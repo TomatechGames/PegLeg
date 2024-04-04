@@ -1,0 +1,123 @@
+[gd_scene load_steps=8 format=3 uid="uid://c3r3aii0wljm0"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/ChoiceRewardEntry.cs" id="1_qkin6"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="1_xbuua"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="2_cr4r6"]
+[ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="3_7iugs"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="3_dvetk"]
+[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="5_5mb8i"]
+[ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="6_4babu"]
+
+[node name="ChoiceRewardEntry" type="MarginContainer"]
+custom_minimum_size = Vector2(64, 64)
+offset_right = 64.0
+offset_bottom = 64.0
+script = ExtResource("1_qkin6")
+fromItemEntryPath = NodePath("AspectRatio/ItemContainer/Left/RewardItem")
+toItemEntryPath = NodePath("AspectRatio/ItemContainer/Right/RewardItem")
+fromDividerPath = NodePath("AspectRatio/ItemContainer/Left")
+toDividerPath = NodePath("AspectRatio/ItemContainer/Right")
+timerBarPath = NodePath("AspectRatio/TimerBox/TimerUI/TextureProgressBar")
+
+[node name="LayoutStupidity" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("2_cr4r6")
+expand_mode = 3
+
+[node name="AspectRatio" type="AspectRatioContainer" parent="."]
+layout_mode = 2
+stretch_mode = 1
+
+[node name="ItemContainer" type="Control" parent="AspectRatio"]
+layout_mode = 2
+
+[node name="Left" type="Control" parent="AspectRatio/ItemContainer"]
+clip_contents = true
+layout_mode = 1
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="RewardItem" parent="AspectRatio/ItemContainer/Left" instance=ExtResource("1_xbuua")]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 43.0
+offset_bottom = 0.0
+grow_vertical = 2
+
+[node name="Right" type="Control" parent="AspectRatio/ItemContainer"]
+clip_contents = true
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="RewardItem" parent="AspectRatio/ItemContainer/Right" instance=ExtResource("1_xbuua")]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="TextureRect" parent="AspectRatio/ItemContainer/Right/RewardItem/IconContainer/RarityIcon" index="1"]
+texture = ExtResource("3_7iugs")
+
+[node name="AmountLabel" parent="AspectRatio/ItemContainer/Right/RewardItem/AmountContainer" index="1"]
+text = "5.12K"
+
+[node name="Responsive Button Area" parent="AspectRatio" instance=ExtResource("3_dvetk")]
+layout_mode = 2
+tooltip_text = "Choose a Reward"
+
+[node name="TimerBox" type="Control" parent="AspectRatio"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TimerUI" type="Control" parent="AspectRatio/TimerBox"]
+layout_mode = 1
+anchor_left = 0.65
+anchor_top = 0.05
+anchor_right = 0.95
+anchor_bottom = 0.35
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="AspectRatio/TimerBox/TimerUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.0
+value = 0.4
+fill_mode = 4
+nine_patch_stretch = true
+texture_under = ExtResource("6_4babu")
+texture_progress = ExtResource("6_4babu")
+tint_under = Color(0.25098, 0.25098, 0.25098, 0.501961)
+
+[node name="Responsive Button Circle" parent="AspectRatio/TimerBox/TimerUI" instance=ExtResource("5_5mb8i")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Cycle Reward"
+
+[editable path="AspectRatio/ItemContainer/Right/RewardItem"]

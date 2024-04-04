@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdpcqsytlgikh"]
+
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="1_bivth"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0w34w"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+shadow_color = Color(0, 0, 0, 0)
+anti_aliasing = false
+anti_aliasing_size = 0.25
+
+[node name="Responsive Button Circle" instance=ExtResource("1_bivth")]
+
+[node name="Panel" parent="MarginContainer" index="0"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_0w34w")

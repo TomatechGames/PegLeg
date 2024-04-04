@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://cwt57r5ga21m2"]
+
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_pdvt5"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_tk6d4"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_pt7gw"]
+
+[node name="RepeatableReward" type="HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+tooltip_text = "sussy"
+theme = ExtResource("1_pdvt5")
+theme_override_constants/separation = 0
+alignment = 1
+script = ExtResource("1_tk6d4")
+addXToAmount = true
+includeAmountInName = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("3_pt7gw")
+expand_mode = 5
+
+[node name="Label" type="Label" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 10
+text = "x2"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[connection signal="AmountChanged" from="." to="TextureRect/Label" method="set_text"]
+[connection signal="IconChanged" from="." to="TextureRect" method="set_texture"]
+[connection signal="NameChanged" from="." to="." method="set_tooltip_text"]

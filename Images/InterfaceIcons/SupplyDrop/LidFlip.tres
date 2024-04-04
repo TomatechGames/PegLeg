@@ -1,0 +1,35 @@
+[gd_resource type="AnimatedTexture" load_steps=11 format=3 uid="uid://ppx4lkl3gdw8"]
+
+[ext_resource type="Texture2D" uid="uid://cd7luw8agg0jf" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0011.png" id="1_ews3t"]
+[ext_resource type="Texture2D" uid="uid://xqy4ettecqhx" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0012.png" id="2_twcct"]
+[ext_resource type="Texture2D" uid="uid://cirtcuujqkrl3" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0013.png" id="3_ko788"]
+[ext_resource type="Texture2D" uid="uid://cp3smnit02d10" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0014.png" id="4_5jk1r"]
+[ext_resource type="Texture2D" uid="uid://7ghiqcmhhnoe" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0015.png" id="5_ww2mm"]
+[ext_resource type="Texture2D" uid="uid://cqpftmuslbvs1" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0016.png" id="6_y2ejg"]
+[ext_resource type="Texture2D" uid="uid://dwvwoffjgblj" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0017.png" id="7_iwqb6"]
+[ext_resource type="Texture2D" uid="uid://ccqypjg314pjx" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0018.png" id="8_il8m2"]
+[ext_resource type="Texture2D" uid="uid://h0h4t6sc8d1k" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0019.png" id="9_nlnr6"]
+[ext_resource type="Texture2D" uid="uid://biy8swfvstoxe" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip/0020.png" id="10_hvayo"]
+
+[resource]
+frames = 10
+speed_scale = 30.0
+frame_0/texture = ExtResource("1_ews3t")
+frame_1/texture = ExtResource("2_twcct")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("3_ko788")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("4_5jk1r")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("5_ww2mm")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("6_y2ejg")
+frame_5/duration = 1.0
+frame_6/texture = ExtResource("7_iwqb6")
+frame_6/duration = 1.0
+frame_7/texture = ExtResource("8_il8m2")
+frame_7/duration = 1.0
+frame_8/texture = ExtResource("9_nlnr6")
+frame_8/duration = 1.0
+frame_9/texture = ExtResource("10_hvayo")
+frame_9/duration = 1.0

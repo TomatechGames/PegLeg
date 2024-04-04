@@ -1,0 +1,1325 @@
+{
+  "AccountResource:athenabattlepassxp": {
+    "Type": "AccountResource",
+    "Name": "AthenaBattlePassXP",
+    "ItemName": "Battle Pass XP",
+    "ItemDescription": "Collecting Battle Pass XP will unlock higher Tiers in the Battle Pass.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenabattlepassxp.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-FNBR-BattlePoints.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-FNBR-BattlePoints-L.T-FNBR-BattlePoints-L"
+    }
+  },
+  "AccountResource:athenabattlestar": {
+    "Type": "AccountResource",
+    "Name": "AthenaBattleStar",
+    "ItemName": "Battle Stars",
+    "ItemDescription": "Seasonal Resource used to claim Battle Pass rewards.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenabattlestar.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_UI_BP_BattleStar_64.png",
+      "LargePreview": "/Game/Athena/UI/Frontend/Art/T_UI_BP_BattleStar_L.T_UI_BP_BattleStar_L"
+    }
+  },
+  "AccountResource:athenalevelup": {
+    "Type": "AccountResource",
+    "Name": "AthenaLevelUp",
+    "ItemName": "Level Up",
+    "ItemDescription": "Increases the Battle Royale Season Level.",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenalevelup.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_UI_FNBR_LevelUp_S.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_UI_FNBR_LevelUp_L.T_UI_FNBR_LevelUp_L"
+    }
+  },
+  "AccountResource:athenaseasonalxp": {
+    "Type": "AccountResource",
+    "Name": "AthenaSeasonalXP",
+    "ItemName": "Season XP",
+    "ItemDescription": "Used to increase the Fortnite Season Level.",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenaseasonalxp.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_UI_FNBR_XPeverywhere_L.T_UI_FNBR_XPeverywhere_L"
+    }
+  },
+  "AccountResource:athenaseasonalxp_large": {
+    "Type": "AccountResource",
+    "Name": "AthenaSeasonalXP_Large",
+    "ItemName": "Season XP",
+    "ItemDescription": "Used to increase the Battle Royale Season Level.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenaseasonalxp_large.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_UI_FNBR_XPeverywhere_L.T_UI_FNBR_XPeverywhere_L"
+    }
+  },
+  "AccountResource:athenaseasonalxp_med": {
+    "Type": "AccountResource",
+    "Name": "AthenaSeasonalXP_Med",
+    "ItemName": "Season XP",
+    "ItemDescription": "Used to increase the Battle Royale Season Level.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenaseasonalxp_med.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_UI_FNBR_XPeverywhere_L.T_UI_FNBR_XPeverywhere_L"
+    }
+  },
+  "AccountResource:athenasurvivorprestige": {
+    "Type": "AccountResource",
+    "Name": "AthenaSurvivorPrestige",
+    "ItemName": "\u003CAthenaSurvivorPrestige\u003E",
+    "ItemDescription": "Increases the Battle Royale Survivor Prestige level",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenasurvivorprestige.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_Items_Survivor_Tier_Arrow1.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_Items_Survivor_Tier_Arrow1L.T_Items_Survivor_Tier_Arrow1L"
+    }
+  },
+  "AccountResource:athenasurvivortier": {
+    "Type": "AccountResource",
+    "Name": "AthenaSurvivorTier",
+    "ItemName": "\u003CAthenaSurvivorTier\u003E",
+    "ItemDescription": "Increases the Battle Royale Survivor Tier level",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenasurvivortier.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_Items_Survivor_Tier_Arrow1.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_Items_Survivor_Tier_Arrow1L.T_Items_Survivor_Tier_Arrow1L"
+    }
+  },
+  "AccountResource:athenawellrestedbooster": {
+    "Type": "AccountResource",
+    "Name": "AthenaWellRestedBooster",
+    "ItemName": "Well Rested Booster",
+    "ItemDescription": "Used to increase the Well Rested amount.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/athenawellrestedbooster.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_UI_FNBR_XPeverywhere_L.T_UI_FNBR_XPeverywhere_L"
+    }
+  },
+  "AccountResource:campaign_event_currency": {
+    "Type": "AccountResource",
+    "Name": "Campaign_Event_Currency",
+    "ItemName": "Campaign Event Currency",
+    "ItemDescription": "Given out as part of Save the World Events",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/campaign_event_currency.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Storm.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Storm-L.T-Items-EventCurrency-Storm-L"
+    }
+  },
+  "AccountResource:compendiumxp": {
+    "Type": "AccountResource",
+    "Name": "CompendiumXP",
+    "ItemName": "Battle Royale Compendium XP",
+    "ItemDescription": "Used to rankup the Battle Royale Compendium.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/compendiumxp.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-CrewXP.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-CrewXP-L.T-CrewXP-L"
+    }
+  },
+  "AccountResource:currency_hybrid_mtx_xrayllama": {
+    "Type": "AccountResource",
+    "Name": "Currency_Hybrid_MTX_XRayLlama",
+    "ItemName": "V-Bucks and X-Ray Tickets",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/currency_hybrid_mtx_xrayllama.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Currency-MTX-X-RayLlama.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Currency-MTX-X-RayLlama-L.T-Items-Currency-MTX-X-RayLlama-L"
+    }
+  },
+  "AccountResource:currency_mtxswap": {
+    "Type": "AccountResource",
+    "Name": "Currency_MtxSwap",
+    "ItemName": "V-Bucks Voucher",
+    "ItemDescription": "Turns into X-Ray Tickets for everyone, and also V-Bucks if you have a Founders account.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/currency_mtxswap.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Vindertech.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Vindertech-L.T-Items-EventCurrency-Vindertech-L"
+    }
+  },
+  "AccountResource:currency_xrayllama": {
+    "Type": "AccountResource",
+    "Name": "Currency_XRayLlama",
+    "ItemName": "X-Ray Tickets",
+    "ItemDescription": "Currency earned by completing Daily Quests, Storm Shield Defenses, and some Mission Alerts. Traded for X-Ray Llamas in the Llama Shop.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/currency_xrayllama.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Currency-X-RayLlama.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Currency-X-RayLlama-L.T-Items-Currency-X-RayLlama-L"
+    }
+  },
+  "AccountResource:eventcurrency_adventure": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Adventure",
+    "ItemName": "Pirate Tickets",
+    "ItemDescription": "Currency earned by completing missions, dungeons, and quests during the Scurvy Shoals season. Traded for event Loot Llamas in the Llama Shop.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/persistentresources/eventcurrency_adventure.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Summer.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Summer-L.T-Items-EventCurrency-Summer-L"
+    }
+  },
+  "AccountResource:eventcurrency_blockbuster": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Blockbuster",
+    "ItemName": "Blockbuster Tickets",
+    "ItemDescription": "Can be traded for special llamas, only available during the Blockbuster Event!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/persistentresources/eventcurrency_blockbuster.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Blockbuster.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Blockbuster-L.T-Items-EventCurrency-Blockbuster-L"
+    }
+  },
+  "AccountResource:eventcurrency_candy": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Candy",
+    "ItemName": "Candy",
+    "ItemDescription": "Currency earned by completing missions, dungeons, and quests during the Fortnitemares season. Traded for event Loot Llamas in the Llama Shop.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/eventcurrency_candy.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Candy.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Candy-L.T-Items-EventCurrency-Candy-L"
+    }
+  },
+  "AccountResource:eventcurrency_founders": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Founders",
+    "ItemName": "Founder\u0027s Coins",
+    "ItemDescription": "Can be traded for special llamas, only available during Founder\u0027s Month! Found by completing quests and in other llamas.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/eventcurrency_founders.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-FoundersBadge-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Boost/T-Icon-FoundersBadge-512.T-Icon-FoundersBadge-512"
+    }
+  },
+  "AccountResource:eventcurrency_lunar": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Lunar",
+    "ItemName": "Lunar Tickets",
+    "ItemDescription": "Currency earned by completing missions and quests during the Mild Meadows season. Traded for event Loot Llamas in the Llama Shop.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/persistentresources/eventcurrency_lunar.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Spring2019.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Spring2019_L.T-Items-EventCurrency-Spring2019_L"
+    }
+  },
+  "AccountResource:eventcurrency_pumpkinwarhead": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_PumpkinWarhead",
+    "ItemName": "Material - Pumpkin Warhead",
+    "ItemDescription": "Pumpkin Warheads.  These Warheads are necessary to develop the Jack-O-Launcher!",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/eventcurrency_pumpkinwarhead.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-pumpkin.png"
+    }
+  },
+  "AccountResource:eventcurrency_roadtrip": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_RoadTrip",
+    "ItemName": "Road Trip Tickets",
+    "ItemDescription": "Currency earned by completing missions and quests during the Blasted Badlands season. Traded for event Loot Llamas in the Llama Shop.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/persistentresources/eventcurrency_roadtrip.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Season5Horde.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Season5Horde-L.T-Items-EventCurrency-Season5Horde-L"
+    }
+  },
+  "AccountResource:eventcurrency_scaling": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Scaling",
+    "ItemName": "Gold",
+    "ItemDescription": "Special currency earned by completing missions and opening mini llamas. Can be traded for items in the Event Store.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/eventcurrency_scaling.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Item-GoldBars.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Item-GoldBars-L.T-Item-GoldBars-L"
+    }
+  },
+  "AccountResource:eventcurrency_scavenger": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Scavenger",
+    "ItemName": "Scavenger Tickets",
+    "ItemDescription": "Can be traded for special llamas, only available during the Scavenger Event!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/eventcurrency_scavenger.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Scavenger.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Scavenger-L.T-Items-EventCurrency-Scavenger-L"
+    }
+  },
+  "AccountResource:eventcurrency_snowballs": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Snowballs",
+    "ItemName": "Snowflake Tickets",
+    "ItemDescription": "Currency earned by completing missions and quests during the Winterfest season. Traded for event Loot Llamas in the Llama Shop.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/eventcurrency_snowballs.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Snowballs.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Snowballs-L.T-Items-EventCurrency-Snowballs-L"
+    }
+  },
+  "AccountResource:eventcurrency_spring": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Spring",
+    "ItemName": "Spring Tickets",
+    "ItemDescription": "Can be traded for special llamas, only available during the Spring Event!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/persistentresources/eventcurrency_spring.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Spring2019.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Spring2019_L.T-Items-EventCurrency-Spring2019_L"
+    }
+  },
+  "AccountResource:eventcurrency_stormzone": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_StormZone",
+    "ItemName": "Storm Tickets",
+    "ItemDescription": "Can be traded for special llamas, only available during the Storm Event!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/eventcurrency_stormzone.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Storm.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Storm-L.T-Items-EventCurrency-Storm-L"
+    }
+  },
+  "AccountResource:eventcurrency_summer": {
+    "Type": "AccountResource",
+    "Name": "EventCurrency_Summer",
+    "ItemName": "Summer Tickets",
+    "ItemDescription": "Can be traded for special llamas, only available during this event!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/persistentresources/eventcurrency_summer.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-EventCurrency-Summer.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-EventCurrency-Summer-L.T-Items-EventCurrency-Summer-L"
+    }
+  },
+  "AccountResource:heroxp": {
+    "Type": "AccountResource",
+    "Name": "HeroXP",
+    "ItemName": "Hero XP",
+    "ItemDescription": "Used to level heroes and defenders. Can be found in llamas and by retiring heroes or defenders.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/heroxp.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-HeroXP.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-HeroXP-L.T-HeroXP-L"
+    }
+  },
+  "AccountResource:peopleresource": {
+    "Type": "AccountResource",
+    "Name": "PeopleResource",
+    "ItemName": "People",
+    "ItemDescription": "Survivors who have decided to join  your Homebase. Used to Transform Heroes, Survivors, and Defenders.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/peopleresource.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-People.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Currency/T-Icon-People-L.T-Icon-People-L"
+    }
+  },
+  "AccountResource:personnelxp": {
+    "Type": "AccountResource",
+    "Name": "PersonnelXP",
+    "ItemName": "Survivor XP",
+    "ItemDescription": "Used to level survivors. Can be found in llamas and by retiring survivors.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/personnelxp.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-CrewXP.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-CrewXP-L.T-CrewXP-L"
+    }
+  },
+  "AccountResource:phoenixxp": {
+    "Type": "AccountResource",
+    "Name": "PhoenixXP",
+    "ItemName": "Venture XP",
+    "ItemDescription": "Advances your Venture Level. Earned by completing missions, mission alerts, or challenge quests in a Venture Zone.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/phoenixxp.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-SeasonalXP-L.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/XP/Icon-SeasonalXP-XL.Icon-SeasonalXP-XL"
+    }
+  },
+  "AccountResource:phoenixxp_reward": {
+    "Type": "AccountResource",
+    "Name": "PhoenixXP_Reward",
+    "ItemName": "Venture XP",
+    "ItemDescription": "Advances your Venture Level. Earned by completing missions, mission alerts, or challenge quests in a Venture Zone.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/phoenixxp_reward.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-SeasonalXP-L.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/XP/Icon-SeasonalXP-XL.Icon-SeasonalXP-XL"
+    }
+  },
+  "AccountResource:reagent_alteration_ele_fire": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Ele_Fire",
+    "ItemName": "FIRE-UP!",
+    "ItemDescription": "Used to make items deal fire damage. Found by eliminating fire husks and completing Fire Storm mission alerts.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_ele_fire.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Fire.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkUp-Fire-L.T-Items-WeaponPerkUp-Fire-L"
+    }
+  },
+  "AccountResource:reagent_alteration_ele_nature": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Ele_Nature",
+    "ItemName": "AMP-UP!",
+    "ItemDescription": "Used to make items deal nature damage. Found by eliminating nature husks and completing Lightning Storm mission alerts.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_ele_nature.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Nature.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkUp-Nature-L.T-Items-WeaponPerkUp-Nature-L"
+    }
+  },
+  "AccountResource:reagent_alteration_ele_water": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Ele_Water",
+    "ItemName": "FROST-UP!",
+    "ItemDescription": "Used to make items deal water damage. Found by eliminating water husks and completing Ice Storm mission alerts.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_ele_water.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Water.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkUp-Water-L.T-Items-WeaponPerkUp-Water-L"
+    }
+  },
+  "AccountResource:reagent_alteration_gameplay_generic": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Gameplay_Generic",
+    "ItemName": "Core RE-PERK!",
+    "ItemDescription": "Resource used to modify weapon perks. Earned by gaining Venture Levels.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_gameplay_generic.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponRePerk-Resource.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponRePerk-Resource-L.T-Items-WeaponRePerk-Resource-L"
+    }
+  },
+  "AccountResource:reagent_alteration_generic": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Generic",
+    "ItemName": "RE-PERK!",
+    "ItemDescription": "Resource used to modify schematic perks. Found in Plankerton and above.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_generic.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Generic.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkUp-Generic-L.T-Items-WeaponPerkUp-Generic-L"
+    }
+  },
+  "AccountResource:reagent_alteration_upgrade_r": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Upgrade_R",
+    "ItemName": "Rare PERK-UP!",
+    "ItemDescription": "Resource used to upgrade schematic perks. Found in Canny Valley.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_upgrade_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Rare.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkUp-Rare-L.T-Items-WeaponPerkUp-Rare-L"
+    }
+  },
+  "AccountResource:reagent_alteration_upgrade_sr": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Upgrade_SR",
+    "ItemName": "Legendary PERK-UP!",
+    "ItemDescription": "Resource used to upgrade schematic perks. Found in Twine Peaks.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_upgrade_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkup-Legendary.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkup-Legendary-L.T-Items-WeaponPerkup-Legendary-L"
+    }
+  },
+  "AccountResource:reagent_alteration_upgrade_uc": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Upgrade_UC",
+    "ItemName": "Uncommon PERK-UP!",
+    "ItemDescription": "Resource used to upgrade schematic perks. Found in Plankerton and Canny Valley.",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_upgrade_uc.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Uncommon.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkUp-Uncommon-L.T-Items-WeaponPerkUp-Uncommon-L"
+    }
+  },
+  "AccountResource:reagent_alteration_upgrade_vr": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Alteration_Upgrade_VR",
+    "ItemName": "Epic PERK-UP!",
+    "ItemDescription": "Resource used to upgrade schematic perks. Found in Canny Valley and Twine Peaks.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_alteration_upgrade_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkup-Epic.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkup-Epic-L.T-Items-WeaponPerkup-Epic-L"
+    }
+  },
+  "AccountResource:reagent_c_t01": {
+    "Type": "AccountResource",
+    "Name": "Reagent_C_T01",
+    "ItemName": "Pure Drop of Rain",
+    "ItemDescription": "Resource used to evolve all types of items.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_c_t01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Reagent-C-T01.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Reagent-C-T01-L.T-Items-Reagent-C-T01-L"
+    }
+  },
+  "AccountResource:reagent_c_t02": {
+    "Type": "AccountResource",
+    "Name": "Reagent_C_T02",
+    "ItemName": "Lightning in a Bottle",
+    "ItemDescription": "Resource used to evolve all types of items. Found primarily in Plankerton.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_c_t02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Reagent-C-T02.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Reagent-C-T02-L.T-Items-Reagent-C-T02-L"
+    }
+  },
+  "AccountResource:reagent_c_t03": {
+    "Type": "AccountResource",
+    "Name": "Reagent_C_T03",
+    "ItemName": "Eye of the Storm",
+    "ItemDescription": "Resource used to evolve all types of items. Found primarily in Canny Valley.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_c_t03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Reagent-C-T03.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Reagent-C-T03-L.T-Items-Reagent-C-T03-L"
+    }
+  },
+  "AccountResource:reagent_c_t04": {
+    "Type": "AccountResource",
+    "Name": "Reagent_C_T04",
+    "ItemName": "Storm Shard",
+    "ItemDescription": "Resource used to evolve all types of items. Found primarily in Twine Peaks.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_c_t04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Reagent-C-T04.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Reagent-C-T04-L.T-Items-Reagent-C-T04-L"
+    }
+  },
+  "AccountResource:reagent_evolverarity_r": {
+    "Type": "AccountResource",
+    "Name": "Reagent_EvolveRarity_R",
+    "ItemName": "Rare Flux",
+    "ItemDescription": "Collect Rare Flux to upgrade an Uncommon Hero or Schematic to Rare rarity!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_evolverarity_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Evolverarity-Rare.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Evolverarity-Rare-L.T-Items-Evolverarity-Rare-L"
+    }
+  },
+  "AccountResource:reagent_evolverarity_sr": {
+    "Type": "AccountResource",
+    "Name": "Reagent_EvolveRarity_SR",
+    "ItemName": "Legendary Flux",
+    "ItemDescription": "Collect Legendary Flux to upgrade an Epic Hero or Schematic to Legendary rarity!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_evolverarity_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Evolverarity-Legend.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Evolverarity-Legend-L.T-Items-Evolverarity-Legend-L"
+    }
+  },
+  "AccountResource:reagent_evolverarity_vr": {
+    "Type": "AccountResource",
+    "Name": "Reagent_EvolveRarity_VR",
+    "ItemName": "Epic Flux",
+    "ItemDescription": "Collect Epic Flux to upgrade a Rare Hero or Schematic to Epic rarity!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_evolverarity_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Evolverarity-Epic.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Evolverarity-Epic-L.T-Items-Evolverarity-Epic-L"
+    }
+  },
+  "AccountResource:reagent_people": {
+    "Type": "AccountResource",
+    "Name": "Reagent_People",
+    "ItemName": "Training Manual",
+    "ItemDescription": "Books full of knowledge, used to evolve survivors and heroes. Can be found by retiring survivors and heroes or in mission rewards.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_people.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Reagent-People.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Reagent-People-L.T-Items-Reagent-People-L"
+    }
+  },
+  "AccountResource:reagent_promotion_heroes": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Promotion_Heroes",
+    "ItemName": "Hero Supercharger",
+    "ItemDescription": "Used to promote heroes, increasing their max level. Can be earned by gaining Venture Levels.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_promotion_heroes.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Hero-PromotionCurrency.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Hero-PromotionCurrency-L.T-Items-Hero-PromotionCurrency-L"
+    }
+  },
+  "AccountResource:reagent_promotion_survivors": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Promotion_Survivors",
+    "ItemName": "Survivor Supercharger",
+    "ItemDescription": "Used to promote Survivors and Leads, increasing their max level. Can be earned by gaining Venture Levels.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_promotion_survivors.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Survivor-PromotionCurrency.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Survivor-PromotionCurrency-L.T-Items-Survivor-PromotionCurrency-L"
+    }
+  },
+  "AccountResource:reagent_promotion_traps": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Promotion_Traps",
+    "ItemName": "Trap Supercharger",
+    "ItemDescription": "Used to promote trap schematics, increasing their max level. Can be earned by gaining Venture Levels.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_promotion_traps.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Trap-PromotionCurrency.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Trap-PromotionCurrency-L.T-Items-Trap-PromotionCurrency-L"
+    }
+  },
+  "AccountResource:reagent_promotion_weapons": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Promotion_Weapons",
+    "ItemName": "Weapon Supercharger",
+    "ItemDescription": "Used to promote weapon schematics, increasing their max level. Can be earned by gaining Venture Levels.",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_promotion_weapons.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Weapon-PromotionCurrency.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Weapon-PromotionCurrency-L.T-Items-Weapon-PromotionCurrency-L"
+    }
+  },
+  "AccountResource:reagent_traps": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Traps",
+    "ItemName": "Trap Designs",
+    "ItemDescription": "Designs used to evolve traps. Found by recycling traps or as mission rewards.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_traps.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Reagent-Traps.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Reagent-Traps-L.T-Items-Reagent-Traps-L"
+    }
+  },
+  "AccountResource:reagent_weapons": {
+    "Type": "AccountResource",
+    "Name": "Reagent_Weapons",
+    "ItemName": "Weapon Designs",
+    "ItemDescription": "Designs used to evolve weapons. Found by recycling weapons or as mission rewards.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/reagent_weapons.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Reagent-Weapons.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Reagent-Weapons-L.T-Items-Reagent-Weapons-L"
+    }
+  },
+  "AccountResource:s29_rebootpoints": {
+    "Type": "AccountResource",
+    "Name": "S29_RebootPoints",
+    "ItemName": "Points",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/battlepasss29_quests/content/items/persistentresources/s29_rebootpoints.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_UI_Points_L.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T_UI_Points_L.T_UI_Points_L"
+    }
+  },
+  "AccountResource:schematicxp": {
+    "Type": "AccountResource",
+    "Name": "SchematicXP",
+    "ItemName": "Schematic XP",
+    "ItemDescription": "Used to level schematics. Can be found in llamas and by recycling schematics.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/schematicxp.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-SchematicXP.png",
+      "LargePreview": "/Game/UI/Icons/Icon-XP/Icon-SchematicXP-XL.Icon-SchematicXP-XL"
+    }
+  },
+  "AccountResource:sparkspack_currency": {
+    "Type": "AccountResource",
+    "Name": "SparksPack_Currency",
+    "ItemName": "Festival Points",
+    "ItemDescription": "Used to unlock Reward Tiers in the Festival Pass.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/fm/sparksquests/sparkspermanentquests/content/items/persistentresources/sparkspack_currency.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_FestivalCurrencyIcon_64px.png",
+      "LargePreview": "/SparksPermanentQuests/UI/Textures/T_FestivalCurrencyIcon_64px.T_FestivalCurrencyIcon_64px"
+    }
+  },
+  "AccountResource:sparkspack_currency_granter": {
+    "Type": "AccountResource",
+    "Name": "SparksPack_Currency_Granter",
+    "ItemName": "Festival Points",
+    "ItemDescription": "Used to unlock Reward Tiers in the Festival Pass.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/fm/sparksquests/sparkspermanentquests/content/items/persistentresources/sparkspack_currency_granter.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_FestivalCurrencyIcon_64px.png",
+      "LargePreview": "/SparksPermanentQuests/UI/Textures/T_FestivalCurrencyIcon_64px.T_FestivalCurrencyIcon_64px"
+    }
+  },
+  "AccountResource:sparkswristband_currency": {
+    "Type": "AccountResource",
+    "Name": "SparksWristband_Currency",
+    "ItemName": "Wristband",
+    "ItemDescription": "Used to unlock seasonal Fortnite Festival Rewards.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/fm/sparksquests/sparkspermanentquests/content/items/persistentresources/sparkswristband_currency.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Placeholder_Icon_Template.png",
+      "LargePreview": "/Game/Blueprints/Blutilities/ForArtists/TextureTools/PlaceholderTextureGenerator/Placeholder_Icon_Template.Placeholder_Icon_Template"
+    }
+  },
+  "AccountResource:sparkswristband_currency_granter": {
+    "Type": "AccountResource",
+    "Name": "SparksWristband_Currency_Granter",
+    "ItemName": "Wristband",
+    "ItemDescription": "Used to unlock seasonal Fortnite Festival Rewards.",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/fm/sparksquests/sparkspermanentquests/content/items/persistentresources/sparkswristband_currency_granter.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T_WristbandCurrency.png",
+      "LargePreview": "/SparksPermanentQuests/UI/Textures/T_WristbandCurrency.T_WristbandCurrency"
+    }
+  },
+  "AccountResource:specialcurrency_daily": {
+    "Type": "AccountResource",
+    "Name": "SpecialCurrency_Daily",
+    "ItemName": "Daily Coins",
+    "ItemDescription": "Special currency used to purchase items from the Event Store. You can earn this currency by completing Daily Quests.",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/specialcurrency_daily.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-DailyCoin.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-DailyCoin-L.T-Items-DailyCoin-L"
+    }
+  },
+  "AccountResource:voucher_basicpack": {
+    "Type": "AccountResource",
+    "Name": "Voucher_BasicPack",
+    "ItemName": "Mini Reward Llama",
+    "ItemDescription": "Claim your free reward llama in the Loot tab.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_basicpack.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-VoucherBasic.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-VoucherBasic-L.T-Items-VoucherBasic-L"
+    }
+  },
+  "AccountResource:voucher_cardpack_2021anniversary": {
+    "Type": "AccountResource",
+    "Name": "Voucher_CardPack_2021Anniversary",
+    "ItemName": "2021 Birthday Llama Token",
+    "ItemDescription": "Trade in for a 2021 Birthday Llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_cardpack_2021anniversary.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\PinataAnniversaryPack_128.png",
+      "LargePreview": "/Game/UI/Frontend/Store/Textures/PinataAnniversaryPack-L.PinataAnniversaryPack-L"
+    }
+  },
+  "AccountResource:voucher_cardpack_bronze": {
+    "Type": "AccountResource",
+    "Name": "Voucher_CardPack_Bronze",
+    "ItemName": "Upgrade Llama Token",
+    "ItemDescription": "Trade in for an Upgrade Llama!",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_cardpack_bronze.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\PinataStandardPack-Upgrade_128.png",
+      "LargePreview": "/Game/UI/Frontend/Store/Textures/PinataStandardPack-Upgrade.PinataStandardPack-Upgrade"
+    }
+  },
+  "AccountResource:voucher_cardpack_event_founders": {
+    "Type": "AccountResource",
+    "Name": "Voucher_CardPack_Event_Founders",
+    "ItemName": "Founder\u0027s Llama Token",
+    "ItemDescription": "Trade in for a Founder\u0027s Llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_cardpack_event_founders.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\PinataFoundersPack_128.png",
+      "LargePreview": "/Game/UI/Frontend/Store/Textures/PinataFoundersPack.PinataFoundersPack"
+    }
+  },
+  "AccountResource:voucher_cardpack_jackpot": {
+    "Type": "AccountResource",
+    "Name": "Voucher_CardPack_Jackpot",
+    "ItemName": "Legendary Troll Stash Llama Token",
+    "ItemDescription": "Trade in for a Legendary Troll Stash Llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_cardpack_jackpot.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\PinataStandardPack-Upgrade_128.png",
+      "LargePreview": "/Game/UI/Frontend/Store/Textures/PinataStandardPack-Upgrade.PinataStandardPack-Upgrade"
+    }
+  },
+  "AccountResource:voucher_cardpack_persistent_anniversary": {
+    "Type": "AccountResource",
+    "Name": "Voucher_CardPack_Persistent_Anniversary",
+    "ItemName": "Birthday Llama Token",
+    "ItemDescription": "Trade in for a Birthday Llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_cardpack_persistent_anniversary.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\PinataAnniversaryPack_128.png",
+      "LargePreview": "/Game/UI/Frontend/Store/Textures/PinataAnniversaryPack-L.PinataAnniversaryPack-L"
+    }
+  },
+  "AccountResource:voucher_custom_firecracker_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Custom_Firecracker_R",
+    "ItemName": "Firecracker Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_custom_firecracker_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-FireCrackerGun.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-FireCrackerGun-L.T-Icon-Weapons-SK-FireCrackerGun-L"
+    }
+  },
+  "AccountResource:voucher_founders_constructor_bundle": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Constructor_Bundle",
+    "ItemName": "Founders Constructor Bundle Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_constructor_bundle.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Founder-SR-ConstructorPack.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/CardPacks/T-Founder-SR-ConstructorPack.T-Founder-SR-ConstructorPack"
+    }
+  },
+  "AccountResource:voucher_founders_constructor_weapon_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Constructor_Weapon_SR",
+    "ItemName": "Founders Constructor Legendary Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_constructor_weapon_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-constructor-pump-shotgun.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-constructor-pump-shotgun-L.T-Icon-Weapons-SK-constructor-pump-shotgun-L"
+    }
+  },
+  "AccountResource:voucher_founders_constructor_weapon_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Constructor_Weapon_VR",
+    "ItemName": "Founders Constructor Epic Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_constructor_weapon_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-constructor-pump-shotgun.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-constructor-pump-shotgun-L.T-Icon-Weapons-SK-constructor-pump-shotgun-L"
+    }
+  },
+  "AccountResource:voucher_founders_ninja_bundle": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Ninja_Bundle",
+    "ItemName": "Founders Ninja Bundle Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_ninja_bundle.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Founder-SR-NinjaPack.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/CardPacks/T-Founder-SR-NinjaPack.T-Founder-SR-NinjaPack"
+    }
+  },
+  "AccountResource:voucher_founders_ninja_weapon_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Ninja_Weapon_SR",
+    "ItemName": "Founders Ninja Legendary Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_ninja_weapon_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-ninja-sword-katana-01.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-ninja-sword-katana-01-L.T-Icon-Weapons-SK-ninja-sword-katana-01-L"
+    }
+  },
+  "AccountResource:voucher_founders_ninja_weapon_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Ninja_Weapon_VR",
+    "ItemName": "Founders Ninja Epic Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_ninja_weapon_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-ninja-sword-katana-01.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-ninja-sword-katana-01-L.T-Icon-Weapons-SK-ninja-sword-katana-01-L"
+    }
+  },
+  "AccountResource:voucher_founders_outlander_bundle": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Outlander_Bundle",
+    "ItemName": "Founders Outlander Bundle Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_outlander_bundle.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Founder-SR-OutlanderPack.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/CardPacks/T-Founder-SR-OutlanderPack.T-Founder-SR-OutlanderPack"
+    }
+  },
+  "AccountResource:voucher_founders_outlander_weapon_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Outlander_Weapon_SR",
+    "ItemName": "Founders Outlander Legendary Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_outlander_weapon_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-Machine-Pistol.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-Machine-Pistol-L.T-Icon-Weapons-SK-Machine-Pistol-L"
+    }
+  },
+  "AccountResource:voucher_founders_outlander_weapon_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Outlander_Weapon_VR",
+    "ItemName": "Founders Outlander Epic Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_outlander_weapon_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-Machine-Pistol.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-Machine-Pistol-L.T-Icon-Weapons-SK-Machine-Pistol-L"
+    }
+  },
+  "AccountResource:voucher_founders_soldier_bundle": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Soldier_Bundle",
+    "ItemName": "Founders Soldier Bundle Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_soldier_bundle.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Founder-SR-SoliderPack.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/CardPacks/T-Founder-SR-SoliderPack.T-Founder-SR-SoliderPack"
+    }
+  },
+  "AccountResource:voucher_founders_soldier_weapon_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Soldier_Weapon_SR",
+    "ItemName": "Founders Soldier Legendary Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_soldier_weapon_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-Drum-Assault-Rifle.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-Drum-Assault-Rifle-L.T-Icon-Weapons-SK-Drum-Assault-Rifle-L"
+    }
+  },
+  "AccountResource:voucher_founders_soldier_weapon_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_Soldier_Weapon_VR",
+    "ItemName": "Founders Soldier Epic Weapon Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_soldier_weapon_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapons-SK-Drum-Assault-Rifle.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Weapons/Items/T-Icon-Weapons-SK-Drum-Assault-Rifle-L.T-Icon-Weapons-SK-Drum-Assault-Rifle-L"
+    }
+  },
+  "AccountResource:voucher_founders_starterweapons_bundle": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Founders_StarterWeapons_Bundle",
+    "ItemName": "Founders Starter Weapons Token",
+    "ItemDescription": "Trade in at the Loot menu to get two Legendary Ninja Heroes and one upgradeable weapon!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_founders_starterweapons_bundle.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Schematic-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Schematic-CARD.T-Icon-Schematic-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_defender_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Defender_R",
+    "ItemName": "Rare Defender Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_defender_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Defenders_-CARD.T-Icon-Defenders_-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_defender_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Defender_SR",
+    "ItemName": "Legendary Defender Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_defender_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Defenders_-CARD.T-Icon-Defenders_-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_defender_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Defender_VR",
+    "ItemName": "Epic Defender Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_defender_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Defenders_-CARD.T-Icon-Defenders_-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_hero_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Hero_R",
+    "ItemName": "Rare Hero Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_hero_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Hero-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Hero-CARD.T-Icon-Hero-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_hero_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Hero_SR",
+    "ItemName": "Legendary Hero Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_hero_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Hero-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Hero-CARD.T-Icon-Hero-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_hero_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Hero_VR",
+    "ItemName": "Epic Hero Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_hero_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Hero-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Hero-CARD.T-Icon-Hero-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_manager_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Manager_R",
+    "ItemName": "Rare Lead Survivor Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_manager_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Survivor-Leader-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemTypes/T-Icon-Survivor-Leader-CARD.T-Icon-Survivor-Leader-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_manager_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Manager_SR",
+    "ItemName": "Legendary Lead Survivor Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_manager_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Survivor-Leader-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemTypes/T-Icon-Survivor-Leader-CARD.T-Icon-Survivor-Leader-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_manager_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Manager_VR",
+    "ItemName": "Epic Lead Survivor Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_manager_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Survivor-Leader-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemTypes/T-Icon-Survivor-Leader-CARD.T-Icon-Survivor-Leader-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_melee_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Melee_R",
+    "ItemName": "Rare Melee Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_melee_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Melee-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Melee-CARD.T-Icon-Melee-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_melee_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Melee_SR",
+    "ItemName": "Legendary Melee Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_melee_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Melee-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Melee-CARD.T-Icon-Melee-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_melee_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Melee_VR",
+    "ItemName": "Epic Melee Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_melee_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Melee-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Melee-CARD.T-Icon-Melee-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_ranged_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Ranged_R",
+    "ItemName": "Rare Ranged Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_ranged_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Ranged-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Ranged-CARD.T-Icon-Ranged-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_ranged_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Ranged_SR",
+    "ItemName": "Legendary Ranged Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_ranged_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Ranged-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Ranged-CARD.T-Icon-Ranged-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_ranged_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Ranged_VR",
+    "ItemName": "Epic Ranged Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_ranged_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Ranged-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Ranged-CARD.T-Icon-Ranged-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_schematic_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Schematic_R",
+    "ItemName": "Rare Schematic Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_schematic_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Schematic-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Schematic-CARD.T-Icon-Schematic-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_schematic_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Schematic_SR",
+    "ItemName": "Legendary Schematic Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_schematic_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Schematic-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Schematic-CARD.T-Icon-Schematic-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_schematic_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Schematic_VR",
+    "ItemName": "Epic Schematic Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_schematic_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Schematic-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Schematic-CARD.T-Icon-Schematic-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_trap_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Trap_R",
+    "ItemName": "Rare Trap Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_trap_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Traps-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Traps-CARD.T-Icon-Traps-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_trap_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Trap_SR",
+    "ItemName": "Legendary Trap Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_trap_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Traps-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Traps-CARD.T-Icon-Traps-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_trap_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Trap_VR",
+    "ItemName": "Epic Trap Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_trap_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Traps-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Traps-CARD.T-Icon-Traps-CARD"
+    }
+  },
+  "AccountResource:voucher_generic_weapon_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Weapon_R",
+    "ItemName": "Rare Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_weapon_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapon-Skill-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Workers/T-Icon-Weapon-Skill-128.T-Icon-Weapon-Skill-128"
+    }
+  },
+  "AccountResource:voucher_generic_weapon_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Weapon_SR",
+    "ItemName": "Legendary Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_weapon_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapon-Skill-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Workers/T-Icon-Weapon-Skill-128.T-Icon-Weapon-Skill-128"
+    }
+  },
+  "AccountResource:voucher_generic_weapon_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Weapon_VR",
+    "ItemName": "Epic Weapon Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_weapon_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Weapon-Skill-128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Workers/T-Icon-Weapon-Skill-128.T-Icon-Weapon-Skill-128"
+    }
+  },
+  "AccountResource:voucher_generic_worker_r": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Worker_R",
+    "ItemName": "Rare Survivor Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Rare",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_worker_r.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\GenericWorker_128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Workers/Generic/GenericWorker.GenericWorker"
+    }
+  },
+  "AccountResource:voucher_generic_worker_sr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Worker_SR",
+    "ItemName": "Legendary Survivor Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_worker_sr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\GenericWorker_128.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Workers/Generic/GenericWorker.GenericWorker"
+    }
+  },
+  "AccountResource:voucher_generic_worker_vr": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Generic_Worker_VR",
+    "ItemName": "Epic Survivor Token",
+    "ItemDescription": "Trade for a loot llama!",
+    "Rarity": "Epic",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_generic_worker_vr.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\GenericWorker.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Workers/Generic/GenericWorker.GenericWorker"
+    }
+  },
+  "AccountResource:voucher_herobuyback": {
+    "Type": "AccountResource",
+    "Name": "Voucher_HeroBuyback",
+    "ItemName": "Hero Recruitment Voucher",
+    "ItemDescription": "This token can be redeemed for Legendary or Mythic event Heroes in the Collection Book!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_herobuyback.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Currency-HeroRecruitmentVoucher.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Currency-HeroRecruitmentVoucher-L.T-Items-Currency-HeroRecruitmentVoucher-L"
+    }
+  },
+  "AccountResource:voucher_item_buyback": {
+    "Type": "AccountResource",
+    "Name": "Voucher_Item_Buyback",
+    "ItemName": "Weapon Research Voucher",
+    "ItemDescription": "This token can be redeemed for Legendary or Mythic event Weapons in the Collection Book!",
+    "Rarity": "Legendary",
+    "AssetPath": "fortnitegame/content/items/persistentresources/voucher_item_buyback.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Items-Currency-WeaponVoucher.png",
+      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-Currency-WeaponVoucher-L.T-Items-Currency-WeaponVoucher-L"
+    }
+  }
+}

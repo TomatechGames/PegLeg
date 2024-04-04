@@ -1,0 +1,127 @@
+[gd_scene load_steps=12 format=3 uid="uid://tso3qs0wxppc"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_j3td7"]
+[ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="2_op652"]
+[ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="3_03rxf"]
+[ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="4_e2vqj"]
+[ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/InterfaceIcons/ChoiceCardV2/LabelUV-sheet.png" id="5_do3oc"]
+[ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/InterfaceIcons/ChoiceCardV2/Base-sheet.png" id="6_m1h2m"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_65gaw"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="8_hciuj"]
+[ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="9_tm7mh"]
+[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="10_pu46j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_86ebe"]
+resource_local_to_scene = true
+shader = ExtResource("2_op652")
+shader_parameter/SliceAmount = Vector2(4, 4)
+shader_parameter/StartTime = null
+shader_parameter/Started = false
+shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
+shader_parameter/UVTexture = ExtResource("5_do3oc")
+shader_parameter/PatternTexture = ExtResource("4_e2vqj")
+shader_parameter/IconTexture = ExtResource("3_03rxf")
+
+[node name="ChoiceEntryCard" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 256)
+offset_right = 82.0313
+offset_bottom = 200.0
+script = ExtResource("1_j3td7")
+autoLinkToViewer = false
+
+[node name="ChoiceCardTexture" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_86ebe")
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_m1h2m")
+expand_mode = 3
+script = ExtResource("7_65gaw")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 24
+text = "Name Name Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Responsive Button Area" parent="Control" instance=ExtResource("8_hciuj")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.09
+anchor_right = 0.85
+anchor_bottom = 0.91
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InspectArea" type="Control" parent="Control"]
+layout_mode = 1
+anchor_left = 0.65
+anchor_top = 0.15
+anchor_right = 0.8
+anchor_bottom = 0.3
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control/InspectArea"]
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("9_tm7mh")
+expand_mode = 5
+
+[node name="Label" type="Label" parent="Control/InspectArea/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Circle" parent="Control/InspectArea/TextureRect" instance=ExtResource("10_pu46j")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="IconChanged" from="." to="ChoiceCardTexture" method="SetShaderTexture" binds= ["IconTexture"]]
+[connection signal="InteractableChanged" from="." to="Control/Responsive Button Area" method="set_visible"]
+[connection signal="InteractableChanged" from="." to="Control/InspectArea/TextureRect/Responsive Button Circle" method="set_visible"]
+[connection signal="NameChanged" from="." to="Control/Label" method="set_text"]
+[connection signal="RarityChanged" from="." to="ChoiceCardTexture" method="SetShaderColor" binds= ["RarityColour"]]
+[connection signal="pressed" from="Control/Responsive Button Area" to="." method="EmitPressedSignal"]
+[connection signal="pressed" from="Control/InspectArea/TextureRect/Responsive Button Circle" to="." method="Inspect"]

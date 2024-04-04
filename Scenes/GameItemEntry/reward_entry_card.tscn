@@ -1,0 +1,190 @@
+[gd_scene load_steps=14 format=3 uid="uid://c47svw0ruq2i3"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_hrn5h"]
+[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/T-Icon-Hero-Soldier-CARD.png" id="1_w7bnd"]
+[ext_resource type="Texture2D" uid="uid://ihmlkc2vs2om" path="res://Images/Items/UI_CardFront.png" id="2_645cs"]
+[ext_resource type="Texture2D" uid="uid://bkqoyh11npn7c" path="res://Images/InterfaceIcons/TriangleScroll.png" id="2_b6m2m"]
+[ext_resource type="Shader" uid="uid://cypncf62qx5bc" path="res://Shaders/CardTriangleEffect.tres" id="2_sp6f0"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="4_bervu"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_w04mt"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="5_w6pnj"]
+
+[sub_resource type="Gradient" id="Gradient_rxla7"]
+colors = PackedColorArray(0.9, 0.9, 0.9, 1, 0.6, 0.6, 0.6, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rdiui"]
+gradient = SubResource("Gradient_rxla7")
+fill = 1
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8i204"]
+resource_local_to_scene = true
+shader = ExtResource("2_sp6f0")
+shader_parameter/TriangleTint = Color(0.9, 0.51, 0, 1)
+shader_parameter/TimeOffset = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_irr70"]
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(0, 0, 0, 0.392157)
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4dys"]
+content_margin_left = 2.0
+content_margin_top = 5.0
+content_margin_right = 2.0
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0, -0.05)
+expand_margin_bottom = 10.0
+
+[node name="RewardEntryCard" type="MarginContainer"]
+custom_minimum_size = Vector2(150, 0)
+pivot_offset = Vector2(75, 117.293)
+script = ExtResource("1_hrn5h")
+
+[node name="ContentParent" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Content" type="Control" parent="ContentParent"]
+clip_contents = true
+layout_mode = 1
+anchor_left = 0.11
+anchor_top = 0.0320513
+anchor_right = 0.89
+anchor_bottom = 0.820513
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="RarityGradient" type="TextureRect" parent="ContentParent/Content"]
+self_modulate = Color(0.901961, 0.509804, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_rdiui")
+
+[node name="Triangles" type="TextureRect" parent="ContentParent/Content"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_8i204")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_b6m2m")
+expand_mode = 1
+script = ExtResource("4_w04mt")
+
+[node name="ItemIcon" type="TextureRect" parent="ContentParent/Content"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_bervu")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DetailsArea" type="VBoxContainer" parent="ContentParent/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Space" type="Control" parent="ContentParent/Content/DetailsArea"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NameBox" type="PanelContainer" parent="ContentParent/Content/DetailsArea"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_irr70")
+
+[node name="NameLabel" type="Label" parent="ContentParent/Content/DetailsArea/NameBox"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+text = "This is a Hero Name"
+autowrap_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentParent/Content/DetailsArea/NameBox"]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+alignment = 2
+
+[node name="TextureRect2" type="TextureRect" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("5_w6pnj")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("5_w6pnj")
+expand_mode = 3
+
+[node name="TypeBox" type="PanelContainer" parent="ContentParent/Content/DetailsArea"]
+self_modulate = Color(0.9, 0.51, 0, 1)
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p4dys")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentParent/Content/DetailsArea/TypeBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="SubtypeIcon" type="TextureRect" parent="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+texture = ExtResource("1_w7bnd")
+expand_mode = 3
+
+[node name="TypeLabel" type="Label" parent="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 18
+text = "Hero
+"
+text_overrun_behavior = 3
+
+[node name="Rating" type="Control" parent="ContentParent/Content"]
+layout_mode = 1
+anchors_preset = 0
+
+[node name="CardOverlay" type="TextureRect" parent="."]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_645cs")
+expand_mode = 5
+
+[connection signal="IconChanged" from="." to="ContentParent/Content/ItemIcon" method="set_texture"]
+[connection signal="NameChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/NameLabel" method="set_text"]
+[connection signal="NameRelevant" from="." to="ContentParent/Content/DetailsArea/NameBox/NameLabel" method="set_visible"]
+[connection signal="RarityChanged" from="." to="ContentParent/Content/RarityGradient" method="set_self_modulate"]
+[connection signal="RarityChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox" method="set_self_modulate"]
+[connection signal="RarityChanged" from="." to="ContentParent/Content/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
+[connection signal="SubtypeIconChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer/MarginContainer/SubtypeIcon" method="set_texture"]
+[connection signal="TypeChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer/TypeLabel" method="set_text"]

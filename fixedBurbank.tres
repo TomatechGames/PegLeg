@@ -1,0 +1,8 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://buoopfdou8nvh"]
+
+[ext_resource type="FontFile" uid="uid://bwsywlqs45ix1" path="res://Burbank Big Regular Bold.otf" id="1_hfmhc"]
+
+[resource]
+base_font = ExtResource("1_hfmhc")
+spacing_top = 3
+spacing_bottom = -1

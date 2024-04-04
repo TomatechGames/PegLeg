@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://cw7vho56e5eoe"]
+
+[ext_resource type="StyleBox" uid="uid://u6vjr3k2dpbq" path="res://Themes/TooltipBox.tres" id="1_t0onv"]
+
+[node name="PegLegTooltip" type="PanelContainer"]
+offset_right = 53.0
+offset_bottom = 21.0
+theme_override_styles/panel = ExtResource("1_t0onv")
+
+[node name="tooltipLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Helloin"
+horizontal_alignment = 1
+vertical_alignment = 1

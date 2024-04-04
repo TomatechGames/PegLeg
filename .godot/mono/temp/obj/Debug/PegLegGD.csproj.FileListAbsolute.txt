@@ -1,0 +1,17 @@
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\bin\Debug\PegLegGD.deps.json
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\bin\Debug\PegLegGD.runtimeconfig.json
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\bin\Debug\PegLegGD.dll
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\bin\Debug\PegLegGD.pdb
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\bin\Debug\GodotSharp.dll
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\bin\Debug\GodotSharpEditor.dll
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.csproj.AssemblyReference.cache
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.AssemblyInfoInputs.cache
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.AssemblyInfo.cs
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.csproj.CoreCompileInputs.cache
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.csproj.CopyComplete
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.dll
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\refint\PegLegGD.dll
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.pdb
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.genruntimeconfig.cache
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\ref\PegLegGD.dll

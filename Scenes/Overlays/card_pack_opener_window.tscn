@@ -1,0 +1,611 @@
+[gd_scene load_steps=31 format=3 uid="uid://b5elx1mhn5ahk"]
+
+[ext_resource type="PackedScene" uid="uid://c47svw0ruq2i3" path="res://Scenes/GameItemEntry/reward_entry_card.tscn" id="1_4na64"]
+[ext_resource type="Script" path="res://Scripts/Overlays/CardPackOpener.cs" id="1_7ayxj"]
+[ext_resource type="AudioStream" uid="uid://pp2evr3c3ty" path="res://Audio/SFX/sfx_supplydrop_reticle_appear.wav" id="2_t7mpn"]
+[ext_resource type="AudioStream" uid="uid://b5yktju6n3mv5" path="res://Audio/SFX/SupplyDrop_Falling_Loop_Mono.wav" id="3_453dg"]
+[ext_resource type="Texture2D" uid="uid://ppx4lkl3gdw8" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip.tres" id="3_gev0u"]
+[ext_resource type="AudioStream" uid="uid://bsii483wtc3y4" path="res://Audio/SFX/supply_drop_land3_Reverb.wav" id="4_ccx0t"]
+[ext_resource type="AudioStream" uid="uid://cp87usj1hhnd1" path="res://Audio/SFX/supply_drop_radio.wav" id="5_62ahg"]
+[ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="6_8xk2d"]
+[ext_resource type="Texture2D" uid="uid://dxrre7seon0uy" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenBG.png" id="8_4oqsw"]
+[ext_resource type="Shader" uid="uid://b78lxdhf2v56q" path="res://Shaders/GradientMaskedBackground.tres" id="9_8g8yp"]
+[ext_resource type="Texture2D" uid="uid://ofyoqhupoowa" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenFG.png" id="9_jsr57"]
+[ext_resource type="Texture2D" uid="uid://c4tescxyper60" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateLid.png" id="10_k5gyc"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="11_jtcf2"]
+[ext_resource type="Texture2D" uid="uid://dcqqspl8haau7" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateFalling.png" id="11_pxkh0"]
+[ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="14_8eotn"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="16_88i1x"]
+[ext_resource type="PackedScene" uid="uid://tso3qs0wxppc" path="res://Scenes/GameItemEntry/choice_entry_card.tscn" id="16_cms4w"]
+[ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="16_x2r4a"]
+[ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="17_knkpm"]
+[ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/InterfaceIcons/ChoiceCardV2/LabelUV-sheet.png" id="18_5uyrt"]
+[ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/InterfaceIcons/ChoiceCardV2/Base-sheet.png" id="19_fhj62"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_walck"]
+shader = ExtResource("9_8g8yp")
+shader_parameter/WarpScale = Vector2(-0.265, -1.045)
+shader_parameter/WarpPower = 2.0
+shader_parameter/ScrollSpeed = Vector2(0.4, -0.2)
+shader_parameter/ColorMinMax = Vector2(0.5, 0.75)
+shader_parameter/Transparancy = 1.0
+shader_parameter/Pattern = ExtResource("14_8eotn")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dtboe"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="Curve" id="Curve_fjmi8"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_uoomx"]
+max_value = 2.0
+_data = [Vector2(0.5, 1), 0.0, 2.0, 0, 1, Vector2(1, 2), 2.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_vmhvw"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_q3qjt"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(1, 0, 0, 1, 0.9, 1, 0, 1, 0.133333, 1, 0, 1, 0.0352941, 1, 0.960784, 1, 1, 0, 0.783333, 1)
+
+[sub_resource type="Gradient" id="Gradient_i5vau"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dun05"]
+gradient = SubResource("Gradient_i5vau")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j1mqq"]
+resource_local_to_scene = true
+shader = ExtResource("16_x2r4a")
+shader_parameter/SliceAmount = Vector2(4, 4)
+shader_parameter/StartTime = null
+shader_parameter/Started = true
+shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
+shader_parameter/UVTexture = ExtResource("18_5uyrt")
+shader_parameter/PatternTexture = ExtResource("14_8eotn")
+shader_parameter/IconTexture = ExtResource("17_knkpm")
+
+[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("clickArea", "backgroundImage", "music", "pullButton", "startAudio", "fallingAudio", "landAudio", "radioAudio", "fallingCrate", "landedCrate", "landedCrateBG", "landedCrateBGCards", "landedCrateLid", "confettiParticles", "crateOpenButton", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_7ayxj")
+pullTime = 0.5
+clickArea = NodePath("ClickArea")
+backgroundImage = NodePath("BG/TextureRect")
+music = NodePath("Audio/Music")
+pullButton = NodePath("ClickArea/PullButton")
+defaultBackgroundColor = Color(0.101961, 0.419608, 1, 1)
+startAudio = NodePath("Audio/SpawnAudio")
+fallingAudio = NodePath("Audio/FallingAudio")
+landAudio = NodePath("Audio/LandAudio")
+radioAudio = NodePath("Audio/RadioAudio")
+fallingCrate = NodePath("ClickArea/SupplyDrop/LandingOffset/FallingCrate")
+landedCrate = NodePath("ClickArea/SupplyDrop/LandedCrate")
+landedCrateBG = NodePath("ClickArea/SupplyDrop/LandedCrate/LandedBg")
+landedCrateBGCards = NodePath("ClickArea/Cards/CardPullAnchor2/LandedBgCard")
+landedCrateLid = NodePath("ClickArea/SupplyDrop/LandedCrateLid/LandedLid")
+lidBasicTexture = ExtResource("10_k5gyc")
+lidFlippingTexture = ExtResource("3_gev0u")
+confettiParticles = NodePath("ClickArea/SupplyDrop/LandedCrate/ParticleCenter/CPUParticles2D")
+crateOpenButton = NodePath("ClickArea/SupplyDrop/CrateOpen")
+topCard = NodePath("ClickArea/Cards/RewardEntryCardTop")
+prevCard = NodePath("ClickArea/Cards/RewardEntryCardPrev")
+mainCardsParent = NodePath("ClickArea/Cards")
+smallCardsOffset = NodePath("ClickArea/Cards/CardPullAnchor/Control/offset")
+smallCardParent = NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer")
+smallCards = [NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard2"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard3"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard4"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard5"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard6")]
+choiceCanvas = NodePath("ClickArea/ChoiceArea/ChoiceCanvas")
+choiceCards = [NodePath("ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard"), NodePath("ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard2")]
+choiceResultCard = NodePath("ClickArea/ChoiceResultForegroundLayer/ChoiceResultCardTexture")
+choiceResultFGParent = NodePath("ClickArea/ChoiceResultForegroundLayer")
+choiceResultBGParent = NodePath("ClickArea/ChoiceResultBackgroundLayer")
+skipChoiceButton = NodePath("ClickArea/ActionButtons/VBoxContainer/SkipChoiceButton")
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="SpawnAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_t7mpn")
+bus = &"SFX"
+
+[node name="FallingAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_453dg")
+volume_db = -80.0
+bus = &"SFX"
+
+[node name="LandAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_ccx0t")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="RadioAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("5_62ahg")
+volume_db = -15.0
+bus = &"SFX"
+
+[node name="OpenAudio" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_ccx0t")
+bus = &"SFX"
+
+[node name="Music" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_8xk2d")
+bus = &"MusicOvr"
+
+[node name="BG" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="Panel" parent="BG"]
+visible = false
+modulate = Color(0.643137, 0.643137, 0.643137, 1)
+self_modulate = Color(0.101961, 0.419608, 1, 1)
+material = SubResource("ShaderMaterial_walck")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dtboe")
+script = ExtResource("11_jtcf2")
+
+[node name="ClickArea" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChoiceResultBackgroundLayer" type="Control" parent="ClickArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Cards" type="Control" parent="ClickArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CardPullAnchor2" type="Control" parent="ClickArea/Cards"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 225.0
+offset_right = 225.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LandedBgCard" type="TextureRect" parent="ClickArea/Cards/CardPullAnchor2"]
+visible = false
+custom_minimum_size = Vector2(384, 384)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -192.0
+offset_right = 192.0
+offset_bottom = 192.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_4oqsw")
+expand_mode = 1
+
+[node name="RewardEntryCardPrev" parent="ClickArea/Cards" instance=ExtResource("1_4na64")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.001
+offset_top = 500.0
+offset_right = -75.0013
+offset_bottom = 734.585
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.785398
+scale = Vector2(1e-05, 1e-05)
+
+[node name="RewardEntryCardTop" parent="ClickArea/Cards" instance=ExtResource("1_4na64")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+
+[node name="CardPullAnchor" type="Control" parent="ClickArea/Cards"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 450.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="ClickArea/Cards/CardPullAnchor"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 240.0
+offset_bottom = 240.0
+grow_horizontal = 2
+
+[node name="offset" type="Control" parent="ClickArea/Cards/CardPullAnchor/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ClickArea/Cards/CardPullAnchor/Control/offset"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -354.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = -210
+
+[node name="RewardEntryCard" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+layout_mode = 2
+
+[node name="RewardEntryCard2" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+layout_mode = 2
+
+[node name="RewardEntryCard3" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+layout_mode = 2
+
+[node name="RewardEntryCard4" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+layout_mode = 2
+
+[node name="RewardEntryCard5" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+layout_mode = 2
+
+[node name="RewardEntryCard6" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+layout_mode = 2
+
+[node name="SupplyDrop" type="Control" parent="ClickArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LandedCrate" type="Control" parent="ClickArea/SupplyDrop"]
+custom_minimum_size = Vector2(384, 384)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -192.0
+offset_top = -517.0
+offset_right = 192.0
+offset_bottom = -133.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(192, 192)
+mouse_filter = 2
+
+[node name="LandedBg" type="TextureRect" parent="ClickArea/SupplyDrop/LandedCrate"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_4oqsw")
+expand_mode = 1
+
+[node name="ParticleCenter" type="Control" parent="ClickArea/SupplyDrop/LandedCrate"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="ClickArea/SupplyDrop/LandedCrate/ParticleCenter"]
+emitting = false
+amount = 200
+lifetime = 0.5
+emission_shape = 3
+emission_rect_extents = Vector2(50, 1)
+direction = Vector2(0, -1)
+spread = 10.0
+gravity = Vector2(0, 4000)
+initial_velocity_min = 1000.0
+initial_velocity_max = 1200.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+orbit_velocity_min = -0.1
+orbit_velocity_max = 0.1
+damping_min = 5.0
+damping_max = 8.0
+damping_curve = SubResource("Curve_fjmi8")
+scale_amount_min = 7.0
+scale_amount_max = 9.0
+scale_amount_curve = SubResource("Curve_uoomx")
+color_ramp = SubResource("Gradient_vmhvw")
+color_initial_ramp = SubResource("Gradient_q3qjt")
+
+[node name="LandedFG" type="TextureRect" parent="ClickArea/SupplyDrop/LandedCrate"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("9_jsr57")
+expand_mode = 1
+
+[node name="LandedCrateLid" type="Control" parent="ClickArea/SupplyDrop"]
+custom_minimum_size = Vector2(384, 384)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LandedLid" type="TextureRect" parent="ClickArea/SupplyDrop/LandedCrateLid"]
+visible = false
+custom_minimum_size = Vector2(384, 384)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -192.0
+offset_top = -384.0
+offset_right = 192.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(192, 192)
+mouse_filter = 2
+texture = ExtResource("10_k5gyc")
+expand_mode = 1
+
+[node name="LandingOffset" type="Control" parent="ClickArea/SupplyDrop"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FallingCrate" type="TextureRect" parent="ClickArea/SupplyDrop/LandingOffset"]
+visible = false
+custom_minimum_size = Vector2(384, 384)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -192.0
+offset_right = 192.0
+offset_bottom = 192.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.5, 1.5)
+pivot_offset = Vector2(192, 192)
+mouse_filter = 2
+texture = ExtResource("11_pxkh0")
+expand_mode = 1
+
+[node name="CrateOpen" parent="ClickArea/SupplyDrop" instance=ExtResource("16_88i1x")]
+custom_minimum_size = Vector2(330, 330)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PullButton" type="Button" parent="ClickArea"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 450.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "Pull"
+
+[node name="ChoiceArea" type="Control" parent="ClickArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ChoiceCanvas" type="CanvasGroup" parent="ClickArea/ChoiceArea"]
+
+[node name="CenterContainer" type="CenterContainer" parent="ClickArea/ChoiceArea/ChoiceCanvas"]
+mouse_filter = 2
+use_top_left = true
+
+[node name="MarginContainer" type="MarginContainer" parent="ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -50
+theme_override_constants/margin_top = -50
+theme_override_constants/margin_right = -50
+theme_override_constants/margin_bottom = -50
+
+[node name="TextureRect" type="TextureRect" parent="ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/MarginContainer"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_dun05")
+
+[node name="Choices" type="HBoxContainer" parent="ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ChoiceEntryCard" parent="ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices" instance=ExtResource("16_cms4w")]
+layout_mode = 2
+
+[node name="ChoiceEntryCard2" parent="ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices" instance=ExtResource("16_cms4w")]
+layout_mode = 2
+
+[node name="ChoiceResultForegroundLayer" type="Control" parent="ClickArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ChoiceResultCardTexture" type="TextureRect" parent="ClickArea/ChoiceResultForegroundLayer"]
+material = SubResource("ShaderMaterial_j1mqq")
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 60.0
+offset_top = -115.0
+offset_right = 60.0
+offset_bottom = -115.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(105, 128)
+mouse_filter = 2
+texture = ExtResource("19_fhj62")
+expand_mode = 3
+script = ExtResource("11_jtcf2")
+
+[node name="ActionButtons" type="MarginContainer" parent="ClickArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 200.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ClickArea/ActionButtons"]
+layout_mode = 2
+
+[node name="SkipChoiceButton" type="Button" parent="ClickArea/ActionButtons/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Skip Choice"
+
+[connection signal="pressed" from="ClickArea/SupplyDrop/CrateOpen" to="." method="PlaySupplyOpenAnimation"]
+[connection signal="button_down" from="ClickArea/PullButton" to="." method="StartPullCard"]
+[connection signal="button_up" from="ClickArea/PullButton" to="." method="EndPullCard"]
+[connection signal="pressed" from="ClickArea/ActionButtons/VBoxContainer/SkipChoiceButton" to="." method="SkipChoice"]

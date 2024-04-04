@@ -1,0 +1,17 @@
+res://Scenes/interfaceRoot.tscn
+res://Themes/BasicTheme.tres
+res://Images/InterfaceIcons/LoadingIconAnim.tres
+res://Shaders/LlamaTriangleEffect.tres
+res://Shaders/LlamaIconTransparancy.tres
+res://Shaders/AdaptivePanel.tres
+res://Themes/LineEditLargeTheme.tres
+res://Themes/WindowBGTransparant.tres
+res://Themes/LightBox.tres
+res://Shaders/CardTriangleEffect.tres
+res://Images/InterfaceIcons/SupplyDrop/LidFlip.tres
+res://Shaders/GradientMaskedBackground.tres
+res://Shaders/ChoiceCard.tres
+res://Images/TextureResources/GradientCircle.tres
+res://Scenes/game_item_viewer.tscn
+res://Scenes/basic_modal_window.tscn
+res://Scenes/LlamaEntries/catalog_llama_entry.tscn

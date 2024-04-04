@@ -1,0 +1,195 @@
+[gd_scene load_steps=16 format=3 uid="uid://b0uxwtxndd6x3"]
+
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_vtoeo"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/LlamaEntry.cs" id="2_e282y"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="3_2od7b"]
+[ext_resource type="Shader" uid="uid://ccpm41chorlnu" path="res://Shaders/LlamaTriangleEffect.tres" id="3_mbvhy"]
+[ext_resource type="Texture2D" uid="uid://bkqoyh11npn7c" path="res://Images/InterfaceIcons/TriangleScroll.png" id="3_qdto2"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="3_r23ei"]
+[ext_resource type="Texture2D" uid="uid://cfvi28ga3mnna" path="res://Images/Llamas/PinataSilver.png" id="5_hfsg2"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="5_jux3k"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_u1yf7"]
+[ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="6_5bd7b"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="6_n8hwd"]
+
+[sub_resource type="Gradient" id="Gradient_flatg"]
+interpolation_mode = 2
+interpolation_color_space = 1
+colors = PackedColorArray(0.5, 0.5, 0.5, 1, 0.5, 0.5, 0.5, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_86265"]
+gradient = SubResource("Gradient_flatg")
+width = 512
+height = 128
+fill_from = Vector2(0, 1)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lvyho"]
+resource_local_to_scene = true
+shader = ExtResource("3_mbvhy")
+shader_parameter/TriangleTint = Color(0.6, 0.6, 0.6, 1)
+shader_parameter/TimeOffset = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gm4vs"]
+shader = ExtResource("6_5bd7b")
+shader_parameter/IconTint = Color(0.1, 0.1, 0.1, 1)
+
+[node name="Catalog Llama Entry" type="PanelContainer"]
+clip_children = 2
+custom_minimum_size = Vector2(350, 0)
+offset_right = 350.0
+offset_bottom = 120.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("1_vtoeo")
+script = ExtResource("2_e282y")
+costItemEntryPath = NodePath("MarginContainer/HBoxContainer/VBoxContainer/LlamaCost")
+tierColors = PackedColorArray(0, 0.392157, 1, 1, 0.6, 0.6, 0.6, 1, 0.74902, 0.74902, 0, 1)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Gradient" type="TextureRect" parent="Control"]
+self_modulate = Color(0.6, 0.6, 0.6, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_86265")
+expand_mode = 1
+
+[node name="Triangles" type="TextureRect" parent="Control"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_lvyho")
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_right = 305.0
+grow_vertical = 2
+texture = ExtResource("3_qdto2")
+expand_mode = 1
+script = ExtResource("5_u1yf7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Pinata" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_hfsg2")
+expand_mode = 3
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/Pinata"]
+material = SubResource("ShaderMaterial_gm4vs")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33
+anchor_top = 0.55
+anchor_right = 0.46
+anchor_bottom = 0.68
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_jux3k")
+expand_mode = 1
+
+[node name="AmountLabel" type="Label" parent="MarginContainer/HBoxContainer/Pinata"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 25
+text = "Out of stock"
+horizontal_alignment = 2
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Lunar Llama"
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="LlamaCost" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("3_2od7b")
+includeAmountInName = true
+
+[node name="PriceTextLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.25
+theme_override_font_sizes/font_size = 24
+text = "Price: "
+vertical_alignment = 1
+
+[node name="FreeObj" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+layout_mode = 2
+
+[node name="PriceNumberLabel2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeObj"]
+layout_mode = 2
+offset_top = 4.0
+offset_right = 57.0
+offset_bottom = 40.0
+rotation = -0.164061
+theme_override_colors/font_color = Color(0.929412, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "FREE"
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+layout_mode = 2
+texture = ExtResource("6_n8hwd")
+expand_mode = 3
+
+[node name="PriceNumberLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "1000"
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="." instance=ExtResource("3_r23ei")]
+layout_mode = 2
+
+[connection signal="AmountChanged" from="." to="MarginContainer/HBoxContainer/Pinata/AmountLabel" method="set_text"]
+[connection signal="DescriptionChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
+[connection signal="IconChanged" from="." to="MarginContainer/HBoxContainer/Pinata/Icon" method="set_texture"]
+[connection signal="IsFreeChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeObj" method="set_visible"]
+[connection signal="NameChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/NameLabel" method="set_text"]
+[connection signal="PinataChanged" from="." to="MarginContainer/HBoxContainer/Pinata" method="set_texture"]
+[connection signal="TierColorChanged" from="." to="Control/Gradient" method="set_self_modulate"]
+[connection signal="TierColorChanged" from="." to="Control/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
+[connection signal="AmountChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceNumberLabel" method="set_text"]
+[connection signal="IconChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/TextureRect" method="set_texture"]
+[connection signal="NameChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" method="set_tooltip_text"]
+[connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

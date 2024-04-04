@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://3kvmnkrrkqf1"]
+
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="1_6jxp4"]
+
+[node name="RewardEntryVertical" instance=ExtResource("1_6jxp4")]
+size_flags_horizontal = 6
+size_flags_vertical = 1
+
+[node name="TextureRect" parent="IconContainer/RarityIcon" index="2"]
+expand_mode = 5

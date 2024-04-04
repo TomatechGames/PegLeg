@@ -1,0 +1,1232 @@
+[gd_scene load_steps=60 format=3 uid="uid://u5ag0k8n6eqm"]
+
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_3bqtb"]
+[ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
+[ext_resource type="Script" path="res://Scripts/TooltipHandler.cs" id="2_b8f5h"]
+[ext_resource type="PackedScene" uid="uid://cw7vho56e5eoe" path="res://Scenes/peg_leg_tooltip.tscn" id="3_5kodu"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="3_mfw8j"]
+[ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
+[ext_resource type="AudioStream" uid="uid://7fphnqpacyx4" path="res://Audio/Music/Pirate_Cove_Amb_Day_Light_Loop_01.wav" id="4_1n6kc"]
+[ext_resource type="Script" path="res://Scripts/MusicController.cs" id="4_7htls"]
+[ext_resource type="PackedScene" uid="uid://dakfgrcwv3gje" path="res://Scenes/MissionEntry/mission_entry_v3.tscn" id="4_26f8i"]
+[ext_resource type="Texture2D" uid="uid://ybhd24tgs2aq" path="res://Images/InterfaceIcons/minimise.png" id="4_v4447"]
+[ext_resource type="Texture2D" uid="uid://cn31q5216hi64" path="res://Images/InterfaceIcons/LoadingIconAnim.tres" id="5_8qgoo"]
+[ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="5_f3eja"]
+[ext_resource type="AudioStream" uid="uid://d3beupkquslmk" path="res://Audio/Music/Pirate_Cove_Amb_Day_Loop_02.wav" id="5_is11q"]
+[ext_resource type="Script" path="res://Scripts/DynamicGridContainer.cs" id="5_uxiwu"]
+[ext_resource type="AudioStream" uid="uid://sv2r2ydjua8g" path="res://Audio/Music/Pirate_Cove_Amb_Day_Light_Loop_02.wav" id="6_rkeoa"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/LoginInterface.cs" id="6_v20tj"]
+[ext_resource type="AudioStream" uid="uid://bno77bt3pn5nn" path="res://Audio/Music/Pirate_Cove_Amb_Day_Light_Loop_03.wav" id="7_wdyu3"]
+[ext_resource type="Texture2D" uid="uid://bq8vrrjy47iav" path="res://Images/InterfaceIcons/maximise.png" id="7_we7j1"]
+[ext_resource type="PackedScene" uid="uid://b0uxwtxndd6x3" path="res://Scenes/LlamaEntries/catalog_llama_entry.tscn" id="8_47m5v"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/LlamaInterface.cs" id="8_c8p7o"]
+[ext_resource type="Script" path="res://Scripts/CurrencyHighlight.cs" id="9_23he5"]
+[ext_resource type="PackedScene" uid="uid://bgn5vgsvgrb1u" path="res://Scenes/LlamaEntries/cardpack_llama_entry.tscn" id="9_ewgu3"]
+[ext_resource type="AudioStream" uid="uid://bg3v8qgqhgyhu" path="res://Audio/Music/Pirate_Cove_Amb_Day_Loop_03.wav" id="9_nlp8y"]
+[ext_resource type="AudioStream" uid="uid://dte2m4hjkekwx" path="res://Audio/Music/Pirate_Cove_Amb_Day_Loop_04.wav" id="10_t8qfg"]
+[ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="11_nhe6x"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="11_toubj"]
+[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="12_rlxg4"]
+[ext_resource type="PackedScene" uid="uid://cggedl5b1a4h" path="res://Scenes/MissionEntry/mission_entry_v3_list.tscn" id="12_tmbkj"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/LlamaEntry.cs" id="13_ouhxc"]
+[ext_resource type="Texture2D" uid="uid://sbafx7mfsanl" path="res://Images/MissionZoneBackgrounds/FORT_Load_PiratesCove.png" id="13_wclwt"]
+[ext_resource type="Texture2D" uid="uid://b1p0g5okeg641" path="res://Images/InterfaceIcons/T-Icon-Manage-Upgrade-32.png" id="14_07m3a"]
+[ext_resource type="PackedScene" uid="uid://df66i164ovyld" path="res://Scenes/MissionEntry/mission_entry_v3_large.tscn" id="14_30s3w"]
+[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="14_p8xhf"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="15_5u8nd"]
+[ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="15_fool5"]
+[ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="16_cu2sv"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="16_mawwv"]
+[ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="16_o064n"]
+[ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://Themes/LineEditLargeTheme.tres" id="19_xrrp5"]
+[ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="20_dgs2r"]
+[ext_resource type="Script" path="res://Scripts/WindowSizeDragger.cs" id="25_3cufh"]
+[ext_resource type="PackedScene" uid="uid://buf6p8qyydofm" path="res://Scenes/game_item_viewer.tscn" id="25_r7yrq"]
+[ext_resource type="Texture2D" uid="uid://djcvidllqfmt5" path="res://Images/InterfaceIcons/T_UI_LevelManagement_Trashcan_Icon.png" id="28_eu0j4"]
+[ext_resource type="PackedScene" uid="uid://c4lt6qwfc4cou" path="res://Scenes/loading_overlay.tscn" id="31_v6low"]
+[ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="36_4fdq7"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/TempCompendiumInterface.cs" id="36_us3cw"]
+[ext_resource type="Script" path="res://Scripts/FixedRowGridContainer.cs" id="37_x6m38"]
+[ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="38_451sw"]
+[ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wyb1b"]
+shader = ExtResource("12_rlxg4")
+shader_parameter/ControlSize = Vector2(1200, 675)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrywe"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 0.101961, 1)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(1, 1, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8upmj"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0.027451, 0.270588, 1)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0, 0, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hxyw"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0.027451, 0.270588, 0.501961)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0, 0, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lex7"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0.027451, 0, 0.501961)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0, 0, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q5lip"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ceiy"]
+bg_color = Color(0.101563, 0.101563, 0.101563, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ewrca"]
+shader = ExtResource("16_cu2sv")
+shader_parameter/IconTint = Color(0.101961, 0.101961, 0.101961, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyvnw"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65fgs"]
+bg_color = Color(0.4514, 0.74, 0.71114, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Root" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3bqtb")
+script = ExtResource("2_b8f5h")
+tooltipBasisScene = ExtResource("3_5kodu")
+
+[node name="MusicController" type="Node" parent="."]
+script = ExtResource("4_7htls")
+lightMusic = [ExtResource("4_1n6kc"), ExtResource("6_rkeoa"), ExtResource("7_wdyu3")]
+fullMusic = [ExtResource("5_is11q"), ExtResource("9_nlp8y"), ExtResource("10_t8qfg")]
+musicAPath = NodePath("MusicA")
+musicBPath = NodePath("MusicB")
+musicCPath = NodePath("MusicC")
+
+[node name="MusicA" type="AudioStreamPlayer" parent="MusicController"]
+stream = ExtResource("9_nlp8y")
+mix_target = 1
+bus = &"Music"
+
+[node name="MusicB" type="AudioStreamPlayer" parent="MusicController"]
+stream = ExtResource("5_is11q")
+mix_target = 1
+bus = &"Music"
+
+[node name="MusicC" type="AudioStreamPlayer" parent="MusicController"]
+stream = ExtResource("11_nhe6x")
+volume_db = 10.0
+mix_target = 1
+bus = &"Music"
+
+[node name="Contents" type="MarginContainer" parent="."]
+texture_repeat = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(-1799, 208)
+
+[node name="BG" type="TextureRect" parent="Contents"]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+material = SubResource("ShaderMaterial_wyb1b")
+layout_mode = 2
+texture = ExtResource("13_wclwt")
+expand_mode = 1
+script = ExtResource("15_fool5")
+
+[node name="MainApp" type="Control" parent="."]
+custom_minimum_size = Vector2(700, 300)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackgroundOld" type="Control" parent="MainApp"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BGPanels" type="MarginContainer" parent="MainApp/BackgroundOld"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 48.0
+grow_horizontal = 2
+
+[node name="Layout" type="HBoxContainer" parent="MainApp/BackgroundOld/BGPanels"]
+layout_mode = 2
+
+[node name="PowerLevel" type="HBoxContainer" parent="MainApp/BackgroundOld/BGPanels/Layout"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/BackgroundOld/BGPanels/Layout/PowerLevel"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/BackgroundOld/BGPanels/Layout/PowerLevel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_bottom = -5
+
+[node name="Control" type="Control" parent="MainApp/BackgroundOld/BGPanels/Layout/PowerLevel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Space" type="Control" parent="MainApp/BackgroundOld/BGPanels/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/BackgroundOld/BGPanels/Layout"]
+layout_mode = 2
+alignment = 2
+
+[node name="TabContainer" type="TabContainer" parent="MainApp"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_selected_color = Color(0, 0.027451, 0.270588, 1)
+theme_override_colors/font_unselected_color = Color(0.87451, 0.87451, 0.87451, 1)
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_nrywe")
+theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_8upmj")
+theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_2hxyw")
+theme_override_styles/tab_disabled = SubResource("StyleBoxFlat_7lex7")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_q5lip")
+tab_alignment = 1
+current_tab = 4
+
+[node name="Login" type="VBoxContainer" parent="MainApp/TabContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("6_v20tj")
+loginButtonPath = NodePath("loginBtn")
+pasteButtonPath = NodePath("pasteBtn")
+codeLabelPath = NodePath("resultLabel")
+deviceAuthButtonPath = NodePath("linkDevice")
+clearDeviceAuthButtonPath = NodePath("unlinkDevice")
+supportACreatorLinePath = NodePath("SACLine")
+closeGameOnEnduranceCompletion = true
+
+[node name="loginBtn" type="Button" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Get Auth Code "
+
+[node name="pasteBtn" type="Button" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Paste Auth Code"
+
+[node name="linkDevice" type="Button" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Link Device"
+
+[node name="unlinkDevice" type="Button" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Unlink Device"
+
+[node name="resultLabel" type="TextEdit" parent="MainApp/TabContainer/Login"]
+visible = false
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "waiting for client code..."
+editable = false
+
+[node name="HSeparator" type="HSeparator" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+
+[node name="SACLine" type="LineEdit" parent="MainApp/TabContainer/Login"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = "Type creator code here!"
+
+[node name="ApplySAC" type="Button" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Apply Creator Code"
+
+[node name="HSeparator2" type="HSeparator" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MainApp/TabContainer/Login"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Start Endurance Detector"
+
+[node name="Missions" type="PanelContainer" parent="MainApp/TabContainer"]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+script = ExtResource("3_mfw8j")
+operationsPerFrame = 5
+missionViewOptionsPath = NodePath("VBoxContainer/HBoxContainer/ViewOptions")
+zoneFilterTabBarPath = NodePath("VBoxContainer/HBoxContainer/TabBar")
+searchBarPath = NodePath("VBoxContainer/HBoxContainer/TextEdit")
+loadingIconPath = NodePath("VBoxContainer/Control/LoadingIcon")
+forceRefreshButtonPath = NodePath("VBoxContainer/HBoxContainer/ForceRefreshButton")
+listEntryScene = ExtResource("12_tmbkj")
+smallGridEntryScene = ExtResource("4_26f8i")
+largeGridEntryScene = ExtResource("14_30s3w")
+missionGridPath = NodePath("VBoxContainer/Control/ScrollContainer/VBoxContainer/MissionGrid")
+missionListPath = NodePath("VBoxContainer/Control/ScrollContainer/VBoxContainer/MissionList")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Missions"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Missions/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextEdit" type="LineEdit" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "Search in missions"
+clear_button_enabled = true
+
+[node name="TabBar" type="TabBar" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+tab_count = 7
+tab_alignment = 1
+tab_0/title = "All Campaign"
+tab_1/title = "All"
+tab_2/title = "Stonewood"
+tab_3/title = "Plankerton"
+tab_4/title = "Canny Valley"
+tab_5/title = "Twine Peaks"
+tab_6/title = "Ventures"
+
+[node name="CheckButton" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(215, 0)
+layout_mode = 2
+text = "Require All Search Terms"
+
+[node name="MenuButton" type="MenuButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Favourites"
+icon = ExtResource("5_8qgoo")
+expand_icon = true
+item_count = 1
+popup/item_0/text = "test"
+popup/item_0/checkable = 1
+popup/item_0/id = 0
+
+[node name="ViewOptions" type="OptionButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+item_count = 3
+selected = 1
+popup/item_0/text = "List"
+popup/item_0/id = 1
+popup/item_1/text = "Small Grid"
+popup/item_1/id = 0
+popup/item_2/text = "Large Grid"
+popup/item_2/id = 2
+
+[node name="ForceRefreshButton" type="Button" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/ForceRefreshButton"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -3.5
+offset_right = 3.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("20_dgs2r")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Control" type="Control" parent="MainApp/TabContainer/Missions/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/Control/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MissionGrid" type="Container" parent="MainApp/TabContainer/Missions/VBoxContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("5_uxiwu")
+minCols = 1
+spacing = Vector2(5, 5)
+
+[node name="MissionList" type="VBoxContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/Control/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="LoadingIcon" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_8qgoo")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Llamas" type="HSplitContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("selectedPurchaseCountSpinner")]
+visible = false
+layout_mode = 2
+split_offset = 585
+script = ExtResource("8_c8p7o")
+catalogLlamaEntryScene = ExtResource("8_47m5v")
+cardpackLlamaEntryScene = ExtResource("9_ewgu3")
+itemEntryScene = ExtResource("14_p8xhf")
+loadingIconPath = NodePath("Llama Selector/MarginContainer/LlamaCatalog/MarginContainer/Center/LoadingIcon")
+llamaTimerLabelPath = NodePath("Llama Selector/MarginContainer3/RefreshTimer/MarginContainer/HBoxContainer/TimeLabel")
+catalogLlamaParentPath = NodePath("Llama Selector/MarginContainer/LlamaCatalog/MarginContainer/XRayLlamas")
+cardpackLlamaPanelPath = NodePath("Llama Selector/MarginContainer2/CardPacks")
+cardpackLlamaParentPath = NodePath("Llama Selector/MarginContainer2/CardPacks/MarginContainer2/ScrollContainer/MarginContainer/CardPackParent")
+selectedLlamaEntryPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama")
+selectedOpenPanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel")
+selectedPurchasePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel")
+selectedBrokePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/CantAffordPanel")
+selectedPriceIconPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer/Icon")
+selectedPriceLabelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer/PriceText")
+selectedPurchaseCountSpinner = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox")
+selectedItemEntryParentPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/RewardsContainer")
+selectedSurprisePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SurpriseContainer")
+selectedNoStockPanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SoldOutContainer")
+
+[node name="Llama Selector" type="VBoxContainer" parent="MainApp/TabContainer/Llamas"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector"]
+layout_mode = 2
+theme_override_constants/margin_right = 5
+
+[node name="RefreshTimer" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer3"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer3/RefreshTimer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer3/RefreshTimer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextLabel" type="Label" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer3/RefreshTimer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Llamas refresh in: "
+
+[node name="TimeLabel" type="Label" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer3/RefreshTimer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "???"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LlamaCatalog" type="ScrollContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer/LlamaCatalog"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="XRayLlamas" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer/LlamaCatalog/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Center" type="Control" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer/LlamaCatalog/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LoadingIcon" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer/LlamaCatalog/MarginContainer/Center"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_8qgoo")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector"]
+layout_mode = 2
+theme_override_constants/margin_right = 5
+
+[node name="CardPacks" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2"]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="CardPackParent" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks/MarginContainer2/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks"]
+layout_mode = 2
+
+[node name="OpenAllButton" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks/MarginContainer"]
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ceiy")
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks/MarginContainer/OpenAllButton"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Open
+All"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks/MarginContainer/OpenAllButton" instance=ExtResource("15_5u8nd")]
+layout_mode = 2
+
+[node name="Llama Contents" type="MarginContainer" parent="MainApp/TabContainer/Llamas"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Contents"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SelectedLlama" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer"]
+layout_mode = 2
+script = ExtResource("13_ouhxc")
+includeAmountInName = true
+
+[node name="LlamaName" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Select A Llama"
+text_overrun_behavior = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -80
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = -80
+theme_override_constants/margin_bottom = 20
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Pinata" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer"]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+layout_mode = 2
+texture = ExtResource("16_o064n")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata"]
+self_modulate = Color(0.101961, 0.101961, 0.101961, 1)
+material = SubResource("ShaderMaterial_ewrca")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33
+anchor_top = 0.55
+anchor_right = 0.46
+anchor_bottom = 0.68
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_toubj")
+expand_mode = 1
+
+[node name="Items" type="ScrollContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="HBoxContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RewardsContainer" type="Container" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("5_uxiwu")
+minCols = 1
+compressSpacing = true
+spacing = Vector2(5, 0)
+
+[node name="SurpriseContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SurpriseContainer"]
+layout_mode = 2
+texture = ExtResource("11_toubj")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SurpriseContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "It's a surprise..."
+horizontal_alignment = 1
+
+[node name="SoldOutContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SoldOutContainer"]
+layout_mode = 2
+texture = ExtResource("28_eu0j4")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SoldOutContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Sold Out :/"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+visible = false
+layout_mode = 2
+text = "Your Currency: 5000 (x10)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PurchasePanel" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="PurchaseButton" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ceiy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Purchase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("16_mawwv")
+expand_mode = 3
+
+[node name="PriceText" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "2500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton" instance=ExtResource("15_5u8nd")]
+layout_mode = 2
+
+[node name="OpenPanel" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="OpenButton" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ceiy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton"]
+layout_mode = 2
+theme_override_constants/separation = -5
+alignment = 1
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "Open"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton" instance=ExtResource("15_5u8nd")]
+layout_mode = 2
+
+[node name="PurchaseSpinBox" type="SpinBox" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("19_xrrp5")
+theme_type_variation = &"LineEditLarge"
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="CantAffordPanel" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/CantAffordPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "Can't Afford"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Temp Compendium" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("itemList", "searchBox")]
+visible = false
+layout_mode = 2
+script = ExtResource("36_us3cw")
+itemList = NodePath("VBoxContainer/ItemList")
+searchBox = NodePath("VBoxContainer/LineEdit")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Temp Compendium"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="MainApp/TabContainer/Temp Compendium/VBoxContainer"]
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="MainApp/TabContainer/Temp Compendium/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_hovered_color = Color(1, 1, 0, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+allow_reselect = true
+allow_search = false
+max_columns = 10
+same_column_width = true
+fixed_icon_size = Vector2i(48, 48)
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Temp Compendium/VBoxContainer"]
+layout_mode = 2
+text = "Yes, this screen is bad. I intend to replace this screen
+with a proper Collection Book screen in the future"
+horizontal_alignment = 1
+
+[node name="Item Shop" type="MarginContainer" parent="MainApp/TabContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop"]
+layout_mode = 2
+
+[node name="WeeklyItems" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Timer" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/Timer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/Timer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/Timer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/Timer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Weekly Shop Resets: "
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/Timer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "6:23:59:59"
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="HighlightItems" type="HBoxContainer" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 5
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/HighlightItems"]
+layout_mode = 2
+texture = ExtResource("36_4fdq7")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/HighlightItems"]
+layout_mode = 2
+texture = ExtResource("36_4fdq7")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RegularItems" type="Container" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(625, 5)
+layout_mode = 2
+script = ExtResource("37_x6m38")
+spacing = Vector2(5, 5)
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect5" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect6" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect7" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect8" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect9" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="TextureRect10" type="TextureRect" parent="MainApp/TabContainer/Item Shop/VBoxContainer/WeeklyItems/ScrollContainer/MarginContainer/HBoxContainer/RegularItems"]
+layout_mode = 2
+texture = ExtResource("38_451sw")
+expand_mode = 3
+
+[node name="Control" type="Control" parent="MainApp/TabContainer/Item Shop/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="OverlayWindows" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CardPackOpenerWindow" parent="OverlayWindows" instance=ExtResource("41_alhak")]
+visible = false
+layout_mode = 1
+
+[node name="GameItemViewer" parent="OverlayWindows" instance=ExtResource("25_r7yrq")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+
+[node name="LoadingOverlay" parent="OverlayWindows" instance=ExtResource("31_v6low")]
+visible = false
+layout_mode = 1
+startOpen = false
+
+[node name="StatusBar" type="MarginContainer" parent="." node_paths=PackedStringArray("background")]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 6
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+script = ExtResource("2_3ot56")
+homebaseNumberTextPath = NodePath("Left/PowerLevel/PowerLevelNumber")
+homebaseNumberPercentPath = NodePath("Left/PowerLevel/PowerLevelProgressBar")
+background = NodePath("../Contents/BG")
+
+[node name="Left" type="HBoxContainer" parent="StatusBar"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="PowerLevel" type="HBoxContainer" parent="StatusBar/Left"]
+layout_mode = 2
+
+[node name="PowerLevelIocn" type="TextureRect" parent="StatusBar/Left/PowerLevel"]
+layout_mode = 2
+texture = ExtResource("3_wfagk")
+expand_mode = 3
+
+[node name="PowerLevelNumber" type="Label" parent="StatusBar/Left/PowerLevel"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PowerLevelProgressBar" type="ProgressBar" parent="StatusBar/Left/PowerLevel"]
+custom_minimum_size = Vector2(80, 15)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_font_sizes/font_size = 12
+theme_override_styles/background = SubResource("StyleBoxFlat_lyvnw")
+theme_override_styles/fill = SubResource("StyleBoxFlat_65fgs")
+max_value = 1.0
+show_percentage = false
+
+[node name="VSeparator" type="VSeparator" parent="StatusBar/Left"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ActiveCurrency" type="HBoxContainer" parent="StatusBar/Left"]
+layout_mode = 2
+alignment = 1
+script = ExtResource("9_23he5")
+
+[node name="Icon" type="TextureRect" parent="StatusBar/Left/ActiveCurrency"]
+layout_mode = 2
+expand_mode = 3
+
+[node name="AmountText" type="Label" parent="StatusBar/Left/ActiveCurrency"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="StatusBar"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 0.0
+text = "PegLeg"
+horizontal_alignment = 1
+
+[node name="Right" type="HBoxContainer" parent="StatusBar"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+alignment = 2
+
+[node name="RefreshBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/RefreshBtn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_07m3a")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MinimiseBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MinimiseBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_v4447")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MaximiseBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MaximiseBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_we7j1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CloseBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/CloseBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_f3eja")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ResizeGrabber" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BottomGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 9
+script = ExtResource("25_3cufh")
+grabberType = 2
+
+[node name="TopGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 5.0
+grow_horizontal = 2
+mouse_default_cursor_shape = 9
+script = ExtResource("25_3cufh")
+
+[node name="LeftGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 5.0
+grow_vertical = 2
+mouse_default_cursor_shape = 10
+script = ExtResource("25_3cufh")
+grabberType = 1
+
+[node name="RightGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_default_cursor_shape = 10
+script = ExtResource("25_3cufh")
+grabberType = 3
+
+[connection signal="pressed" from="MainApp/TabContainer/Login/ApplySAC" to="MainApp/TabContainer/Login" method="SetCreatorCode"]
+[connection signal="pressed" from="MainApp/TabContainer/Login/Button" to="MainApp/TabContainer/Login" method="CheckForEnduranceCompletion"]
+[connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Selector/MarginContainer2/CardPacks/MarginContainer/OpenAllButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="BulkOpenAllCardpacks"]
+[connection signal="IconChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata/Icon" method="set_texture"]
+[connection signal="NameChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/LlamaName" method="set_text"]
+[connection signal="PinataChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata" method="set_texture"]
+[connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="PurchaseLlama"]
+[connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="OpenSelectedCardpack"]
+[connection signal="value_changed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox" to="MainApp/TabContainer/Llamas" method="SpinnerChanged"]
+[connection signal="AmountChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/AmountText" method="set_text"]
+[connection signal="IconChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/Icon" method="set_texture"]
+[connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="StatusBar" method="Refresh"]
+[connection signal="pressed" from="StatusBar/Right/MinimiseBtn" to="StatusBar" method="MinimiseApp"]
+[connection signal="pressed" from="StatusBar/Right/MaximiseBtn" to="StatusBar" method="MaximiseApp"]
+[connection signal="pressed" from="StatusBar/Right/CloseBtn" to="StatusBar" method="CloseApp"]

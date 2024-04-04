@@ -1,0 +1,777 @@
+[gd_scene load_steps=25 format=3 uid="uid://ctvb148sxh7ht"]
+
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_oqrak"]
+[ext_resource type="Texture2D" uid="uid://b57flomv1w1kn" path="res://External/Icons/Mission/T-Icon-4Player-RepairTheShelter-128.png" id="1_ygfqt"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="2_ldfyk"]
+[ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="3_gksdc"]
+[ext_resource type="Texture2D" uid="uid://qo8gr8lcnhwe" path="res://External/Icons/Mission/T-Icon-Replay-Timeline-L.png" id="4_v50ia"]
+[ext_resource type="Texture2D" uid="uid://7ufybuxv5ka1" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Escalation-128.png" id="4_ytwif"]
+[ext_resource type="Texture2D" uid="uid://c4ws7nelc40k3" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Elemental-Water-128.png" id="5_so40f"]
+[ext_resource type="Texture2D" uid="uid://cu7ogl6fefksj" path="res://External/Icons/MissionRewards/T-Items-WeaponPerkup-Epic-L.png" id="5_u2dso"]
+[ext_resource type="Texture2D" uid="uid://bbbt4kdbwl3m6" path="res://External/Icons/Mission/T_Icon_ProtectThePresent_128.png" id="6_kieuh"]
+[ext_resource type="Texture2D" uid="uid://cm44cfj810nv6" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Pos-AssaultRifle-DamageBuff-128.png" id="6_paxbb"]
+[ext_resource type="Texture2D" uid="uid://671ho5mj72at" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-128.png" id="7_gwati"]
+[ext_resource type="Texture2D" uid="uid://cqb476ao8r15" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Pos-Axe-Buff-128.png" id="7_yjuno"]
+[ext_resource type="Texture2D" uid="uid://dah6pctd8iger" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Pos-Ninja-AbilityRate-Buff-128.png" id="8_5np88"]
+[ext_resource type="Texture2D" uid="uid://chap5n4pu50av" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Enemy-OnHitWeakenBuildings-128.png" id="8_r4rn3"]
+[ext_resource type="Texture2D" uid="uid://cpm4mi4gb1r3v" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-OnDeath-Explode-128.png" id="9_tlcbl"]
+[ext_resource type="Texture2D" uid="uid://cj75oubx4pkq" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Miniboss-128.png" id="10_nwnrv"]
+[ext_resource type="Texture2D" uid="uid://iaxpx37qxrsk" path="res://External/Icons/PersistentResources/T-Items-WeaponPerkup-Legendary-L.png" id="12_h6i3t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_537ep"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.113725, 0.156863, 0.533333, 1)
+border_width_bottom = 3
+border_color = Color(0.0588235, 0.0588235, 0.411765, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snwau"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0.470588)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 5
+
+[sub_resource type="Gradient" id="Gradient_cr6g2"]
+offsets = PackedFloat32Array(0.465035, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_iaura"]
+gradient = SubResource("Gradient_cr6g2")
+fill = 1
+fill_from = Vector2(0.5, 2)
+fill_to = Vector2(0.5, 0.5)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_stbun"]
+texture = SubResource("GradientTexture2D_iaura")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmpao"]
+bg_color = Color(1, 1, 1, 0)
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3k8c"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+
+[node name="PanelContainer" type="PanelContainer"]
+clip_children = 1
+custom_minimum_size = Vector2(240, 310)
+offset_right = 240.0
+offset_bottom = 310.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_oqrak")
+theme_override_styles/panel = SubResource("StyleBoxFlat_537ep")
+script = ExtResource("2_ldfyk")
+powerLevelLabel = NodePath("Front/Panel/PowerLevelLabel")
+missionIcon = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MissionIconSection/PanelContainer/TextureRect")
+missionRewardParent = NodePath("MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer")
+alertModifierParent = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer")
+alertRewardParent = NodePath("MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer")
+alertModifierLayout = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection")
+alertRewardLayout = NodePath("MarginContainer/VBoxContainer/OneTimeRewardsSection")
+backgroundTexture = NodePath("TextureRect")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.5, 0.5, 0.5, 1)
+layout_mode = 2
+texture = ExtResource("3_gksdc")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MissionIconSection" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionIconSection"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_snwau")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionIconSection/PanelContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_ygfqt")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="MissionAlertsSection" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection"]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+color = Color(0.496094, 0.496094, 0.496094, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_snwau")
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = -2
+columns = 3
+
+[node name="Modifier" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("4_ytwif")
+expand_mode = 1
+
+[node name="Modifier8" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("6_paxbb")
+expand_mode = 1
+
+[node name="Modifier9" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("7_yjuno")
+expand_mode = 1
+
+[node name="Modifier3" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("8_5np88")
+expand_mode = 1
+
+[node name="Modifier2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_so40f")
+expand_mode = 1
+
+[node name="Modifier4" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("7_gwati")
+expand_mode = 1
+
+[node name="Modifier5" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("8_r4rn3")
+expand_mode = 1
+
+[node name="Modifier6" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("9_tlcbl")
+expand_mode = 1
+
+[node name="Modifier7" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("10_nwnrv")
+expand_mode = 1
+
+[node name="OneTimeRewardsSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection"]
+layout_mode = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("4_v50ia")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/HBoxContainer4"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "One-Time"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_snwau")
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="AlertReward" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="RarityIcon" type="Control" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+stretch_mode = 0
+alignment_vertical = 2
+
+[node name="Gradient" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward/RarityIcon/AspectRatioContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stbun")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("12_h6i3t")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Overlay" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward/RarityIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmpao")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward"]
+layout_mode = 2
+text = "x200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlertReward2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="RarityIcon" type="Control" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward2/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+stretch_mode = 0
+alignment_vertical = 2
+
+[node name="Gradient" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward2/RarityIcon/AspectRatioContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stbun")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward2/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("12_h6i3t")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Overlay" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward2/RarityIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmpao")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward2"]
+layout_mode = 2
+text = "x200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlertReward3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="RarityIcon" type="Control" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward3"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward3/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+stretch_mode = 0
+alignment_vertical = 2
+
+[node name="Gradient" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward3/RarityIcon/AspectRatioContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stbun")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward3/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("12_h6i3t")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Overlay" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward3/RarityIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmpao")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward3"]
+layout_mode = 2
+text = "x200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlertReward4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="RarityIcon" type="Control" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward4"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward4/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+stretch_mode = 0
+alignment_vertical = 2
+
+[node name="Gradient" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward4/RarityIcon/AspectRatioContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stbun")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward4/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("12_h6i3t")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Overlay" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward4/RarityIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmpao")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward4"]
+layout_mode = 2
+text = "x200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlertReward5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="RarityIcon" type="Control" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward5"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward5/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+stretch_mode = 0
+alignment_vertical = 2
+
+[node name="Gradient" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward5/RarityIcon/AspectRatioContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stbun")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward5/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("12_h6i3t")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Overlay" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward5/RarityIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmpao")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward5"]
+layout_mode = 2
+text = "x200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlertReward6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_constants/separation = 1
+alignment = 1
+
+[node name="RarityIcon" type="Control" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward6"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward6/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+stretch_mode = 0
+alignment_vertical = 2
+
+[node name="Gradient" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward6/RarityIcon/AspectRatioContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_stbun")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward6/RarityIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("12_h6i3t")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="Overlay" type="Panel" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward6/RarityIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_nmpao")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer/AlertReward6"]
+layout_mode = 2
+text = "x200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RepeatableRewardsSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("6_kieuh")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Repeatable"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer3" type="CenterContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_snwau")
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer"]
+layout_mode = 2
+theme_override_constants/v_separation = 0
+columns = 3
+
+[node name="RepeatableReward" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "sussy"
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_u2dso")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward"]
+layout_mode = 2
+text = "x2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RepeatableReward2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "sussy"
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward2"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_u2dso")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward2"]
+layout_mode = 2
+text = "x2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RepeatableReward3" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "sussy"
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward3"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_u2dso")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward3"]
+layout_mode = 2
+text = "x2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RepeatableReward4" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "sussy"
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward4"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_u2dso")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward4"]
+layout_mode = 2
+text = "x2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RepeatableReward5" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "sussy"
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward5"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_u2dso")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward5"]
+layout_mode = 2
+text = "x2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RepeatableReward6" type="HBoxContainer" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "sussy"
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward6"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+texture = ExtResource("5_u2dso")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward6"]
+layout_mode = 2
+text = "x2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Front" type="Control" parent="."]
+custom_minimum_size = Vector2(200, 250)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Front"]
+layout_mode = 0
+offset_right = 34.0
+offset_bottom = 22.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_q3k8c")
+
+[node name="Slant" type="Panel" parent="Front/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = 3.40339
+theme_override_styles/panel = SubResource("StyleBoxFlat_q3k8c")
+
+[node name="PowerLevelLabel" type="Label" parent="Front/Panel"]
+custom_minimum_size = Vector2(33, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -23.0
+offset_right = 1.0
+offset_bottom = 2.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "160"
+horizontal_alignment = 1
+vertical_alignment = 1

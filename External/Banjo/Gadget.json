@@ -1,0 +1,327 @@
+{
+  "Gadget:g_airstrike": {
+    "Type": "Gadget",
+    "Name": "G_AirStrike",
+    "ItemName": "AirStrike",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Drops [Ability.MaxStacks] bombs on targets.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/abilities/player/generic/gadgets/airstrike/g_airstrike.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Airstrike-bg-128.png"
+    }
+  },
+  "Gadget:g_airstrike_onboarding": {
+    "Type": "Gadget",
+    "Name": "G_AirStrike_Onboarding",
+    "ItemName": "AirStrike",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/abilities/player/generic/gadgets/onboardingairstrike/g_airstrike_onboarding.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Airstrike-bg-128.png"
+    }
+  },
+  "Gadget:g_bottlerocket": {
+    "Type": "Gadget",
+    "Name": "G_BottleRocket",
+    "ItemName": "Bottle Rocket",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/abilities/player/generic/gadgets/bottlerocket/g_bottlerocket.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-S-BottleRocket-Launcher.png"
+    }
+  },
+  "Gadget:g_cart": {
+    "Type": "Gadget",
+    "Name": "G_Cart",
+    "ItemName": "Cart",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/track/g_cart.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Teleporter.png"
+    }
+  },
+  "Gadget:g_debugattributegain": {
+    "Type": "Gadget",
+    "Name": "G_DebugAttributeGain",
+    "ItemName": "HomeBaseLevelScaler",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Mythic",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/debug/g_debugattributegain.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\KillIcon_Skull.png"
+    }
+  },
+  "Gadget:g_generic_adrenalinerush": {
+    "Type": "Gadget",
+    "Name": "G_Generic_AdrenalineRush",
+    "ItemName": "Adrenaline Rush",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Instantly restores [instahealamt] health to you and friendly players in a [Ability.AOERadius] tile range. [Purge] [HOTStart]",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/abilities/player/generic/gadgets/adrenalinerush/g_generic_adrenalinerush.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-AdrenalineRush-bg-128.png"
+    }
+  },
+  "Gadget:g_generic_banner": {
+    "Type": "Gadget",
+    "Name": "G_Generic_Banner",
+    "ItemName": "Banner",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Drops a Banner, healing player buildings\u0027 health to [Ability.Line1] for [Ability.Duration] seconds in a [Ability.AOERadius] tile radius. [Ability.Line2] [Ability.Line4]",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/banner/g_generic_banner.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Banner-bg-128.png"
+    }
+  },
+  "Gadget:g_generic_botturret": {
+    "Type": "Gadget",
+    "Name": "G_Generic_BotTurret",
+    "ItemName": "Stationary Hover Turret",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Deploys a hovering turret that fires energy rounds [FireRate] at enemies within [Range] tile range for [Duration] seconds. [Explode]",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/bot_turret/g_generic_botturret.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-TurretBot-bg-128.png"
+    }
+  },
+  "Gadget:g_generic_glowtorch_blue": {
+    "Type": "Gadget",
+    "Name": "G_Generic_GlowTorch_Blue",
+    "ItemName": "GlowTorch",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/glow_torch/g_generic_glowtorch_blue.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-GlowStick-Pickup-Blue.png"
+    }
+  },
+  "Gadget:g_generic_glowtorch_green": {
+    "Type": "Gadget",
+    "Name": "G_Generic_GlowTorch_Green",
+    "ItemName": "GlowTorch Green",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/glow_torch/g_generic_glowtorch_green.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-GlowStick-Pickup-Green.png"
+    }
+  },
+  "Gadget:g_generic_glowtorch_orange": {
+    "Type": "Gadget",
+    "Name": "G_Generic_GlowTorch_Orange",
+    "ItemName": "GlowTorch Orange",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/glow_torch/g_generic_glowtorch_orange.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-GlowStick-Pickup-Orange.png"
+    }
+  },
+  "Gadget:g_generic_glowtorch_purple": {
+    "Type": "Gadget",
+    "Name": "G_Generic_GlowTorch_Purple",
+    "ItemName": "GlowTorch Purple",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/glow_torch/g_generic_glowtorch_purple.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-GlowStick-Pickup-Purple.png"
+    }
+  },
+  "Gadget:g_generic_glowtorch_white": {
+    "Type": "Gadget",
+    "Name": "G_Generic_GlowTorch_White",
+    "ItemName": "GlowTorch White",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/glow_torch/g_generic_glowtorch_white.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-GlowStick-Pickup-White.png"
+    }
+  },
+  "Gadget:g_generic_glowtorch_yellow": {
+    "Type": "Gadget",
+    "Name": "G_Generic_GlowTorch_Yellow",
+    "ItemName": "GlowTorch Yellow",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/glow_torch/g_generic_glowtorch_yellow.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-GlowStick-Pickup-Yellow.png"
+    }
+  },
+  "Gadget:g_generic_proximitymines": {
+    "Type": "Gadget",
+    "Name": "G_Generic_ProximityMines",
+    "ItemName": "Proximity Mine",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Deploys a Proximity Mine that explodes with a [Range] tile range.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/proximity_mines/g_generic_proximitymines.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-ProximityMine-bg-128.png"
+    }
+  },
+  "Gadget:g_generic_slowfield": {
+    "Type": "Gadget",
+    "Name": "G_Generic_SlowField",
+    "ItemName": "Slow Field",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Reduces speed of enemies to [SlowAmount]% in a [Radius] tile range for [Duration] seconds.",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/slowfield/g_generic_slowfield.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Slowfield-bg-128.png"
+    }
+  },
+  "Gadget:g_generic_taunt": {
+    "Type": "Gadget",
+    "Name": "G_Generic_Taunt",
+    "ItemName": "Husk Pheromones",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/taunt/g_generic_taunt.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Perk-Missing-M.png"
+    }
+  },
+  "Gadget:g_grapplehook": {
+    "Type": "Gadget",
+    "Name": "G_GrappleHook",
+    "ItemName": "GrappleHook",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/grapplehook/g_grapplehook.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-S-M80.png"
+    }
+  },
+  "Gadget:g_hoverboard": {
+    "Type": "Gadget",
+    "Name": "G_Hoverboard",
+    "ItemName": "Hoverboard",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/vehicles/hoverboard/g_hoverboard.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-SupplyDrop-128.png"
+    }
+  },
+  "Gadget:g_m80": {
+    "Type": "Gadget",
+    "Name": "G_M80",
+    "ItemName": "M80",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/abilities/player/generic/gadgets/m80/g_m80.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-S-M80.png"
+    }
+  },
+  "Gadget:g_outlander_specialfragment_llama": {
+    "Type": "Gadget",
+    "Name": "g_Outlander_SpecialFragment_Llama",
+    "ItemName": "Loot Llama",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/llama/g_outlander_specialfragment_llama.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Outlander_Fragment-Full-_Special_.png"
+    }
+  },
+  "Gadget:g_plasmabomb": {
+    "Type": "Gadget",
+    "Name": "G_PlasmaBomb",
+    "ItemName": "PlasmaBomb",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/plasmabomb/g_plasmabomb.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-S-M80.png"
+    }
+  },
+  "Gadget:g_quickbuilder": {
+    "Type": "Gadget",
+    "Name": "G_QuickBuilder",
+    "ItemName": "Quick Wall",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/quickbuilder/g_quickbuilder.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\proximity_mine.png"
+    }
+  },
+  "Gadget:g_quicktower": {
+    "Type": "Gadget",
+    "Name": "G_QuickTower",
+    "ItemName": "QuickTower",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/quicktower/g_quicktower.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-HomeBase-L.png"
+    }
+  },
+  "Gadget:g_romancandle": {
+    "Type": "Gadget",
+    "Name": "G_RomanCandle",
+    "ItemName": "Roman Candle",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/romancandle/g_romancandle.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-S-BottleRocket-Launcher.png"
+    }
+  },
+  "Gadget:g_seeker": {
+    "Type": "Gadget",
+    "Name": "G_Seeker",
+    "ItemName": "Seeker",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/seekerbomb/g_seeker.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-S-M80.png"
+    }
+  },
+  "Gadget:g_supplydrop": {
+    "Type": "Gadget",
+    "Name": "G_SupplyDrop",
+    "ItemName": "Supply Drop",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Calls in supply drop of [Ability.Line1], [Ability.Line2][Ability.Line3][Ability.Line4][Ability.Line5][SpecialEnd][SpecialStart][SpecialAmount].",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/supplydrop/g_supplydrop.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-SupplyDrop-bg-128.png"
+    }
+  },
+  "Gadget:g_teleporter": {
+    "Type": "Gadget",
+    "Name": "G_Teleporter",
+    "ItemName": "Teleporter",
+    "IsInventoryLimitExempt": true,
+    "ItemDescription": "Deploy two teleportation pads up to [Ability.Line1] away from one another. Arms in [Ability.Line2].",
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/generic/gadgets/teleporter/g_teleporter.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Teleporter-bg-128.png"
+    }
+  },
+  "Gadget:g_track": {
+    "Type": "Gadget",
+    "Name": "G_Track",
+    "ItemName": "Tracks",
+    "IsInventoryLimitExempt": true,
+    "Rarity": "Common",
+    "AssetPath": "fortnitegame/content/abilities/player/generic/gadgets/track/g_track.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Floor-Cart-Track-PickUp.png"
+    }
+  }
+}
