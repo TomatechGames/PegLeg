@@ -2,9 +2,19 @@
   "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Trios.MissionGen_Habanero_Trios_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Habanero_Trios_C",
-    "ItemName": "Battle Royale",
-    "ItemDescription": "Wild West",
+    "DisplayName": "Battle Royale",
+    "Description": "Wild West",
     "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Trios",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
+      "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
+    }
+  },
+  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Duo.MissionGen_Habanero_Duo_C": {
+    "Type": "MissionGen",
+    "Name": "MissionGen_Habanero_Duo_C",
+    "DisplayName": "\u003CMissionGen_Habanero_Duo_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Duo",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
       "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
@@ -13,38 +23,8 @@
   "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Squad.MissionGen_Habanero_Squad_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Habanero_Squad_C",
-    "ItemName": "\u003CMissionGen_Habanero_Squad_C\u003E",
+    "DisplayName": "\u003CMissionGen_Habanero_Squad_C\u003E",
     "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Squad",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
-      "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
-    }
-  },
-  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Solo.MissionGen_NoBuildBR_Habanero_Solo_C": {
-    "Type": "MissionGen",
-    "Name": "MissionGen_NoBuildBR_Habanero_Solo_C",
-    "ItemName": "\u003CMissionGen_NoBuildBR_Habanero_Solo_C\u003E",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Solo",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
-      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
-    }
-  },
-  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio.MissionGen_NoBuildBR_Habanero_Trio_C": {
-    "Type": "MissionGen",
-    "Name": "MissionGen_NoBuildBR_Habanero_Trio_C",
-    "ItemName": "\u003CMissionGen_NoBuildBR_Habanero_Trio_C\u003E",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
-      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
-    }
-  },
-  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Duo.MissionGen_Habanero_Duo_C": {
-    "Type": "MissionGen",
-    "Name": "MissionGen_Habanero_Duo_C",
-    "ItemName": "\u003CMissionGen_Habanero_Duo_C\u003E",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Duo",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
       "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
@@ -53,7 +33,7 @@
   "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Solo.MissionGen_Habanero_Solo_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Habanero_Solo_C",
-    "ItemName": "\u003CMissionGen_Habanero_Solo_C\u003E",
+    "DisplayName": "\u003CMissionGen_Habanero_Solo_C\u003E",
     "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Solo",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
@@ -63,8 +43,18 @@
   "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Duo.MissionGen_NoBuildBR_Habanero_Duo_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_NoBuildBR_Habanero_Duo_C",
-    "ItemName": "\u003CMissionGen_NoBuildBR_Habanero_Duo_C\u003E",
+    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Duo_C\u003E",
     "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Duo",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
+      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
+    }
+  },
+  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Solo.MissionGen_NoBuildBR_Habanero_Solo_C": {
+    "Type": "MissionGen",
+    "Name": "MissionGen_NoBuildBR_Habanero_Solo_C",
+    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Solo_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Solo",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
       "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
@@ -73,18 +63,38 @@
   "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Squad.MissionGen_NoBuildBR_Habanero_Squad_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_NoBuildBR_Habanero_Squad_C",
-    "ItemName": "\u003CMissionGen_NoBuildBR_Habanero_Squad_C\u003E",
+    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Squad_C\u003E",
     "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Squad",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
       "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
     }
   },
+  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio.MissionGen_NoBuildBR_Habanero_Trio_C": {
+    "Type": "MissionGen",
+    "Name": "MissionGen_NoBuildBR_Habanero_Trio_C",
+    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Trio_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
+      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
+    }
+  },
+  "/Game/World/MissionGens/MissionGen_Default.MissionGen_Default_C": {
+    "Type": "MissionGen",
+    "Name": "MissionGen_Default_C",
+    "DisplayName": "\u003CMissionGen_Default_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/MissionGen_Default",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
+      "LoadingScreen": "ExportedImages\\Fort_Load_SeasonKeyArt.png"
+    }
+  },
   "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_BuildTheMemorial.MissionGen_BuildTheMemorial_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_BuildTheMemorial_C",
-    "ItemName": "Build The Memorial",
-    "ItemDescription": "Construct the Vinderman Memorial",
+    "DisplayName": "Build The Memorial",
+    "Description": "Construct the Vinderman Memorial",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_BuildTheMemorial",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -94,8 +104,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_BuildTheSTWIrwinMemorial.MissionGen_BuildTheSTWIrwinMemorial_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_BuildTheSTWIrwinMemorial_C",
-    "ItemName": "Buildasaurus Rex",
-    "ItemDescription": "Distract the raptor forces with a perfectly built dino distraction. ",
+    "DisplayName": "Buildasaurus Rex",
+    "Description": "Distract the raptor forces with a perfectly built dino distraction. ",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_BuildTheSTWIrwinMemorial",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -105,8 +115,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_DeployTheProbe.MissionGen_DeployTheProbe_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_DeployTheProbe_C",
-    "ItemName": "Deploy the Probe",
-    "ItemDescription": "Explore the Nothing and Launch the Probe",
+    "DisplayName": "Deploy the Probe",
+    "Description": "Explore the Nothing and Launch the Probe",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_DeployTheProbe",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -116,8 +126,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_FightTheGunslinger.MissionGen_FightTheGunslinger_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_FightTheGunslinger_C",
-    "ItemName": "Fight The Gunslinger",
-    "ItemDescription": "Fight Legendary Gunslinger Blackboot Ayers",
+    "DisplayName": "Fight The Gunslinger",
+    "Description": "Fight Legendary Gunslinger Blackboot Ayers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_FightTheGunslinger",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -127,8 +137,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_HitTheRoad.MissionGen_HitTheRoad_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_HitTheRoad_C",
-    "ItemName": "Hit the Road",
-    "ItemDescription": "Welcome to Route 99",
+    "DisplayName": "Hit the Road",
+    "Description": "Welcome to Route 99",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_HitTheRoad",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -138,8 +148,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_StabilizeTheRift.MissionGen_StabilizeTheRift_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_StabilizeTheRift_C",
-    "ItemName": "Stabilize the Rift",
-    "ItemDescription": "Use lasers to stabilize a rift",
+    "DisplayName": "Stabilize the Rift",
+    "Description": "Use lasers to stabilize a rift",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_StabilizeTheRift",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -149,29 +159,18 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_1Gate.MissionGen_T3_R5_1Gate_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_1Gate_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_1Gate",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
     }
   },
-  "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion.MissionGen_VindermanMansion_C": {
-    "Type": "MissionGen",
-    "Name": "MissionGen_VindermanMansion_C",
-    "ItemName": "Search Vinderman\u2019s Mansion",
-    "ItemDescription": "Locate Vinderman\u0027s Servers and Download the Data",
-    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\T-Icon-Story-128.png",
-      "LoadingScreen": "ExportedImages\\FORT_Load_VindermanMansion.png"
-    }
-  },
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_2Gates.MissionGen_T3_R5_2Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_2Gates_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_2Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Double-128.png"
@@ -180,8 +179,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_3Gates.MissionGen_T3_R5_3Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_3Gates_C",
-    "ItemName": "Fight Category 3 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 3 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_3Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Triple-128.png"
@@ -190,8 +189,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_4Gates.MissionGen_T3_R5_4Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_4Gates_C",
-    "ItemName": "Fight Category 4 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 4 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_4Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Quadruple-128.png"
@@ -200,8 +199,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_BuildtheRadarGrid.MissionGen_T3_R5_BuildtheRadarGrid_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_BuildtheRadarGrid_C",
-    "ItemName": "Build the Radar Grid",
-    "ItemDescription": "Build and activate Radar Towers",
+    "DisplayName": "Build the Radar Grid",
+    "Description": "Build and activate Radar Towers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_BuildtheRadarGrid",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-RadarTower-128.png"
@@ -210,8 +209,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_DtB.MissionGen_T3_R5_DtB_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_DtB_C",
-    "ItemName": "Deliver The Bomb",
-    "ItemDescription": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
+    "DisplayName": "Deliver The Bomb",
+    "Description": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_DtB",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Deliver-128.png"
@@ -220,8 +219,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_DtE.MissionGen_T3_R5_DtE_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_DtE_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_DtE",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -230,18 +229,29 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_EtShelter.MissionGen_T3_R5_EtShelter_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_EtShelter_C",
-    "ItemName": "Evacuate the Shelter",
-    "ItemDescription": "Survivors are held up in a Shelter! They need your help!",
+    "DisplayName": "Evacuate the Shelter",
+    "Description": "Survivors are held up in a Shelter! They need your help!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_EtShelter",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Rescue-128.png"
     }
   },
+  "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion.MissionGen_VindermanMansion_C": {
+    "Type": "MissionGen",
+    "Name": "MissionGen_VindermanMansion_C",
+    "DisplayName": "Search Vinderman\u2019s Mansion",
+    "Description": "Locate Vinderman\u0027s Servers and Download the Data",
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\T-Icon-Story-128.png",
+      "LoadingScreen": "ExportedImages\\FORT_Load_VindermanMansion.png"
+    }
+  },
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_EtSurvivors.MissionGen_T3_R5_EtSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_EtSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_EtSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -250,8 +260,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_RtD.MissionGen_T3_R5_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -260,8 +270,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_RtL.MissionGen_T3_R5_RtL_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_RtL_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_RtL",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -270,8 +280,8 @@
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_RtS.MissionGen_T3_R5_RtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_RtS_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_RtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Repair-128.png"
@@ -280,8 +290,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_AdventureRevenge.MissionGen_AdventureRevenge_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_AdventureRevenge_C",
-    "ItemName": "Yarrr\u0027s Return",
-    "ItemDescription": "Find the Stash of Anti-Pirate Munitions",
+    "DisplayName": "Yarrr\u0027s Return",
+    "Description": "Find the Stash of Anti-Pirate Munitions",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_AdventureRevenge",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -291,8 +301,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_Day1.MissionGen_Day1_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Day1_C",
-    "ItemName": "Night 1: Rumors of Ghosts",
-    "ItemDescription": "Find the Haunted Hotel and place sensors to detect ghosts",
+    "DisplayName": "Night 1: Rumors of Ghosts",
+    "Description": "Find the Haunted Hotel and place sensors to detect ghosts",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_Day1",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -302,8 +312,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_Day18257.MissionGen_Day18257_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Day18257_C",
-    "ItemName": "The Door To Darkness",
-    "ItemDescription": "Day 18257",
+    "DisplayName": "The Door To Darkness",
+    "Description": "Day 18257",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_Day18257",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -313,8 +323,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_FinalFrontier.MissionGen_FinalFrontier_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_FinalFrontier_C",
-    "ItemName": "Backstage",
-    "ItemDescription": "Construct the movie set",
+    "DisplayName": "Backstage",
+    "Description": "Construct the movie set",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_FinalFrontier",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png"
@@ -323,8 +333,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_FinalRehearsal.MissionGen_FinalRehearsal_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_FinalRehearsal_C",
-    "ItemName": "Re-Shoots",
-    "ItemDescription": "It\u0027s Showtime!",
+    "DisplayName": "Re-Shoots",
+    "Description": "It\u0027s Showtime!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_FinalRehearsal",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png"
@@ -333,8 +343,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_HotelHuskEscape.MissionGen_HotelHuskEscape_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_HotelHuskEscape_C",
-    "ItemName": "Jar-Related Consequences",
-    "ItemDescription": "Foil Brainstorm\u0027s spooky plan by battling the Door to Darkness!",
+    "DisplayName": "Jar-Related Consequences",
+    "Description": "Foil Brainstorm\u0027s spooky plan by battling the Door to Darkness!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_HotelHuskEscape",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -344,8 +354,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_Kidnapped.MissionGen_Kidnapped_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Kidnapped_C",
-    "ItemName": "Holly Jolly Ransom",
-    "ItemDescription": "Find the Ransom Demands",
+    "DisplayName": "Holly Jolly Ransom",
+    "Description": "Find the Ransom Demands",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_Kidnapped",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png"
@@ -354,8 +364,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_MerryHellMaze.MissionGen_MerryHellMaze_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_MerryHellMaze_C",
-    "ItemName": "Fright Maze",
-    "ItemDescription": "Trap husks in a maze for Willow.",
+    "DisplayName": "Fright Maze",
+    "Description": "Trap husks in a maze for Willow.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_MerryHellMaze",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png"
@@ -364,8 +374,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_ProtectThePresents.MissionGen_ProtectThePresents_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_ProtectThePresents_C",
-    "ItemName": "Protect The Presents",
-    "ItemDescription": "Defend gifts dropping from the sky!",
+    "DisplayName": "Protect The Presents",
+    "Description": "Defend gifts dropping from the sky!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_ProtectThePresents",
     "ImagePaths": {
       "Icon": "ExportedImages\\T_Icon_ProtectThePresent_128.png"
@@ -374,8 +384,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_Yarrr_Island.MissionGen_Yarrr_Island_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Yarrr_Island_C",
-    "ItemName": "Yarrr!",
-    "ItemDescription": "Neutralize the Pirate Threat",
+    "DisplayName": "Yarrr!",
+    "Description": "Neutralize the Pirate Threat",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_Yarrr_Island",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -385,8 +395,8 @@
   "/SaveTheWorld/World/MissionGens/EventPrimaryMissions/MissionGen_Yarrr_WalkthePlank.MissionGen_Yarrr_WalkthePlank_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Yarrr_WalkthePlank_C",
-    "ItemName": "Walk the Plank",
-    "ItemDescription": "Build the Pirate Ship",
+    "DisplayName": "Walk the Plank",
+    "Description": "Build the Pirate Ship",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/EventPrimaryMissions/MissionGen_Yarrr_WalkthePlank",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -396,8 +406,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_1Gate.MissionGen_1Gate_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_1Gate_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_1Gate",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Gate1-XL.png"
@@ -406,8 +416,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_1GateNoBonus.MissionGen_1GateNoBonus_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_1GateNoBonus_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Search the Lab. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Search the Lab. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_1GateNoBonus",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -416,8 +426,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_1Gate_Group.MissionGen_1Gate_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_1Gate_Group_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_1Gate_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-FightTheStorm-Lvl1-128.png"
@@ -426,8 +436,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_1Gate_Group_PVE02on.MissionGen_1Gate_Group_PVE02on_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_1Gate_Group_PVE02on_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_1Gate_Group_PVE02on",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-FightTheStorm-Lvl1-128.png"
@@ -436,8 +446,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_1Gate_VLT.MissionGen_1Gate_VLT_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_1Gate_VLT_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_1Gate_VLT",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -446,8 +456,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_2Gates.MissionGen_2Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_2Gates_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_2Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Double-128.png"
@@ -456,8 +466,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_2Gates_Group.MissionGen_2Gates_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_2Gates_Group_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_2Gates_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-FightTheStorm-Lvl2-128.png"
@@ -466,8 +476,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_3Gates.MissionGen_3Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_3Gates_C",
-    "ItemName": "Fight Category 3 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 3 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_3Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Triple-128.png"
@@ -476,8 +486,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_3Gates_Group.MissionGen_3Gates_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_3Gates_Group_C",
-    "ItemName": "Fight Category 3 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 3 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_3Gates_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-FightTheStorm-Lvl3-128.png"
@@ -486,8 +496,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_4Gates.MissionGen_4Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_4Gates_C",
-    "ItemName": "Fight Category 4 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 4 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_4Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Quadruple-128.png"
@@ -496,8 +506,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_4Gates_Group.MissionGen_4Gates_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_4Gates_Group_C",
-    "ItemName": "Fight Category 4 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 4 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_4Gates_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-FightTheStorm-Lvl4-128.png"
@@ -506,8 +516,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_BuildTheBase.MissionGen_BuildTheBase_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_BuildTheBase_C",
-    "ItemName": "Build the Fort",
-    "ItemDescription": "Build a permanent fort that will be deployed to challenge the horde.",
+    "DisplayName": "Build the Fort",
+    "Description": "Build a permanent fort that will be deployed to challenge the horde.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_BuildTheBase",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Horde-BuildBase-128.png",
@@ -517,8 +527,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_BuildtheRadarGrid.MissionGen_BuildtheRadarGrid_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_BuildtheRadarGrid_C",
-    "ItemName": "Build the Radar Grid",
-    "ItemDescription": "Build and activate Radar Towers",
+    "DisplayName": "Build the Radar Grid",
+    "Description": "Build and activate Radar Towers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_BuildtheRadarGrid",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-RadarTower-128.png"
@@ -527,8 +537,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_ChallengeTheHorde.MissionGen_ChallengeTheHorde_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_ChallengeTheHorde_C",
-    "ItemName": "Challenge the Horde",
-    "ItemDescription": "Defend your deployable forts from the unrelenting horde!",
+    "DisplayName": "Challenge the Horde",
+    "Description": "Defend your deployable forts from the unrelenting horde!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_ChallengeTheHorde",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-collect-Unspeakable-Horrors-128.png",
@@ -538,8 +548,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Debug_PerfMem.MissionGen_Debug_PerfMem_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Debug_PerfMem_C",
-    "ItemName": "Close the Gate (PerfMem)",
-    "ItemDescription": "Find and close 3 Gates! (PerfMem)",
+    "DisplayName": "Close the Gate (PerfMem)",
+    "Description": "Find and close 3 Gates! (PerfMem)",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Debug_PerfMem",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Unknown-128.png"
@@ -548,8 +558,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_DeliverTheGoods.MissionGen_DeliverTheGoods_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_DeliverTheGoods_C",
-    "ItemName": "Deliver The Goods",
-    "ItemDescription": "Build tracks from the Drop-off to the Pickup, and protect the Hover Tub while it completes deliveries.",
+    "DisplayName": "Deliver The Goods",
+    "Description": "Build tracks from the Drop-off to the Pickup, and protect the Hover Tub while it completes deliveries.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_DeliverTheGoods",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Goods-128.png"
@@ -558,8 +568,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_DestroyTheEncampments.MissionGen_DestroyTheEncampments_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_DestroyTheEncampments_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_DestroyTheEncampments",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -568,8 +578,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_EliminateAndCollect.MissionGen_EliminateAndCollect_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_EliminateAndCollect_C",
-    "ItemName": "Eliminate and Collect",
-    "ItemDescription": "Take out as many enemies as possible in ten minutes!",
+    "DisplayName": "Eliminate and Collect",
+    "Description": "Take out as many enemies as possible in ten minutes!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_EliminateAndCollect",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-EliminateAndCollect-128.png"
@@ -578,8 +588,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_EliminateAndCollect_WR.MissionGen_EliminateAndCollect_WR_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_EliminateAndCollect_WR_C",
-    "ItemName": "Eliminate and Collect",
-    "ItemDescription": "Take out as many enemies as possible in ten minutes!",
+    "DisplayName": "Eliminate and Collect",
+    "Description": "Take out as many enemies as possible in ten minutes!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_EliminateAndCollect_WR",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-EliminateAndCollect-128.png"
@@ -588,8 +598,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless.MissionGen_Endless_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_C",
-    "ItemName": "Frostnite",
-    "ItemDescription": "Survive Frostnite",
+    "DisplayName": "Frostnite",
+    "Description": "Survive Frostnite",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Winterpass-128.png",
@@ -599,8 +609,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless_Challenge_FinalFrost.MissionGen_Endless_Challenge_FinalFrost_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_Challenge_FinalFrost_C",
-    "ItemName": "Frostnite: Final Frost",
-    "ItemDescription": "Survive \u0022Final Frost\u0022... A combination of previous Frostnite challenges in a wintry mix of pain. Good luck, and have fun!",
+    "DisplayName": "Frostnite: Final Frost",
+    "Description": "Survive \u0022Final Frost\u0022... A combination of previous Frostnite challenges in a wintry mix of pain. Good luck, and have fun!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless_Challenge_FinalFrost",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png"
@@ -609,8 +619,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless_Challenge_FrostyTurf.MissionGen_Endless_Challenge_FrostyTurf_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_Challenge_FrostyTurf_C",
-    "ItemName": "Frostnite: Frosty Turf",
-    "ItemDescription": "Survive \u0022Frosty Turf\u0022... Cold traps and cold feet!",
+    "DisplayName": "Frostnite: Frosty Turf",
+    "Description": "Survive \u0022Frosty Turf\u0022... Cold traps and cold feet!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless_Challenge_FrostyTurf",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png"
@@ -619,8 +629,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless_Challenge_MerryMelee.MissionGen_Endless_Challenge_MerryMelee_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_Challenge_MerryMelee_C",
-    "ItemName": "Frostnite: Merry Melee",
-    "ItemDescription": "Survive \u0022Merry Melee\u0022... Only melee weapons!",
+    "DisplayName": "Frostnite: Merry Melee",
+    "Description": "Survive \u0022Merry Melee\u0022... Only melee weapons!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless_Challenge_MerryMelee",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png"
@@ -629,8 +639,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless_Challenge_NewWaveHoliday.MissionGen_Endless_Challenge_NewWaveHoliday_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_Challenge_NewWaveHoliday_C",
-    "ItemName": "Frostnite: New Wave Holiday",
-    "ItemDescription": "Survive \u0022New Wave Holiday\u0022... Target specific husk types to advance to new waves in this challenge, but watch out, they are coming in hordes!",
+    "DisplayName": "Frostnite: New Wave Holiday",
+    "Description": "Survive \u0022New Wave Holiday\u0022... Target specific husk types to advance to new waves in this challenge, but watch out, they are coming in hordes!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless_Challenge_NewWaveHoliday",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png"
@@ -639,8 +649,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless_Challenge_Runway.MissionGen_Endless_Challenge_Runway_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_Challenge_Runway_C",
-    "ItemName": "Frostnite: Special Delivery",
-    "ItemDescription": "Survive \u0022Special Delivery\u0022... Defend BluGlo Dispensers and deliver their BluGlo to your burner!",
+    "DisplayName": "Frostnite: Special Delivery",
+    "Description": "Survive \u0022Special Delivery\u0022... Defend BluGlo Dispensers and deliver their BluGlo to your burner!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless_Challenge_Runway",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png"
@@ -649,8 +659,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless_Challenge_Superheated.MissionGen_Endless_Challenge_Superheated_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_Challenge_Superheated_C",
-    "ItemName": "Frostnite: Superheated",
-    "ItemDescription": "Survive \u0022Superheated\u0022...Player-built structures near the burner take constant damage.",
+    "DisplayName": "Frostnite: Superheated",
+    "Description": "Survive \u0022Superheated\u0022...Player-built structures near the burner take constant damage.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless_Challenge_Superheated",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png"
@@ -659,8 +669,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Endless_Challenge_TopItOff2.MissionGen_Endless_Challenge_TopItOff2_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Endless_Challenge_TopItOff2_C",
-    "ItemName": "Frostnite: Top It Off",
-    "ItemDescription": "Survive \u0022Top It Off\u0022... The Frostnite storm is really ramping up! Keep that burner full of Blu-Glo to keep it at bay!",
+    "DisplayName": "Frostnite: Top It Off",
+    "Description": "Survive \u0022Top It Off\u0022... The Frostnite storm is really ramping up! Keep that burner full of Blu-Glo to keep it at bay!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Endless_Challenge_TopItOff2",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png"
@@ -669,8 +679,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_EvacuateTheSurvivors.MissionGen_EvacuateTheSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_EvacuateTheSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_EvacuateTheSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -679,8 +689,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_EvacuateTheSurvivors_TRV.MissionGen_EvacuateTheSurvivors_TRV_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_EvacuateTheSurvivors_TRV_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_EvacuateTheSurvivors_TRV",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -689,8 +699,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_LaunchTheBalloon.MissionGen_LaunchTheBalloon_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_LaunchTheBalloon_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_LaunchTheBalloon",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Launch-128.png"
@@ -699,8 +709,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_LaunchTheBalloon_NoSecondary.MissionGen_LaunchTheBalloon_NoSecondary_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_LaunchTheBalloon_NoSecondary_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_LaunchTheBalloon_NoSecondary",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png",
@@ -710,8 +720,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_LtR_CannyValley.MissionGen_LtR_CannyValley_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_LtR_CannyValley_C",
-    "ItemName": "Launch the Rocket",
-    "ItemDescription": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
+    "DisplayName": "Launch the Rocket",
+    "Description": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_LtR_CannyValley",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rocket-128.png"
@@ -720,8 +730,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_LtR_Twine.MissionGen_LtR_Twine_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_LtR_Twine_C",
-    "ItemName": "Launch the Rocket",
-    "ItemDescription": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
+    "DisplayName": "Launch the Rocket",
+    "Description": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_LtR_Twine",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rocket-128.png"
@@ -730,8 +740,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Mayday.MissionGen_Mayday_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Mayday_C",
-    "ItemName": "Hit the Road",
-    "ItemDescription": "Protect the truck as you journey through the desert to play the Song of the Summer.",
+    "DisplayName": "Hit the Road",
+    "Description": "Protect the truck as you journey through the desert to play the Song of the Summer.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Mayday",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-MaydayMission-128.png",
@@ -741,8 +751,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Onboarding_Fort.MissionGen_Onboarding_Fort_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Onboarding_Fort_C",
-    "ItemName": "Onboarding Fort",
-    "ItemDescription": "Help Ramirez Launch the Satellite into Orbit",
+    "DisplayName": "Onboarding Fort",
+    "Description": "Help Ramirez Launch the Satellite into Orbit",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Onboarding_Fort",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rocket-32.png"
@@ -751,8 +761,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_PowerTheStormShield.MissionGen_PowerTheStormShield_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_PowerTheStormShield_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_PowerTheStormShield",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Bunker-128.png"
@@ -761,8 +771,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RefuelTheBase.MissionGen_RefuelTheBase_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RefuelTheBase_C",
-    "ItemName": "Refuel the Homebase",
-    "ItemDescription": "Collect BluGlo Tanks",
+    "DisplayName": "Refuel the Homebase",
+    "Description": "Collect BluGlo Tanks",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RefuelTheBase",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-BluGloSiphon-128.png"
@@ -771,8 +781,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Resupply.MissionGen_Resupply_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Resupply_C",
-    "ItemName": "Resupply",
-    "ItemDescription": "Time to replenish your inventory!",
+    "DisplayName": "Resupply",
+    "Description": "Time to replenish your inventory!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Resupply",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Resupply-128.png"
@@ -781,8 +791,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Resupply_WithRift.MissionGen_Resupply_WithRift_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Resupply_WithRift_C",
-    "ItemName": "Resupply",
-    "ItemDescription": "Time to replenish your inventory!",
+    "DisplayName": "Resupply",
+    "Description": "Time to replenish your inventory!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Resupply_WithRift",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Resupply-128.png"
@@ -791,8 +801,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RetrieveTheData.MissionGen_RetrieveTheData_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RetrieveTheData_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RetrieveTheData",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -801,8 +811,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RetrieveTheData_Group.MissionGen_RetrieveTheData_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RetrieveTheData_Group_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RetrieveTheData_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-RetrieveTheData-128.png"
@@ -811,8 +821,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RetrieveTheData_Group_PVE02on.MissionGen_RetrieveTheData_Group_PVE02on_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RetrieveTheData_Group_PVE02on_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RetrieveTheData_Group_PVE02on",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-RetrieveTheData-128.png"
@@ -821,8 +831,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RetrieveTheData_NoSecondary.MissionGen_RetrieveTheData_NoSecondary_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RetrieveTheData_NoSecondary_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RetrieveTheData_NoSecondary",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -831,8 +841,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RideTheLightning_Group.MissionGen_RideTheLightning_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RideTheLightning_Group_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RideTheLightning_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-RideTheLightning-128.png"
@@ -841,8 +851,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RideTheLightning_Group_PVE02on.MissionGen_RideTheLightning_Group_PVE02on_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RideTheLightning_Group_PVE02on_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RideTheLightning_Group_PVE02on",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-RideTheLightning-128.png"
@@ -851,8 +861,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_RtL_StormQuest2018Landmark.MissionGen_RtL_StormQuest2018Landmark_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RtL_StormQuest2018Landmark_C",
-    "ItemName": "Steel Icarus",
-    "ItemDescription": "Time to Upgrade Lars Van",
+    "DisplayName": "Steel Icarus",
+    "Description": "Time to Upgrade Lars Van",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_RtL_StormQuest2018Landmark",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png"
@@ -861,8 +871,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight.MissionGen_Starlight_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_C",
-    "ItemName": "The Crypts",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Crypts",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-DungeonMission_128.png",
@@ -872,8 +882,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D1.MissionGen_Starlight_D1_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D1_C",
-    "ItemName": "The Crypts",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Crypts",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D1",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-DungeonMission_128.png"
@@ -882,8 +892,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D1_Melee.MissionGen_Starlight_D1_Melee_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D1_Melee_C",
-    "ItemName": "The Crypts (Melee Only!)",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Crypts (Melee Only!)",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D1_Melee",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Sword-128.png"
@@ -892,8 +902,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D1_Melee_Timed.MissionGen_Starlight_D1_Melee_Timed_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D1_Melee_Timed_C",
-    "ItemName": "The Crypts (Melee\u002BTimed!)",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Crypts (Melee\u002BTimed!)",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D1_Melee_Timed",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Sword-128.png"
@@ -902,8 +912,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D1_Timed.MissionGen_Starlight_D1_Timed_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D1_Timed_C",
-    "ItemName": "The Crypts (Timed Run!)",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Crypts (Timed Run!)",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D1_Timed",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Replay-Timeline-L.png"
@@ -912,8 +922,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D2.MissionGen_Starlight_D2_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D2_C",
-    "ItemName": "Inferno",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "Inferno",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D2",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-DungeonMission_128.png"
@@ -922,8 +932,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D2_Timed.MissionGen_Starlight_D2_Timed_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D2_Timed_C",
-    "ItemName": "Inferno (Timed Run!)",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "Inferno (Timed Run!)",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D2_Timed",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Replay-Timeline-L.png"
@@ -932,8 +942,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D3.MissionGen_Starlight_D3_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D3_C",
-    "ItemName": "The Grotto",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Grotto",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D3",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-DungeonMission_128.png"
@@ -942,8 +952,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D3_Timed.MissionGen_Starlight_D3_Timed_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D3_Timed_C",
-    "ItemName": "The Grotto (Timed Run!)",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Grotto (Timed Run!)",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D3_Timed",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Replay-Timeline-L.png"
@@ -952,8 +962,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D4.MissionGen_Starlight_D4_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D4_C",
-    "ItemName": "The Labyrinth",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Labyrinth",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D4",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-DungeonMission_128.png"
@@ -962,8 +972,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D4_Timed.MissionGen_Starlight_D4_Timed_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D4_Timed_C",
-    "ItemName": "The Labyrinth (Timed Run!)",
-    "ItemDescription": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
+    "DisplayName": "The Labyrinth (Timed Run!)",
+    "Description": "Delve deep into a mysterious dungeon and face off against terrifying foes.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D4_Timed",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Replay-Timeline-L.png"
@@ -972,8 +982,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Starlight_D5Science.MissionGen_Starlight_D5Science_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Starlight_D5Science_C",
-    "ItemName": "The Lab",
-    "ItemDescription": "The going is hard, so suit up and head out to The Lab!  Destroy Husk Incubation Chambers to gather BluGlo, then use BluGlo to overload the Lightning Coils that are powering up the boss. Don\u0027t forget to look for lightning traps, they block-off the best loot!",
+    "DisplayName": "The Lab",
+    "Description": "The going is hard, so suit up and head out to The Lab!  Destroy Husk Incubation Chambers to gather BluGlo, then use BluGlo to overload the Lightning Coils that are powering up the boss. Don\u0027t forget to look for lightning traps, they block-off the best loot!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Starlight_D5Science",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-DungeonMission_128.png"
@@ -982,8 +992,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Survival_3Day.MissionGen_Survival_3Day_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Survival_3Day_C",
-    "ItemName": "Survive the Storm: 3 Days",
-    "ItemDescription": "Create a diversion for the Storm",
+    "DisplayName": "Survive the Storm: 3 Days",
+    "Description": "Create a diversion for the Storm",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Survival_3Day",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Survival3-128.png",
@@ -993,8 +1003,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Survival_7Day.MissionGen_Survival_7Day_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Survival_7Day_C",
-    "ItemName": "Survive the Storm: 7 Days",
-    "ItemDescription": "Create a diversion for the Storm",
+    "DisplayName": "Survive the Storm: 7 Days",
+    "Description": "Create a diversion for the Storm",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Survival_7Day",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Survival7-128.png",
@@ -1004,8 +1014,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Survival_Min14Day.MissionGen_Survival_Min14Day_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Survival_Min14Day_C",
-    "ItemName": "Survive the Storm: 14 Days",
-    "ItemDescription": "Create a diversion for the Storm",
+    "DisplayName": "Survive the Storm: 14 Days",
+    "Description": "Create a diversion for the Storm",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Survival_Min14Day",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Survival14-128.png",
@@ -1015,8 +1025,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Survival_Min3Day.MissionGen_Survival_Min3Day_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Survival_Min3Day_C",
-    "ItemName": "Survive the Storm: 3\u002B Days",
-    "ItemDescription": "Create a diversion for the Storm",
+    "DisplayName": "Survive the Storm: 3\u002B Days",
+    "Description": "Create a diversion for the Storm",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Survival_Min3Day",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Survival3-128.png",
@@ -1026,8 +1036,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_Survival_Min7Day.MissionGen_Survival_Min7Day_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_Survival_Min7Day_C",
-    "ItemName": "Survive the Storm: 7\u002B Days",
-    "ItemDescription": "Create a diversion for the Storm",
+    "DisplayName": "Survive the Storm: 7\u002B Days",
+    "Description": "Create a diversion for the Storm",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_Survival_Min7Day",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Survival7-128.png",
@@ -1037,8 +1047,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_HT_Cat1FtS.MissionGen_T1_HT_Cat1FtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_HT_Cat1FtS_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_HT_Cat1FtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1047,8 +1057,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_HT_EvacuateTheSurvivors.MissionGen_T1_HT_EvacuateTheSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_HT_EvacuateTheSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_HT_EvacuateTheSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -1057,8 +1067,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_HT_LtB.MissionGen_T1_HT_LtB_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_HT_LtB_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_HT_LtB",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1067,8 +1077,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_HT_RtD.MissionGen_T1_HT_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_HT_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_HT_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1077,8 +1087,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_LT_Cat1FtS.MissionGen_T1_LT_Cat1FtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_LT_Cat1FtS_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_LT_Cat1FtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1087,8 +1097,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_LT_LtB.MissionGen_T1_LT_LtB_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_LT_LtB_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_LT_LtB",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1097,8 +1107,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_MT_Cat1FtS.MissionGen_T1_MT_Cat1FtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_MT_Cat1FtS_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_MT_Cat1FtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1107,8 +1117,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_MT_LtB.MissionGen_T1_MT_LtB_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_MT_LtB_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_MT_LtB",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1117,8 +1127,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_MT_RtD.MissionGen_T1_MT_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_MT_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_MT_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1127,8 +1137,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_VHT_Cat1FtS.MissionGen_T1_VHT_Cat1FtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_VHT_Cat1FtS_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_VHT_Cat1FtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1137,8 +1147,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_VHT_EvacuateTheSurvivors.MissionGen_T1_VHT_EvacuateTheSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_VHT_EvacuateTheSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_VHT_EvacuateTheSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -1147,8 +1157,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_VHT_LtB.MissionGen_T1_VHT_LtB_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_VHT_LtB_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_VHT_LtB",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1157,8 +1167,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_VHT_LtR.MissionGen_T1_VHT_LtR_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_VHT_LtR_C",
-    "ItemName": "Launch the Rocket",
-    "ItemDescription": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
+    "DisplayName": "Launch the Rocket",
+    "Description": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_VHT_LtR",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rocket-128.png"
@@ -1167,8 +1177,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T1_VHT_RtD.MissionGen_T1_VHT_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T1_VHT_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T1_VHT_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1177,8 +1187,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_T2_EtS.MissionGen_T2_EtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_EtS_C",
-    "ItemName": "Evacuate the Shelter",
-    "ItemDescription": "Survivors are held up in a Shelter! They need your help!",
+    "DisplayName": "Evacuate the Shelter",
+    "Description": "Survivors are held up in a Shelter! They need your help!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_T2_EtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Bunker-128.png"
@@ -1187,8 +1197,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_TheOutpost_PARENT.MissionGen_TheOutpost_PARENT_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TheOutpost_PARENT_C",
-    "ItemName": "The Outpost",
-    "ItemDescription": "Expand and defend the Outpost.",
+    "DisplayName": "The Outpost",
+    "Description": "Expand and defend the Outpost.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_TheOutpost_PARENT",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Outpost-128.png",
@@ -1198,41 +1208,38 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_TheOutpost_PvE_01.MissionGen_TheOutpost_PvE_01_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TheOutpost_PvE_01_C",
-    "ItemName": "Homebase Storm Shield",
-    "ItemDescription": "Expand and defend the Stonewood Storm Shield or play Wargames.",
+    "DisplayName": "Homebase Storm Shield",
+    "Description": "Expand and defend the Stonewood Storm Shield or play Wargames.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_TheOutpost_PvE_01",
     "ImagePaths": {
-      "Icon": "ExportedImages\\T-Icon-Outpost-128.png",
-      "LoadingScreen": ""
+      "Icon": "ExportedImages\\T-Icon-Outpost-128.png"
     }
   },
   "/SaveTheWorld/World/MissionGens/MissionGen_TheOutpost_PvE_02.MissionGen_TheOutpost_PvE_02_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TheOutpost_PvE_02_C",
-    "ItemName": "Plankerton Storm Shield",
-    "ItemDescription": "Expand and defend the Plankerton Storm Shield or play Wargames.",
+    "DisplayName": "Plankerton Storm Shield",
+    "Description": "Expand and defend the Plankerton Storm Shield or play Wargames.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_TheOutpost_PvE_02",
     "ImagePaths": {
-      "Icon": "ExportedImages\\T-Icon-Outpost-128.png",
-      "LoadingScreen": ""
+      "Icon": "ExportedImages\\T-Icon-Outpost-128.png"
     }
   },
   "/SaveTheWorld/World/MissionGens/MissionGen_TheOutpost_PvE_03.MissionGen_TheOutpost_PvE_03_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TheOutpost_PvE_03_C",
-    "ItemName": "Canny Valley Storm Shield",
-    "ItemDescription": "Expand and defend the Canny Valley Storm Shield or play Wargames.",
+    "DisplayName": "Canny Valley Storm Shield",
+    "Description": "Expand and defend the Canny Valley Storm Shield or play Wargames.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_TheOutpost_PvE_03",
     "ImagePaths": {
-      "Icon": "ExportedImages\\T-Icon-Outpost-128.png",
-      "LoadingScreen": ""
+      "Icon": "ExportedImages\\T-Icon-Outpost-128.png"
     }
   },
   "/SaveTheWorld/World/MissionGens/MissionGen_TheOutpost_PvE_04.MissionGen_TheOutpost_PvE_04_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TheOutpost_PvE_04_C",
-    "ItemName": "Twine Peaks Storm Shield",
-    "ItemDescription": "Expand and defend the Twine Peaks Storm Shield or play Wargames.",
+    "DisplayName": "Twine Peaks Storm Shield",
+    "Description": "Expand and defend the Twine Peaks Storm Shield or play Wargames.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_TheOutpost_PvE_04",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Outpost-128.png"
@@ -1241,8 +1248,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_WeeklyHordeChallenge_01.MissionGen_WeeklyHordeChallenge_01_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_WeeklyHordeChallenge_01_C",
-    "ItemName": "Weekly Horde Challenge",
-    "ItemDescription": "Defend your deployable forts from the unrelenting horde!",
+    "DisplayName": "Weekly Horde Challenge",
+    "Description": "Defend your deployable forts from the unrelenting horde!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_WeeklyHordeChallenge_01",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png",
@@ -1252,8 +1259,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_WeeklyHordeChallenge_02.MissionGen_WeeklyHordeChallenge_02_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_WeeklyHordeChallenge_02_C",
-    "ItemName": "Weekly Horde Challenge",
-    "ItemDescription": "Defend your deployable forts from the unrelenting horde!",
+    "DisplayName": "Weekly Horde Challenge",
+    "Description": "Defend your deployable forts from the unrelenting horde!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_WeeklyHordeChallenge_02",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png",
@@ -1263,8 +1270,8 @@
   "/SaveTheWorld/World/MissionGens/MissionGen_WeeklyHordeChallenge_03.MissionGen_WeeklyHordeChallenge_03_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_WeeklyHordeChallenge_03_C",
-    "ItemName": "Weekly Horde Challenge",
-    "ItemDescription": "Defend your deployable forts from the unrelenting horde!",
+    "DisplayName": "Weekly Horde Challenge",
+    "Description": "Defend your deployable forts from the unrelenting horde!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/MissionGen_WeeklyHordeChallenge_03",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-WeeklyHordeChallenge-128.png",
@@ -1274,8 +1281,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_DtB_Group.MissionGen_DtB_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_DtB_Group_C",
-    "ItemName": "Deliver The Bomb",
-    "ItemDescription": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
+    "DisplayName": "Deliver The Bomb",
+    "Description": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_DtB_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-DeliverTheBomb-128.png"
@@ -1284,8 +1291,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_DtM_BlockBuster_Landmark.MissionGen_DtM_BlockBuster_Landmark_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_DtM_BlockBuster_Landmark_C",
-    "ItemName": "Destroy The Meteor",
-    "ItemDescription": "Deploy lasers to destroy the meteor",
+    "DisplayName": "Destroy The Meteor",
+    "Description": "Deploy lasers to destroy the meteor",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_DtM_BlockBuster_Landmark",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -1295,8 +1302,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_StC_BlockBuster_Landmark.MissionGen_StC_BlockBuster_Landmark_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_StC_BlockBuster_Landmark_C",
-    "ItemName": "Scan the Comet",
-    "ItemDescription": "Deploy scanners around the comet",
+    "DisplayName": "Scan the Comet",
+    "Description": "Deploy scanners around the comet",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_StC_BlockBuster_Landmark",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -1306,8 +1313,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_1Gate.MissionGen_T2_1Gate_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_1Gate_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_1Gate",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1316,8 +1323,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_2Gates.MissionGen_T2_2Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_2Gates_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_2Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Double-128.png"
@@ -1326,8 +1333,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_3Gates.MissionGen_T2_3Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_3Gates_C",
-    "ItemName": "Fight Category 3 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 3 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_3Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Triple-128.png"
@@ -1336,8 +1343,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_4Gates.MissionGen_T2_4Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_4Gates_C",
-    "ItemName": "Fight Category 4 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 4 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_4Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Quadruple-128.png"
@@ -1346,8 +1353,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_BuildtheRadarGrid.MissionGen_T2_BuildtheRadarGrid_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_BuildtheRadarGrid_C",
-    "ItemName": "Build the Radar Grid",
-    "ItemDescription": "Build and activate Radar Towers",
+    "DisplayName": "Build the Radar Grid",
+    "Description": "Build and activate Radar Towers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_BuildtheRadarGrid",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-RadarTower-128.png"
@@ -1356,8 +1363,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_DtB.MissionGen_T2_DtB_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_DtB_C",
-    "ItemName": "Deliver The Bomb",
-    "ItemDescription": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
+    "DisplayName": "Deliver The Bomb",
+    "Description": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_DtB",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Deliver-128.png"
@@ -1366,8 +1373,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_DtE.MissionGen_T2_DtE_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_DtE_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_DtE",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -1376,8 +1383,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_EtShelter.MissionGen_T2_EtShelter_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_EtShelter_C",
-    "ItemName": "Evacuate the Shelter",
-    "ItemDescription": "Survivors are held up in a Shelter! They need your help!",
+    "DisplayName": "Evacuate the Shelter",
+    "Description": "Survivors are held up in a Shelter! They need your help!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_EtShelter",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Rescue-128.png"
@@ -1386,8 +1393,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_EtSurvivors.MissionGen_T2_EtSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_EtSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_EtSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -1396,8 +1403,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_LtR.MissionGen_T2_LtR_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_LtR_C",
-    "ItemName": "Launch the Rocket",
-    "ItemDescription": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
+    "DisplayName": "Launch the Rocket",
+    "Description": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_LtR",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rocket-128.png"
@@ -1406,8 +1413,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_PtS.MissionGen_T2_PtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_PtS_C",
-    "ItemName": "Vindertech Research Lab",
-    "ItemDescription": "Protect the data stored at the research lab",
+    "DisplayName": "Vindertech Research Lab",
+    "Description": "Protect the data stored at the research lab",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_PtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png"
@@ -1416,8 +1423,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_RtD.MissionGen_T2_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1426,8 +1433,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_RtL.MissionGen_T2_RtL_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_RtL_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_RtL",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1436,8 +1443,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_RtS.MissionGen_T2_RtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_RtS_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_T2_RtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Repair-128.png"
@@ -1446,8 +1453,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_TestTheSuit_BlockBuster_Landmark.MissionGen_TestTheSuit_BlockBuster_Landmark_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TestTheSuit_BlockBuster_Landmark_C",
-    "ItemName": "Test the Suit",
-    "ItemDescription": "Deploy and test the Exosuit",
+    "DisplayName": "Test the Suit",
+    "Description": "Deploy and test the Exosuit",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_TestTheSuit_BlockBuster_Landmark",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -1457,8 +1464,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_WatchTheSkies_Landmark.MissionGen_WatchTheSkies_Landmark_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_WatchTheSkies_Landmark_C",
-    "ItemName": "Watch the Skies",
-    "ItemDescription": "Deploy telescope array for Lars",
+    "DisplayName": "Watch the Skies",
+    "Description": "Deploy telescope array for Lars",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/ParentMissionGens/MissionGen_WatchTheSkies_Landmark",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -1468,8 +1475,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Plank_Landmarks/MissionGen_PlankHarbor3Gate.MissionGen_PlankHarbor3Gate_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_PlankHarbor3Gate_C",
-    "ItemName": "Liberate Plank Harbor",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Liberate Plank Harbor",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Plank_Landmarks/MissionGen_PlankHarbor3Gate",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -1479,8 +1486,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_1Gate.MissionGen_T2_R1_1Gate_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R1_1Gate_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_1Gate",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1489,8 +1496,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_2Gates.MissionGen_T2_R1_2Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R1_2Gates_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_2Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Double-128.png"
@@ -1499,8 +1506,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_BuildtheRadarGrid.MissionGen_T2_R1_BuildtheRadarGrid_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R1_BuildtheRadarGrid_C",
-    "ItemName": "Build the Radar Grid",
-    "ItemDescription": "Build and activate Radar Towers",
+    "DisplayName": "Build the Radar Grid",
+    "Description": "Build and activate Radar Towers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_BuildtheRadarGrid",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-RadarTower-128.png"
@@ -1509,8 +1516,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_DtE.MissionGen_T2_R1_DtE_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R1_DtE_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_DtE",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -1519,8 +1526,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_EtSurvivors.MissionGen_T2_R1_EtSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R1_EtSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_EtSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -1529,8 +1536,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_RtD.MissionGen_T2_R1_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R1_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1539,8 +1546,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_RtL.MissionGen_T2_R1_RtL_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R1_RtL_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_1/MissionGen_T2_R1_RtL",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1549,8 +1556,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_RtS_Group.MissionGen_RtS_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_RtS_Group_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_RtS_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-RepairTheShelter-128.png"
@@ -1559,8 +1566,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_1Gate.MissionGen_T2_R2_1Gate_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_1Gate_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_1Gate",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1569,8 +1576,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_2Gates.MissionGen_T2_R2_2Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_2Gates_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_2Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Double-128.png"
@@ -1579,8 +1586,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_BuildtheRadarGrid.MissionGen_T2_R2_BuildtheRadarGrid_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_BuildtheRadarGrid_C",
-    "ItemName": "Build the Radar Grid",
-    "ItemDescription": "Build and activate Radar Towers",
+    "DisplayName": "Build the Radar Grid",
+    "Description": "Build and activate Radar Towers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_BuildtheRadarGrid",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-RadarTower-128.png"
@@ -1589,8 +1596,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_DtE.MissionGen_T2_R2_DtE_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_DtE_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_DtE",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -1599,8 +1606,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_EtSurvivors.MissionGen_T2_R2_EtSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_EtSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_EtSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -1609,8 +1616,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtD.MissionGen_T2_R2_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1619,8 +1626,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtL.MissionGen_T2_R2_RtL_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_RtL_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtL",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1629,8 +1636,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtS.MissionGen_T2_R2_RtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_RtS_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Repair-128.png"
@@ -1639,8 +1646,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtS_Tutorial.MissionGen_T2_R2_RtS_Tutorial_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R2_RtS_Tutorial_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_2/MissionGen_T2_R2_RtS_Tutorial",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Repair-128.png"
@@ -1649,8 +1656,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_1Gate.MissionGen_T2_R3_1Gate_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_1Gate_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_1Gate",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1659,8 +1666,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_2Gates.MissionGen_T2_R3_2Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_2Gates_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_2Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Double-128.png"
@@ -1669,8 +1676,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_BuildtheRadarGrid.MissionGen_T2_R3_BuildtheRadarGrid_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_BuildtheRadarGrid_C",
-    "ItemName": "Build the Radar Grid",
-    "ItemDescription": "Build and activate Radar Towers",
+    "DisplayName": "Build the Radar Grid",
+    "Description": "Build and activate Radar Towers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_BuildtheRadarGrid",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-RadarTower-128.png"
@@ -1679,8 +1686,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_DtB_Tutorial.MissionGen_T2_R3_DtB_Tutorial_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_DtB_Tutorial_C",
-    "ItemName": "Deliver The Bomb",
-    "ItemDescription": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
+    "DisplayName": "Deliver The Bomb",
+    "Description": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_DtB_Tutorial",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Deliver-128.png"
@@ -1689,8 +1696,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_DtE.MissionGen_T2_R3_DtE_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_DtE_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_DtE",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -1699,8 +1706,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_EtSurvivors.MissionGen_T2_R3_EtSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_EtSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_EtSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -1709,8 +1716,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_RtD.MissionGen_T2_R3_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1719,8 +1726,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_RtL.MissionGen_T2_R3_RtL_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_RtL_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_RtL",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1729,8 +1736,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_RtS.MissionGen_T2_R3_RtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R3_RtS_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_3/MissionGen_T2_R3_RtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Repair-128.png"
@@ -1739,8 +1746,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_4/MissionGen_T2_R4_EtShelter_Tutorial.MissionGen_T2_R4_EtShelter_Tutorial_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R4_EtShelter_Tutorial_C",
-    "ItemName": "Evacuate the Shelter",
-    "ItemDescription": "Survivors are held up in a Shelter! They need your help!",
+    "DisplayName": "Evacuate the Shelter",
+    "Description": "Survivors are held up in a Shelter! They need your help!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_4/MissionGen_T2_R4_EtShelter_Tutorial",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Rescue-128.png"
@@ -1749,8 +1756,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_EtShelter_Group.MissionGen_EtShelter_Group_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_EtShelter_Group_C",
-    "ItemName": "Evacuate the Shelter",
-    "ItemDescription": "Survivors are held up in a Shelter! They need your help!",
+    "DisplayName": "Evacuate the Shelter",
+    "Description": "Survivors are held up in a Shelter! They need your help!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_EtShelter_Group",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-4Player-EvacuateTheShelter-128.png"
@@ -1759,8 +1766,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_2Gates.MissionGen_T2_R5_2Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_2Gates_C",
-    "ItemName": "Fight Category 2 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 2 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_2Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Double-128.png"
@@ -1769,8 +1776,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_3Gates.MissionGen_T2_R5_3Gates_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_3Gates_C",
-    "ItemName": "Fight Category 3 Storm",
-    "ItemDescription": "Find the targets. Deploy the ATLASES. Fight the Storm!",
+    "DisplayName": "Fight Category 3 Storm",
+    "Description": "Find the targets. Deploy the ATLASES. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_3Gates",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Triple-128.png"
@@ -1779,8 +1786,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_BuildtheRadarGrid.MissionGen_T2_R5_BuildtheRadarGrid_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_BuildtheRadarGrid_C",
-    "ItemName": "Build the Radar Grid",
-    "ItemDescription": "Build and activate Radar Towers",
+    "DisplayName": "Build the Radar Grid",
+    "Description": "Build and activate Radar Towers",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_BuildtheRadarGrid",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-RadarTower-128.png"
@@ -1789,8 +1796,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_DtB.MissionGen_T2_R5_DtB_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_DtB_C",
-    "ItemName": "Deliver The Bomb",
-    "ItemDescription": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
+    "DisplayName": "Deliver The Bomb",
+    "Description": "Build tracks from the Armory to the Launcher, then protect the Bomb until it reaches the Launcher and gets fired at the Rift.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_DtB",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Deliver-128.png"
@@ -1799,8 +1806,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_DtE.MissionGen_T2_R5_DtE_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_DtE_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_DtE",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -1809,8 +1816,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_EtShelter.MissionGen_T2_R5_EtShelter_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_EtShelter_C",
-    "ItemName": "Evacuate the Shelter",
-    "ItemDescription": "Survivors are held up in a Shelter! They need your help!",
+    "DisplayName": "Evacuate the Shelter",
+    "Description": "Survivors are held up in a Shelter! They need your help!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_EtShelter",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Rescue-128.png"
@@ -1819,8 +1826,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_EtSurvivors.MissionGen_T2_R5_EtSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_EtSurvivors_C",
-    "ItemName": "Rescue the Survivors",
-    "ItemDescription": "Search the zone for survivors and get them to evacuate!",
+    "DisplayName": "Rescue the Survivors",
+    "Description": "Search the zone for survivors and get them to evacuate!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_EtSurvivors",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rescue-Survivors-128.png"
@@ -1829,8 +1836,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_LtR.MissionGen_T2_R5_LtR_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_LtR_C",
-    "ItemName": "Launch the Rocket",
-    "ItemDescription": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
+    "DisplayName": "Launch the Rocket",
+    "Description": "Acquire BluGlo and deliver it to the launchpad to fuel the rocket\u0027s lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_LtR",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Rocket-128.png"
@@ -1839,8 +1846,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_PtS.MissionGen_T2_R5_PtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_PtS_C",
-    "ItemName": "Vindertech Research Lab",
-    "ItemDescription": "Protect the data stored at the research lab",
+    "DisplayName": "Vindertech Research Lab",
+    "Description": "Protect the data stored at the research lab",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_PtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png"
@@ -1849,8 +1856,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_RtD.MissionGen_T2_R5_RtD_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_RtD_C",
-    "ItemName": "Retrieve the Data",
-    "ItemDescription": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
+    "DisplayName": "Retrieve the Data",
+    "Description": "Protect the drop zone while crucial data is downloaded from the fallen weather balloon.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
@@ -1859,8 +1866,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_RtL.MissionGen_T2_R5_RtL_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_RtL_C",
-    "ItemName": "Ride The Lightning",
-    "ItemDescription": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
+    "DisplayName": "Ride The Lightning",
+    "Description": "Acquire BluGlo and deliver it to the van to fuel the balloon for lift off.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_RtL",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Ride-128.png"
@@ -1869,8 +1876,8 @@
   "/SaveTheWorld/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_RtS.MissionGen_T2_R5_RtS_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T2_R5_RtS_C",
-    "ItemName": "Repair the Shelter",
-    "ItemDescription": "Find the missing modules needed to repair the shelter.",
+    "DisplayName": "Repair the Shelter",
+    "Description": "Find the missing modules needed to repair the shelter.",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Plankerton/Region_5/MissionGen_T2_R5_RtS",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Shelter-Repair-128.png"
@@ -1879,8 +1886,8 @@
   "/SaveTheWorld/World/MissionGens/Stonewood/SW_Landmarks/MissionGen_BuildOff.MissionGen_BuildOff_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_BuildOff_C",
-    "ItemName": "Constructor Build Off",
-    "ItemDescription": "Follow build instructions from Kyle and Penny",
+    "DisplayName": "Constructor Build Off",
+    "Description": "Follow build instructions from Kyle and Penny",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/Stonewood/SW_Landmarks/MissionGen_BuildOff",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -1890,8 +1897,8 @@
   "/SaveTheWorld/World/MissionGens/TestMissionGens/MissionGen_DUDEBRO.MissionGen_DUDEBRO_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_DUDEBRO_C",
-    "ItemName": "The Portal",
-    "ItemDescription": "Enter the Portal",
+    "DisplayName": "The Portal",
+    "Description": "Enter the Portal",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/TestMissionGens/MissionGen_DUDEBRO",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Miniboss-128.png",
@@ -1901,8 +1908,8 @@
   "/SaveTheWorld/World/MissionGens/TRV/MissionGen_1stTrapTheStorm.MissionGen_1stTrapTheStorm_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_1stTrapTheStorm_C",
-    "ItemName": "Trap the Storm",
-    "ItemDescription": "Place and Defend the Traps",
+    "DisplayName": "Trap the Storm",
+    "Description": "Place and Defend the Traps",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/TRV/MissionGen_1stTrapTheStorm",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-TrapTheStorm-128.png"
@@ -1911,8 +1918,8 @@
   "/SaveTheWorld/World/MissionGens/TRV/MissionGen_SurviveTheNight.MissionGen_SurviveTheNight_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_SurviveTheNight_C",
-    "ItemName": "Survive the Night",
-    "ItemDescription": "Eliminate Husks and Survive",
+    "DisplayName": "Survive the Night",
+    "Description": "Eliminate Husks and Survive",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/TRV/MissionGen_SurviveTheNight",
     "ImagePaths": {
       "Icon": "ExportedImages\\T_Icon_SurviveTheNight_128.png",
@@ -1922,8 +1929,8 @@
   "/SaveTheWorld/World/MissionGens/TRV/MissionGen_TrapTheStorm.MissionGen_TrapTheStorm_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TrapTheStorm_C",
-    "ItemName": "Trap the Storm",
-    "ItemDescription": "Place and Defend the Traps",
+    "DisplayName": "Trap the Storm",
+    "Description": "Place and Defend the Traps",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/TRV/MissionGen_TrapTheStorm",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-TrapTheStorm-128.png"
@@ -1932,8 +1939,8 @@
   "/SaveTheWorld/World/MissionGens/TRV/MissionGen_TRV_DestroyTheEncampments.MissionGen_TRV_DestroyTheEncampments_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TRV_DestroyTheEncampments_C",
-    "ItemName": "Destroy The Encampments",
-    "ItemDescription": "Destroy all the Encampments!",
+    "DisplayName": "Destroy The Encampments",
+    "Description": "Destroy all the Encampments!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/TRV/MissionGen_TRV_DestroyTheEncampments",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-DestroyEncampments-128.png"
@@ -1942,8 +1949,8 @@
   "/SaveTheWorld/World/MissionGens/TRV/MissionGen_TRV_GateSingle.MissionGen_TRV_GateSingle_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TRV_GateSingle_C",
-    "ItemName": "Fight the Storm",
-    "ItemDescription": "Find the target. Deploy the ATLAS. Fight the Storm!",
+    "DisplayName": "Fight the Storm",
+    "Description": "Find the target. Deploy the ATLAS. Fight the Storm!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/TRV/MissionGen_TRV_GateSingle",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Single-128.png"
@@ -1952,8 +1959,8 @@
   "/SaveTheWorld/World/MissionGens/TRV/MissionGen_TRV_Landmark.MissionGen_TRV_Landmark_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_TRV_Landmark_C",
-    "ItemName": "Explore the Mist",
-    "ItemDescription": "",
+    "DisplayName": "Explore the Mist",
+    "Description": "",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/TRV/MissionGen_TRV_Landmark",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-Story-128.png",
@@ -1963,8 +1970,8 @@
   "/STW_Horde/World/MissionGens/MissionGen_HordeV3_T1.MissionGen_HordeV3_T1_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_HordeV3_T1_C",
-    "ItemName": "Survive the Horde",
-    "ItemDescription": "Gather supply drops, build defenses, and survive the unrelenting horde!",
+    "DisplayName": "Survive the Horde",
+    "Description": "Gather supply drops, build defenses, and survive the unrelenting horde!",
     "AssetPath": "FortniteGame/Plugins/GameFeatures/STW/STW_Horde/Content/World/MissionGens/MissionGen_HordeV3_T1",
     "ImagePaths": {
       "Icon": "ExportedImages\\T-Icon-SurviveTheHorde-128.png",

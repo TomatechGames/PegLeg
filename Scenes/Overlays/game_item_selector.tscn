@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://cvc7hj4ng7c04"]
+
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_bjivd"]
+[ext_resource type="Script" path="res://Scripts/Overlays/GameItemSelector.cs" id="2_msbn1"]
+[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="3_p3a1g"]
+[ext_resource type="Script" path="res://Scripts/DynamicGridContainer.cs" id="4_2yqeq"]
+[ext_resource type="PackedScene" uid="uid://ch7kqyndhfgvs" path="res://Scenes/GameItemEntry/inventory_entry_large.tscn" id="4_7jdcp"]
+
+[node name="GameItemSelector" node_paths=PackedStringArray("container", "windowControl") instance=ExtResource("1_bjivd")]
+script = ExtResource("2_msbn1")
+container = NodePath("Control/MarginContainer/PanelContainer/ScrollContainer")
+windowControl = NodePath("Control")
+
+[node name="Control" parent="." index="2"]
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="WindowContents" parent="Control" index="0"]
+visible = false
+
+[node name="MarginContainer" type="MarginContainer" parent="Control" index="1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 60
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/MarginContainer/PanelContainer" index="0" node_paths=PackedStringArray("linkedGrid", "offsetControl", "paddingControl", "elementParent")]
+layout_mode = 2
+horizontal_scroll_mode = 0
+script = ExtResource("3_p3a1g")
+elementSpace = 10.0
+linkedGrid = NodePath("MarginContainer/VBoxContainer/Grid")
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/Grid")
+elementScene = ExtResource("4_7jdcp")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/PanelContainer/ScrollContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/PanelContainer/ScrollContainer/MarginContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Offset" type="Control" parent="Control/MarginContainer/PanelContainer/ScrollContainer/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="Grid" type="Container" parent="Control/MarginContainer/PanelContainer/ScrollContainer/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+script = ExtResource("4_2yqeq")
+minCols = 3
+compressSpacing = true
+spacing = Vector2(10, 10)
+
+[node name="Padding" type="Control" parent="Control/MarginContainer/PanelContainer/ScrollContainer/MarginContainer/VBoxContainer" index="2"]
+layout_mode = 2
+
+[connection signal="pressed" from="BG" to="." method="CloseWindow"]

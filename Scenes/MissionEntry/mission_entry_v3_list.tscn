@@ -1,56 +1,56 @@
-[gd_scene load_steps=15 format=3 uid="uid://cggedl5b1a4h"]
+[gd_scene load_steps=16 format=3 uid="uid://cggedl5b1a4h"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_cv1mc"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="2_oopl8"]
 [ext_resource type="Texture2D" uid="uid://d1sgahybai425" path="res://Images/MissionZoneBackgrounds/FORT_Load_STWIrwinBuild.png" id="3_orne4"]
-[ext_resource type="Texture2D" uid="uid://b57flomv1w1kn" path="res://External/Icons/Mission/T-Icon-4Player-RepairTheShelter-128.png" id="4_6o6fk"]
-[ext_resource type="Texture2D" uid="uid://7ufybuxv5ka1" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Escalation-128.png" id="5_b816f"]
+[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="3_srxa7"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_fx7us"]
-[ext_resource type="Texture2D" uid="uid://b6in45pvhvddv" path="res://External/Icons/Mission/Icon-Mission-Critical-XL.png" id="5_m1ig2"]
-[ext_resource type="Texture2D" uid="uid://bbbt4kdbwl3m6" path="res://External/Icons/Mission/T_Icon_ProtectThePresent_128.png" id="6_cwkpi"]
-[ext_resource type="Texture2D" uid="uid://qo8gr8lcnhwe" path="res://External/Icons/Mission/T-Icon-Replay-Timeline-L.png" id="8_rhc11"]
+[ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="5_jw021"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="6_4k6gs"]
+[ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="8_6tlrj"]
 [ext_resource type="PackedScene" uid="uid://cabjtbslcfikw" path="res://Scenes/GameItemEntry/mission_reward_entry_list.tscn" id="8_vhh2j"]
-[ext_resource type="PackedScene" uid="uid://8y0sgtaqiyqr" path="res://Scenes/GameItemEntry/mission_alert_reward_entry_list.tscn" id="10_6ysly"]
-[ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="10_w2bos"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="9_mryk5"]
+[ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="9_rh3hy"]
+[ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="11_d81fi"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqnfa"]
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wbodm"]
+shader = ExtResource("3_srxa7")
+shader_parameter/ControlSize = Vector2(1050, 95)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idj3s"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hpw6j"]
 bg_color = Color(0.453125, 0.496094, 0.644531, 1)
-skew = Vector2(0.25, 0)
-corner_radius_bottom_right = 5
-expand_margin_left = 4.0
-expand_margin_right = 4.0
+corner_radius_top_left = 5
 
-[node name="mission_entry_v3_list" type="PanelContainer"]
-clip_children = 1
-custom_minimum_size = Vector2(0, 80)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48gyy"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+skew = Vector2(0.5, 0)
+corner_radius_bottom_right = 3
+
+[node name="mission_entry_v3_list" type="MarginContainer" node_paths=PackedStringArray("powerLevelLabel", "missionIcon", "missionRewardParent", "alertModifierParent", "alertRewardParent", "alertModifierLayout", "alertRewardLayout")]
+custom_minimum_size = Vector2(1050, 95)
 offset_right = 829.0
 offset_bottom = 80.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("1_cv1mc")
-theme_override_styles/panel = SubResource("StyleBoxFlat_dqnfa")
 script = ExtResource("2_oopl8")
-powerLevelLabel = NodePath("Control/PanelContainer/MarginContainer/HBoxContainer/PowerLevelLabel")
+powerLevelLabel = NodePath("Control/MarginContainer/HBoxContainer/PowerLevelLabel")
 missionIcon = NodePath("MarginContainer/HBoxContainer/VBoxContainer/PanelContainer/MissionIcon")
 missionRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/RepeatableRewards/VBoxContainer2/VBoxContainer/PanelContainer/MarginContainer/RepeatableRewardParent")
 alertModifierParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers/VBoxContainer/PanelContainer/MarginContainer/ModifierParent")
 alertRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent")
 alertModifierLayout = NodePath("MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers")
 alertRewardLayout = NodePath("MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards")
-backgroundTexture = NodePath("BGTexture")
 
 [node name="BGTexture" type="TextureRect" parent="."]
-self_modulate = Color(0.75, 0.75, 0.75, 1)
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_wbodm")
 layout_mode = 2
 texture = ExtResource("3_orne4")
 expand_mode = 1
-stretch_mode = 6
+script = ExtResource("5_jw021")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -72,11 +72,12 @@ theme_type_variation = &"TransparantPanel"
 
 [node name="MissionIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
-texture = ExtResource("4_6o6fk")
+texture = ExtResource("6_4k6gs")
 expand_mode = 3
 stretch_mode = 5
 
 [node name="Responsive Button Area" parent="MarginContainer/HBoxContainer/VBoxContainer/PanelContainer" instance=ExtResource("5_fx7us")]
+visible = false
 layout_mode = 2
 
 [node name="AlertModifiers" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
@@ -93,7 +94,7 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers/PanelContainer/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("5_m1ig2")
+texture = ExtResource("8_6tlrj")
 expand_mode = 3
 stretch_mode = 4
 
@@ -131,35 +132,35 @@ columns = 6
 [node name="Modifier" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("5_b816f")
+texture = ExtResource("6_4k6gs")
 expand_mode = 3
 stretch_mode = 4
 
 [node name="Modifier2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("5_b816f")
+texture = ExtResource("6_4k6gs")
 expand_mode = 3
 stretch_mode = 4
 
 [node name="Modifier3" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("5_b816f")
+texture = ExtResource("6_4k6gs")
 expand_mode = 3
 stretch_mode = 4
 
 [node name="Modifier4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("5_b816f")
+texture = ExtResource("6_4k6gs")
 expand_mode = 3
 stretch_mode = 4
 
 [node name="Modifier5" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/AlertModifiers/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("5_b816f")
+texture = ExtResource("6_4k6gs")
 expand_mode = 3
 stretch_mode = 4
 
@@ -183,7 +184,7 @@ alignment = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer2/HBoxContainer4"]
 layout_mode = 2
-texture = ExtResource("8_rhc11")
+texture = ExtResource("9_rh3hy")
 expand_mode = 3
 stretch_mode = 4
 
@@ -211,25 +212,30 @@ layout_mode = 2
 theme_override_constants/h_separation = 3
 columns = 7
 
-[node name="AlertReward" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("10_6ysly")]
+[node name="RewardEntryHorizontal" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
-size_flags_vertical = 3
+compactifyAmount = true
+includeAmountInName = true
 
-[node name="AlertReward2" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("10_6ysly")]
+[node name="RewardEntryHorizontal2" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
-size_flags_vertical = 3
+compactifyAmount = true
+includeAmountInName = true
 
-[node name="AlertReward3" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("10_6ysly")]
+[node name="RewardEntryHorizontal3" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
-size_flags_vertical = 3
+compactifyAmount = true
+includeAmountInName = true
 
-[node name="AlertReward4" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("10_6ysly")]
+[node name="RewardEntryHorizontal4" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
-size_flags_vertical = 3
+compactifyAmount = true
+includeAmountInName = true
 
-[node name="AlertReward5" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("10_6ysly")]
+[node name="RewardEntryHorizontal5" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
-size_flags_vertical = 3
+compactifyAmount = true
+includeAmountInName = true
 
 [node name="RepeatableRewards" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(214, 0)
@@ -252,7 +258,7 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/RepeatableRewards/VBoxContainer2/PanelContainer2/HBoxContainer4"]
 layout_mode = 2
-texture = ExtResource("6_cwkpi")
+texture = ExtResource("11_d81fi")
 expand_mode = 3
 stretch_mode = 4
 
@@ -305,38 +311,35 @@ size_flags_vertical = 3
 layout_mode = 2
 mouse_filter = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Control"]
-custom_minimum_size = Vector2(15, 0)
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 0
-offset_left = 2.0
 offset_right = 15.0
 offset_bottom = 17.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_idj3s")
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 2
+theme_override_constants/separation = -5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="Control/MarginContainer/HBoxContainer2"]
 layout_mode = 2
-theme_override_constants/separation = 0
-alignment = 1
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hpw6j")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="Panel2" type="Panel" parent="Control/MarginContainer/HBoxContainer2"]
 layout_mode = 2
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_bottom = 1
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_48gyy")
 
-[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/MarginContainer/HBoxContainer/MarginContainer"]
-visible = false
+[node name="HBoxContainer" type="MarginContainer" parent="Control/MarginContainer"]
 layout_mode = 2
-texture = ExtResource("10_w2bos")
-expand_mode = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
 
-[node name="PowerLevelLabel" type="Label" parent="Control/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="PowerLevelLabel" type="Label" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
-text = "1"
+text = "9"
 horizontal_alignment = 1
-vertical_alignment = 1

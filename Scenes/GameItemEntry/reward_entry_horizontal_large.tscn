@@ -4,6 +4,8 @@
 
 [node name="RewardEntryHorizontal" instance=ExtResource("1_7nwdj")]
 custom_minimum_size = Vector2(96, 96)
+compactifyAmount = true
+includeAmountInName = true
 
 [node name="CPUParticles2D" parent="IconContainer/RarityIcon/ParticlePosition" index="0"]
 position = Vector2(48, 46)

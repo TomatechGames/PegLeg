@@ -1,0 +1,230 @@
+[gd_scene load_steps=18 format=3 uid="uid://wb5ukb74fot1"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/ShopOfferEntry.cs" id="1_hvr15"]
+[ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="1_io7lf"]
+[ext_resource type="Shader" uid="uid://cypncf62qx5bc" path="res://Shaders/CardTriangleEffect.tres" id="2_6kl4y"]
+[ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="2_rx7yy"]
+[ext_resource type="Texture2D" uid="uid://bkqoyh11npn7c" path="res://Images/InterfaceIcons/TriangleScroll.png" id="3_c82yr"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_qji8a"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="5_wjuhi"]
+[ext_resource type="Texture2D" uid="uid://bkj1uu2syehgg" path="res://Images/InterfaceIcons/T-Item-GoldBars.png" id="7_bv0ye"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="8_ahbeu"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="8_ocl4j"]
+
+[sub_resource type="Gradient" id="Gradient_rxla7"]
+colors = PackedColorArray(0.9, 0.9, 0.9, 1, 0.6, 0.6, 0.6, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cgiwg"]
+gradient = SubResource("Gradient_rxla7")
+fill = 1
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ya7jx"]
+resource_local_to_scene = true
+shader = ExtResource("2_6kl4y")
+shader_parameter/TriangleTint = Color(0.9, 0.51, 0, 1)
+shader_parameter/TimeOffset = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nb4if"]
+content_margin_left = 3.0
+content_margin_right = 3.0
+bg_color = Color(0, 0, 0, 0.392157)
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ynyt"]
+content_margin_left = 2.0
+content_margin_top = 5.0
+content_margin_right = 2.0
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0, -0.05)
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3n3on"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pt1cr"]
+content_margin_left = 2.0
+content_margin_top = 0.0
+content_margin_right = 3.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0.752941)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="RegularShopEntry" type="MarginContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry")]
+custom_minimum_size = Vector2(150, 0)
+offset_right = 75.0
+offset_bottom = 75.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_hvr15")
+grantedItemEntry = NodePath("DetailsArea")
+priceEntry = NodePath("DetailsArea/PriceBox")
+
+[node name="AspectTexture" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("1_io7lf")
+expand_mode = 5
+
+[node name="RarityGradient" type="TextureRect" parent="."]
+self_modulate = Color(0.901961, 0.509804, 0, 1)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_cgiwg")
+expand_mode = 1
+
+[node name="Control" type="Control" parent="."]
+clip_contents = true
+layout_mode = 2
+
+[node name="AspectTexture" type="TextureRect" parent="Control"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("2_rx7yy")
+expand_mode = 5
+
+[node name="Triangles" type="TextureRect" parent="Control/AspectTexture"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_ya7jx")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_c82yr")
+expand_mode = 1
+script = ExtResource("4_qji8a")
+
+[node name="ItemIcon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("5_wjuhi")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="DetailsArea" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+script = ExtResource("8_ocl4j")
+
+[node name="Space" type="Control" parent="DetailsArea"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NameBox" type="PanelContainer" parent="DetailsArea"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nb4if")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DetailsArea/NameBox"]
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="TypeLabel" type="Label" parent="DetailsArea/NameBox/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 10
+text = "Hero
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="NameLabel" type="Label" parent="DetailsArea/NameBox/VBoxContainer"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+text = "This is a Hero Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="PriceBox" type="PanelContainer" parent="DetailsArea"]
+self_modulate = Color(0, 0.0705882, 0.231373, 1)
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ynyt")
+script = ExtResource("8_ocl4j")
+
+[node name="MarginContainer" type="MarginContainer" parent="DetailsArea/PriceBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DetailsArea/PriceBox/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CurrencyIcon" type="TextureRect" parent="DetailsArea/PriceBox/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_bv0ye")
+expand_mode = 3
+
+[node name="PriceAmount" type="Label" parent="DetailsArea/PriceBox/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "10000"
+text_overrun_behavior = 3
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(0.901961, 0.509804, 0, 1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3n3on")
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 5.0
+offset_right = -5.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pt1cr")
+
+[node name="Label" type="Label" parent="Panel/PanelContainer"]
+layout_mode = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 10
+text = "x999"
+
+[node name="Responsive Button Area" parent="." instance=ExtResource("8_ahbeu")]
+layout_mode = 2
+outlinePadding = 0.0
+
+[connection signal="AmountChanged" from="." to="Panel/PanelContainer/Label" method="set_text"]
+[connection signal="AmountNeeded" from="." to="Panel/PanelContainer" method="set_visible"]
+[connection signal="NameChanged" from="." to="DetailsArea/NameBox/VBoxContainer/NameLabel" method="set_text"]
+[connection signal="IconChanged" from="DetailsArea" to="ItemIcon" method="set_texture"]
+[connection signal="RarityChanged" from="DetailsArea" to="RarityGradient" method="set_self_modulate"]
+[connection signal="RarityChanged" from="DetailsArea" to="Panel" method="set_self_modulate"]
+[connection signal="RarityChanged" from="DetailsArea" to="Control/AspectTexture/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
+[connection signal="TypeChanged" from="DetailsArea" to="DetailsArea/NameBox/VBoxContainer/TypeLabel" method="set_text"]
+[connection signal="AmountChanged" from="DetailsArea/PriceBox" to="DetailsArea/PriceBox/MarginContainer/HBoxContainer/PriceAmount" method="set_text"]
+[connection signal="IconChanged" from="DetailsArea/PriceBox" to="DetailsArea/PriceBox/MarginContainer/HBoxContainer/CurrencyIcon" method="set_texture"]
+[connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

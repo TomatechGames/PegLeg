@@ -2,10 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using static Godot.OpenXRHand;
 
 public partial class LlamaInterface : Control
 {
@@ -88,7 +86,7 @@ public partial class LlamaInterface : Control
     DateTime llamaRefreshTime;
 
     // Called when the node enters the scene tree for the first time.
-    public override async void _Ready()
+    public override void _Ready()
 	{
         this.GetNodeOrNull(catalogLlamaParentPath, out catalogLlamaParent);
         this.GetNodeOrNull(cardpackLlamaParentPath, out cardpackLlamaParent);
@@ -105,6 +103,8 @@ public partial class LlamaInterface : Control
         this.GetNodeOrNull(cardpackLlamaPanelPath, out cardpackLlamaPanel);
         this.GetNodeOrNull(llamaTimerLabelPath, out llamaTimerLabel);
 
+        availableCardPacks.Clear();
+
         VisibilityChanged += async () =>
         {
             if (Visible)
@@ -115,6 +115,16 @@ public partial class LlamaInterface : Control
                     var offer = activeOffers[currentPurchaseSelection];
                     string priceType = offer["prices"][0]["currencySubType"].ToString();
                     CurrencyHighlight.Instance.SetCurrencyType(priceType);
+                }
+                if(cardPackListener is null)
+                {
+                    cardPackListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, "CardPack");
+                    cardPackListener.OnAdded += AddCardPackEntry;
+                    cardPackListener.OnRemoved += RemoveCardPackEntry;
+                    foreach (var item in cardPackListener.Items)
+                    {
+                        AddCardPackEntry(item);
+                    }
                 }
             }
         };
@@ -130,13 +140,11 @@ public partial class LlamaInterface : Control
             }
         };
 
-        cardPackListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, "CardPack");
-        cardPackListener.OnAdded += AddCardPackEntry;
-        cardPackListener.OnRemoved += RemoveCardPackEntry;
-        foreach (var item in cardPackListener.Items)
-        {
-            AddCardPackEntry(item);
-        }
+    }
+
+    public override void _ExitTree()
+    {
+        cardPackListener?.Unlink();
     }
 
     ProfileListener cardPackListener;
@@ -144,7 +152,7 @@ public partial class LlamaInterface : Control
 
     class CardPackGroup
     {
-        public string PressData => linkedHandles.First().uuid;
+        public string PressData => linkedHandles.First().profileItem.uuid;
 
         public readonly string type;
         public readonly string customType;
@@ -159,7 +167,7 @@ public partial class LlamaInterface : Control
 
             type = firstItem["templateId"].ToString();
 
-            if (firstItem.GetTemplate()["ItemName"].ToString().Contains("Accolade"))
+            if (firstItem.GetTemplate()["DisplayName"].ToString().Contains("Accolade"))
                 customType = "Accolade";
 
             isKnown = firstItem["attributes"].AsObject().ContainsKey("options");
@@ -167,7 +175,7 @@ public partial class LlamaInterface : Control
         }
 
         public bool Has(ProfileItemHandle handle) => linkedHandles.Contains(handle);
-        public bool Has(string uuid) => linkedHandles.Any(val => val.uuid == uuid);
+        public bool Has(string uuid) => linkedHandles.Any(val => val.profileItem.uuid == uuid);
 
         public int DisplayAmount => isKnown ? -1 : linkedHandles.Count;
 
@@ -178,7 +186,7 @@ public partial class LlamaInterface : Control
                 return false;
             if (type == item["templateId"].ToString())
                 return true;
-            if (item.GetTemplate()["ItemName"].ToString().Contains("Accolade") && customType== "Accolade")
+            if (item.GetTemplate()["DisplayName"].ToString().Contains("Accolade") && customType== "Accolade")
                 return true;
             return false;
         }
@@ -187,7 +195,7 @@ public partial class LlamaInterface : Control
         {
             if (customType == "Accolade")
             {
-                baseObject["template"]["ItemName"] = "Battle Royale Xp Bundle";
+                baseObject["template"]["DisplayName"] = "Battle Royale Xp Bundle";
                 baseObject["template"]["ImagePaths"] ??= new JsonObject();
                 baseObject["template"]["ImagePaths"]["SmallPreview"] = "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png";
             }
@@ -222,7 +230,7 @@ public partial class LlamaInterface : Control
         {
             var nextHandle = linkedHandles.Last();
             llamaEntry.SetItemData(GetDisplayCardpack());
-            llamaEntry.linkedPressData = nextHandle.uuid;
+            llamaEntry.SetLinkedItemId(nextHandle.profileItem.uuid);
         }
     }
 
@@ -250,7 +258,7 @@ public partial class LlamaInterface : Control
             //spawn new
             newEntry = cardpackLlamaEntryScene.Instantiate<LlamaEntry>();
             cardpackLlamaParent.AddChild(newEntry);
-            newEntry.Pressed += () => SetCardPackLlama(newEntry.linkedPressData);
+            newEntry.LlamaPressed += SetCardPackLlama;
         }
 
         CardPackGroup newGroup = new(handle, newEntry); 
@@ -267,8 +275,11 @@ public partial class LlamaInterface : Control
             if (stackableGroup.linkedHandles.Count == 0)
             {
                 GD.Print("stack depleted");
-                stackableGroup.llamaEntry.Visible = false;
-                pooledCardpackLlamas.Enqueue(stackableGroup.llamaEntry);
+                if (stackableGroup.llamaEntry.IsInsideTree())
+                {
+                    stackableGroup.llamaEntry.Visible = false;
+                    //pooledCardpackLlamas.Enqueue(stackableGroup.llamaEntry);
+                }
                 availableCardPacks.Remove(stackableGroup);
                 if (availableCardPacks.Count == 0)
                 {
@@ -282,10 +293,10 @@ public partial class LlamaInterface : Control
     Dictionary<string, JsonObject> activeOffers = new();
     public async Task LoadLlamas(bool force = false, bool clearSelection = true)
     {
-        if (isLoadingLlamas || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count==0))
+        if (isLoadingLlamas || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count==0) || !await LoginRequests.TryLogin())
             return;
         isLoadingLlamas = true;
-        llamaRefreshTime = CatalogRequests.DailyRefreshTime();
+        llamaRefreshTime = await CalenderRequests.DailyShopRefreshTime();
         GD.Print("Llamas refresh at: "+llamaRefreshTime);
         loadingIcon.Visible = true;
         activeOffers.Clear();
@@ -304,7 +315,7 @@ public partial class LlamaInterface : Control
         {
             var newEntry = catalogLlamaEntryScene.Instantiate<ShopOfferEntry>();
             catalogLlamaParent.AddChild(newEntry);
-            newEntry.Pressed += () => SetCatalogLlama(newEntry.linkedPressData);
+            newEntry.Pressed += SetCatalogLlama;
             pooledCatalogLlamas.Add(newEntry);
         }
 
@@ -341,7 +352,7 @@ public partial class LlamaInterface : Control
         int price = offer["prices"][0]["finalPrice"].GetValue<int>();
         int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
 
-        return !(price == 1 && inInventory < 1);
+        return price != 1 || inInventory >= 1;
     }
 
     async Task<JsonObject[]> FilterLlamas(JsonObject[] llamaCatalog)
@@ -443,7 +454,7 @@ public partial class LlamaInterface : Control
             selectedPurchaseCountSpinner.MaxValue = maxSimultaniousAmount;
             selectedPurchaseCountSpinner.Visible = maxSimultaniousAmount > 1;
             latestPurchasablePrice = price;
-            SpinnerChanged((float)selectedPurchaseCountSpinner.Value);
+            SpinnerChanged(selectedPurchaseCountSpinner.Value);
             BanjoAssets.TryGetTemplate(priceType, out var priceTemplate);
             selectedPriceIcon.Texture = priceTemplate.GetItemTexture();
         }
@@ -493,7 +504,6 @@ public partial class LlamaInterface : Control
             {
                 pooledGameItems[i].Visible = false;
             }
-
         }
         else
         {
@@ -505,7 +515,7 @@ public partial class LlamaInterface : Control
 
     int latestPurchasablePrice = 0;
 
-    public void SpinnerChanged(float newValue)
+    public void SpinnerChanged(double newValue)
     {
         selectedPriceLabel.Text = (latestPurchasablePrice * newValue).ToString();
     }
@@ -533,8 +543,8 @@ public partial class LlamaInterface : Control
         SetCatalogLlama(currentPurchaseSelection);
         LoadingOverlay.Instance.RemoveLoadingKey("LlamaPurchase");
 
-        var resultItems = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"].AsArray();
-        await CardPackOpener.Instance.StartOpening(resultItems.Select(val => ProfileItemHandle.CreateHandleUnsafe(val["itemProfile"].ToString(), val["itemGuid"].ToString())).ToArray());
+        var resultItems = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"].AsArray().Select(var=>var.AsObject()).ToArray();
+        await CardPackOpener.Instance.StartOpeningShopResults(resultItems);
 
     }
 
@@ -611,7 +621,7 @@ public partial class LlamaInterface : Control
         if (depletesSelected)
             ClearSelection();
         else
-            SetCardPackLlama(currentCardpackSelection.linkedHandles.Last().uuid);
+            SetCardPackLlama(currentCardpackSelection.linkedHandles.Last().profileItem.uuid);
     }
 
     public async void BulkOpenAllCardpacks()
@@ -659,31 +669,15 @@ public partial class LlamaInterface : Control
         if(llamaRefreshTime != default && llamaTimerLabel is not null)
         {
             var remainingTime = (llamaRefreshTime - DateTime.UtcNow);
-            string text = remainingTime.Seconds.ToString();
-            if (remainingTime.TotalMinutes >= 1)
-            {
-                text = remainingTime.Minutes + ":" + (remainingTime.Seconds < 10 ? "0" : "") + text;
-                if (remainingTime.TotalHours >= 1)
-                {
-                    text = remainingTime.Hours + ":" + (remainingTime.Minutes < 10 ? "0" : "") + text;
 
-                    if (remainingTime.TotalDays >= 1)
-                    {
-                        text = remainingTime.Days + ":" + (remainingTime.Hours < 10 ? "0" : "") + text;
-                    }
-
-                    llamaTimerLabel.SelfModulate = Colors.White;
-                }
-                else
-                {
-                    llamaTimerLabel.SelfModulate = Colors.Orange;
-                }
-            }
+            if (remainingTime.TotalMinutes < 1)
+                llamaTimerLabel.SelfModulate = Colors.Red;
+            else if (remainingTime.TotalHours < 1)
+                llamaTimerLabel.SelfModulate = Colors.Orange;
             else
-            {
-                llamaTimerLabel.SelfModulate = Colors.OrangeRed;
-            }
-            llamaTimerLabel.Text = text;
+                llamaTimerLabel.SelfModulate = Colors.White;
+
+            llamaTimerLabel.Text = remainingTime.FormatTime();
             if (DateTime.UtcNow.CompareTo(llamaRefreshTime) >= 0)
             {
                 llamaRefreshTime = default;

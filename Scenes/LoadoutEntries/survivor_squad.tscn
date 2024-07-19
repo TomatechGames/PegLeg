@@ -1,0 +1,135 @@
+[gd_scene load_steps=4 format=3 uid="uid://bje4f7reoc8da"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/SurvivorSquadEntry.cs" id="1_crhol"]
+[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/T-Icon-Hero-Soldier-CARD.png" id="1_i6sy6"]
+[ext_resource type="PackedScene" uid="uid://dljot1ntapg7q" path="res://Scenes/GameItemEntry/inventory_slot.tscn" id="2_0x38l"]
+
+[node name="SurvivorSquad" type="MarginContainer" node_paths=PackedStringArray("squadNameLabel", "squadIcon", "fortPointsLabel", "fortPointsIcon", "leadSurvivorSlot", "survivorSlots")]
+script = ExtResource("1_crhol")
+synergy = "Doctor"
+squadNameLabel = NodePath("MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer/SquadNameLabel")
+squadIcon = NodePath("MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer/SquadIcon")
+fortPointsLabel = NodePath("MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer/FortLabel")
+fortPointsIcon = NodePath("MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer/FortIcon")
+leadSurvivorSlot = NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot")
+survivorSlots = [NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot2"), NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot3"), NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot4"), NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot5"), NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot6"), NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot7"), NodePath("MarginContainer/VBoxContainer/Slots/InventorySlot8")]
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="NameAndFortStat" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/NameAndFortStat"]
+layout_mode = 2
+
+[node name="SquadIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_i6sy6")
+expand_mode = 3
+
+[node name="SquadNameLabel" type="Label" parent="MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 32
+text = "Survivor Squad Name Here"
+vertical_alignment = 1
+
+[node name="FortIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_i6sy6")
+expand_mode = 3
+
+[node name="FortLabel" type="Label" parent="MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "+0"
+
+[node name="Slots" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="InventorySlot" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/Slots"]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="InventorySlot3" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="InventorySlot4" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="InventorySlot5" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="InventorySlot6" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="InventorySlot7" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="InventorySlot8" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_vertical = 8
+useSurvivorBoosts = true
+
+[node name="Perks" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Perks"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_top = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Perks/MarginContainer"]
+modulate = Color(0.25098, 1, 0.25098, 1)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/Perks/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_i6sy6")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Perks/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "7/7"

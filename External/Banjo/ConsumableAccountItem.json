@@ -2,8 +2,8 @@
   "ConsumableAccountItem:foundersfriendcode": {
     "Type": "ConsumableAccountItem",
     "Name": "FoundersFriendCode",
-    "ItemName": "Founder\u0027s Friend Code",
-    "ItemDescription": "Gift a Standard Edition to a friend!",
+    "DisplayName": "Founder\u0027s Friend Code",
+    "Description": "Gift a Standard Edition to a friend!",
     "Rarity": "Legendary",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/accountconsumables/foundersfriendcode.uasset",
     "ImagePaths": {
@@ -14,29 +14,29 @@
   "ConsumableAccountItem:smallxpboost": {
     "Type": "ConsumableAccountItem",
     "Name": "SmallXpBoost",
-    "ItemName": "XP Boost",
-    "ItemDescription": "Activate an XP Boost to gain Account XP boost points. Boost points earn [XpBoost.Self.Value] more experience for yourself, as well as give a [XpBoost.Team.Value] bonus to all other players on your team! If you are a Founder, you automatically grant a 5% bonus to all your team mates. The more players that use XP Boosts, the bigger the bonus for everyone!",
-    "AssetPath": "fortnitegame/content/items/accountconsumables/smallxpboost.uasset",
+    "DisplayName": "XP Boost",
+    "Description": "Activate an XP Boost to gain Account XP boost points. Boost points earn [XpBoost.Self.Value] more experience for yourself, as well as give a [XpBoost.Team.Value] bonus to all other players on your team! If you are a Founder, you automatically grant a 5% bonus to all your team mates. The more players that use XP Boosts, the bigger the bonus for everyone!",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/accountconsumables/smallxpboost.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\Icon-XP-L.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/XP/Icon-XP-XL.Icon-XP-XL"
+      "LargePreview": "/SaveTheWorld/UI/Foundation/Textures/Icons/XP/Icon-XP-XL.Icon-XP-XL"
     }
   },
   "ConsumableAccountItem:smallxpboost_gift": {
     "Type": "ConsumableAccountItem",
     "Name": "SmallXpBoost_Gift",
-    "ItemName": "Teammate XP Boost",
-    "ItemDescription": "Activate a Teammate XP Boost to give a teammate Account XP boost points. Boost points earn [XpBoost.Self.Value] more experience for a teammate, as well as give a [XpBoost.Team.Value] bonus to you and the other players on your team!  The more players that use XP Boosts, the bigger the bonus for everyone!",
-    "AssetPath": "fortnitegame/content/items/accountconsumables/smallxpboost_gift.uasset",
+    "DisplayName": "Teammate XP Boost",
+    "Description": "Activate a Teammate XP Boost to give a teammate Account XP boost points. Boost points earn [XpBoost.Self.Value] more experience for a teammate, as well as give a [XpBoost.Team.Value] bonus to you and the other players on your team!  The more players that use XP Boosts, the bigger the bonus for everyone!",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/accountconsumables/smallxpboost_gift.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\Icon-GiftXP-L.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/XP/Icon-GiftXP-XL.Icon-GiftXP-XL"
+      "LargePreview": "/SaveTheWorld/UI/Foundation/Textures/Icons/XP/Icon-GiftXP-XL.Icon-GiftXP-XL"
     }
   },
   "ConsumableAccountItem:tt_xpboost_c": {
     "Type": "ConsumableAccountItem",
     "Name": "TT_XpBoost_C",
-    "ItemName": "\u003CTT_XpBoost_C\u003E",
-    "AssetPath": "fortnitegame/content/items/accountconsumables/tt_xpboost.uasset"
+    "DisplayName": "\u003CTT_XpBoost_C\u003E",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/accountconsumables/tt_xpboost.uasset"
   }
 }

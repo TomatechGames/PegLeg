@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 public partial class TempCompendiumInterface : Control
 {
@@ -45,32 +46,38 @@ public partial class TempCompendiumInterface : Control
         {
 			if (BanjoAssets.TryGetSource(source, out var sourceFile))
 			{
-                foreach (var item in sourceFile)
+				Parallel.ForEach(sourceFile, item =>
                 {
 					if (item.Value["Tier"].GetValue<int>() != 1)
-						continue;
+						return;
 					else
 					{
-						string entryName = $"{item.Value["ItemName"]}";
+						string entryName = $"{item.Value["DisplayName"]}";
 						string extraSearchTerm = $"[{item.Value["Rarity"]}]";
-						if (source == "Hero" && BanjoAssets.TryGetTemplate(item.Value["HeroPerk"], out var ability))
+						if (source == "Hero" && BanjoAssets.TryGetTemplate("Ability:"+item.Value["HeroPerkName"], out var ability))
 						{
-							extraSearchTerm += ability["ItemName"].ToString();
+							extraSearchTerm += ability["DisplayName"].ToString();
 						}
-						compendiumEntries.Add(new()
-						{ 
-							displayName = entryName, 
-							isHero = source == "Hero", 
-							texture = item.Value.AsObject().GetItemTexture(), 
-							templateId = item.Key, 
-							rarity = item.Value.AsObject().GetItemRarity(), 
+						CompendiumEntry result = new()
+						{
+							displayName = entryName,
+							isHero = source == "Hero",
+							texture = item.Value.AsObject().GetItemTexture(),
+							templateId = item.Key,
+							rarity = item.Value.AsObject().GetItemRarity(),
 							extraSearchTerm = extraSearchTerm
-						});
+						};
+						lock (compendiumEntries)
+                        {
+                            if (!compendiumEntries.Exists(e => e.displayName == result.displayName && e.rarity >= result.rarity))
+								compendiumEntries.Add(result);
+							compendiumEntries.Remove(compendiumEntries.FirstOrDefault(e => e.displayName == result.displayName && e.rarity < result.rarity));
+                        }
 					}
-                }
+                });
             }
         }
-		compendiumEntries = compendiumEntries.OrderBy(val => val.isHero ? 0 : 1).ThenBy(val => -val.rarity).ThenBy(val => val.displayName).ToList();
+		compendiumEntries = compendiumEntries.OrderBy(val => val.isHero ? 0 : 1).ThenBy(val => -val.rarity).ThenBy(val => val.displayName.StartsWith("The ") ? val.displayName[4..] : val.displayName).ToList();
 		FilterItems("");
     }
 
@@ -85,7 +92,7 @@ public partial class TempCompendiumInterface : Control
                 (!item.extraSearchTerm?.ToLower().Contains(searchTerm.ToLower()) ?? false)
 				)
 				continue;
-            var index = itemList.AddItem(item.displayName, item.texture);
+            var index = itemList.AddItem("", item.texture);
             itemList.SetItemMetadata(index, item.templateId);
 			itemList.SetItemCustomFgColor(index, Colors.Black);
 			var color = BanjoAssets.GetRarityColor(item.rarity);

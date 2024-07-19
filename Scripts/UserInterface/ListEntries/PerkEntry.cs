@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using static ItemShopEntry;
 
 public partial class PerkEntry : Control
 {
@@ -43,7 +42,7 @@ public partial class PerkEntry : Control
         linkedIndex = index;
         if (alterationId is not null && BanjoAssets.TryGetTemplate(alterationId, out var alteration))
         {
-            EmitSignal(SignalName.NameChanged, alteration["ItemName"].ToString());
+            EmitSignal(SignalName.NameChanged, alteration["DisplayName"].ToString());
 
             if (hasRarity)
             {

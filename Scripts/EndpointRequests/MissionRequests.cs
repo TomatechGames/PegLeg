@@ -7,23 +7,20 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Godot;
-using static FNAssetData;
 
 static class MissionRequests
 {
     const string missionCacheSavePath = "user://missions.json";
     static JsonObject missionsCache;
-    static JsonObject difficultyTable;
-
-    const string difficultyGrowthTablePath = "res://External/DataTables/GameDifficultyGrowthBounds.json";
 
     public static bool MissionsRequireUpdate()
     {
         if (missionsCache is null)
             return true;
-        var refreshTime = DateTime.Parse(missionsCache["availableUntil"].ToString(), null, DateTimeStyles.RoundtripKind);
+        var refreshTime = DateTime.UtcNow.Date.AddDays(1);
         return DateTime.UtcNow.CompareTo(refreshTime) >= 0;
     }
 
@@ -48,7 +45,7 @@ static class MissionRequests
 
         if (missionsCache is not null)
         {
-            var refreshTime = DateTime.Parse(missionsCache["availableUntil"].ToString(), null, DateTimeStyles.RoundtripKind);
+            var refreshTime = await CalenderRequests.DailyShopRefreshTime();
             if (DateTime.UtcNow.CompareTo(refreshTime) >= 0)
                 missionsCache = null;
         }
@@ -67,7 +64,7 @@ static class MissionRequests
 
     static async Task<JsonObject> RequestMissions()
     {
-        if (!await LoginRequests.WaitForLogin())
+        if (!await LoginRequests.TryLogin())
             return null;
         Debug.WriteLine("retrieving missions from epic...");
         JsonNode fullMissions = await Helpers.MakeRequest(
@@ -85,137 +82,164 @@ static class MissionRequests
         return missionsCache;
     }
 
-    static JsonObject LoadDifficultyTable()
+    static Dictionary<string, string> rewardPackAssociations = new()
     {
-        var difficultyFile = FileAccess.Open(difficultyGrowthTablePath, FileAccess.ModeFlags.Read);
-        return JsonNode.Parse(difficultyFile.GetAsText())[0]["Rows"].AsObject();
-    }
+        ["CardPack:zcp_reagent_c_t04_\\w*"] = "AccountResource:reagent_c_t04",
+        ["CardPack:zcp_reagent_c_t03_\\w*"] = "AccountResource:reagent_c_t03",
+        ["CardPack:zcp_reagent_c_t02_\\w*"] = "AccountResource:reagent_c_t02",
+        ["CardPack:zcp_reagent_c_t01_\\w*"] = "AccountResource:reagent_c_t01",
+
+        ["CardPack:zcp_reagent_alteration_upgrade_sr_\\w*"] = "AccountResource:reagent_alteration_upgrade_sr",
+        ["CardPack:zcp_reagent_alteration_upgrade_vr_\\w*"] = "AccountResource:reagent_alteration_upgrade_vr",
+        ["CardPack:zcp_reagent_alteration_upgrade_r_\\w*"] = "AccountResource:reagent_alteration_upgrade_r",
+        ["CardPack:zcp_reagent_alteration_upgrade_uc_\\w*"] = "AccountResource:reagent_alteration_upgrade_uc",
+        ["CardPack:zcp_reagent_alteration_generic_\\w*"] = "AccountResource:reagent_alteration_generic",
+
+        ["CardPack:zcp_phoenixxp_t\\d\\d"] = "AccountResource:phoenixxp",
+        ["CardPack:zcp_personnelxp_t\\d\\d"] = "AccountResource:personnelxp",
+        ["CardPack:zcp_heroxp_t\\d\\d"] = "AccountResource:heroxp",
+
+        ["CardPack:zcp_ore_copper_\\w*"] = "Ingredient:ingredient_ore_copper",
+        ["CardPack:zcp_ore_silver_\\w*"] = "Ingredient:ingredient_ore_silver",
+        ["CardPack:zcp_ore_malachite_\\w*"] = "Ingredient:ingredient_ore_malachite",
+        ["CardPack:zcp_ore_obsidian_\\w*"] = "Ingredient:ingredient_ore_obsidian",
+        ["CardPack:zcp_ore_brightcore_\\w*"] = "Ingredient:ingredient_ore_brightcore",
+
+        ["CardPack:zcp_crystal_quartz_\\w*"] = "Ingredient:ingredient_crystal_quartz",
+        ["CardPack:zcp_crystal_shadowshard_\\w*"] = "Ingredient:ingredient_crystal_shadowshard",
+        ["CardPack:zcp_crystal_sunbeam_\\w*"] = "Ingredient:ingredient_crystal_sunbeam",
+    };
 
     static JsonObject SimplifyMissions(JsonNode rootNode)
     {
-        difficultyTable ??= LoadDifficultyTable();
-
         //Theatres
-        List<string> allowedTheatreIDs = new();
-
-        //base game theatres
-        allowedTheatreIDs.AddRange(new string[]{
+        List<string> allowedTheaterIDs = new()
+        {
             "33A2311D4AE64B361CCE27BC9F313C8B",
             "D477605B4FA48648107B649CE97FCF27",
             "E6ECBD064B153234656CB4BDE6743870",
             "D9A801C5444D1C74D1B7DAB5C7C12C5B"
-        });
+        };
 
         //ventures theatre
-        var venturesTheatre = rootNode["theaters"]
+        var venturesTheater = rootNode["theaters"]
             .AsArray()
-            .FirstOrDefault(t => t["displayName"]?["en"]?.ToString().Contains("Venture") == true, null);
-        if (venturesTheatre != null)
-            allowedTheatreIDs.Add(venturesTheatre["uniqueId"].ToString());
+            .FirstOrDefault(t => t["missionRewardNamedWeightsRowName"]?.ToString() == "Theater.Phoenix");
+        if (venturesTheater is not null)
+            allowedTheaterIDs.Add(venturesTheater["uniqueId"].ToString());
 
-        string refreshDateTime = null;
-        List<JsonNode> missionResultList = new();
-        foreach (var theatreID in allowedTheatreIDs)
+        BanjoAssets.TryGetSource("MissionGen", out var missionGenLookup);
+        BanjoAssets.TryGetSource("DifficultyInfo", out var difficultyInfoLookup);
+        BanjoAssets.TryGetSource("ZoneTheme", out var zoneThemeLookup);
+
+        JsonArray allMissions = rootNode["missions"].AsArray();
+        JsonArray allMissionAlerts = rootNode["missionAlerts"].AsArray();
+
+        List<JsonObject> missionList = new();
+
+        foreach (var theaterID in allowedTheaterIDs)
         {
-            var theatre = rootNode["theaters"].AsArray().First(t => t["uniqueId"].ToString() == theatreID);
-            if (theatre == null)
+            var theater = rootNode["theaters"].AsArray().First(t => t["uniqueId"].ToString() == theaterID);
+            if (theater is null)
                 continue;
 
-            string theatreName = theatre["displayName"]["en"].ToString();
-            char theatreCategory = theatreName switch
+            string theaterName = theater["displayName"]["en"].ToString();
+            string theaterCat = theaterName switch
             {
-                "Stonewood" => 's',
-                "Plankerton" => 'p',
-                "Canny Valley" => 'c',
-                "Twine Peaks" => 't',
-                _ => 'v'
+                "Stonewood" => "s",
+                "Plankerton" => "p",
+                "Canny Valley" => "c",
+                "Twine Peaks" => "t",
+                _ => "v"
             };
+            bool isVentures = theaterCat == "v";
 
             //Missions
-            JsonArray missionArray = rootNode["missions"].AsArray().FirstOrDefault(t => t["theaterId"].ToString() == theatreID)["availableMissions"].AsArray();
+            JsonArray theaterMissions = allMissions.FirstOrDefault(t => t["theaterId"].ToString() == theaterID)["availableMissions"].AsArray();
 
             //Mission Alerts (indexed by Tile Index, as that is the common factor between missions and mission alerts)
-            Dictionary<int, JsonNode> missionAlertDict = rootNode["missionAlerts"].AsArray().FirstOrDefault(t => t["theaterId"].ToString() == theatreID)["availableMissionAlerts"].AsArray().ToDictionary(n => n["tileIndex"].GetValue<int>());
+            var missionAlertDict = allMissionAlerts
+                .FirstOrDefault(t => t["theaterId"].ToString() == theaterID)
+                ["availableMissionAlerts"]
+                .AsArray()
+                .ToDictionary(n => n["tileIndex"].GetValue<int>());
 
-            //resolve power level ints to sort them later
-            Dictionary<int, TreeItem> powerLevelFilters = new();
-            foreach (var missionObj in missionArray)
+            var missionTiles = theater["tiles"].AsArray();
+
+            foreach (var missionObj in theaterMissions)
             {
-                //get refresh time if we havent already
-                refreshDateTime ??= missionObj["availableUntil"]?.ToString();
-
                 //establish mission details
-                string missionGenName = missionObj["missionGenerator"].ToString().Split(".")[^1];
-                var missionData = GetDisplayDataForMissionGenerator(missionGenName);
-
-                string powerLevelRow = missionObj["missionDifficultyInfo"]["rowName"].ToString();
-                int powerLevel = difficultyTable[powerLevelRow]["RecommendedRating"].GetValue<int>();
-
-                int tileIndex = missionObj["tileIndex"].GetValue<int>();
+                string missionGen = missionObj["missionGenerator"].ToString();
+                missionObj["missionGenerator"] = missionGenLookup[missionGen].Reserialise();
 
                 //skip Homebase and Story missions
-                if (missionData.iconPath.EndsWith("T-Icon-Story-128.png") || missionData.iconPath.EndsWith("T-Icon-Outpost-128.png"))
+                string iconPath = missionObj["missionGenerator"]["ImagePaths"]["Icon"].ToString();
+                if (iconPath.EndsWith("T-Icon-Story-128.png") || iconPath.EndsWith("T-Icon-Outpost-128.png"))
                     continue;
 
-                //debug: only show invalid missions
-                // if(missionData.IsValid)
-                // 	continue;
-                JsonObject missionResult = new()
-                {
-                    ["generatorID"] = missionGenName,
-                    ["powerLevel"] = powerLevel,
-                    ["theatreName"] = theatreName,
-                    ["theatreCat"] = theatreCategory,
-                    ["zoneTheme"] = theatre["tiles"][tileIndex]["zoneTheme"].ToString().Split(".")[^1]
-                };
+                string dificultyRow = missionObj["missionDifficultyInfo"]["rowName"].ToString();
+                missionObj["missionDifficultyInfo"] = difficultyInfoLookup[dificultyRow].Reserialise();
 
+                missionObj["theaterCat"] = theaterCat;
 
-                JsonObject missionRewardsObject = new();
-                foreach (JsonNode rewardNode in missionObj["missionRewards"]["items"].AsArray())
+                missionObj["missionRewards"] = new JsonArray(
+                        missionObj["missionRewards"]["items"].AsArray()
+                        .GroupBy(r => r["itemType"].ToString())
+                        .Select(g =>new JsonObject()
+                        {
+                            ["itemType"] = g.Key,
+                            ["quantity"] = g.Select(r => r["quantity"].GetValue<int>()).Sum()
+                        })
+                        .ToArray()
+                    );
+                foreach (var rewardNode in missionObj["missionRewards"].AsArray())
                 {
-                    int nodeValue = rewardNode["quantity"].GetValue<int>();
-                    if (missionRewardsObject.ContainsKey(rewardNode["itemType"].ToString()))
-                        nodeValue += missionRewardsObject[rewardNode["itemType"].ToString()].GetValue<int>();
-                    missionRewardsObject[rewardNode["itemType"].ToString()] = nodeValue;
+                    foreach (var equivelent in rewardPackAssociations)
+                    {
+                        if(Regex.Match(equivelent.Key, rewardNode["itemType"].ToString()).Success)
+                        {
+                            rewardNode["equivelent"] = equivelent.Value;
+                            break;
+                        }
+                    }
                 }
-                missionResult["rewards"] = missionRewardsObject;
 
+                int tileIndex = missionObj["tileIndex"].GetValue<int>();
                 if (missionAlertDict.ContainsKey(tileIndex))
                 {
                     //parse mission alert
                     JsonObject alertObj = missionAlertDict[tileIndex].AsObject();
-                    JsonObject alertRewardsObject = new();
-                    foreach (JsonNode rewardNode in alertObj["missionAlertRewards"]["items"].AsArray())
-                    {
-                        alertRewardsObject[rewardNode["itemType"].ToString()] = rewardNode["quantity"].GetValue<int>();
-                    }
                     JsonArray modifierArray = new();
                     if (alertObj.ContainsKey("missionAlertModifiers"))
                         foreach (JsonNode modifierNode in alertObj["missionAlertModifiers"]["items"].AsArray())
                         {
                             modifierArray.Add(modifierNode["itemType"].ToString());
                         }
-                    missionResult["missionAlert"] = new JsonObject
+                    missionObj["missionAlert"] = new JsonObject
                     {
-                        ["rewards"] = alertRewardsObject,
+                        ["rewards"] = alertObj["missionAlertRewards"]["items"].AsArray().Reserialise(),
                         ["modifiers"] = modifierArray
                     };
                 }
 
-                missionResultList.Add(missionResult);
+                missionObj["tile"] = missionTiles[tileIndex].AsObject().Reserialise();
+                string zoneTheme = missionObj["tile"]["zoneTheme"].ToString();
+                missionObj["tile"]["zoneTheme"] = zoneThemeLookup[zoneTheme].Reserialise();
+
+                missionList.Add(missionObj.AsObject().Reserialise());
             }
         }
 
-        var orderedMissions = missionResultList.OrderBy(n => n["powerLevel"].GetValue<int>());
-        JsonObject simplifiedRoot = new()
-        {
-            ["missions"] = JsonNode.Parse(JsonSerializer.Serialize(orderedMissions)),
-            ["availableUntil"] = refreshDateTime
-        };
+        //var orderedMissions = missionList.OrderBy(n => n["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>());
 
-        return simplifiedRoot;
+        return new(missionList
+            .GroupBy(n => n["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>())
+            .Select(g => KeyValuePair.Create<string, JsonNode>(g.Key.ToString(), new JsonArray(g.ToArray())))
+            .OrderBy(kvp => int.Parse(kvp.Key))
+            );
     }
 
+    /* Old filtering system
     static JsonObject FilterMissions(JsonNode rootNode, string searchText, string zoneFilterText, bool requireAllSearchTerms)
     {
         if(string.IsNullOrWhiteSpace(searchText) && string.IsNullOrWhiteSpace(zoneFilterText))
@@ -273,4 +297,5 @@ static class MissionRequests
 
         return filteredRoot;
     }
+    */
 }

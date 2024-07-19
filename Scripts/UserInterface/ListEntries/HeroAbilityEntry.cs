@@ -33,13 +33,30 @@ public partial class HeroAbilityEntry : Node
 
     public void SetAbility(JsonObject heroAbility, bool locked = false, string warning = null)
 	{
-        string name = heroAbility["ItemName"].ToString();
-        string description = heroAbility["ItemDescription"].ToString();
-        if (heroAbility.ContainsKey("AbilityStats"))
-        {
-            description = description.Replace("[Damage.Value]", heroAbility["AbilityStats"]["Damage"].ToString());
-            description = description.Replace("[Damage]", heroAbility["AbilityStats"]["Damage"].ToString());
-        }
+        string name = heroAbility["DisplayName"].ToString();
+        string description = heroAbility["Description"].ToString();
+        //JsonObject abilityStats = heroAbility["AbilityStats"]?.AsObject() ?? new();
+
+        //description = description.Replace("+[Damage]",          "+" + (ScalarAsPercentage(abilityStats["Damage"]        ?.GetValue<float>()) ?? "?") + "%");
+        //description = description.Replace("+[Ability.Line4]",   "+" + (ScalarAsPercentage(abilityStats["AbilityLine4"]  ?.GetValue<float>()) ?? "?") + "%");
+        //description = description.Replace("+[Ability.Line5]",   "+" + (ScalarAsPercentage(abilityStats["AbilityLine5"]  ?.GetValue<float>()) ?? "?") + "%");
+
+        //description = description.Replace("[Damage]", abilityStats["Damage"]?.ToString() ?? "?");
+        //description = description.Replace("[Damage.Value]", abilityStats["Damage"]?.ToString() ?? "?");
+        //description = description.Replace("[AbilityWeaponDamage.Value]", abilityStats["Damage"]?.ToString() ?? "?");
+
+        //description = description.Replace("[Ability.Line2]", abilityStats["AbilityLine2"]?.ToString() ?? "?");
+        //description = description.Replace("[Ability.Line3]", abilityStats["AbilityLine3"]?.ToString() ?? "?");
+
+        //description = description.Replace("[FireRate.Value]", abilityStats["FireRate"]?.ToString() ?? "?");
+        //description = description.Replace("[Ability.RateOfFire]", abilityStats["FireRate"]?.ToString() ?? "?");
+
+        //description = description.Replace("[Ability.Distance]", ScalarAsTiles(abilityStats["Distance"]?.GetValue<float>()) ?? "?");
+
+        //description = description.Replace("[Radius]", (ScalarAsTiles(abilityStats["Radius"]?.GetValue<float>()) ?? "?")+ " tile");
+
+        //description = description.Replace("[Duration]", abilityStats["Duration"]?.ToString() ?? "?");
+        //description = description.Replace("[Ability.Duration]", abilityStats["Duration"]?.ToString() ?? "?");
 
         EmitSignal(SignalName.NameChanged, name);
         EmitSignal(SignalName.DescriptionChanged, description);

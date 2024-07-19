@@ -10,11 +10,11 @@ public partial class ShopOfferEntry : Control
     [Signal]
     public delegate void AmountChangedEventHandler(string amount);
     [Signal]
+    public delegate void AmountNeededEventHandler(bool isNeeded);
+    [Signal]
     public delegate void IsFreeChangedEventHandler(bool isFree);
     [Signal]
-    public delegate void LlamaColorChangedEventHandler(Color tierColor);
-    [Signal]
-    public delegate void PressedEventHandler();
+    public delegate void PressedEventHandler(string linkedOfferId);
 
     [Export]
     GameItemEntry grantedItemEntry;
@@ -22,18 +22,16 @@ public partial class ShopOfferEntry : Control
     GameItemEntry priceEntry;
     [Export]
     bool includeAmountInName = false;
+    [Export]
+    bool requireGreaterThanOne = false;
+    [Export]
+    Label temporaryTimerLabel;
 
-    public string linkedPressData;
-
-    public static readonly Color[] llamaTierColors = new Color[]
-    {
-        Color.FromString("#0064ff", Colors.White),
-        Color.FromString("#999999", Colors.White),
-        Color.FromString("#bfbf00", Colors.White),
-    };
+    string linkedOfferId = "";
 
     public async void SetOffer(JsonObject shopOffer)
     {
+        linkedOfferId = shopOffer["offerId"].ToString();
         string priceType = shopOffer["prices"][0]["currencySubType"].ToString();
         int price = shopOffer["prices"][0]["finalPrice"].GetValue<int>();
         int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
@@ -44,11 +42,14 @@ public partial class ShopOfferEntry : Control
         if (stockLimit == 999)
             stockLimit = -1;
 
-        string name = grantedItem.GetTemplate()?["ItemName"]?.ToString();
-        if (stockLimit > 0)
-            name += " (" + stockLimit + " left)";
-        else if (stockLimit == 0)
-            name += " (Sold Out)";
+        string name = grantedItem.GetTemplate()?["DisplayName"]?.ToString();
+        if (includeAmountInName)
+        {
+            if (stockLimit > (requireGreaterThanOne ? 1 : 0))
+                name += " (" + stockLimit + " left)";
+            else if (stockLimit == 0)
+                name += " (Sold Out)";
+        }
         EmitSignal(SignalName.NameChanged, name);
 
         string amountText = "x" + stockLimit;
@@ -56,24 +57,66 @@ public partial class ShopOfferEntry : Control
             amountText = "";
         else if (stockLimit == 0)
             amountText = "Sold Out";
+        var grantedQuantity = grantedItem["quantity"].GetValue<int>();
+        if (grantedQuantity > 1 && stockLimit != 0)
+            amountText = grantedQuantity + amountText;
+
+        EmitSignal(SignalName.AmountNeeded, amountText!="");
         EmitSignal(SignalName.AmountChanged, amountText);
 
-        //todo: move tier color logic into cardPackEntry, and set rarity of grantedItem to its tier if its a cardpack
-        int tier = shopOffer["prerollData"]?["attributes"]?["highest_rarity"]?.GetValue<int>() ?? 0;
-        if (grantedItem.GetTemplate()?["Rarity"]?.ToString() == "Legendary")
-            tier = 2;
-        EmitSignal(SignalName.LlamaColorChanged, llamaTierColors[tier]);
+        grantedItem["shopQuantity"] = stockLimit;
+
+        if (grantedItem["templateId"].ToString().StartsWith("CardPack"))
+        {
+            int tier = shopOffer["prerollData"]?["attributes"]?["highest_rarity"]?.GetValue<int>() ?? 0;
+            if (grantedItem.GetTemplate()?["Rarity"]?.ToString() == "Epic")
+                tier = Mathf.Max(1, tier);
+            if (grantedItem.GetTemplate()?["Rarity"]?.ToString() == "Legendary")
+                tier = 2;
+            grantedItem["template"]["Rarity"] = tier switch
+            {
+                1=>"Epic",
+                2=>"Legendary",
+                _=>"Rare"
+            };
+        }
 
         BanjoAssets.TryGetTemplate(priceType, out var priceTemplate);
         priceTemplate = priceTemplate.Reserialise();
-        priceTemplate["ItemDescription"] = inInventory + "/" + price;
-        if (price == 0)
-            priceTemplate["ImagePaths"] = null;
+        priceTemplate["Description"] = inInventory + "/" + price;
 
         EmitSignal(SignalName.IsFreeChanged, price == 0);
+        skipHourTimer = price != 0;
 
+        if (price == 0)
+            priceEntry.ClearItem(null);
+        else
+            priceEntry.SetItemData(priceTemplate.CreateInstanceOfItem(price));
+        grantedItemEntry.SetItemData(grantedItem);
+    }
 
-        priceEntry.SetItemData(priceTemplate.CreateInstanceOfItem(price));
-        grantedItemEntry.SetItemData(new(grantedItem));
+    public void EmitPressedSignal()
+    {
+        EmitSignal(SignalName.Pressed, linkedOfferId);
+    }
+
+    bool skipHourTimer = true;
+    public override void _Process(double delta)
+    {
+        if (skipHourTimer || Engine.GetProcessFrames()%30!=1)
+            return;
+
+        DateTime nextHourTime = DateTime.Now.AddHours(1);
+        nextHourTime = nextHourTime.AddSeconds(-nextHourTime.Second).AddMinutes(-nextHourTime.Minute);
+        var nextHourTimeSpan = nextHourTime - DateTime.Now;
+
+        if (nextHourTimeSpan.TotalMinutes < 1)
+            temporaryTimerLabel.SelfModulate = Colors.Red;
+        else if (nextHourTimeSpan.TotalMinutes < 15)
+            temporaryTimerLabel.SelfModulate = Colors.Orange;
+        else
+            temporaryTimerLabel.SelfModulate = Colors.White;
+
+        temporaryTimerLabel.Text = nextHourTimeSpan.FormatTime();
     }
 }

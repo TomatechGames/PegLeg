@@ -129,7 +129,7 @@ public partial class PerkViewer : Control
         optionalPerkArea.AnchorRight = 2;
 
         existingPerks = null;
-        if (itemInstance["attributes"].AsObject().ContainsKey("alterations"))
+        if (itemInstance["attributes"]?.AsObject().ContainsKey("alterations") ?? false)
         {
             existingPerks = itemInstance["attributes"]["alterations"]
                 .AsArray()
@@ -164,17 +164,17 @@ public partial class PerkViewer : Control
                 .ToArray();
             if(existingPerks is null)
             {
-                existingPerks ??= new string[perkPossibilities.Length];
+                existingPerks = new string[perkPossibilities.Length];
                 //GD.Print("blank perks");
                 for (int i = 0; i < existingPerks.Length; i++)
                 {
-                    string perk = existingPerks[i];
-                    string tierSource = perk?[^1..] ?? "";
-                    int.TryParse(tierSource, out int tier);
-                    if (tier > 0)
-                        perk = perk[..^1] + tier;
+                    //string perk = existingPerks[i];
+                    //string tierSource = perk?[^1..] ?? "";
+                    //_ = int.TryParse(tierSource, out int tier);
+                    //if (tier > 0)
+                    //    perk = perk[..^1] + tier;
                     realPerkEntries[i].Visible = true;
-                    realPerkEntries[i].SetPerkAlteration(perk, !isDefender, i == 5 && !isTrap, i);
+                    realPerkEntries[i].SetPerkAlteration("", !isDefender, i == 5 && !isTrap, i);
                     realPerkEntries[i].SetInteractable(false);
                 }
                 for (int i = existingPerks.Length; i < realPerkEntries.Length; i++)
@@ -227,7 +227,7 @@ public partial class PerkViewer : Control
 
         if (!hasUpgrade && possibilities.Length==0)
         {
-            //this shouldnt happe, but if it does, kablam
+            //this shouldnt happen, but if it does, kablam
             return;
         }
 
@@ -250,8 +250,10 @@ public partial class PerkViewer : Control
         for (int i = 0; i < possibilities.Length; i++)
         {
             string perk = possibilities[i];
-            if (tier>0)
+            if (tier > 0)
                 perk = perk[..^1] + tier;
+            else if (index != 5)
+                perk = perk[..^1] + 5;
 
             if (perk == baseAlteration)
             {
@@ -321,7 +323,7 @@ public partial class PerkViewer : Control
                 int existingAmount = existingItem.Value?["quantity"].GetValue<int>() ?? 0;
                 if (existingAmount < requiredAmount)
                     allCostsMet = false;
-                reperkCostEntries[i].SetItemData(new(existingItem.Value?.AsObject() ?? costItem.CreateInstanceOfItem(0)), requiredAmount);
+                reperkCostEntries[i].SetItemData(existingItem.Value?.AsObject() ?? costItem.CreateInstanceOfItem(0));
                 reperkCostEntries[i].Visible = true;
             }
             for (int i = costs.Count; i < reperkCostEntries.Length; i++)

@@ -1,0 +1,152 @@
+[gd_scene load_steps=6 format=3 uid="uid://cnggvfd2x7nu2"]
+
+[ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="1_1enid"]
+[ext_resource type="Shader" uid="uid://c7qw0gc6a1mip" path="res://Shaders/TimelineIconMask.tres" id="2_bk21o"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="3_xc4li"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_un3qd"]
+bg_color = Color(0.9, 0.9, 0.9, 1)
+border_width_top = 1
+border_color = Color(1, 1, 1, 0)
+corner_radius_top_left = 15
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 2
+expand_margin_left = 45.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rfr7h"]
+shader = ExtResource("2_bk21o")
+
+[node name="TimelineEvent" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 64)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -64.0
+offset_right = 350.0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = -1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 64
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(285, 20)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_un3qd")
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 322.0
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "Hit The Road
+with Penny Pt. 2"
+
+[node name="BG" type="TextureRect" parent="MarginContainer/VBoxContainer/Control/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_1enid")
+expand_mode = 3
+
+[node name="Image" type="TextureRect" parent="MarginContainer/VBoxContainer/Control/HBoxContainer/BG"]
+material = SubResource("ShaderMaterial_rfr7h")
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_xc4li")
+expand_mode = 5
+
+[node name="BG2" type="TextureRect" parent="MarginContainer/VBoxContainer/Control/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_1enid")
+expand_mode = 3
+
+[node name="Image" type="TextureRect" parent="MarginContainer/VBoxContainer/Control/HBoxContainer/BG2"]
+material = SubResource("ShaderMaterial_rfr7h")
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_xc4li")
+expand_mode = 5
+
+[node name="BG3" type="TextureRect" parent="MarginContainer/VBoxContainer/Control/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_1enid")
+expand_mode = 3
+
+[node name="Image" type="TextureRect" parent="MarginContainer/VBoxContainer/Control/HBoxContainer/BG3"]
+material = SubResource("ShaderMaterial_rfr7h")
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_xc4li")
+expand_mode = 5
+
+[node name="ImageParent" type="Control" parent="."]
+layout_mode = 2
+
+[node name="BG" type="TextureRect" parent="ImageParent"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+grow_vertical = 2
+texture = ExtResource("1_1enid")
+expand_mode = 3
+
+[node name="Image" type="TextureRect" parent="ImageParent/BG"]
+material = SubResource("ShaderMaterial_rfr7h")
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_xc4li")
+expand_mode = 5

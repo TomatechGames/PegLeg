@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=34 format=3 uid="uid://ccpm41chorlnu"]
+[gd_resource type="VisualShader" load_steps=35 format=3 uid="uid://ccpm41chorlnu"]
 
 [ext_resource type="Texture2D" uid="uid://bkqoyh11npn7c" path="res://Images/InterfaceIcons/TriangleScroll.png" id="1_ib8rm"]
 
@@ -99,6 +99,9 @@ operator = 2
 
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_8c4sf"]
 parameter_name = "TimeOffset"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_icwsu"]
+input_name = "uv"
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_dhfit"]
 output_port_for_preview = 1
@@ -304,7 +307,7 @@ void fragment() {
 "
 mode = 1
 flags/light_only = false
-nodes/fragment/0/position = Vector2(1900, 1020)
+nodes/fragment/0/position = Vector2(2040, 1040)
 nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_dhfit")
 nodes/fragment/7/position = Vector2(420, 1000)
 nodes/fragment/8/node = SubResource("VisualShaderNodeVectorCompose_bctxj")
@@ -369,4 +372,6 @@ nodes/fragment/45/node = SubResource("VisualShaderNodeFloatOp_1ipvd")
 nodes/fragment/45/position = Vector2(-600, 1200)
 nodes/fragment/46/node = SubResource("VisualShaderNodeFloatParameter_8c4sf")
 nodes/fragment/46/position = Vector2(-960, 1280)
-nodes/fragment/connections = PackedInt32Array(8, 0, 10, 1, 10, 0, 7, 0, 13, 0, 7, 2, 17, 0, 16, 1, 16, 0, 19, 0, 18, 0, 17, 0, 13, 0, 19, 2, 26, 0, 25, 1, 25, 0, 28, 0, 27, 0, 26, 0, 13, 0, 28, 2, 15, 0, 31, 0, 31, 0, 8, 0, 15, 0, 18, 0, 15, 0, 27, 0, 30, 0, 33, 1, 33, 0, 0, 1, 32, 0, 34, 1, 34, 0, 33, 0, 28, 3, 35, 0, 35, 0, 36, 0, 36, 0, 30, 1, 37, 0, 38, 0, 19, 2, 37, 0, 38, 0, 24, 1, 40, 0, 39, 0, 39, 0, 24, 0, 7, 1, 40, 0, 24, 0, 30, 0, 42, 0, 0, 0, 11, 0, 32, 0, 43, 0, 10, 0, 43, 0, 16, 0, 43, 0, 25, 0, 11, 0, 44, 0, 44, 0, 43, 0, 14, 0, 45, 0, 45, 0, 15, 0, 46, 0, 45, 1)
+nodes/fragment/47/node = SubResource("VisualShaderNodeInput_icwsu")
+nodes/fragment/47/position = Vector2(1520, 1080)
+nodes/fragment/connections = PackedInt32Array(8, 0, 10, 1, 10, 0, 7, 0, 13, 0, 7, 2, 17, 0, 16, 1, 16, 0, 19, 0, 18, 0, 17, 0, 13, 0, 19, 2, 26, 0, 25, 1, 25, 0, 28, 0, 27, 0, 26, 0, 13, 0, 28, 2, 15, 0, 31, 0, 31, 0, 8, 0, 15, 0, 18, 0, 15, 0, 27, 0, 30, 0, 33, 1, 32, 0, 34, 1, 34, 0, 33, 0, 28, 3, 35, 0, 35, 0, 36, 0, 36, 0, 30, 1, 37, 0, 38, 0, 19, 2, 37, 0, 38, 0, 24, 1, 40, 0, 39, 0, 39, 0, 24, 0, 7, 1, 40, 0, 24, 0, 30, 0, 11, 0, 32, 0, 43, 0, 10, 0, 43, 0, 16, 0, 43, 0, 25, 0, 11, 0, 44, 0, 44, 0, 43, 0, 14, 0, 45, 0, 45, 0, 15, 0, 46, 0, 45, 1, 42, 0, 0, 0, 33, 0, 0, 1)

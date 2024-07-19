@@ -33,7 +33,7 @@ public partial class DebugRequestInterface : Control
     static StringContent blankJsonContent = new("{}", Encoding.UTF8, "application/json");
     public async void SubmitRequest(string profileId, string route, string operation)
 	{
-        if (!await LoginRequests.WaitForLogin())
+        if (!await LoginRequests.TryLogin())
             return;
 
         using var request = 

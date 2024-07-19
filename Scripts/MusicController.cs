@@ -13,6 +13,12 @@ public partial class MusicController : Node
     AudioStream[] fullMusic = new AudioStream[3];
 
     [Export]
+    AudioStream simpleMusic;
+
+    [Export]
+    bool simpleMode;
+
+    [Export]
     NodePath musicAPath;
     AudioStreamPlayer musicA;
 
@@ -48,7 +54,7 @@ public partial class MusicController : Node
     [Export]
     int minLoopsBetweenSwitches = 2;
 
-    public override void _Ready()
+    public override async void _Ready()
     {
         instance = this;
         this.GetNodeOrNull(musicAPath, out musicA);
@@ -56,10 +62,11 @@ public partial class MusicController : Node
         this.GetNodeOrNull(musicCPath, out musicC);
 
         musicA.Finished += PlayMusic;
-        musicA.Stream = isLight ? lightMusic[lastIndex] : fullMusic[lastIndex];
+        musicA.Stream = simpleMode ? simpleMusic : (isLight ? lightMusic[lastIndex] : fullMusic[lastIndex]);
         //musicA.VolumeDb = -80;
         //var transitionTween = GetTree().CreateTween().SetTrans(Tween.TransitionType.Expo);
         //transitionTween.TweenProperty(musicA, "volume_db", 0, 5).SetEase(Tween.EaseType.Out);
+        await this.WaitForTimer(0.5);
         PlayMusic();
     }
 
@@ -82,6 +89,15 @@ public partial class MusicController : Node
         if (isOverridden)
         {
             musicC.Play();
+            return;
+        }
+        if (simpleMode)
+        {
+            musicA.Play();
+            if (currentTransition?.IsValid() ?? false)
+                currentTransition.Kill();
+            currentTransition = GetTree().CreateTween().SetTrans(Tween.TransitionType.Expo);
+            currentTransition.Parallel().TweenProperty(musicA, "volume_db", 0, transitionTime).SetEase(Tween.EaseType.Out);
             return;
         }
         loopsSinceLastSwitch++;

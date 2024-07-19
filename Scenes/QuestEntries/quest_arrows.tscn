@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://eefk0jg2avkf"]
+
+[ext_resource type="Shader" uid="uid://vbwmvwysxdh2" path="res://Shaders/QuestArrows.tres" id="1_ei87d"]
+[ext_resource type="Texture2D" uid="uid://cwxenftivgutm" path="res://Images/InterfaceIcons/questArrows.png" id="2_jgvbw"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="2_ocrat"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_034mf"]
+resource_local_to_scene = true
+shader = ExtResource("1_ei87d")
+shader_parameter/Animation = false
+shader_parameter/FromColor = Color(0.901961, 0.901961, 0, 1)
+shader_parameter/ToColor = Color(0.07451, 0.090196, 0.145098, 1)
+shader_parameter/UseCompleteColor = false
+shader_parameter/CompleteColor = Color(0.215878, 0.539241, 0.218078, 1)
+
+[node name="QuestArrows" type="Control"]
+self_modulate = Color(1, 1, 1, 0)
+material = SubResource("ShaderMaterial_034mf")
+custom_minimum_size = Vector2(32, 128)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_ocrat")
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_034mf")
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = 16.0
+offset_right = 64.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_jgvbw")
+expand_mode = 1

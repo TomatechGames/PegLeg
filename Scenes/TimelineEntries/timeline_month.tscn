@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://cd6brxw00l3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6i51b"]
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="TimelineMonth" type="MarginContainer"]
+custom_minimum_size = Vector2(1600, 32)
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(0, 0.831373, 1, 1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6i51b")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "June"
+horizontal_alignment = 1
+vertical_alignment = 1

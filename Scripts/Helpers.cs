@@ -8,13 +8,29 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Godot;
-using System.IO;
-using static Godot.HttpClient;
 
+class MissingTreeException : Exception
+{
+    public override string Message => "The Node is not in a Tree";
+}
 static class Helpers
 {
+    public static void SetVisibleIfHasContent(this Label label)
+    {
+        label.Visible = !string.IsNullOrWhiteSpace(label.Text);
+    }
+
+    public static string ProperlyGlobalisePath(string godotPath)
+    {
+        if (godotPath.StartsWith("res://") && OS.HasFeature("template"))
+            return OS.GetExecutablePath().Split("/")[..^1].Join("/") + "/" + ProjectSettings.GlobalizePath(godotPath);
+        else
+            return ProjectSettings.GlobalizePath(godotPath);
+    }
     public static async Task WaitForFrame(this Node owner)
     {
+        if (!owner.IsInsideTree())
+            throw new MissingTreeException();
         await owner.ToSignal(owner.GetTree(), SceneTree.SignalName.ProcessFrame);
     }
 
@@ -27,8 +43,64 @@ static class Helpers
         await owner.ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
     }
 
+    public static KeyValuePair<string, JsonNode> CreateKVP(this JsonObject from, string keyTerm)
+    {
+        return KeyValuePair.Create<string, JsonNode>(from[keyTerm]?.ToString() ?? from.ToString(), from.Reserialise());
+    }
+
+    public static int GetCosmeticItemCounts(this JsonObject from)
+    {
+        int total = 0;
+        if (from["brItems"] is JsonArray brItemArray)
+            total += brItemArray.Count;
+        if (from["tracks"] is JsonArray trackArray)
+            total += trackArray.Count;
+        if (from["instruments"] is JsonArray instrumentArray)
+            total += instrumentArray.Count;
+        if (from["cars"] is JsonArray carArray)
+            total += carArray.Count;
+        if (from["legoKits"] is JsonArray legoArray)
+            total += legoArray.Count;
+        return total;
+    }
+    public static JsonObject GetFirstCosmeticItem(this JsonObject from)
+    {
+        if (from["brItems"] is JsonArray brItemArray)
+            return brItemArray[0].AsObject();
+        if (from["tracks"] is JsonArray trackArray)
+            return trackArray[0].AsObject();
+        if (from["instruments"] is JsonArray instrumentArray)
+            return instrumentArray[0].AsObject();
+        if (from["cars"] is JsonArray carArray)
+            return carArray[0].AsObject();
+        if (from["legoKits"] is JsonArray legoArray)
+            return legoArray[0].AsObject();
+        return null;
+    }
+    public static JsonArray MergeCosmeticItems(this JsonObject from)
+    {
+        List<JsonNode> resultNodes = new();
+        if (from["brItems"] is JsonArray brItemArray)
+            resultNodes.AddRange(brItemArray);
+        if (from["tracks"] is JsonArray trackArray)
+            resultNodes.AddRange(trackArray);
+        if (from["instruments"] is JsonArray instrumentArray)
+            resultNodes.AddRange(instrumentArray);
+        if (from["cars"] is JsonArray carArray)
+            resultNodes.AddRange(carArray);
+        if (from["legoKits"] is JsonArray legoArray)
+            resultNodes.AddRange(legoArray);
+        return resultNodes.Count == 0 ? null : new(resultNodes.Select(n => n.Reserialise()).ToArray());
+    }
+
     public static async void RunSafely(this Task task)
     {
+        await task;
+    }
+
+    public static async void RunWithDelay(this Node owner, Task task, float delay)
+    {
+        await owner.ToSignal(owner.GetTree().CreateTimer(delay), SceneTreeTimer.SignalName.Timeout);
         await task;
     }
 
@@ -52,18 +124,26 @@ static class Helpers
             onComplete(result);
     }
 
-    public static async Task<JsonNode> MakeRequest(HttpMethod method, System.Net.Http.HttpClient endpoint, string uri, string body, AuthenticationHeaderValue authentication, string mediaType = "application/x-www-form-urlencoded")
+    public const string cosmeticAPIKey = "676b8175-a049-4f03-b829-323c95153a43";
+    public static async Task<JsonNode> MakeRequest(HttpMethod method, System.Net.Http.HttpClient endpoint, string uri, string body, AuthenticationHeaderValue authentication, string mediaType = "application/x-www-form-urlencoded", bool addCosmeticHeader = false)
     {
         using StringContent content = mediaType != "" ? new(body, Encoding.UTF8, mediaType) : null;
         using var request = new HttpRequestMessage(method, uri) { Content = content };
-        request.Headers.Authorization = authentication;
+        if (authentication is not null)
+            request.Headers.Authorization = authentication;
+        if (addCosmeticHeader)
+            request.Headers.Add("x-api-key", cosmeticAPIKey);
         return await MakeRequest(endpoint, request);
     }
-
-
     public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
     {
-        using HttpResponseMessage response = await endpoint.SendAsync(request);
+        using var result = await MakeRequestRaw(endpoint, request, disregardStatusCode);
+        return JsonNode.Parse(await result.Content.ReadAsStringAsync());
+    }
+
+    public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
+    {
+        HttpResponseMessage response = await endpoint.SendAsync(request);
         try
         {
             if (true)
@@ -75,9 +155,9 @@ static class Helpers
             GD.Print($"Message :{ex.Message} ");
             GD.Print($"Response :{await response.Content.ReadAsStringAsync()} ");
         }
-        string responseBody = await response.Content.ReadAsStringAsync();
-        return JsonNode.Parse(responseBody);
+        return response;
     }
+
 
     static char[] compactNumberMilestones = "KMBT".ToCharArray();
     public static bool debugBool = false;
@@ -110,5 +190,26 @@ static class Helpers
 
         string combinedNumber = solidNumber + (decimalExists ? ("." + decimalNumber.ToString()) : "");
         return combinedNumber + (milestoneLevel==0 ? "" : compactNumberMilestones[milestoneLevel-1]);
+    }
+
+    public static string FormatTimeSeconds(this int timeInSeconds) =>
+        TimeSpan.FromSeconds(timeInSeconds).FormatTime();
+    public static string FormatTime(this TimeSpan time)
+    {
+        string text = time.Seconds.ToString();
+        if (time.TotalMinutes >= 1)
+        {
+            text = time.Minutes + ":" + (time.Seconds < 10 ? "0" : "") + text;
+            if (time.TotalHours >= 1)
+            {
+                text = time.Hours + ":" + (time.Minutes < 10 ? "0" : "") + text;
+
+                if (time.TotalDays >= 1)
+                {
+                    text = time.Days + ":" + (time.Hours < 10 ? "0" : "") + text;
+                }
+            }
+        }
+        return text;
     }
 }

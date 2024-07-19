@@ -9,9 +9,9 @@ C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\P
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.AssemblyInfoInputs.cache
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.AssemblyInfo.cs
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.csproj.CoreCompileInputs.cache
-C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.csproj.CopyComplete
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.dll
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\refint\PegLegGD.dll
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.pdb
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.genruntimeconfig.cache
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\ref\PegLegGD.dll
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.csproj.Up2Date

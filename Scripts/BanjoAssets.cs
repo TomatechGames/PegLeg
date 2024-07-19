@@ -1,16 +1,19 @@
 ﻿using Godot;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 public static class BanjoAssets
 {
     const string banjoFolderPath = "res://External/Banjo";
 
-    public static readonly Texture2D defaultIcon = ResourceLoader.Load<Texture2D>("res://External/Icons/Mission/T-Icon-Unknown-128.png", "Texture2D");
+    public static readonly Texture2D defaultIcon = ResourceLoader.Load<Texture2D>("res://Images/InterfaceIcons/T-Icon-Unknown-128.png");
+    public static readonly BanjoSuppliments supplimentaryData = ResourceLoader.Load<BanjoSuppliments>("res://banjo_suppliments.tres");
     static readonly Dictionary<string, WeakRef> iconCache = new();
     public enum TextureType
     {
@@ -20,22 +23,20 @@ public static class BanjoAssets
         PackImage
     }
 
-    public static T Reserialise<T>(this T toReserialise) where T : JsonNode
-    { 
-        return JsonNode.Parse(toReserialise.ToString()) as T; 
-    }
+    public static T Reserialise<T>(this T toReserialise) where T : JsonNode =>
+        toReserialise is not null ? (T)JsonNode.Parse(toReserialise.ToString()) : null;
 
     public static JsonObject CreateTemplate(string name, string description = null, string type = "Custom:item", string iconPath = null)
     {
         var splitType = type.Split(':');
         JsonObject toReturn = new()
         {
-            ["ItemName"] = name,
+            ["DisplayName"] = name,
             ["Type"] = splitType[0],
             ["Name"] = splitType[1],
         };
         if(description is not null)
-            toReturn["ItemDescription"] = description;
+            toReturn["Description"] = description;
         if(iconPath is not null)
             toReturn["ImagePaths"] = new JsonObject() { ["SmallPreview"] =  iconPath };
         return toReturn;
@@ -50,12 +51,13 @@ public static class BanjoAssets
             {
                 return true;
             }
-            GD.Print("Itemisation failed on id: "+itemIdJson);
+            //GD.Print("Itemisation failed on id: "+itemIdJson);
         }
-        GD.PushWarning("Itemisation failed on possible id: " + possibleItemId);
+        //GD.PushWarning("Itemisation failed on possible id: " + possibleItemId);
         return  false;
     }
 
+    public static JsonObject TryGetTemplate(string itemID) => TryGetTemplate(itemID, out var result) ? result : null;
     public static bool TryGetTemplate(string itemID, out JsonObject itemTemplate)
     {
         var splitItemId = itemID.Split(':');
@@ -70,13 +72,20 @@ public static class BanjoAssets
     }
 
     public static JsonObject GetTemplate(this JsonObject itemInstance, out JsonObject template) => template = itemInstance.GetTemplate();
-    public static JsonObject GetTemplate(this JsonObject itemInstance)
+    public static JsonObject GetTemplate(this JsonObject itemInstance, bool print = false)
     {
-        if (itemInstance.ContainsKey("template"))
-            return itemInstance["template"].AsObject();
-        if (itemInstance.ContainsKey("itemType"))
-            itemInstance["templateId"] = itemInstance["itemType"].ToString();
-        if (itemInstance["templateId"].TryGetTemplate(out var template))
+        if (print)
+            GD.Print(itemInstance.ToString());
+        if (itemInstance["template"] is JsonObject cachedTemplate)
+            return cachedTemplate;
+
+        if(itemInstance["template"]?.ToString() is string templateID)
+            itemInstance["templateId"] = templateID;
+
+        if (itemInstance["itemType"]?.ToString() is string itemType)
+            itemInstance["templateId"] = itemType;
+
+        if (itemInstance["templateId"]?.TryGetTemplate(out var template) ?? false)
         {
             itemInstance["template"] = template.Reserialise();
             return itemInstance["template"].AsObject();
@@ -88,7 +97,8 @@ public static class BanjoAssets
 
     public static void PreloadSourcesParalell()
     {
-        DirAccess banjoDir = DirAccess.Open(banjoFolderPath);
+        GD.Print(Helpers.ProperlyGlobalisePath(banjoFolderPath));
+        DirAccess banjoDir = DirAccess.Open(Helpers.ProperlyGlobalisePath(banjoFolderPath));
         var allFiles = banjoDir.GetFiles();
         var result = Parallel.ForEach(allFiles, file =>
         {
@@ -115,55 +125,217 @@ public static class BanjoAssets
         return exists;
     }
 
-    public static Texture2D GetItemTexture(this JsonObject itemData, TextureType textureType = TextureType.Preview) =>
-        itemData.GetItemTexture(defaultIcon, textureType);
-    public static Texture2D GetItemTexture(this JsonObject itemData, Texture2D fallbackIcon, TextureType textureType = TextureType.Preview)
+    public static JsonObject[] GetTemplatesFromSource(string namedDataSource, Func<JsonObject, bool> filter = null)
     {
-        if (itemData is null)
+        if (!TryGetSource(namedDataSource, out var source))
+            return null;
+        filter ??= item => true;
+        return source.Select(kvp=>kvp.Value.AsObject()).Where(val=>filter(val)).ToArray();
+    }
+
+    public static string GetIDFromTemplate(this JsonObject template) => template["Type"].ToString() + ":" + template["Name"].ToString().ToLower();
+
+    public static Texture2D GetItemTexture(this JsonObject itemTemplate, TextureType textureType = TextureType.Preview) =>
+        itemTemplate.GetItemTexture(defaultIcon, textureType);
+    public static Texture2D GetItemTexture(this JsonObject itemTemplate, Texture2D fallbackIcon, TextureType textureType = TextureType.Preview)
+    {
+        if (itemTemplate is null)
             return fallbackIcon;
-        if(TryGetTexturePathFromItem(itemData, textureType, out var texturePath))
+
+        if (textureType == TextureType.Preview && (itemTemplate["attributes"]?["portrait"]?.TryGetTemplate(out var portraitTemplate) ?? false))
+        {
+            var portraitTexture = portraitTemplate.GetItemTexture(fallbackIcon);
+            if (portraitTexture is not null)
+                return portraitTexture;
+        }
+
+        if (!itemTemplate.ContainsKey("Type"))
+            itemTemplate = itemTemplate.GetTemplate();
+
+        if (itemTemplate is null)
+            return fallbackIcon;
+
+        if (itemTemplate["Type"]?.ToString() == "Worker" && (itemTemplate["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false))
+        {
+            if (itemTemplate.ContainsKey("SubType"))
+                return GetSubtypeTexture(itemTemplate["SubType"].ToString(), fallbackIcon);
+            else
+                return GetSubtypeTexture("Survivor", fallbackIcon);
+        }
+
+        if(TryGetTexturePathFromItem(itemTemplate, textureType, out var texturePath))
             return GetReservedTexture(texturePath);
         else 
             return fallbackIcon;
     }
 
-    //static readonly Dictionary<string, string> subtypeTextureMap = new()
-    //{
-    //    [""]
-    //};
-
-    public static Texture2D GetItemSubtypeTexture(this JsonObject itemData, Texture2D fallbackIcon, TextureType textureType = TextureType.Preview)
+    static readonly Dictionary<string, string> itemTypeTextureMap = new()
     {
-        if (itemData is null)
+        //main types
+        ["Weapon"] = "T-Icon-Weapon-Skill-128",
+        ["Hero"] = "T-Icon-Hero-128",
+        ["Ranged"] = "T-Icon-Ranged-128",
+        ["Melee"] = "T-Icon-Melee-128",
+        ["Survivor"] = "T-Icon-Survivor-128",
+        ["Lead Survivor"] = "T-Icon-Survivor-Leader-128",
+        ["Trap"] = "T-Icon-Traps-128",
+        ["Defender"] = "T-Icon-Defenders-128",
+
+        //hero sybtypes
+        ["Soldier"] = "T-Icon-Hero-Soldier-128",
+        ["Constructor"] = "T-Icon-Hero-Constructor-128",
+        ["Ninja"] = "T-Icon-Hero-Ninja-128",
+        ["Outlander"] = "T-Icon-Hero-Outlander-128",
+
+        //ranged subtypes
+        ["Assault"] = "T-Icon-Assault-128",
+        ["SMG"] = "T-Icon-SMG-128",
+        ["Pistol"] = "T-Icon-Pistol-128",
+        ["Shotgun"] = "T-Icon-Shotgun-128",
+        ["Explosive"] = "T-Icon-Explosive-128",
+        ["Sniper"] = "T-Icon-Sniper-128",
+
+        //melee subtypes
+        ["Axe"] = "T-Icon-Axe-128",
+        ["Hardware"] = "T-Icon-Tool-128",
+        ["Scythe"] = "T-Icon-Scythe-128",
+        ["Spear"] = "T-Icon-Spear-128",
+        ["Sword"] = "T-Icon-Sword-128",
+        ["Club"] = "T-Icon-Blunt-128", //is this the right icon??
+
+        //lead survivor subtypes
+        ["Doctor"] = "T-Icon-Leader-Doctor-128",
+        ["Engineer"] = "T-Icon-Leader-Engineer-128",
+        ["Explorer"] = "T-Icon-Leader-Explorer-128",
+        ["Gadgeteer"] = "T-Icon-Leader-Gadgeteer-128",
+        ["Inventor"] = "T-Icon-Leader-Inventor-128",
+        ["Martial Artist"] = "T-Icon-Leader-MartialArtist-128",
+        ["Marksman"] = "T-Icon-Leader-Soldier-128",
+        ["Trainer"] = "T-Icon-Leader-Trainer-128",
+
+        //trap subtypes
+        ["Wall"] = "T-Icon-Trap-Wall-128",
+        ["Ceiling"] = "T-Icon-Trap-Ceiling-128",
+        ["Floor"] = "T-Icon-Trap-Floor-128",
+
+        //defender subtypes
+        ["Assault Defender"] = "T-Icon-Survivor-Assault-128",
+        ["Shotgun Defender"] = "T-Icon-Survivor-Assault-128",
+        ["Melee Defender"] = "T-Icon-Survivor-Assault-128",
+        ["Pistol Defender"] = "T-Icon-Survivor-Assault-128",
+        ["Sniper Defender"] = "T-Icon-Survivor-Assault-128",
+    };
+
+    public static Texture2D GetSubtypeTexture(string key, Texture2D fallbackIcon = null)
+    {
+        if (itemTypeTextureMap.ContainsKey(key))
+        {
+            return GetReservedTexture($"ExportedImages/{itemTypeTextureMap[key]}.png");
+        }
+        return fallbackIcon;
+    }
+
+    public static Texture2D GetItemSubtypeTexture(this JsonObject itemTemplate, Texture2D fallbackIcon = null)
+    {
+        switch (itemTemplate["Type"].ToString())
+        {
+            case "Schematic":
+                if (itemTemplate["Category"].ToString() == "Trap")
+                    return GetSubtypeTexture("Trap", fallbackIcon);
+                else
+                    return GetSubtypeTexture(itemTemplate["SubType"]?.ToString() ?? "", fallbackIcon);
+            case "Worker":
+                if(itemTemplate["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false)
+                    return null;
+                else
+                {
+                    if (itemTemplate.ContainsKey("SubType"))
+                        return GetSubtypeTexture(itemTemplate["SubType"].ToString(), fallbackIcon);
+                    else
+                        return GetSubtypeTexture("Survivor", fallbackIcon);
+                }
+            default:
+                return GetSubtypeTexture(itemTemplate["SubType"]?.ToString() ?? "", fallbackIcon);
+        }
+    }
+
+    public static Texture2D GetItemAmmoTexture(this JsonObject itemTemplate, Texture2D fallbackIcon = null)
+    {
+        if (itemTemplate["Type"].ToString() != "Schematic")
             return fallbackIcon;
-        if (TryGetTexturePathFromItem(itemData, textureType, out var texturePath))
-            return GetReservedTexture(texturePath);
+
+        if(itemTemplate["Category"]?.ToString() == "Trap")
+            return GetSubtypeTexture(itemTemplate["SubType"]?.ToString() ?? "", fallbackIcon);
+
+        if(itemTemplate["RangedWeaponStats"]?["AmmoType"]?.ToString() is string ammoType && supplimentaryData.AmmoIcons.ContainsKey(ammoType))
+            return supplimentaryData.AmmoIcons[ammoType];
+
+        return fallbackIcon;
+    }
+
+    public static Texture2D GetSurvivorPersonalityTexture(this JsonObject itemInstance, Texture2D fallbackIcon = null)
+    {
+        var template = itemInstance.GetTemplate();
+
+        //GD.Print(template["Type"].ToString());
+
+        if (template["Type"].ToString() != "Worker")
+            return fallbackIcon;
+
+        //GD.Print("is "+(template.ContainsKey("Personality") ? "Mythic" : "Regular"));
+
+        var personalityId = template.ContainsKey("Personality") ?
+            template["Personality"]?.ToString() :
+            itemInstance["attributes"]?["personality"]?.ToString()?.Split(".")?[^1];
+
+        //GD.Print("personality: " + personalityId);
+
+        if (personalityId is not null && supplimentaryData.PersonalityIcons.ContainsKey(personalityId))
+            return supplimentaryData.PersonalityIcons[personalityId];
+
+        return fallbackIcon;
+    }
+
+    public static Texture2D GetSurvivorSetTexture(this JsonObject itemInstance, Texture2D fallbackIcon = null)
+    {
+        var template = itemInstance.GetTemplate();
+
+        if (template["Type"].ToString() != "Worker")
+            return fallbackIcon;
+
+        if (template.ContainsKey("SubType"))
+        {
+            if (template["SubType"]?.ToString()?.Replace("Martial Artist", "MartialArtist") is string subType && supplimentaryData.SquadIcons.ContainsKey(subType))
+                return supplimentaryData.SquadIcons[subType];
+        }
         else
-            return fallbackIcon;
+        {
+            string setBonus = itemInstance["attributes"]?["set_bonus"]?.ToString()?.Split(".")?[^1];
+            if (setBonus is not null && supplimentaryData.SetBonusIcons.ContainsKey(setBonus))
+                return supplimentaryData.SetBonusIcons[setBonus];
+        }
+
+        return fallbackIcon;
     }
 
     public static Texture2D GetReservedTexture(string texturePath)
     {
         if (iconCache.ContainsKey(texturePath) && iconCache[texturePath].GetRef().Obj is Texture2D cachedTexture)
-        {
             return cachedTexture;
-        }
-        else
-        {
-            string fullPath = banjoFolderPath + "/" + texturePath;
-            Texture2D loadedTexture = ImageTexture.CreateFromImage(Image.LoadFromFile(fullPath));
-            //Texture2D loadedTexture = ResourceLoader.Load<Texture2D>(fullPath);
-            iconCache[texturePath] = GodotObject.WeakRef(loadedTexture);
 
-            return loadedTexture;
-        }
+        string fullPath = banjoFolderPath + "/" + texturePath;
+        Texture2D loadedTexture = ImageTexture.CreateFromImage(Image.LoadFromFile(fullPath));
+        //Texture2D loadedTexture = ResourceLoader.Load<Texture2D>(fullPath);
+        iconCache[texturePath] = GodotObject.WeakRef(loadedTexture);
+
+        return loadedTexture;
     }
 
-    public static int GetItemRarity(this JsonObject itemData)
+    public static int GetItemRarity(this JsonObject itemTemplate)
     {
-        if (itemData is null)
+        if (itemTemplate is null)
             return 0;
-        return (itemData["Rarity"]?.ToString() ?? "") switch
+        return (itemTemplate["Rarity"]?.ToString() ?? "") switch
         {
             "Common" => 1,
             "Rare" => 3,
@@ -174,11 +346,151 @@ public static class BanjoAssets
         };
     }
 
+    static string[] rarityIds = new string[]
+    {
+        "C",
+        "UC",
+        "R",
+        "VR",
+        "SR",
+        "UR"
+    };
+
+    static string[] tierIds = new string[]
+    {
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05"
+    };
+
+    static string GetCompactRarityAndRating(this JsonObject template)
+    {
+        var name = template["Name"].ToString().ToUpper();
+        var rarityId = rarityIds.FirstOrDefault(val => name.Contains(val));
+        var tierId = tierIds.FirstOrDefault(val => name.Contains(val));
+        return rarityId + "_" + tierId;
+    }
+
+    public static float GetItemRating(this JsonObject itemInstance, bool useSurvivorBoosts = false)
+    {
+        if (TryGetSource("ItemRatings", out var ratings))
+        {
+
+            var template = itemInstance.GetTemplate();
+            if (template["Tier"] is null)
+                return 0;
+            var level = itemInstance["attributes"]?["level"]?.GetValue<int>() ?? ((template["Tier"].GetValue<int>() * 10) - 10);
+            level = Mathf.Max(level, 1);
+            string ratingCategory = "Default";
+
+            if (template["Type"].ToString() == "Worker")
+            {
+                if (template.ContainsKey("SubType"))
+                    ratingCategory = "LeadSurvivor";
+                else
+                    ratingCategory = "Survivor";
+            }
+
+            var ratingKey = template.GetCompactRarityAndRating();
+
+            if (ratingKey.Length<5)
+                return 0;
+
+            var ratingSet = ratings[ratingCategory]["Tiers"][ratingKey];
+            int subLevel = level - ratingSet["FirstLevel"].GetValue<int>();
+            var rating = ratingSet["Ratings"][subLevel].GetValue<float>();
+
+            if (useSurvivorBoosts && template["Type"].ToString() == "Worker" && itemInstance["attributes"]?["squad_id"]?.ToString() is string squadId)
+            {
+                if (template["SubType"]?.ToString() is string leadType)
+                {
+                    //check for synergy match
+                    if (supplimentaryData.SynergyToSquadId[leadType.Replace(" ","")] == squadId)
+                        rating *= 2;
+                }
+                else
+                {
+                    var leadSurvivor = ProfileRequests.GetCachedProfileItems(FnProfiles.AccountItems, kvp =>
+                        kvp.Value?["attributes"]?["squad_id"]?.ToString() == squadId &&
+                        kvp.Value["attributes"]["squad_slot_idx"].GetValue<int>() == 0
+                    ).FirstOrDefault().Value?.AsObject();
+                    if (leadSurvivor is not null)
+                    {
+                        string leaderRarity = leadSurvivor.GetTemplate()["Rarity"].ToString();
+                        int rarityBoost = leaderRarity switch
+                        {
+                            "Mythic" => 8,
+                            "Legendary" => 8,
+                            "Epic" => 5,
+                            "Rare" => 4,
+                            "Uncommon" => 3,
+                            "Common" => 2,
+                            _ => 3
+                        };
+
+                        int rarityPenalty = (leaderRarity=="Mythic") ? 2 : 0;
+
+                        string targetPersonality = leadSurvivor["attributes"]["personality"].ToString().Split(".")[^1];
+                        string currentPersonality = itemInstance["attributes"]["personality"].ToString().Split(".")[^1];
+
+                        if (currentPersonality == targetPersonality)
+                            rating += rarityBoost;
+                        else
+                            rating -= rarityPenalty;
+
+                        rating = Mathf.Max(rating, 1);
+                    }
+                    //check for personality match
+                }
+            }
+            return rating;
+        }
+        return 0;
+    }
+
     public static async Task<JsonObject> SetItemRewardNotification(this JsonObject itemData)
     {
-        bool existsInInventory = (await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, itemData["templateId"].ToString())) > 0;
+        var itemTemplate = itemData.GetTemplate();
+
+        if (itemTemplate["Type"].ToString()== "Accolades")
+        {
+            itemData["attributes"] ??= new JsonObject();
+            itemData["attributes"]["item_seen"] = true;
+            return itemData;
+        }
+        if (itemTemplate["Type"].ToString() == "CardPack")
+        {
+            itemData["attributes"] ??= new JsonObject();
+            itemData["attributes"]["item_seen"] = true;
+            return itemData;
+        }
+
+        bool existsInAccountInventory = await ProfileRequests.ProfileItemExists(FnProfiles.AccountItems, kvp =>
+        {
+            if(kvp.Value?.GetTemplate() is not JsonObject qTemplate)
+                return false;
+            if(itemTemplate["Name"]?.ToString()== "Campaign_Event_Currency")
+            {
+                return qTemplate["Name"]?.ToString().StartsWith("EventCurrency") ?? false;
+            }
+            else if (itemTemplate["Name"]?.ToString() == "Currency_MtxSwap")
+            {
+                return qTemplate["Name"]?.ToString() != "Currency_XRayLlama";
+            }
+            else if(qTemplate["DisplayName"]?.ToString() != itemTemplate["DisplayName"]?.ToString())
+                return false;
+            bool rarityMatch = qTemplate.GetItemRarity() >= itemTemplate.GetItemRarity();
+
+            return rarityMatch;
+        }, true);
+        bool existsInBackpack = await ProfileRequests.ProfileItemExists(FnProfiles.Backpack, kvp =>
+        {
+            return kvp.Value["templateId"]?.ToString() == itemData["templateId"]?.ToString();
+        }, true);
         itemData["attributes"] ??= new JsonObject();
-        itemData["attributes"]["item_seen"] = existsInInventory;
+        itemData["attributes"]["item_seen"] = existsInAccountInventory || existsInBackpack;
         return itemData;
     }
 
@@ -203,8 +515,8 @@ public static class BanjoAssets
         {
             JsonObject heroItems = new()
             {
-                ["HeroPerk"] = itemTemplate["HeroPerk"].TryGetTemplate(out var heroPerk) ? heroPerk.Reserialise() : null,
-                ["CommanderPerk"] = itemTemplate["CommanderPerk"].TryGetTemplate(out var commanderPerk) ? commanderPerk.Reserialise() : null,
+                ["HeroPerk"] = TryGetTemplate("Ability:" + itemTemplate["HeroPerkName"],out var heroPerk) ? heroPerk.Reserialise() : null,
+                ["CommanderPerk"] = TryGetTemplate("Ability:" + itemTemplate["CommanderPerkName"], out var commanderPerk) ? commanderPerk.Reserialise() : null,
                 ["HeroAbilities"] = new JsonArray()
                 {
                     itemTemplate["HeroAbilities"][0].TryGetTemplate(out var heroAbility0) ? heroAbility0.Reserialise() : null,
@@ -222,13 +534,17 @@ public static class BanjoAssets
     static readonly DataTable heroStatsDataTable = new("res://External/DataTables/AttributesHeroScaling.json");
     public static float GetHeroStat(this JsonObject heroInstance, string statType)
     {
-        string statRowKey = heroInstance.GetTemplate()["HeroStatsRowPrefix"].ToString() + statType;
+        return 0;
+        JsonObject template = heroInstance.GetTemplate();
+        string heroStatType = template["HeroStatLine"].ToString();
+        string heroSubType = template["SubType"].ToString();
+        string statRowKey = $"{heroSubType}.{heroSubType}_{heroStatType}_{template.GetCompactRarityAndRating().Replace("0", "")}.{statType}";
+
         int sampleTime = heroInstance["attributes"]?["level"]?.GetValue<int>() ?? 1;
         return heroStatsDataTable[statRowKey].Sample(sampleTime);
     }
     
-
-    public static JsonObject CreateInstanceOfItem(this JsonObject itemTemplate, int quantity = 1, JsonObject attributes = null)
+    public static JsonObject CreateInstanceOfItem(this JsonObject itemTemplate, int quantity = 1, JsonObject attributes = null, string overrideItem = null)
     {
         
         JsonObject toReturn = new()
@@ -239,6 +555,8 @@ public static class BanjoAssets
         };
         attributes ??= new JsonObject();
         attributes["generated_by_pegleg"] = true;
+        if(overrideItem is not null)
+            attributes["overrideItem"] = overrideItem;
         toReturn["attributes"] = attributes;
         return toReturn;
     }
@@ -276,6 +594,7 @@ public static class BanjoAssets
         return true;
     }
 }
+
 public static class HeroStats
 {
     public const string MaxHealth = "FortHealthSet.MaxHealth";
@@ -314,6 +633,30 @@ class DataTableCurve
     readonly float minTime = 0;
     readonly float maxTime = 0;
 
+    public DataTableCurve(string filepath, string curveKey)
+    {
+        if (!FileAccess.FileExists(filepath))
+            return;
+        using FileAccess dataTableFile = FileAccess.Open(filepath, FileAccess.ModeFlags.Read);
+        var curveJsonMap = JsonNode.Parse(dataTableFile.GetAsText())[0]["Rows"].AsObject();
+
+        if (!curveJsonMap.ContainsKey(curveKey))
+            return;
+
+        var dataTableCurveJson = curveJsonMap[curveKey].AsObject();
+
+        var keysArray = dataTableCurveJson["Keys"].AsArray();
+
+        minTime = keysArray[0]["Time"].GetValue<float>();
+        maxTime = keysArray[^1]["Time"].GetValue<float>();
+
+        foreach (var curvePointKey in keysArray)
+        {
+            times.Add(curvePointKey["Time"].GetValue<float>());
+            values.Add(curvePointKey["Value"].GetValue<float>());
+        }
+    }
+
     public DataTableCurve(JsonObject dataTableCurveJson)
     {
         var keysArray = dataTableCurveJson["Keys"].AsArray();
@@ -321,10 +664,10 @@ class DataTableCurve
         minTime = keysArray[0]["Time"].GetValue<float>();
         maxTime = keysArray[^1]["Time"].GetValue<float>();
 
-        foreach (var curveKey in keysArray)
+        foreach (var curvePointKey in keysArray)
         {
-            times.Add(curveKey["Time"].GetValue<float>());
-            values.Add(curveKey["Value"].GetValue<float>());
+            times.Add(curvePointKey["Time"].GetValue<float>());
+            values.Add(curvePointKey["Value"].GetValue<float>());
         }
     }
 

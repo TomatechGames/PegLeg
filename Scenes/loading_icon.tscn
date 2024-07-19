@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://76mx3dxck070"]
+
+[ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="1_d3dh0"]
+[ext_resource type="Texture2D" uid="uid://dhv0msu3x04at" path="res://Images/InterfaceIcons/LoadingIconV2/PegLegLoadingWheelRenderSmall.png" id="2_3631g"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="3_heheh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oruk0"]
+resource_local_to_scene = true
+shader = ExtResource("1_d3dh0")
+shader_parameter/ControlSize = Vector2(256, 256)
+shader_parameter/SliceAmount = Vector2(10, 10)
+shader_parameter/FPS = 30.0
+shader_parameter/CellCount = 0
+shader_parameter/Fit = true
+shader_parameter/Repeat = null
+shader_parameter/HorizontalMask = null
+shader_parameter/VerticalMask = null
+
+[node name="LoadingIcon" type="TextureRect"]
+material = SubResource("ShaderMaterial_oruk0")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -127.5
+offset_right = 128.0
+offset_bottom = 128.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_3631g")
+expand_mode = 1
+script = ExtResource("3_heheh")
+syncControlSize = true

@@ -1,0 +1,111 @@
+[gd_scene load_steps=9 format=3 uid="uid://dljot1ntapg7q"]
+
+[ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="1_gryht"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/InventoryItemSlot.cs" id="1_t20bs"]
+[ext_resource type="Texture2D" uid="uid://b7xndv3hrkxn6" path="res://Images/InterfaceIcons/T-Icon-Lock-64.png" id="2_1ato0"]
+[ext_resource type="PackedScene" uid="uid://wy0yh5wkf4u4" path="res://Scenes/GameItemEntry/inventory_entry.tscn" id="3_2k13d"]
+[ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="3_424rb"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="4_poxbv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uapl"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjv2f"]
+bg_color = Color(1, 1, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[node name="InventorySlot" type="MarginContainer" node_paths=PackedStringArray("entry", "open", "locked")]
+custom_minimum_size = Vector2(100, 0)
+offset_right = 100.0
+offset_bottom = 150.0
+size_flags_vertical = 4
+script = ExtResource("1_t20bs")
+entry = NodePath("InventoryEntry")
+open = NodePath("OpenEntry")
+locked = NodePath("LockedEntry")
+
+[node name="AspectTexture" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("1_gryht")
+expand_mode = 5
+
+[node name="OpenEntry" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="OpenEntry"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0uapl")
+
+[node name="MarginContainer" type="MarginContainer" parent="OpenEntry"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="OpenEntry/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("3_424rb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LockedEntry" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="LockedEntry"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0uapl")
+
+[node name="MarginContainer" type="MarginContainer" parent="LockedEntry"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureRect" type="TextureRect" parent="LockedEntry/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_1ato0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InventoryEntry" parent="." instance=ExtResource("3_2k13d")]
+visible = false
+layout_mode = 2
+preventInteractability = true
+autoLinkToRecycleSelection = false
+
+[node name="SelectionOutline" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = -5
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_right = -5
+theme_override_constants/margin_bottom = -5
+
+[node name="Panel" type="Panel" parent="SelectionOutline"]
+self_modulate = Color(1, 1, 0.4, 1)
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kjv2f")
+
+[node name="Responsive Button Area" parent="." instance=ExtResource("4_poxbv")]
+layout_mode = 2
+outlinePadding = 0.0
+
+[connection signal="pressed" from="Responsive Button Area" to="." method="ChangeItem"]

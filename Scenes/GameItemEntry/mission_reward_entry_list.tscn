@@ -41,5 +41,6 @@ horizontal_alignment = 2
 vertical_alignment = 2
 
 [connection signal="AmountChanged" from="." to="TextureRect/Label" method="set_text"]
+[connection signal="AmountVisibility" from="." to="TextureRect/Label" method="set_visible"]
 [connection signal="IconChanged" from="." to="TextureRect" method="set_texture"]
 [connection signal="NameChanged" from="." to="." method="set_tooltip_text"]

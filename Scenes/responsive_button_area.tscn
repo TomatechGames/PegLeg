@@ -1,23 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://xvc01jygcwse"]
+[gd_scene load_steps=6 format=3 uid="uid://xvc01jygcwse"]
 
 [ext_resource type="Script" path="res://Scripts/ResponsiveButtonArea.cs" id="1_3bhad"]
+[ext_resource type="Shader" path="res://Shaders/ButtonOutlineShader.gdshader" id="2_gilom"]
+[ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="3_8ncov"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_f4dwi"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0q7q0"]
-bg_color = Color(1, 1, 0, 0)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 7
-corner_radius_top_right = 7
-corner_radius_bottom_right = 7
-corner_radius_bottom_left = 7
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_133ye"]
+resource_local_to_scene = true
+shader = ExtResource("2_gilom")
+shader_parameter/ControlSize = Vector2(1210, 685)
+shader_parameter/TargetSize = Vector2(1200, 675)
+shader_parameter/LineSize = 3.0
 
-[node name="Responsive Button Area" type="TextureButton"]
+[node name="Responsive Button Area" type="TextureButton" node_paths=PackedStringArray("outlineObject")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_3bhad")
-hiddenOffsetDifference = 5
-hoverTime = 0.05
+outlineObject = NodePath("MarginContainer/TextureRect")
+outlinePadding = 10.0
+hoverTime = 0.075
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -33,8 +37,12 @@ theme_override_constants/margin_top = -5
 theme_override_constants/margin_right = -5
 theme_override_constants/margin_bottom = -5
 
-[node name="Panel" type="Panel" parent="MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
 z_index = 1
+material = SubResource("ShaderMaterial_133ye")
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0q7q0")
+texture = ExtResource("3_8ncov")
+expand_mode = 1
+script = ExtResource("4_f4dwi")
+syncControlSize = true

@@ -1,0 +1,232 @@
+[gd_scene load_steps=13 format=3 uid="uid://cjbof0gqgvsp1"]
+
+[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="1_7h2uk"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_pgpnh"]
+[ext_resource type="Texture2D" uid="uid://d1sgahybai425" path="res://Images/MissionZoneBackgrounds/FORT_Load_STWIrwinBuild.png" id="2_5jiwa"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="3_laoju"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://Themes/Styleboxes/WindowBGTransparant.tres" id="5_6qvft"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="5_twwar"]
+[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/T_UI_ICON_S22_SR_SupplyDropMin.png" id="5_ypxgn"]
+[ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="6_7hbk2"]
+[ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="9_5fgop"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jnh54"]
+resource_local_to_scene = true
+shader = ExtResource("1_7h2uk")
+shader_parameter/ControlSize = Vector2(82, 84)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
+
+[sub_resource type="Gradient" id="Gradient_kw1j2"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_22jtq"]
+gradient = SubResource("Gradient_kw1j2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[node name="MissionEntryV4_0" type="MarginContainer" node_paths=PackedStringArray("alertModifierLayout", "alertModifierParent", "searchResultsParent", "searchResultsLayout")]
+size_flags_horizontal = 0
+script = ExtResource("1_pgpnh")
+alertModifierLayout = NodePath("MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer")
+alertModifierParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer")
+searchResultsParent = NodePath("MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer")
+searchResultsLayout = NodePath("MarginContainer/HBoxContainer/SearchItems")
+
+[node name="BGTexture" type="TextureRect" parent="."]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_jnh54")
+layout_mode = 2
+texture = ExtResource("2_5jiwa")
+expand_mode = 1
+script = ExtResource("3_laoju")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_constants/margin_left = -10
+theme_override_constants/margin_top = -10
+theme_override_constants/margin_right = -10
+theme_override_constants/margin_bottom = -10
+
+[node name="IconBG" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_22jtq")
+expand_mode = 5
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/IconBG"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_ypxgn")
+expand_mode = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -10
+theme_override_constants/margin_top = -40
+theme_override_constants/margin_right = -10
+theme_override_constants/margin_bottom = -10
+
+[node name="HFlowContainer" type="HFlowContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/h_separation = -2
+theme_override_constants/v_separation = -8
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_7hbk2")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_7hbk2")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_7hbk2")
+expand_mode = 1
+
+[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_7hbk2")
+expand_mode = 1
+
+[node name="TextureRect5" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_7hbk2")
+expand_mode = 1
+
+[node name="TextureRect6" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_7hbk2")
+expand_mode = 1
+
+[node name="TextureRect7" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("6_7hbk2")
+expand_mode = 1
+
+[node name="SearchItems" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/SearchItems"]
+custom_minimum_size = Vector2(4, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/SearchItems"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("5_6qvft")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+
+[node name="Modifiers" type="Control" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Modifiers"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 5.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 8
+theme_override_constants/separation = -5
+
+[node name="VenturesIndicator" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="VenturesIndicator"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Ventures"
+texture = ExtResource("9_5fgop")
+expand_mode = 1
+
+[connection signal="BackgroundChanged" from="." to="BGTexture" method="set_texture"]
+[connection signal="IconChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/IconBG/Icon" method="set_texture"]
+[connection signal="TooltipChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/IconBG/Icon" method="set_tooltip_text"]
+[connection signal="VenturesIndicatorVisible" from="." to="VenturesIndicator" method="set_visible"]

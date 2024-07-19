@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3 uid="uid://c4lt6qwfc4cou"]
+
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_va8u1"]
+[ext_resource type="Script" path="res://Scripts/Overlays/LoadingOverlay.cs" id="2_qygb4"]
+[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="3_bjdao"]
+
+[node name="LoadingOverlay" instance=ExtResource("1_va8u1")]
+script = ExtResource("2_qygb4")
+startOpen = true
+
+[node name="LoadingIcon" parent="Control/WindowContents" index="0" instance=ExtResource("3_bjdao")]

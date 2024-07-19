@@ -232,13 +232,18 @@ public partial class CardPackOpener : Control
     {
         while (supplyCrateActive)
         {
+            if (!IsInsideTree())
+                return;
             await this.WaitForFrame();
         }
     }
 
-    public async Task StartOpening(ProfileItemHandle[] items)
+    public async Task StartOpeningShopResults(JsonObject[] shopResults) =>
+        await StartOpening(null, shopResults);
+
+    public async Task StartOpening(ProfileItemHandle[] cardPacks, JsonObject[] extraShopResults = null)
     {
-        if (queuedItems.Count > 0)
+        if (queuedItems.Count > 0 || queuedChoices.Count > 0)
             return;
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
         clickArea.Visible = true;
@@ -249,47 +254,97 @@ public partial class CardPackOpener : Control
         PlaySupplyAnimation();
         await this.WaitForTimer(1.25);
 
+        cardPacks ??= Array.Empty<ProfileItemHandle>();
+        extraShopResults ??= Array.Empty<JsonObject>();
+        var extraItems = extraShopResults
+                .Where(val => val.AsObject().ContainsKey("itemGuid") && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
+                .Select(val => BanjoAssets.CreateInstanceOfItem(
+                    BanjoAssets.TryGetTemplate(val["itemType"].ToString()),
+                    (int)val["quantity"],
+                    val["attributes"]?.Reserialise().AsObject(),
+                    val["itemProfile"] + ":" + val["itemGuid"]
+                    ))
+                .ToArray();
+        var extraCardPacks = extraShopResults
+                .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
+                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                .ToArray();
+
+        cardPacks = cardPacks.Union(extraCardPacks).ToArray();
+
         //step 1: separate the choice cardpacks from the regular ones
         List<ProfileItemHandle> openableCardPacks = new();
-        foreach (var item in items)
+        foreach (var item in cardPacks)
         {
             if (!(await item.GetItem())["templateId"].ToString().StartsWith("CardPack"))
-                queuedItems.Add(item);
+                continue; //items should no longer be fed in through cardpacks
             else if ((await item.GetItem())["attributes"].AsObject().ContainsKey("options"))
-                queuedItems.Add(item);
+                queuedChoices.Add(item);
             else
                 openableCardPacks.Add(item);
         }
 
+        await WaitForSupplyCrate();
+
+        if (!IsInsideTree())
+            return;
+
+
         //step 2: send request to open all regular ones
         if (openableCardPacks.Count>0)
         {
-            JsonArray cardpacksToOpen = new(default, openableCardPacks.Select(val => (JsonNode)val.uuid).ToArray());
-            GD.Print("opening all these cardpacks:\n- " + openableCardPacks.Select(val => val.uuid).ToArray().Join("\n- "));
+            JsonArray cardpacksToOpen = new(default, openableCardPacks.Select(val => (JsonNode)val.profileItem.uuid).ToArray());
+            GD.Print("opening all these cardpacks:\n- " + openableCardPacks.Select(val => val.profileItem.uuid).ToArray().Join("\n- "));
             JsonObject body = new()
             {
                 ["cardPackItemIds"] = cardpacksToOpen
             };
             //LoadingOverlay.Instance.AddLoadingKey("LlamaOpenBulk");
+
+            //TODO: handle errors
+            //TODO: merge amounts of identical item stacks
             var resultNotification = (await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "OpenCardPackBatch", body.ToString()))["notifications"][0];
-            var resultHandles = resultNotification["lootGranted"]["items"]
-                .AsArray()
-                .Select(val => ProfileItemHandle.CreateHandleUnsafe(FnProfiles.AccountItems, val["itemGuid"].ToString()))
+            var resultItems = resultNotification["lootGranted"]["items"].AsArray()
+                .Where(val => val?["itemGuid"] is not null && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
+                .Select(val => BanjoAssets.CreateInstanceOfItem(
+                    BanjoAssets.TryGetTemplate(val["itemType"].ToString()),
+                    (int)val["quantity"],
+                    val["attributes"]?.Reserialise().AsObject() ?? 
+                        ProfileRequests.GetCachedProfileItemInstance(new(val["itemProfile"].ToString(), val["itemGuid"].ToString()))
+                        ["attributes"]?.Reserialise().AsObject(),
+                    val["itemProfile"] + ":" + val["itemGuid"]
+                    ))
                 .ToList();
-            queuedItems.AddRange(resultHandles);
+            var resultCardPacks = resultNotification["lootGranted"]["items"].AsArray()
+                .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
+                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                .ToArray();
+            GD.Print("LlamaResult: "+ resultNotification["lootGranted"]["items"].ToString());
+
+            var exceptions = resultNotification["lootGranted"]["items"]
+                .AsArray()
+                .Where(val => !val.AsObject().ContainsKey("itemGuid"))
+                .ToArray();
+            if (exceptions.Length > 0)
+                GD.Print("Exception: " + exceptions[0]);
+
+            queuedChoices.AddRange(resultCardPacks);
+            queuedItems.AddRange(resultItems);
         }
+        queuedItems.AddRange(extraItems);
 
 
         //step 3: apply sorting
-        var ordered = queuedItems.OrderBy(val => true);
-        if (choicePacksFirst)
-            ordered = ordered.ThenBy(val=> val.GetItemUnsafe()["templateId"].ToString().StartsWith("CardPack"));
         if (sortByRarity)
-            ordered = ordered.ThenBy(val => val.GetItemUnsafe().GetTemplate().GetItemRarity());
-        queuedItems = ordered.ToList();
+        {
+            var orderedChoices = queuedChoices.OrderBy(val => val.GetItemUnsafe().GetTemplate().GetItemRarity());
+            queuedChoices = orderedChoices.ToList();
+
+            var orderedItems = queuedItems.OrderBy(val => val.GetTemplate().GetItemRarity());
+            queuedItems = orderedItems.ToList();
+        }
 
         //step 4: display results based on user settings
-        await WaitForSupplyCrate();
         PlaySupplyShrinkAnimation();
         await this.WaitForTimer(0.75);
 
@@ -310,7 +365,9 @@ public partial class CardPackOpener : Control
         landedCrateBGCards.Visible = true;
     }
 
-    public List<ProfileItemHandle> queuedItems = new();
+    public List<ProfileItemHandle> queuedChoices = new();
+    public List<JsonObject> queuedItems = new();
+    int TotalQueueLength => queuedChoices.Count + queuedItems.Count;
 
     int nextPullIndex = 1;
 	bool isPulling;
@@ -327,22 +384,23 @@ public partial class CardPackOpener : Control
             isFast = true;
             if (!isPulling)
                 PullCard();
-            TweenTimeScale(pullFastSpeed, pullFastSpeed*2, -10);
-            
+
             //enable fast effects
+            if (nextPullIndex < TotalQueueLength)
+                TweenTimeScale(pullFastSpeed, pullFastSpeed * 2, -10);
         };
         if (!isPulling)
             PullCard();
     }
     static readonly Callable setTimeScaleCallable = Callable.From<float>(SetTimeScale);
     static void SetTimeScale(float newVal) => Engine.TimeScale = newVal;
-    void TweenTimeScale(float target, float pitch, float vol)
+    void TweenTimeScale(float target, float pitch, float vol, float time = 0.5f)
     {
         speedTween?.Kill();
         speedTween = GetTree().CreateTween().SetParallel();
         speedTween.Pause();
-        speedTween.TweenMethod(setTimeScaleCallable, Engine.TimeScale, target, 0.5f);
-        speedTween.TweenProperty(music, "pitch_scale", pitch, 0.5f).SetTrans(Tween.TransitionType.Linear);
+        speedTween.TweenMethod(setTimeScaleCallable, Engine.TimeScale, target, time);
+        speedTween.TweenProperty(music, "pitch_scale", pitch, time).SetTrans(Tween.TransitionType.Linear);
     }
 
     public void EndPullCard()
@@ -374,24 +432,43 @@ public partial class CardPackOpener : Control
         if (index > 0)
         {
             //prevCard.SetItemData(new(queuedItems[index-1].GetItemUnsafe()));
-            prevCard.LinkProfileItem(queuedItems[index - 1]);
+            //prevCard.LinkProfileItem(queuedChoices[index - 1]);
+            SetSingleCardItem(index - 1, prevCard);
         }
-        if (index >= 0 && index < queuedItems.Count)
+        if (index >= 0 && index < TotalQueueLength)
         {
             //topCard.SetItemData(new(queuedItems[index].GetItemUnsafe()));
-            topCard.LinkProfileItem(queuedItems[index]);
+            //topCard.LinkProfileItem(queuedChoices[index]);
+            SetSingleCardItem(index, topCard);
         }
-        int remainder = Mathf.Max(0, queuedItems.Count - (index + 1));
+        int remainder = Mathf.Max(0, TotalQueueLength - (index + 1));
         int cardCount = Mathf.Min(smallCards.Length, remainder);
         for (int i = 0; i < cardCount; i++)
         {
             //smallCards[i].SetItemData(new(queuedItems[index + i + 1].GetItemUnsafe()));
-            smallCards[i].LinkProfileItem(queuedItems[index + i + 1]);
+            //smallCards[i].LinkProfileItem(queuedChoices[index + i + 1]);
+            SetSingleCardItem(index + i + 1, smallCards[i]);
             smallCards[i].Modulate = Colors.White;
         }
         for (int i = cardCount; i < smallCards.Length; i++)
         {
             smallCards[i].Modulate = Colors.Transparent;
+        }
+    }
+
+    void SetSingleCardItem(int index, GameItemEntry card)
+    {
+        GD.Print("INDEX: " + index);
+        if (index>=queuedItems.Count)
+        {
+            index -= queuedItems.Count;
+            //choice card
+            card.LinkProfileItem(queuedChoices[index]);
+        }
+        else
+        {
+            //regular item
+            card.SetItemData(queuedItems[index]);
         }
     }
 
@@ -404,7 +481,7 @@ public partial class CardPackOpener : Control
             prevCard.Rotation = 0;
         }
 
-        if (nextPullIndex < queuedItems.Count)
+        if (nextPullIndex < TotalQueueLength)
         {
             topCard.GlobalPosition = smallCards[0].GlobalPosition;
             topCard.Scale = smallCards[0].Scale;
@@ -422,7 +499,7 @@ public partial class CardPackOpener : Control
 
         bool pauseForChoice = false;
         //if current item is cardpack, add delay in fast mode or stop fast mode
-        if(nextPullIndex < queuedItems.Count && queuedItems[nextPullIndex].GetItemUnsafe()["templateId"].ToString().StartsWith("CardPack"))
+        if (nextPullIndex < TotalQueueLength && nextPullIndex >= queuedItems.Count)
         {
             EndPullCard();
             pauseForChoice = true;
@@ -436,7 +513,7 @@ public partial class CardPackOpener : Control
         var tweener = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quart);
         float delay = 0;
 
-        if (nextPullIndex <= queuedItems.Count)
+        if (nextPullIndex <= TotalQueueLength)
         {
             tweener.TweenProperty(topCard, "offset_top", 0, pullTime).SetEase(Tween.EaseType.Out);
             tweener.TweenProperty(topCard, "offset_bottom", 0, pullTime).SetEase(Tween.EaseType.Out);
@@ -478,12 +555,15 @@ public partial class CardPackOpener : Control
                 OpenChoices();
                 return;
             }
-            if(nextPullIndex > queuedItems.Count)
+            if(nextPullIndex > TotalQueueLength)
             {
                 //show results grid
                 GD.Print("results");
                 if (speedTween?.IsValid() ?? false)
                     await ToSignal(speedTween, "finished");
+                EndPullCard();
+                TweenTimeScale(1, 1, 0, 0.1f);
+                await ToSignal(speedTween, "finished");
 
                 await CloseMenu();
                 return;
@@ -506,15 +586,16 @@ public partial class CardPackOpener : Control
         var choiceOpen = GetTree().CreateTween().SetParallel();
         choiceOpen.TweenProperty(choiceCanvas, "scale", Vector2.One, 0.25f).SetEase(Tween.EaseType.Out);
         choiceOpen.TweenProperty(choiceCanvas, "self_modulate", Colors.White, 0.25f);
-        
-        GD.Print(queuedItems[nextPullIndex - 1].GetItemUnsafe());
-        var currentChoices = queuedItems[nextPullIndex - 1].GetItemUnsafe()["attributes"]["options"].AsArray();
+
+        int nextChoiceIndex = nextPullIndex - queuedItems.Count;
+        GD.Print(queuedChoices[nextChoiceIndex - 1].GetItemUnsafe());
+        var currentChoices = queuedChoices[nextChoiceIndex - 1].GetItemUnsafe()["attributes"]["options"].AsArray();
         for (int i = 0; i < currentChoices.Count; i++)
         {
             var thisChoice = currentChoices[i];
             BanjoAssets.TryGetTemplate(thisChoice["itemType"].ToString(), out var itemData);
-            var itemStack = itemData.CreateInstanceOfItem(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"].AsObject().Reserialise());
-            choiceCards[i].SetItemData(new(itemStack));
+            var itemStack = itemData.CreateInstanceOfItem(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
+            choiceCards[i].SetItemData(itemStack);
             choiceCards[i].GetChild<Control>(0).SelfModulate = Colors.White;
             choiceCards[i].SetInteractable(true);
         }
@@ -527,10 +608,11 @@ public partial class CardPackOpener : Control
         isChosing = false;
         skipChoiceButton.Visible = false;
 
+        int nextChoiceIndex = nextPullIndex - queuedItems.Count;
         //start the request now and await later, asynchronism baby!
         JsonObject body = new()
         {
-            ["cardPackItemId"] = queuedItems[nextPullIndex - 1].uuid,
+            ["cardPackItemId"] = queuedChoices[nextChoiceIndex - 1].profileItem.uuid,
             ["selectionIdx"] = index
         };
         var operationTask = ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "OpenCardPack", body.ToString());
@@ -540,9 +622,10 @@ public partial class CardPackOpener : Control
             choiceCards[i].SetInteractable(false);
         }
 
-        var currentChoices = queuedItems[nextPullIndex - 1].GetItemUnsafe()["attributes"]["options"].AsArray();
+        var currentChoices = queuedChoices[nextChoiceIndex - 1].GetItemUnsafe()["attributes"]["options"].AsArray();
         var resultChoice = currentChoices[index];
-        BanjoAssets.TryGetTemplate(resultChoice["itemType"].ToString(), out var itemData);
+        BanjoAssets.TryGetTemplate(resultChoice["itemType"].ToString(), out var itemTemplate);
+        var itemInstance = itemTemplate.CreateInstanceOfItem((int?)resultChoice["quantity"] ?? 1, resultChoice["attributes"]?.AsObject().Reserialise() ?? null);
 
         var resultChild = choiceCards[index].GetChild<Control>(0);
         resultChild.SelfModulate = Colors.Transparent;
@@ -555,8 +638,8 @@ public partial class CardPackOpener : Control
         choiceResultCard.OffsetRight = choiceResultCard.OffsetLeft;
         choiceResultCard.OffsetTop += choiceResultCard.Size.Y * 0.5f;
         choiceResultCard.OffsetBottom = choiceResultCard.OffsetTop;
-        choiceResultCard.SetShaderTexture(itemData.GetItemTexture(), "IconTexture");
-        choiceResultCard.SetShaderColor(itemData.GetItemRarityColor(), "RarityColour");
+        choiceResultCard.SetShaderTexture(itemInstance.GetItemTexture(), "IconTexture");
+        choiceResultCard.SetShaderColor(itemTemplate.GetItemRarityColor(), "RarityColour");
         choiceResultCard.SetShaderBool(false, "Started");
 
 
@@ -565,18 +648,19 @@ public partial class CardPackOpener : Control
         choiceClose.TweenProperty(choiceCanvas, "scale", Vector2.Zero, 0.25).SetEase(Tween.EaseType.In);
 
         var cardSlideUp = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quad);
-        cardSlideUp.TweenProperty(choiceResultCard, "offset_left",      60,   0.5);
-        cardSlideUp.TweenProperty(choiceResultCard, "offset_right",     60,   0.5);
-        cardSlideUp.TweenProperty(choiceResultCard, "offset_top",       -250,     0.5);
-        cardSlideUp.TweenProperty(choiceResultCard, "offset_bottom",    -250,     0.5);
-        cardSlideUp.TweenProperty(choiceResultCard, "scale", Vector2.One * 0.5f, 0.5);
-
-        await this.WaitForTimer(0.15f);
+        cardSlideUp.TweenProperty(choiceResultCard, "offset_left",      60,         0.3);
+        cardSlideUp.TweenProperty(choiceResultCard, "offset_right",     60,         0.3);
+        cardSlideUp.TweenProperty(choiceResultCard, "offset_top",       -250,       0.3);
+        cardSlideUp.TweenProperty(choiceResultCard, "offset_bottom",    -250,       0.3);
+        cardSlideUp.TweenProperty(choiceResultCard, "scale", Vector2.One * 0.5f,    0.3);
 
         choiceResultCard.SetShaderBool(true, "Started");
-        choiceResultCard.SetShaderFloat((float)(Time.GetTicksMsec()*0.001)-0.5f, "StartTime");
+        choiceResultCard.SetShaderFloat((float)(Time.GetTicksMsec()*0.001)+0.1f, "StartTime");
 
-        await this.WaitForTimer(0.6f);
+        GD.Print(choiceResultCard.GetShaderFloat("time"));
+        GD.Print(choiceResultCard.GetShaderFloat("StartTime"));
+
+        await this.WaitForTimer(0.4f);
 
 
         choiceResultCard.Reparent(choiceResultBGParent);
@@ -600,12 +684,17 @@ public partial class CardPackOpener : Control
         //wait for choice request
 
         //LoadingOverlay.Instance.AddLoadingKey("LlamaOpenBulk");
+
         var resultNotification = (await operationTask)["notifications"][0];
         var resultItem = resultNotification["lootGranted"]["items"][0];
-        await queuedItems[nextPullIndex - 1].ReplaceWith(resultItem["itemProfile"].ToString(),resultItem["itemGuid"].ToString());
+        await queuedChoices[nextChoiceIndex - 1].ReplaceWith(new(resultItem["itemProfile"].ToString(), resultItem["itemGuid"].ToString()));
         GD.Print(resultNotification);
 
-        pullButton.Visible = true;
+        //reopen choices if the result is another cardpack
+        if (resultItem["itemType"].ToString().StartsWith("CardPack"))
+            OpenChoices();
+        else
+            pullButton.Visible = true;
     }
 
     public void SkipChoice()
@@ -641,9 +730,9 @@ public partial class CardPackOpener : Control
             .SetEase(Tween.EaseType.In);
 
         await this.WaitForTimer(0.25f);
+        queuedChoices.Clear();
         queuedItems.Clear();
         clickArea.Visible = false;
         isPulling = false;
-
     }
 }

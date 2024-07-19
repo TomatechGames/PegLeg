@@ -1,0 +1,284 @@
+[gd_scene load_steps=20 format=3 uid="uid://wy0yh5wkf4u4"]
+
+[ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="1_fvh8r"]
+[ext_resource type="Shader" uid="uid://cypncf62qx5bc" path="res://Shaders/CardTriangleEffect.tres" id="2_trgqp"]
+[ext_resource type="Texture2D" uid="uid://bkqoyh11npn7c" path="res://Images/InterfaceIcons/TriangleScroll.png" id="3_wupvr"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_mmo3m"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="5_0r6rn"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="5_rqbak"]
+[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/T-Icon-Hero-Soldier-CARD.png" id="7_4uv0h"]
+[ext_resource type="Script" path="res://Scripts/ItemTierController.cs" id="8_f4ssv"]
+[ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="8_mm71c"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="10_psg1y"]
+
+[sub_resource type="Gradient" id="Gradient_o50gb"]
+colors = PackedColorArray(0.9, 0.9, 0.9, 1, 0.6, 0.6, 0.6, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4arc4"]
+gradient = SubResource("Gradient_o50gb")
+fill = 1
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tybqm"]
+resource_local_to_scene = true
+shader = ExtResource("2_trgqp")
+shader_parameter/TriangleTint = Color(0.9, 0.51, 0, 1)
+shader_parameter/TimeOffset = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kdj1r"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+corner_radius_top_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxue7"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+skew = Vector2(0.5, 0)
+corner_radius_bottom_right = 3
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p04va"]
+gradient = SubResource("Gradient_o50gb")
+fill = 1
+fill_from = Vector2(0.1, 0.9)
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d0iaq"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wraxx"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vt785"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[node name="InventoryEntry" type="MarginContainer"]
+custom_minimum_size = Vector2(80, 120)
+offset_right = 80.0
+offset_bottom = 120.0
+script = ExtResource("5_rqbak")
+interactableByDefault = true
+autoLinkToViewer = false
+autoLinkToRecycleSelection = true
+
+[node name="AspectTexture" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("1_fvh8r")
+expand_mode = 5
+
+[node name="RarityGradient" type="TextureRect" parent="."]
+self_modulate = Color(0.901961, 0.509804, 0, 1)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_4arc4")
+expand_mode = 1
+
+[node name="TriangleParent" type="Control" parent="."]
+clip_contents = true
+layout_mode = 2
+
+[node name="AspectTexture" type="TextureRect" parent="TriangleParent"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("1_fvh8r")
+expand_mode = 5
+
+[node name="Triangles" type="TextureRect" parent="TriangleParent/AspectTexture"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_tybqm")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_wupvr")
+expand_mode = 1
+script = ExtResource("4_mmo3m")
+
+[node name="ItemIcon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("5_0r6rn")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="GameItem" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Space" type="Control" parent="GameItem"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PowerLevel" type="MarginContainer" parent="GameItem/Space"]
+layout_mode = 1
+offset_right = 17.0
+offset_bottom = 17.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="GameItem/Space/PowerLevel"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Panel" type="Panel" parent="GameItem/Space/PowerLevel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_kdj1r")
+
+[node name="Panel2" type="Panel" parent="GameItem/Space/PowerLevel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_uxue7")
+
+[node name="HBoxContainer" type="MarginContainer" parent="GameItem/Space/PowerLevel"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="GameItem/Space/PowerLevel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 12
+text = "130"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="GameItem"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="GameItem/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.392157)
+
+[node name="MarginContainer" type="MarginContainer" parent="GameItem/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameItem/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Subtype" type="TextureRect" parent="GameItem/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_4uv0h")
+expand_mode = 3
+
+[node name="Tersiary" type="TextureRect" parent="GameItem/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_4uv0h")
+expand_mode = 3
+
+[node name="TierAndXp" type="MarginContainer" parent="GameItem"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="GameItem/TierAndXp"]
+self_modulate = Color(0.901961, 0.509804, 0, 1)
+layout_mode = 2
+texture = SubResource("GradientTexture2D_p04va")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="GameItem/TierAndXp"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameItem/TierAndXp/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_d0iaq")
+theme_override_styles/fill = SubResource("StyleBoxFlat_wraxx")
+min_value = -0.06
+max_value = 1.0
+show_percentage = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer" node_paths=PackedStringArray("tierImages")]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+script = ExtResource("8_f4ssv")
+tierImages = [NodePath("TextureRect"), NodePath("TextureRect2"), NodePath("TextureRect3"), NodePath("TextureRect4"), NodePath("TextureRect5")]
+superchargeColor = Color(0, 0.708333, 0.85, 1)
+
+[node name="TextureRect" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0, 0.708333, 0.85, 1)
+layout_mode = 2
+texture = ExtResource("8_mm71c")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("8_mm71c")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("8_mm71c")
+expand_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("8_mm71c")
+expand_mode = 3
+
+[node name="TextureRect5" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("8_mm71c")
+expand_mode = 3
+
+[node name="Panel" type="Panel" parent="."]
+self_modulate = Color(0.901961, 0.509804, 0, 1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vt785")
+
+[node name="Responsive Button Area" parent="." instance=ExtResource("10_psg1y")]
+layout_mode = 2
+outlinePadding = 0.0
+
+[connection signal="AmmoIconChanged" from="." to="GameItem/MarginContainer/MarginContainer/HBoxContainer/Tersiary" method="set_texture"]
+[connection signal="IconChanged" from="." to="ItemIcon" method="set_texture"]
+[connection signal="InteractableChanged" from="." to="Responsive Button Area" method="set_visible"]
+[connection signal="LevelProgressChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/ProgressBar" method="set_value"]
+[connection signal="PersonalityIconChanged" from="." to="GameItem/MarginContainer/MarginContainer/HBoxContainer/Subtype" method="set_texture"]
+[connection signal="RarityChanged" from="." to="RarityGradient" method="set_self_modulate"]
+[connection signal="RarityChanged" from="." to="GameItem/TierAndXp/TextureRect" method="set_self_modulate"]
+[connection signal="RarityChanged" from="." to="Panel" method="set_self_modulate"]
+[connection signal="RarityChanged" from="." to="TriangleParent/AspectTexture/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
+[connection signal="RatingChanged" from="." to="GameItem/Space/PowerLevel/HBoxContainer/PowerLevelLabel" method="set_text"]
+[connection signal="RatingVisibility" from="." to="GameItem/Space/PowerLevel" method="set_visible"]
+[connection signal="SubtypeIconChanged" from="." to="GameItem/MarginContainer/MarginContainer/HBoxContainer/Subtype" method="set_texture"]
+[connection signal="SuperchargeChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer" method="SetSuperchargedTier"]
+[connection signal="SurvivorBoostIconChanged" from="." to="GameItem/MarginContainer/MarginContainer/HBoxContainer/Tersiary" method="set_texture"]
+[connection signal="TierChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer" method="SetTier"]
+[connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

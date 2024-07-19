@@ -2,1057 +2,952 @@
   "HomebaseNode:commanderlevel_rpcollection": {
     "Type": "HomebaseNode",
     "Name": "CommanderLevel_RPCollection",
-    "ItemName": "Research Lab Upgrade",
+    "DisplayName": "Research Lab Upgrade",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/commanderlevel_rpcollection.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Research-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Quest/T-Icon-Research-128.T-Icon-Research-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Research-128.png"
     }
   },
   "HomebaseNode:questreward_buildingresourcecap": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_BuildingResourceCap",
-    "ItemName": "Increase Building Resource Capacity",
+    "DisplayName": "Increase Building Resource Capacity",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_buildingresourcecap.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-NH-StarterResource-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/Icon-NH-StarterResource-128.Icon-NH-StarterResource-128"
+      "SmallPreview": "ExportedImages\\Icon-NH-StarterResource-128.png"
     }
   },
   "HomebaseNode:questreward_buildingresourcecap2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_BuildingResourceCap2",
-    "ItemName": "Increase Building Resource Capacity",
+    "DisplayName": "Increase Building Resource Capacity",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_buildingresourcecap2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-NH-StarterResource-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/Icon-NH-StarterResource-128.Icon-NH-StarterResource-128"
+      "SmallPreview": "ExportedImages\\Icon-NH-StarterResource-128.png"
     }
   },
   "HomebaseNode:questreward_buildingresourcecap3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_BuildingResourceCap3",
-    "ItemName": "Increase Building Resource Capacity",
+    "DisplayName": "Increase Building Resource Capacity",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_buildingresourcecap3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-NH-StarterResource-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/Icon-NH-StarterResource-128.Icon-NH-StarterResource-128"
+      "SmallPreview": "ExportedImages\\Icon-NH-StarterResource-128.png"
     }
   },
   "HomebaseNode:questreward_buildingupgradelevel": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_BuildingUpgradeLevel",
-    "ItemName": "Increase Building Upgrade Level",
+    "DisplayName": "Increase Building Upgrade Level",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_buildingupgradelevel.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-BuildingSkill-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-BuildingSkill-128.T-Icon-BuildingSkill-128"
+      "SmallPreview": "ExportedImages\\T-Icon-BuildingSkill-128.png"
     }
   },
   "HomebaseNode:questreward_buildingupgradelevel2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_BuildingUpgradeLevel2",
-    "ItemName": "Increase Building Upgrade Level",
+    "DisplayName": "Increase Building Upgrade Level",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_buildingupgradelevel2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-BuildingSkill-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-BuildingSkill-128.T-Icon-BuildingSkill-128"
+      "SmallPreview": "ExportedImages\\T-Icon-BuildingSkill-128.png"
     }
   },
   "HomebaseNode:questreward_cannyvalley_squad_ssd1": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_CannyValley_Squad_SSD1",
-    "ItemName": "Scouting Party Slots 4, 5 and 6",
+    "DisplayName": "Scouting Party Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_cannyvalley_squad_ssd1.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-ScoutingPartySquad-128.T-Icon-ST-Surv-ScoutingPartySquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png"
     }
   },
   "HomebaseNode:questreward_cannyvalley_squad_ssd2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_CannyValley_Squad_SSD2",
-    "ItemName": "Fire Team Alpha Slots 4, 5 and 6",
+    "DisplayName": "Fire Team Alpha Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_cannyvalley_squad_ssd2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-FireTeamAlphaSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-FireTeamAlphaSquad-128.T-Icon-ST-Surv-FireTeamAlphaSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-FireTeamAlphaSquad-128.png"
     }
   },
   "HomebaseNode:questreward_cannyvalley_squad_ssd3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_CannyValley_Squad_SSD3",
-    "ItemName": "EMT Squad Slots 4, 5 and 6",
+    "DisplayName": "EMT Squad Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_cannyvalley_squad_ssd3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EMTSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-EMTSquad-128.T-Icon-ST-Surv-EMTSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EMTSquad-128.png"
     }
   },
   "HomebaseNode:questreward_cannyvalley_squad_ssd4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_CannyValley_Squad_SSD4",
-    "ItemName": "Corps of Engineering Slots 4, 5 and 6",
+    "DisplayName": "Corps of Engineering Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_cannyvalley_squad_ssd4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EngineeringSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-EngineeringSquad-128.T-Icon-ST-Surv-EngineeringSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EngineeringSquad-128.png"
     }
   },
   "HomebaseNode:questreward_cannyvalley_squad_ssd5": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_CannyValley_Squad_SSD5",
-    "ItemName": "Scouting Party and Fire Team Alpha Slot 7",
+    "DisplayName": "Scouting Party and Fire Team Alpha Slot 7",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_cannyvalley_squad_ssd5.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Navigation/T-Icon-Nav-Squad-128.T-Icon-Nav-Squad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png"
     }
   },
   "HomebaseNode:questreward_cannyvalley_squad_ssd6": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_CannyValley_Squad_SSD6",
-    "ItemName": "EMT Squad and Corps of Engineering Slot 7",
+    "DisplayName": "EMT Squad and Corps of Engineering Slot 7",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_cannyvalley_squad_ssd6.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Navigation/T-Icon-Nav-Squad-128.T-Icon-Nav-Squad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png"
     }
   },
   "HomebaseNode:questreward_evolution": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Evolution",
-    "ItemName": "2-Star Evolution",
+    "DisplayName": "2-Star Evolution",
     "AssetPath": "fortnitegame/content/items/homebasenodes/questreward_evolution.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Stars-Full-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Stars/Stars-Full-128.Stars-Full-128"
+      "SmallPreview": "ExportedImages\\Stars-Full-128.png"
     }
   },
   "HomebaseNode:questreward_evolution2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Evolution2",
-    "ItemName": "3-Star Evolution",
+    "DisplayName": "3-Star Evolution",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_evolution2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Stars-Full-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Stars/Stars-Full-128.Stars-Full-128"
+      "SmallPreview": "ExportedImages\\Stars-Full-128.png"
     }
   },
   "HomebaseNode:questreward_evolution3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Evolution3",
-    "ItemName": "4-Star Evolution",
+    "DisplayName": "4-Star Evolution",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_evolution3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Stars-Full-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Stars/Stars-Full-128.Stars-Full-128"
+      "SmallPreview": "ExportedImages\\Stars-Full-128.png"
     }
   },
   "HomebaseNode:questreward_evolution4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Evolution4",
-    "ItemName": "5-Star Evolution",
+    "DisplayName": "5-Star Evolution",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_evolution4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Stars-Full-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Stars/Stars-Full-128.Stars-Full-128"
+      "SmallPreview": "ExportedImages\\Stars-Full-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_dirtbike": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_DirtBike",
-    "ItemName": "Dirt Bike Slot 1",
+    "DisplayName": "Dirt Bike Slot 1",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_dirtbike.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Dirtbike-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Dirtbike-128.T-Icon-ST-Dirtbike-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Dirtbike-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_dirtbike2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_DirtBike2",
-    "ItemName": "Dirt Bike Slot 2",
+    "DisplayName": "Dirt Bike Slot 2",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_dirtbike2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Dirtbike-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Dirtbike-128.T-Icon-ST-Dirtbike-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Dirtbike-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_dirtbike3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_DirtBike3",
-    "ItemName": "Dirt Bike Slot 3",
+    "DisplayName": "Dirt Bike Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_dirtbike3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Dirtbike-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Dirtbike-128.T-Icon-ST-Dirtbike-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Dirtbike-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_helicopter": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Helicopter",
-    "ItemName": "Helicopter Slot 1",
+    "DisplayName": "Helicopter Slot 1",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_helicopter.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Helicopter-128.T-Icon-ST-Helicopter-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_helicopter2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Helicopter2",
-    "ItemName": "Helicopter Slot 2",
+    "DisplayName": "Helicopter Slot 2",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_helicopter2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Helicopter-128.T-Icon-ST-Helicopter-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_helicopter3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Helicopter3",
-    "ItemName": "Helicopter Slot 3",
+    "DisplayName": "Helicopter Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_helicopter3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Helicopter-128.T-Icon-ST-Helicopter-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_helicopter4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Helicopter4",
-    "ItemName": "Helicopter Slot 4",
+    "DisplayName": "Helicopter Slot 4",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_helicopter4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Helicopter-128.T-Icon-ST-Helicopter-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Helicopter-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_propplane": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_PropPlane",
-    "ItemName": "Prop Plane Slot 1",
+    "DisplayName": "Prop Plane Slot 1",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_propplane.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Airplane-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Airplane-128.T-Icon-ST-Airplane-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Airplane-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_propplane2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_PropPlane2",
-    "ItemName": "Prop Plane Slot 2",
+    "DisplayName": "Prop Plane Slot 2",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_propplane2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Airplane-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Airplane-128.T-Icon-ST-Airplane-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Airplane-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_propplane3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_PropPlane3",
-    "ItemName": "Prop Plane Slot 3",
+    "DisplayName": "Prop Plane Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_propplane3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Airplane-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Airplane-128.T-Icon-ST-Airplane-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Airplane-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_rowboat": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_RowBoat",
-    "ItemName": "Row Boat Slot 1",
+    "DisplayName": "Row Boat Slot 1",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_rowboat.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Rowboat-128.T-Icon-ST-Rowboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_rowboat2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_RowBoat2",
-    "ItemName": "Row Boat Slot 2",
+    "DisplayName": "Row Boat Slot 2",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_rowboat2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Rowboat-128.T-Icon-ST-Rowboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_rowboat3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_RowBoat3",
-    "ItemName": "Row Boat Slot 3",
+    "DisplayName": "Row Boat Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_rowboat3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Rowboat-128.T-Icon-ST-Rowboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_rowboat4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_RowBoat4",
-    "ItemName": "Row Boat Slot 4",
+    "DisplayName": "Row Boat Slot 4",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_rowboat4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Rowboat-128.T-Icon-ST-Rowboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Rowboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_speedboat": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_SpeedBoat",
-    "ItemName": "Speed Boat Slot 1",
+    "DisplayName": "Speed Boat Slot 1",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_speedboat.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Speedboat-128.T-Icon-ST-Speedboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_speedboat2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_SpeedBoat2",
-    "ItemName": "Speed Boat Slot 2",
+    "DisplayName": "Speed Boat Slot 2",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_speedboat2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Speedboat-128.T-Icon-ST-Speedboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_speedboat3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_SpeedBoat3",
-    "ItemName": "Speed Boat Slot 3",
+    "DisplayName": "Speed Boat Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_speedboat3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Speedboat-128.T-Icon-ST-Speedboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_speedboat4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_SpeedBoat4",
-    "ItemName": "Speed Boat Slot 4",
+    "DisplayName": "Speed Boat Slot 4",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_speedboat4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Speedboat-128.T-Icon-ST-Speedboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_speedboat5": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_SpeedBoat5",
-    "ItemName": "Speed Boat Slot 5",
+    "DisplayName": "Speed Boat Slot 5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_speedboat5.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Speedboat-128.T-Icon-ST-Speedboat-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Speedboat-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_truck": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Truck",
-    "ItemName": "Truck Slot 1",
+    "DisplayName": "Truck Slot 1",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_truck.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Struck-128.T-Icon-ST-Struck-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_truck2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Truck2",
-    "ItemName": "Truck Slot 2",
+    "DisplayName": "Truck Slot 2",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_truck2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Struck-128.T-Icon-ST-Struck-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_truck3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Truck3",
-    "ItemName": "Truck Slot 3",
+    "DisplayName": "Truck Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_truck3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Struck-128.T-Icon-ST-Struck-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_truck4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Truck4",
-    "ItemName": "Truck Slot 4",
+    "DisplayName": "Truck Slot 4",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_truck4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Struck-128.T-Icon-ST-Struck-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png"
     }
   },
   "HomebaseNode:questreward_expedition_truck5": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Expedition_Truck5",
-    "ItemName": "Truck Slot 5",
+    "DisplayName": "Truck Slot 5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_expedition_truck5.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Struck-128.T-Icon-ST-Struck-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Struck-128.png"
     }
   },
   "HomebaseNode:questreward_feature_defenderlevelup": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_DefenderLevelUp",
-    "ItemName": "Level Up: Defenders",
+    "DisplayName": "Level Up: Defenders",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_defenderlevelup.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-DefenderMelee.png",
-      "LargePreview": "/Game/UI/Icons/Icon-Nodes/Icon-DefenderMelee.Icon-DefenderMelee"
+      "SmallPreview": "ExportedImages\\Icon-DefenderMelee.png"
     }
   },
   "HomebaseNode:questreward_feature_herolevelup": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_HeroLevelUp",
-    "ItemName": "Level Up: Heroes",
+    "DisplayName": "Level Up: Heroes",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_herolevelup.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-MAJOR.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Quest/T-MAJOR.T-Major"
+      "SmallPreview": "ExportedImages\\T-MAJOR.png"
     }
   },
   "HomebaseNode:questreward_feature_reperk": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_RePerk",
-    "ItemName": "Perk Recombobulation",
-    "AssetPath": "fortnitegame/content/items/homebasenodes/questreward_feature_reperk.uasset",
+    "DisplayName": "Perk Recombobulation",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_reperk.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Generic.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Items/T-Items-WeaponPerkUp-Generic.T-Items-WeaponPerkUp-Generic"
+      "SmallPreview": "ExportedImages\\T-Items-WeaponPerkUp-Generic.png"
     }
   },
   "HomebaseNode:questreward_feature_researchsystem": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_ResearchSystem",
-    "ItemName": "Lars, the Scientist",
+    "DisplayName": "Lars, the Scientist",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_researchsystem.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-LARS-Headshot_NOALPHA-XL.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Quest/Icon-LARS-Headshot_NOALPHA-XL.Icon-LARS-Headshot_NOALPHA-XL"
+      "SmallPreview": "ExportedImages\\Icon-LARS-Headshot_NOALPHA-XL.png"
     }
   },
   "HomebaseNode:questreward_feature_skillsystem": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_SkillSystem",
-    "ItemName": "Kevin, the Technologist",
+    "DisplayName": "Kevin, the Technologist",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_skillsystem.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-KEVIN-ALPHA.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Quest/Icon-KEVIN-ALPHA.Icon-KEVIN-ALPHA"
+      "SmallPreview": "ExportedImages\\Icon-KEVIN-ALPHA.png"
     }
   },
   "HomebaseNode:questreward_feature_survivorlevelup": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_SurvivorLevelUp",
-    "ItemName": "Level Up: Survivors",
+    "DisplayName": "Level Up: Survivors",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_survivorlevelup.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Director.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Quest/T-Director.T-Director"
+      "SmallPreview": "ExportedImages\\T-Director.png"
     }
   },
   "HomebaseNode:questreward_feature_survivorslotting": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_SurvivorSlotting",
-    "ItemName": "Survivor Slotting",
+    "DisplayName": "Survivor Slotting",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_survivorslotting.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Survivor-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemTypes/T-Icon-Survivor-128.T-Icon-Survivor-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Survivor-128.png"
     }
   },
   "HomebaseNode:questreward_feature_traplevelup": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_TrapLevelUp",
-    "ItemName": "Level Up: Trap Schematics",
+    "DisplayName": "Level Up: Trap Schematics",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_traplevelup.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Traps-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Traps-128.T-Icon-Traps-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Traps-128.png"
     }
   },
   "HomebaseNode:questreward_feature_weaponlevelup": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Feature_WeaponLevelUp",
-    "ItemName": "Level Up: Weapon Schematics",
+    "DisplayName": "Level Up: Weapon Schematics",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_feature_weaponlevelup.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Clip.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Quest/T-Clip.T-Clip"
+      "SmallPreview": "ExportedImages\\T-Clip.png"
     }
   },
   "HomebaseNode:questreward_herosupport_slot": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_HeroSupport_Slot",
-    "ItemName": "Hero Support Operative",
-    "AssetPath": "fortnitegame/content/items/homebasenodes/questreward_herosupport_slot.uasset",
+    "DisplayName": "Hero Support Operative",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_herosupport_slot.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Support-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Drilldowns/T-Icon-Support-128.T-Icon-Support-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Support-128.png"
     }
   },
   "HomebaseNode:questreward_herotactical_slot": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_HeroTactical_Slot",
-    "ItemName": "Hero Tactical Operative",
-    "AssetPath": "fortnitegame/content/items/homebasenodes/questreward_herotactical_slot.uasset",
+    "DisplayName": "Hero Tactical Operative",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_herotactical_slot.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Tactical-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Drilldowns/T-Icon-Tactical-128.T-Icon-Tactical-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Tactical-128.png"
     }
   },
   "HomebaseNode:questreward_homebase_defender": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Homebase_Defender",
-    "ItemName": "Storm Shield Defender 1/5",
+    "DisplayName": "Storm Shield Defender 1/5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_homebase_defender.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png",
-      "LargePreview": "/Game/UI/Icons/Icon-NodeDrilldowns/Drilldown-Icon-SquadSlot-Defenders-XL.Drilldown-Icon-SquadSlot-Defenders-XL"
+      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png"
     }
   },
   "HomebaseNode:questreward_homebase_defender2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Homebase_Defender2",
-    "ItemName": "Storm Shield Defender 2/5",
+    "DisplayName": "Storm Shield Defender 2/5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_homebase_defender2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png",
-      "LargePreview": "/Game/UI/Icons/Icon-NodeDrilldowns/Drilldown-Icon-SquadSlot-Defenders-XL.Drilldown-Icon-SquadSlot-Defenders-XL"
+      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png"
     }
   },
   "HomebaseNode:questreward_homebase_defender3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Homebase_Defender3",
-    "ItemName": "Storm Shield Defender 3/5",
+    "DisplayName": "Storm Shield Defender 3/5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_homebase_defender3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png",
-      "LargePreview": "/Game/UI/Icons/Icon-NodeDrilldowns/Drilldown-Icon-SquadSlot-Defenders-XL.Drilldown-Icon-SquadSlot-Defenders-XL"
+      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png"
     }
   },
   "HomebaseNode:questreward_homebase_defender4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Homebase_Defender4",
-    "ItemName": "Storm Shield Defender 4/5",
+    "DisplayName": "Storm Shield Defender 4/5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_homebase_defender4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png",
-      "LargePreview": "/Game/UI/Icons/Icon-NodeDrilldowns/Drilldown-Icon-SquadSlot-Defenders-XL.Drilldown-Icon-SquadSlot-Defenders-XL"
+      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png"
     }
   },
   "HomebaseNode:questreward_homebase_defender5": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Homebase_Defender5",
-    "ItemName": "Storm Shield Defender 5/5",
+    "DisplayName": "Storm Shield Defender 5/5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_homebase_defender5.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png",
-      "LargePreview": "/Game/UI/Icons/Icon-NodeDrilldowns/Drilldown-Icon-SquadSlot-Defenders-XL.Drilldown-Icon-SquadSlot-Defenders-XL"
+      "SmallPreview": "ExportedImages\\Drilldown-Icon-SquadSlot-Defenders-XL.png"
     }
   },
   "HomebaseNode:questreward_mission_defender": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Mission_Defender",
-    "ItemName": "Mission Defender 1/3",
+    "DisplayName": "Mission Defender 1/3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_mission_defender.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Defenders-128.T-Icon-Defenders-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png"
     }
   },
   "HomebaseNode:questreward_mission_defender2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Mission_Defender2",
-    "ItemName": "Mission Defender 2/3",
+    "DisplayName": "Mission Defender 2/3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_mission_defender2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Defenders-128.T-Icon-Defenders-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png"
     }
   },
   "HomebaseNode:questreward_mission_defender3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Mission_Defender3",
-    "ItemName": "Mission Defender 3/3",
+    "DisplayName": "Mission Defender 3/3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_mission_defender3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/ItemCategories/T-Icon-Defenders-128.T-Icon-Defenders-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Defenders-128.png"
     }
   },
   "HomebaseNode:questreward_newfollower1_slot": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewFollower1_Slot",
-    "ItemName": "Hero Team Support 1",
+    "DisplayName": "Hero Team Support 1",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newfollower1_slot.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewSupportSlot-128x.T-Icon-NewSupportSlot-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png"
     }
   },
   "HomebaseNode:questreward_newfollower2_slot": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewFollower2_Slot",
-    "ItemName": "Hero Team Support 2",
+    "DisplayName": "Hero Team Support 2",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newfollower2_slot.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewSupportSlot-128x.T-Icon-NewSupportSlot-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png"
     }
   },
   "HomebaseNode:questreward_newfollower3_slot": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewFollower3_Slot",
-    "ItemName": "Hero Team Support 3",
+    "DisplayName": "Hero Team Support 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newfollower3_slot.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewSupportSlot-128x.T-Icon-NewSupportSlot-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png"
     }
   },
   "HomebaseNode:questreward_newfollower4_slot": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewFollower4_Slot",
-    "ItemName": "Hero Team Support 4",
+    "DisplayName": "Hero Team Support 4",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newfollower4_slot.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewSupportSlot-128x.T-Icon-NewSupportSlot-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png"
     }
   },
   "HomebaseNode:questreward_newfollower5_slot": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewFollower5_Slot",
-    "ItemName": "Hero Team Support 5",
+    "DisplayName": "Hero Team Support 5",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newfollower5_slot.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewSupportSlot-128x.T-Icon-NewSupportSlot-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewSupportSlot-128x.png"
     }
   },
   "HomebaseNode:questreward_newheroloadout2_dummy": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewHeroLoadout2_Dummy",
-    "ItemName": "Hero Loadout",
+    "DisplayName": "Hero Loadout",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newheroloadout2_dummy.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewLoadoutConfiguration-128x.T-Icon-NewLoadoutConfiguration-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png"
     }
   },
   "HomebaseNode:questreward_newheroloadout3_dummy": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewHeroLoadout3_Dummy",
-    "ItemName": "Hero Loadout",
+    "DisplayName": "Hero Loadout",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newheroloadout3_dummy.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewLoadoutConfiguration-128x.T-Icon-NewLoadoutConfiguration-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png"
     }
   },
   "HomebaseNode:questreward_newheroloadout4_dummy": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewHeroLoadout4_Dummy",
-    "ItemName": "Hero Loadout",
+    "DisplayName": "Hero Loadout",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newheroloadout4_dummy.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewLoadoutConfiguration-128x.T-Icon-NewLoadoutConfiguration-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png"
     }
   },
   "HomebaseNode:questreward_newheroloadout5_dummy": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewHeroLoadout5_Dummy",
-    "ItemName": "Hero Loadout",
+    "DisplayName": "Hero Loadout",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newheroloadout5_dummy.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewLoadoutConfiguration-128x.T-Icon-NewLoadoutConfiguration-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png"
     }
   },
   "HomebaseNode:questreward_newheroloadout6_dummy": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewHeroLoadout6_Dummy",
-    "ItemName": "Hero Loadout",
+    "DisplayName": "Hero Loadout",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newheroloadout6_dummy.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewLoadoutConfiguration-128x.T-Icon-NewLoadoutConfiguration-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png"
     }
   },
   "HomebaseNode:questreward_newheroloadout7_dummy": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewHeroLoadout7_Dummy",
-    "ItemName": "Hero Loadout",
+    "DisplayName": "Hero Loadout",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newheroloadout7_dummy.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewLoadoutConfiguration-128x.T-Icon-NewLoadoutConfiguration-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png"
     }
   },
   "HomebaseNode:questreward_newheroloadout8_dummy": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_NewHeroLoadout8_Dummy",
-    "ItemName": "Hero Loadout",
+    "DisplayName": "Hero Loadout",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_newheroloadout8_dummy.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-NewLoadoutConfiguration-128x.T-Icon-NewLoadoutConfiguration-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-NewLoadoutConfiguration-128x.png"
     }
   },
   "HomebaseNode:questreward_pickaxe": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Pickaxe",
-    "ItemName": "Pickaxe Upgrade",
+    "DisplayName": "Pickaxe Upgrade",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_pickaxe.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-OutpostTab-HarvestOptimizer-L.png",
-      "LargePreview": "/Game/UI/Icons/Icon-Outpost/Icon-OutpostTab-HarvestOptimizer-L.Icon-OutpostTab-HarvestOptimizer-L"
+      "SmallPreview": "ExportedImages\\Icon-OutpostTab-HarvestOptimizer-L.png"
     }
   },
   "HomebaseNode:questreward_plankerton_squad_ssd1": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Plankerton_Squad_SSD1",
-    "ItemName": "Squad: Gadgeteers",
+    "DisplayName": "Squad: Gadgeteers",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_plankerton_squad_ssd1.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-Gadgeteers-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-Gadgeteers-128.T-Icon-ST-Surv-Gadgeteers-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-Gadgeteers-128.png"
     }
   },
   "HomebaseNode:questreward_plankerton_squad_ssd2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Plankerton_Squad_SSD2",
-    "ItemName": "Squad: Close Assault Squad",
+    "DisplayName": "Squad: Close Assault Squad",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_plankerton_squad_ssd2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-CloseAssaultSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-CloseAssaultSquad-128.T-Icon-ST-Surv-CloseAssaultSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-CloseAssaultSquad-128.png"
     }
   },
   "HomebaseNode:questreward_plankerton_squad_ssd3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Plankerton_Squad_SSD3",
-    "ItemName": "Squad: Training Team",
+    "DisplayName": "Squad: Training Team",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_plankerton_squad_ssd3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-TrainingTeamSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-TrainingTeamSquad-128.T-Icon-ST-Surv-TrainingTeamSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-TrainingTeamSquad-128.png"
     }
   },
   "HomebaseNode:questreward_plankerton_squad_ssd4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Plankerton_Squad_SSD4",
-    "ItemName": "Squad: The Think Tank",
+    "DisplayName": "Squad: The Think Tank",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_plankerton_squad_ssd4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ThinkTankSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-ThinkTankSquad-128.T-Icon-ST-Surv-ThinkTankSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ThinkTankSquad-128.png"
     }
   },
   "HomebaseNode:questreward_plankerton_squad_ssd5": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Plankerton_Squad_SSD5",
-    "ItemName": "Gadgeteers and Close Assault Squad Slot 3",
+    "DisplayName": "Gadgeteers and Close Assault Squad Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_plankerton_squad_ssd5.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Navigation/T-Icon-Nav-Squad-128.T-Icon-Nav-Squad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png"
     }
   },
   "HomebaseNode:questreward_plankerton_squad_ssd6": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Plankerton_Squad_SSD6",
-    "ItemName": "Training Team and The Think Tank Slot 3",
+    "DisplayName": "Training Team and The Think Tank Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_plankerton_squad_ssd6.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Navigation/T-Icon-Nav-Squad-128.T-Icon-Nav-Squad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png"
     }
   },
   "HomebaseNode:questreward_recyclecollection": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_RecycleCollection",
-    "ItemName": "Recycling and Collection",
+    "DisplayName": "Recycling and Collection",
     "AssetPath": "fortnitegame/content/items/homebasenodes/questreward_recyclecollection.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-SlotIcon-Recycle-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Buttons/T-SlotIcon-Recycle-128.T-SlotIcon-Recycle-128"
+      "SmallPreview": "ExportedImages\\T-SlotIcon-Recycle-128.png"
     }
   },
   "HomebaseNode:questreward_stonewood_squad_ssd1": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Stonewood_Squad_SSD1",
-    "ItemName": "Squad: Scouting Party",
+    "DisplayName": "Squad: Scouting Party",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_stonewood_squad_ssd1.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-ScoutingPartySquad-128.T-Icon-ST-Surv-ScoutingPartySquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png"
     }
   },
   "HomebaseNode:questreward_stonewood_squad_ssd2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Stonewood_Squad_SSD2",
-    "ItemName": "Scouting Party Lead",
+    "DisplayName": "Scouting Party Lead",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_stonewood_squad_ssd2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-ScoutingPartySquad-128.T-Icon-ST-Surv-ScoutingPartySquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png"
     }
   },
   "HomebaseNode:questreward_stonewood_squad_ssd3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Stonewood_Squad_SSD3",
-    "ItemName": "Scouting Party Slot 3",
+    "DisplayName": "Scouting Party Slot 3",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_stonewood_squad_ssd3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-ScoutingPartySquad-128.T-Icon-ST-Surv-ScoutingPartySquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ScoutingPartySquad-128.png"
     }
   },
   "HomebaseNode:questreward_stonewood_squad_ssd4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Stonewood_Squad_SSD4",
-    "ItemName": "Squad: Fire Team Alpha",
+    "DisplayName": "Squad: Fire Team Alpha",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_stonewood_squad_ssd4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-FireTeamAlphaSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-FireTeamAlphaSquad-128.T-Icon-ST-Surv-FireTeamAlphaSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-FireTeamAlphaSquad-128.png"
     }
   },
   "HomebaseNode:questreward_stonewood_squad_ssd5": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Stonewood_Squad_SSD5",
-    "ItemName": "Squad: EMT Squad",
+    "DisplayName": "Squad: EMT Squad",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_stonewood_squad_ssd5.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EMTSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-EMTSquad-128.T-Icon-ST-Surv-EMTSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EMTSquad-128.png"
     }
   },
   "HomebaseNode:questreward_stonewood_squad_ssd6": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_Stonewood_Squad_SSD6",
-    "ItemName": "Squad: Corps of Engineering",
+    "DisplayName": "Squad: Corps of Engineering",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_stonewood_squad_ssd6.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EngineeringSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-EngineeringSquad-128.T-Icon-ST-Surv-EngineeringSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-EngineeringSquad-128.png"
     }
   },
   "HomebaseNode:questreward_teamperk_slot1": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_TeamPerk_Slot1",
-    "ItemName": "Team Perk",
+    "DisplayName": "Team Perk",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_teamperk_slot1.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-TeamPerkSlot-128x.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HeroLoadout/T-Icon-TeamPerkSlot-128x.T-Icon-TeamPerkSlot-128x"
+      "SmallPreview": "ExportedImages\\T-Icon-TeamPerkSlot-128x.png"
     }
   },
   "HomebaseNode:questreward_twinepeaks_squad_ssd1": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_TwinePeaks_Squad_SSD1",
-    "ItemName": "Gadgeteers Slots 4, 5 and 6",
+    "DisplayName": "Gadgeteers Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_twinepeaks_squad_ssd1.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-Gadgeteers-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-Gadgeteers-128.T-Icon-ST-Surv-Gadgeteers-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-Gadgeteers-128.png"
     }
   },
   "HomebaseNode:questreward_twinepeaks_squad_ssd2": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_TwinePeaks_Squad_SSD2",
-    "ItemName": "Close Assault Squad Slots 4, 5 and 6",
+    "DisplayName": "Close Assault Squad Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_twinepeaks_squad_ssd2.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-CloseAssaultSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-CloseAssaultSquad-128.T-Icon-ST-Surv-CloseAssaultSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-CloseAssaultSquad-128.png"
     }
   },
   "HomebaseNode:questreward_twinepeaks_squad_ssd3": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_TwinePeaks_Squad_SSD3",
-    "ItemName": "Training Team Slots 4, 5 and 6",
+    "DisplayName": "Training Team Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_twinepeaks_squad_ssd3.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-TrainingTeamSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-TrainingTeamSquad-128.T-Icon-ST-Surv-TrainingTeamSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-TrainingTeamSquad-128.png"
     }
   },
   "HomebaseNode:questreward_twinepeaks_squad_ssd4": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_TwinePeaks_Squad_SSD4",
-    "ItemName": "The Think Tank Slots 4, 5 and 6",
+    "DisplayName": "The Think Tank Slots 4, 5 and 6",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_twinepeaks_squad_ssd4.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ThinkTankSquad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/SkillTree/T-Icon-ST-Surv-ThinkTankSquad-128.T-Icon-ST-Surv-ThinkTankSquad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-ST-Surv-ThinkTankSquad-128.png"
     }
   },
   "HomebaseNode:questreward_twinepeaks_squad_ssd5": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_TwinePeaks_Squad_SSD5",
-    "ItemName": "Gadgeteers and Close Assault Squad Slot 7",
+    "DisplayName": "Gadgeteers and Close Assault Squad Slot 7",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_twinepeaks_squad_ssd5.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Navigation/T-Icon-Nav-Squad-128.T-Icon-Nav-Squad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png"
     }
   },
   "HomebaseNode:questreward_twinepeaks_squad_ssd6": {
     "Type": "HomebaseNode",
     "Name": "QuestReward_TwinePeaks_Squad_SSD6",
-    "ItemName": "Training Team and The Think Tank Slot 7",
+    "DisplayName": "Training Team and The Think Tank Slot 7",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/questreward_twinepeaks_squad_ssd6.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Navigation/T-Icon-Nav-Squad-128.T-Icon-Nav-Squad-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Nav-Squad-128.png"
     }
   },
   "HomebaseNode:skilltree_adrenalinerush": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_AdrenalineRush",
-    "ItemName": "Adrenaline Rush",
+    "DisplayName": "Adrenaline Rush",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_adrenalinerush.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-AdrenalineRush-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-AdrenalineRush-128.Icon-Gadget-AdrenalineRush-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-AdrenalineRush-128.png"
     }
   },
   "HomebaseNode:skilltree_airstrike": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_Airstrike",
-    "ItemName": "Air Strike",
+    "DisplayName": "Air Strike",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_airstrike.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-Airstrike-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-Airstrike-128.Icon-Gadget-Airstrike-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Airstrike-128.png"
     }
   },
   "HomebaseNode:skilltree_backpacksize": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_BackpackSize",
-    "ItemName": "Backpack Size",
+    "DisplayName": "Backpack Size",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_backpacksize.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Backpack-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/HUD/T-Icon-Backpack-128.T-Icon-Backpack-128"
+      "SmallPreview": "ExportedImages\\T-Icon-Backpack-128.png"
     }
   },
   "HomebaseNode:skilltree_banner": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_Banner",
-    "ItemName": "Banner",
+    "DisplayName": "Banner",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_banner.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-Banner-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-Banner-128.Icon-Gadget-Banner-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Banner-128.png"
     }
   },
   "HomebaseNode:skilltree_buildandrepairspeed": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_BuildAndRepairSpeed",
-    "ItemName": "Build and Repair Speed",
+    "DisplayName": "Build and Repair Speed",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_buildandrepairspeed.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-BuildingSpeed-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Stats/T-Icon-BuildingSpeed-128.T-Icon-BuildingSpeed-128"
+      "SmallPreview": "ExportedImages\\T-Icon-BuildingSpeed-128.png"
     }
   },
   "HomebaseNode:skilltree_buildinghealth": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_BuildingHealth",
-    "ItemName": "Building Health",
+    "DisplayName": "Building Health",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_buildinghealth.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-BuildingHealth-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Stats/T-Icon-BuildingHealth-128.T-Icon-BuildingHealth-128"
+      "SmallPreview": "ExportedImages\\T-Icon-BuildingHealth-128.png"
     }
   },
   "HomebaseNode:skilltree_hoverturret": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_HoverTurret",
-    "ItemName": "Hover Turret",
+    "DisplayName": "Hover Turret",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_hoverturret.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-TurretBot-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-TurretBot-128.Icon-Gadget-TurretBot-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-TurretBot-128.png"
     }
   },
   "HomebaseNode:skilltree_pickaxe": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_Pickaxe",
-    "ItemName": "Pickaxe Upgrade",
+    "DisplayName": "Pickaxe Upgrade",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_pickaxe.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-OutpostTab-HarvestOptimizer-L.png",
-      "LargePreview": "/Game/UI/Icons/Icon-Outpost/Icon-OutpostTab-HarvestOptimizer-L.Icon-OutpostTab-HarvestOptimizer-L"
+      "SmallPreview": "ExportedImages\\Icon-OutpostTab-HarvestOptimizer-L.png"
     }
   },
   "HomebaseNode:skilltree_proximitymine": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_ProximityMine",
-    "ItemName": "Proximity Mine",
+    "DisplayName": "Proximity Mine",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_proximitymine.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-ProximityMine-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-ProximityMine-128.Icon-Gadget-ProximityMine-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-ProximityMine-128.png"
     }
   },
   "HomebaseNode:skilltree_slowfield": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_SlowField",
-    "ItemName": "Slow Field",
+    "DisplayName": "Slow Field",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_slowfield.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-Slowfield-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-Slowfield-128.Icon-Gadget-Slowfield-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Slowfield-128.png"
     }
   },
   "HomebaseNode:skilltree_stormshieldstorage": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_StormShieldStorage",
-    "ItemName": "Storm Shield Storage Vault",
+    "DisplayName": "Storm Shield Storage Vault",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_stormshieldstorage.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-OutpostTab-Storage-128.png",
-      "LargePreview": "/Game/UI/Icons/Icon-Outpost/Icon-OutpostTab-Storage-128.Icon-OutpostTab-Storage-128"
+      "SmallPreview": "ExportedImages\\Icon-OutpostTab-Storage-128.png"
     }
   },
   "HomebaseNode:skilltree_supplydrop": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_SupplyDrop",
-    "ItemName": "Supply Drop",
+    "DisplayName": "Supply Drop",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_supplydrop.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-SupplyDrop-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-SupplyDrop-128.Icon-Gadget-SupplyDrop-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-SupplyDrop-128.png"
     }
   },
   "HomebaseNode:skilltree_teleporter": {
     "Type": "HomebaseNode",
     "Name": "SkillTree_Teleporter",
-    "ItemName": "Teleporter",
+    "DisplayName": "Teleporter",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/skilltree_teleporter.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Gadget-Teleporter-128.png",
-      "LargePreview": "/Game/UI/Foundation/Textures/Icons/Gadgets/Icon-Gadget-Teleporter-128.Icon-Gadget-Teleporter-128"
+      "SmallPreview": "ExportedImages\\Icon-Gadget-Teleporter-128.png"
     }
   },
   "HomebaseNode:startnode_commandcenter": {
     "Type": "HomebaseNode",
     "Name": "StartNode_CommandCenter",
-    "ItemName": "Command Center",
+    "DisplayName": "Command Center",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/homebasenodes/startnode_commandcenter.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\Icon-Perk-Missing-M.png",

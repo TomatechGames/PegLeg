@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 static class LoginRequests
 {
-    const string deviceDetailsFilePath = "user://settings.json";
+    const string deviceDetailsFilePath = "user://fishFingers.json";
     static string ClientAuthHeaderFromKeys(string clientID, string clientSecret) =>
         Convert.ToBase64String(Encoding.ASCII.GetBytes($"{clientID}:{clientSecret}"));
 
@@ -29,17 +29,17 @@ static class LoginRequests
 
 
     static AuthenticationHeaderValue clientHeader = new("Basic", B64AuthString);
+
     static AuthenticationHeaderValue accountAuthHeader;
     public static AuthenticationHeaderValue AccountAuthHeader => accountAuthHeader;
     static int authExpiresAt = -999999;
     public static bool AuthTokenValid => authExpiresAt > Time.GetTicksMsec() * 0.001;
 
-    const string deviceDetailKey = "Peg-Leg is cool!";
     static readonly AesContext deviceDetailEncryptor = new();
 
     static JsonObject accountAccessToken;
     static JsonObject deviceDetails;
-    public static bool HasDeviceDetails => deviceDetails is not null;
+    public static bool HasDeviceDetails => LoadDeviceDetails() is not null;
     public static string AccountID => accountAccessToken["account_id"].ToString();
     public static string AccessToken = accountAccessToken?["access_token"]?.ToString();
 
@@ -52,18 +52,24 @@ static class LoginRequests
 
         if (await InterruptLogin())
             return AuthTokenValid;
-        loginInProgress = true;
+        try
+        {
+            loginInProgress = true;
 
-        Debug.WriteLine("authorising via one-time code...");
-        JsonNode accountAuth = await Helpers.MakeRequest(
-            HttpMethod.Post,
-            FNEndpoints.loginEndpoint,
-            "account/api/oauth/token",
-            $"grant_type=authorization_code&code={oneTimeCode}",
-            clientHeader
-        );
-        OnRecieveAccountAuth(accountAuth);
-        loginInProgress = false;
+            Debug.WriteLine("authorising via one-time code...");
+            JsonNode accountAuth = await Helpers.MakeRequest(
+                HttpMethod.Post,
+                FNEndpoints.loginEndpoint,
+                "account/api/oauth/token",
+                $"grant_type=authorization_code&code={oneTimeCode}",
+                clientHeader
+            );
+            OnRecieveAccountAuth(accountAuth);
+        }
+        finally
+        {
+            loginInProgress = false;
+        }
         return AuthTokenValid;
     }
 
@@ -120,6 +126,11 @@ static class LoginRequests
             deviceDetalsString += "^";
         }
 
+        string deviceDetailKey = System.Environment.MachineName;
+        while (deviceDetailKey.Length < 32)
+            deviceDetailKey += "#";
+        deviceDetailKey = deviceDetailKey[..32];
+
         //encrypt
         deviceDetailEncryptor.Start(AesContext.Mode.EcbEncrypt, deviceDetailKey.ToUtf8Buffer());
         byte[] encryptedDetails = deviceDetailEncryptor.Update(deviceDetalsString.ToUtf8Buffer());
@@ -133,13 +144,15 @@ static class LoginRequests
         Debug.WriteLine("device auth encrypted and saved");
     }
 
-    static void LoadDeviceDetails()
+    static JsonObject LoadDeviceDetails()
     {
+        if(deviceDetails is not null)
+            return deviceDetails;
         string fullPath = ProjectSettings.GlobalizePath(deviceDetailsFilePath);
         if (!File.Exists(fullPath))
         {
             Debug.WriteLine($"Failed to load device auth: {fullPath}");
-            return;
+            return null;
         }
 
         byte[] encryptedDetails = null;
@@ -147,10 +160,15 @@ static class LoginRequests
         {
             //return if byte length isnt a multiple of 16
             if (fs.Length % 16 != 0)
-                return;
+                return null;
             encryptedDetails = new byte[fs.Length];
             fs.Read(encryptedDetails, 0, encryptedDetails.Length);
         }
+
+        string deviceDetailKey = System.Environment.MachineName;
+        while (deviceDetailKey.Length < 32)
+            deviceDetailKey += "#";
+        deviceDetailKey = deviceDetailKey[..32];
 
         //decrypt
         deviceDetailEncryptor.Start(AesContext.Mode.EcbDecrypt, deviceDetailKey.ToUtf8Buffer());
@@ -164,33 +182,27 @@ static class LoginRequests
             deviceDetalsString = deviceDetalsString[..^1];
         }
 
-        JsonObject resultDetails = JsonNode.Parse(deviceDetalsString).AsObject();
+        JsonObject resultDetails = null;
+        try
+        {
+            resultDetails = JsonNode.Parse(deviceDetalsString).AsObject();
+        }
+        catch (Exception)
+        {
+
+        }
 
         //return on invalid data
         if (!DeviceDetailsSchemaValid(resultDetails))
         {
             Debug.WriteLine("invalid devide auth loaded:\n" + deviceDetalsString);
-            return;
+            return null;
         }
         deviceDetails = resultDetails;
         Debug.WriteLine("device auth loaded");
+        return deviceDetails;
     }
 
-    public static async Task<bool> WaitForLogin()
-    {
-        int loginIterations = 0;
-        //attempt a login (will be blocked if a login is already in progress)
-        if(!AuthTokenValid)
-            await LoginWithDeviceDetails();
-        while (!AuthTokenValid)
-        {
-            await Task.Delay(500);
-            loginIterations++;
-            if (loginIterations > 60)
-                return false;
-        }
-        return AuthTokenValid;
-    }
 
     public static void DeleteDeviceDetails()
     {
@@ -203,38 +215,43 @@ static class LoginRequests
         }
     }
 
-    public static async Task<bool> LoginWithDeviceDetails()
+    public static async Task<bool> TryLogin()
     {
         //return if already logged in or currently logging in
         if (await InterruptLogin())
             return AuthTokenValid;
-        loginInProgress = true;
-
-        if (deviceDetails is null)
-            LoadDeviceDetails();
-
-        if (deviceDetails is null)
+        try
         {
-            Debug.WriteLine("something oopsied");
-            loginInProgress = false;
-            return AuthTokenValid;
+            loginInProgress = true;
+            if (deviceDetails is null)
+                LoadDeviceDetails();
+
+            if (deviceDetails is null)
+            {
+                Debug.WriteLine("something oopsied");
+                loginInProgress = false;
+                return AuthTokenValid;
+            }
+
+            Debug.WriteLine("authorising via device auth...");
+
+            JsonNode accountAuth = await Helpers.MakeRequest(
+                HttpMethod.Post,
+                FNEndpoints.loginEndpoint,
+                "account/api/oauth/token",
+                $"grant_type=device_auth&" +
+                $"account_id={deviceDetails["accountId"]}&" +
+                $"device_id={deviceDetails["deviceId"]}&" +
+                $"secret={deviceDetails["secret"]}",
+                clientHeader
+            );
+
+            OnRecieveAccountAuth(accountAuth);
         }
-
-        Debug.WriteLine("authorising via device auth...");
-
-        JsonNode accountAuth = await Helpers.MakeRequest(
-            HttpMethod.Post,
-            FNEndpoints.loginEndpoint,
-            "account/api/oauth/token",
-            $"grant_type=device_auth&" +
-            $"account_id={deviceDetails["accountId"]}&" +
-            $"device_id={deviceDetails["deviceId"]}&" +
-            $"secret={deviceDetails["secret"]}",
-            clientHeader
-        );
-
-        OnRecieveAccountAuth(accountAuth);
-        loginInProgress = false;
+        finally
+        {
+            loginInProgress = false;
+        }
         return AuthTokenValid;
     }
 
@@ -246,7 +263,7 @@ static class LoginRequests
         {
             await Task.Delay(500);
             loginIterations++;
-            if (loginIterations > 15)
+            if (loginIterations > 100)
                 return true;
         }
         return AuthTokenValid;

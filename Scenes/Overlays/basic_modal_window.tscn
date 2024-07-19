@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://dta7ntrychbp1"]
+
+[ext_resource type="Script" path="res://Scripts/Overlays/ModalWindow.cs" id="1_oupub"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://Themes/Styleboxes/WindowBGTransparant.tres" id="2_ferkv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6l75"]
+bg_color = Color(0.301961, 0.301961, 0.301961, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="BasicWindow" type="Control" node_paths=PackedStringArray("mouseBlockPanel", "backgroundPanel", "windowCanvas")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_oupub")
+mouseBlockPanel = NodePath("MouseBlocker")
+backgroundPanel = NodePath("BG")
+windowCanvas = NodePath("Control/WindowContents")
+
+[node name="MouseBlocker" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BG" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = ExtResource("2_ferkv")
+theme_override_styles/hover = ExtResource("2_ferkv")
+theme_override_styles/pressed = ExtResource("2_ferkv")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_k6l75")
+theme_override_styles/focus = SubResource("StyleBoxFlat_k6l75")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WindowContents" type="CanvasGroup" parent="Control"]

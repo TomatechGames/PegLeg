@@ -1,3 +1,10 @@
+External/Banjo/
+
+# Godot 4+ specific ignores
+.godot/
+.vs/
+
+
 # Godot-specific ignores
 .import/
 export.cfg

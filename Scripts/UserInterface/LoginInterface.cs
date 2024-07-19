@@ -1,77 +1,64 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-public partial class LoginInterface : VBoxContainer
+public partial class LoginInterface : Control
 {
-	[Export] NodePath loginButtonPath;
-	Button loginButton;
-
-	[Export] NodePath pasteButtonPath;
-	Button pasteButton;
-
-	[Export] NodePath codeLabelPath;
-	TextEdit codeLabel;
-
-	[Export] NodePath deviceAuthButtonPath;
-	Button deviceAuthButton;
-
-    [Export] NodePath clearDeviceAuthButtonPath;
-    Button clearDeviceAuthButton;
-
+	[Export]
+    protected Button generateCodeButton;
+	[Export]
+    protected Button pasteButton;
     [Export]
-    bool autoRefreshSAC = false;
-
-    [Export] NodePath supportACreatorLinePath;
-    LineEdit supportACreatorLine;
-
+    protected LineEdit oneTimeCodeLine;
     [Export]
-    bool closeGameOnEnduranceCompletion;
+    protected Button loginButton;
+    [Export]
+    protected CheckButton usePersistantLogin;
 
-    [Export] string deviceDetailsFilePath = "user://settings.json";
+    protected static bool hasAutoLoggedIn = false;
 
-
-	//static string clientAccessToken;
-	//static JsonNode clientCredResponse;
-	//public static string ClientToken =>clientAccessToken;
-
-
-
-	// Called when the node enters the scene tree for the first time.
-	public override async void _Ready()
+    // Called when the node enters the scene tree for the first time.
+    public override async void _Ready()
     {
-        codeLabel = GetNode<TextEdit>(codeLabelPath);
+        await ReadyTask();
+    }
 
-        GetNode<Button>(loginButtonPath).Pressed += OnRequestLoginCode;
-		GetNode<Button>(pasteButtonPath).Pressed += OnPasteLoginCode;
-		GetNode<Button>(deviceAuthButtonPath).Pressed += OnActivateDeviceAuth;
-        GetNode<Button>(clearDeviceAuthButtonPath).Pressed += OnClearDeviceAuth;
-
-		this.GetNodeOrNull(supportACreatorLinePath, out supportACreatorLine);
-
+    protected virtual async Task ReadyTask()
+    {
+        ConnectButtons();
         await this.WaitForFrame();
         LoadingOverlay.Instance.AddLoadingKey("loginPreload");
         BanjoAssets.PreloadSourcesParalell();
-        await LoginRequests.LoginWithDeviceDetails();
-        await ProfileRequests.GetProfile(FnProfiles.AccountItems);
+        await LoginRequests.TryLogin();
         LoadingOverlay.Instance.RemoveLoadingKey("loginPreload");
-
-        supportACreatorLine.Text = await ProfileRequests.GetSACCode();
-        if (autoRefreshSAC && await ProfileRequests.IsSACExpired())
-            SetCreatorCode();
-        GD.Print("Item Count: "+await ProfileRequests.GetProfileItemsCount(FnProfiles.AccountItems));
     }
 
+    protected void ConnectButtons()
+    {
+        if (generateCodeButton is not null)
+            generateCodeButton.Pressed += RequestLoginCode;
+        if (pasteButton is not null)
+            pasteButton.Pressed += PasteLoginCode;
+        if (loginButton is not null)
+            loginButton.Pressed += () => Login().RunSafely();
+        if (usePersistantLogin is not null && LoginRequests.HasDeviceDetails)
+            usePersistantLogin.ButtonPressed = true;
+    }
 
-    const string enduranceCardPackPrefix = "CardPack:ZCP_Endurance_T0";
-    bool enduranceTimerRunning;
+    /* WIP system to detect when an endurance run ends and auto-close the game, intended for automated AFKing
+    public const string enduranceCardPackPrefix = "CardPack:ZCP_Endurance_T0";
+    protected bool enduranceTimerRunning;
+    protected virtual bool closeGameOnEnduranceCompletion => false;
     async void CheckForEnduranceCompletion()
     {
         if (enduranceTimerRunning)
@@ -99,8 +86,9 @@ public partial class LoginInterface : VBoxContainer
         }
         enduranceTimerRunning = false;
     }
+    */
 
-	void OnRequestLoginCode()
+	public void RequestLoginCode()
     {
         Process.Start(new ProcessStartInfo()
         {
@@ -109,31 +97,38 @@ public partial class LoginInterface : VBoxContainer
         });
     }
 
-	async void OnPasteLoginCode()
+    public void PasteLoginCode()
     {
-		await LoginRequests.LoginWithOneTimeCode(DisplayServer.ClipboardGet());
+        if (oneTimeCodeLine is not null)
+            oneTimeCodeLine.Text = DisplayServer.ClipboardGet();
     }
 
-	async void OnActivateDeviceAuth()
+    public virtual async Task Login()
+    {
+        if (!await LoginRequests.TryLogin())
+            await LoginRequests.LoginWithOneTimeCode(oneTimeCodeLine.Text);
+        if (usePersistantLogin is null)
+            return;
+        if (!LoginRequests.HasDeviceDetails)
+        {
+            if(usePersistantLogin.ButtonPressed)
+                await LoginRequests.SetupDeviceAuth();
+        }
+        else if (!usePersistantLogin.ButtonPressed)
+        {
+            LoginRequests.DeleteDeviceDetails();
+        }
+    }
+
+	public async Task ActivateDeviceAuth()
     {
 		if (!LoginRequests.HasDeviceDetails)
             await LoginRequests.SetupDeviceAuth();
-        await LoginRequests.LoginWithDeviceDetails();
+        await LoginRequests.TryLogin();
     }
 
-    private void OnClearDeviceAuth()
+    public void ClearDeviceAuth()
     {
 		LoginRequests.DeleteDeviceDetails();
-    }
-
-    void UpdateLabel()
-	{
-		codeLabel.Text = LoginRequests.B64AuthString + "\n" + LoginRequests.AccountAuthHeader?.ToString();
-	}
-
-    public async void SetCreatorCode()
-    {
-        await ProfileRequests.SetSACCode(supportACreatorLine.Text.Replace(" (Expired)", ""));
-        supportACreatorLine.Text = await ProfileRequests.GetSACCode();
     }
 }

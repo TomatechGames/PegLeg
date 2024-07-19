@@ -1,0 +1,327 @@
+[gd_scene load_steps=14 format=3 uid="uid://dmxb4fns6x2fm"]
+
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_ydvvi"]
+[ext_resource type="Texture2D" uid="uid://chrwn7nsdg50k" path="res://Images/InterfaceIcons/DefaultCosmeticGradient.tres" id="2_3e4tx"]
+[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="2_n7tcl"]
+[ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="4_6dg1j"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_nhy4d"]
+[ext_resource type="Texture2D" uid="uid://1ixqc8hojkjr" path="res://Images/InterfaceIcons/o5hq54xvrat91.jpg" id="5_4u4oq"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_vm0pn"]
+[ext_resource type="Texture2D" uid="uid://c220ltun2a5lc" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_checkmark_128.png" id="8_56cfw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5d8u"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oq4rh"]
+bg_color = Color(0.145098, 0.145098, 0.145098, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6huqa"]
+shader = ExtResource("2_n7tcl")
+shader_parameter/ControlSize = Vector2(248, 234)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/Fit = null
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 9.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f2lks"]
+shader = ExtResource("2_n7tcl")
+shader_parameter/ControlSize = Vector2(250, 236)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/Fit = null
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 9.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4tovw"]
+resource_local_to_scene = true
+shader = ExtResource("2_n7tcl")
+shader_parameter/ControlSize = Vector2(95.2715, 80)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/Fit = null
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
+
+[node name="CosmeticItemViewer" node_paths=PackedStringArray("windowControl") instance=ExtResource("1_ydvvi")]
+windowControl = NodePath("Control/WindowContents/CenterContainer")
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer" index="0"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_bottom = -5
+
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/VBoxContainer/MarginContainer2" index="0"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_c5d8u")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/MarginContainer2" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/MarginContainer2/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Bundle Name Here"
+
+[node name="ItemDetails" type="PanelContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oq4rh")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="CosmeticLargePreview" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_constants/margin_left = -3
+theme_override_constants/margin_top = -3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = -3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/CosmeticLargePreview" index="0"]
+layout_mode = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/CosmeticLargePreview/MarginContainer" index="0"]
+material = SubResource("ShaderMaterial_6huqa")
+layout_mode = 2
+texture = ExtResource("2_3e4tx")
+expand_mode = 1
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/CosmeticLargePreview" index="1"]
+material = SubResource("ShaderMaterial_f2lks")
+layout_mode = 2
+texture = ExtResource("5_4u4oq")
+expand_mode = 5
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Item Name" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer" index="0"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_constants/line_spacing = -4
+theme_override_font_sizes/font_size = 25
+text = "Cosmetic Name"
+autowrap_mode = 2
+text_overrun_behavior = 3
+
+[node name="Item Description" type="RichTextLabel" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer" index="1"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_separation = -2
+bbcode_enabled = true
+text = "This item has a placeholder description"
+context_menu_enabled = true
+threaded = true
+progress_bar_delay = 100
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer" index="2"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer" index="0"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 2
+theme_override_constants/separation = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="0"]
+material = SubResource("ShaderMaterial_4tovw")
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_4u4oq")
+expand_mode = 3
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="TextureRect2" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="1"]
+material = SubResource("ShaderMaterial_4tovw")
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_4u4oq")
+expand_mode = 3
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="TextureRect3" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="2"]
+material = SubResource("ShaderMaterial_4tovw")
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_4u4oq")
+expand_mode = 3
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="TextureRect4" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="3"]
+material = SubResource("ShaderMaterial_4tovw")
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_4u4oq")
+expand_mode = 3
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="TextureRect5" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="4"]
+material = SubResource("ShaderMaterial_4tovw")
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_4u4oq")
+expand_mode = 3
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="TextureRect6" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/ItemDetails/MarginContainer/HBoxContainer/VBoxContainer/ScrollContainer/VBoxContainer" index="5"]
+material = SubResource("ShaderMaterial_4tovw")
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_4u4oq")
+expand_mode = 3
+script = ExtResource("4_nhy4d")
+syncControlSize = true
+
+[node name="PurchaseButton" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/VBoxContainer/PurchaseButton" index="0"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/PurchaseButton" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/PurchaseButton/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/PurchaseButton/MarginContainer/HBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Purchase: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/PurchaseButton/MarginContainer/HBoxContainer" index="1"]
+layout_mode = 2
+texture = ExtResource("4_6dg1j")
+expand_mode = 3
+
+[node name="PriceText" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/PurchaseButton/MarginContainer/HBoxContainer" index="2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "2500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/VBoxContainer/PurchaseButton" index="2" instance=ExtResource("7_vm0pn")]
+layout_mode = 2
+
+[node name="OwnedContent" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer" index="3"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent" index="0"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_font_sizes/font_size = 32
+text = "Owned"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent" index="1"]
+modulate = Color(0, 0.75, 0, 1)
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 15
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent/MarginContainer" index="0"]
+layout_mode = 2
+texture = ExtResource("8_56cfw")
+expand_mode = 3
+
+[node name="RefundButton" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent/RefundButton" index="0"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent/RefundButton" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent/RefundButton/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Refund"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/VBoxContainer/OwnedContent/RefundButton" index="2" node_paths=PackedStringArray("outlineObject") instance=ExtResource("7_vm0pn")]
+layout_mode = 2
+outlineObject = NodePath("../../../PurchaseButton/Responsive Button Area/MarginContainer/TextureRect")
+
+[node name="SACText" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/VBoxContainer" index="4"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/SACText" index="0"]
+layout_mode = 2
+text = "This Purchase will support:  "
+
+[node name="Label2" type="Label" parent="Control/WindowContents/CenterContainer/VBoxContainer/SACText" index="1"]
+layout_mode = 2
+text = "NoahsNoah"

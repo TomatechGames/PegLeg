@@ -10,26 +10,17 @@ public partial class TitleBarDragger : Control
 	Vector2I windowStart;
     Vector2I mouseStart;
     [Export]
-    NodePath homebaseNumberTextPath;
+    AdaptivePanelController background;
     [Export]
-    NodePath homebaseNumberPercentPath;
-    [Export]
-    ShaderHook background;
-
-    public override async void _Ready()
-    {
-        this.GetNodeOrNull(homebaseNumberTextPath, out Label homebaseNumberText);
-        this.GetNodeOrNull(homebaseNumberPercentPath, out ProgressBar homebaseNumberPercent);
-        if (homebaseNumberText is null || homebaseNumberPercent is null)
-            return;
-        float powerLevel = await ProfileRequests.GetHomebasePowerLevel();
-        homebaseNumberText.Text = MathF.Floor(powerLevel).ToString();
-        homebaseNumberPercent.Value = powerLevel % 1;
-    }
+    PackedScene interfaceRoot;
+    [Export(PropertyHint.ArrayType)]
+    WindowSizeDragger[] sizeDraggers = Array.Empty<WindowSizeDragger>();
 
     bool isMaximised = false;
+    bool isMuted = false;
     Vector2I preMaximisedPos = Vector2I.Zero;
     Vector2I preMaximisedSize = Vector2I.Zero;
+
 
     public override void _GuiInput(InputEvent @event)
     {
@@ -38,9 +29,10 @@ public partial class TitleBarDragger : Control
             if (mouseEvent.ButtonIndex == MouseButton.Left)
             {
                 var window = GetWindow();
-                isDragging = !isDragging;
+                bool wasDragging = isDragging;
+                isDragging = mouseEvent.Pressed;
                 mouseStart = DisplayServer.MouseGetPosition();
-                if (isMaximised)
+                if (isMaximised && isDragging)
                 {
                     int xSizeDifference = window.Size.X - preMaximisedSize.X;
                     float offsetScalar = (mouseStart.X- window.Position.X) / (float)window.Size.X;
@@ -50,6 +42,10 @@ public partial class TitleBarDragger : Control
                     background.SetShaderBool(true, "UseCorners");
                 }
                 windowStart = window.Position;
+                if (wasDragging && !isDragging && mouseStart.Y < 10)
+                {
+                    MaximiseApp();
+                }
             }
         }
     }
@@ -73,6 +69,12 @@ public partial class TitleBarDragger : Control
             //unmaximise
             window.Position = preMaximisedPos;
             window.Size = preMaximisedSize;
+
+            foreach (var dragger in sizeDraggers)
+            {
+                dragger.Visible = true;
+            }
+
             isMaximised = false;
         }
         else
@@ -85,6 +87,10 @@ public partial class TitleBarDragger : Control
 
             window.Position = displaySize.Position;
             window.Size = displaySize.Size;
+            foreach (var dragger in sizeDraggers)
+            {
+                dragger.Visible = false;
+            }
 
             isMaximised = true;
         }
@@ -97,8 +103,13 @@ public partial class TitleBarDragger : Control
     {
         LoadingOverlay.Instance.AddLoadingKey("RefreshButton");
         await ProfileRequests.RevalidateProfiles();
+        GetTree().ReloadCurrentScene();
+        /*
+        LoadingOverlay.Instance.AddLoadingKey("RefreshButton");
+        await ProfileRequests.RevalidateProfiles();
         PerformRefresh?.Invoke();
         LoadingOverlay.Instance.RemoveLoadingKey("RefreshButton");
+        */
     }
 
     public void CloseApp()

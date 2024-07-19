@@ -24,7 +24,6 @@ shader_parameter/IconTint = Color(0.1, 0.1, 0.1, 1)
 
 [node name="Cardpack Llama Entry" type="MarginContainer"]
 script = ExtResource("1_5w7bn")
-tierColors = PackedColorArray(0, 0.392157, 1, 1, 0.6, 0.6, 0.6, 1, 0.75, 0.75, 0, 1)
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 clip_contents = true
@@ -96,6 +95,7 @@ layout_mode = 2
 
 [connection signal="AmountChanged" from="." to="PanelContainer/MarginContainer2/Pinata/AmountLabel" method="set_text"]
 [connection signal="DescriptionChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
-[connection signal="IconChanged" from="." to="PanelContainer/MarginContainer2/Pinata/Icon" method="set_texture"]
-[connection signal="PinataChanged" from="." to="PanelContainer/MarginContainer2/Pinata" method="set_texture"]
+[connection signal="IconChanged" from="." to="PanelContainer/MarginContainer2/Pinata" method="set_texture"]
+[connection signal="RarityChanged" from="." to="PanelContainer/MarginContainer/Gradient" method="set_self_modulate"]
+[connection signal="SubtypeIconChanged" from="." to="PanelContainer/MarginContainer2/Pinata/Icon" method="set_texture"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

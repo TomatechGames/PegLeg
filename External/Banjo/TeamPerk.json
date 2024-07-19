@@ -2,8 +2,8 @@
   "TeamPerk:tpid_bioenergysource": {
     "Type": "TeamPerk",
     "Name": "TPID_BioEnergySource",
-    "ItemName": "Bio-Energy Source",
-    "ItemDescription": "Recover Shield equal to 0.2% of Energy lost.",
+    "DisplayName": "Bio-Energy Source",
+    "Description": "Recover Shield equal to 0.2% of Energy lost.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/bioenergysource/tpid_bioenergysource.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Global-Bio-EnergySource.png"
@@ -12,8 +12,8 @@
   "TeamPerk:tpid_blakebeardsstash": {
     "Type": "TeamPerk",
     "Name": "TPID_BlakebeardsStash",
-    "ItemName": "Blakebeard\u0027s Stash",
-    "ItemDescription": "Eliminations have a 5% chance to uncover one of Blakebeard\u0027s stashes. Search them to find Peg Legs, Coconuts, and Cannonball Grenades.",
+    "DisplayName": "Blakebeard\u0027s Stash",
+    "Description": "Eliminations have a 5% chance to uncover one of Blakebeard\u0027s stashes. Search them to find Peg Legs, Coconuts, and Cannonball Grenades.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/blakebeardsstash/tpid_blakebeardsstash.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-BlakebeardsTreasure-128.png"
@@ -22,8 +22,8 @@
   "TeamPerk:tpid_blastfromthepast": {
     "Type": "TeamPerk",
     "Name": "TPID_BlastFromThePast",
-    "ItemName": "Blast from the Past",
-    "ItemDescription": "Removes all shield and increases Max Health by 200%.",
+    "DisplayName": "Blast from the Past",
+    "Description": "Removes all shield and increases Max Health by 200%.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/blastfromthepast/tpid_blastfromthepast.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Perk-TeamPerk-BlastFromThePast-128.png"
@@ -32,8 +32,8 @@
   "TeamPerk:tpid_boombase": {
     "Type": "TeamPerk",
     "Name": "TPID_BOOMBASE",
-    "ItemName": "BOOM-B.A.S.E.",
-    "ItemDescription": "B.A.S.E. blasts Steel Wool music, increasing Damage by 12% and Critical Rating by 15 for allies within 5 tiles.",
+    "DisplayName": "BOOM-B.A.S.E.",
+    "Description": "B.A.S.E. blasts Steel Wool music, increasing Damage by 12% and Critical Rating by 15 for allies within 5 tiles.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/boombase/tpid_boombase.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-BoomBase-128.png"
@@ -42,8 +42,8 @@
   "TeamPerk:tpid_coolcustomer": {
     "Type": "TeamPerk",
     "Name": "TPID_CoolCustomer",
-    "ItemName": "Cool Customer",
-    "ItemDescription": "With Stay Frosty active, using an ability reduces Cooldown of all abilities by 3 seconds and ends Stay Frosty.",
+    "DisplayName": "Cool Customer",
+    "Description": "With Stay Frosty active, using an ability reduces Cooldown of all abilities by 3 seconds and ends Stay Frosty.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/coolcustomer/tpid_coolcustomer.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-CoolCustomer-128.png"
@@ -52,8 +52,8 @@
   "TeamPerk:tpid_dangerdanger": {
     "Type": "TeamPerk",
     "Name": "TPID_DangerDanger",
-    "ItemName": "Z.A.P.",
-    "ItemDescription": "Z.A.P. has your back, dealing 105 base Energy Damage to a random enemy every 6 seconds.",
+    "DisplayName": "Z.A.P.",
+    "Description": "Z.A.P. has your back, dealing 105 base Energy Damage to a random enemy every 6 seconds.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/dangerdanger/tpid_dangerdanger.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-DangerDanger-128.png"
@@ -62,8 +62,8 @@
   "TeamPerk:tpid_dimmak": {
     "Type": "TeamPerk",
     "Name": "TPID_DimMak",
-    "ItemName": "Dim Mak",
-    "ItemDescription": "Shadow Stance regenerates 1.8% Shield per second.",
+    "DisplayName": "Dim Mak",
+    "Description": "Shadow Stance regenerates 1.8% Shield per second.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/dimmak/tpid_dimmak.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Ninja-DimMak-128.png"
@@ -72,8 +72,8 @@
   "TeamPerk:tpid_endlessshadow": {
     "Type": "TeamPerk",
     "Name": "TPID_EndlessShadow",
-    "ItemName": "Endless Shadow",
-    "ItemDescription": "Increases Shadow Stance Duration by 4 seconds.",
+    "DisplayName": "Endless Shadow",
+    "Description": "Increases Shadow Stance Duration by 4 seconds.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/endlessshadow/tpid_endlessshadow.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-EndlessShadow-128.png"
@@ -82,8 +82,8 @@
   "TeamPerk:tpid_holidaycheer": {
     "Type": "TeamPerk",
     "Name": "TPID_HolidayCheer",
-    "ItemName": "Happy Holidays",
-    "ItemDescription": "Reduces your Ability cooldowns by 40%. Stacks independently from other cooldown reduction perks.",
+    "DisplayName": "Happy Holidays",
+    "Description": "Reduces your Ability cooldowns by 40%. Stacks independently from other cooldown reduction perks.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/holidaycheer/tpid_holidaycheer.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-HappyHolidays-128.png"
@@ -92,8 +92,8 @@
   "TeamPerk:tpid_huntersinstinct": {
     "Type": "TeamPerk",
     "Name": "TPID_HuntersInstinct",
-    "ItemName": "Hunter\u0027s Instinct",
-    "ItemDescription": "Eliminations during Evening or Night grant 0.2% Damage and 0.1% Melee Life Leech, up to 40 stacks. These bonuses last until Night ends.",
+    "DisplayName": "Hunter\u0027s Instinct",
+    "Description": "Eliminations during Evening or Night grant 0.2% Damage and 0.1% Melee Life Leech, up to 40 stacks. These bonuses last until Night ends.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/huntersinstinct/tpid_huntersinstinct.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-HuntersInstinct-128.png"
@@ -102,8 +102,8 @@
   "TeamPerk:tpid_keepout": {
     "Type": "TeamPerk",
     "Name": "TPID_KeepOut",
-    "ItemName": "Keep Out!!!",
-    "ItemDescription": "Frag Grenade leaves an energized area dealing 18 base Energy Damage per second for 6 Seconds. Base Radius is 0.375 tiles and increases by 40% with each match.",
+    "DisplayName": "Keep Out!!!",
+    "Description": "Frag Grenade leaves an energized area dealing 18 base Energy Damage per second for 6 Seconds. Base Radius is 0.375 tiles and increases by 40% with each match.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/keepout/tpid_keepout.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-KeepOut-128.png"
@@ -112,8 +112,8 @@
   "TeamPerk:tpid_kineticoverdrive": {
     "Type": "TeamPerk",
     "Name": "TPID_KineticOverdrive",
-    "ItemName": "Kinetic Overdrive",
-    "ItemDescription": "Kinetic Overload occurs an additional time.",
+    "DisplayName": "Kinetic Overdrive",
+    "Description": "Kinetic Overload occurs an additional time.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/kineticoverdrive/tpid_kineticoverdrive.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-KineticOverdrive-128.png"
@@ -122,8 +122,8 @@
   "TeamPerk:tpid_longarmofthelaw": {
     "Type": "TeamPerk",
     "Name": "TPID_LongArmOfTheLaw",
-    "ItemName": "Long Arm of the Law",
-    "ItemDescription": "Increases Anti-Material Charge Range by 1 tile(s).",
+    "DisplayName": "Long Arm of the Law",
+    "Description": "Increases Anti-Material Charge Range by 1 tile(s).",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/longarmofthelaw/tpid_longarmofthelaw.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Outlander-LongArmOfTheLaw-128.png"
@@ -132,8 +132,8 @@
   "TeamPerk:tpid_nevertellmetheodds": {
     "Type": "TeamPerk",
     "Name": "TPID_NeverTellMeTheOdds",
-    "ItemName": "Underdog",
-    "ItemDescription": "Increases Healing Received by 2.5% for each nearby enemy.",
+    "DisplayName": "Underdog",
+    "Description": "Increases Healing Received by 2.5% for each nearby enemy.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/nevertellmetheodds/tpid_nevertellmetheodds.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Global-Underdog.png"
@@ -142,8 +142,8 @@
   "TeamPerk:tpid_onetwopunch": {
     "Type": "TeamPerk",
     "Name": "TPID_OneTwoPunch",
-    "ItemName": "One-Two Punch",
-    "ItemDescription": "Your next Heavy Attack after using an ability costs 20% less Energy.",
+    "DisplayName": "One-Two Punch",
+    "Description": "Your next Heavy Attack after using an ability costs 20% less Energy.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/onetwopunch/tpid_onetwopunch.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Global-OneTwoPunch.png"
@@ -152,8 +152,8 @@
   "TeamPerk:tpid_phaseblaster": {
     "Type": "TeamPerk",
     "Name": "TPID_PhaseBlaster",
-    "ItemName": "Phase Blaster",
-    "ItemDescription": "Every 5 seconds, your next shot will fire a Phase Pulse which deals 47 base Energy Damage.",
+    "DisplayName": "Phase Blaster",
+    "Description": "Every 5 seconds, your next shot will fire a Phase Pulse which deals 47 base Energy Damage.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/phaseblaster/tpid_phaseblaster.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-PhaseBlaster-128.png"
@@ -162,8 +162,8 @@
   "TeamPerk:tpid_preemptivestrike": {
     "Type": "TeamPerk",
     "Name": "TPID_PreemptiveStrike",
-    "ItemName": "Preemptive Strike",
-    "ItemDescription": "Increases Damage by 6.5% against full health enemies.",
+    "DisplayName": "Preemptive Strike",
+    "Description": "Increases Damage by 6.5% against full health enemies.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/preemptivestrike/tpid_preemptivestrike.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-PreemptiveStrike-128.png"
@@ -172,8 +172,8 @@
   "TeamPerk:tpid_recycling": {
     "Type": "TeamPerk",
     "Name": "TPID_Recycling",
-    "ItemName": "Recycling",
-    "ItemDescription": "B.A.S.E. generates resources based on affected structures. Higher tier structures generate more resources. Interact with B.A.S.E. to collect.",
+    "DisplayName": "Recycling",
+    "Description": "B.A.S.E. generates resources based on affected structures. Higher tier structures generate more resources. Interact with B.A.S.E. to collect.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/recycling/tpid_recycling.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-Recycling-128.png"
@@ -182,8 +182,8 @@
   "TeamPerk:tpid_roundtrip": {
     "Type": "TeamPerk",
     "Name": "TPID_RoundTrip",
-    "ItemName": "Round Trip",
-    "ItemDescription": "Throwing Stars return to you, dealing their damage again on the way back.",
+    "DisplayName": "Round Trip",
+    "Description": "Throwing Stars return to you, dealing their damage again on the way back.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/roundtrip/tpid_roundtrip.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-RoundTrip-128.png"
@@ -192,8 +192,8 @@
   "TeamPerk:tpid_shakeitoff": {
     "Type": "TeamPerk",
     "Name": "TPID_ShakeItOff",
-    "ItemName": "Shake It Off",
-    "ItemDescription": "Decreases Duration of elemental status effects by 50%.",
+    "DisplayName": "Shake It Off",
+    "Description": "Decreases Duration of elemental status effects by 50%.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/shakeitoff/tpid_shakeitoff.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-ShakeItOff-128.png"
@@ -202,8 +202,8 @@
   "TeamPerk:tpid_shiftinggears": {
     "Type": "TeamPerk",
     "Name": "TPID_ShiftingGears",
-    "ItemName": "Shifting Gears",
-    "ItemDescription": "Phase Shift has 1 additional charge(s) and Range is decreased by 0.2 tile(s).",
+    "DisplayName": "Shifting Gears",
+    "Description": "Phase Shift has 1 additional charge(s) and Range is decreased by 0.2 tile(s).",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/shiftinggears/tpid_shiftinggears.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Outlander-ShiftingGears-128.png"
@@ -212,8 +212,8 @@
   "TeamPerk:tpid_slowyourroll": {
     "Type": "TeamPerk",
     "Name": "TPID_SlowYourRoll",
-    "ItemName": "Slow Your Roll",
-    "ItemDescription": "Freeze melee attackers for 2 second(s). Mist Monsters are slowed by 43%.",
+    "DisplayName": "Slow Your Roll",
+    "Description": "Freeze melee attackers for 2 second(s). Mist Monsters are slowed by 43%.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/slowyourroll/tpid_slowyourroll.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Global-SlowYourRoll.png"
@@ -222,8 +222,8 @@
   "TeamPerk:tpid_soaringmantis": {
     "Type": "TeamPerk",
     "Name": "TPID_SoaringMantis",
-    "ItemName": "Soaring Mantis",
-    "ItemDescription": "Mantis Leap allows 2 additional jump(s).",
+    "DisplayName": "Soaring Mantis",
+    "Description": "Mantis Leap allows 2 additional jump(s).",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/soaringmantis/tpid_soaringmantis.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Ninja-SoaringMantis-128.png"
@@ -232,8 +232,8 @@
   "TeamPerk:tpid_superchargedtraps": {
     "Type": "TeamPerk",
     "Name": "TPID_SuperchargedTraps",
-    "ItemName": "Supercharged Traps",
-    "ItemDescription": "Increases Damage of traps affected by B.A.S.E. by 8.5%.",
+    "DisplayName": "Supercharged Traps",
+    "Description": "Increases Damage of traps affected by B.A.S.E. by 8.5%.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/superchargedtraps/tpid_superchargedtraps.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-TrapDamageBoost-128.png"
@@ -242,8 +242,8 @@
   "TeamPerk:tpid_totallygnarly": {
     "Type": "TeamPerk",
     "Name": "TPID_TotallyGnarly",
-    "ItemName": "Totally Rockin\u0027 Out",
-    "ItemDescription": "Rockin\u0027 Riff also increases Crit Rating by 160 (decaying over 8 seconds), and Heals 73.8 base health.",
+    "DisplayName": "Totally Rockin\u0027 Out",
+    "Description": "Rockin\u0027 Riff also increases Crit Rating by 160 (decaying over 8 seconds), and Heals 73.8 base health.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/totallygnarlly/tpid_totallygnarly.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-TotallyGnarly-128.png"
@@ -252,8 +252,8 @@
   "TeamPerk:tpid_trickandtreat": {
     "Type": "TeamPerk",
     "Name": "TPID_TrickAndTreat",
-    "ItemName": "Trick and Treat",
-    "ItemDescription": "50% chance to conjure an extra Phantasm every time you conjure one. In addition, Phantasms have 33% Life Leech.",
+    "DisplayName": "Trick and Treat",
+    "Description": "50% chance to conjure an extra Phantasm every time you conjure one. In addition, Phantasms have 33% Life Leech.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/trickandtreat/tpid_trickandtreat.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-TeamPerk-TrickAndTreat-128.png"
@@ -262,8 +262,8 @@
   "TeamPerk:tpid_violentinspiration": {
     "Type": "TeamPerk",
     "Name": "TPID_ViolentInspiration",
-    "ItemName": "Hot Swap",
-    "ItemDescription": "Weapon eliminations increase Weapon Damage by 13% for 15 seconds. Each weapon type can only apply one stack of this effect.",
+    "DisplayName": "Hot Swap",
+    "Description": "Weapon eliminations increase Weapon Damage by 13% for 15 seconds. Each weapon type can only apply one stack of this effect.",
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/violentinspiration/tpid_violentinspiration.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Global-Hotswap.png"

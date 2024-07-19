@@ -6,15 +6,18 @@ using System.Xml.Linq;
 //TODO: extend gameItemEntry and rename to cardPackEntry
 public partial class LlamaEntry : GameItemEntry
 {
+    [Signal]
+    public delegate void LlamaPressedEventHandler(string itemId);
 
     [Export]
     bool includeAmountInName = false;
     [Export]
     bool includeNameInDescription = true;
 
-    public string linkedPressData;
+    public void SetLinkedItemId(string value) => linkedItemId = value;
+    string linkedItemId = "";
 
-    const string defaultPreviewImage = "ExportedImages\\PinataStandardPack_128.png";
+    const string defaultPreviewImage = "ExportedImages\\PinataStandardPack.png";
     public static readonly Texture2D[] llamaTierIcons = new Texture2D[]
     {
         ResourceLoader.Load<Texture2D>("res://Images/Llamas/PinataStandardPack.png", "Texture2D"),
@@ -24,6 +27,8 @@ public partial class LlamaEntry : GameItemEntry
 
     protected override void UpdateItemData(JsonObject itemInstance)
     {
+        if (itemInstance is null)
+            return;
         if (!itemInstance["templateId"].ToString().StartsWith("CardPack"))
         {
             base.UpdateItemData(itemInstance);
@@ -32,22 +37,29 @@ public partial class LlamaEntry : GameItemEntry
         SetCardPack(itemInstance);
     }
 
+    public static readonly Color[] llamaTierColors = new Color[]
+    {
+        Color.FromString("#0064ff", Colors.White),
+        Color.FromString("#999999", Colors.White),
+        Color.FromString("#bfbf00", Colors.White),
+    };
+
     void SetCardPack(JsonObject cardPackInstance)
     {
+        linkedItemId = cardPackInstance["templateId"].ToString();
         var cardPackTemplate = cardPackInstance?.GetTemplate();
 
-        string name = cardPackTemplate["ItemName"].ToString();
+        string name = cardPackTemplate["DisplayName"].ToString();
         int amount = cardPackInstance["quantity"].GetValue<int>();
         if (includeAmountInName)
         {
-            if(amount > 0)
-                name += " (" + amount + " left)";
-            else if(amount==0)
-                name += " (Sold Out)";
+            int shopAmount = cardPackInstance["shopQuantity"]?.GetValue<int>() ?? amount;
+            if (shopAmount > 0)
+                name += " (" + shopAmount + " left)";
         }
         EmitSignal(SignalName.NameChanged, name);
 
-        string description = cardPackTemplate["ItemDescription"]?.ToString();
+        string description = cardPackTemplate["Description"]?.ToString();
         description = description?.Replace(". ", ".\n");
         description = description?.Replace("! ", "!\n");
         if (includeNameInDescription)
@@ -57,8 +69,6 @@ public partial class LlamaEntry : GameItemEntry
         string amountText = "x"+amount;
         if (amount < 0)
             amountText = "";
-        else if (amount == 0)
-            amountText = "Sold Out";
         EmitSignal(SignalName.AmountChanged, amountText);
 
 
@@ -88,14 +98,20 @@ public partial class LlamaEntry : GameItemEntry
         EmitSignal(SignalName.IconChanged, pinataIcon);
         EmitSignal(SignalName.SubtypeIconChanged, packIcon);
 
-        EmitSignal(SignalName.RarityChanged, ShopOfferEntry.llamaTierColors[llamaTier]);
+        EmitSignal(SignalName.RarityChanged, llamaTierColors[llamaTier]);
     }
 
     public override void ClearItem()
     {
         base.ClearItem();
+        linkedItemId = "";
         EmitSignal(SignalName.NameChanged, "Select a Llama");
         EmitSignal(SignalName.IconChanged, llamaTierIcons[0]);
         EmitSignal(SignalName.SubtypeIconChanged, BanjoAssets.defaultIcon);
+    }
+
+    public override void EmitPressedSignal()
+    {
+        EmitSignal(SignalName.LlamaPressed, linkedItemId);
     }
 }

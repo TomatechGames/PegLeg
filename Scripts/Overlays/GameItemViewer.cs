@@ -13,9 +13,8 @@ public partial class GameItemViewer : ModalWindow
     NodePath primaryItemEntryPath;
     GameItemEntry primaryItemEntry;
 
-    [Export]
-    NodePath descriptionTextPath;
-    RichTextLabel descriptionText;
+    //[Export]
+    //RichTextLabel descriptionText;
 
     [Export]
     NodePath extraIconsRootPath;
@@ -57,9 +56,6 @@ public partial class GameItemViewer : ModalWindow
     //TODO: set up hero perks and stuff
 
     [ExportGroup("Buttons")]
-    [Export]
-    NodePath purchaseButtonPanelPath;
-    Control purchaseButtonPanel;
 
     [Export]
     NodePath recycleButtonPanelPath;
@@ -86,13 +82,26 @@ public partial class GameItemViewer : ModalWindow
     [Export]
     Control[] itemChoiceLayoutSections;
 
+    [ExportGroup("Purchases")]
+    [Export]
+    Control purchasePanel;
+    [Export]
+    Control outOfStockPanel;
+    [Export]
+    Control cantAffordPanel;
+    [Export]
+    SpinBox purchaseCountSpinner;
+    [Export]
+    TextureRect priceIcon;
+    [Export]
+    Label priceLabel;
+
     public override void _Ready()
     {
         base._Ready();
         Instance = this;
 
         this.GetNodeOrNull(primaryItemEntryPath, out primaryItemEntry);
-        this.GetNodeOrNull(descriptionTextPath, out descriptionText);
         this.GetNodeOrNull(extraIconsRootPath, out extraIconsRoot);
 
         this.GetNodeOrNull(statsTreePath, out statsTree);
@@ -103,7 +112,6 @@ public partial class GameItemViewer : ModalWindow
         this.GetNodeOrNull(heroCommanderPerkEntryPath, out heroCommanderPerkEntry);
         this.GetNodeOrNull(heroPerkEntryPath, out heroPerkEntry);
 
-        this.GetNodeOrNull(purchaseButtonPanelPath, out purchaseButtonPanel);
         this.GetNodeOrNull(recycleButtonPanelPath, out recycleButtonPanel);
         this.GetNodeOrNull(levelupButtonPanelPath, out levelupButtonPanel);
         this.GetNodeOrNull(evolveButtonPanelPath, out evolveButtonPanel);
@@ -111,6 +119,8 @@ public partial class GameItemViewer : ModalWindow
 
         this.GetNodeOrNull(devTextPath, out devText);
         this.GetNodeOrNull(itemChoiceParentPath, out itemChoiceParent);
+
+        purchaseCountSpinner.ValueChanged += SpinnerChanged;
 
         for (int i = 0; i < itemChoiceEntries.Length; i++)
         {
@@ -120,11 +130,23 @@ public partial class GameItemViewer : ModalWindow
 
     }
 
+    public override void _ExitTree()
+    {
+        linkedProfileItem?.Unlink();
+    }
+
     ProfileItemHandle linkedProfileItem;
+    JsonObject linkedShopOffer;
+    Action purchaseCallback;
+
     public async Task LinkItem(ProfileItemHandle profileItem)
     {
         itemChoiceParent.Visible = false;
         linkedProfileItem = profileItem;
+        linkedShopOffer = null;
+        purchasePanel.Visible = false;
+        outOfStockPanel.Visible = false;
+        cantAffordPanel.Visible = false;
         var itemInstance = await profileItem.GetItem();
         SetWindowOpen(true);
         await SetDisplayItem(itemInstance);
@@ -137,8 +159,14 @@ public partial class GameItemViewer : ModalWindow
         linkedProfileItem = null;
         SetWindowOpen(true);
 
+        purchasePanel.Visible = false;
+        outOfStockPanel.Visible = false;
+        cantAffordPanel.Visible = false;
+        linkedShopOffer = null;
+        purchaseCallback = null;
+
         //if choice cardpack, display choices instead
-        if (itemInstance["templateId"].ToString().StartsWith("CardPack") && itemInstance["attributes"].AsObject().ContainsKey("options"))
+        if (itemInstance["templateId"].ToString().StartsWith("CardPack") && (itemInstance["attributes"]?.AsObject().ContainsKey("options") ?? false))
         {
             itemChoiceParent.Visible = true;
             var optionsArr = itemInstance["attributes"]["options"].AsArray();
@@ -147,9 +175,9 @@ public partial class GameItemViewer : ModalWindow
             for (int i=0; i<optionsArr.Count; i++)
             {
                 var thisChoice = optionsArr[i];
-                BanjoAssets.TryGetTemplate(thisChoice["itemType"].ToString(), out var itemTemplate);
-                var itemStack = itemTemplate.CreateInstanceOfItem(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"].AsObject().Reserialise());
-                itemChoiceEntries[i].SetItemData(new(itemStack));
+                BanjoAssets.TryGetTemplate(thisChoice["itemType"].ToString().Replace("Weapon:w", "Schematic:s"), out var itemTemplate);
+                var itemStack = itemTemplate.CreateInstanceOfItem(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
+                itemChoiceEntries[i].SetItemData(await itemStack.SetItemRewardNotification());
                 choices[i] = itemStack;
             }
 
@@ -170,20 +198,8 @@ public partial class GameItemViewer : ModalWindow
     {
         Visible = true;
         devText.Text = itemInstance.ToString();
-        primaryItemEntry.SetItemData(new(itemInstance));
+        primaryItemEntry.SetItemData(itemInstance);
         var template = itemInstance.GetTemplate();
-        var description = template["ItemDescription"]?.ToString() ?? "";
-
-        description = description.Replace("{Gender}|gender(him, her)", "them");
-
-        if(template["Type"].ToString() == "Worker" && template["ItemName"].ToString()=="Survivor")
-        {
-            //cut off text that requires personality and set bonus, since we dont know what they are
-            description = description[..104];
-        }
-        description = description.Replace(". ", ".\n");
-
-        descriptionText.Text = description;
 
         //TODO: add extra icons for survivors, and fix descriptions
 
@@ -204,7 +220,7 @@ public partial class GameItemViewer : ModalWindow
             heroPerkEntry.SetAbility(heroItems["HeroPerk"].AsObject(), false);
             heroCommanderPerkEntry.SetAbility(heroItems["CommanderPerk"].AsObject(), tier<2);
 
-            var fortStats = await ProfileRequests.GetCurrentFortStats();
+            var fortStats = await HomebasePowerLevel.GetFORTStats();
             statsTree.Visible = true;
             statsTree.Clear();
             statsTree.Columns = 3;
@@ -251,7 +267,7 @@ public partial class GameItemViewer : ModalWindow
             perkDetailsPanel.Visible = true;
             if (linkedProfileItem is not null)
                 perkDetailsPanel.LinkItem(linkedProfileItem);
-            else if (itemInstance["attributes"].AsObject().ContainsKey("alterations"))
+            else if (itemInstance["attributes"]?.AsObject().ContainsKey("alterations") ?? false)
                 perkDetailsPanel.SetDisplayItem(itemInstance);
             else
                 perkDetailsPanel.Visible = false;
@@ -285,12 +301,98 @@ public partial class GameItemViewer : ModalWindow
             else
             {
                 string fixedVal = Regex.Replace(item.Value.ToString(), "[A-Z]", " $0");
+
+                if (item.Value.AsValue().TryGetValue(out float floatValue))
+                    fixedVal = (Mathf.Round(floatValue * 100) / 100).ToString();
+
                 if(fixedVal.StartsWith(" "))
                     fixedVal = fixedVal[1..];
                 fixedVal = fixedVal.Replace("  ", " ");
                 entry.SetText(1, fixedVal);
             }
         }
+    }
+
+    public async Task LinkShopOffer(JsonObject offer, Action purchaseCallback = null)
+    {
+        linkedShopOffer = offer;
+        this.purchaseCallback = purchaseCallback;
+
+        string priceType = offer["prices"][0]["currencySubType"].ToString();
+        int price = offer["prices"][0]["finalPrice"].GetValue<int>();
+        var inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
+
+        int maxAffordable = price == 0 ? 999 : Mathf.FloorToInt(inInventory / price);
+        int maxInStock = await offer.GetPurchaseLimitFromOffer();
+        int maxAmount = Mathf.Min(maxAffordable, maxInStock);
+
+        int maxSimultaniousAmount = Mathf.Min(int.Parse(
+            offer["metaInfo"]?
+                .AsArray()
+                .FirstOrDefault(val => val["key"].ToString() == "MaxConcurrentPurchases")?
+                ["value"]
+                .ToString()
+            ??
+            maxAmount.ToString()
+        ), maxAmount);
+
+        purchasePanel.Visible = false;
+        outOfStockPanel.Visible = false;
+        cantAffordPanel.Visible = false;
+
+        if (maxAmount > 0)
+        {
+            purchasePanel.Visible = true;
+            latestPurchasablePrice = price;
+            SpinnerChanged(purchaseCountSpinner.Value);
+            purchaseCountSpinner.MaxValue = maxSimultaniousAmount;
+            purchaseCountSpinner.Visible = maxSimultaniousAmount > 1;
+            BanjoAssets.TryGetTemplate(priceType, out var priceTemplate);
+            priceIcon.Texture = priceTemplate.GetItemTexture();
+        }
+        else if (maxInStock <= 0)
+        {
+            //out of stock
+            outOfStockPanel.Visible = true;
+        }
+        else
+        {
+            //can't afford
+            cantAffordPanel.Visible = true;
+        }
+    }
+    int latestPurchasablePrice = 0;
+
+    public void SpinnerChanged(double newValue)
+    {
+        priceLabel.Text = (latestPurchasablePrice * newValue).ToString();
+    }
+    public async void PurchaseItem()
+    {
+        if (linkedShopOffer is null)
+            return;
+        GD.Print("attempting to purchase offer: " + linkedShopOffer);
+
+        JsonObject body = new()
+        {
+            ["offerId"] = linkedShopOffer["offerId"].ToString(),
+            ["purchaseQuantity"] = purchaseCountSpinner.Value,
+            ["currency"] = linkedShopOffer["prices"][0]["currencyType"].ToString(),
+            ["currencySubType"] = linkedShopOffer["prices"][0]["currencySubType"].ToString(),
+            ["expectedTotalPrice"] = linkedShopOffer["prices"][0]["finalPrice"].GetValue<int>() * purchaseCountSpinner.Value,
+            ["gameContext"] = "Pegleg",
+        };
+        LoadingOverlay.Instance.AddLoadingKey("ItemPurchase");
+        var result = (await ProfileRequests.PerformProfileOperation(FnProfiles.Common, "PurchaseCatalogEntry", body.ToString()));
+        GD.Print(result["notifications"]);
+        GD.Print(result["multiUpdate"]);
+        SetWindowOpen(false);
+        LoadingOverlay.Instance.RemoveLoadingKey("ItemPurchase");
+
+        var resultItems = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"].AsArray();
+        await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());
+        purchaseCallback?.Invoke();
+        purchaseCallback = null;
     }
 
 

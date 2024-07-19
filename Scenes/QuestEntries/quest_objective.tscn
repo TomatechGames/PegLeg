@@ -1,0 +1,86 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5in0c8tv1sfq"]
+
+[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://Themes/Styleboxes/Heavy/HeavyBox.tres" id="1_332se"]
+[ext_resource type="Script" path="res://Scripts/Quests/QuestObjective.cs" id="1_u26dx"]
+[ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="2_hawdj"]
+[ext_resource type="StyleBox" uid="uid://wf5aopk2bqf1" path="res://Themes/Styleboxes/Medium/MediumBox.tres" id="3_wxk0j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44vsw"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="QuestObjective" type="MarginContainer" node_paths=PackedStringArray("progressBar")]
+custom_minimum_size = Vector2(180, 0)
+script = ExtResource("1_u26dx")
+progressBar = NodePath("MarginContainer/VBoxContainer/ProgressBar")
+incompleteBarColor = Color(1, 1, 0, 1)
+incompleteTextColor = Color(1, 1, 1, 1)
+completeColor = Color(0, 1, 0, 1)
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_332se")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="InstructionLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 20
+text = "Complete 3 missions as a Constructor"
+vertical_alignment = 1
+autowrap_mode = 2
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 20
+text = "1/3"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+visible = false
+self_modulate = Color(0, 1, 0, 1)
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Complete"
+texture = ExtResource("2_hawdj")
+expand_mode = 3
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+theme_override_styles/background = ExtResource("3_wxk0j")
+theme_override_styles/fill = SubResource("StyleBoxFlat_44vsw")
+max_value = 3.0
+value = 1.0
+show_percentage = false
+
+[connection signal="IsComplete" from="." to="MarginContainer/VBoxContainer/HBoxContainer/TextureRect" method="set_visible"]
+[connection signal="NameChanged" from="." to="MarginContainer/VBoxContainer/HBoxContainer/InstructionLabel" method="set_text"]
+[connection signal="ProgressTextChanged" from="." to="MarginContainer/VBoxContainer/HBoxContainer/Label2" method="set_text"]
+[connection signal="TextColorChanged" from="." to="MarginContainer/VBoxContainer/HBoxContainer/Label2" method="set_self_modulate"]
+[connection signal="TooltipChanged" from="." to="." method="set_tooltip_text"]

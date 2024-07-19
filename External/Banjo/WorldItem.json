@@ -2,8 +2,8 @@
   "WorldItem:golditemdata": {
     "Type": "WorldItem",
     "Name": "GoldItemData",
-    "ItemName": "Gold",
-    "ItemDescription": "Basic resource found throughout the world.",
+    "DisplayName": "Gold",
+    "Description": "Basic resource found throughout the world.",
     "Rarity": "Common",
     "AssetPath": "fortnitegame/content/items/resourcepickups/golditemdata.uasset",
     "ImagePaths": {
@@ -14,8 +14,8 @@
   "WorldItem:metalitemdata": {
     "Type": "WorldItem",
     "Name": "MetalItemData",
-    "ItemName": "Metal",
-    "ItemDescription": "Basic resource found throughout the world.",
+    "DisplayName": "Metal",
+    "Description": "Basic resource found throughout the world.",
     "Rarity": "Common",
     "AssetPath": "fortnitegame/content/items/resourcepickups/metalitemdata.uasset",
     "ImagePaths": {
@@ -26,8 +26,8 @@
   "WorldItem:permaniteitemdata": {
     "Type": "WorldItem",
     "Name": "PermaniteItemData",
-    "ItemName": "Permanite",
-    "ItemDescription": "Permanent resource used to build core of the Keep",
+    "DisplayName": "Permanite",
+    "Description": "Permanent resource used to build core of the Keep",
     "AssetPath": "fortnitegame/content/items/resourcepickups/permaniteitemdata.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\Icon_Permanite.png"
@@ -36,8 +36,8 @@
   "WorldItem:stoneitemdata": {
     "Type": "WorldItem",
     "Name": "StoneItemData",
-    "ItemName": "Stone",
-    "ItemDescription": "Basic resource found throughout the world.",
+    "DisplayName": "Stone",
+    "Description": "Basic resource found throughout the world.",
     "Rarity": "Common",
     "AssetPath": "fortnitegame/content/items/resourcepickups/stoneitemdata.uasset",
     "ImagePaths": {
@@ -48,20 +48,19 @@
   "WorldItem:survivoritemdata": {
     "Type": "WorldItem",
     "Name": "SurvivorItemData",
-    "ItemName": "Survivor",
-    "ItemDescription": "A human being worth saving",
+    "DisplayName": "Survivor",
+    "Description": "A human being worth saving",
     "Rarity": "Mythic",
     "AssetPath": "fortnitegame/content/items/resourcepickups/survivoritemdata.uasset",
     "ImagePaths": {
-      "SmallPreview": "ExportedImages\\Icon-Worker-L.png",
-      "LargePreview": "/Game/UI/Icons/Icon-Worker/Icon-Worker-L.Icon-Worker-L"
+      "SmallPreview": "ExportedImages\\Icon-Worker-L.png"
     }
   },
   "WorldItem:wooditemdata": {
     "Type": "WorldItem",
     "Name": "WoodItemData",
-    "ItemName": "Wood",
-    "ItemDescription": "Basic resource found throughout the world.",
+    "DisplayName": "Wood",
+    "Description": "Basic resource found throughout the world.",
     "Rarity": "Common",
     "AssetPath": "fortnitegame/content/items/resourcepickups/wooditemdata.uasset",
     "ImagePaths": {

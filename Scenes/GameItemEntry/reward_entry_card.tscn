@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://c47svw0ruq2i3"]
+[gd_scene load_steps=16 format=3 uid="uid://c47svw0ruq2i3"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_hrn5h"]
 [ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/T-Icon-Hero-Soldier-CARD.png" id="1_w7bnd"]
@@ -8,12 +8,14 @@
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="4_bervu"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_w04mt"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="5_w6pnj"]
+[ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="6_p6e2l"]
+[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="7_dc4uf"]
 
-[sub_resource type="Gradient" id="Gradient_rxla7"]
+[sub_resource type="Gradient" id="Gradient_tpqxe"]
 colors = PackedColorArray(0.9, 0.9, 0.9, 1, 0.6, 0.6, 0.6, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_rdiui"]
-gradient = SubResource("Gradient_rxla7")
+gradient = SubResource("Gradient_tpqxe")
 fill = 1
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
@@ -43,6 +45,7 @@ expand_margin_bottom = 10.0
 custom_minimum_size = Vector2(150, 0)
 pivot_offset = Vector2(75, 117.293)
 script = ExtResource("1_hrn5h")
+addXToAmount = true
 
 [node name="ContentParent" type="Control" parent="."]
 layout_mode = 2
@@ -106,12 +109,66 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="InspectArea" type="Control" parent="ContentParent/Content/DetailsArea/Space"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -30.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="ContentParent/Content/DetailsArea/Space/InspectArea"]
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_p6e2l")
+expand_mode = 5
+
+[node name="Label" type="Label" parent="ContentParent/Content/DetailsArea/Space/InspectArea/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Circle" parent="ContentParent/Content/DetailsArea/Space/InspectArea/TextureRect" instance=ExtResource("7_dc4uf")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="NameBox" type="PanelContainer" parent="ContentParent/Content/DetailsArea"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_irr70")
 
 [node name="NameLabel" type="Label" parent="ContentParent/Content/DetailsArea/NameBox"]
+visible = false
+custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_constants/line_spacing = 0
 text = "This is a Hero Name"
 autowrap_mode = 3
@@ -125,14 +182,16 @@ custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 alignment = 2
 
-[node name="TextureRect2" type="TextureRect" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer"]
-visible = false
+[node name="AmountLabel" type="Label" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TersiatyIcon" type="TextureRect" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("5_w6pnj")
 expand_mode = 3
 
-[node name="TextureRect3" type="TextureRect" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer"]
-visible = false
+[node name="SecondaryIocn" type="TextureRect" parent="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("5_w6pnj")
 expand_mode = 3
@@ -154,7 +213,6 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="SubtypeIcon" type="TextureRect" parent="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer/MarginContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("1_w7bnd")
 expand_mode = 3
@@ -180,11 +238,18 @@ mouse_filter = 2
 texture = ExtResource("2_645cs")
 expand_mode = 5
 
+[connection signal="AmmoIconChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer/SecondaryIocn" method="set_texture"]
+[connection signal="AmountChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer/AmountLabel" method="set_text"]
+[connection signal="AmountVisibility" from="." to="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer/AmountLabel" method="set_visible"]
 [connection signal="IconChanged" from="." to="ContentParent/Content/ItemIcon" method="set_texture"]
+[connection signal="InteractableChanged" from="." to="ContentParent/Content/DetailsArea/Space/InspectArea/TextureRect/Responsive Button Circle" method="set_visible"]
 [connection signal="NameChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/NameLabel" method="set_text"]
 [connection signal="NameRelevant" from="." to="ContentParent/Content/DetailsArea/NameBox/NameLabel" method="set_visible"]
+[connection signal="PersonalityIconChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer/SecondaryIocn" method="set_texture"]
 [connection signal="RarityChanged" from="." to="ContentParent/Content/RarityGradient" method="set_self_modulate"]
 [connection signal="RarityChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox" method="set_self_modulate"]
 [connection signal="RarityChanged" from="." to="ContentParent/Content/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
 [connection signal="SubtypeIconChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer/MarginContainer/SubtypeIcon" method="set_texture"]
+[connection signal="SurvivorBoostIconChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer/TersiatyIcon" method="set_texture"]
 [connection signal="TypeChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer/TypeLabel" method="set_text"]
+[connection signal="pressed" from="ContentParent/Content/DetailsArea/Space/InspectArea/TextureRect/Responsive Button Circle" to="." method="Inspect"]

@@ -45,6 +45,20 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 anti_aliasing = false
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j1mqq"]
+resource_local_to_scene = true
+shader = ExtResource("16_x2r4a")
+shader_parameter/SliceAmount = Vector2(4, 4)
+shader_parameter/UseManual = null
+shader_parameter/ManualControl = null
+shader_parameter/time = 3036.35
+shader_parameter/StartTime = null
+shader_parameter/Started = true
+shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
+shader_parameter/UVTexture = ExtResource("18_5uyrt")
+shader_parameter/PatternTexture = ExtResource("14_8eotn")
+shader_parameter/IconTexture = ExtResource("17_knkpm")
+
 [sub_resource type="Curve" id="Curve_fjmi8"]
 max_value = 100.0
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
@@ -71,17 +85,6 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0, 0.5)
 metadata/_snap_enabled = true
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_j1mqq"]
-resource_local_to_scene = true
-shader = ExtResource("16_x2r4a")
-shader_parameter/SliceAmount = Vector2(4, 4)
-shader_parameter/StartTime = null
-shader_parameter/Started = true
-shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
-shader_parameter/UVTexture = ExtResource("18_5uyrt")
-shader_parameter/PatternTexture = ExtResource("14_8eotn")
-shader_parameter/IconTexture = ExtResource("17_knkpm")
 
 [node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("clickArea", "backgroundImage", "music", "pullButton", "startAudio", "fallingAudio", "landAudio", "radioAudio", "fallingCrate", "landedCrate", "landedCrateBG", "landedCrateBGCards", "landedCrateLid", "confettiParticles", "crateOpenButton", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
 layout_mode = 3
@@ -119,7 +122,7 @@ smallCardParent = NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxCo
 smallCards = [NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard2"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard3"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard4"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard5"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard6")]
 choiceCanvas = NodePath("ClickArea/ChoiceArea/ChoiceCanvas")
 choiceCards = [NodePath("ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard"), NodePath("ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard2")]
-choiceResultCard = NodePath("ClickArea/ChoiceResultForegroundLayer/ChoiceResultCardTexture")
+choiceResultCard = NodePath("ClickArea/ChoiceResultBackgroundLayer/ChoiceResultCardTexture")
 choiceResultFGParent = NodePath("ClickArea/ChoiceResultForegroundLayer")
 choiceResultBGParent = NodePath("ClickArea/ChoiceResultBackgroundLayer")
 skipChoiceButton = NodePath("ClickArea/ActionButtons/VBoxContainer/SkipChoiceButton")
@@ -195,6 +198,29 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="ChoiceResultCardTexture" type="TextureRect" parent="ClickArea/ChoiceResultBackgroundLayer"]
+material = SubResource("ShaderMaterial_j1mqq")
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 7.5
+offset_top = -179.0
+offset_right = 217.5
+offset_bottom = 77.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(105, 128)
+mouse_filter = 2
+texture = ExtResource("19_fhj62")
+expand_mode = 3
+script = ExtResource("11_jtcf2")
+syncTimeProperty = true
+
 [node name="Cards" type="Control" parent="ClickArea"]
 layout_mode = 1
 anchors_preset = 15
@@ -260,6 +286,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.5, 1.5)
+interactableByDefault = true
 
 [node name="CardPullAnchor" type="Control" parent="ClickArea/Cards"]
 layout_mode = 1
@@ -427,6 +454,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="LandedLid" type="TextureRect" parent="ClickArea/SupplyDrop/LandedCrateLid"]
 visible = false
@@ -481,6 +509,7 @@ texture = ExtResource("11_pxkh0")
 expand_mode = 1
 
 [node name="CrateOpen" parent="ClickArea/SupplyDrop" instance=ExtResource("16_88i1x")]
+visible = false
 custom_minimum_size = Vector2(330, 330)
 layout_mode = 1
 anchors_preset = -1
@@ -490,8 +519,6 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_top = -15.0
 offset_bottom = -15.0
-grow_horizontal = 2
-grow_vertical = 2
 
 [node name="PullButton" type="Button" parent="ClickArea"]
 custom_minimum_size = Vector2(0, 100)
@@ -563,28 +590,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-
-[node name="ChoiceResultCardTexture" type="TextureRect" parent="ClickArea/ChoiceResultForegroundLayer"]
-material = SubResource("ShaderMaterial_j1mqq")
-custom_minimum_size = Vector2(0, 256)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 60.0
-offset_top = -115.0
-offset_right = 60.0
-offset_bottom = -115.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(105, 128)
-mouse_filter = 2
-texture = ExtResource("19_fhj62")
-expand_mode = 3
-script = ExtResource("11_jtcf2")
 
 [node name="ActionButtons" type="MarginContainer" parent="ClickArea"]
 layout_mode = 1

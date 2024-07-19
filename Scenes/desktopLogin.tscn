@@ -1,0 +1,167 @@
+[gd_scene load_steps=7 format=3 uid="uid://cd46kdw5i45cu"]
+
+[ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="1_7xbjg"]
+[ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="1_s3ots"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/Desktop/DesktopLoginInterface.cs" id="1_yqctf"]
+[ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://Themes/Styleboxes/CheckButton/CheckSeparator.tres" id="2_d8lrk"]
+[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://Themes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_hui55"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_rx0xh"]
+
+[node name="DesktopLogin" type="Control" node_paths=PackedStringArray("sizeTarget", "sizeSource", "logo", "generateCodeButton", "pasteButton", "oneTimeCodeLine", "loginButton", "usePersistantLogin")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yqctf")
+desktopMainInterfacePath = "res://Scenes/interfaceRoot.tscn"
+sizeTarget = NodePath("CenterContainer/Control")
+sizeSource = NodePath("CenterContainer/Control/Control/MarginContainer")
+logo = NodePath("CenterContainer/Control/TextureRect")
+generateCodeButton = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/GenerateCode")
+pasteButton = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/HBoxContainer/PasteCode")
+oneTimeCodeLine = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")
+loginButton = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/Button2")
+usePersistantLogin = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer/CheckButton")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="CenterContainer"]
+custom_minimum_size = Vector2(300, 230)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="CenterContainer/Control"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer/Control/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Control/Control"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 42.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Control/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Not Logged In"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GenerateCode" type="Button" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Generate One-Time Login Code"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Paste One-Time Login Code Here"
+
+[node name="PasteCode" type="Button" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/HBoxContainer/PasteCode"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_s3ots")
+expand_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_d8lrk")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = " Remember login details? "
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hui55")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="CheckButton" type="CheckButton" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LeftCheckButton"
+button_group = SubResource("ButtonGroup_rx0xh")
+text = " Yes"
+
+[node name="CheckButton2" type="CheckButton" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"RightCheckButton"
+button_pressed = true
+button_group = SubResource("ButtonGroup_rx0xh")
+text = " No"
+
+[node name="Button2" type="Button" parent="CenterContainer/Control/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"ActionButton"
+theme_override_font_sizes/font_size = 24
+text = "Login"
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(128, 128)
+mouse_filter = 2
+texture = ExtResource("1_7xbjg")

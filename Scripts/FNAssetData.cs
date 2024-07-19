@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using Godot;
 
+//Todo: for the love of bluglo, get rid of this old code and make missions/modifiers load from Banjo
 [Serializable]
 public static class FNAssetData
 {
@@ -93,7 +94,7 @@ public static class FNAssetData
         return displayData;
     }
 
-    public static readonly Texture2D defaultIcon = ResourceLoader.Load<Texture2D>("res://External/Icons/Mission/T-Icon-Unknown-128.png", "Texture2D");
+    public static readonly Texture2D defaultIcon = ResourceLoader.Load<Texture2D>("res://Images/InterfaceIcons/T-Icon-Unknown-128.png", "Texture2D");
     static readonly Dictionary<string, Texture2D> iconCache = new();
 
     public struct DisplayData
@@ -142,9 +143,10 @@ public static class FNAssetData
                     return iconCache[iconPath];
                 }
                 string fullPath = "res://External/" + iconPath;
-                if (ResourceLoader.Exists(fullPath))
+                if (FileAccess.FileExists(fullPath))
                 {
-                    return ResourceLoader.Load<Texture2D>(fullPath, "Texture2D");
+                    return ImageTexture.CreateFromImage(Image.LoadFromFile(fullPath));
+                    //return ResourceLoader.Load<Texture2D>(fullPath, "Texture2D");
                     // Image image = ResourceLoader.Load<Texture2D>(fullPath, "Texture2D").GetImage();
                     // image.Resize(32, 32);
                     // Texture2D icon = ImageTexture.CreateFromImage(image);
@@ -152,9 +154,7 @@ public static class FNAssetData
                     // return icon;
                 }
             }
-            if (fallback != null)
-                return fallback;
-            return defaultIcon;
+            return fallback ?? defaultIcon;
         }
     }
 
@@ -209,7 +209,8 @@ public static class FNAssetData
 
             foreach (var item in processedKeys)
             {
-                var loadedImage = ResourceLoader.Load<Texture2D>(iconFolder + "/" + item.Value, "Texture2D").GetImage();
+                //var loadedImage = ResourceLoader.Load<Texture2D>(iconFolder + "/" + item.Value, "Texture2D").GetImage();
+                var loadedImage = Image.LoadFromFile(iconFolder + "/" + item.Value);
                 loadedImage.Resize(32, 32);
                 loadedIcons.Add(item.Key, ImageTexture.CreateFromImage(loadedImage));
             }

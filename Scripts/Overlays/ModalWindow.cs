@@ -4,16 +4,16 @@ using System;
 public partial class ModalWindow : Control
 {
     [Export]
-    NodePath mouseBlockPanelPath;
     Control mouseBlockPanel;
 
     [Export]
-    NodePath backgroundPanelPath;
     Control backgroundPanel;
 
     [Export]
-    NodePath windowContentsPath;
-    CanvasGroup windowContents;
+    CanvasGroup windowCanvas;
+
+    [Export]
+    Control windowControl;
 
     [Export]
     float tweenTime = 0.1f;
@@ -24,23 +24,41 @@ public partial class ModalWindow : Control
 
     public override void _Ready()
     {
-        this.GetNodeOrNull(mouseBlockPanelPath, out mouseBlockPanel);
-        this.GetNodeOrNull(backgroundPanelPath, out backgroundPanel);
-        this.GetNodeOrNull(windowContentsPath, out windowContents);
 
         backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
         mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
         backgroundPanel.SelfModulate = Colors.Transparent;
-        windowContents.SelfModulate = Colors.Transparent;
-        windowContents.Scale = Vector2.One * shrunkScale;
-        windowContents.Visible = false;
+
+        if (windowCanvas is not null)
+        {
+            windowCanvas.SelfModulate = Colors.Transparent;
+            windowCanvas.Scale = Vector2.One * shrunkScale;
+            windowCanvas.Visible = false;
+        }
+        if (windowControl is not null)
+        {
+            windowControl.Modulate = Colors.Transparent;
+            windowControl.Scale = Vector2.One * shrunkScale;
+            windowControl.Visible = false;
+        }
+
         if (startOpen)
             SetWindowOpen(true);
         Visible = true;
     }
 
+    public override void _Process(double delta)
+    {
+        if (windowControl is not null)
+        {
+            windowControl.PivotOffset = windowControl.Size * 0.5f;
+        }
+    }
+
+    void CloseWindow() => SetWindowOpen(false);
+
     Tween currentTween;
-    public void SetWindowOpen(bool openState)
+    public virtual void SetWindowOpen(bool openState)
     {
         if (currentTween is not null && currentTween.IsRunning())
             currentTween.Kill();
@@ -50,21 +68,38 @@ public partial class ModalWindow : Control
         {
             backgroundPanel.MouseFilter = MouseFilterEnum.Stop;
             mouseBlockPanel.MouseFilter = MouseFilterEnum.Stop;
-            windowContents.Visible = true;
+            if (windowCanvas is not null)
+                windowCanvas.Visible = true;
+            if (windowControl is not null)
+                windowControl.Visible = true;
         }
 
         var newSize = openState ? 1 : shrunkScale;
         var newColour = openState ? Colors.White : Colors.Transparent;
         currentTween.TweenProperty(backgroundPanel, "self_modulate", newColour, tweenTime);
-        currentTween.TweenProperty(windowContents, "self_modulate", newColour, tweenTime);
-        currentTween.TweenProperty(windowContents, "scale", Vector2.One*newSize, tweenTime);
+
+        if(windowCanvas is not null)
+        {
+            currentTween.TweenProperty(windowCanvas, "self_modulate", newColour, tweenTime);
+            currentTween.TweenProperty(windowCanvas, "scale", Vector2.One * newSize, tweenTime);
+        }
+
+        if(windowControl is not null)
+        {
+            currentTween.TweenProperty(windowControl, "modulate", newColour, tweenTime);
+            currentTween.TweenProperty(windowControl, "scale", Vector2.One * newSize, tweenTime);
+        }
+
         currentTween.Finished += () =>
         {
             if (!openState)
             {
                 backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
                 mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
-                windowContents.Visible = false;
+                if (windowCanvas is not null)
+                    windowCanvas.Visible = false;
+                if (windowControl is not null)
+                    windowControl.Visible = false;
             }
         };
     }

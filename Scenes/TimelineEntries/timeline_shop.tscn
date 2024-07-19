@@ -1,0 +1,205 @@
+[gd_scene load_steps=9 format=3 uid="uid://btkd1lcscyrac"]
+
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="1_dqaet"]
+[ext_resource type="Texture2D" uid="uid://cfu6gwsnycjjg" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_shoppingcart_128.png" id="2_rqt4n"]
+[ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="3_bek10"]
+[ext_resource type="Texture2D" uid="uid://dvaxtvga1xl7j" path="res://Images/InterfaceIcons/T-Icon-Warning-32.png" id="4_uy3oc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqjp7"]
+content_margin_top = 1.0
+content_margin_right = 8.0
+content_margin_bottom = 1.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+expand_margin_left = 1.0
+
+[sub_resource type="Gradient" id="Gradient_bmpou"]
+colors = PackedColorArray(0.5, 0.5, 0.5, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aqusk"]
+gradient = SubResource("Gradient_bmpou")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i4gmn"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 10
+
+[node name="TimelineShop" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 64)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_direction = 3
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Element" type="MarginContainer" parent="HBoxContainer"]
+layout_direction = 3
+layout_mode = 2
+theme_override_constants/margin_left = -15
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Element"]
+modulate = Color(0.701961, 0, 1, 1)
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="PanelContainer" type="Panel" parent="HBoxContainer/Element/HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_vqjp7")
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Element/HBoxContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_aqusk")
+expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Element"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 10
+
+[node name="Image" type="TextureRect" parent="HBoxContainer/Element/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_dqaet")
+expand_mode = 3
+
+[node name="Element2" type="MarginContainer" parent="HBoxContainer"]
+layout_direction = 3
+layout_mode = 2
+theme_override_constants/margin_left = -15
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Element2"]
+modulate = Color(0, 0.32549, 1, 1)
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="PanelContainer" type="Panel" parent="HBoxContainer/Element2/HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_vqjp7")
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Element2/HBoxContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_aqusk")
+expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Element2"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 10
+
+[node name="Image" type="TextureRect" parent="HBoxContainer/Element2/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_dqaet")
+expand_mode = 3
+
+[node name="Element3" type="MarginContainer" parent="HBoxContainer"]
+layout_direction = 3
+layout_mode = 2
+theme_override_constants/margin_left = -15
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Element3"]
+modulate = Color(1, 0.501961, 0.0745098, 1)
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="PanelContainer" type="Panel" parent="HBoxContainer/Element3/HBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_vqjp7")
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Element3/HBoxContainer"]
+layout_mode = 2
+texture = SubResource("GradientTexture2D_aqusk")
+expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Element3"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 10
+
+[node name="Image" type="TextureRect" parent="HBoxContainer/Element3/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("1_dqaet")
+expand_mode = 3
+
+[node name="Title" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="HBoxContainer/Title"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i4gmn")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Title"]
+custom_minimum_size = Vector2(64, 0)
+layout_direction = 2
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = -5
+
+[node name="Label" type="Label" parent="HBoxContainer/Title/MarginContainer"]
+visible = false
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_constants/line_spacing = -2
+text = "Shop Refresh"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/Title/MarginContainer"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+texture = ExtResource("2_rqt4n")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/Title/MarginContainer/TextureRect"]
+self_modulate = Color(1, 0.666667, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.3
+anchor_bottom = 0.7
+grow_vertical = 0
+rotation = 0.139626
+texture = ExtResource("3_bek10")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="HBoxContainer/Title/MarginContainer/TextureRect"]
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 0.9
+grow_horizontal = 0
+grow_vertical = 0
+tooltip_text = "Note: Current Event items will be 
+removed from the shop next week "
+texture = ExtResource("4_uy3oc")
+expand_mode = 3

@@ -10,17 +10,10 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Threading;
 
-static class ProfileRequests
+public static class ProfileRequests
 {
     static readonly Dictionary<string, JsonObject> profileCache = new();
     static readonly List<string> validProfiles = new();
-
-    static DataTableCurve homebaseRatingCurve;
-    static DataTable survivorRatingDataTable = new("res://External/DataTables/SurvivorItemRating.json");
-    //TODO: rework to support getting ratings of any item
-    public static float GetSurvivorRating(JsonObject itemInstance)=>
-        survivorRatingDataTable[itemInstance.GetTemplate()["RatingLookup"].ToString()]
-                .Sample(itemInstance["attributes"]["level"].GetValue<float>());
 
     public static void InvalidateProfileCache(string profileId) => validProfiles.Remove(profileId);
     public static void InvalidateProfileCache() => validProfiles.Clear();
@@ -35,159 +28,78 @@ static class ProfileRequests
         }
     }
 
-    public static DataTableCurve GetHomebaseRatingCurve()
-    {
-        if (homebaseRatingCurve is not null)
-            return homebaseRatingCurve;
-
-        using FileAccess missionFile = FileAccess.Open("res://External/DataTables/HomebaseRatingMapping.json", FileAccess.ModeFlags.Read);
-        var curveJson = JsonNode.Parse(missionFile.GetAsText())[0]["Rows"]["UIMonsterRating"].AsObject();
-        homebaseRatingCurve = new(curveJson);
-        return homebaseRatingCurve;
-    }
-
-    static readonly Dictionary<string, string> synergyMap = new()
-    {
-        ["IsDoctor"] = "squad_attribute_medicine_emtsquad",
-        ["IsTrainer"] = "squad_attribute_medicine_trainingteam",
-        ["IsSoldier"] = "squad_attribute_arms_fireteamalpha",
-        ["IsGadgeteer"] = "squad_attribute_scavenging_gadgeteers",
-        ["IsEngineer"] = "squad_attribute_synthesis_corpsofengineering",
-        ["IsMartialArtist"] = "squad_attribute_arms_closeassaultsquad",
-        ["IsExplorer"] = "squad_attribute_scavenging_scoutingparty",
-        ["IsInventor"] = "squad_attribute_synthesis_thethinktank",
-    };
-
-    public struct FORTStats
-    {
-        public float fortitude;
-        public float offense;
-        public float resistance;
-        public float technology;
-        public FORTStats(float fortitude, float offense, float resistance, float technology)
-        {
-            this.fortitude = fortitude;
-            this.offense = offense;
-            this.resistance = resistance;
-            this.technology = technology;
-        }
-    }
-    static FORTStats? currentFortStats = null;
-    public static async Task<FORTStats> GetCurrentFortStats()
-    {
-        if(currentFortStats.HasValue)
-            return currentFortStats.Value;
-
-        var profileStats = (await GetProfile(FnProfiles.AccountItems))["profileChanges"][0]["profile"]["stats"]["attributes"]["research_levels"];
-        var profileStatAndWorkerItems = await GetProfileItems(FnProfiles.AccountItems, item =>
-            item.Value["templateId"].ToString().StartsWith("Stat") ||
-            (
-                item.Value["templateId"].ToString().StartsWith("Worker") &&
-                item.Value["attributes"].AsObject().ContainsKey("squad_id")
-            )
-        );
-        int LookupStatItem(string statId) =>
-            profileStatAndWorkerItems.First(
-                item => item.Value["templateId"].ToString() == statId
-            ).Value["quantity"].GetValue<int>();
-
-        //TODO: move this into a purpose-built SurvivorRequests class, and cache survivor squads
-        float LookupWorkers(string squadId)
-        {
-            float summedValue = 0;
-            string personalityTarget = "";
-            string leaderRarity = "";
-
-            var matchingWorkers = profileStatAndWorkerItems.Where(item => item.Value["attributes"].AsObject().ContainsKey("squad_id") && item.Value["attributes"]["squad_id"].ToString() == squadId);
-
-            var leadSurvivor = matchingWorkers.FirstOrDefault(item => item.Value["templateId"].ToString().Contains("manager"), new(null, null));
-            if (leadSurvivor.Key is not null)
-            {
-                float thisRating = GetSurvivorRating(leadSurvivor.Value.AsObject());
-
-                bool synergyMatch = synergyMap[leadSurvivor.Value["attributes"]["managerSynergy"].ToString().Split(".")[^1]] == squadId;
-
-                if (synergyMatch)
-                    thisRating *= 2;
-
-                summedValue += thisRating;
-
-                personalityTarget = leadSurvivor.Value["attributes"]["personality"].ToString();
-                leaderRarity = leadSurvivor.Value.AsObject().GetTemplate()["Rarity"].ToString();
-            }
-
-            foreach (var item in matchingWorkers)
-            {
-                if (item.Key == leadSurvivor.Key)
-                    continue;
-                float thisRating = GetSurvivorRating(item.Value.AsObject());
-
-                if (item.Value["attributes"]["personality"].ToString() == personalityTarget)
-                {
-                    thisRating += leaderRarity switch
-                    {
-                        "Mythic" => 8,
-                        "Legendary" => 8,
-                        "Epic" => 5,
-                        "Rare" => 4,
-                        "Uncommon" => 3,
-                        "Common" => 2,
-                        _ => 0
-                    };
-                }
-                else if (leaderRarity == "Mythic" && thisRating >= 2)
-                {
-                    thisRating -= 2;
-                }
-                summedValue += thisRating;
-            }
-
-            return summedValue;
-        }
-        //+ profileStats["fortitude"].GetValue<int>()
-        float fortitude = LookupStatItem("Stat:fortitude") + LookupStatItem("Stat:fortitude_team") + LookupWorkers("squad_attribute_medicine_trainingteam") + LookupWorkers("squad_attribute_medicine_emtsquad");
-        float offense = LookupStatItem("Stat:offense") + LookupStatItem("Stat:offense_team") + LookupWorkers("squad_attribute_arms_fireteamalpha") + LookupWorkers("squad_attribute_arms_closeassaultsquad");
-        float resistance = LookupStatItem("Stat:resistance") + LookupStatItem("Stat:resistance_team") + LookupWorkers("squad_attribute_scavenging_scoutingparty") + LookupWorkers("squad_attribute_scavenging_gadgeteers");
-        float technology = LookupStatItem("Stat:technology") + LookupStatItem("Stat:technology_team") + LookupWorkers("squad_attribute_synthesis_corpsofengineering") + LookupWorkers("squad_attribute_synthesis_thethinktank");
-
-        currentFortStats = new(fortitude, offense, resistance, technology);
-        return currentFortStats.Value;
-    }
-
-    public static async Task<float> GetHomebasePowerLevel()
-    {
-        var stats = await GetCurrentFortStats();
-        
-        var homebaseRatingKey = 4 * (stats.fortitude + stats.offense + stats.resistance + stats.technology);
-
-        return GetHomebaseRatingCurve().Sample(homebaseRatingKey);
-    }
-
     public static async Task<int> GetSumOfProfileItems(string profileID, string type) =>
         (await GetProfileItems(profileID, item => item.Value["templateId"].ToString().StartsWith(type))).Select(kvp => kvp.Value["quantity"].GetValue<int>()).Sum();
 
     public static async Task<JsonObject> GetProfileItems(string profileID, string type) =>
         await GetProfileItems(profileID, item => item.Value["templateId"].ToString().StartsWith(type));
 
-    public static async Task<JsonObject> GetProfileItems(string profileID, Func<KeyValuePair<string,JsonObject>, bool> predicate)
+    public delegate bool ProfileItemPredicate(KeyValuePair<string, JsonObject> kvp);
+    public static async Task<JsonObject> GetProfileItems(string profileID, ProfileItemPredicate predicate)
     {
         var matchedItems = 
             (await GetProfile(profileID))
             ["profileChanges"][0]["profile"]["items"]
             .AsObject()
             .Select(kvp=>KeyValuePair.Create(kvp.Key,kvp.Value.AsObject()))
-            .Where(predicate);
+            .Where(kvp=>predicate(kvp));
+        JsonObject result = new();
+        foreach (var item in matchedItems)
+            result[item.Key] = JsonNode.Parse(item.Value.ToString());
+        return result;
+    }
+    public static async Task<bool> ProfileItemExists(string profileID, ProfileItemPredicate predicate, bool preferCache = false)
+    {
+        if (profileCache.ContainsKey(profileID) && preferCache)
+            return ProfileItemExistsUnsafe(profileID, predicate);
+       return (await GetProfile(profileID))
+            ["profileChanges"][0]["profile"]["items"]
+            .AsObject()
+            .Select(kvp => KeyValuePair.Create(kvp.Key, kvp.Value.AsObject()))
+            .Any(kvp => predicate(kvp));
+    }
+    public static bool ProfileItemExistsUnsafe(string profileID, ProfileItemPredicate predicate)
+    {
+        return profileCache[profileID]
+             ["profileChanges"][0]["profile"]["items"]
+             .AsObject()
+             .Select(kvp => KeyValuePair.Create(kvp.Key, kvp.Value.AsObject()))
+             .Any(kvp => predicate(kvp));
+    }
+    public static async Task<JsonObject> GetFirstProfileItem(string profileID, ProfileItemPredicate predicate)
+    {
+        var matchedItem =
+            (await GetProfile(profileID))
+            ["profileChanges"][0]["profile"]["items"]
+            .AsObject()
+            .Select(kvp => KeyValuePair.Create(kvp.Key, kvp.Value.AsObject()))
+            .Where(kvp => predicate(kvp))
+            .FirstOrDefault();
+        var result = (matchedItem.Key == default) ? null : matchedItem.Value.Reserialise();
+        if (result is not null)
+            result["uuid"] = matchedItem.Key;
+        return result;
+    }
+
+    public static JsonObject GetCachedProfileItems(string profileID, ProfileItemPredicate predicate)
+    {
+        var matchedItems =
+            profileCache[profileID]
+            ["profileChanges"][0]["profile"]["items"]
+            .AsObject()
+            .Select(kvp => KeyValuePair.Create(kvp.Key, kvp.Value.AsObject()))
+            .Where(kvp => predicate(kvp));
         JsonObject result = new();
         foreach (var item in matchedItems)
             result[item.Key] = JsonNode.Parse(item.Value.ToString());
         return result;
     }
 
-    public static JsonObject GetCachedProfileItemInstance(string profileID, string uuid) =>
-        profileCache[profileID]["profileChanges"][0]["profile"]["items"][uuid]?.AsObject();
+    public static JsonObject GetCachedProfileItemInstance(ProfileItemId profileItem) =>
+        profileCache[profileItem.profile]["profileChanges"][0]["profile"]["items"][profileItem.uuid]?.AsObject();
 
-    public static async Task<JsonObject> GetProfileItemInstance(string profileID, string uuid) =>
-        (await GetProfile(profileID))["profileChanges"][0]["profile"]["items"][uuid].AsObject();
+    public static async Task<JsonObject> GetProfileItemInstance(ProfileItemId profileItem) =>
+        (await GetProfile(profileItem.profile))["profileChanges"][0]["profile"]["items"][profileItem.uuid].AsObject();
 
     public static async Task<int> GetProfileItemsCount(string profileID)
     {
@@ -235,11 +147,18 @@ static class ProfileRequests
         _ => throw new NotImplementedException(),
     };
 
-public static async Task<JsonObject> GetOrderCounts(OrderRange range)
+    static async Task<DateTime> OrderRangeToInterval(OrderRange range) => range switch
+    {
+        OrderRange.Daily => (await CalenderRequests.DailyShopRefreshTime()).AddDays(-1),
+        OrderRange.Weekly => (await CalenderRequests.WeeklyShopRefreshTime()).AddDays(-7),
+        _ => throw new NotImplementedException(),
+    };
+
+    public static async Task<JsonObject> GetOrderCounts(OrderRange range)
     {
         var orderRange = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"][OrderRangeToAttribute(range)];
         var lastIntervalTime = DateTime.Parse(orderRange["lastInterval"].ToString(), null, DateTimeStyles.RoundtripKind);
-        if (lastIntervalTime != DateTime.UtcNow.Date)
+        if (lastIntervalTime != await OrderRangeToInterval(range))
             return null;
         return orderRange["purchaseList"].AsObject();
     }
@@ -249,12 +168,12 @@ public static async Task<JsonObject> GetOrderCounts(OrderRange range)
         return attributes["in_app_purchases"]["fufillmentCounts"].AsObject();
     }
 
-    public static async Task<string> GetSACCode()
+    public static async Task<string> GetSACCode(bool addExpiredText = true)
     {
         var attributes = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
         var lastSetTime = DateTime.Parse(attributes["mtx_affiliate_set_time"].ToString(), null, DateTimeStyles.RoundtripKind);
         bool isExpired = (DateTime.UtcNow - lastSetTime).Days > 13;
-        return attributes["mtx_affiliate"] + (isExpired ? " (Expired)" : "");
+        return attributes["mtx_affiliate"] + (isExpired && addExpiredText ? " (Expired)" : "");
     }
 
     public static async Task<bool> IsSACExpired()
@@ -269,12 +188,102 @@ public static async Task<JsonObject> GetOrderCounts(OrderRange range)
         //TODO: return false if creator code not found
         return true;
     }
+    //public static async Task<List<string>> GetPinnedQuests()
+    //{
+    //    return (await GetProfile(FnProfiles.AccountItems))
+    //        ["profileChanges"]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
+    //        .AsArray()
+    //        .Select(q=>q.ToString())
+    //        .ToList();
+    //}
+    //public static List<string> GetPinnedQuestsUnsafe()
+    //{
+    //    return profileCache[FnProfiles.AccountItems]
+    //        ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
+    //        .AsArray()
+    //        .Select(q => q.ToString())
+    //        .ToList();
+    //}
+
+    public static async Task AddPinnedQuest(string uuid)
+    {
+        var existingPinnedQuests = profileCache[FnProfiles.AccountItems]
+            ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
+            .AsArray()
+            .Select(q => q.ToString())
+            .ToList();
+        if (!existingPinnedQuests.Contains(uuid))
+        {
+            existingPinnedQuests.Add(uuid);
+            JsonObject content = new()
+            {
+                ["pinnedQuestIds"] = new JsonArray(existingPinnedQuests.Select(q => (JsonValue)q.ToString()).ToArray())
+            };
+            GD.Print(content.ToString());
+            await PerformProfileOperation(FnProfiles.AccountItems, "SetPinnedQuests", content.ToString());
+        }
+    }
+
+    public static async Task RemovePinnedQuest(string uuid)
+    {
+        var existingPinnedQuests = profileCache[FnProfiles.AccountItems]
+            ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
+            .AsArray()
+            .Select(q => q.ToString())
+            .ToList();
+        if (existingPinnedQuests.Contains(uuid))
+        {
+            existingPinnedQuests.Remove(uuid);
+            JsonObject content = new()
+            {
+                ["pinnedQuestIds"] = new JsonArray(existingPinnedQuests.Select(q => (JsonValue)q).ToArray())
+            };
+            GD.Print(content.ToString());
+            await PerformProfileOperation(FnProfiles.AccountItems, "SetPinnedQuests", content.ToString());
+        }
+    }
+
+    public static async Task ClearPinnedQuests()
+    {
+        GD.Print("clearing all pinned");
+        JsonObject content = new()
+        {
+            ["pinnedQuestIds"] = new JsonArray()
+        };
+        await PerformProfileOperation(FnProfiles.AccountItems, "SetPinnedQuests", content.ToString());
+    }
+
+    public static bool HasPinnedQuestUnsafe(string uuid)
+    {
+        return profileCache[FnProfiles.AccountItems]
+            ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
+            .AsArray()
+            .Select(q=>q.ToString())
+            .Contains(uuid);
+    }
+    public static async Task<ProfileItemHandle> RerollQuest(string uuid)
+    {
+        GD.Print("rerolling quest " + uuid);
+        JsonObject content = new()
+        {
+            ["questId"] = uuid
+        };
+        await PerformProfileOperation(FnProfiles.AccountItems, "FortRerollDailyQuest", content.ToString());
+        return null; //TODO: return handle of new profile item
+    }
+
+    public static bool CanRerollQuestUnsafe()
+    {
+        return profileCache[FnProfiles.AccountItems]
+            ["profileChanges"][0]["profile"]["stats"]["attributes"]["quest_manager"]["dailyQuestRerolls"].GetValue<int>() > 0;
+    }
 
     public static async Task<JsonObject> GetProfile(string profileId, bool forceRefresh = false)
     {
         if (forceRefresh && validProfiles.Contains(profileId))
             validProfiles.Remove(profileId);
-
+        if (!validProfiles.Contains(profileId))
+            GD.Print("profile invalid");
         await PerformProfileOperation(profileId, "QueryProfile");
         return profileCache[profileId];
     }
@@ -296,57 +305,7 @@ public static async Task<JsonObject> GetOrderCounts(OrderRange range)
         await profileOperationSephamore.WaitAsync();
         try
         {
-            //if this profile has been accessed between sending the query and getting past the sephamore, return the profile
-            if (operation == "QueryProfile" && profileCache.ContainsKey(profileId) && profileCache[profileId] is not null && validProfiles.Contains(profileId))
-                return profileCache[profileId];
-
-            if (profileId == FnProfiles.AccountItems)
-                currentFortStats = null;//TODO: this is messy
-
-            if (!await LoginRequests.WaitForLogin())
-                return null;
-
-            bool publicMode = (operation == "QueryPublicProfile");
-            string route = publicMode ? "public" : "client";
-
-            StringContent jsonContent = new(content, Encoding.UTF8, "application/json");
-            using var request =
-                new HttpRequestMessage(
-                    HttpMethod.Post,
-                    $"fortnite/api/game/v2/profile/{LoginRequests.AccountID}/{route}/{operation}?profileId={profileId}&rvn=-1"
-                )
-                {
-                    Content = jsonContent
-                };
-
-            request.Headers.Authorization = LoginRequests.AccountAuthHeader;
-
-            var result = (await Helpers.MakeRequest(FNEndpoints.gameEndpoint, request)).AsObject();
-
-            JsonObject changelog = null;
-            if (profileCache.ContainsKey(profileId) && profileCache[profileId] is not null)
-                changelog = await GenerateChangelog(profileCache[profileId], result);
-            else
-                GD.Print("no cached profile");
-
-            profileCache[profileId] = result;
-            if (result.ContainsKey("notifications"))
-            {
-                var notifications = result["notifications"].AsArray();
-                foreach (var item in notifications)
-                    OnNotification?.Invoke(profileId, item.AsObject());
-                //TODO: handle notifications (such as invoking OnItemAdded for llama results)
-            }
-            JsonArray multiUpdateArray = new();
-            if (result.ContainsKey("multiUpdate"))
-                multiUpdateArray = result["multiUpdate"].AsArray();
-            if (changelog is not null)
-                multiUpdateArray.Add(changelog);
-            HandleChanges(multiUpdateArray);
-            if (!validProfiles.Contains(profileId))
-                validProfiles.Add(profileId);
-
-            return profileCache[profileId];
+            return await PerformProfileOperationUnsafe(profileId, operation, content);
         }
         finally
         {
@@ -354,11 +313,82 @@ public static async Task<JsonObject> GetOrderCounts(OrderRange range)
         }
     }
 
+
+
+    public static async Task<JsonObject> PerformProfileOperationUnsafe(string profileId, string operation, string content = "{}")
+    {
+        //if this profile has been accessed between sending the query and getting past the sephamore, return the profile
+        if (operation == "QueryProfile" && validProfiles.Contains(profileId) && profileCache.ContainsKey(profileId) && profileCache[profileId] is JsonObject cachedProfile)
+            return cachedProfile;
+
+        GD.Print("requestingProfile");
+        GD.Print(operation);
+        GD.Print(profileId);
+        GD.Print(operation == "QueryProfile");
+        GD.Print(validProfiles.Contains(profileId));
+        GD.Print(profileCache.ContainsKey(profileId));
+
+        if (!await LoginRequests.TryLogin())
+            return null;
+
+        bool publicMode = (operation == "QueryPublicProfile");
+        string route = publicMode ? "public" : "client";
+
+        StringContent jsonContent = new(content, Encoding.UTF8, "application/json");
+        using var request =
+            new HttpRequestMessage(
+                HttpMethod.Post,
+                $"fortnite/api/game/v2/profile/{LoginRequests.AccountID}/{route}/{operation}?profileId={profileId}&rvn=-1"
+            )
+            {
+                Content = jsonContent
+            };
+
+        request.Headers.Authorization = LoginRequests.AccountAuthHeader;
+
+        var result = (await Helpers.MakeRequest(FNEndpoints.gameEndpoint, request)).AsObject();
+        if (result.ContainsKey("errorCode"))
+        {
+            var _ = GenericConfirmationWindow.ShowErrorForWebResult(result);
+            return profileCache[profileId];
+        }
+
+        JsonObject changelog = null;
+        if (profileCache.ContainsKey(profileId) && profileCache[profileId] is not null)
+            changelog = await GenerateChangelog(profileCache[profileId], result);
+        else
+            GD.Print("no cached profile");
+
+        profileCache[profileId] = result;
+        if (result.ContainsKey("notifications"))
+        {
+            var notifications = result["notifications"].AsArray();
+            foreach (var item in notifications)
+                OnNotification?.Invoke(profileId, item.AsObject());
+            //TODO: handle notifications (such as invoking OnItemAdded for llama results)
+        }
+        JsonArray multiUpdateArray = new();
+        if (result.ContainsKey("multiUpdate"))
+            multiUpdateArray = result["multiUpdate"].AsArray();
+        if (changelog is not null)
+            multiUpdateArray.Add(changelog);
+        HandleChanges(multiUpdateArray);
+        if (!validProfiles.Contains(profileId))
+            validProfiles.Add(profileId);
+        if (!validProfiles.Contains(profileId))
+            GD.Print("profile invalid WJHAR");
+
+        return profileCache[profileId];
+    }
+
     const int operationsPer10ms = 50;
     static async Task<JsonObject> GenerateChangelog(JsonObject oldProfile, JsonObject newProfile)
     {
-        var oldItems = oldProfile["profileChanges"][0]["profile"]["items"].AsObject();
-        var newItems = newProfile["profileChanges"][0]["profile"]["items"].AsObject();
+        var oldItems = oldProfile?["profileChanges"]?[0]?["profile"]?["items"]?.AsObject();
+        var newItems = newProfile?["profileChanges"]?[0]?["profile"]?["items"]?.AsObject();
+
+        if(oldItems is null || newItems is null)
+            return null;
 
         var oldKeys = oldItems.Select(x => x.Key).ToArray();
         var newKeys = newItems.Select(x => x.Key).ToArray();
@@ -419,47 +449,54 @@ public static async Task<JsonObject> GetOrderCounts(OrderRange range)
         };
     }
 
-    public static event Action<string, string> OnItemAdded;
-    public static event Action<string, string> OnItemUpdated;
-    public static event Action<string, string> OnItemRemoved;
+    public static event Action<ProfileItemId> OnItemAdded;
+    public static event Action<ProfileItemId> OnItemUpdated;
+    public static event Action<ProfileItemId> OnItemRemoved;
     static void HandleChanges(JsonArray multiUpdate)
     {
         foreach (var profileUpdate in multiUpdate)
         {
-            string profileId = profileUpdate["profileId"].ToString();
+            string profile = profileUpdate["profileId"].ToString();
             foreach (var change in profileUpdate["profileChanges"].AsArray())
             {
                 string changeType = change["changeType"].ToString();
-                string itemId = change["itemId"]?.ToString();
+                string uuid = change["itemId"]?.ToString();
+
+                if (!profileCache.ContainsKey(profile))
+                {
+                    GD.Print($"uncached item changed {{type:{changeType}, id:{uuid}");
+                    continue;
+                }
+                ProfileItemId profileItem = new(profile, uuid);
                 switch (changeType)
                 {
                     case "itemAdded":
-                        GD.Print("ADDED: " + itemId);
-                        profileCache[profileId]["profileChanges"][0]["profile"]["items"][itemId] = change["item"].Reserialise();
-                        OnItemAdded?.Invoke(profileId, itemId);
+                        GD.Print("ADDED: " + uuid);
+                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid] = change["item"].Reserialise();
+                        OnItemAdded?.Invoke(profileItem);
                         break;
                     case "itemRemoved":
-                        GD.Print("REMOVED: " + itemId);
-                        profileCache[profileId]["profileChanges"][0]["profile"]["items"].AsObject().Remove(itemId);
-                        OnItemRemoved?.Invoke(profileId, itemId);
+                        GD.Print("REMOVED: " + uuid);
+                        profileCache[profile]["profileChanges"][0]["profile"]["items"].AsObject().Remove(uuid);
+                        OnItemRemoved?.Invoke(profileItem);
                         break;
                     case "statChanged":
                         break;
                     case "itemQuantityChanged":
-                        profileCache[profileId]["profileChanges"][0]["profile"]["items"][itemId]["quantity"] = change["quantity"].Reserialise();
-                        GD.Print("CHANGED (quantity): " + itemId);
-                        OnItemUpdated?.Invoke(profileId, itemId);
+                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid]["quantity"] = change["quantity"].Reserialise();
+                        GD.Print("CHANGED (quantity): " + uuid);
+                        OnItemUpdated?.Invoke(profileItem);
                         break;
                     case "itemAttrChanged":
                         //TODO: apply change to profile
-                        GD.Print("CHANGED (attribute): " + itemId + "[" + change["attributeName"] +"]");
-                        profileCache[profileId]["profileChanges"][0]["profile"]["items"][itemId][change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
-                        OnItemUpdated?.Invoke(profileId, itemId);
+                        GD.Print("CHANGED (attribute): " + uuid + "[" + change["attributeName"] +"]");
+                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid][change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
+                        OnItemUpdated?.Invoke(profileItem);
                         break;
                     case "itemFullyChanged"://custom one for handling generated changelogs
-                        profileCache[profileId]["profileChanges"][0]["profile"]["items"][itemId] = change["item"].Reserialise();
-                        GD.Print("CHANGED (full): " + itemId);
-                        OnItemUpdated?.Invoke(profileId, itemId);
+                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid] = change["item"].Reserialise();
+                        GD.Print("CHANGED (full): " + uuid);
+                        OnItemUpdated?.Invoke(profileItem);
                         break;
                 }
             }
@@ -472,106 +509,199 @@ public static async Task<JsonObject> GetOrderCounts(OrderRange range)
 public class ProfileListener
 {
     public event Action<ProfileItemHandle> OnAdded;
-    public event Action<ProfileItemHandle> OnRemoved; // only sends UUID
+    public event Action<ProfileItemHandle> OnUpdated;
+    public event Action<ProfileItemHandle> OnRemoved;
     public readonly string profile;
-    public readonly Func<KeyValuePair<string, JsonObject>,bool> predicate;
+    public readonly ProfileRequests.ProfileItemPredicate predicate;
     readonly List<ProfileItemHandle> items = new();
 
     public static async Task<ProfileListener> CreateListener(string profile, string type)
     {
-        Func<KeyValuePair<string, JsonObject>, bool> predicate = kvp => kvp.Value["templateId"].ToString().StartsWith(type);
+        ProfileRequests.ProfileItemPredicate predicate = kvp => kvp.Value["templateId"]?.ToString()?.StartsWith(type) ?? false;
         return new(profile, predicate, await ProfileRequests.GetProfileItems(profile, predicate));
     }
 
-    public static async Task<ProfileListener> CreateListener(string profile, Func<KeyValuePair<string, JsonObject>, bool> predicate)
+    public static async Task<ProfileListener> CreateListener(string profile, ProfileRequests.ProfileItemPredicate predicate)
     {
         return new(profile, predicate, await ProfileRequests.GetProfileItems(profile, predicate));
     }
 
-    ProfileListener(string profile, Func<KeyValuePair<string, JsonObject>, bool> predicate, JsonObject existingItems)
+    ProfileListener(string profile, ProfileRequests.ProfileItemPredicate predicate, JsonObject existingItems)
     {
         this.profile = profile;
         this.predicate = predicate;
         ProfileRequests.OnItemAdded += ItemAddedDetector;
+        ProfileRequests.OnItemUpdated += ItemUpdatedDetector;
         ProfileRequests.OnItemRemoved += ItemRemovalDetector;
 
         foreach (var existingItem in existingItems)
         {
-            items.Add(ProfileItemHandle.CreateHandleUnsafe(profile, existingItem.Key));
+            items.Add(ProfileItemHandle.CreateHandleUnsafe(new(profile, existingItem.Key)));
+        }
+    }
+
+    ~ProfileListener()
+    {
+        Unlink();
+    }
+
+    public void Unlink()
+    {
+        ProfileRequests.OnItemAdded -= ItemAddedDetector;
+        ProfileRequests.OnItemUpdated -= ItemUpdatedDetector;
+        ProfileRequests.OnItemRemoved -= ItemRemovalDetector;
+        foreach (var item in items)
+        {
+            item.Unlink();
         }
     }
 
     public ProfileItemHandle[] Items => items.ToArray();
 
-    void ItemAddedDetector(string profile, string uuid)
+    bool debug = false;
+    public void EnableDebug() => debug = true;
+
+    void ItemAddedDetector(ProfileItemId profileItem)
     {
-        var addedItem = ProfileRequests.GetCachedProfileItemInstance(profile, uuid);
-        addedItem.GetTemplate();
-        //GD.Print($"checking if item ({uuid}) is a match...");
-        if (predicate(new(uuid, addedItem)))
+        var addedItem = ProfileRequests.GetCachedProfileItemInstance(profileItem);
+        if (debug)
+            GD.Print($"checking if added item ({profileItem.uuid}) is a match...");
+        if (predicate(new(profileItem.uuid, addedItem)))
         {
-            //GD.Print($"item ({uuid}) is valid");
-            var handle = ProfileItemHandle.CreateHandleUnsafe(profile, uuid);
+            if (debug)
+                GD.Print($"item ({profileItem.uuid}) is valid");
+            var handle = ProfileItemHandle.CreateHandleUnsafe(profileItem);
             items.Add(handle);
             OnAdded?.Invoke(handle);
         }
     }
-
-    void ItemRemovalDetector(string profile, string uuid)
+    void ItemUpdatedDetector(ProfileItemId profileItem)
     {
-        var handle = items.FirstOrDefault(i=>i.IsMatch(uuid));
+        var handle = items.FirstOrDefault(i => i.IsMatch(profileItem.uuid));
+        if (debug)
+            GD.Print($"checking if changed item ({profileItem.uuid}) is a match...");
         if (handle is not null)
         {
+            if (debug)
+                GD.Print($"item ({profileItem.uuid}) is valid");
+            OnUpdated?.Invoke(handle);
+        }
+    }
+
+    void ItemRemovalDetector(ProfileItemId profileItem)
+    {
+        var handle = items.FirstOrDefault(i=>i.IsMatch(profileItem.uuid));
+        if (debug)
+            GD.Print($"checking if removed item ({profileItem.uuid}) is a match...");
+        if (handle is not null)
+        {
+            if (debug)
+                GD.Print($"item ({profileItem.uuid}) is valid");
             OnRemoved?.Invoke(handle);
             items.Remove(handle);
         }
     }
 }
 
+public readonly struct ProfileItemId
+{
+    public readonly string profile = null;
+    public readonly string uuid = null;
+    public ProfileItemId(string compositeProfileItemId)
+    {
+        var splitItem = compositeProfileItemId.Split(':');
+        if (splitItem.Length != 2)
+        {
+            profile = null;
+            uuid = null;
+            return;
+        }
+        profile = splitItem[0];
+        uuid = splitItem[1];
+    }
+    public ProfileItemId(string profile, string uuid)
+    {
+        this.profile = profile;
+        this.uuid = uuid;
+    }
+    public ProfileItemId()
+    {
+        profile = null;
+        uuid = null;
+    }
+    public readonly string Composite => profile + ":" + uuid;
+
+
+    public static bool operator ==(ProfileItemId left, ProfileItemId right)=>
+        left.uuid==right.uuid && left.profile==right.profile;
+    public static bool operator !=(ProfileItemId left, ProfileItemId right) =>
+        left.uuid != right.uuid || left.profile != right.profile;
+
+    public static bool operator ==(string left, ProfileItemId right) =>
+        new ProfileItemId(left) == right;
+    public static bool operator !=(string left, ProfileItemId right) =>
+        new ProfileItemId(left) != right;
+
+    public static bool operator ==(ProfileItemId left, string right) =>
+        left == new ProfileItemId(right);
+    public static bool operator !=(ProfileItemId left, string right) =>
+        left != new ProfileItemId(right);
+
+    public override readonly bool Equals(object obj) =>
+        (obj is ProfileItemId profileIDObj && profileIDObj == this) ||
+        (obj is string stringObj && stringObj == this);
+
+    public override readonly int GetHashCode() => HashCode.Combine(uuid, profile);
+}
+
 public class ProfileItemHandle
 {
     public event Action<ProfileItemHandle> OnChanged;
     public event Action<ProfileItemHandle> OnRemoved;
-    public string profile { get; private set; }
-    public string uuid { get; private set; }
-    bool isValid = true;
+    public ProfileItemId profileItem { get; private set; }
+    public bool isValid { get; private set; } = true;
 
-    public static async Task<ProfileItemHandle> CreateHandle(string profile, string uuid)
+    public static async Task<ProfileItemHandle> CreateHandle(ProfileItemId profileItem)
     {
-        if((await ProfileRequests.GetProfileItemInstance(profile, uuid)) is not null)
-            return new ProfileItemHandle(profile, uuid);
+        if((await ProfileRequests.GetProfileItemInstance(profileItem)) is not null)
+            return new ProfileItemHandle(profileItem);
         return new ProfileItemHandle();
     }
-    public static ProfileItemHandle CreateHandleUnsafe(string profile, string uuid) =>
-        new(profile, uuid);
+    public static ProfileItemHandle CreateHandleUnsafe(ProfileItemId profileItem) =>
+        new(profileItem);
 
-    ProfileItemHandle()
+    public ProfileItemHandle()
     {
         isValid = false;
     }
 
-    ProfileItemHandle(string profile, string uuid)
+    ProfileItemHandle(ProfileItemId profileItem)
     {
-        this.profile = profile;
-        this.uuid = uuid;
+        this.profileItem = profileItem;
         ProfileRequests.OnItemUpdated += ItemChangeDetector;
         ProfileRequests.OnItemRemoved += ItemRemovalDetector;
     }
 
     ~ProfileItemHandle()
     {
+        Unlink();
+    }
+
+    public void Unlink()
+    {
+        isValid = false;
+        profileItem = new();
         ProfileRequests.OnItemUpdated -= ItemChangeDetector;
         ProfileRequests.OnItemRemoved -= ItemRemovalDetector;
     }
 
-    public async Task ReplaceWith(string profile, string uuid)
+    public async Task ReplaceWith(ProfileItemId profileItem)
     {
-        if (this.profile == profile && this.uuid == uuid)
+        if (this.profileItem == profileItem)
             return;
-        if ((await ProfileRequests.GetProfileItemInstance(profile, uuid)) is not null)
+        if ((await ProfileRequests.GetProfileItemInstance(profileItem)) is not null)
         {
-            this.profile = profile;
-            this.uuid = uuid;
+            this.profileItem = profileItem;
             isValid = true;
             OnChanged?.Invoke(this);
         }
@@ -579,26 +709,26 @@ public class ProfileItemHandle
 
     public bool IsMatch(string uuid)
     {
-        return !isValid || this.uuid == uuid;
+        return !isValid || profileItem.uuid == uuid;
     }
 
-    void ItemChangeDetector(string profile, string uuid)
+    void ItemChangeDetector(ProfileItemId profileItem)
     {
-        if (this.profile==profile && this.uuid==uuid)
+        if (this.profileItem == profileItem)
             OnChanged?.Invoke(this);
     }
 
-    void ItemRemovalDetector(string profile, string uuid)
+    void ItemRemovalDetector(ProfileItemId profileItem)
     {
-        if (this.profile == profile && this.uuid == uuid)
+        if (this.profileItem == profileItem)
         {
             isValid = false;
             OnRemoved?.Invoke(this);
         }
     }
 
-    public async Task<JsonObject> GetItem() => isValid ? await ProfileRequests.GetProfileItemInstance(profile, uuid) : null;
-    public JsonObject GetItemUnsafe() => isValid ? ProfileRequests.GetCachedProfileItemInstance(profile, uuid) : null;
+    public async Task<JsonObject> GetItem() => isValid ? await ProfileRequests.GetProfileItemInstance(profileItem) : null;
+    public JsonObject GetItemUnsafe() => isValid ? ProfileRequests.GetCachedProfileItemInstance(profileItem) : null;
 }
 
 static class FnProfiles

@@ -2,13 +2,12 @@
   "Defender:did_defenderassault_basic_c_t00": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_c_t00",
-    "ItemName": "Rifleman Trainee",
+    "DisplayName": "Rifleman Trainee",
     "SubType": "Assault Defender",
+    "Description": "A defender (sort of) trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender (sort of) trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T01",
     "Tier": 0,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_c_t00.uasset",
     "ImagePaths": {
@@ -19,11 +18,10 @@
   "Defender:did_defenderassault_basic_c_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_c_t01",
-    "ItemName": "Common Assault Defender",
+    "DisplayName": "Common Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_c_t01.uasset",
     "ImagePaths": {
@@ -34,11 +32,10 @@
   "Defender:did_defenderassault_basic_c_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_c_t02",
-    "ItemName": "Common Assault Defender",
+    "DisplayName": "Common Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_c_t02.uasset",
     "ImagePaths": {
@@ -49,11 +46,10 @@
   "Defender:did_defenderassault_basic_m_r_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_r_t01",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_r_t01.uasset",
     "ImagePaths": {
@@ -64,11 +60,10 @@
   "Defender:did_defenderassault_basic_m_r_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_r_t02",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_r_t02.uasset",
     "ImagePaths": {
@@ -79,11 +74,10 @@
   "Defender:did_defenderassault_basic_m_r_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_r_t03",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_r_t03.uasset",
     "ImagePaths": {
@@ -94,11 +88,10 @@
   "Defender:did_defenderassault_basic_m_r_t04": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_r_t04",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_r_t04.uasset",
     "ImagePaths": {
@@ -109,11 +102,10 @@
   "Defender:did_defenderassault_basic_m_sr_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_sr_t01",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_sr_t01.uasset",
     "ImagePaths": {
@@ -124,11 +116,10 @@
   "Defender:did_defenderassault_basic_m_sr_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_sr_t02",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_sr_t02.uasset",
     "ImagePaths": {
@@ -139,11 +130,10 @@
   "Defender:did_defenderassault_basic_m_sr_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_sr_t03",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_sr_t03.uasset",
     "ImagePaths": {
@@ -154,11 +144,10 @@
   "Defender:did_defenderassault_basic_m_sr_t04": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_sr_t04",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_sr_t04.uasset",
     "ImagePaths": {
@@ -169,11 +158,10 @@
   "Defender:did_defenderassault_basic_m_sr_t05": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_sr_t05",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_sr_t05.uasset",
     "ImagePaths": {
@@ -184,11 +172,10 @@
   "Defender:did_defenderassault_basic_m_vr_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_vr_t01",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_vr_t01.uasset",
     "ImagePaths": {
@@ -199,11 +186,10 @@
   "Defender:did_defenderassault_basic_m_vr_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_vr_t02",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_vr_t02.uasset",
     "ImagePaths": {
@@ -214,11 +200,10 @@
   "Defender:did_defenderassault_basic_m_vr_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_vr_t03",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_vr_t03.uasset",
     "ImagePaths": {
@@ -229,11 +214,10 @@
   "Defender:did_defenderassault_basic_m_vr_t04": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_vr_t04",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_vr_t04.uasset",
     "ImagePaths": {
@@ -244,11 +228,10 @@
   "Defender:did_defenderassault_basic_m_vr_t05": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_m_vr_t05",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_m_vr_t05.uasset",
     "ImagePaths": {
@@ -259,11 +242,10 @@
   "Defender:did_defenderassault_basic_r_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_r_t01",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_r_t01.uasset",
     "ImagePaths": {
@@ -274,11 +256,10 @@
   "Defender:did_defenderassault_basic_r_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_r_t02",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_r_t02.uasset",
     "ImagePaths": {
@@ -289,11 +270,10 @@
   "Defender:did_defenderassault_basic_r_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_r_t03",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_r_t03.uasset",
     "ImagePaths": {
@@ -304,11 +284,10 @@
   "Defender:did_defenderassault_basic_r_t04": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_r_t04",
-    "ItemName": "Rare Assault Defender",
+    "DisplayName": "Rare Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_r_t04.uasset",
     "ImagePaths": {
@@ -319,11 +298,10 @@
   "Defender:did_defenderassault_basic_sr_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_sr_t01",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_sr_t01.uasset",
     "ImagePaths": {
@@ -334,11 +312,10 @@
   "Defender:did_defenderassault_basic_sr_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_sr_t02",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_sr_t02.uasset",
     "ImagePaths": {
@@ -349,11 +326,10 @@
   "Defender:did_defenderassault_basic_sr_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_sr_t03",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_sr_t03.uasset",
     "ImagePaths": {
@@ -364,11 +340,10 @@
   "Defender:did_defenderassault_basic_sr_t04": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_sr_t04",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_sr_t04.uasset",
     "ImagePaths": {
@@ -379,11 +354,10 @@
   "Defender:did_defenderassault_basic_sr_t05": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_sr_t05",
-    "ItemName": "Legendary Assault Defender",
+    "DisplayName": "Legendary Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_sr_t05.uasset",
     "ImagePaths": {
@@ -394,11 +368,10 @@
   "Defender:did_defenderassault_basic_uc_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_uc_t01",
-    "ItemName": "Uncommon Assault Defender",
+    "DisplayName": "Uncommon Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_uc_t01.uasset",
     "ImagePaths": {
@@ -409,11 +382,10 @@
   "Defender:did_defenderassault_basic_uc_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_uc_t02",
-    "ItemName": "Uncommon Assault Defender",
+    "DisplayName": "Uncommon Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_uc_t02.uasset",
     "ImagePaths": {
@@ -424,11 +396,10 @@
   "Defender:did_defenderassault_basic_uc_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_uc_t03",
-    "ItemName": "Uncommon Assault Defender",
+    "DisplayName": "Uncommon Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_uc_t03.uasset",
     "ImagePaths": {
@@ -439,11 +410,10 @@
   "Defender:did_defenderassault_basic_vr_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_vr_t01",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_vr_t01.uasset",
     "ImagePaths": {
@@ -454,11 +424,10 @@
   "Defender:did_defenderassault_basic_vr_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_vr_t02",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_vr_t02.uasset",
     "ImagePaths": {
@@ -469,11 +438,10 @@
   "Defender:did_defenderassault_basic_vr_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_vr_t03",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_vr_t03.uasset",
     "ImagePaths": {
@@ -484,11 +452,10 @@
   "Defender:did_defenderassault_basic_vr_t04": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_vr_t04",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_vr_t04.uasset",
     "ImagePaths": {
@@ -499,11 +466,10 @@
   "Defender:did_defenderassault_basic_vr_t05": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_vr_t05",
-    "ItemName": "Epic Assault Defender",
+    "DisplayName": "Epic Assault Defender",
     "SubType": "Assault Defender",
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_vr_t05.uasset",
     "ImagePaths": {
@@ -514,13 +480,12 @@
   "Defender:did_defenderassault_founders_vr_t01": {
     "Type": "Defender",
     "Name": "did_defenderassault_founders_vr_t01",
-    "ItemName": "Jill",
+    "DisplayName": "Jill",
     "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_founders_vr_t01.uasset",
     "ImagePaths": {
@@ -531,13 +496,12 @@
   "Defender:did_defenderassault_founders_vr_t02": {
     "Type": "Defender",
     "Name": "did_defenderassault_founders_vr_t02",
-    "ItemName": "Jill",
+    "DisplayName": "Jill",
     "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_founders_vr_t02.uasset",
     "ImagePaths": {
@@ -548,13 +512,12 @@
   "Defender:did_defenderassault_founders_vr_t03": {
     "Type": "Defender",
     "Name": "did_defenderassault_founders_vr_t03",
-    "ItemName": "Jill",
+    "DisplayName": "Jill",
     "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_founders_vr_t03.uasset",
     "ImagePaths": {
@@ -565,13 +528,12 @@
   "Defender:did_defenderassault_founders_vr_t04": {
     "Type": "Defender",
     "Name": "did_defenderassault_founders_vr_t04",
-    "ItemName": "Jill",
+    "DisplayName": "Jill",
     "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_founders_vr_t04.uasset",
     "ImagePaths": {
@@ -582,13 +544,12 @@
   "Defender:did_defenderassault_founders_vr_t05": {
     "Type": "Defender",
     "Name": "did_defenderassault_founders_vr_t05",
-    "ItemName": "Jill",
+    "DisplayName": "Jill",
     "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_founders_vr_t05.uasset",
     "ImagePaths": {
@@ -599,11 +560,10 @@
   "Defender:did_defendermelee_basic_c_t01": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_c_t01",
-    "ItemName": "Common Melee Defender",
+    "DisplayName": "Common Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_c_t01.uasset",
     "ImagePaths": {
@@ -614,11 +574,10 @@
   "Defender:did_defendermelee_basic_c_t02": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_c_t02",
-    "ItemName": "Common Melee Defender",
+    "DisplayName": "Common Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_c_t02.uasset",
     "ImagePaths": {
@@ -629,11 +588,10 @@
   "Defender:did_defendermelee_basic_f_sr_t01": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_f_sr_t01",
-    "ItemName": "Val",
+    "DisplayName": "Val",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_f_sr_t01.uasset",
     "ImagePaths": {
@@ -644,11 +602,10 @@
   "Defender:did_defendermelee_basic_f_sr_t02": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_f_sr_t02",
-    "ItemName": "Val",
+    "DisplayName": "Val",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_f_sr_t02.uasset",
     "ImagePaths": {
@@ -659,11 +616,10 @@
   "Defender:did_defendermelee_basic_f_sr_t03": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_f_sr_t03",
-    "ItemName": "Val",
+    "DisplayName": "Val",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_f_sr_t03.uasset",
     "ImagePaths": {
@@ -674,11 +630,10 @@
   "Defender:did_defendermelee_basic_f_sr_t04": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_f_sr_t04",
-    "ItemName": "Val",
+    "DisplayName": "Val",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_f_sr_t04.uasset",
     "ImagePaths": {
@@ -689,11 +644,10 @@
   "Defender:did_defendermelee_basic_f_sr_t05": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_f_sr_t05",
-    "ItemName": "Val",
+    "DisplayName": "Val",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_f_sr_t05.uasset",
     "ImagePaths": {
@@ -704,11 +658,10 @@
   "Defender:did_defendermelee_basic_r_t01": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_r_t01",
-    "ItemName": "Rare Melee Defender",
+    "DisplayName": "Rare Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_r_t01.uasset",
     "ImagePaths": {
@@ -719,11 +672,10 @@
   "Defender:did_defendermelee_basic_r_t02": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_r_t02",
-    "ItemName": "Rare Melee Defender",
+    "DisplayName": "Rare Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_r_t02.uasset",
     "ImagePaths": {
@@ -734,11 +686,10 @@
   "Defender:did_defendermelee_basic_r_t03": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_r_t03",
-    "ItemName": "Rare Melee Defender",
+    "DisplayName": "Rare Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_r_t03.uasset",
     "ImagePaths": {
@@ -749,11 +700,10 @@
   "Defender:did_defendermelee_basic_r_t04": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_r_t04",
-    "ItemName": "Rare Melee Defender",
+    "DisplayName": "Rare Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_r_t04.uasset",
     "ImagePaths": {
@@ -764,11 +714,10 @@
   "Defender:did_defendermelee_basic_sr_t01": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_sr_t01",
-    "ItemName": "Legendary Melee Defender",
+    "DisplayName": "Legendary Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_sr_t01.uasset",
     "ImagePaths": {
@@ -779,11 +728,10 @@
   "Defender:did_defendermelee_basic_sr_t02": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_sr_t02",
-    "ItemName": "Legendary Melee Defender",
+    "DisplayName": "Legendary Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_sr_t02.uasset",
     "ImagePaths": {
@@ -794,11 +742,10 @@
   "Defender:did_defendermelee_basic_sr_t03": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_sr_t03",
-    "ItemName": "Legendary Melee Defender",
+    "DisplayName": "Legendary Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_sr_t03.uasset",
     "ImagePaths": {
@@ -809,11 +756,10 @@
   "Defender:did_defendermelee_basic_sr_t04": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_sr_t04",
-    "ItemName": "Legendary Melee Defender",
+    "DisplayName": "Legendary Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_sr_t04.uasset",
     "ImagePaths": {
@@ -824,11 +770,10 @@
   "Defender:did_defendermelee_basic_sr_t05": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_sr_t05",
-    "ItemName": "Legendary Melee Defender",
+    "DisplayName": "Legendary Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_sr_t05.uasset",
     "ImagePaths": {
@@ -839,11 +784,10 @@
   "Defender:did_defendermelee_basic_uc_t01": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_uc_t01",
-    "ItemName": "Uncommon Melee Defender",
+    "DisplayName": "Uncommon Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_uc_t01.uasset",
     "ImagePaths": {
@@ -854,11 +798,10 @@
   "Defender:did_defendermelee_basic_uc_t02": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_uc_t02",
-    "ItemName": "Uncommon Melee Defender",
+    "DisplayName": "Uncommon Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_uc_t02.uasset",
     "ImagePaths": {
@@ -869,11 +812,10 @@
   "Defender:did_defendermelee_basic_uc_t03": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_uc_t03",
-    "ItemName": "Uncommon Melee Defender",
+    "DisplayName": "Uncommon Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_uc_t03.uasset",
     "ImagePaths": {
@@ -884,11 +826,10 @@
   "Defender:did_defendermelee_basic_vr_t01": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_vr_t01",
-    "ItemName": "Epic Melee Defender",
+    "DisplayName": "Epic Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_vr_t01.uasset",
     "ImagePaths": {
@@ -899,11 +840,10 @@
   "Defender:did_defendermelee_basic_vr_t02": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_vr_t02",
-    "ItemName": "Epic Melee Defender",
+    "DisplayName": "Epic Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_vr_t02.uasset",
     "ImagePaths": {
@@ -914,11 +854,10 @@
   "Defender:did_defendermelee_basic_vr_t03": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_vr_t03",
-    "ItemName": "Epic Melee Defender",
+    "DisplayName": "Epic Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_vr_t03.uasset",
     "ImagePaths": {
@@ -929,11 +868,10 @@
   "Defender:did_defendermelee_basic_vr_t04": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_vr_t04",
-    "ItemName": "Epic Melee Defender",
+    "DisplayName": "Epic Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_vr_t04.uasset",
     "ImagePaths": {
@@ -944,11 +882,10 @@
   "Defender:did_defendermelee_basic_vr_t05": {
     "Type": "Defender",
     "Name": "did_defendermelee_basic_vr_t05",
-    "ItemName": "Epic Melee Defender",
+    "DisplayName": "Epic Melee Defender",
     "SubType": "Melee Defender",
-    "ItemDescription": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendermelee_basic_vr_t05.uasset",
     "ImagePaths": {
@@ -959,11 +896,10 @@
   "Defender:did_defenderpistol_basic_c_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_c_t01",
-    "ItemName": "Common Pistol Defender",
+    "DisplayName": "Common Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_c_t01.uasset",
     "ImagePaths": {
@@ -974,11 +910,10 @@
   "Defender:did_defenderpistol_basic_c_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_c_t02",
-    "ItemName": "Common Pistol Defender",
+    "DisplayName": "Common Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_c_t02.uasset",
     "ImagePaths": {
@@ -989,11 +924,10 @@
   "Defender:did_defenderpistol_basic_f_r_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_r_t01",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_r_t01.uasset",
     "ImagePaths": {
@@ -1004,11 +938,10 @@
   "Defender:did_defenderpistol_basic_f_r_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_r_t02",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_r_t02.uasset",
     "ImagePaths": {
@@ -1019,11 +952,10 @@
   "Defender:did_defenderpistol_basic_f_r_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_r_t03",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_r_t03.uasset",
     "ImagePaths": {
@@ -1034,11 +966,10 @@
   "Defender:did_defenderpistol_basic_f_r_t04": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_r_t04",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_r_t04.uasset",
     "ImagePaths": {
@@ -1049,11 +980,10 @@
   "Defender:did_defenderpistol_basic_f_sr_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_sr_t01",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_sr_t01.uasset",
     "ImagePaths": {
@@ -1064,11 +994,10 @@
   "Defender:did_defenderpistol_basic_f_sr_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_sr_t02",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_sr_t02.uasset",
     "ImagePaths": {
@@ -1079,11 +1008,10 @@
   "Defender:did_defenderpistol_basic_f_sr_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_sr_t03",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_sr_t03.uasset",
     "ImagePaths": {
@@ -1094,11 +1022,10 @@
   "Defender:did_defenderpistol_basic_f_sr_t04": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_sr_t04",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_sr_t04.uasset",
     "ImagePaths": {
@@ -1109,11 +1036,10 @@
   "Defender:did_defenderpistol_basic_f_sr_t05": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_sr_t05",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_sr_t05.uasset",
     "ImagePaths": {
@@ -1124,11 +1050,10 @@
   "Defender:did_defenderpistol_basic_f_vr_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_vr_t01",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_vr_t01.uasset",
     "ImagePaths": {
@@ -1139,11 +1064,10 @@
   "Defender:did_defenderpistol_basic_f_vr_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_vr_t02",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_vr_t02.uasset",
     "ImagePaths": {
@@ -1154,11 +1078,10 @@
   "Defender:did_defenderpistol_basic_f_vr_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_vr_t03",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_vr_t03.uasset",
     "ImagePaths": {
@@ -1169,11 +1092,10 @@
   "Defender:did_defenderpistol_basic_f_vr_t04": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_vr_t04",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_vr_t04.uasset",
     "ImagePaths": {
@@ -1184,11 +1106,10 @@
   "Defender:did_defenderpistol_basic_f_vr_t05": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_f_vr_t05",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_f_vr_t05.uasset",
     "ImagePaths": {
@@ -1199,11 +1120,10 @@
   "Defender:did_defenderpistol_basic_r_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_r_t01",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_r_t01.uasset",
     "ImagePaths": {
@@ -1214,11 +1134,10 @@
   "Defender:did_defenderpistol_basic_r_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_r_t02",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_r_t02.uasset",
     "ImagePaths": {
@@ -1229,11 +1148,10 @@
   "Defender:did_defenderpistol_basic_r_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_r_t03",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_r_t03.uasset",
     "ImagePaths": {
@@ -1244,11 +1162,10 @@
   "Defender:did_defenderpistol_basic_r_t04": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_r_t04",
-    "ItemName": "Rare Pistol Defender",
+    "DisplayName": "Rare Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_r_t04.uasset",
     "ImagePaths": {
@@ -1259,11 +1176,10 @@
   "Defender:did_defenderpistol_basic_sr_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_sr_t01",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_sr_t01.uasset",
     "ImagePaths": {
@@ -1274,11 +1190,10 @@
   "Defender:did_defenderpistol_basic_sr_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_sr_t02",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_sr_t02.uasset",
     "ImagePaths": {
@@ -1289,11 +1204,10 @@
   "Defender:did_defenderpistol_basic_sr_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_sr_t03",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_sr_t03.uasset",
     "ImagePaths": {
@@ -1304,11 +1218,10 @@
   "Defender:did_defenderpistol_basic_sr_t04": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_sr_t04",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_sr_t04.uasset",
     "ImagePaths": {
@@ -1319,11 +1232,10 @@
   "Defender:did_defenderpistol_basic_sr_t05": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_sr_t05",
-    "ItemName": "Legendary Pistol Defender",
+    "DisplayName": "Legendary Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_sr_t05.uasset",
     "ImagePaths": {
@@ -1334,11 +1246,10 @@
   "Defender:did_defenderpistol_basic_uc_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_uc_t01",
-    "ItemName": "Uncommon Pistol Defender",
+    "DisplayName": "Uncommon Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_uc_t01.uasset",
     "ImagePaths": {
@@ -1349,11 +1260,10 @@
   "Defender:did_defenderpistol_basic_uc_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_uc_t02",
-    "ItemName": "Uncommon Pistol Defender",
+    "DisplayName": "Uncommon Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_uc_t02.uasset",
     "ImagePaths": {
@@ -1364,11 +1274,10 @@
   "Defender:did_defenderpistol_basic_uc_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_uc_t03",
-    "ItemName": "Uncommon Pistol Defender",
+    "DisplayName": "Uncommon Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_uc_t03.uasset",
     "ImagePaths": {
@@ -1379,11 +1288,10 @@
   "Defender:did_defenderpistol_basic_vr_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_vr_t01",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_vr_t01.uasset",
     "ImagePaths": {
@@ -1394,11 +1302,10 @@
   "Defender:did_defenderpistol_basic_vr_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_vr_t02",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_vr_t02.uasset",
     "ImagePaths": {
@@ -1409,11 +1316,10 @@
   "Defender:did_defenderpistol_basic_vr_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_vr_t03",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_vr_t03.uasset",
     "ImagePaths": {
@@ -1424,11 +1330,10 @@
   "Defender:did_defenderpistol_basic_vr_t04": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_vr_t04",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_vr_t04.uasset",
     "ImagePaths": {
@@ -1439,11 +1344,10 @@
   "Defender:did_defenderpistol_basic_vr_t05": {
     "Type": "Defender",
     "Name": "did_defenderpistol_basic_vr_t05",
-    "ItemName": "Epic Pistol Defender",
+    "DisplayName": "Epic Pistol Defender",
     "SubType": "Pistol Defender",
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_basic_vr_t05.uasset",
     "ImagePaths": {
@@ -1454,13 +1358,12 @@
   "Defender:did_defenderpistol_founders_vr_t01": {
     "Type": "Defender",
     "Name": "did_defenderpistol_founders_vr_t01",
-    "ItemName": "Idris",
+    "DisplayName": "Idris",
     "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_founders_vr_t01.uasset",
     "ImagePaths": {
@@ -1471,13 +1374,12 @@
   "Defender:did_defenderpistol_founders_vr_t02": {
     "Type": "Defender",
     "Name": "did_defenderpistol_founders_vr_t02",
-    "ItemName": "Idris",
+    "DisplayName": "Idris",
     "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_founders_vr_t02.uasset",
     "ImagePaths": {
@@ -1488,13 +1390,12 @@
   "Defender:did_defenderpistol_founders_vr_t03": {
     "Type": "Defender",
     "Name": "did_defenderpistol_founders_vr_t03",
-    "ItemName": "Idris",
+    "DisplayName": "Idris",
     "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_founders_vr_t03.uasset",
     "ImagePaths": {
@@ -1505,13 +1406,12 @@
   "Defender:did_defenderpistol_founders_vr_t04": {
     "Type": "Defender",
     "Name": "did_defenderpistol_founders_vr_t04",
-    "ItemName": "Idris",
+    "DisplayName": "Idris",
     "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_founders_vr_t04.uasset",
     "ImagePaths": {
@@ -1522,13 +1422,12 @@
   "Defender:did_defenderpistol_founders_vr_t05": {
     "Type": "Defender",
     "Name": "did_defenderpistol_founders_vr_t05",
-    "ItemName": "Idris",
+    "DisplayName": "Idris",
     "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "IsInventoryLimitExempt": true,
     "IsPermanent": true,
-    "ItemDescription": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderpistol_founders_vr_t05.uasset",
     "ImagePaths": {
@@ -1539,11 +1438,10 @@
   "Defender:did_defendershotgun_basic_c_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_c_t01",
-    "ItemName": "Common Shotgun Defender",
+    "DisplayName": "Common Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_c_t01.uasset",
     "ImagePaths": {
@@ -1554,11 +1452,10 @@
   "Defender:did_defendershotgun_basic_c_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_c_t02",
-    "ItemName": "Common Shotgun Defender",
+    "DisplayName": "Common Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_c_t02.uasset",
     "ImagePaths": {
@@ -1569,11 +1466,10 @@
   "Defender:did_defendershotgun_basic_f_r_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_r_t01",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_r_t01.uasset",
     "ImagePaths": {
@@ -1584,11 +1480,10 @@
   "Defender:did_defendershotgun_basic_f_r_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_r_t02",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_r_t02.uasset",
     "ImagePaths": {
@@ -1599,11 +1494,10 @@
   "Defender:did_defendershotgun_basic_f_r_t03": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_r_t03",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_r_t03.uasset",
     "ImagePaths": {
@@ -1614,11 +1508,10 @@
   "Defender:did_defendershotgun_basic_f_r_t04": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_r_t04",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_r_t04.uasset",
     "ImagePaths": {
@@ -1629,11 +1522,10 @@
   "Defender:did_defendershotgun_basic_f_sr_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_sr_t01",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_sr_t01.uasset",
     "ImagePaths": {
@@ -1644,11 +1536,10 @@
   "Defender:did_defendershotgun_basic_f_sr_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_sr_t02",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_sr_t02.uasset",
     "ImagePaths": {
@@ -1659,11 +1550,10 @@
   "Defender:did_defendershotgun_basic_f_sr_t03": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_sr_t03",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_sr_t03.uasset",
     "ImagePaths": {
@@ -1674,11 +1564,10 @@
   "Defender:did_defendershotgun_basic_f_sr_t04": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_sr_t04",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_sr_t04.uasset",
     "ImagePaths": {
@@ -1689,11 +1578,10 @@
   "Defender:did_defendershotgun_basic_f_sr_t05": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_sr_t05",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_sr_t05.uasset",
     "ImagePaths": {
@@ -1704,11 +1592,10 @@
   "Defender:did_defendershotgun_basic_f_vr_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_vr_t01",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_vr_t01.uasset",
     "ImagePaths": {
@@ -1719,11 +1606,10 @@
   "Defender:did_defendershotgun_basic_f_vr_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_vr_t02",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_vr_t02.uasset",
     "ImagePaths": {
@@ -1734,11 +1620,10 @@
   "Defender:did_defendershotgun_basic_f_vr_t03": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_vr_t03",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_vr_t03.uasset",
     "ImagePaths": {
@@ -1749,11 +1634,10 @@
   "Defender:did_defendershotgun_basic_f_vr_t04": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_vr_t04",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_vr_t04.uasset",
     "ImagePaths": {
@@ -1764,11 +1648,10 @@
   "Defender:did_defendershotgun_basic_f_vr_t05": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_f_vr_t05",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_f_vr_t05.uasset",
     "ImagePaths": {
@@ -1779,11 +1662,10 @@
   "Defender:did_defendershotgun_basic_r_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_r_t01",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_r_t01.uasset",
     "ImagePaths": {
@@ -1794,11 +1676,10 @@
   "Defender:did_defendershotgun_basic_r_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_r_t02",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_r_t02.uasset",
     "ImagePaths": {
@@ -1809,11 +1690,10 @@
   "Defender:did_defendershotgun_basic_r_t03": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_r_t03",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_r_t03.uasset",
     "ImagePaths": {
@@ -1824,11 +1704,10 @@
   "Defender:did_defendershotgun_basic_r_t04": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_r_t04",
-    "ItemName": "Rare Shotgun Defender",
+    "DisplayName": "Rare Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_r_t04.uasset",
     "ImagePaths": {
@@ -1839,11 +1718,10 @@
   "Defender:did_defendershotgun_basic_sr_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_sr_t01",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_sr_t01.uasset",
     "ImagePaths": {
@@ -1854,11 +1732,10 @@
   "Defender:did_defendershotgun_basic_sr_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_sr_t02",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_sr_t02.uasset",
     "ImagePaths": {
@@ -1869,11 +1746,10 @@
   "Defender:did_defendershotgun_basic_sr_t03": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_sr_t03",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_sr_t03.uasset",
     "ImagePaths": {
@@ -1884,11 +1760,10 @@
   "Defender:did_defendershotgun_basic_sr_t04": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_sr_t04",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_sr_t04.uasset",
     "ImagePaths": {
@@ -1899,11 +1774,10 @@
   "Defender:did_defendershotgun_basic_sr_t05": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_sr_t05",
-    "ItemName": "Legendary Shotgun Defender",
+    "DisplayName": "Legendary Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_sr_t05.uasset",
     "ImagePaths": {
@@ -1914,11 +1788,10 @@
   "Defender:did_defendershotgun_basic_uc_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_uc_t01",
-    "ItemName": "Uncommon Shotgun Defender",
+    "DisplayName": "Uncommon Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_uc_t01.uasset",
     "ImagePaths": {
@@ -1929,11 +1802,10 @@
   "Defender:did_defendershotgun_basic_uc_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_uc_t02",
-    "ItemName": "Uncommon Shotgun Defender",
+    "DisplayName": "Uncommon Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_uc_t02.uasset",
     "ImagePaths": {
@@ -1944,11 +1816,10 @@
   "Defender:did_defendershotgun_basic_uc_t03": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_uc_t03",
-    "ItemName": "Uncommon Shotgun Defender",
+    "DisplayName": "Uncommon Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_uc_t03.uasset",
     "ImagePaths": {
@@ -1959,11 +1830,10 @@
   "Defender:did_defendershotgun_basic_vr_t01": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_vr_t01",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_vr_t01.uasset",
     "ImagePaths": {
@@ -1974,11 +1844,10 @@
   "Defender:did_defendershotgun_basic_vr_t02": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_vr_t02",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_vr_t02.uasset",
     "ImagePaths": {
@@ -1989,11 +1858,10 @@
   "Defender:did_defendershotgun_basic_vr_t03": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_vr_t03",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_vr_t03.uasset",
     "ImagePaths": {
@@ -2004,11 +1872,10 @@
   "Defender:did_defendershotgun_basic_vr_t04": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_vr_t04",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_vr_t04.uasset",
     "ImagePaths": {
@@ -2019,11 +1886,10 @@
   "Defender:did_defendershotgun_basic_vr_t05": {
     "Type": "Defender",
     "Name": "did_defendershotgun_basic_vr_t05",
-    "ItemName": "Epic Shotgun Defender",
+    "DisplayName": "Epic Shotgun Defender",
     "SubType": "Shotgun Defender",
-    "ItemDescription": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendershotgun_basic_vr_t05.uasset",
     "ImagePaths": {
@@ -2034,41 +1900,38 @@
   "Defender:did_defendersniper_basic_c_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_c_t01",
-    "ItemName": "Common Sniper Defender",
+    "DisplayName": "Common Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_c_t01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_c_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_c_t02",
-    "ItemName": "Common Sniper Defender",
+    "DisplayName": "Common Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Common",
-    "RatingLookup": "Default_C_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_c_t02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_m_r_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_r_t01",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_r_t01.uasset",
     "ImagePaths": {
@@ -2079,11 +1942,10 @@
   "Defender:did_defendersniper_basic_m_r_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_r_t02",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_r_t02.uasset",
     "ImagePaths": {
@@ -2094,11 +1956,10 @@
   "Defender:did_defendersniper_basic_m_r_t03": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_r_t03",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_r_t03.uasset",
     "ImagePaths": {
@@ -2109,11 +1970,10 @@
   "Defender:did_defendersniper_basic_m_r_t04": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_r_t04",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_r_t04.uasset",
     "ImagePaths": {
@@ -2124,11 +1984,10 @@
   "Defender:did_defendersniper_basic_m_sr_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_sr_t01",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_sr_t01.uasset",
     "ImagePaths": {
@@ -2139,11 +1998,10 @@
   "Defender:did_defendersniper_basic_m_sr_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_sr_t02",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_sr_t02.uasset",
     "ImagePaths": {
@@ -2154,11 +2012,10 @@
   "Defender:did_defendersniper_basic_m_sr_t03": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_sr_t03",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_sr_t03.uasset",
     "ImagePaths": {
@@ -2169,11 +2026,10 @@
   "Defender:did_defendersniper_basic_m_sr_t04": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_sr_t04",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_sr_t04.uasset",
     "ImagePaths": {
@@ -2184,11 +2040,10 @@
   "Defender:did_defendersniper_basic_m_sr_t05": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_sr_t05",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_sr_t05.uasset",
     "ImagePaths": {
@@ -2199,11 +2054,10 @@
   "Defender:did_defendersniper_basic_m_vr_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_vr_t01",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_vr_t01.uasset",
     "ImagePaths": {
@@ -2214,11 +2068,10 @@
   "Defender:did_defendersniper_basic_m_vr_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_vr_t02",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_vr_t02.uasset",
     "ImagePaths": {
@@ -2229,11 +2082,10 @@
   "Defender:did_defendersniper_basic_m_vr_t03": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_vr_t03",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_vr_t03.uasset",
     "ImagePaths": {
@@ -2244,11 +2096,10 @@
   "Defender:did_defendersniper_basic_m_vr_t04": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_vr_t04",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_vr_t04.uasset",
     "ImagePaths": {
@@ -2259,11 +2110,10 @@
   "Defender:did_defendersniper_basic_m_vr_t05": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_m_vr_t05",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_m_vr_t05.uasset",
     "ImagePaths": {
@@ -2274,256 +2124,239 @@
   "Defender:did_defendersniper_basic_r_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_r_t01",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T01",
     "Tier": 1,
-    "AssetPath": "fortnitegame/content/items/defenders/did_defendersniper_basic_r_t01.uasset",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_r_t01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_r_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_r_t02",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_r_t02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_r_t03": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_r_t03",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_r_t03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_r_t04": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_r_t04",
-    "ItemName": "Rare Sniper Defender",
+    "DisplayName": "Rare Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Rare",
-    "RatingLookup": "Default_R_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_r_t04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_sr_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_sr_t01",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_sr_t01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_sr_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_sr_t02",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_sr_t02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_sr_t03": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_sr_t03",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_sr_t03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_sr_t04": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_sr_t04",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_sr_t04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_sr_t05": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_sr_t05",
-    "ItemName": "Legendary Sniper Defender",
+    "DisplayName": "Legendary Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Legendary",
-    "RatingLookup": "Default_SR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_sr_t05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_uc_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_uc_t01",
-    "ItemName": "Uncommon Sniper Defender",
+    "DisplayName": "Uncommon Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_uc_t01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_uc_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_uc_t02",
-    "ItemName": "Uncommon Sniper Defender",
+    "DisplayName": "Uncommon Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_uc_t02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_uc_t03": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_uc_t03",
-    "ItemName": "Uncommon Sniper Defender",
+    "DisplayName": "Uncommon Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Uncommon",
-    "RatingLookup": "Default_UC_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_uc_t03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_vr_t01": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_vr_t01",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T01",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_vr_t01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_vr_t02": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_vr_t02",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T02",
     "Tier": 2,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_vr_t02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_vr_t03": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_vr_t03",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T03",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_vr_t03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_vr_t04": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_vr_t04",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T04",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_vr_t04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   },
   "Defender:did_defendersniper_basic_vr_t05": {
     "Type": "Defender",
     "Name": "did_defendersniper_basic_vr_t05",
-    "ItemName": "Epic Sniper Defender",
+    "DisplayName": "Epic Sniper Defender",
     "SubType": "Sniper Defender",
-    "ItemDescription": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
     "Rarity": "Epic",
-    "RatingLookup": "Default_VR_T05",
     "Tier": 5,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defendersniper_basic_vr_t05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Sniper.png",
-      "LargePreview": "/Game/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper-L.T-Defenders-Defender-Sniper-L"
     }
   }
 }

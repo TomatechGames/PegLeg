@@ -1,59 +1,53 @@
-[gd_scene load_steps=15 format=3 uid="uid://df66i164ovyld"]
+[gd_scene load_steps=14 format=3 uid="uid://df66i164ovyld"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_lh5ab"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="2_fahct"]
 [ext_resource type="Texture2D" uid="uid://d1sgahybai425" path="res://Images/MissionZoneBackgrounds/FORT_Load_STWIrwinBuild.png" id="3_cn3qa"]
-[ext_resource type="Texture2D" uid="uid://b57flomv1w1kn" path="res://External/Icons/Mission/T-Icon-4Player-RepairTheShelter-128.png" id="4_iiimt"]
+[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="3_w6ueb"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_3nior"]
-[ext_resource type="Texture2D" uid="uid://7ufybuxv5ka1" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Escalation-128.png" id="5_n12c2"]
-[ext_resource type="Texture2D" uid="uid://bbbt4kdbwl3m6" path="res://External/Icons/Mission/T_Icon_ProtectThePresent_128.png" id="6_i7602"]
-[ext_resource type="Texture2D" uid="uid://b6in45pvhvddv" path="res://External/Icons/Mission/Icon-Mission-Critical-XL.png" id="7_6o5v0"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="5_38lly"]
+[ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="6_ih4qj"]
 [ext_resource type="PackedScene" uid="uid://cwt57r5ga21m2" path="res://Scenes/GameItemEntry/mission_reward_entry.tscn" id="7_shmen"]
-[ext_resource type="Texture2D" uid="uid://qo8gr8lcnhwe" path="res://External/Icons/Mission/T-Icon-Replay-Timeline-L.png" id="8_mr5un"]
-[ext_resource type="PackedScene" uid="uid://clcibty4h4pr3" path="res://Scenes/GameItemEntry/mission_alert_reward_entry.tscn" id="9_3iyu5"]
-[ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="10_vwfvf"]
+[ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="8_tpt1k"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="13_5eamh"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dqnfa"]
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grr01"]
+shader = ExtResource("3_w6ueb")
+shader_parameter/ControlSize = Vector2(385, 170)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_idj3s"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ux6pk"]
 bg_color = Color(0.453125, 0.496094, 0.644531, 1)
-skew = Vector2(0.25, 0)
-corner_radius_bottom_right = 5
-expand_margin_left = 4.0
-expand_margin_right = 4.0
+corner_radius_top_left = 5
 
-[node name="mission_entry_v3" type="PanelContainer"]
-clip_children = 1
-custom_minimum_size = Vector2(385, 170)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -814.0
-offset_bottom = -481.0
-grow_horizontal = 2
-grow_vertical = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3g0vu"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+skew = Vector2(0.5, 0)
+corner_radius_bottom_right = 3
+
+[node name="mission_entry_v3" type="MarginContainer" node_paths=PackedStringArray("powerLevelLabel", "missionIcon", "missionRewardParent", "alertModifierParent", "alertRewardParent", "alertModifierLayout", "alertRewardLayout")]
+custom_minimum_size = Vector2(455, 175)
+offset_right = 452.0
+offset_bottom = 172.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_lh5ab")
-theme_override_styles/panel = SubResource("StyleBoxFlat_dqnfa")
 script = ExtResource("2_fahct")
-powerLevelLabel = NodePath("Control/PanelContainer/MarginContainer/HBoxContainer/PowerLevelLabel")
+powerLevelLabel = NodePath("Control/MarginContainer/HBoxContainer/PowerLevelLabel")
 missionIcon = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MissionIcon")
 missionRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/RepeatableRewards/PanelContainer/MarginContainer/RepeatableRewardParent")
-alertModifierParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent")
+alertModifierParent = NodePath("MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent")
 alertRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent")
-alertModifierLayout = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2")
+alertModifierLayout = NodePath("MarginContainer/HBoxContainer/AlertModifiers2")
 alertRewardLayout = NodePath("MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards")
-backgroundTexture = NodePath("BGTexture")
 
 [node name="BGTexture" type="TextureRect" parent="."]
-self_modulate = Color(0.75, 0.75, 0.75, 1)
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_grr01")
 layout_mode = 2
 texture = ExtResource("3_cn3qa")
 expand_mode = 1
-stretch_mode = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -63,17 +57,16 @@ theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 alignment = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
@@ -82,15 +75,15 @@ theme_type_variation = &"TransparantPanel"
 
 [node name="MissionIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer"]
 layout_mode = 2
-texture = ExtResource("4_iiimt")
+texture = ExtResource("5_38lly")
 expand_mode = 3
 stretch_mode = 5
 
 [node name="Responsive Button Area" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer" instance=ExtResource("5_3nior")]
+visible = false
 layout_mode = 2
 
 [node name="RepeatableRewards" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 1
@@ -104,7 +97,7 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/RepeatableRewards/PanelContainer2/HBoxContainer4"]
 layout_mode = 2
-texture = ExtResource("6_i7602")
+texture = ExtResource("6_ih4qj")
 expand_mode = 3
 stretch_mode = 4
 
@@ -146,91 +139,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 2
 
-[node name="AlertModifiers2" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(125, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/separation = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2"]
-layout_mode = 2
-theme_type_variation = &"TransparantPanel"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/PanelContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/PanelContainer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("7_6o5v0")
-expand_mode = 3
-stretch_mode = 4
-
-[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/PanelContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/line_spacing = 0
-theme_override_font_sizes/font_size = 10
-text = "Gameplay Modifiers"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2"]
-layout_mode = 2
-size_flags_vertical = 3
-alignment = 1
-
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 3
-theme_type_variation = &"TransparantPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_right = 3
-
-[node name="ModifierParent" type="GridContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_stretch_ratio = 0.0
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 2
-columns = 3
-
-[node name="Modifier" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("5_n12c2")
-expand_mode = 3
-stretch_mode = 4
-
-[node name="Modifier2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("5_n12c2")
-expand_mode = 3
-stretch_mode = 4
-
-[node name="Modifier3" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("5_n12c2")
-expand_mode = 3
-stretch_mode = 4
-
-[node name="Modifier4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("5_n12c2")
-expand_mode = 3
-stretch_mode = 4
-
-[node name="Modifier5" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("5_n12c2")
-expand_mode = 3
-stretch_mode = 4
-
 [node name="OneTimeRewards" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
@@ -245,7 +153,7 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer2/HBoxContainer4"]
 layout_mode = 2
-texture = ExtResource("8_mr5un")
+texture = ExtResource("8_tpt1k")
 expand_mode = 3
 stretch_mode = 4
 
@@ -268,62 +176,153 @@ layout_mode = 2
 theme_override_constants/h_separation = 3
 columns = 7
 
-[node name="AlertReward" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_3iyu5")]
-custom_minimum_size = Vector2(61, 0)
+[node name="RewardEntryHorizontal" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("13_5eamh")]
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal2" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("13_5eamh")]
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal3" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("13_5eamh")]
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal4" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("13_5eamh")]
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal5" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("13_5eamh")]
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="AlertModifiers2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/AlertModifiers2"]
+layout_mode = 2
+theme_type_variation = &"TransparantPanel"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/AlertModifiers2/PanelContainer"]
 layout_mode = 2
 
-[node name="AlertReward2" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_3iyu5")]
-custom_minimum_size = Vector2(61, 0)
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/AlertModifiers2/PanelContainer/HBoxContainer"]
 layout_mode = 2
+expand_mode = 3
+stretch_mode = 4
 
-[node name="AlertReward3" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_3iyu5")]
-custom_minimum_size = Vector2(61, 0)
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/AlertModifiers2/PanelContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 10
+text = "Gameplay Modifiers"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="AlertReward4" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_3iyu5")]
-custom_minimum_size = Vector2(61, 0)
+[node name="VBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/AlertModifiers2"]
 layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
 
-[node name="AlertReward5" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_3iyu5")]
-custom_minimum_size = Vector2(61, 0)
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_type_variation = &"TransparantPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 3
+
+[node name="ModifierParent" type="GridContainer" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 2
+columns = 2
+
+[node name="Modifier" type="TextureRect" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("5_38lly")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Modifier2" type="TextureRect" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("5_38lly")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Modifier3" type="TextureRect" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("5_38lly")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Modifier4" type="TextureRect" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("5_38lly")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Modifier5" type="TextureRect" parent="MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent"]
+custom_minimum_size = Vector2(46, 46)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("5_38lly")
+expand_mode = 1
+stretch_mode = 4
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Control"]
-custom_minimum_size = Vector2(15, 0)
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 0
-offset_left = 2.0
 offset_right = 15.0
 offset_bottom = 17.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_idj3s")
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 2
+theme_override_constants/separation = -5
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="Control/MarginContainer/HBoxContainer2"]
 layout_mode = 2
-theme_override_constants/separation = 0
-alignment = 1
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ux6pk")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="Panel2" type="Panel" parent="Control/MarginContainer/HBoxContainer2"]
 layout_mode = 2
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_bottom = 1
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_3g0vu")
 
-[node name="TextureRect" type="TextureRect" parent="Control/PanelContainer/MarginContainer/HBoxContainer/MarginContainer"]
-visible = false
+[node name="HBoxContainer" type="MarginContainer" parent="Control/MarginContainer"]
 layout_mode = 2
-texture = ExtResource("10_vwfvf")
-expand_mode = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
 
-[node name="PowerLevelLabel" type="Label" parent="Control/PanelContainer/MarginContainer/HBoxContainer"]
+[node name="PowerLevelLabel" type="Label" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
-text = "1"
+text = "9"
 horizontal_alignment = 1
-vertical_alignment = 1

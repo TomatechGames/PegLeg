@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_j3td7"]
 [ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="2_op652"]
-[ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="3_03rxf"]
+[ext_resource type="Texture2D" uid="uid://bu7y4624c7w51" path="res://Images/InterfaceIcons/o5hq54xvrat91.png" id="3_5abd1"]
 [ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="4_e2vqj"]
 [ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/InterfaceIcons/ChoiceCardV2/LabelUV-sheet.png" id="5_do3oc"]
 [ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/InterfaceIcons/ChoiceCardV2/Base-sheet.png" id="6_m1h2m"]
@@ -15,17 +15,21 @@
 resource_local_to_scene = true
 shader = ExtResource("2_op652")
 shader_parameter/SliceAmount = Vector2(4, 4)
-shader_parameter/StartTime = null
-shader_parameter/Started = false
-shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
+shader_parameter/UseManual = true
+shader_parameter/ManualControl = 0
+shader_parameter/time = 2480.29
+shader_parameter/StartTime = 2480.0
+shader_parameter/Started = true
+shader_parameter/RarityColour = Color(1, 0.266667, 0, 1)
 shader_parameter/UVTexture = ExtResource("5_do3oc")
 shader_parameter/PatternTexture = ExtResource("4_e2vqj")
-shader_parameter/IconTexture = ExtResource("3_03rxf")
+shader_parameter/IconTexture = ExtResource("3_5abd1")
 
 [node name="ChoiceEntryCard" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 256)
 offset_right = 82.0313
 offset_bottom = 200.0
+mouse_filter = 2
 script = ExtResource("1_j3td7")
 autoLinkToViewer = false
 
@@ -41,6 +45,7 @@ script = ExtResource("7_65gaw")
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Control"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 1.0
@@ -62,12 +67,10 @@ autowrap_mode = 3
 [node name="Responsive Button Area" parent="Control" instance=ExtResource("8_hciuj")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.15
-anchor_top = 0.09
-anchor_right = 0.85
-anchor_bottom = 0.91
-grow_horizontal = 2
-grow_vertical = 2
+anchor_left = 0.155
+anchor_top = 0.092
+anchor_right = 0.845
+anchor_bottom = 0.911
 
 [node name="InspectArea" type="Control" parent="Control"]
 layout_mode = 1
@@ -110,13 +113,10 @@ vertical_alignment = 1
 
 [node name="Responsive Button Circle" parent="Control/InspectArea/TextureRect" instance=ExtResource("10_pu46j")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
 offset_left = 1.0
 offset_right = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+circleMode = true
+outlinePadding = 0.0
 
 [connection signal="IconChanged" from="." to="ChoiceCardTexture" method="SetShaderTexture" binds= ["IconTexture"]]
 [connection signal="InteractableChanged" from="." to="Control/Responsive Button Area" method="set_visible"]

@@ -3,47 +3,37 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
 public partial class MissionInterface : Control
 {
-	[Export]
-	int operationsPerFrame = 10;
-
-    [Export] NodePath missionViewOptionsPath;
-    OptionButton missionViewOptions;
-
-    [Export] NodePath zoneFilterTabBarPath;
-	TabBar zoneFilterTabBar;
-
-	[Export] NodePath searchBarPath;
+    [Export]
+    VirtualTabBar zoneFilterTabBar;
+    [Export]
 	LineEdit searchBar;
+    [Export]
+    Button itemSearchToggle;
 
-    [Export] NodePath loadingIconPath;
+    [Export]
+    CheckButton[] itemFilterButtons = Array.Empty<CheckButton>();
+
+    [Export]
+    PackedScene missionRowScene;
+    [Export]
+    Control missionRowParent;
+
+    [Export]
+    PackedScene missionEntryScene;
+
+    [Export]
 	Control loadingIcon;
 
-	[Export] NodePath forceRefreshButtonPath;
-    BaseButton forceRefreshButton;
+    string currentZoneFilter => theaterFilters[zoneFilterTabBar.CurrentTab];
 
-    [Export]
-    PackedScene listEntryScene;
-    [Export]
-	PackedScene smallGridEntryScene;
-    [Export]
-    PackedScene largeGridEntryScene;
-
-    [Export] NodePath missionGridPath;
-	DynamicGridContainer missionGrid;
-
-    [Export] NodePath missionListPath;
-    VBoxContainer missionList;
-
-    List<MissionEntry> prewarmedMissions = new();
-	const int maxMissionCount = 370;
-
-	static readonly string[] filters = new string[]
+    static readonly string[] theaterFilters = new string[]
 	{
 		"spct",
         "spctv",
@@ -54,176 +44,287 @@ public partial class MissionInterface : Control
         "v",
     };
 
-	//[Export] string testJSONPath;
-	//[Export] string testAltJSONPath;
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+    static readonly string[][] itemFilters = new string[][]
+    {
+        new string[] {
+            "AccountResource:reagent_alteration_generic",
+            "AccountResource:reagent_alteration_upgrade_uc", 
+            "AccountResource:reagent_alteration_upgrade_r",
+            "AccountResource:reagent_alteration_upgrade_vr",
+            "AccountResource:reagent_alteration_upgrade_sr",
+        },
+        new string[] {
+            "AccountResource:reagent_c_t01",
+            "AccountResource:reagent_c_t02",
+            "AccountResource:reagent_c_t03",
+            "AccountResource:reagent_c_t04",
+        },
+        new string[] {
+            "Ingredient:ingredient_ore_copper",
+            "Ingredient:ingredient_ore_silver",
+            "Ingredient:ingredient_ore_malachite",
+            "Ingredient:ingredient_ore_obsidian",
+            "Ingredient:ingredient_ore_brightcore",
+
+            "Ingredient:ingredient_crystal_quartz",
+            "Ingredient:Ingredient:ingredient_crystal_shadowshard",
+            "Ingredient:ingredient_crystal_sunbeam",
+        },
+        new string[]
+        {
+            "Schematic:*",
+        },
+        new string[]
+        {
+            "Hero:*",
+        },
+        new string[]
+        {
+            "Worker:workerbasic_sr_t01",
+            "MYTHICLEAD",
+        }
+    };
+
+
+    public override void _Ready()
 	{
-		this.GetNodeOrNull(forceRefreshButtonPath, out forceRefreshButton);
-
-		missionViewOptions = GetNode<OptionButton>(missionViewOptionsPath);
-        zoneFilterTabBar = GetNode<TabBar>(zoneFilterTabBarPath);
-		searchBar = GetNode<LineEdit>(searchBarPath);
-		loadingIcon = GetNode<Control>(loadingIconPath);
-
-        missionGrid = GetNode<DynamicGridContainer>(missionGridPath);
-		missionList = GetNode<VBoxContainer>(missionListPath);
-
 		VisibilityChanged += () =>
         {
 			if (Visible)
 				LoadMissions();
         };
 
-        TitleBarDragger.PerformRefresh += () =>
-        {
-            LoadMissions();
-        };
-        missionViewOptions.ItemSelected += e =>
-        {
-			cellsRequireRebuild = true;
-			LoadMissions();
-        };
-        zoneFilterTabBar.TabChanged += e => LoadMissions();
-        searchBar.TextSubmitted += e => LoadMissions();
+        zoneFilterTabBar.TabChanged += e => FilterMissionGrid();
+        searchBar.TextSubmitted += e => FilterMissionGrid();
 		searchBar.TextChanged += e =>
 		{
-			if (string.IsNullOrWhiteSpace(e))
-				LoadMissions();
+            //if (string.IsNullOrWhiteSpace(e))
+            //GenerateSearchInstructions(searchBar.Text);
+            FilterMissionGrid();
 		};
-		forceRefreshButton.Pressed += () => LoadMissions(true);
+        foreach (var button in itemFilterButtons)
+        {
+            button.Pressed += () =>
+            {
+                GenerateSearchFilters();
+                FilterMissionGrid();
+            };
+        }
+        //GenerateSearchInstructions(searchBar.Text);
+        GenerateSearchFilters();
+
+        if (Visible)
+            LoadMissions();
     }
 
-	bool listMode = false;
-	async Task BuildCells()
+    List<MissionRowGroup> activeRowGroups = new();
+    record MissionRowGroup(MissionRow row, MissionEntry[] entries);
+    PLSearch.Instruction[] currentMissionSearchInstructions;
+    PLSearch.Instruction[] currentItemSearchInstructions;
+    List<string> activeItemFilters = new();
+
+    bool isLoadingMissions = false;
+    async void LoadMissions(bool force = false)
     {
-        for (int i = 0; i < prewarmedMissions.Count; i++)
-        {
-			prewarmedMissions[i].QueueFree();
-            if (i % (operationsPerFrame/2) == 0)
-                await this.WaitForFrame();
-        }
-        prewarmedMissions.Clear();
-        await this.WaitForFrame();
-
-        PackedScene missionEntry = missionViewOptions.Selected switch
-		{
-			0 => listEntryScene,
-			1 => smallGridEntryScene,
-			2 => largeGridEntryScene,
-            _ => listEntryScene,
-        };
-		listMode = missionEntry == listEntryScene;
-        Control destinationParent = listMode ? missionList : missionGrid;
-
-        for (int i = 0; i < maxMissionCount; i++)
-        {
-            var missionTile = missionEntry.Instantiate<MissionEntry>();
-            missionTile.Visible = false;
-            destinationParent.AddChild(missionTile);
-            prewarmedMissions.Add(missionTile);
-			if (i % (operationsPerFrame / 2) == 0)
-				await this.WaitForFrame();
-        }
-        cellsRequireRebuild = false;
-    }
-
-	bool cellsRequireRebuild = true;
-	bool isLoadingMissions = false;
-	async void LoadMissions(bool force = false)
-	{
-		if (isLoadingMissions)
+        if (isLoadingMissions || !await LoginRequests.TryLogin())
             return;
-        isLoadingMissions = true;
-		if (MissionRequests.MissionsRequireUpdate() || cellsRequireRebuild || force)
+        try
         {
-            loadingIcon.Visible = true;
-            Control destinationParent = listMode ? missionList : missionGrid;
-            destinationParent.Visible = false;
+            isLoadingMissions = true;
 
-            if (cellsRequireRebuild)
-				await BuildCells();
-			ClearMissionGrid();
-            await PopulateMissionGrid(await MissionRequests.GetMissions(force));
+            missionRowParent.Visible = false;
+            if (MissionRequests.MissionsRequireUpdate() || force)
+            {
+                loadingIcon.Visible = true;
+                foreach (var rowGroup in activeRowGroups)
+                {
+                    rowGroup.row.QueueFree();
+                }
+                activeRowGroups.Clear();
+                await this.WaitForFrame();
 
-            destinationParent.Visible = false;
+                var allMissionData = await MissionRequests.GetMissions(force);
+                loadingIcon.Visible = false;
+                missionRowParent.Visible = true;
+                var instructions = PLSearch.GenerateSearchInstructions(searchBar.Text, out var _);
+
+                List<MissionEntry> currentMissions = new();
+                foreach (var rowData in allMissionData)
+                {
+                    int i = 0;
+                    var thisRow = missionRowScene.Instantiate<MissionRow>();
+                    missionRowParent.AddChild(thisRow);
+                    thisRow.SetName("Power Level "+rowData.Key);
+                    thisRow.Visible = false;
+                    foreach (var missionData in rowData.Value.AsArray())
+                    {
+                        var thisMission = missionEntryScene.Instantiate<MissionEntry>();
+                        thisMission.SetMissionData(missionData.AsObject());
+                        thisRow.missionParent.AddChild(thisMission);
+                        currentMissions.Add(thisMission);
+                        i++;
+                        if (i % 10 == 9)
+                            await this.WaitForFrame();
+                    }
+                    thisRow.Visible = false;
+                    foreach (var missionEntry in currentMissions)
+                    {
+                        missionEntry.Visible = missionEntry.Filter(currentMissionSearchInstructions, currentItemSearchInstructions, itemSearchToggle.ButtonPressed, currentZoneFilter, activeItemFilters.ToArray());
+                        thisRow.Visible |= missionEntry.Visible;
+                    }
+
+                    activeRowGroups.Add(new(thisRow, currentMissions.ToArray()));
+                    currentMissions.Clear();
+                    await this.WaitForFrame();
+                }
+            }
+        }
+        finally
+        {
             loadingIcon.Visible = false;
+            isLoadingMissions = false;
         }
-        isLoadingMissions = false;
-        //searchBar.Text, filters[zoneFilterTabBar.CurrentTab], requireAllTermsButton.ButtonPressed
-		FilterMissionGrid();
+
+        //FilterMissionGrid();
     }
 
-	void ClearMissionGrid()
+    void GenerateSearchInstructions(string searchText)
     {
-        for (int i = 0; i < maxMissionCount; i++)
+        if (searchText.Contains(" i/: "))
         {
-			prewarmedMissions[i].Visible = false;
+            string[] splitSearchText = searchText.Split("i/:");
+            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0], out var _);
+            currentItemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join(), out var _);
+        }
+        else
+        {
+            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(searchText, out var _);
+            currentItemSearchInstructions = Array.Empty<PLSearch.Instruction>();
         }
     }
 
-	async Task PopulateMissionGrid(JsonObject simplifiedMissions)
-	{
-		//ClearMissionGrid();
-		if (simplifiedMissions is null)
-			return;
-		var missionArray = simplifiedMissions["missions"].AsArray();
-
-		if (prewarmedMissions.Count < missionArray.Count)
-			Debug.WriteLine(prewarmedMissions.Count + "<" + missionArray.Count);
-
-        for (int i = 0; i < missionArray.Count; i++)
+    void GenerateSearchFilters()
+    {
+        activeItemFilters.Clear();
+        for (int i = 0; i < itemFilters.Length; i++)
         {
-            var mission = missionArray[i];
-            var missionTile = prewarmedMissions[i];
-            missionTile.ActivateEntry(mission.AsObject());
-			if (i % operationsPerFrame == 0)
-				await this.WaitForFrame();
-        }
-
-        for (int i = missionArray.Count; i < maxMissionCount; i++)
-        {
-            var missionTile = prewarmedMissions[i];
-			missionTile.DeactivateEntry();
-			//missionGrid.RemoveChild(missionTile);
+            if (itemFilterButtons.Length>i && itemFilterButtons[i].ButtonPressed)
+            {
+                activeItemFilters.AddRange(itemFilters[i]);
+            }
         }
     }
 
-	void FilterMissionGrid()
+    void FilterMissionGrid()
 	{
-		char[] theatreCatFilter = filters[zoneFilterTabBar.CurrentTab].ToCharArray();
-		List<string> searchTerms = new(searchBar.Text.ToLower().Split());
-		if (string.IsNullOrWhiteSpace(searchBar.Text))
-			searchTerms.Clear();
-		int minPowerLevel = 0;
-		int maxPowerLevel = 999;
-
-		string minPLTerm = searchTerms.FirstOrDefault(t=>t.StartsWith("min:"));
-		if (minPLTerm is not null)
-		{
-			searchTerms.Remove(minPLTerm);
-            if(!int.TryParse(minPLTerm.Split(":")[1], out minPowerLevel))
-                minPowerLevel = 0;
-        }
-
-        string maxPLTerm = searchTerms.FirstOrDefault(t => t.StartsWith("max:"));
-        if (maxPLTerm is not null)
+        foreach (var rowGroup in activeRowGroups)
         {
-            searchTerms.Remove(maxPLTerm);
-            if (!int.TryParse(maxPLTerm.Split(":")[1], out maxPowerLevel))
-                maxPowerLevel = 999;
+            rowGroup.row.Visible = false;
+            foreach (var missionEntry in rowGroup.entries)
+            {
+                missionEntry.Visible = missionEntry.Filter(currentMissionSearchInstructions, currentItemSearchInstructions, itemSearchToggle.ButtonPressed, currentZoneFilter, activeItemFilters.ToArray());
+                rowGroup.row.Visible |= missionEntry.Visible;
+            }
         }
+    }
 
-		var searchTermsArray = searchTerms.ToArray();
+}
 
-        Control destinationParent = listMode ? missionList : missionGrid;
-        missionGrid.SetDisableSort(true);
-        destinationParent.Visible = false;
-        for (int i = 0; i < maxMissionCount; i++)
+/*
+public class MissionData
+{
+    public JsonObject missionInstance;
+    public JsonObject missionGen;
+    public JsonObject missionTile;
+    public int powerLevel;
+    public char theatreCategory;
+    public bool hasMissionAlert;
+    public List<JsonObject> missionRewards = new();
+    public List<string> alertModifiers = new();
+    public List<JsonObject> alertRewards = new();
+
+    //used to keep WeakRefs alive in the BanjoAssets texture cache
+    List<Texture2D> textureDependancies = new();
+
+    public MissionData(JsonObject missionInstance)
+    {
+        this.missionInstance = missionInstance;
+        powerLevel = missionInstance["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>();
+        theatreCategory = missionInstance["theatreCat"].GetValue<char>();
+        missionRewards = missionInstance["rewards"].AsArray().Select(val=>val.AsObject()).ToList();
+
+        textureDependancies.AddRange(missionRewards.Select(r=>r.GetTemplate().GetItemTexture()));
+
+        if (missionInstance.ContainsKey("missionAlert"))
         {
-            prewarmedMissions[i].FilterEntry(theatreCatFilter, searchTermsArray, false, minPowerLevel, maxPowerLevel);
+            hasMissionAlert = true;
+
+            alertModifiers = missionInstance["missionAlert"]["modifiers"].Deserialize<List<string>>();
+            textureDependancies.AddRange(alertModifiers.Select(m => BanjoAssets.TryGetTemplate(m).GetItemTexture()));
+
+            alertRewards = missionInstance["missionAlert"]["rewards"].AsArray().Select(r=>r.AsObject()).ToList();
+            textureDependancies.AddRange(alertRewards.Select(r => r.GetTemplate().GetItemTexture()));
         }
-        destinationParent.Visible = true;
-        missionGrid.SetDisableSort(false);
+    }
+
+    static readonly Dictionary<string, string> typeKeywordAliases = new()
+    {
+        ["survivor"] = "worker"
+    };
+
+    public bool FilterElement(char[] theatreFilters, string[] searchTerms, bool requireAll)
+    {
+        if (!theatreFilters.Contains(theatreCategory))
+            return false;
+
+        if (minPowerLevel > powerLevel)
+            return false;
+
+        if (maxPowerLevel < powerLevel)
+            return false;
+
+        if (searchTerms.Length == 0)
+            return true;
+
+        bool matchFound = requireAll;
+        foreach (var item in searchTerms)
+        {
+            if (item.StartsWith("-"))
+            {
+                if (searchKeywords.Exists(val => val.Contains(item[1..])))
+                {
+                    matchFound = false;
+                    break;
+                }
+            }
+            else if (item.StartsWith("t:"))
+            {
+                string itemType = item[2..];
+                if (
+                    requireAll != (
+                     typeKeywords.Contains(itemType) ||
+                     (
+                      typeKeywordAliases.ContainsKey(itemType) &&
+                      typeKeywords.Contains(typeKeywordAliases[itemType])
+                      )
+                     )
+                    )
+                {
+                    matchFound = !requireAll;
+                    break;
+                }
+            }
+            else if (requireAll != searchKeywords.Exists(val=>val.Contains(item)))
+            {
+                matchFound = !requireAll;
+                break;
+            }
+        }
+
+        if (!matchFound)
+            return false;
+
+        return true;
     }
 }
+*/

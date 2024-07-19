@@ -11,13 +11,8 @@ public partial class FixedRowGridContainer : Container
     Vector2 spacing;
     bool disableSort = false;
 
-    bool minSizeLock = false;
     public override Vector2 _GetMinimumSize()
     {
-        if (minSizeLock)
-            return Vector2.Zero;
-        minSizeLock = true;
-
         var children = GetChildren().Cast<Control>().ToArray();
         int visibleChildCount = children.Count(c => c.Visible);
         if (visibleChildCount == 0)
@@ -31,7 +26,6 @@ public partial class FixedRowGridContainer : Container
             (firstChildMinSize.Y * fixedRows) + (spacing.Y * (fixedRows - 1))
             );
 
-        minSizeLock = false;
         return newMinSize;
     }
 
