@@ -56,7 +56,7 @@ static class LoginRequests
         {
             loginInProgress = true;
 
-            Debug.WriteLine("authorising via one-time code...");
+            GD.Print("authorising via one-time code...");
             JsonNode accountAuth = await Helpers.MakeRequest(
                 HttpMethod.Post,
                 FNEndpoints.loginEndpoint,
@@ -73,15 +73,15 @@ static class LoginRequests
         return AuthTokenValid;
     }
 
-    public static async Task SetupDeviceAuth()
+    public static async Task SetupDeviceAuth()          
     {
         if (HasDeviceDetails)
             return;
-        Debug.WriteLine($"Setting up device auth...");
+        GD.Print($"Setting up device auth...");
         //needed for Account Id
         if (accountAccessToken is null)
         {
-            Debug.WriteLine($"No access token has been provided");
+            GD.Print($"No access token has been provided");
             return;
         }
 
@@ -100,11 +100,11 @@ static class LoginRequests
 
         if (!DeviceDetailsSchemaValid(returnedDetails))
         {
-            Debug.WriteLine("invalid devide auth recieved:\n" + returnedDetails?.ToString());
+            GD.Print("invalid devide auth recieved:\n" + returnedDetails?.ToString());
             return;
         }
 
-        Debug.WriteLine($"Device auth retrieved");
+        GD.Print($"Device auth retrieved");
         deviceDetails = returnedDetails;
         //return on invalid response
         SaveDeviceDetails();
@@ -115,7 +115,7 @@ static class LoginRequests
         if (deviceDetails is null)
             return;
 
-        Debug.WriteLine($"Saving device auth");
+        GD.Print($"Saving device auth");
 
         //stringify and add padding
         string deviceDetalsString = deviceDetails.ToString();
@@ -141,7 +141,7 @@ static class LoginRequests
         using FileStream fs = File.Create(fullPath);
         fs.Write(encryptedDetails, 0, encryptedDetails.Length);
         fs.Flush();
-        Debug.WriteLine("device auth encrypted and saved");
+        GD.Print("device auth encrypted and saved");
     }
 
     static JsonObject LoadDeviceDetails()
@@ -151,7 +151,7 @@ static class LoginRequests
         string fullPath = ProjectSettings.GlobalizePath(deviceDetailsFilePath);
         if (!File.Exists(fullPath))
         {
-            Debug.WriteLine($"Failed to load device auth: {fullPath}");
+            GD.Print($"Failed to load device auth: {fullPath}");
             return null;
         }
 
@@ -195,11 +195,11 @@ static class LoginRequests
         //return on invalid data
         if (!DeviceDetailsSchemaValid(resultDetails))
         {
-            Debug.WriteLine("invalid devide auth loaded:\n" + deviceDetalsString);
+            GD.Print("invalid devide auth loaded:\n" + deviceDetalsString);
             return null;
         }
         deviceDetails = resultDetails;
-        Debug.WriteLine("device auth loaded");
+        GD.Print("device auth loaded");
         return deviceDetails;
     }
 
@@ -211,7 +211,7 @@ static class LoginRequests
         {
             File.Delete(fullPath);
             deviceDetails = null;
-            Debug.WriteLine("device auth cleared");
+            GD.Print("device auth cleared");
         }
     }
 
@@ -228,12 +228,12 @@ static class LoginRequests
 
             if (deviceDetails is null)
             {
-                Debug.WriteLine("something oopsied");
+                GD.Print("something oopsied");
                 loginInProgress = false;
                 return AuthTokenValid;
             }
 
-            Debug.WriteLine("authorising via device auth...");
+            GD.Print("authorising via device auth...");
 
             JsonNode accountAuth = await Helpers.MakeRequest(
                 HttpMethod.Post,

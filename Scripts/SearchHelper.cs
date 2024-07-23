@@ -23,9 +23,9 @@ public static class PLSearch
    (?<TextQuery>
     (?<TQVar>[a-zA-Z]+(?:\.(?:[a-zA-Z]+|(?:\^?\d+)))*)=
     (?<TQVal>
-              (?:\.\.)?\""[\w:_.!?\/\\]*\""(?:\.\.)?|
-            \[(?:\.\.)?\""[\w:_.!?\/\\]*\""(?:\.\.)?
-       (?:,\ ?(?:\.\.)?\""[\w:_.!?\/\\]*\""(?:\.\.)?)*\]
+              (?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?|
+            \[(?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?
+       (?:,\ ?(?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?)*\]
     )
    )|
    (?<NumericQuery>
@@ -36,8 +36,8 @@ public static class PLSearch
        (?:                 \d+(?:\.\d+)?(?:\.\.)?)
     )
    )|
-   (?<FullSearchQuery>\""[a-zA-Z]+\"")|
-   (?<SearchQuery>[a-zA-Z]+)
+   (?<FullSearchQuery>\""[\w:\-_.!?\/\\ ]+\"")|
+   (?<SearchQuery>[\w:\-_.!?\/\\]+)
   )
  )
  (?>[ )]+|\Z)
@@ -355,11 +355,13 @@ public static class PLSearch
                         if (!skipThisOp)
                             skipUntilIndex = item.endIndex;
                         bool comparisonTrue = false;
-                        if (target["tags"] is JsonArray tagArray)
+                        if (target["searchTags"] is JsonArray tagArray)
                         {
                             string checkString = item.meta.ToString()[1..^1];
-                            comparisonTrue = tagArray.Any(t => t.ToString() == checkString);
+                            comparisonTrue = tagArray.Any(t => t?.ToString().ToLower() == checkString.ToLower());
                         }
+                        if (item.inverted)
+                            comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
                             currentState = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
@@ -370,11 +372,18 @@ public static class PLSearch
                         if (!skipThisOp)
                             skipUntilIndex = item.endIndex;
                         bool comparisonTrue = false;
-                        if (target["tags"] is JsonArray tagArray)
+                        string checkString = item.meta.ToString();
+                        if (checkString == "NEW" && target["attributes"] is JsonObject itemAttributes)
                         {
-                            string checkString = item.meta.ToString();
-                            comparisonTrue = tagArray.Any(t => t.ToString().Contains(checkString));
+                            //special query that checks an items isSeen property
+                            comparisonTrue = !(itemAttributes["item_seen"]?.GetValue<bool>() ?? false);
                         }
+                        else if (target["searchTags"] is JsonArray tagArray)
+                        {
+                            comparisonTrue = tagArray.Any(t => t?.ToString().ToLower().Contains(checkString.ToLower()) ?? false);
+                        }
+                        if (item.inverted)
+                            comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
                             currentState = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";

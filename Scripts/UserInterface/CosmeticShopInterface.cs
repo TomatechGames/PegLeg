@@ -43,6 +43,8 @@ public partial class CosmeticShopInterface : Control
     [Export]
     CheckButton requireAddedToday;
     [Export]
+    CheckButton requireLeavingSoon;
+    [Export]
     CheckButton excludeDiscountBundles;
     [Export]
     Button resetTypeFilters;
@@ -78,6 +80,7 @@ public partial class CosmeticShopInterface : Control
         sacButton.Pressed += OpenSACPrompt;
 
         requireAddedToday.Pressed += ApplyFilters;
+        requireLeavingSoon.Pressed += ApplyFilters;
         excludeDiscountBundles.Pressed += ApplyFilters;
         foreach (var button in newOrOldFilters)
         {
@@ -442,7 +445,11 @@ public partial class CosmeticShopInterface : Control
 
     bool IsValidEntry(CosmeticShopOfferEntry entry)
     {
-        if(requireAddedToday.ButtonPressed && !entry.isAddedToday)
+        if(requireLeavingSoon.ButtonPressed && !entry.isLeavingSoon)
+            return false;
+        if (requireAddedToday.ButtonPressed && !entry.isAddedToday)
+            return false;
+        if (!excludeDiscountBundles.ButtonPressed && entry.isMultiBundle)
             return false;
 
         if (!(newOrOldFilterValue switch
@@ -457,8 +464,6 @@ public partial class CosmeticShopInterface : Control
 
         var types = entry.itemTypes;
 
-        if(!excludeDiscountBundles.ButtonPressed && entry.isMultiBundle)
-            return false;
 
         if (typeMasks[0] && MatchAnyFilterIndex(types, 0, 4))
             return true;

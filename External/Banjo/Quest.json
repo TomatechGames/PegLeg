@@ -27749,6 +27749,77 @@
       "SmallPreview": "ExportedImages\\T-Icon-Hero-Soldier-128.png"
     }
   },
+  "Quest:homebaseonboardingafteroutpost": {
+    "Type": "Quest",
+    "Name": "HomebaseOnboardingAfterOutpost",
+    "DisplayName": "Loot Llamas",
+    "Category": "MainQuests",
+    "Description": "You\u0027ve earned a Mini-Llama and enough V-bucks to purchase one Upgrade Llama. Head to the Loot tab and get that loot!",
+    "Objectives": [
+      {
+        "BackendName": "open_card_pack",
+        "Count": 1,
+        "Description": "Redeem a Mini Llama from the Loot tab",
+        "HudShortDescription": ""
+      },
+      {
+        "BackendName": "purchase_card_pack",
+        "Count": 1,
+        "Description": "Purchase an Upgrade Llama from the Loot tab",
+        "HudShortDescription": ""
+      },
+      {
+        "BackendName": "hbonboarding_watchoutpostunlock",
+        "Count": 1,
+        "Description": "Continue the fight!",
+        "HudShortDescription": ""
+      }
+    ],
+    "Rewards": [],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/onboarding/homebaseonboardingafteroutpost.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-StoreLlamaBG-64.png"
+    }
+  },
+  "Quest:homebaseonboardinggrantschematics": {
+    "Type": "Quest",
+    "Name": "HomebaseOnboardingGrantSchematics",
+    "DisplayName": "(Hidden) Grant Starting Schematics",
+    "Category": "",
+    "Description": "Quest to track when Homebase Storm Shield Defense 1 has been completed. Once it is completed, grant starting schematics behind the scenes to players.",
+    "Objectives": [
+      {
+        "BackendName": "questcomplete_outpostquest_t1_l1",
+        "Count": 1,
+        "Description": "Complete Homebase Storm Shield Defense 1",
+        "HudShortDescription": ""
+      }
+    ],
+    "Rewards": [
+      {
+        "Hidden": false,
+        "Item": "Schematic:ammo_energycell",
+        "Quantity": 1,
+        "Selectable": false
+      },
+      {
+        "Hidden": false,
+        "Item": "Schematic:ingredient_blastpowder",
+        "Quantity": 1,
+        "Selectable": false
+      },
+      {
+        "Hidden": false,
+        "Item": "Schematic:ingredient_duct_tape",
+        "Quantity": 1,
+        "Selectable": false
+      }
+    ],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/onboarding/homebaseonboardinggrantschematics.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Outpost-128.png"
+    }
+  },
   "Quest:homebaseonboarding": {
     "Type": "Quest",
     "Name": "HomebaseOnboarding",
@@ -28026,77 +28097,6 @@
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/onboarding/homebaseonboarding.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
-    }
-  },
-  "Quest:homebaseonboardingafteroutpost": {
-    "Type": "Quest",
-    "Name": "HomebaseOnboardingAfterOutpost",
-    "DisplayName": "Loot Llamas",
-    "Category": "MainQuests",
-    "Description": "You\u0027ve earned a Mini-Llama and enough V-bucks to purchase one Upgrade Llama. Head to the Loot tab and get that loot!",
-    "Objectives": [
-      {
-        "BackendName": "open_card_pack",
-        "Count": 1,
-        "Description": "Redeem a Mini Llama from the Loot tab",
-        "HudShortDescription": ""
-      },
-      {
-        "BackendName": "purchase_card_pack",
-        "Count": 1,
-        "Description": "Purchase an Upgrade Llama from the Loot tab",
-        "HudShortDescription": ""
-      },
-      {
-        "BackendName": "hbonboarding_watchoutpostunlock",
-        "Count": 1,
-        "Description": "Continue the fight!",
-        "HudShortDescription": ""
-      }
-    ],
-    "Rewards": [],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/onboarding/homebaseonboardingafteroutpost.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-StoreLlamaBG-64.png"
-    }
-  },
-  "Quest:homebaseonboardinggrantschematics": {
-    "Type": "Quest",
-    "Name": "HomebaseOnboardingGrantSchematics",
-    "DisplayName": "(Hidden) Grant Starting Schematics",
-    "Category": "",
-    "Description": "Quest to track when Homebase Storm Shield Defense 1 has been completed. Once it is completed, grant starting schematics behind the scenes to players.",
-    "Objectives": [
-      {
-        "BackendName": "questcomplete_outpostquest_t1_l1",
-        "Count": 1,
-        "Description": "Complete Homebase Storm Shield Defense 1",
-        "HudShortDescription": ""
-      }
-    ],
-    "Rewards": [
-      {
-        "Hidden": false,
-        "Item": "Schematic:ammo_energycell",
-        "Quantity": 1,
-        "Selectable": false
-      },
-      {
-        "Hidden": false,
-        "Item": "Schematic:ingredient_blastpowder",
-        "Quantity": 1,
-        "Selectable": false
-      },
-      {
-        "Hidden": false,
-        "Item": "Schematic:ingredient_duct_tape",
-        "Quantity": 1,
-        "Selectable": false
-      }
-    ],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/onboarding/homebaseonboardinggrantschematics.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Outpost-128.png"
     }
   },
   "Quest:homebasequest_completeexpedition": {
@@ -42124,108 +42124,6 @@
       "SmallPreview": "ExportedImages\\Icon-Quest-HarvestOptimizer-XL.png"
     }
   },
-  "Quest:phoenix_seasonal_locating_04": {
-    "Type": "Quest",
-    "Name": "Phoenix_Seasonal_Locating_04",
-    "DisplayName": "Locating: Survivor Savior 1",
-    "Category": "Phoenix_Seasonal",
-    "Description": "This is a Lars\u0027 Locating Venture Quest. Complete it to earn Venture experience and the next Lars\u0027 Locating quest!",
-    "Objectives": [
-      {
-        "BackendName": "phoenixseasonal_locating_04",
-        "Count": 10,
-        "Description": "Rescue Survivors in a 34\u002B Blasted Badlands zone",
-        "HudShortDescription": "Survivors rescued",
-        "ZonePowerLevel": 34
-      }
-    ],
-    "Rewards": [
-      {
-        "Hidden": true,
-        "Item": "Quest:phoenix_seasonal_locating_05",
-        "Quantity": 1,
-        "Selectable": false
-      },
-      {
-        "Hidden": false,
-        "Item": "AccountResource:phoenixxp_reward",
-        "Quantity": 3875,
-        "Selectable": false
-      }
-    ],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/phoenix/phoenixseasonal/phoenix_locating_quest/phoenix_seasonal_locating_04.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
-    }
-  },
-  "Quest:phoenix_seasonal_locating_05": {
-    "Type": "Quest",
-    "Name": "Phoenix_Seasonal_Locating_05",
-    "DisplayName": "Locating: Radar",
-    "Category": "Phoenix_Seasonal",
-    "Description": "This is a Lars\u0027 Locating Venture Quest. Complete it to earn Venture experience and the next Lars\u0027 Locating quest!",
-    "Objectives": [
-      {
-        "BackendName": "phoenixseasonal_locating_05",
-        "Count": 1,
-        "Description": "Build a Radar Tower in an 46\u002B Blasted Badlands zone",
-        "HudShortDescription": "Radar Tower Built",
-        "ZonePowerLevel": 46
-      }
-    ],
-    "Rewards": [
-      {
-        "Hidden": true,
-        "Item": "Quest:phoenix_seasonal_locating_06",
-        "Quantity": 1,
-        "Selectable": false
-      },
-      {
-        "Hidden": false,
-        "Item": "AccountResource:phoenixxp_reward",
-        "Quantity": 4700,
-        "Selectable": false
-      }
-    ],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/phoenix/phoenixseasonal/phoenix_locating_quest/phoenix_seasonal_locating_05.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
-    }
-  },
-  "Quest:phoenix_seasonal_locating_02": {
-    "Type": "Quest",
-    "Name": "Phoenix_Seasonal_Locating_02",
-    "DisplayName": "Locating: Robber 1",
-    "Category": "Phoenix_Seasonal",
-    "Description": "This is a Lars\u0027 Locating Venture Quest. Complete it to earn Venture experience and the next Lars\u0027 Locating quest!",
-    "Objectives": [
-      {
-        "BackendName": "phoenixseasonal_locating_02",
-        "Count": 3,
-        "Description": "Loot Safes or Treasure Chests in a 15\u002B Blasted Badlands zone",
-        "HudShortDescription": "Safes or treasure chests looted",
-        "ZonePowerLevel": 15
-      }
-    ],
-    "Rewards": [
-      {
-        "Hidden": true,
-        "Item": "Quest:phoenix_seasonal_locating_03",
-        "Quantity": 1,
-        "Selectable": false
-      },
-      {
-        "Hidden": false,
-        "Item": "AccountResource:phoenixxp_reward",
-        "Quantity": 2650,
-        "Selectable": false
-      }
-    ],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/phoenix/phoenixseasonal/phoenix_locating_quest/phoenix_seasonal_locating_02.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
-    }
-  },
   "Quest:phoenix_seasonal_destroy_summer_12": {
     "Type": "Quest",
     "Name": "Phoenix_Seasonal_Destroy_Summer_12",
@@ -42293,6 +42191,40 @@
       "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
     }
   },
+  "Quest:phoenix_seasonal_locating_02": {
+    "Type": "Quest",
+    "Name": "Phoenix_Seasonal_Locating_02",
+    "DisplayName": "Locating: Robber 1",
+    "Category": "Phoenix_Seasonal",
+    "Description": "This is a Lars\u0027 Locating Venture Quest. Complete it to earn Venture experience and the next Lars\u0027 Locating quest!",
+    "Objectives": [
+      {
+        "BackendName": "phoenixseasonal_locating_02",
+        "Count": 3,
+        "Description": "Loot Safes or Treasure Chests in a 15\u002B Blasted Badlands zone",
+        "HudShortDescription": "Safes or treasure chests looted",
+        "ZonePowerLevel": 15
+      }
+    ],
+    "Rewards": [
+      {
+        "Hidden": true,
+        "Item": "Quest:phoenix_seasonal_locating_03",
+        "Quantity": 1,
+        "Selectable": false
+      },
+      {
+        "Hidden": false,
+        "Item": "AccountResource:phoenixxp_reward",
+        "Quantity": 2650,
+        "Selectable": false
+      }
+    ],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/phoenix/phoenixseasonal/phoenix_locating_quest/phoenix_seasonal_locating_02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
+    }
+  },
   "Quest:phoenix_seasonal_locating_03": {
     "Type": "Quest",
     "Name": "Phoenix_Seasonal_Locating_03",
@@ -42323,6 +42255,74 @@
       }
     ],
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/phoenix/phoenixseasonal/phoenix_locating_quest/phoenix_seasonal_locating_03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
+    }
+  },
+  "Quest:phoenix_seasonal_locating_04": {
+    "Type": "Quest",
+    "Name": "Phoenix_Seasonal_Locating_04",
+    "DisplayName": "Locating: Survivor Savior 1",
+    "Category": "Phoenix_Seasonal",
+    "Description": "This is a Lars\u0027 Locating Venture Quest. Complete it to earn Venture experience and the next Lars\u0027 Locating quest!",
+    "Objectives": [
+      {
+        "BackendName": "phoenixseasonal_locating_04",
+        "Count": 10,
+        "Description": "Rescue Survivors in a 34\u002B Blasted Badlands zone",
+        "HudShortDescription": "Survivors rescued",
+        "ZonePowerLevel": 34
+      }
+    ],
+    "Rewards": [
+      {
+        "Hidden": true,
+        "Item": "Quest:phoenix_seasonal_locating_05",
+        "Quantity": 1,
+        "Selectable": false
+      },
+      {
+        "Hidden": false,
+        "Item": "AccountResource:phoenixxp_reward",
+        "Quantity": 3875,
+        "Selectable": false
+      }
+    ],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/phoenix/phoenixseasonal/phoenix_locating_quest/phoenix_seasonal_locating_04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
+    }
+  },
+  "Quest:phoenix_seasonal_locating_05": {
+    "Type": "Quest",
+    "Name": "Phoenix_Seasonal_Locating_05",
+    "DisplayName": "Locating: Radar",
+    "Category": "Phoenix_Seasonal",
+    "Description": "This is a Lars\u0027 Locating Venture Quest. Complete it to earn Venture experience and the next Lars\u0027 Locating quest!",
+    "Objectives": [
+      {
+        "BackendName": "phoenixseasonal_locating_05",
+        "Count": 1,
+        "Description": "Build a Radar Tower in an 46\u002B Blasted Badlands zone",
+        "HudShortDescription": "Radar Tower Built",
+        "ZonePowerLevel": 46
+      }
+    ],
+    "Rewards": [
+      {
+        "Hidden": true,
+        "Item": "Quest:phoenix_seasonal_locating_06",
+        "Quantity": 1,
+        "Selectable": false
+      },
+      {
+        "Hidden": false,
+        "Item": "AccountResource:phoenixxp_reward",
+        "Quantity": 4700,
+        "Selectable": false
+      }
+    ],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/phoenix/phoenixseasonal/phoenix_locating_quest/phoenix_seasonal_locating_05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-IconMagnifying-Glass-128.png"
     }
@@ -48568,33 +48568,6 @@
       "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
     }
   },
-  "Quest:reactivequest_gatherhydraulic_2": {
-    "Type": "Quest",
-    "Name": "ReactiveQuest_GatherHydraulic_2",
-    "DisplayName": "Ctrl Assault Delete",
-    "Category": "LimitedTimeEvent",
-    "Description": "Part of the Hydraulic Weapons update was deleted. If you can collect hydraulic rifle parts we should be able to recreate one of the missing prototypes from memory. ",
-    "Objectives": [
-      {
-        "BackendName": "quest_reactive_gatherhydraulic_2",
-        "Count": 20,
-        "Description": "Collect hydraulic rifle parts by harvesting mechanical objects in successful missions ",
-        "HudShortDescription": "Rifle parts collected"
-      }
-    ],
-    "Rewards": [
-      {
-        "Hidden": false,
-        "Item": "Weapon:wid_assault_hydraulic_drum_sr_ore_t01",
-        "Quantity": 1,
-        "Selectable": false
-      }
-    ],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/reactivequests/reactivequest_gatherhydraulic_2.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
-    }
-  },
   "Quest:reactivequest_gatherhydraulic_3": {
     "Type": "Quest",
     "Name": "ReactiveQuest_GatherHydraulic_3",
@@ -48652,6 +48625,33 @@
       }
     ],
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/reactivequests/reactivequest_goodpop.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
+    }
+  },
+  "Quest:reactivequest_gatherhydraulic_2": {
+    "Type": "Quest",
+    "Name": "ReactiveQuest_GatherHydraulic_2",
+    "DisplayName": "Ctrl Assault Delete",
+    "Category": "LimitedTimeEvent",
+    "Description": "Part of the Hydraulic Weapons update was deleted. If you can collect hydraulic rifle parts we should be able to recreate one of the missing prototypes from memory. ",
+    "Objectives": [
+      {
+        "BackendName": "quest_reactive_gatherhydraulic_2",
+        "Count": 20,
+        "Description": "Collect hydraulic rifle parts by harvesting mechanical objects in successful missions ",
+        "HudShortDescription": "Rifle parts collected"
+      }
+    ],
+    "Rewards": [
+      {
+        "Hidden": false,
+        "Item": "Weapon:wid_assault_hydraulic_drum_sr_ore_t01",
+        "Quantity": 1,
+        "Selectable": false
+      }
+    ],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/reactivequests/reactivequest_gatherhydraulic_2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
     }
@@ -52919,39 +52919,6 @@
       "SmallPreview": "ExportedImages\\Icon-Ninja-LegendarySword-128.png"
     }
   },
-  "Quest:s11_holdfastquest_repeat_ice": {
-    "Type": "Quest",
-    "Name": "S11_HoldfastQuest_Repeat_Ice",
-    "DisplayName": "Ice Picker",
-    "Category": "LTE_Frostnite",
-    "Description": "Don\u2019t be picky! Well, actually, yes. Be picky, pick that ice! Get the BluGlo out of those Ice Blocks so we can use them!",
-    "Objectives": [
-      {
-        "BackendName": "S11_HoldfastQuest_Repeat_Ice",
-        "Count": 3,
-        "Description": "Break out BluGlo from Ice Blocks in Frostnite 3 times in a single mission (Note: This is a repeatable quest)",
-        "HudShortDescription": "BluGlo Ice Blocks destroyed"
-      }
-    ],
-    "Rewards": [
-      {
-        "Hidden": true,
-        "Item": "Quest:s11_holdfastquest_repeat_ice",
-        "Quantity": 1,
-        "Selectable": false
-      },
-      {
-        "Hidden": false,
-        "Item": "AccountResource:campaign_event_currency",
-        "Quantity": 100,
-        "Selectable": false
-      }
-    ],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/events/holdfast2019/holdfastregular/repeat/s11_holdfastquest_repeat_ice.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Emotes-E-IceKing.png"
-    }
-  },
   "Quest:s11_holdfastquest_repeat_pathfinder": {
     "Type": "Quest",
     "Name": "S11_HoldfastQuest_Repeat_Pathfinder",
@@ -53016,6 +52983,39 @@
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/events/holdfast2019/holdfastregular/repeat/s11_holdfastquest_repeat_taste.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\Icon-Soldier-EveryoneWave-128.png"
+    }
+  },
+  "Quest:s11_holdfastquest_repeat_ice": {
+    "Type": "Quest",
+    "Name": "S11_HoldfastQuest_Repeat_Ice",
+    "DisplayName": "Ice Picker",
+    "Category": "LTE_Frostnite",
+    "Description": "Don\u2019t be picky! Well, actually, yes. Be picky, pick that ice! Get the BluGlo out of those Ice Blocks so we can use them!",
+    "Objectives": [
+      {
+        "BackendName": "S11_HoldfastQuest_Repeat_Ice",
+        "Count": 3,
+        "Description": "Break out BluGlo from Ice Blocks in Frostnite 3 times in a single mission (Note: This is a repeatable quest)",
+        "HudShortDescription": "BluGlo Ice Blocks destroyed"
+      }
+    ],
+    "Rewards": [
+      {
+        "Hidden": true,
+        "Item": "Quest:s11_holdfastquest_repeat_ice",
+        "Quantity": 1,
+        "Selectable": false
+      },
+      {
+        "Hidden": false,
+        "Item": "AccountResource:campaign_event_currency",
+        "Quantity": 100,
+        "Selectable": false
+      }
+    ],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/events/holdfast2019/holdfastregular/repeat/s11_holdfastquest_repeat_ice.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Emotes-E-IceKing.png"
     }
   },
   "Quest:s11_holdfastquest_seasonelite_cramps": {
@@ -85023,39 +85023,6 @@
       "SmallPreview": "ExportedImages\\T-Icon-Survival3-128.png"
     }
   },
-  "Quest:winterquest_2017_complete_presentdrop_repeatable": {
-    "Type": "Quest",
-    "Name": "WinterQuest_2017_Complete_PresentDrop_Repeatable",
-    "DisplayName": "Present Drop",
-    "Category": "LTE_Winter2017",
-    "Description": "Lars\u0027 van is on the move! Be on the lookout for Present Drops and see what you receive! (not available in Ride the Lightning mission). Note: This is a repeatable Quest.",
-    "Objectives": [
-      {
-        "BackendName": "complete_presentdrop",
-        "Count": 1,
-        "Description": "Complete a Present Drop in a successful mission",
-        "HudShortDescription": "Present Drop completed"
-      }
-    ],
-    "Rewards": [
-      {
-        "Hidden": false,
-        "Item": "AccountResource:campaign_event_currency",
-        "Quantity": 100,
-        "Selectable": false
-      },
-      {
-        "Hidden": true,
-        "Item": "Quest:winterquest_2017_complete_presentdrop_repeatable",
-        "Quantity": 1,
-        "Selectable": false
-      }
-    ],
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/events/winter2017/winterquest_2017_complete_presentdrop_repeatable.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
-    }
-  },
   "Quest:winterquest_2017_hidden_1": {
     "Type": "Quest",
     "Name": "WinterQuest_2017_Hidden_1",
@@ -85091,6 +85058,39 @@
       }
     ],
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/events/winter2017/winterquest_2017_hidden_1.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
+    }
+  },
+  "Quest:winterquest_2017_complete_presentdrop_repeatable": {
+    "Type": "Quest",
+    "Name": "WinterQuest_2017_Complete_PresentDrop_Repeatable",
+    "DisplayName": "Present Drop",
+    "Category": "LTE_Winter2017",
+    "Description": "Lars\u0027 van is on the move! Be on the lookout for Present Drops and see what you receive! (not available in Ride the Lightning mission). Note: This is a repeatable Quest.",
+    "Objectives": [
+      {
+        "BackendName": "complete_presentdrop",
+        "Count": 1,
+        "Description": "Complete a Present Drop in a successful mission",
+        "HudShortDescription": "Present Drop completed"
+      }
+    ],
+    "Rewards": [
+      {
+        "Hidden": false,
+        "Item": "AccountResource:campaign_event_currency",
+        "Quantity": 100,
+        "Selectable": false
+      },
+      {
+        "Hidden": true,
+        "Item": "Quest:winterquest_2017_complete_presentdrop_repeatable",
+        "Quantity": 1,
+        "Selectable": false
+      }
+    ],
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/quests/events/winter2017/winterquest_2017_complete_presentdrop_repeatable.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Icon-Quest-Journal-64.png"
     }

@@ -32,8 +32,8 @@ public partial class RecycleListContainer : ScrollContainer
         await this.WaitForFrame();
         basis.node.Visible = false;
         basis.node.Size = Vector2.Zero;
-        basisSize = basis.GetBasisSize();
-        GD.Print($"basis {basisSize} initialised from {basis.node.Name}");
+        basisSize = basis.BasisSize;
+        //GD.Print($"basis {basisSize} initialised from {basis.node.Name}");
 
         //SetProvider(new TestRecyclableElementProvider());
     }
@@ -43,7 +43,7 @@ public partial class RecycleListContainer : ScrollContainer
         linkedProvider = provider;
         for (int i = 0; i < activeEntries.Count; i++)
         {
-            activeEntries[i].LinkRecyclableElementProvider(provider);
+            activeEntries[i].SetRecyclableElementProvider(provider);
         }
         UpdateList(true);
     }
@@ -58,7 +58,7 @@ public partial class RecycleListContainer : ScrollContainer
         lockList = true;
         try
         {
-            var elementSize = basis.GetBasisSize();
+            var elementSize = basis.BasisSize;
             float elementHeight = elementSize.Y;
             int columns = linkedGrid?.CalcGrid(elementSize, 1).X ?? 1;
 
@@ -189,7 +189,7 @@ public partial class RecycleListContainer : ScrollContainer
     IRecyclableEntry GenerateNewPoolEntry()
     {
         var spawnedEntry = elementScene.Instantiate<IRecyclableEntry>();
-        spawnedEntry.LinkRecyclableElementProvider(linkedProvider);
+        spawnedEntry.SetRecyclableElementProvider(linkedProvider);
         elementParent.AddChild(spawnedEntry.node);
         return spawnedEntry;
     }
@@ -218,10 +218,9 @@ public class TestRecyclableElementProvider : IRecyclableElementProvider
 public interface IRecyclableEntry
 {
     public Control node { get; }
-    public void LinkRecyclableElementProvider(IRecyclableElementProvider provider);
+    public Vector2 BasisSize => node.Size;
 
-    public Vector2 GetBasisSize() => node.Size;
-
+    public void SetRecyclableElementProvider(IRecyclableElementProvider provider);
     public void SetRecycleIndex(int index);
 }
 

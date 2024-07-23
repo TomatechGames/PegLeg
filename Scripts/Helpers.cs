@@ -124,7 +124,7 @@ static class Helpers
             onComplete(result);
     }
 
-    public const string cosmeticAPIKey = "676b8175-a049-4f03-b829-323c95153a43";
+    public const string cosmeticSalsa = "676b8175-a049-4f03-b829-323c95153a43";
     public static async Task<JsonNode> MakeRequest(HttpMethod method, System.Net.Http.HttpClient endpoint, string uri, string body, AuthenticationHeaderValue authentication, string mediaType = "application/x-www-form-urlencoded", bool addCosmeticHeader = false)
     {
         using StringContent content = mediaType != "" ? new(body, Encoding.UTF8, mediaType) : null;
@@ -132,7 +132,7 @@ static class Helpers
         if (authentication is not null)
             request.Headers.Authorization = authentication;
         if (addCosmeticHeader)
-            request.Headers.Add("x-api-key", cosmeticAPIKey);
+            request.Headers.Add("x-api-key", cosmeticSalsa);
         return await MakeRequest(endpoint, request);
     }
     public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)

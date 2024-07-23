@@ -1,10 +1,19 @@
 {
-  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Trios.MissionGen_Habanero_Trios_C": {
+  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio.MissionGen_NoBuildBR_Habanero_Trio_C": {
     "Type": "MissionGen",
-    "Name": "MissionGen_Habanero_Trios_C",
-    "DisplayName": "Battle Royale",
-    "Description": "Wild West",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Trios",
+    "Name": "MissionGen_NoBuildBR_Habanero_Trio_C",
+    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Trio_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
+      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
+    }
+  },
+  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Squad.MissionGen_Habanero_Squad_C": {
+    "Type": "MissionGen",
+    "Name": "MissionGen_Habanero_Squad_C",
+    "DisplayName": "\u003CMissionGen_Habanero_Squad_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Squad",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
       "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
@@ -20,21 +29,22 @@
       "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
     }
   },
-  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Squad.MissionGen_Habanero_Squad_C": {
+  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Squad.MissionGen_NoBuildBR_Habanero_Squad_C": {
     "Type": "MissionGen",
-    "Name": "MissionGen_Habanero_Squad_C",
-    "DisplayName": "\u003CMissionGen_Habanero_Squad_C\u003E",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Squad",
+    "Name": "MissionGen_NoBuildBR_Habanero_Squad_C",
+    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Squad_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Squad",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
-      "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
+      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
     }
   },
-  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Solo.MissionGen_Habanero_Solo_C": {
+  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Trios.MissionGen_Habanero_Trios_C": {
     "Type": "MissionGen",
-    "Name": "MissionGen_Habanero_Solo_C",
-    "DisplayName": "\u003CMissionGen_Habanero_Solo_C\u003E",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Solo",
+    "Name": "MissionGen_Habanero_Trios_C",
+    "DisplayName": "Battle Royale",
+    "Description": "Wild West",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Trios",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
       "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
@@ -60,24 +70,14 @@
       "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
     }
   },
-  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Squad.MissionGen_NoBuildBR_Habanero_Squad_C": {
+  "/Game/World/MissionGens/Habanero/MissionGen_Habanero_Solo.MissionGen_Habanero_Solo_C": {
     "Type": "MissionGen",
-    "Name": "MissionGen_NoBuildBR_Habanero_Squad_C",
-    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Squad_C\u003E",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Squad",
+    "Name": "MissionGen_Habanero_Solo_C",
+    "DisplayName": "\u003CMissionGen_Habanero_Solo_C\u003E",
+    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_Habanero_Solo",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
-      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
-    }
-  },
-  "/Game/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio.MissionGen_NoBuildBR_Habanero_Trio_C": {
-    "Type": "MissionGen",
-    "Name": "MissionGen_NoBuildBR_Habanero_Trio_C",
-    "DisplayName": "\u003CMissionGen_NoBuildBR_Habanero_Trio_C\u003E",
-    "AssetPath": "FortniteGame/Content/World/MissionGens/Habanero/MissionGen_NoBuildBR_Habanero_Trio",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\Icon-Mission-Unknown-XL.png",
-      "LoadingScreen": "ExportedImages\\Fort_Load_BattleRoyale_NoBuild.png"
+      "LoadingScreen": "ExportedImages\\FORT_Load_BattleRoyale.png"
     }
   },
   "/Game/World/MissionGens/MissionGen_Default.MissionGen_Default_C": {
@@ -236,17 +236,6 @@
       "Icon": "ExportedImages\\T-Icon-Shelter-Rescue-128.png"
     }
   },
-  "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion.MissionGen_VindermanMansion_C": {
-    "Type": "MissionGen",
-    "Name": "MissionGen_VindermanMansion_C",
-    "DisplayName": "Search Vinderman\u2019s Mansion",
-    "Description": "Locate Vinderman\u0027s Servers and Download the Data",
-    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\T-Icon-Story-128.png",
-      "LoadingScreen": "ExportedImages\\FORT_Load_VindermanMansion.png"
-    }
-  },
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_EtSurvivors.MissionGen_T3_R5_EtSurvivors_C": {
     "Type": "MissionGen",
     "Name": "MissionGen_T3_R5_EtSurvivors_C",
@@ -265,6 +254,17 @@
     "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/MissionGen_T3_R5_RtD",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Mission-Data-XL.png"
+    }
+  },
+  "/SaveTheWorld/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion.MissionGen_VindermanMansion_C": {
+    "Type": "MissionGen",
+    "Name": "MissionGen_VindermanMansion_C",
+    "DisplayName": "Search Vinderman\u2019s Mansion",
+    "Description": "Locate Vinderman\u0027s Servers and Download the Data",
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/World/MissionGens/CannyValley/CV_Landmarks/MissionGen_VindermanMansion",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\T-Icon-Story-128.png",
+      "LoadingScreen": "ExportedImages\\FORT_Load_VindermanMansion.png"
     }
   },
   "/SaveTheWorld/World/MissionGens/CannyValley/MissionGen_T3_R5_RtL.MissionGen_T3_R5_RtL_C": {

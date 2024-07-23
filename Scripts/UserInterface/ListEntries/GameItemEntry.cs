@@ -72,21 +72,21 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public delegate void PressedEventHandler();
 
     [Export]
-    bool addXToAmount;
+    public bool addXToAmount;
     [Export]
-    bool compactifyAmount;
+    public bool compactifyAmount;
     [Export]
-    bool includeAmountInName;
+    public bool includeAmountInName;
     [Export]
-    bool preventInteractability;
+    public bool preventInteractability;
     [Export]
-    bool interactableByDefault;
+    public bool interactableByDefault;
     [Export]
-    bool autoLinkToViewer = true;
+    public bool autoLinkToViewer = true;
     [Export]
-    bool autoLinkToRecycleSelection = false;
+    public bool autoLinkToRecycleSelection = false;
     [Export]
-    bool showSingleItemAmount = false;
+    public bool showSingleItemAmount = false;
     [Export]
     public bool useSurvivorBoosts = false;
 
@@ -268,6 +268,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         }
 
         EmitSignal(SignalName.NameChanged, name + (includeAmountInName && amountNeeded ? $" ({(addXToAmount ? "x" : "") + amount})" : ""));
+        //if (itemInstance["searchTags"] is JsonArray tagArray)
+        //    EmitSignal(SignalName.NameChanged, tagArray.Select(t=>t?.ToString()).ToArray().Join("\n"));
+
         EmitSignal(SignalName.DescriptionChanged, description);
         EmitSignal(SignalName.TypeChanged, type);
 
@@ -300,6 +303,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         //    rarity = 0;
 
         LatestRarityColor = itemInstance.GetTemplate().GetItemRarityColor();
+        if (itemInstance["templateId"].ToString().StartsWith("CardPack:zcp"))
+            LatestRarityColor = Colors.Transparent;
         EmitSignal(SignalName.RarityChanged, LatestRarityColor);
         EmitSignal(SignalName.NotificationChanged, !(itemInstance?["attributes"]?["item_seen"]?.GetValue<bool>() ?? false));
         EmitSignal(SignalName.TierChanged, tier);
@@ -373,7 +378,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public static bool TypeShouldBeInteractable(string type) => reccomendedInteractableTypes.Contains(type.ToLower());
 
     IRecyclableElementProvider<ProfileItemHandle> handleProvider;
-    public void LinkRecyclableElementProvider(IRecyclableElementProvider provider)
+    public void SetRecyclableElementProvider(IRecyclableElementProvider provider)
     {
         if (provider is IRecyclableElementProvider<ProfileItemHandle> newHandleProvider)
         {

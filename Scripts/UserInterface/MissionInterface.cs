@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-public partial class MissionInterface : Control
+public partial class MissionInterface : Control, IRecyclableElementProvider<MissionData>
 {
     [Export]
     VirtualTabBar zoneFilterTabBar;
@@ -21,17 +23,12 @@ public partial class MissionInterface : Control
     CheckButton[] itemFilterButtons = Array.Empty<CheckButton>();
 
     [Export]
-    PackedScene missionRowScene;
-    [Export]
-    Control missionRowParent;
-
-    [Export]
-    PackedScene missionEntryScene;
+    RecycleListContainer missionList;
 
     [Export]
 	Control loadingIcon;
 
-    string currentZoneFilter => theaterFilters[zoneFilterTabBar.CurrentTab];
+    string currentTheaterFilter => theaterFilters[zoneFilterTabBar.CurrentTab];
 
     static readonly string[] theaterFilters = new string[]
 	{
@@ -77,6 +74,7 @@ public partial class MissionInterface : Control
         new string[]
         {
             "Hero:*",
+            "Defender:*",
         },
         new string[]
         {
@@ -86,7 +84,7 @@ public partial class MissionInterface : Control
     };
 
 
-    public override void _Ready()
+    public override async void _Ready()
 	{
 		VisibilityChanged += () =>
         {
@@ -99,7 +97,7 @@ public partial class MissionInterface : Control
 		searchBar.TextChanged += e =>
 		{
             //if (string.IsNullOrWhiteSpace(e))
-            //GenerateSearchInstructions(searchBar.Text);
+            GenerateSearchInstructions(searchBar.Text);
             FilterMissionGrid();
 		};
         foreach (var button in itemFilterButtons)
@@ -110,221 +108,214 @@ public partial class MissionInterface : Control
                 FilterMissionGrid();
             };
         }
-        //GenerateSearchInstructions(searchBar.Text);
+        GenerateSearchInstructions(searchBar.Text);
         GenerateSearchFilters();
+
+        missionList.SetProvider(this);
 
         if (Visible)
             LoadMissions();
+        await MissionRequests.GetMissions();
     }
 
-    List<MissionRowGroup> activeRowGroups = new();
-    record MissionRowGroup(MissionRow row, MissionEntry[] entries);
     PLSearch.Instruction[] currentMissionSearchInstructions;
     PLSearch.Instruction[] currentItemSearchInstructions;
-    List<string> activeItemFilters = new();
+    List<MissionData> allMissions = new();
+    List<MissionData> activeMissions = new();
+    List<string> currentItemFilters = new();
+
+    public MissionData GetRecycleElement(int index) => index >= 0 && index < activeMissions.Count ? activeMissions[index] : null;
+    public int GetRecycleElementCount() => activeMissions.Count;
+
+    public void ForceReloadMissions() => LoadMissions(true);
 
     bool isLoadingMissions = false;
     async void LoadMissions(bool force = false)
     {
         if (isLoadingMissions || !await LoginRequests.TryLogin())
             return;
-        try
+        isLoadingMissions = true;
+        if (MissionRequests.MissionsRequireUpdate() || force)
         {
-            isLoadingMissions = true;
-
-            missionRowParent.Visible = false;
-            if (MissionRequests.MissionsRequireUpdate() || force)
+            try
             {
+                await ProfileRequests.GetProfile(FnProfiles.AccountItems);
+                missionList.Visible = false;
                 loadingIcon.Visible = true;
-                foreach (var rowGroup in activeRowGroups)
-                {
-                    rowGroup.row.QueueFree();
-                }
-                activeRowGroups.Clear();
                 await this.WaitForFrame();
 
                 var allMissionData = await MissionRequests.GetMissions(force);
-                loadingIcon.Visible = false;
-                missionRowParent.Visible = true;
-                var instructions = PLSearch.GenerateSearchInstructions(searchBar.Text, out var _);
+                await this.WaitForFrame();
+                allMissions = allMissionData["missions"].AsArray().Select(m=>new MissionData(m.AsObject())).ToList();
 
-                List<MissionEntry> currentMissions = new();
-                foreach (var rowData in allMissionData)
+                foreach (var mission in allMissions)
                 {
-                    int i = 0;
-                    var thisRow = missionRowScene.Instantiate<MissionRow>();
-                    missionRowParent.AddChild(thisRow);
-                    thisRow.SetName("Power Level "+rowData.Key);
-                    thisRow.Visible = false;
-                    foreach (var missionData in rowData.Value.AsArray())
-                    {
-                        var thisMission = missionEntryScene.Instantiate<MissionEntry>();
-                        thisMission.SetMissionData(missionData.AsObject());
-                        thisRow.missionParent.AddChild(thisMission);
-                        currentMissions.Add(thisMission);
-                        i++;
-                        if (i % 10 == 9)
-                            await this.WaitForFrame();
-                    }
-                    thisRow.Visible = false;
-                    foreach (var missionEntry in currentMissions)
-                    {
-                        missionEntry.Visible = missionEntry.Filter(currentMissionSearchInstructions, currentItemSearchInstructions, itemSearchToggle.ButtonPressed, currentZoneFilter, activeItemFilters.ToArray());
-                        thisRow.Visible |= missionEntry.Visible;
-                    }
-
-                    activeRowGroups.Add(new(thisRow, currentMissions.ToArray()));
-                    currentMissions.Clear();
+                    //()=> this.WaitForFrame()
+                    await mission.SetRewardNotifications();
                     await this.WaitForFrame();
                 }
             }
-        }
-        finally
-        {
-            loadingIcon.Visible = false;
-            isLoadingMissions = false;
+            finally
+            {
+                missionList.Visible = true;
+                loadingIcon.Visible = false;
+                isLoadingMissions = false;
+            }
         }
 
-        //FilterMissionGrid();
+        FilterMissionGrid();
     }
 
     void GenerateSearchInstructions(string searchText)
     {
-        if (searchText.Contains(" i/: "))
+        searchText = searchText
+            .Replace("///", " i:/ ")
+            .Replace(" I:/ ", " i:/ ");
+        if (searchText.Contains(" i:/ ") || searchText.StartsWith("i:/ "))
         {
-            string[] splitSearchText = searchText.Split("i/:");
-            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0], out var _);
-            currentItemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join(), out var _);
+            string[] splitSearchText = searchText.Split("i:/");
+            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0], out var _) ?? Array.Empty<PLSearch.Instruction>();
+            currentItemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join(), out var _) ?? Array.Empty<PLSearch.Instruction>();
         }
         else
         {
-            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(searchText, out var _);
+            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(searchText, out var _) ?? Array.Empty<PLSearch.Instruction>();
             currentItemSearchInstructions = Array.Empty<PLSearch.Instruction>();
         }
     }
 
     void GenerateSearchFilters()
     {
-        activeItemFilters.Clear();
+        currentItemFilters.Clear();
         for (int i = 0; i < itemFilters.Length; i++)
         {
             if (itemFilterButtons.Length>i && itemFilterButtons[i].ButtonPressed)
             {
-                activeItemFilters.AddRange(itemFilters[i]);
+                currentItemFilters.AddRange(itemFilters[i]);
             }
         }
     }
 
     void FilterMissionGrid()
 	{
-        foreach (var rowGroup in activeRowGroups)
-        {
-            rowGroup.row.Visible = false;
-            foreach (var missionEntry in rowGroup.entries)
-            {
-                missionEntry.Visible = missionEntry.Filter(currentMissionSearchInstructions, currentItemSearchInstructions, itemSearchToggle.ButtonPressed, currentZoneFilter, activeItemFilters.ToArray());
-                rowGroup.row.Visible |= missionEntry.Visible;
-            }
-        }
+        activeMissions = allMissions
+            .Where(m => 
+                m.Filter(
+                    currentMissionSearchInstructions, 
+                    currentItemSearchInstructions, 
+                    currentTheaterFilter, 
+                    currentItemFilters.ToArray()
+                )
+            ).
+            ToList();
+        missionList.UpdateList(true);
     }
-
 }
 
-/*
 public class MissionData
 {
-    public JsonObject missionInstance;
-    public JsonObject missionGen;
-    public JsonObject missionTile;
-    public int powerLevel;
-    public char theatreCategory;
-    public bool hasMissionAlert;
-    public List<JsonObject> missionRewards = new();
-    public List<string> alertModifiers = new();
-    public List<JsonObject> alertRewards = new();
+    public int powerLevel { get; private set; }
+    public string theaterCat { get; private set; }
 
-    //used to keep WeakRefs alive in the BanjoAssets texture cache
+    public JsonObject missionJson { get; private set; }
+
     List<Texture2D> textureDependancies = new();
+    List<JsonObject> rewardItems = new();
 
-    public MissionData(JsonObject missionInstance)
+    public MissionData(JsonObject missionJson)
     {
-        this.missionInstance = missionInstance;
-        powerLevel = missionInstance["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>();
-        theatreCategory = missionInstance["theatreCat"].GetValue<char>();
-        missionRewards = missionInstance["rewards"].AsArray().Select(val=>val.AsObject()).ToList();
+        this.missionJson = missionJson;
 
-        textureDependancies.AddRange(missionRewards.Select(r=>r.GetTemplate().GetItemTexture()));
+        powerLevel = missionJson["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>();
+        theaterCat = missionJson["theaterCat"].ToString();
 
-        if (missionInstance.ContainsKey("missionAlert"))
+        textureDependancies.Add(missionJson["missionGenerator"].AsObject().GetItemTexture(BanjoAssets.TextureType.Icon));
+
+        if (missionJson["missionGenerator"].AsObject().GetItemTexture(BanjoAssets.TextureType.LoadingScreen) is Texture2D missionLoadingScreen)
+            textureDependancies.Add(missionLoadingScreen);
+        else if (missionJson["tile"]["zoneTheme"].AsObject().GetItemTexture(BanjoAssets.TextureType.LoadingScreen) is Texture2D zoneLoadingScreen)
+            textureDependancies.Add(zoneLoadingScreen);
+
+        foreach (var item in missionJson["missionRewards"].AsArray())
         {
-            hasMissionAlert = true;
+            textureDependancies.Add(item.AsObject().GetItemTexture());
+            rewardItems.Add(item.AsObject());
+        }
 
-            alertModifiers = missionInstance["missionAlert"]["modifiers"].Deserialize<List<string>>();
-            textureDependancies.AddRange(alertModifiers.Select(m => BanjoAssets.TryGetTemplate(m).GetItemTexture()));
-
-            alertRewards = missionInstance["missionAlert"]["rewards"].AsArray().Select(r=>r.AsObject()).ToList();
-            textureDependancies.AddRange(alertRewards.Select(r => r.GetTemplate().GetItemTexture()));
+        if (missionJson["missionAlert"] is JsonObject missionAlert)
+        {
+            foreach (var item in missionAlert["modifiers"].AsArray())
+            {
+                textureDependancies.Add(item.GetTemplate().GetItemTexture());
+            }
+            foreach (var item in missionAlert["rewards"].AsArray())
+            {
+                textureDependancies.Add(item.AsObject().GetItemTexture());
+                rewardItems.Add(item.AsObject());
+            }
         }
     }
 
-    static readonly Dictionary<string, string> typeKeywordAliases = new()
+    public async Task SetRewardNotifications(Func<Task> frameTaskGenerator = null)
     {
-        ["survivor"] = "worker"
-    };
-
-    public bool FilterElement(char[] theatreFilters, string[] searchTerms, bool requireAll)
-    {
-        if (!theatreFilters.Contains(theatreCategory))
-            return false;
-
-        if (minPowerLevel > powerLevel)
-            return false;
-
-        if (maxPowerLevel < powerLevel)
-            return false;
-
-        if (searchTerms.Length == 0)
-            return true;
-
-        bool matchFound = requireAll;
-        foreach (var item in searchTerms)
+        foreach (var item in rewardItems)
         {
-            if (item.StartsWith("-"))
-            {
-                if (searchKeywords.Exists(val => val.Contains(item[1..])))
-                {
-                    matchFound = false;
-                    break;
-                }
-            }
-            else if (item.StartsWith("t:"))
-            {
-                string itemType = item[2..];
-                if (
-                    requireAll != (
-                     typeKeywords.Contains(itemType) ||
-                     (
-                      typeKeywordAliases.ContainsKey(itemType) &&
-                      typeKeywords.Contains(typeKeywordAliases[itemType])
-                      )
-                     )
-                    )
-                {
-                    matchFound = !requireAll;
-                    break;
-                }
-            }
-            else if (requireAll != searchKeywords.Exists(val=>val.Contains(item)))
-            {
-                matchFound = !requireAll;
-                break;
-            }
+            await item.SetItemRewardNotification();
+            if (frameTaskGenerator is not null)
+                await frameTaskGenerator();
         }
+        //for (int i = 0; i < missionJson["missionRewards"].AsArray().Count; i++)
+        //{
+        //    missionJson["missionRewards"][i] = await missionJson["missionRewards"][i].AsObject().SetItemRewardNotification();
+        //}
 
-        if (!matchFound)
+        //for (int i = 0; i < (missionJson["missionAlert"]?["rewards"].AsArray().Count ?? 0); i++)
+        //{
+        //    missionJson["missionAlert"]["rewards"][i] = await missionJson["missionAlert"]["rewards"][i].AsObject().SetItemRewardNotification();
+        //}
+    }
+
+    public bool Filter(PLSearch.Instruction[] missionInstructions, PLSearch.Instruction[] itemInstructions, string theaterFilter, string[] extraItemFilters)
+    {
+        if (!theaterFilter.Contains(theaterCat[0]))
+            return false;
+        if(!PLSearch.EvaluateInstructions(missionInstructions, missionJson))
             return false;
 
-        return true;
+        //GD.Print("matching: "+itemFilter);
+        bool matchesItemFilter = true;
+        foreach (var reward in rewardItems)
+        {
+            matchesItemFilter = extraItemFilters.Length == 0;
+            foreach (var itemFilter in extraItemFilters)
+            {
+                string rewardId = reward["itemType"].ToString();
+                var template = reward.GetTemplate();
+
+                //GD.Print("reward: " + rewardId);
+                if (reward.ContainsKey("equivelent"))
+                {
+                    rewardId = reward["equivelent"].ToString();
+                    template = reward["equivelentTemplate"].AsObject();
+                    //GD.Print("equivelent: " + rewardId);
+                }
+
+                matchesItemFilter = rewardId.Contains(itemFilter);
+                if (itemFilter.EndsWith("*"))
+                    matchesItemFilter = rewardId.StartsWith(itemFilter[..^1]);
+
+                if (itemFilter == "MYTHICLEAD")
+                    matchesItemFilter = Regex.Match(rewardId, "Worker:manager\\w+_sr_\\w*").Success;
+
+                if (matchesItemFilter)
+                    break;
+            }
+            if (!matchesItemFilter)
+                continue;
+            matchesItemFilter = PLSearch.EvaluateInstructions(itemInstructions, reward); //search item instructions
+            if (matchesItemFilter)
+                break;
+        }
+        return matchesItemFilter;
     }
 }
-*/

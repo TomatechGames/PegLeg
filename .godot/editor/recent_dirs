@@ -1,3 +1,5 @@
+res://Scenes/MissionEntry
+res://Scenes/GameItemEntry
 res://Scenes
 res://Scenes/QuestEntries
 res://Themes/Styleboxes/Tabs
@@ -8,7 +10,6 @@ res://Scripts
 res://Scenes/TimelineEntries
 res://Scenes/Overlays/GenericWindows
 C:/Users/Tomatech/Documents/Godot Projects/PegLegGDExports
-res://Scenes/GameItemEntry
 res://
 res://Scenes/LoadoutEntries
 res://Scripts/UIElements
@@ -19,4 +20,3 @@ res://Scenes/PerkAndAbilityEntries
 res://Themes
 res://Images/TextureResources
 res://Scenes/LlamaEntries
-res://Images

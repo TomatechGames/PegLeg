@@ -29,13 +29,11 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 metadata/_snap_enabled = true
 
-[node name="MissionEntryV4_0" type="MarginContainer" node_paths=PackedStringArray("alertModifierLayout", "alertModifierParent", "searchResultsParent", "searchResultsLayout")]
+[node name="MissionEntryV4_0" type="MarginContainer" node_paths=PackedStringArray("alertModifierLayout", "alertModifierParent")]
 size_flags_horizontal = 0
 script = ExtResource("1_pgpnh")
 alertModifierLayout = NodePath("MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer")
 alertModifierParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/MarginContainer2/HFlowContainer")
-searchResultsParent = NodePath("MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer")
-searchResultsLayout = NodePath("MarginContainer/HBoxContainer/SearchItems")
 
 [node name="BGTexture" type="TextureRect" parent="."]
 modulate = Color(0.75, 0.75, 0.75, 1)
@@ -177,14 +175,50 @@ layout_mode = 2
 [node name="RewardEntryHorizontal" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
 custom_minimum_size = Vector2(55, 55)
 layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
 
 [node name="RewardEntryHorizontal2" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
 custom_minimum_size = Vector2(55, 55)
 layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
 
 [node name="RewardEntryHorizontal3" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
 custom_minimum_size = Vector2(55, 55)
 layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal4" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal5" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal6" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal7" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
+
+[node name="RewardEntryHorizontal8" parent="MarginContainer/HBoxContainer/SearchItems/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("5_twwar")]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+compactifyAmount = true
+includeAmountInName = true
 
 [node name="Modifiers" type="Control" parent="."]
 visible = false

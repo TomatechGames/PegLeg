@@ -10027,39 +10027,6 @@
       "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Soldier/Portrait/T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L.T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L"
     }
   },
-  "Hero:hid_commando_038_shock_wave_vr_t02": {
-    "Type": "Hero",
-    "Name": "hid_commando_038_shock_wave_vr_t02",
-    "DisplayName": "Powerhouse",
-    "SubType": "Soldier",
-    "CommanderPerk": "Power Impact \u002B",
-    "CommanderPerkDescription": "Increases Shockwave Radius by 112.5%.",
-    "CommanderPerkName": "Kit_Perk_H_PowerImpact_T02",
-    "Description": "\u0022This may come as a shock to you.\u0022 - Powerhouse",
-    "HeroAbilities": [
-      "Ability:Kit_Commando_Shockwave",
-      "Ability:Kit_Commando_FragGrenade",
-      "Ability:Kit_Commando_GoinCommando"
-    ],
-    "HeroPerk": "Power Impact",
-    "HeroPerkDescription": "Increases Shockwave Radius by 37.5%.",
-    "HeroPerkName": "Kit_Perk_H_PowerImpact_T01",
-    "HeroPerkRequirement": {
-      "CommanderTag": [
-        "Granted.Ability.Commando.Shockwave"
-      ],
-      "Description": "Requires commander with Shockwave ability."
-    },
-    "IsInventoryLimitExempt": true,
-    "IsPermanent": true,
-    "Rarity": "Epic",
-    "Tier": 2,
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_038_shock_wave_vr_t02.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Soldier-HID-Commando-038-Shock-Wave-SR-T01.png",
-      "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Soldier/Portrait/T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L.T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L"
-    }
-  },
   "Hero:hid_commando_038_shock_wave_vr_t01": {
     "Type": "Hero",
     "Name": "hid_commando_038_shock_wave_vr_t01",
@@ -10088,6 +10055,39 @@
     "Rarity": "Epic",
     "Tier": 1,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_038_shock_wave_vr_t01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Soldier-HID-Commando-038-Shock-Wave-SR-T01.png",
+      "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Soldier/Portrait/T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L.T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L"
+    }
+  },
+  "Hero:hid_commando_038_shock_wave_vr_t02": {
+    "Type": "Hero",
+    "Name": "hid_commando_038_shock_wave_vr_t02",
+    "DisplayName": "Powerhouse",
+    "SubType": "Soldier",
+    "CommanderPerk": "Power Impact \u002B",
+    "CommanderPerkDescription": "Increases Shockwave Radius by 112.5%.",
+    "CommanderPerkName": "Kit_Perk_H_PowerImpact_T02",
+    "Description": "\u0022This may come as a shock to you.\u0022 - Powerhouse",
+    "HeroAbilities": [
+      "Ability:Kit_Commando_Shockwave",
+      "Ability:Kit_Commando_FragGrenade",
+      "Ability:Kit_Commando_GoinCommando"
+    ],
+    "HeroPerk": "Power Impact",
+    "HeroPerkDescription": "Increases Shockwave Radius by 37.5%.",
+    "HeroPerkName": "Kit_Perk_H_PowerImpact_T01",
+    "HeroPerkRequirement": {
+      "CommanderTag": [
+        "Granted.Ability.Commando.Shockwave"
+      ],
+      "Description": "Requires commander with Shockwave ability."
+    },
+    "IsInventoryLimitExempt": true,
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 2,
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_038_shock_wave_vr_t02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Soldier-HID-Commando-038-Shock-Wave-SR-T01.png",
       "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Soldier/Portrait/T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L.T-Soldier-HID-Commando-038-Shock-Wave-SR-T01-L"
@@ -10217,31 +10217,6 @@
       "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
     }
   },
-  "Hero:hid_commando_039_pajama_party_sr_t03": {
-    "Type": "Hero",
-    "Name": "hid_commando_039_pajama_party_sr_t03",
-    "DisplayName": "Tricera Ops Ramirez",
-    "SubType": "Soldier",
-    "CommanderPerk": "Saurian Vigor \u002B",
-    "CommanderPerkDescription": "Heal 6.4% of your max Health every 4 seconds.",
-    "CommanderPerkName": "Kit_Perk_H_SaurianVigor_T02",
-    "Description": "\u0022Rrrrooooar!\u0022 - Tricera Ops Ramirez",
-    "HeroAbilities": [
-      "Ability:Kit_Commando_Shockwave",
-      "Ability:Kit_Commando_FragGrenade",
-      "Ability:Kit_Commando_GoinCommando"
-    ],
-    "HeroPerk": "Saurian Vigor",
-    "HeroPerkDescription": "Heal 2.1% of your max Health every 4 seconds.",
-    "HeroPerkName": "Kit_Perk_H_SaurianVigor_T01",
-    "Rarity": "Legendary",
-    "Tier": 3,
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_039_pajama_party_sr_t03.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Soldier-HID-107-Athena-Commando-F-PajamaParty.png",
-      "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
-    }
-  },
   "Hero:hid_commando_039_pajama_party_sr_t02": {
     "Type": "Hero",
     "Name": "hid_commando_039_pajama_party_sr_t02",
@@ -10267,6 +10242,31 @@
       "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
     }
   },
+  "Hero:hid_commando_039_pajama_party_sr_t03": {
+    "Type": "Hero",
+    "Name": "hid_commando_039_pajama_party_sr_t03",
+    "DisplayName": "Tricera Ops Ramirez",
+    "SubType": "Soldier",
+    "CommanderPerk": "Saurian Vigor \u002B",
+    "CommanderPerkDescription": "Heal 6.4% of your max Health every 4 seconds.",
+    "CommanderPerkName": "Kit_Perk_H_SaurianVigor_T02",
+    "Description": "\u0022Rrrrooooar!\u0022 - Tricera Ops Ramirez",
+    "HeroAbilities": [
+      "Ability:Kit_Commando_Shockwave",
+      "Ability:Kit_Commando_FragGrenade",
+      "Ability:Kit_Commando_GoinCommando"
+    ],
+    "HeroPerk": "Saurian Vigor",
+    "HeroPerkDescription": "Heal 2.1% of your max Health every 4 seconds.",
+    "HeroPerkName": "Kit_Perk_H_SaurianVigor_T01",
+    "Rarity": "Legendary",
+    "Tier": 3,
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_039_pajama_party_sr_t03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Soldier-HID-107-Athena-Commando-F-PajamaParty.png",
+      "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
+    }
+  },
   "Hero:hid_commando_039_pajama_party_sr_t04": {
     "Type": "Hero",
     "Name": "hid_commando_039_pajama_party_sr_t04",
@@ -10287,6 +10287,31 @@
     "Rarity": "Legendary",
     "Tier": 4,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_039_pajama_party_sr_t04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Soldier-HID-107-Athena-Commando-F-PajamaParty.png",
+      "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
+    }
+  },
+  "Hero:hid_commando_039_pajama_party_sr_t05": {
+    "Type": "Hero",
+    "Name": "hid_commando_039_pajama_party_sr_t05",
+    "DisplayName": "Tricera Ops Ramirez",
+    "SubType": "Soldier",
+    "CommanderPerk": "Saurian Vigor \u002B",
+    "CommanderPerkDescription": "Heal 6.4% of your max Health every 4 seconds.",
+    "CommanderPerkName": "Kit_Perk_H_SaurianVigor_T02",
+    "Description": "\u0022Rrrrooooar!\u0022 - Tricera Ops Ramirez",
+    "HeroAbilities": [
+      "Ability:Kit_Commando_Shockwave",
+      "Ability:Kit_Commando_FragGrenade",
+      "Ability:Kit_Commando_GoinCommando"
+    ],
+    "HeroPerk": "Saurian Vigor",
+    "HeroPerkDescription": "Heal 2.1% of your max Health every 4 seconds.",
+    "HeroPerkName": "Kit_Perk_H_SaurianVigor_T01",
+    "Rarity": "Legendary",
+    "Tier": 5,
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_039_pajama_party_sr_t05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Soldier-HID-107-Athena-Commando-F-PajamaParty.png",
       "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
@@ -10362,31 +10387,6 @@
     "Rarity": "Epic",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_039_pajama_party_vr_t03.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Soldier-HID-107-Athena-Commando-F-PajamaParty.png",
-      "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
-    }
-  },
-  "Hero:hid_commando_039_pajama_party_sr_t05": {
-    "Type": "Hero",
-    "Name": "hid_commando_039_pajama_party_sr_t05",
-    "DisplayName": "Tricera Ops Ramirez",
-    "SubType": "Soldier",
-    "CommanderPerk": "Saurian Vigor \u002B",
-    "CommanderPerkDescription": "Heal 6.4% of your max Health every 4 seconds.",
-    "CommanderPerkName": "Kit_Perk_H_SaurianVigor_T02",
-    "Description": "\u0022Rrrrooooar!\u0022 - Tricera Ops Ramirez",
-    "HeroAbilities": [
-      "Ability:Kit_Commando_Shockwave",
-      "Ability:Kit_Commando_FragGrenade",
-      "Ability:Kit_Commando_GoinCommando"
-    ],
-    "HeroPerk": "Saurian Vigor",
-    "HeroPerkDescription": "Heal 2.1% of your max Health every 4 seconds.",
-    "HeroPerkName": "Kit_Perk_H_SaurianVigor_T01",
-    "Rarity": "Legendary",
-    "Tier": 5,
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/commando/itemdefinition/hid_commando_039_pajama_party_sr_t05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Soldier-HID-107-Athena-Commando-F-PajamaParty.png",
       "LargePreview": "/BRCosmetics/UI/Foundation/Textures/Icons/Heroes/Athena/Soldier/T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L.T-Soldier-HID-107-Athena-Commando-F-PajamaParty-L"
@@ -43535,37 +43535,6 @@
       "LargePreview": "/SaveTheWorld/UI/Foundation/Textures/Icons/Heroes/Ninja/Portrait/T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L.T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L"
     }
   },
-  "Hero:hid_ninja_smokedimmak_vr_t04": {
-    "Type": "Hero",
-    "Name": "hid_ninja_smokedimmak_vr_t04",
-    "DisplayName": "Dim Mak Mari",
-    "SubType": "Ninja",
-    "CommanderPerk": "Utility Belt \u002B",
-    "CommanderPerkDescription": "Decreases Smoke Bomb Cooldown by 42%.",
-    "CommanderPerkName": "Kit_Perk_H_UtilityBelt_T02",
-    "Description": "\u0022Now you see me, now you don\u0027t.\u0022 - Mari",
-    "HeroAbilities": [
-      "Ability:Kit_Ninja_SmokeBomb",
-      "Ability:Kit_Ninja_ThrowingStars",
-      "Ability:Kit_Ninja_DragonSlash"
-    ],
-    "HeroPerk": "Utility Belt",
-    "HeroPerkDescription": "Decreases Smoke Bomb Cooldown by 18%.",
-    "HeroPerkName": "Kit_Perk_H_UtilityBelt_T01",
-    "HeroPerkRequirement": {
-      "CommanderTag": [
-        "Granted.Ability.Ninja.SmokeBomb"
-      ],
-      "Description": "Requires commander with Smoke Bomb ability."
-    },
-    "Rarity": "Epic",
-    "Tier": 4,
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/ninja/itemdefinition/hid_ninja_smokedimmak_vr_t04.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Ninja-HID-Ninja-SmokeDimMak-VR-T01.png",
-      "LargePreview": "/SaveTheWorld/UI/Foundation/Textures/Icons/Heroes/Ninja/Portrait/T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L.T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L"
-    }
-  },
   "Hero:hid_ninja_smokedimmak_vr_t03": {
     "Type": "Hero",
     "Name": "hid_ninja_smokedimmak_vr_t03",
@@ -43592,6 +43561,37 @@
     "Rarity": "Epic",
     "Tier": 3,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/ninja/itemdefinition/hid_ninja_smokedimmak_vr_t03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Ninja-HID-Ninja-SmokeDimMak-VR-T01.png",
+      "LargePreview": "/SaveTheWorld/UI/Foundation/Textures/Icons/Heroes/Ninja/Portrait/T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L.T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L"
+    }
+  },
+  "Hero:hid_ninja_smokedimmak_vr_t04": {
+    "Type": "Hero",
+    "Name": "hid_ninja_smokedimmak_vr_t04",
+    "DisplayName": "Dim Mak Mari",
+    "SubType": "Ninja",
+    "CommanderPerk": "Utility Belt \u002B",
+    "CommanderPerkDescription": "Decreases Smoke Bomb Cooldown by 42%.",
+    "CommanderPerkName": "Kit_Perk_H_UtilityBelt_T02",
+    "Description": "\u0022Now you see me, now you don\u0027t.\u0022 - Mari",
+    "HeroAbilities": [
+      "Ability:Kit_Ninja_SmokeBomb",
+      "Ability:Kit_Ninja_ThrowingStars",
+      "Ability:Kit_Ninja_DragonSlash"
+    ],
+    "HeroPerk": "Utility Belt",
+    "HeroPerkDescription": "Decreases Smoke Bomb Cooldown by 18%.",
+    "HeroPerkName": "Kit_Perk_H_UtilityBelt_T01",
+    "HeroPerkRequirement": {
+      "CommanderTag": [
+        "Granted.Ability.Ninja.SmokeBomb"
+      ],
+      "Description": "Requires commander with Smoke Bomb ability."
+    },
+    "Rarity": "Epic",
+    "Tier": 4,
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/heroes/ninja/itemdefinition/hid_ninja_smokedimmak_vr_t04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Ninja-HID-Ninja-SmokeDimMak-VR-T01.png",
       "LargePreview": "/SaveTheWorld/UI/Foundation/Textures/Icons/Heroes/Ninja/Portrait/T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L.T-Ninja-HID-Ninja-SmokeDimMak-VR-T01-L"

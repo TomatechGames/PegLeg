@@ -1,4 +1,18 @@
 {
+  "Defender:did_defenderassault_basic_c_t01": {
+    "Type": "Defender",
+    "Name": "did_defenderassault_basic_c_t01",
+    "DisplayName": "Common Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "Rarity": "Common",
+    "Tier": 1,
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_c_t01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "ExportedImages\\T-Defenders-Defender-Assault.png",
+      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault-L.T-Defenders-Defender-Assault-L"
+    }
+  },
   "Defender:did_defenderassault_basic_c_t00": {
     "Type": "Defender",
     "Name": "did_defenderassault_basic_c_t00",
@@ -10,20 +24,6 @@
     "Rarity": "Common",
     "Tier": 0,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_c_t00.uasset",
-    "ImagePaths": {
-      "SmallPreview": "ExportedImages\\T-Defenders-Defender-Assault.png",
-      "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault-L.T-Defenders-Defender-Assault-L"
-    }
-  },
-  "Defender:did_defenderassault_basic_c_t01": {
-    "Type": "Defender",
-    "Name": "did_defenderassault_basic_c_t01",
-    "DisplayName": "Common Assault Defender",
-    "SubType": "Assault Defender",
-    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
-    "Rarity": "Common",
-    "Tier": 1,
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/defenders/did_defenderassault_basic_c_t01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T-Defenders-Defender-Assault.png",
       "LargePreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault-L.T-Defenders-Defender-Assault-L"

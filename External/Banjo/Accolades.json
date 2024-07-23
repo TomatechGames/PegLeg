@@ -5,7 +5,6 @@
     "DisplayName": "Building Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_building.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -18,7 +17,6 @@
     "DisplayName": "Building Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_building_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -31,7 +29,6 @@
     "DisplayName": "Building Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_building_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -44,7 +41,6 @@
     "DisplayName": "Building Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_building_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -57,7 +53,6 @@
     "DisplayName": "Combat Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_combat.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -70,7 +65,6 @@
     "DisplayName": "Combat Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_combat_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -83,7 +77,6 @@
     "DisplayName": "Combat Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_combat_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -96,7 +89,6 @@
     "DisplayName": "Combat Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_combat_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -109,7 +101,6 @@
     "DisplayName": "Exploration Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_exploration.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -122,7 +113,6 @@
     "DisplayName": "Utility Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_utility.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -135,7 +125,6 @@
     "DisplayName": "Utility Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_utility_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -148,7 +137,6 @@
     "DisplayName": "Utility Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_utility_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -161,7 +149,6 @@
     "DisplayName": "Utility Badge",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_badge_utility_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -174,7 +161,6 @@
     "DisplayName": "Endurance: Wave 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -187,7 +173,6 @@
     "DisplayName": "Endurance: Wave 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -200,7 +185,6 @@
     "DisplayName": "Endurance: Wave 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 9700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -213,7 +197,6 @@
     "DisplayName": "Endurance: Wave 4",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -226,7 +209,6 @@
     "DisplayName": "Endurance: Wave 5",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -239,7 +221,6 @@
     "DisplayName": "Endurance: Wave 6",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 29900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w06.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -252,7 +233,6 @@
     "DisplayName": "Endurance: Wave 7",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 35200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w07.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -265,7 +245,6 @@
     "DisplayName": "Endurance: Wave 8",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 40500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w08.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -278,7 +257,6 @@
     "DisplayName": "Endurance: Wave 9",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 46600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w09.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -291,7 +269,6 @@
     "DisplayName": "Endurance: Wave 10",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 52800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -304,7 +281,6 @@
     "DisplayName": "Endurance: Wave 11",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 59000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w11.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -317,7 +293,6 @@
     "DisplayName": "Endurance: Wave 12",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 65100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w12.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -330,7 +305,6 @@
     "DisplayName": "Endurance: Wave 13",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 73000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w13.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -343,7 +317,6 @@
     "DisplayName": "Endurance: Wave 14",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 79200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w14.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -356,7 +329,6 @@
     "DisplayName": "Endurance: Wave 15",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 88900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w15.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -369,7 +341,6 @@
     "DisplayName": "Endurance: Wave 16",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 93300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w16.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -382,7 +353,6 @@
     "DisplayName": "Endurance: Wave 17",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 102100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w17.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -395,7 +365,6 @@
     "DisplayName": "Endurance: Wave 18",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 110900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w18.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -408,7 +377,6 @@
     "DisplayName": "Endurance: Wave 19",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 118800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w19.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -421,7 +389,6 @@
     "DisplayName": "Endurance: Wave 20",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 126700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w20.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -434,7 +401,6 @@
     "DisplayName": "Endurance: Wave 21",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 137300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w21.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -447,7 +413,6 @@
     "DisplayName": "Endurance: Wave 22",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 142600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w22.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -460,7 +425,6 @@
     "DisplayName": "Endurance: Wave 23",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 156600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w23.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -473,7 +437,6 @@
     "DisplayName": "Endurance: Wave 24",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 165400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w24.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -486,7 +449,6 @@
     "DisplayName": "Endurance: Wave 25",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 175100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w25.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -499,7 +461,6 @@
     "DisplayName": "Endurance: Wave 26",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 187400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w26.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -512,7 +473,6 @@
     "DisplayName": "Endurance: Wave 27",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 198000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w27.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -525,7 +485,6 @@
     "DisplayName": "Endurance: Wave 28",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 208600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w28.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -538,7 +497,6 @@
     "DisplayName": "Endurance: Wave 29",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 220000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w29.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -551,7 +509,6 @@
     "DisplayName": "Endurance: Wave 30",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 231400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_endurance_w30.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -564,7 +521,6 @@
     "DisplayName": "Frostnite: Wave 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -577,7 +533,6 @@
     "DisplayName": "Frostnite: Wave 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 18500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -590,7 +545,6 @@
     "DisplayName": "Frostnite: Wave 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 29000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -603,7 +557,6 @@
     "DisplayName": "Frostnite: Wave 4",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 37000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -616,7 +569,6 @@
     "DisplayName": "Frostnite: Wave 5",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 44000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -629,7 +581,6 @@
     "DisplayName": "Frostnite: Wave 6",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 51900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w06.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -642,7 +593,6 @@
     "DisplayName": "Frostnite: Wave 7",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 59800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w07.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -655,7 +605,6 @@
     "DisplayName": "Frostnite: Wave 8",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 66900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w08.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -668,7 +617,6 @@
     "DisplayName": "Frostnite: Wave 9",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 73900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w09.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -681,7 +629,6 @@
     "DisplayName": "Frostnite: Wave 10",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 82700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -694,7 +641,6 @@
     "DisplayName": "Frostnite: Wave 11",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 90600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w11.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -707,7 +653,6 @@
     "DisplayName": "Frostnite: Wave 12",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 99400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w12.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -720,7 +665,6 @@
     "DisplayName": "Frostnite: Wave 13",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 110000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w13.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -733,7 +677,6 @@
     "DisplayName": "Frostnite: Wave 14",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 118800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w14.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -746,7 +689,6 @@
     "DisplayName": "Frostnite: Wave 15",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 128500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w15.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -759,7 +701,6 @@
     "DisplayName": "Frostnite: Wave 16",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 140800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w16.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -772,7 +713,6 @@
     "DisplayName": "Frostnite: Wave 17",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 149600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w17.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -785,7 +725,6 @@
     "DisplayName": "Frostnite: Wave 18",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 167200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w18.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -798,7 +737,6 @@
     "DisplayName": "Frostnite: Wave 19",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 177800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w19.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -811,7 +749,6 @@
     "DisplayName": "Frostnite: Wave 20",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 182200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_frostnite_w20.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -824,7 +761,6 @@
     "DisplayName": "Hit the Road: Bridge Out",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_bridgeout.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -837,7 +773,6 @@
     "DisplayName": "Hit the Road: Infestation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_bughunt.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -850,7 +785,6 @@
     "DisplayName": "Hit the Road: Feelin\u0027 Blu",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_feelinblu.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -863,7 +797,6 @@
     "DisplayName": "Hit the Road: Minor Delay",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_minordelay.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -876,7 +809,6 @@
     "DisplayName": "Hit the Road: Overheat",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_overheat.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -889,7 +821,6 @@
     "DisplayName": "Hit the Road: Record Dash",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_partyplanner.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -902,7 +833,6 @@
     "DisplayName": "Hit the Road: Pit Stop",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_pitstop.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -915,7 +845,6 @@
     "DisplayName": "Hit the Road: Signal Boost",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_signalboost.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -928,7 +857,6 @@
     "DisplayName": "Hit the Road: Strangelands",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_prog_strangelands.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -941,7 +869,6 @@
     "DisplayName": "Hit the Road: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 27300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_hittheroad_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -954,7 +881,6 @@
     "DisplayName": "Bonus: One Base Survived",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_bonus_base1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -967,7 +893,6 @@
     "DisplayName": "Bonus: Two Bases Survived",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_bonus_base2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -980,7 +905,6 @@
     "DisplayName": "Bonus: All Bases Survived",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_bonus_base3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -993,7 +917,6 @@
     "DisplayName": "Bonus: All Heroes Survived",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_bonus_survive.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1006,7 +929,6 @@
     "DisplayName": "Survive the Horde: Defeat",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 850,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1019,7 +941,6 @@
     "DisplayName": "Survive the Horde: Wave 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1032,7 +953,6 @@
     "DisplayName": "Survive the Horde: Wave 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 11400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1045,7 +965,6 @@
     "DisplayName": "Survive the Horde: Wave 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 19400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1058,7 +977,6 @@
     "DisplayName": "Survive the Horde: Wave 4",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 25500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1071,7 +989,6 @@
     "DisplayName": "Survive the Horde: Wave 5",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 32600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1084,7 +1001,6 @@
     "DisplayName": "Survive the Horde: Wave 6",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 39600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w06.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1097,7 +1013,6 @@
     "DisplayName": "Survive the Horde: Wave 7",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 46600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w07.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1110,7 +1025,6 @@
     "DisplayName": "Survive the Horde: Wave 8",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 53700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w08.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1123,7 +1037,6 @@
     "DisplayName": "Survive the Horde: Wave 9",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 60700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w09.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1136,7 +1049,6 @@
     "DisplayName": "Survive the Horde: Wave 10",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 68600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1149,7 +1061,6 @@
     "DisplayName": "Survive the Horde: Wave 11",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 75700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w11.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1162,7 +1073,6 @@
     "DisplayName": "Survive the Horde: Wave 12",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 83600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w12.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1175,7 +1085,6 @@
     "DisplayName": "Survive the Horde: Wave 13",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 91500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w13.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1188,7 +1097,6 @@
     "DisplayName": "Survive the Horde: Wave 14",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 99400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w14.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1201,7 +1109,6 @@
     "DisplayName": "Survive the Horde: Victory!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 110900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_horde_w15.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1214,7 +1121,6 @@
     "DisplayName": "Speed Run",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_bonus_speedrun2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1227,7 +1133,6 @@
     "DisplayName": "Speed Run",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_bonus_speedrun3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1240,7 +1145,6 @@
     "DisplayName": "Speed Run",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_bonus_speedrun4.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1253,7 +1157,6 @@
     "DisplayName": "Build Radar Grid: Gold",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_brt_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1266,7 +1169,6 @@
     "DisplayName": "Build Radar Grid: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 11400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_brt_participation.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1279,7 +1181,6 @@
     "DisplayName": "Build Radar Grid: Platinum",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_brt_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1292,7 +1193,6 @@
     "DisplayName": "Build Radar Grid: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 26000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_brt_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1305,7 +1205,6 @@
     "DisplayName": "Deliver The Bomb: Found Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dtb_bonusfindobjective.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1318,7 +1217,6 @@
     "DisplayName": "Deliver The Bomb: Half Health Left",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dtb_bonushalfhealth.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1331,7 +1229,6 @@
     "DisplayName": "Deliver The Bomb: Bomb Lost",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dtb_failbomblost.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1344,7 +1241,6 @@
     "DisplayName": "Deliver The Bomb: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dtb_failfinaldefense.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1357,7 +1253,6 @@
     "DisplayName": "Deliver The Bomb: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dtb_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1370,7 +1265,6 @@
     "DisplayName": "Destroy The Encampments: Camp Crasher",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dte_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1383,7 +1277,6 @@
     "DisplayName": "Destroy The Encampments: Encampment Executioner",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dte_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1396,7 +1289,6 @@
     "DisplayName": "Destroy The Encampments: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dte_participation.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1409,7 +1301,6 @@
     "DisplayName": "Destroy The Encampments: Annihilator",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dte_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1422,7 +1313,6 @@
     "DisplayName": "Destroy The Encampments: Husk Shucker",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dte_silver.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1435,7 +1325,6 @@
     "DisplayName": "Destroy The Encampments: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 14100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_dte_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1448,7 +1337,6 @@
     "DisplayName": "Eliminate And Collect: Bonus Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_elimandcollect_bonus1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1461,7 +1349,6 @@
     "DisplayName": "Eliminate And Collect: Bronze",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 12800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_elimandcollect_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1474,7 +1361,6 @@
     "DisplayName": "Eliminate And Collect: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_elimandcollect_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1487,7 +1373,6 @@
     "DisplayName": "Eliminate And Collect: Gold",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 13600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_elimandcollect_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1500,7 +1385,6 @@
     "DisplayName": "Eliminate And Collect: Platinum",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 17600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_elimandcollect_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1513,7 +1397,6 @@
     "DisplayName": "Bonus Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_elimandcollect_resupply_bonus2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1526,7 +1409,6 @@
     "DisplayName": "Eliminate And Collect: Silver",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 13200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_elimandcollect_silver.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1539,7 +1421,6 @@
     "DisplayName": "Evacuate the Shelter: Half Health Left",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_etshelter_bonushalfhealth.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1552,7 +1433,6 @@
     "DisplayName": "Evacuate the Shelter: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_etshelter_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1565,7 +1445,6 @@
     "DisplayName": "Evacuate the Shelter: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 25500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_etshelter_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1578,7 +1457,6 @@
     "DisplayName": "Bonus Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_fts_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1591,7 +1469,6 @@
     "DisplayName": "Fight the Storm: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_fts_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1604,7 +1481,6 @@
     "DisplayName": "Fight the Storm: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 17600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_fts_victory1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1617,7 +1493,6 @@
     "DisplayName": "Fight the Storm: Double Down",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 19400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_fts_victory2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1630,7 +1505,6 @@
     "DisplayName": "Fight the Storm: Triple Tap",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_fts_victory3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1643,7 +1517,6 @@
     "DisplayName": "Fight the Storm: Four Score",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 26400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_fts_victory4.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1656,7 +1529,6 @@
     "DisplayName": "Defense Bonus",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_huskescape_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1669,7 +1541,6 @@
     "DisplayName": "Bronze Defense",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 14100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_huskescape_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1682,7 +1553,6 @@
     "DisplayName": "Gold Defense",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_huskescape_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1695,7 +1565,6 @@
     "DisplayName": "Defense Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_huskescape_participation.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1708,7 +1577,6 @@
     "DisplayName": "Platinum Defense",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 16700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_huskescape_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1721,7 +1589,6 @@
     "DisplayName": "Silver Defense",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_huskescape_silver.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1734,7 +1601,6 @@
     "DisplayName": "Built the Dino Quickly",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_br_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1747,7 +1613,6 @@
     "DisplayName": "Buildasaurus Rex: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_br_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1760,7 +1625,6 @@
     "DisplayName": "Buildasaurus Rex: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 12300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_br_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1773,7 +1637,6 @@
     "DisplayName": "Built the Memorial Quickly",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_btm_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1786,7 +1649,6 @@
     "DisplayName": "Build the Memorial: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_btm_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1799,7 +1661,6 @@
     "DisplayName": "Build the Memorial: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 12300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_btm_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1812,7 +1673,6 @@
     "DisplayName": "Destroy the Meteor: No Laser Lost",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_dtm_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1825,7 +1685,6 @@
     "DisplayName": "Destroy the Meteor: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_dtm_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1838,7 +1697,6 @@
     "DisplayName": "Destroy the Meteor: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 20200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_dtm_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1851,7 +1709,6 @@
     "DisplayName": "Deploy the Probe: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_dtp_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1864,7 +1721,6 @@
     "DisplayName": "Deploy the Probe: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 24600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_dtp_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1877,7 +1733,6 @@
     "DisplayName": "Box the Final Frontier: Built Quick",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_ff_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1890,7 +1745,6 @@
     "DisplayName": "Box the Final Frontier: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 9700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_ff_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1903,7 +1757,6 @@
     "DisplayName": "Box the Final Frontier: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 18500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_ff_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1916,7 +1769,6 @@
     "DisplayName": "Final Rehearsal: Perfect Rehearsal",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_fr_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1929,7 +1781,6 @@
     "DisplayName": "Final Rehearsal: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_fr_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1942,7 +1793,6 @@
     "DisplayName": "Final Rehearsal: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_fr_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1955,7 +1805,6 @@
     "DisplayName": "Fight the Gunslinger: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_ftg_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1968,7 +1817,6 @@
     "DisplayName": "Fight the Gunslinger: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_ftg_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1981,7 +1829,6 @@
     "DisplayName": "Haunted Hotel Night 1: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_hh1_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -1994,7 +1841,6 @@
     "DisplayName": "Haunted Hotel Night 1: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 26400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_hh1_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2007,7 +1853,6 @@
     "DisplayName": "Haunted Hotel Final Night: Bonus Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_hhf_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2020,7 +1865,6 @@
     "DisplayName": "Haunted Hotel Final Night: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 9300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_hhf_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2033,7 +1877,6 @@
     "DisplayName": "Haunted Hotel Final Night: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_hhf_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2046,7 +1889,6 @@
     "DisplayName": "Hit the Road: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_htr_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2059,7 +1901,6 @@
     "DisplayName": "Hit the Road: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 17600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_htr_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2072,7 +1913,6 @@
     "DisplayName": "Holly Jolly Ransom: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_kn_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2085,7 +1925,6 @@
     "DisplayName": "Holly Jolly Ransom: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_kn_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2098,7 +1937,6 @@
     "DisplayName": "Fright Maze: Bonus",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_mhm_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2111,7 +1949,6 @@
     "DisplayName": "Fright Maze: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_mhm_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2124,7 +1961,6 @@
     "DisplayName": "Fright Maze: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 12300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_mhm_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2137,7 +1973,6 @@
     "DisplayName": "Pirate\u0027s Cove: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 11400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_pc_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2150,7 +1985,6 @@
     "DisplayName": "Pirate\u0027s Cove: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_pc_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2163,7 +1997,6 @@
     "DisplayName": "Scan the Comet: No Scanner Lost",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_stc_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2176,7 +2009,6 @@
     "DisplayName": "Scan the Comet: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_stc_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2189,7 +2021,6 @@
     "DisplayName": "Scan the Comet: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_stc_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2202,7 +2033,6 @@
     "DisplayName": "Stabilize the Rift: No Laser Lost",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_str_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2215,7 +2045,6 @@
     "DisplayName": "Stabilize the Rift: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_str_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2228,7 +2057,6 @@
     "DisplayName": "Stabilize the Rift: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 9200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_str_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2241,7 +2069,6 @@
     "DisplayName": "Explore the Mist: Perfect Data",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_trv_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2254,7 +2081,6 @@
     "DisplayName": "Explore the Mist: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_trv_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2267,7 +2093,6 @@
     "DisplayName": "Explore the Mist: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 33400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_trv_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2280,7 +2105,6 @@
     "DisplayName": "Test the Suit: Suit Destroyed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_tts_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2293,7 +2117,6 @@
     "DisplayName": "Test the Suit: Successful Test",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_tts_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2306,7 +2129,6 @@
     "DisplayName": "Bonus Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_vl_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2319,7 +2141,6 @@
     "DisplayName": "Research Lab: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_vl_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2332,7 +2153,6 @@
     "DisplayName": "Research Lab: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_vl_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2345,7 +2165,6 @@
     "DisplayName": "Vinderman Mansion: Bonus",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_vm_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2358,7 +2177,6 @@
     "DisplayName": "Vinderman Mansion: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_vm_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2371,7 +2189,6 @@
     "DisplayName": "Vinderman Mansion: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 24600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_vm_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2384,7 +2201,6 @@
     "DisplayName": "Walk The Plank: Bonus",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_wtp_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2397,7 +2213,6 @@
     "DisplayName": "Walk The Plank: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_wtp_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2410,7 +2225,6 @@
     "DisplayName": "Walk The Plank: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_wtp_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2423,7 +2237,6 @@
     "DisplayName": "Yarrr\u0027s Return: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_yr_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2436,7 +2249,6 @@
     "DisplayName": "Yarrr\u0027s Return: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_lm_yr_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2449,7 +2261,6 @@
     "DisplayName": "Launch The Rocket: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 11600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ltr_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2462,7 +2273,6 @@
     "DisplayName": "Launch The Rocket: Stage 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ltr_stage1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2475,7 +2285,6 @@
     "DisplayName": "Launch The Rocket: Stage 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ltr_stage2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2488,7 +2297,6 @@
     "DisplayName": "Launch The Rocket: Stage 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ltr_stage3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2501,7 +2309,6 @@
     "DisplayName": "Launch The Rocket: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 18700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ltr_success.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2514,7 +2321,6 @@
     "DisplayName": "Protect the Presents: Bronze",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 20200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ptp_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2527,7 +2333,6 @@
     "DisplayName": "Protect the Presents: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ptp_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2540,7 +2345,6 @@
     "DisplayName": "Protect the Presents: Gold",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ptp_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2553,7 +2357,6 @@
     "DisplayName": "Protect the Presents: Platinum",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ptp_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2566,7 +2369,6 @@
     "DisplayName": "Protect the Presents: Silver",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ptp_silver.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2579,7 +2381,6 @@
     "DisplayName": "Repair The Shelter: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 11700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ptr_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2592,7 +2393,6 @@
     "DisplayName": "Repair The Shelter: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_ptr_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2605,7 +2405,6 @@
     "DisplayName": "Resupply: Map Type Bonus Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_resupply_bonus1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2618,7 +2417,6 @@
     "DisplayName": "Resupply: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_resupply_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2631,7 +2429,6 @@
     "DisplayName": "Resupply: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 17600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_resupply_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2644,7 +2441,6 @@
     "DisplayName": "Refuel The Homebase: Bonus Objective",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rftb_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2657,7 +2453,6 @@
     "DisplayName": "Refuel The Homebase: Bronze",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 29900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rftb_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2670,7 +2465,6 @@
     "DisplayName": "Refuel The Homebase: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 14100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rftb_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2683,7 +2477,6 @@
     "DisplayName": "Refuel The Homebase: Gold",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 31700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rftb_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2696,7 +2489,6 @@
     "DisplayName": "Refuel The Homebase: Platinum",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 32600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rftb_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2709,7 +2501,6 @@
     "DisplayName": "Refuel The Homebase: Silver",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 30800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rftb_silver.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2722,7 +2513,6 @@
     "DisplayName": "Found the Landing Zone",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtd_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2735,7 +2525,6 @@
     "DisplayName": "Retrieve the Data: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtd_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2748,7 +2537,6 @@
     "DisplayName": "Retrieve the Data: 25% Files Recovered",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 12300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtd_victory1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2761,7 +2549,6 @@
     "DisplayName": "Retrieve the Data: 50% Files Recovered",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 14100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtd_victory2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2774,7 +2561,6 @@
     "DisplayName": "Retrieve the Data: 75% Files Recovered",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 16700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtd_victory3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2787,7 +2573,6 @@
     "DisplayName": "Retrieve the Data: All Files Recovered",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 24500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtd_victory4.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2800,7 +2585,6 @@
     "DisplayName": "Ride The Lightning: We Lost the Van!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 9500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtl_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2813,7 +2597,6 @@
     "DisplayName": "Ride The Lightning: Van Stage 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtl_stage1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2826,7 +2609,6 @@
     "DisplayName": "Ride The Lightning: Van Stage 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtl_stage2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2839,7 +2621,6 @@
     "DisplayName": "Ride The Lightning: Van Launched!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 16700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rtl_success.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2852,7 +2633,6 @@
     "DisplayName": "Rescue the Survivors: Rescue Rookie",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rts_bronze.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2865,7 +2645,6 @@
     "DisplayName": "Rescue the Survivors: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rts_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2878,7 +2657,6 @@
     "DisplayName": "Rescue the Survivors: Humanitarian",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rts_gold.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2891,7 +2669,6 @@
     "DisplayName": "Rescue the Survivors: Evacuation Expert",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rts_platinum.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2904,7 +2681,6 @@
     "DisplayName": "Rescue the Survivors: Life Preserver",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rts_silver.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2917,7 +2693,6 @@
     "DisplayName": "Rescue the Survivors: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_rts_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2930,7 +2705,6 @@
     "DisplayName": "Storm King: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 450,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_sk_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2943,7 +2717,6 @@
     "DisplayName": "Storm King: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 9900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_sk_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2956,7 +2729,6 @@
     "DisplayName": "Survive the Night: 200 Husks Eliminated!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_stn_eliminatet1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2969,7 +2741,6 @@
     "DisplayName": "Survive the Night: 350 Husks Eliminated!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_stn_eliminatet2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2982,7 +2753,6 @@
     "DisplayName": "Survive the Night: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_stn_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -2995,7 +2765,6 @@
     "DisplayName": "Survive the Night: Takers Hunted!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_stn_hunttakers.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3008,7 +2777,6 @@
     "DisplayName": "Survive the Night: No Downs!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_stn_nodowns.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3021,7 +2789,6 @@
     "DisplayName": "Survive the Night: Night Survived!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 12000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_stn_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3034,7 +2801,6 @@
     "DisplayName": "Trap The Storm: Participation",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_tts_fail.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3047,7 +2813,6 @@
     "DisplayName": "Trap The Storm: Storm Successfully Trapped!",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 31500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_tts_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3060,7 +2825,6 @@
     "DisplayName": "Tutorial: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 22000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_mission_tutorial_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3073,7 +2837,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 42000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_dungeon_daily.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3086,7 +2849,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_endurance_daily_w05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3099,7 +2861,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_endurance_daily_w10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3112,7 +2873,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_endurance_daily_w15.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3125,7 +2885,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_endurance_daily_w20.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3138,7 +2897,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_endurance_daily_w25.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3151,7 +2909,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_endurance_daily_w30.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3164,7 +2921,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_frostnite_daily.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3177,7 +2933,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 25000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_frostnite_weekly.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3190,7 +2945,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 16000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_general_daily.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3203,7 +2957,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 78000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_general_weekly.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3216,7 +2969,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 25000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_hittheroad_daily.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3229,7 +2981,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 33000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_hittheroad_weekly.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3242,7 +2993,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_quest_hordev3_daily_w05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3255,7 +3005,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 10000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_quest_hordev3_daily_w10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3268,7 +3017,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 12000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_quest_hordev3_daily_w15.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3281,7 +3029,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 54000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/stw/stw_horde/content/items/stwaccolades/accolades/accoladeid_stw_quest_hordev3_weekly.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3294,7 +3041,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 18000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_wargames_daily.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3307,7 +3053,6 @@
     "DisplayName": "Battle Pass XP",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 15000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_quest_wargames_weekly.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3320,7 +3065,6 @@
     "DisplayName": "Storm Shield: Building Health Over 80%",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3333,7 +3077,6 @@
     "DisplayName": "Storm Shield: Defense 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3346,7 +3089,6 @@
     "DisplayName": "Storm Shield: Defense 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 14100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3359,7 +3101,6 @@
     "DisplayName": "Storm Shield: Defense 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 17600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3372,7 +3113,6 @@
     "DisplayName": "Storm Shield: Defense 4",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3385,7 +3125,6 @@
     "DisplayName": "Storm Shield: Defense 5",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 24600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3398,7 +3137,6 @@
     "DisplayName": "Storm Shield: Defense 6",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 28200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l06.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3411,7 +3149,6 @@
     "DisplayName": "Storm Shield: Defense 7",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 29900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l07.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3424,7 +3161,6 @@
     "DisplayName": "Storm Shield: Defense 8",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 31700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l08.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3437,7 +3173,6 @@
     "DisplayName": "Storm Shield: Defense 9",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 33400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l09.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3450,7 +3185,6 @@
     "DisplayName": "Storm Shield: Defense 10",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 35200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t01_l10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3463,7 +3197,6 @@
     "DisplayName": "Storm Shield: Building Health Over 80%",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3476,7 +3209,6 @@
     "DisplayName": "Storm Shield: Defense 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3489,7 +3221,6 @@
     "DisplayName": "Storm Shield: Defense 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 14100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3502,7 +3233,6 @@
     "DisplayName": "Storm Shield: Defense 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 17600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3515,7 +3245,6 @@
     "DisplayName": "Storm Shield: Defense 4",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3528,7 +3257,6 @@
     "DisplayName": "Storm Shield: Defense 5",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 24600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3541,7 +3269,6 @@
     "DisplayName": "Storm Shield: Defense 6",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 28200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l06.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3554,7 +3281,6 @@
     "DisplayName": "Storm Shield: Defense 7",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 29900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l07.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3567,7 +3293,6 @@
     "DisplayName": "Storm Shield: Defense 8",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 31700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l08.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3580,7 +3305,6 @@
     "DisplayName": "Storm Shield: Defense 9",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 33400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l09.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3593,7 +3317,6 @@
     "DisplayName": "Storm Shield: Defense 10",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 35200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t02_l10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3606,7 +3329,6 @@
     "DisplayName": "Storm Shield: Building Health Over 80%",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3619,7 +3341,6 @@
     "DisplayName": "Storm Shield: Defense 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 7000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3632,7 +3353,6 @@
     "DisplayName": "Storm Shield: Defense 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 14100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3645,7 +3365,6 @@
     "DisplayName": "Storm Shield: Defense 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 17600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3658,7 +3377,6 @@
     "DisplayName": "Storm Shield: Defense 4",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 21100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3671,7 +3389,6 @@
     "DisplayName": "Storm Shield: Defense 5",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 24600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3684,7 +3401,6 @@
     "DisplayName": "Storm Shield: Defense 6",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 28200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l06.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3697,7 +3413,6 @@
     "DisplayName": "Storm Shield: Defense 7",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 29900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l07.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3710,7 +3425,6 @@
     "DisplayName": "Storm Shield: Defense 8",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 31700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l08.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3723,7 +3437,6 @@
     "DisplayName": "Storm Shield: Defense 9",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 33400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l09.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3736,7 +3449,6 @@
     "DisplayName": "Storm Shield: Defense 10",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 35200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t03_l10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3749,7 +3461,6 @@
     "DisplayName": "Storm Shield: Building Health Over 80%",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 8800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3762,7 +3473,6 @@
     "DisplayName": "Storm Shield: Defense 1",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 31700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l01.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3775,7 +3485,6 @@
     "DisplayName": "Storm Shield: Defense 2",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 33400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l02.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3788,7 +3497,6 @@
     "DisplayName": "Storm Shield: Defense 3",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 35200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l03.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3801,7 +3509,6 @@
     "DisplayName": "Storm Shield: Defense 4",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 37000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l04.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3814,7 +3521,6 @@
     "DisplayName": "Storm Shield: Defense 5",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 40500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l05.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3827,7 +3533,6 @@
     "DisplayName": "Storm Shield: Defense 6",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 41400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l06.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3840,7 +3545,6 @@
     "DisplayName": "Storm Shield: Defense 7",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 44000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l07.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3853,7 +3557,6 @@
     "DisplayName": "Storm Shield: Defense 8",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 49300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l08.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3866,7 +3569,6 @@
     "DisplayName": "Storm Shield: Defense 9",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 50200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l09.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3879,7 +3581,6 @@
     "DisplayName": "Storm Shield: Defense 10",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 51000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_ssd_t04_l10.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3892,7 +3593,6 @@
     "DisplayName": "The Crypts: All Keys Collected",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d01_keymaster.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3905,7 +3605,6 @@
     "DisplayName": "The Crypts: Upper Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d01_progress1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3918,7 +3617,6 @@
     "DisplayName": "The Crypts: Middle Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d01_progress2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3931,7 +3629,6 @@
     "DisplayName": "The Crypts: Lower Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d01_progress3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3944,7 +3641,6 @@
     "DisplayName": "The Crypts: Boss Defeated",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 9300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d01_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3957,7 +3653,6 @@
     "DisplayName": "Inferno: All Keys Collected",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 750,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d02_keymaster.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3970,7 +3665,6 @@
     "DisplayName": "Inferno: Upper Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d02_progress1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3983,7 +3677,6 @@
     "DisplayName": "Inferno: Middle Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d02_progress2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -3996,7 +3689,6 @@
     "DisplayName": "Inferno: Lower Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d02_progress3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4009,7 +3701,6 @@
     "DisplayName": "Inferno: Boss Defeated",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d02_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4022,7 +3713,6 @@
     "DisplayName": "The Grotto: All Keys Collected",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d03_keymaster.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4035,7 +3725,6 @@
     "DisplayName": "The Grotto: Upper Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2200,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d03_progress1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4048,7 +3737,6 @@
     "DisplayName": "The Grotto: Middle Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d03_progress2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4061,7 +3749,6 @@
     "DisplayName": "The Grotto: Lower Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d03_progress3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4074,7 +3761,6 @@
     "DisplayName": "The Grotto: Boss Defeated",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d03_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4087,7 +3773,6 @@
     "DisplayName": "Labyrinth: All Keys Collected",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 1800,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d04_keymaster.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4100,7 +3785,6 @@
     "DisplayName": "Labyrinth: Upper Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d04_progress1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4113,7 +3797,6 @@
     "DisplayName": "Labyrinth: Middle Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 3700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d04_progress2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4126,7 +3809,6 @@
     "DisplayName": "Labyrinth: Lower Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4000,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d04_progress3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4139,7 +3821,6 @@
     "DisplayName": "Labyrinth: Boss Defeated",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 6500,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d04_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4152,7 +3833,6 @@
     "DisplayName": "The Lab: All Keys Collected",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2400,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d05_keymaster.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4165,7 +3845,6 @@
     "DisplayName": "The Lab: Upper Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4100,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d05_progress1.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4178,7 +3857,6 @@
     "DisplayName": "The Lab: Middle Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 4900,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d05_progress2.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4191,7 +3869,6 @@
     "DisplayName": "The Lab: Lower Floors Completed",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 5700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d05_progress3.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4204,7 +3881,6 @@
     "DisplayName": "The Lab: Boss Defeated",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 11300,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_starlight_d05_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4217,7 +3893,6 @@
     "DisplayName": "Wargames: Challenge Complete",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 2700,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_wargames_bonus.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",
@@ -4230,7 +3905,6 @@
     "DisplayName": "Wargames: Victory",
     "Description": "Battle Pass XP Earned",
     "Rarity": "Common",
-    "Tier": 20600,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/items/stwaccolades/accolades/accoladeid_stw_wargames_victory.uasset",
     "ImagePaths": {
       "SmallPreview": "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png",

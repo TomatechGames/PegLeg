@@ -15,3 +15,4 @@ C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\P
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.genruntimeconfig.cache
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\ref\PegLegGD.dll
 C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.csproj.Up2Date
+C:\Users\Tomatech\Documents\Godot Projects\PegLegGD\.godot\mono\temp\obj\Debug\PegLegGD.sourcelink.json

@@ -44,6 +44,11 @@ public partial class SurvivorLoadoutInterface : Node
         deleteLoadoutButton.Disabled = true;
     }
 
+    public override void _Process(double delta)
+    {
+        eggTimer -= (float)(delta / Engine.TimeScale);
+    }
+
     string loadoutName = null;
 
     private void OnLoadoutChanged(long index)
@@ -117,17 +122,19 @@ public partial class SurvivorLoadoutInterface : Node
         loadoutSelector.Selected = loadouts.Select(kvp => kvp.Key).ToList().IndexOf(loadoutName) + 2;
         OnLoadoutChanged(loadoutSelector.Selected);
     }
-
+    float eggTimer = 0;
     private async void OnLoadoutLoad()
     {
+        if (eggTimer > 0)
+            return;
         if (!(await GenericConfirmationWindow.OpenConfirmation(
                 "Apply Loadout?", 
                 "Apply", 
                 contextText:"Survivors in this loadout will be slotted into their squads", 
-                warningText: "Existing survivors in squads may be unslotted"
+                warningText: "Currently slotted survivors will be unslotted"
             ) ?? false))
             return;
-
+        eggTimer = 3;
         var existingWorkers = await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, item =>
                 item.Value["templateId"].ToString().StartsWith("Worker") &&
                 item.Value["attributes"].AsObject().ContainsKey("squad_id")
@@ -164,7 +171,13 @@ public partial class SurvivorLoadoutInterface : Node
             }
         }
         LoadingOverlay.Instance.AddLoadingKey("applySurvivorLoadout");
-        var result = await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "AssignWorkerToSquadBatch", flattenedLoadout.ToString());
+        JsonObject unslotBody = new()
+        {
+            ["squadIds"] = new JsonArray(survivorSquads.Select(s => (JsonNode)s).ToArray()),
+        }; ;
+        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
+        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "AssignWorkerToSquadBatch", flattenedLoadout.ToString());
+        await this.WaitForTimer(1);
         LoadingOverlay.Instance.RemoveLoadingKey("applySurvivorLoadout");
     }
 
@@ -259,11 +272,11 @@ public partial class SurvivorLoadoutInterface : Node
             }
         }
         */
-        JsonObject body = new()
+        JsonObject unslotBody = new()
         {
             ["squadIds"] = new JsonArray(survivorSquads.Select(s=>(JsonNode)s).ToArray()),
         }; ;
-        await ProfileRequests.PerformProfileOperationUnsafe(FnProfiles.AccountItems, "UnassignAllSquads", body.ToString());
+        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
         LoadingOverlay.Instance.RemoveLoadingKey("clearSurvivorLoadout");
     }
 

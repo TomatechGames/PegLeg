@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
-public partial class MissionEntry : Control
+public partial class MissionEntry : Control, IRecyclableEntry
 {
     [Signal]
     public delegate void NameChangedEventHandler(string name);
@@ -12,6 +12,8 @@ public partial class MissionEntry : Control
     public delegate void DescriptionChangedEventHandler(string description);
     [Signal]
     public delegate void LocationChangedEventHandler(string location);
+    [Signal]
+    public delegate void PowerLevelChangedEventHandler(string powerLevel);
     [Signal]
     public delegate void TooltipChangedEventHandler(string tooltip);
     [Signal]
@@ -27,27 +29,47 @@ public partial class MissionEntry : Control
     Control alertModifierParent;
 
     [Export]
-    Control searchResultsParent;
+    Control missionRewardParent;
     [Export]
-    Control searchResultsLayout;
+    Control alertRewardLayout;
+    [Export]
+    Control alertRewardParent;
+    [Export]
+    Texture2D defaultBackground;
 
-    public int powerLevel { get; private set; }
-    string theaterCat;
+    public Control node => this;
 
-    List<JsonObject> possibleSearchRewards;
+    IRecyclableElementProvider<MissionData> missionProvider;
+    public void SetRecyclableElementProvider(IRecyclableElementProvider provider)
+    {
+        if(provider is IRecyclableElementProvider<MissionData> newProvider)
+            missionProvider = newProvider;
+    }
 
-    public void SetMissionData(JsonObject missionData)
+    public void SetRecycleIndex(int index)
+    {
+        if (missionProvider is null)
+            return;
+        SetMissionData(missionProvider.GetRecycleElement(index));
+    }
+
+    public void SetMissionData(MissionData missionData)
 	{
         //apply data to element
-        var generator = missionData["missionGenerator"].AsObject();
-        var tile = missionData["tile"].AsObject();
-
-        powerLevel = missionData["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>();
+        var generator = missionData.missionJson["missionGenerator"].AsObject();
+        var tile = missionData.missionJson["tile"].AsObject();
+        var zoneTheme = tile["zoneTheme"].AsObject();
 
         EmitSignal(SignalName.IconChanged, generator.GetItemTexture(BanjoAssets.TextureType.Icon));
+        EmitSignal(SignalName.VenturesIndicatorVisible, missionData.theaterCat == "v");
+        EmitSignal(SignalName.PowerLevelChanged, missionData.powerLevel.ToString());
 
-        theaterCat = missionData["theaterCat"].ToString();
-        EmitSignal(SignalName.VenturesIndicatorVisible, theaterCat == "v");
+        if (generator.GetItemTexture(null, BanjoAssets.TextureType.LoadingScreen) is Texture2D missionLoadingScreen)
+            EmitSignal(SignalName.BackgroundChanged, missionLoadingScreen);
+        else if(zoneTheme.GetItemTexture(null, BanjoAssets.TextureType.LoadingScreen) is Texture2D zoneLoadingScreen)
+            EmitSignal(SignalName.BackgroundChanged, zoneLoadingScreen);
+        else
+            EmitSignal(SignalName.BackgroundChanged, defaultBackground);
 
         EmitSignal(SignalName.NameChanged, generator["DisplayName"].ToString());
         EmitSignal(SignalName.DescriptionChanged, generator["Description"].ToString());
@@ -55,24 +77,24 @@ public partial class MissionEntry : Control
 
         EmitSignal(SignalName.TooltipChanged, $"{generator["DisplayName"]}\n{generator["Description"]}\nLocated in: {tile["zoneTheme"]["DisplayName"]}");
 
-        possibleSearchRewards = missionData["missionRewards"].AsArray().Select(r=>r.AsObject()).ToList();
+        ApplyItems(missionData.missionJson["missionRewards"].AsArray(), missionRewardParent);
 
-        if (missionData["missionAlert"] is JsonObject missionAlert)
+        if (missionData.missionJson["missionAlert"] is JsonObject missionAlert)
         {
             var alertModifiers = missionAlert["modifiers"].AsArray();
             for (int i = 0; i < alertModifierParent.GetChildCount(); i++)
             {
-                var alertChild = alertModifierParent.GetChild<TextureRect>(i);
+                var controlChild = alertModifierParent.GetChild<TextureRect>(i);
                 if (alertModifiers.Count <= i)
                 {
-                    alertChild.Visible = false;
+                    controlChild.Visible = false;
                     continue;
                 }
-                alertChild.Visible = true;
-                var modifierData = BanjoAssets.TryGetTemplate(alertModifiers[i].ToString());
+                controlChild.Visible = true;
+                var itemData = alertModifiers[i].GetTemplate();
 
-                alertChild.Texture = modifierData.GetItemTexture();
-                alertChild.TooltipText = modifierData["DisplayName"].ToString();
+                controlChild.Texture = itemData.GetItemTexture();
+                controlChild.TooltipText = itemData["DisplayName"].ToString();
             }
             alertModifierParent.SizeFlagsHorizontal = alertModifiers.Count == 5 ? SizeFlags.ShrinkCenter : SizeFlags.ExpandFill;
             if (alertModifiers.Count == 6)
@@ -81,59 +103,42 @@ public partial class MissionEntry : Control
                 seventhChild.Visible = true;
                 seventhChild.SelfModulate = Colors.Transparent;
             }
-                
-            possibleSearchRewards.AddRange(missionAlert["rewards"].AsArray().Select(r=>r.AsObject()));
+
+            ApplyItems(missionAlert["rewards"].AsArray(), alertRewardParent);
+
+            alertRewardLayout.Visible = true;
             alertModifierLayout.Visible = true;
         }
         else
         {
+            alertRewardLayout.Visible = false;
             alertModifierLayout.Visible = false;
         }
-	}
+    }
 
-    public bool Filter(PLSearch.Instruction[] missionInstructions, PLSearch.Instruction[] itemInstructions, bool targetItems, string theaterFilter, string[] extraItemFilters)
+    static void ApplyItems(JsonArray itemArray, Control parent)
     {
-        if (!theaterFilter.Contains(theaterCat[0]))
-            return false;
-        bool matchesItemFilter = extraItemFilters.Length == 0;
-        List<JsonObject> rewardsToDisplay = new();
-        foreach (var itemFilter in extraItemFilters)
+        for (int i = 0; i < parent.GetChildCount(); i++)
         {
-            GD.Print("matching: "+itemFilter);
-            foreach (var reward in possibleSearchRewards)
+            var controlChild = parent.GetChild<GameItemEntry>(i);
+            if (itemArray.Count <= i)
             {
-                string rewardId = reward["itemType"].ToString();
-                GD.Print("reward: " + rewardId);
-                if (reward.ContainsKey("equivelent"))
-                    rewardId = reward["equivelent"].ToString();
-
-                bool match = rewardId.Contains(itemFilter);
-                if (itemFilter.EndsWith("*"))
-                    match = rewardId.StartsWith(itemFilter[..^1]);
-
-                if (itemFilter == "MYTHICLEAD")
-                    match = Regex.Match(rewardId, "Worker:manager\\w+_sr_\\w*").Success;
-
-                if (match && !rewardsToDisplay.Contains(reward))
-                {
-                    rewardsToDisplay.Add(reward);
-                    matchesItemFilter = true;
-                }
-            }
-        }
-        for (int i = 0; i < alertModifierParent.GetChildCount(); i++)
-        {
-            var rewardChild = searchResultsParent.GetChild<GameItemEntry>(i);
-            if (rewardsToDisplay.Count <= i)
-            {
-                rewardChild.Visible = false;
+                controlChild.Visible = false;
                 continue;
             }
-            rewardChild.Visible = true;
+            controlChild.Visible = true;
 
-            rewardChild.SetItemData(rewardsToDisplay[i]);
+            bool isRewardBundle = itemArray[i].GetTemplate()["Name"].ToString().ToLower().StartsWith("zcp_");
+            controlChild.addXToAmount = isRewardBundle;
+            controlChild.compactifyAmount = !isRewardBundle;
+            controlChild.includeAmountInName = !isRewardBundle;
+
+            controlChild.SetItemData(itemArray[i].AsObject());
+
+            if (!isRewardBundle)
+                controlChild.SetInteractableSmart();
+            else
+                controlChild.SetInteractable(false);
         }
-        searchResultsLayout.Visible = rewardsToDisplay.Count > 0;
-        return matchesItemFilter;
     }
 }

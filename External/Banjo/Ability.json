@@ -9,14 +9,12 @@
       "Damage": 153.0,
       "EnvDamage": 0.0,
       "ImpactDamage": 455.0,
-      "Radius": 256.0,
       "StunTime": 0.0
     },
     "CooldownSeconds": 1.0,
-    "Description": "Throw a grenade which deals 153 energy damage in a 0.5 tile radius.",
+    "Description": "Throw a grenade which deals [Damage.Value] energy damage in a [Radius] radius.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Commando.FragGrenade",
-    "PreferredQuickbarSlot": 8,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/commando/actives/fraggrenade/kit_commando_fraggrenade.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-Grenade-128.png"
@@ -26,21 +24,10 @@
     "Type": "Ability",
     "Name": "Kit_Commando_GoinCommando",
     "DisplayName": "Goin\u0027 Commando!!!",
-    "AbilityStats": {
-      "BaseCritChance": 0.1,
-      "BaseCritDamage": 0.5,
-      "Damage": 23.0,
-      "Duration": 10.0,
-      "EnvDamage": 9.0,
-      "FireRate": 18.0,
-      "ImpactDamage": 20.0,
-      "StunTime": 0.0
-    },
     "CooldownSeconds": 100.0,
-    "Description": "Equip a minigun which deals 23 physical damage per shot and fires 18 shots per second. Lasts 10 seconds.",
+    "Description": "Equip a minigun which deals [AbilityWeaponDamage.Value] physical damage per shot and fires [FireRate.Value] shots per second. Lasts [Ability.Duration] seconds.",
     "EnergyCost": 50.0,
     "GrantedTag": "Granted.Ability.Commando.GoinCommando",
-    "PreferredQuickbarSlot": 7,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/commando/actives/goincommando/kit_commando_goincommando.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-GoinCommando-128.png"
@@ -50,21 +37,10 @@
     "Type": "Ability",
     "Name": "Kit_Commando_LeftyAndRighty",
     "DisplayName": "Lefty and Righty",
-    "AbilityStats": {
-      "BaseCritChance": 0.15,
-      "BaseCritDamage": 0.75,
-      "Damage": 60.0,
-      "Duration": 10.0,
-      "EnvDamage": 19.0,
-      "FireRate": 6.0,
-      "ImpactDamage": 32.0,
-      "StunTime": 0.0
-    },
     "CooldownSeconds": 100.0,
-    "Description": "Equip two pistols which deal 60 physical damage per shot and fire 6 shots per second. Lasts 10 seconds.",
+    "Description": "Equip two pistols which deal [AbilityWeaponDamage.Value] physical damage per shot and fire [FireRate.Value] shots per second. Lasts [Ability.Duration] seconds.",
     "EnergyCost": 50.0,
     "GrantedTag": "Granted.Ability.Commando.LeftyAndRighty",
-    "PreferredQuickbarSlot": 7,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/commando/actives/leftyandrighty/kit_commando_leftyandrighty.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-LeftyAndRighty-128.png"
@@ -103,10 +79,9 @@
       "StunTime": 0.0
     },
     "CooldownSeconds": 25.0,
-    "Description": "Slam a grenade into the ground, knocking back and dealing 102 energy damage to nearby enemies.",
+    "Description": "Slam a grenade into the ground, knocking back and dealing [Damage.Value] energy damage to nearby enemies.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Commando.Shockwave",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/commando/actives/shockwave/kit_commando_shockwave.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-Shockwave-128.png"
@@ -116,18 +91,10 @@
     "Type": "Ability",
     "Name": "Kit_Commando_WarCry",
     "DisplayName": "War Cry",
-    "AbilityStats": {
-      "AbilityLine4": 1.2,
-      "AbilityLine5": 1.3,
-      "Damage": 1.45,
-      "Duration": 12.0,
-      "FireRate": 1.3
-    },
     "CooldownSeconds": 90.0,
-    "Description": "Shout an inspiring War Cry, granting nearby allies \u002B45% weapon damage, \u002B29.95% fire rate, and \u002B20% melee attack speed for 12 seconds.",
+    "Description": "Shout an inspiring War Cry, granting nearby allies \u002B[Damage] weapon damage, \u002B[Ability.Line5] fire rate, and \u002B[Ability.Line4] melee attack speed for [Duration] seconds.",
     "EnergyCost": 40.0,
     "GrantedTag": "Granted.Ability.Commando.WarCry",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/commando/actives/warcry/kit_commando_warcry.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-WarCry-128.png"
@@ -141,16 +108,14 @@
       "BaseCritChance": 0.05,
       "BaseCritDamage": 0.5,
       "Damage": 104.0,
-      "Duration": 1536.0,
       "EnvDamage": 251.0,
       "ImpactDamage": 800.0,
       "StunTime": 0.0
     },
     "CooldownSeconds": 15.0,
-    "Description": "Charge forward ? tiles, dealing 104 physical damage to enemies and pushing them away with your shield.",
+    "Description": "Charge forward [Ability.Distance] tiles, dealing [Damage.Value] physical damage to enemies and pushing them away with your shield.",
     "EnergyCost": 20.0,
     "GrantedTag": "Granted.Ability.Constructor.BullRush",
-    "PreferredQuickbarSlot": 7,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/constructor/actives/bullrush/kit_constructor_bullrush.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-BullRush-128.png"
@@ -164,16 +129,14 @@
       "BaseCritChance": 0.0,
       "BaseCritDamage": 0.0,
       "Damage": 15.0,
-      "Duration": 6.0,
       "EnvDamage": 0.0,
       "ImpactDamage": 0.0,
       "StunTime": 0.0
     },
     "CooldownSeconds": 30.0,
-    "Description": "Deploy a D.E.C.O.Y. which distracts nearby enemies for 6 seconds. Does not affect Mist Monsters or Bosses.",
+    "Description": "Deploy a D.E.C.O.Y. which distracts nearby enemies for [Ability.Duration] seconds. Does not affect Mist Monsters or Bosses.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Constructor.Decoy",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/constructor/actives/decoy/kit_constructor_decoy.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-Decoy-128.png"
@@ -183,22 +146,10 @@
     "Type": "Ability",
     "Name": "Kit_Constructor_GoinConstructor",
     "DisplayName": "Goin\u0027 Constructor",
-    "AbilityStats": {
-      "AbilityLine2": 675.0,
-      "AbilityLine3": 75.0,
-      "BaseCritChance": 0.0,
-      "BaseCritDamage": 0.0,
-      "Damage": 314.0,
-      "Duration": 16.0,
-      "EnvDamage": 11.0,
-      "ImpactDamage": 350.0,
-      "StunTime": 3.5
-    },
     "CooldownSeconds": 0.0,
-    "Description": "Equip a hammer which deals 314 physical damage per hit and a shield that grants 675 Armor, and Taunts nearby enemies while it is raised. Gain 75 base armor. Lasts 16 seconds. At the end of the ability, explode, knocking back enemies. ",
+    "Description": "Equip a hammer which deals [Damage.Value] physical damage per hit and a shield that grants [Ability.Line2] Armor, and Taunts nearby enemies while it is raised. Gain [Ability.Line3] base armor. Lasts [Ability.Duration] seconds. At the end of the ability, explode, knocking back enemies. ",
     "EnergyCost": 50.0,
     "GrantedTag": "Granted.Ability.Constructor.GoinConstructor",
-    "PreferredQuickbarSlot": 7,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/constructor/actives/goinconstructor/kit_constructor_goinconstructor.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-GoinConstructor-128.png"
@@ -208,21 +159,10 @@
     "Type": "Ability",
     "Name": "Kit_Constructor_MountedCannonTurret",
     "DisplayName": "R.O.S.I.E.",
-    "AbilityStats": {
-      "BaseCritChance": 0.0,
-      "BaseCritDamage": 0.0,
-      "Damage": 284.0,
-      "Duration": 180.0,
-      "EnvDamage": 1022.0,
-      "FireRate": 0.75,
-      "ImpactDamage": 933.0,
-      "StunTime": 0.0
-    },
     "CooldownSeconds": 120.0,
-    "Description": "Deploy a mountable turret which deals 284 physical damage per shot and fires 0.75 shots per second. R.O.S.I.E. has 180 ammo.",
+    "Description": "Deploy a mountable turret which deals [AbilityWeaponDamage.Value] physical damage per shot and fires [FireRate.Value] shots per second. R.O.S.I.E. has [Ability.Duration] ammo.",
     "EnergyCost": 50.0,
     "GrantedTag": "Granted.Ability.Constructor.MountedTurret",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/constructor/actives/mountedturret/kit_constructor_mountedcannonturret.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-ROSIE-128.png"
@@ -232,21 +172,10 @@
     "Type": "Ability",
     "Name": "Kit_Constructor_MountedTurret",
     "DisplayName": "R.O.S.I.E.",
-    "AbilityStats": {
-      "BaseCritChance": 0.0,
-      "BaseCritDamage": 0.0,
-      "Damage": 52.0,
-      "Duration": 180.0,
-      "EnvDamage": 35.0,
-      "FireRate": 7.0,
-      "ImpactDamage": 30.0,
-      "StunTime": 0.0
-    },
     "CooldownSeconds": 120.0,
-    "Description": "Deploy a mountable turret which deals 52 physical damage per shot and fires 7 shots per second. R.O.S.I.E. has 180 ammo.",
+    "Description": "Deploy a mountable turret which deals [AbilityWeaponDamage.Value] physical damage per shot and fires [FireRate.Value] shots per second. R.O.S.I.E. has [Ability.Duration] ammo.",
     "EnergyCost": 50.0,
     "GrantedTag": "Granted.Ability.Constructor.MountedTurret",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/constructor/actives/mountedturret/kit_constructor_mountedturret.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-ROSIE-128.png"
@@ -260,16 +189,14 @@
       "BaseCritChance": 0.05,
       "BaseCritDamage": 0.5,
       "Damage": 46.0,
-      "Duration": 6.0,
       "EnvDamage": 0.0,
       "ImpactDamage": 0.0,
       "StunTime": 0.0
     },
     "CooldownSeconds": 45.0,
-    "Description": "Deploy a device which spews plasma mines for 6 seconds. Each mine deals 46 energy damage.",
+    "Description": "Deploy a device which spews plasma mines for [Ability.Duration] seconds. Each mine deals [Damage.Value] energy damage.",
     "EnergyCost": 40.0,
     "GrantedTag": "Granted.Ability.Constructor.PlasmaPulse",
-    "PreferredQuickbarSlot": 8,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/constructor/actives/plasmapulse/kit_constructor_plasmapulse.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Constructor-PlasmaPulse-128.png"
@@ -288,10 +215,9 @@
       "StunTime": 2.5
     },
     "CooldownSeconds": 10.0,
-    "Description": "Execute a powerful spin kick which stuns enemies and deals 121 damage.",
+    "Description": "Execute a powerful spin kick which stuns enemies and deals [Damage.Value] damage.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Ninja.CrescentKick",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/ninja/actives/crescentkick/kit_ninja_crescentkick.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Ninja-CrescentKick-128.png"
@@ -310,10 +236,9 @@
       "StunTime": 0.0
     },
     "CooldownSeconds": 10.0,
-    "Description": "Dash forward, slashing enemies for 115 damage.",
+    "Description": "Dash forward, slashing enemies for [Damage.Value] damage.",
     "EnergyCost": 50.0,
     "GrantedTag": "Granted.Ability.Ninja.DragonSlash",
-    "PreferredQuickbarSlot": 7,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/ninja/actives/dragonslash/kit_ninja_dragonslash.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Ninja-DragonSlash-128.png"
@@ -342,10 +267,9 @@
       "StunTime": 0.0
     },
     "CooldownSeconds": 15.0,
-    "Description": "Vault into the air and hurl a barrage of kunai at your enemies. Each kunai deals 184 damage.",
+    "Description": "Vault into the air and hurl a barrage of kunai at your enemies. Each kunai deals [Damage.Value] damage.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Ninja.KunaiStorm",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/ninja/actives/kunaistorm/kit_ninja_kunaistorm.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Ninja-KunaiThrow-128.png"
@@ -384,10 +308,9 @@
       "StunTime": 0.0
     },
     "CooldownSeconds": 45.0,
-    "Description": "Drop a smoke bomb which slows enemies and deals 52 damage per second.",
+    "Description": "Drop a smoke bomb which slows enemies and deals [Damage.Value] damage per second.",
     "EnergyCost": 40.0,
     "GrantedTag": "Granted.Ability.Ninja.SmokeBomb",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/ninja/actives/smokebomb/kit_ninja_smokebomb.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Ninja-SmokeBomb-128.png"
@@ -406,10 +329,9 @@
       "StunTime": 0.0
     },
     "CooldownSeconds": 10.0,
-    "Description": "Unleash a volley of throwing stars, which deal 87 damage.",
+    "Description": "Unleash a volley of throwing stars, which deal [Damage.Value] damage.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Ninja.ThrowingStars",
-    "PreferredQuickbarSlot": 8,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/ninja/actives/throwingstars/kit_ninja_throwingstars.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Ninja-ThrowingStars-128.png"
@@ -423,17 +345,14 @@
       "BaseCritChance": 0.0,
       "BaseCritDamage": 0.0,
       "Damage": 13.0,
-      "Duration": 15.0,
       "EnvDamage": 0.0,
-      "FireRate": 4.0,
       "ImpactDamage": 0.0,
       "StunTime": 0.0
     },
     "CooldownSeconds": 60.0,
-    "Description": "Deploy a husk-crushing robot bear which deals 13 base damage per shot and fires 4 shots per second. T.E.D.D.Y. lasts 15 seconds.",
+    "Description": "Deploy a husk-crushing robot bear which deals [Damage] base damage per shot and fires [Ability.RateOfFire] shots per second. T.E.D.D.Y. lasts [Ability.Duration] seconds.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Outlander.Bear",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/outlander/actives/fragment/bear/kit_outlander_bearfragment.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Outlander-BearFragment-128.png"
@@ -452,10 +371,9 @@
       "StunTime": 0.0
     },
     "CooldownSeconds": 15.0,
-    "Description": "Smash the ground, creating a fissure of energy which deals 114 energy damage to enemies.",
+    "Description": "Smash the ground, creating a fissure of energy which deals [Damage.Value] energy damage to enemies.",
     "EnergyCost": 40.0,
     "GrantedTag": "Granted.Ability.Outlander.GroundWave",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/outlander/actives/groundwave/kit_outlander_groundwave.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Outlander-SeismicImpact-128.png"
@@ -465,15 +383,10 @@
     "Type": "Ability",
     "Name": "Kit_Outlander_PhaseShift",
     "DisplayName": "Phase Shift",
-    "AbilityStats": {
-      "AbilityLine2": 3.0,
-      "AbilityLine3": 1.3
-    },
     "CooldownSeconds": 0.5,
-    "Description": "Quickly dash through space, gaining 3% increased movement speed for 1.3 seconds.",
+    "Description": "Quickly dash through space, gaining [Ability.Line2]% increased movement speed for [Ability.Line3] seconds.",
     "EnergyCost": 15.0,
     "GrantedTag": "Granted.Ability.Outlander.PhaseShift",
-    "PreferredQuickbarSlot": 7,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/outlander/actives/phaseshift/kit_outlander_phaseshift.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Outlander-PhaseShift-128.png"
@@ -492,10 +405,9 @@
       "StunTime": 0.5
     },
     "CooldownSeconds": 20.0,
-    "Description": "Deploy a device which shocks nearby enemies, stunning them and dealing 12 base damage.",
+    "Description": "Deploy a device which shocks nearby enemies, stunning them and dealing [Damage] base damage.",
     "EnergyCost": 30.0,
     "GrantedTag": "Granted.Ability.Outlander.ShockTower",
-    "PreferredQuickbarSlot": 9,
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/outlander/actives/fragment/shocktower/kit_outlander_shocktowerfragment.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Outlander-ShockTower-128.png"
@@ -519,24 +431,6 @@
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/class/commando/suppressivefire/kit_perk_c_commando_suppressivefire_t01.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-SuppressiveFire-128.png"
-    }
-  },
-  "Ability:kit_perk_c_constructor_base_t01": {
-    "Type": "Ability",
-    "Name": "Kit_Perk_C_Constructor_BASE_T01",
-    "DisplayName": "B.A.S.E.",
-    "AbilityStats": {
-      "BaseCritChance": 0.0,
-      "BaseCritDamage": 0.0,
-      "Damage": 12.0,
-      "EnvDamage": 0.0,
-      "ImpactDamage": 0.0,
-      "StunTime": 0.0
-    },
-    "Description": "Place \u003CHeroAbility\u003EB.A.S.E.\u003C/\u003E to reinforce attached structures with \u003CNumber\u003E[Ability.Line1]\u003C/\u003E \u003CModifiedAttribute\u003EArmor\u003C/\u003E. Extends \u003CNumber\u003E? segments\u003C/\u003E from placement. Placed from trap wheel.",
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/class/constructor/base/kit_perk_c_constructor_base_t01.uasset",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\Icon-Constructor-BASE-128.png"
     }
   },
   "Ability:kit_perk_c_kineticoverload_t01": {
@@ -4599,16 +4493,6 @@
       "Icon": "ExportedImages\\Icon-Soldier-ZipAndZap-128.png"
     }
   },
-  "Ability:kit_perk_l_bioenergysource_t01": {
-    "Type": "Ability",
-    "Name": "Kit_Perk_L_BioEnergySource_T01",
-    "DisplayName": "Bio-Energy Source",
-    "Description": "Recover Shield equal to 0.2% of Energy lost.",
-    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/bioenergysource/kit_perk_l_bioenergysource_t01.uasset",
-    "ImagePaths": {
-      "Icon": "ExportedImages\\Icon-Global-Bio-EnergySource.png"
-    }
-  },
   "Ability:kit_perk_h_zipandzap_t02": {
     "Type": "Ability",
     "Name": "Kit_Perk_H_ZipAndZap_T02",
@@ -4617,6 +4501,16 @@
     "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/hero/zipandzap/kit_perk_h_zipandzap_t02.uasset",
     "ImagePaths": {
       "Icon": "ExportedImages\\Icon-Soldier-ZipAndZap-128.png"
+    }
+  },
+  "Ability:kit_perk_l_bioenergysource_t01": {
+    "Type": "Ability",
+    "Name": "Kit_Perk_L_BioEnergySource_T01",
+    "DisplayName": "Bio-Energy Source",
+    "Description": "Recover Shield equal to 0.2% of Energy lost.",
+    "AssetPath": "fortnitegame/plugins/gamefeatures/savetheworld/content/abilities/player/perks/leader/bioenergysource/kit_perk_l_bioenergysource_t01.uasset",
+    "ImagePaths": {
+      "Icon": "ExportedImages\\Icon-Global-Bio-EnergySource.png"
     }
   },
   "Ability:kit_perk_l_blakebeardsstash_t01": {

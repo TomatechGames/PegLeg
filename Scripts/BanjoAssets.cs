@@ -71,11 +71,17 @@ public static class BanjoAssets
         return false;
     }
 
-    public static JsonObject GetTemplate(this JsonObject itemInstance, out JsonObject template) => template = itemInstance.GetTemplate();
-    public static JsonObject GetTemplate(this JsonObject itemInstance, bool print = false)
+    public static JsonObject GetTemplate(this JsonNode itemInstance, out JsonObject template) => template = itemInstance.GetTemplate();
+    public static JsonObject GetTemplate(this JsonNode itemInstance, bool print = false)
     {
         if (print)
             GD.Print(itemInstance.ToString());
+        if (itemInstance is JsonValue val && TryGetTemplate(val, out var varTemplate))
+            return varTemplate;
+
+        if (itemInstance is JsonArray)
+            return null;
+
         if (itemInstance["template"] is JsonObject cachedTemplate)
             return cachedTemplate;
 
@@ -91,6 +97,23 @@ public static class BanjoAssets
             return itemInstance["template"].AsObject();
         }
         return null;
+    }
+    public static void GenerateItemSearchTags(this JsonNode itemInstance) =>
+        itemInstance["searchTags"] = GenerateItemTemplateSearchTags(itemInstance.GetTemplate());
+    public static JsonArray GenerateItemTemplateSearchTags(string itemID) => 
+        GenerateItemTemplateSearchTags(TryGetTemplate(itemID));
+    public static JsonArray GenerateItemTemplateSearchTags(JsonNode template)
+    {
+        List<string> tags = new()
+        {
+            template["DisplayName"]?.ToString(),
+            template["Rarity"]?.ToString(),
+            template["SubType"]?.ToString(),
+            template["Category"]?.ToString(),
+            template["Personality"]?.ToString()[2..]
+        };
+
+        return new JsonArray(tags.Select(t=>(JsonNode)t).ToArray());
     }
 
     static readonly Dictionary<string, JsonObject> dataSources = new();
@@ -485,10 +508,14 @@ public static class BanjoAssets
 
             return rarityMatch;
         }, true);
-        bool existsInBackpack = await ProfileRequests.ProfileItemExists(FnProfiles.Backpack, kvp =>
+        bool existsInBackpack = false;
+        if (itemTemplate["Type"].ToString() == "Weapon")
         {
-            return kvp.Value["templateId"]?.ToString() == itemData["templateId"]?.ToString();
-        }, true);
+            existsInBackpack = await ProfileRequests.ProfileItemExists(FnProfiles.Backpack, kvp =>
+            {
+                return kvp.Value["templateId"]?.ToString() == itemData["templateId"]?.ToString();
+            }, true);
+        }
         itemData["attributes"] ??= new JsonObject();
         itemData["attributes"]["item_seen"] = existsInAccountInventory || existsInBackpack;
         return itemData;

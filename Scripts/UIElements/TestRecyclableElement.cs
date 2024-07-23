@@ -8,7 +8,7 @@ public partial class TestRecyclableElement : Control, IRecyclableEntry
     public delegate void ValueChangedEventHandler(string value);
     public Control node => this;
 
-    public void LinkRecyclableElementProvider(IRecyclableElementProvider provider)
+    public void SetRecyclableElementProvider(IRecyclableElementProvider provider)
     {
     }
 

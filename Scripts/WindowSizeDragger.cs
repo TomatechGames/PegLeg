@@ -10,6 +10,10 @@ public partial class WindowSizeDragger : Control
     [Export]
     GrabberType grabberType;
 
+    static readonly Vector2I limitSize = new(1000, 500);
+    const double minAspectRatio = 4.0/3;
+    const double maxAspectRatio = 2;
+
     public enum GrabberType
     {
         Top = 0,
@@ -41,10 +45,22 @@ public partial class WindowSizeDragger : Control
             Vector2I axisScale = ((int)grabberType) % 2 == 0 ? Vector2I.Down : Vector2I.Right;
             var window = GetWindow();
 
-            window.Size = windowSizeStart + ((DisplayServer.MouseGetPosition() - mouseStart) * axisScale * (attachToWindow ? -1 : 1));
+            Vector2I mouseDiff = (DisplayServer.MouseGetPosition() - mouseStart) * axisScale;
 
-            if(attachToWindow)
-                window.Position = windowPosStart + ((DisplayServer.MouseGetPosition() - mouseStart) * axisScale);
+            
+            Vector2I newSize = windowSizeStart + (mouseDiff * (attachToWindow ? -1 : 1));
+
+            newSize =
+                new(
+                    Mathf.Max(newSize.X, limitSize.X),
+                    Mathf.Max(newSize.Y, limitSize.Y)
+                );
+
+            window.Size = newSize;
+            mouseDiff = (newSize - windowSizeStart) * (attachToWindow ? -1 : 1);
+
+            if (attachToWindow)
+                window.Position = windowPosStart + mouseDiff;
         }
     }
 }

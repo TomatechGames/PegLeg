@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PegLegGD")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d67debd2f8d4d93a4e1a69dfa34d903484618ff3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae94def9f3f63ffd9fe619d8abbc9ecc468fe1aa")]
 [assembly: System.Reflection.AssemblyProductAttribute("PegLegGD")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PegLegGD")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -239,6 +239,7 @@ public partial class CosmeticShopOfferEntry : Control
     public int lastSeenDaysAgo { get; private set; }
     public bool isRecentlyNew { get; private set; }
     public bool isAddedToday { get; private set; }
+    public bool isLeavingSoon { get; private set; }
     public bool isMultiBundle { get; private set; }
     public bool isOld { get; private set; }
     public bool isVeryOld { get; private set; }
@@ -329,6 +330,7 @@ public partial class CosmeticShopOfferEntry : Control
         string firstAddedDateText = firstItem["shopHistory"]?[0]?.ToString();
         DateTime firstAddedDate = firstAddedDateText is not null ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
         DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
+        DateTime outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
         DateTime? lastAddedDate = null;
         var shopHistory = firstItem["shopHistory"]?.AsArray();
         if (shopHistory is not null)
@@ -346,6 +348,7 @@ public partial class CosmeticShopOfferEntry : Control
 
         lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
         isAddedToday = inDate == DateTime.UtcNow.Date;
+        isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
         isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
         isOld = lastSeenDaysAgo > 500;
         isVeryOld = lastSeenDaysAgo > 1000;
