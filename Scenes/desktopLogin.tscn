@@ -8,7 +8,7 @@
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_rx0xh"]
 
-[node name="DesktopLogin" type="Control" node_paths=PackedStringArray("sizeTarget", "sizeSource", "logo", "generateCodeButton", "pasteButton", "oneTimeCodeLine", "loginButton", "usePersistantLogin")]
+[node name="DesktopLogin" type="Control" node_paths=PackedStringArray("sizeTarget", "sizeSource", "logo", "loginText", "generateCodeButton", "pasteButton", "oneTimeCodeLine", "loginButton", "usePersistantLogin")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,6 +20,7 @@ desktopMainInterfacePath = "res://Scenes/interfaceRoot.tscn"
 sizeTarget = NodePath("CenterContainer/Control")
 sizeSource = NodePath("CenterContainer/Control/Control/MarginContainer")
 logo = NodePath("CenterContainer/Control/TextureRect")
+loginText = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/Label")
 generateCodeButton = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/GenerateCode")
 pasteButton = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/HBoxContainer/PasteCode")
 oneTimeCodeLine = NodePath("CenterContainer/Control/Control/MarginContainer/VBoxContainer/HBoxContainer/LineEdit")

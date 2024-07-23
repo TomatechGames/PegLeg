@@ -1,4 +1,4 @@
-[gd_scene load_steps=128 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=130 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
@@ -109,6 +109,7 @@
 [ext_resource type="Texture2D" uid="uid://b2prelv5a2wnx" path="res://Images/AspectRatios/1x2Aspect.png" id="74_wl78o"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="75_q1lfg"]
 [ext_resource type="Script" path="res://Scripts/RegexTest.cs" id="83_rdrjc"]
+[ext_resource type="PackedScene" uid="uid://dd6fc218gb2da" path="res://Scenes/Overlays/settings_window.tscn" id="99_hfy7e"]
 [ext_resource type="Texture2D" uid="uid://boywmwfvrbmwp" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Cogs_128.png" id="103_l32pl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wyb1b"]
@@ -185,6 +186,18 @@ shader_parameter/HorizontalMask = 0.1
 shader_parameter/VerticalMask = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mclrw"]
+resource_local_to_scene = true
+shader = ExtResource("25_26oh8")
+shader_parameter/ControlSize = Vector2(256, 256)
+shader_parameter/SliceAmount = Vector2(10, 10)
+shader_parameter/FPS = 30.0
+shader_parameter/CellCount = 0
+shader_parameter/Fit = true
+shader_parameter/Repeat = null
+shader_parameter/HorizontalMask = null
+shader_parameter/VerticalMask = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7awe0"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -549,7 +562,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
-current_tab = 2
+current_tab = 5
 
 [node name="Missions" type="PanelContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemSearchToggle", "itemFilterButtons", "missionList", "loadingIcon")]
 visible = false
@@ -1405,6 +1418,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Compendium" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("itemList", "searchBox")]
+visible = false
 layout_mode = 2
 script = ExtResource("36_us3cw")
 itemList = NodePath("VBoxContainer/ItemList")
@@ -1415,6 +1429,7 @@ layout_mode = 2
 
 [node name="LineEdit" type="LineEdit" parent="MainApp/TabContainer/Compendium/VBoxContainer"]
 layout_mode = 2
+clear_button_enabled = true
 
 [node name="ItemList" type="ItemList" parent="MainApp/TabContainer/Compendium/VBoxContainer"]
 layout_mode = 2
@@ -2337,8 +2352,7 @@ material = SubResource("ShaderMaterial_mclrw")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
-[node name="Quests" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("nodeController", "questViewer", "foldoutParent")]
-visible = false
+[node name="Quests" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("nodeController", "questViewer", "foldoutParent", "questListLayout", "loadingIcon")]
 layout_mode = 2
 script = ExtResource("64_mksrq")
 nodeController = NodePath("HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController")
@@ -2346,6 +2360,8 @@ questViewer = NodePath("HSplitContainer/MarginContainer/VBoxContainer/QuestViewe
 foldoutParent = NodePath("HSplitContainer/QuestGroupList/ScrollContainer/MarginContainer/VBoxContainer/QuestFoldouts")
 foldoutScene = ExtResource("52_6qush")
 questGroupScene = ExtResource("66_4mrvf")
+questListLayout = NodePath("HSplitContainer/QuestGroupList/ScrollContainer")
+loadingIcon = NodePath("HSplitContainer/QuestGroupList/LoadingIcon")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MainApp/TabContainer/Quests"]
 layout_mode = 2
@@ -2399,6 +2415,13 @@ vertical_alignment = 1
 [node name="Responsive Button Area" parent="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("15_5u8nd")]
 layout_mode = 2
 holdTime = 1.0
+
+[node name="LoadingIcon" parent="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList" instance=ExtResource("30_sx8jl")]
+material = SubResource("ShaderMaterial_7awe0")
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Quests/HSplitContainer"]
 layout_mode = 2
@@ -2622,6 +2645,7 @@ stretch_mode = 5
 
 [node name="Button" type="Button" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"TinyButton"
 theme_override_font_sizes/font_size = 128
 
 [node name="TextureRect3" type="TextureRect" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer/Button"]
@@ -2686,6 +2710,7 @@ expand_mode = 3
 
 [node name="Button" type="Button" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer2"]
 layout_mode = 2
+theme_type_variation = &"TinyButton"
 theme_override_font_sizes/font_size = 128
 
 [node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer2/Button"]
@@ -2852,7 +2877,11 @@ visible = false
 layout_mode = 1
 startOpen = false
 
-[node name="StatusBar" type="MarginContainer" parent="." node_paths=PackedStringArray("background", "sizeDraggers")]
+[node name="SettingsWindow" parent="OverlayWindows" instance=ExtResource("99_hfy7e")]
+visible = false
+layout_mode = 1
+
+[node name="StatusBar" type="MarginContainer" parent="." node_paths=PackedStringArray("background", "settingsWindow", "sizeDraggers")]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -2865,6 +2894,7 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 script = ExtResource("2_3ot56")
 background = NodePath("../Contents/BG")
+settingsWindow = NodePath("../OverlayWindows/SettingsWindow")
 sizeDraggers = [NodePath("../ResizeGrabber/BottomGrabber"), NodePath("../ResizeGrabber/TopGrabber"), NodePath("../ResizeGrabber/LeftGrabber"), NodePath("../ResizeGrabber/RightGrabber")]
 
 [node name="Left" type="HBoxContainer" parent="StatusBar"]
@@ -3194,7 +3224,7 @@ layout_mode = 2
 [connection signal="AmountChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/AmountText" method="set_text"]
 [connection signal="IconChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/Icon" method="set_texture"]
 [connection signal="NameChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency" method="set_tooltip_text"]
-[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="StatusBar" method="Refresh"]
+[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="StatusBar" method="OpenSettings"]
 [connection signal="pressed" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn" method="ToggleMute"]
 [connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="StatusBar" method="Refresh"]
 [connection signal="pressed" from="StatusBar/Right/MinimiseBtn" to="StatusBar" method="MinimiseApp"]

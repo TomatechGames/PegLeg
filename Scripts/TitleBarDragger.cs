@@ -12,6 +12,8 @@ public partial class TitleBarDragger : Control
     [Export]
     AdaptivePanelController background;
     [Export]
+    ModalWindow settingsWindow;
+    [Export]
     PackedScene interfaceRoot;
     [Export(PropertyHint.ArrayType)]
     WindowSizeDragger[] sizeDraggers = Array.Empty<WindowSizeDragger>();
@@ -110,6 +112,11 @@ public partial class TitleBarDragger : Control
         PerformRefresh?.Invoke();
         LoadingOverlay.Instance.RemoveLoadingKey("RefreshButton");
         */
+    }
+
+    public void OpenSettings()
+    {
+        settingsWindow.SetWindowOpen(true);
     }
 
     public void CloseApp()

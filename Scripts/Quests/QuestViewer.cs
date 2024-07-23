@@ -121,13 +121,13 @@ public partial class QuestViewer : Control
             .Where(r => !r["Selectable"].GetValue<bool>())
             .Select(r => 
             {
-                if (r["Item"].ToString().StartsWith("STWAccoladeReward"))
-                {
-                    var accoladeID = r["Item"].ToString().Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
-                    GD.Print(accoladeID);
-                    var accoladeTemplate = BanjoAssets.TryGetTemplate(accoladeID);
-                    return accoladeTemplate?.CreateInstanceOfItem(accoladeTemplate["Tier"].GetValue<int>()) ?? r.AsObject();
-                }
+                //if (r["Item"].ToString().StartsWith("STWAccoladeReward"))
+                //{
+                //    var accoladeID = r["Item"].ToString().Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
+                //    GD.Print(accoladeID);
+                //    var accoladeTemplate = BanjoAssets.TryGetTemplate(accoladeID);
+                //    return accoladeTemplate?.CreateInstanceOfItem(1) ?? r.AsObject();
+                //}
                 return BanjoAssets.TryGetTemplate(r["Item"].ToString())?.CreateInstanceOfItem(r["Quantity"].GetValue<int>()) ?? r.AsObject();
             })
             .Where(r =>

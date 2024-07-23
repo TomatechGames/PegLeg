@@ -208,6 +208,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             return;
         var template = itemInstance.GetTemplate();
         int amount = itemInstance["quantity"].GetValue<int>();
+        if (template["Type"].ToString() == "Accolades")
+            amount = template["AccoladeXP"]?.GetValue<int>() ?? template["Tier"]?.GetValue<int>() ?? 1;
         string amountText = compactifyAmount ? amount.Compactify() : amount.ToString();
 
         compositeItemOverride = itemInstance["attributes"]?["overrideItem"]?.ToString();

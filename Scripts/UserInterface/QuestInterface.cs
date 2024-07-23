@@ -15,6 +15,10 @@ public partial class QuestInterface : Control
     PackedScene foldoutScene;
     [Export]
     PackedScene questGroupScene;
+    [Export]
+    Control questListLayout;
+    [Export]
+    Control loadingIcon;
 
     List<Foldout> questGroupCollections = new();
     List<QuestGroupEntry> questGroups = new();
@@ -60,6 +64,8 @@ public partial class QuestInterface : Control
     {
         if (!await LoginRequests.TryLogin() || hasGeneratedQuests)
             return;
+        questListLayout.Visible = false;
+        loadingIcon.Visible = true;
         hasGeneratedQuests = true;
         await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
         var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
@@ -71,7 +77,7 @@ public partial class QuestInterface : Control
 
         await this.WaitForFrame();
 
-        ButtonGroup questButtonGroup = new ButtonGroup();
+        ButtonGroup questButtonGroup = new();
 
         foreach (var collection in generatedQuestGroups)
         {
@@ -108,10 +114,14 @@ public partial class QuestInterface : Control
             foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
             foldoutParent.AddChild(foldout);
         }
+
+        questListLayout.Visible = true;
+        loadingIcon.Visible = false;
     }
 
-    void RefreshCurrentSelection()
+    async void RefreshCurrentSelection()
     {
+        await this.WaitForFrame();
         currentEntry.UpdateNotificationAndIcon();
         currentFoldout.SetNotification(currentQuestGroups.Any(g => g.HasNotification));
     }

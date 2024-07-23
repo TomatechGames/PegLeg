@@ -60,6 +60,8 @@ public static class BanjoAssets
     public static JsonObject TryGetTemplate(string itemID) => TryGetTemplate(itemID, out var result) ? result : null;
     public static bool TryGetTemplate(string itemID, out JsonObject itemTemplate)
     {
+        if (itemID.StartsWith("STWAccoladeReward"))
+            itemID = itemID.Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
         var splitItemId = itemID.Split(':');
         if (itemID.Contains(':') && TryGetSource(splitItemId[0], out var source))
         {
