@@ -76,7 +76,7 @@ public partial class CosmeticShopRow : Control
             if (entry.Visible = filterFunc(entry))
             {
                 result = true;
-                if (PageData[entry.offerId]["tileSize"].ToString() != "Size_1_x_1" || i > 5)
+                if (PageData[entry.offerId]["tileSize"].ToString() != "Size_1_x_1" || i >= 5)
                     isSmall = false;
                 i++;
             }

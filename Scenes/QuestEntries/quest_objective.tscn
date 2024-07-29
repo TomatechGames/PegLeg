@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5in0c8tv1sfq"]
+[gd_scene load_steps=5 format=3 uid="uid://c5in0c8tv1sfq"]
 
 [ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://Themes/Styleboxes/Heavy/HeavyBox.tres" id="1_332se"]
 [ext_resource type="Script" path="res://Scripts/Quests/QuestObjective.cs" id="1_u26dx"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="2_hawdj"]
-[ext_resource type="StyleBox" uid="uid://wf5aopk2bqf1" path="res://Themes/Styleboxes/Medium/MediumBox.tres" id="3_wxk0j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44vsw"]
 resource_local_to_scene = true
@@ -23,7 +22,7 @@ completeColor = Color(0, 1, 0, 1)
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("1_332se")
+theme_type_variation = &"SecondaryPanel"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -73,7 +72,7 @@ expand_mode = 3
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 6)
 layout_mode = 2
-theme_override_styles/background = ExtResource("3_wxk0j")
+theme_override_styles/background = ExtResource("1_332se")
 theme_override_styles/fill = SubResource("StyleBoxFlat_44vsw")
 max_value = 3.0
 value = 1.0

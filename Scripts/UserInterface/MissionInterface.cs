@@ -22,7 +22,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
     RecycleListContainer missionList;
 
     [Export]
-	Control loadingIcon;
+	TextureProgressBar loadingIcon;
 
     string currentTheaterFilter => theaterFilters[zoneFilterTabBar.CurrentTab];
 
@@ -82,9 +82,12 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
     public override async void _Ready()
 	{
-		VisibilityChanged += () =>
+        await this.WaitForFrame();
+        await this.WaitForFrame();
+
+        VisibilityChanged += () =>
         {
-			if (Visible)
+			if (IsVisibleInTree())
 				LoadMissions();
         };
 
@@ -109,9 +112,8 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
         missionList.SetProvider(this);
 
-        if (Visible)
+        if (IsVisibleInTree())
             LoadMissions();
-        await MissionRequests.GetMissions();
     }
 
     PLSearch.Instruction[] currentMissionSearchInstructions;
@@ -126,12 +128,13 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
     public void ForceReloadMissions() => LoadMissions(true);
 
     bool isLoadingMissions = false;
+    bool hasMissions = false;
     async void LoadMissions(bool force = false)
     {
         if (isLoadingMissions || !await LoginRequests.TryLogin())
             return;
         isLoadingMissions = true;
-        if (MissionRequests.MissionsRequireUpdate() || force)
+        if (MissionRequests.MissionsRequireUpdate() || force || !hasMissions)
         {
             try
             {
@@ -144,12 +147,11 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
                 await this.WaitForFrame();
                 allMissions = allMissionData["missions"].AsArray().Select(m=>new MissionData(m.AsObject())).ToList();
 
-                foreach (var mission in allMissions)
-                {
-                    //()=> this.WaitForFrame()
-                    await mission.SetRewardNotifications();
-                    await this.WaitForFrame();
-                }
+                //foreach (var mission in allMissions)
+                //{
+                //    mission.OnRewardsCompleted += FilterMissionGrid;
+                //}
+                //PassivelyGenerateRewards();
             }
             finally
             {
@@ -157,19 +159,37 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
                 loadingIcon.Visible = false;
                 isLoadingMissions = false;
             }
+            hasMissions = true;
         }
 
         FilterMissionGrid();
     }
 
+    //need to find a better way to set these notifications over time so that they can be filtered with NEW
+    async void PassivelyGenerateRewards()
+    {
+        foreach (var item in allMissions)
+        {
+            if (item.rewardsGenerated)
+                continue;
+            bool currentCompleted = false;
+            void ThisItemComplated() => currentCompleted = true;
+            item.OnRewardsCompleted += ThisItemComplated;
+            item.SetRewardNotifications();
+            while (!currentCompleted)
+            {
+                await this.WaitForFrame();
+            }
+            item.OnRewardsCompleted -= ThisItemComplated;
+        }
+        GD.Print("ALLDONE");
+    }
+
     void GenerateSearchInstructions(string searchText)
     {
-        searchText = searchText
-            .Replace("///", " i:/ ")
-            .Replace(" I:/ ", " i:/ ");
-        if (searchText.Contains(" i:/ ") || searchText.StartsWith("i:/ "))
+        if (searchText.Contains("///"))
         {
-            string[] splitSearchText = searchText.Split("i:/");
+            string[] splitSearchText = searchText.Split("///");
             currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0], out var _) ?? Array.Empty<PLSearch.Instruction>();
             currentItemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join(), out var _) ?? Array.Empty<PLSearch.Instruction>();
         }
@@ -210,6 +230,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
 public class MissionData
 {
+    public event Action OnRewardsCompleted;
     public int powerLevel { get; private set; }
     public string theaterCat { get; private set; }
 
@@ -235,6 +256,8 @@ public class MissionData
         foreach (var item in missionJson["missionRewards"].AsArray())
         {
             textureDependancies.Add(item.AsObject().GetItemTexture());
+            item["attributes"] ??= new JsonObject();
+            item["attributes"]["item_seen"] = true;
             rewardItems.Add(item.AsObject());
         }
 
@@ -247,19 +270,26 @@ public class MissionData
             foreach (var item in missionAlert["rewards"].AsArray())
             {
                 textureDependancies.Add(item.AsObject().GetItemTexture());
+                item["attributes"] ??= new JsonObject();
+                item["attributes"]["item_seen"] = true;
                 rewardItems.Add(item.AsObject());
             }
         }
     }
 
-    public async Task SetRewardNotifications(Func<Task> frameTaskGenerator = null)
+    public bool rewardsGenerated { get; private set; } = false;
+    bool startedGeneratingNotifications = false;
+    public async void SetRewardNotifications()
     {
+        if (startedGeneratingNotifications)
+            return;
+        startedGeneratingNotifications = true;
         foreach (var item in rewardItems)
         {
             await item.SetItemRewardNotification();
-            if (frameTaskGenerator is not null)
-                await frameTaskGenerator();
         }
+        rewardsGenerated = true;
+        OnRewardsCompleted?.Invoke();
         //for (int i = 0; i < missionJson["missionRewards"].AsArray().Count; i++)
         //{
         //    missionJson["missionRewards"][i] = await missionJson["missionRewards"][i].AsObject().SetItemRewardNotification();

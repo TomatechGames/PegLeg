@@ -7,11 +7,14 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_talfe"]
 resource_local_to_scene = true
 shader = ExtResource("1_osw80")
-shader_parameter/ControlSize = Vector2(1248, 396)
+shader_parameter/ControlSize = Vector2(1328, 396)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
+shader_parameter/Fit = null
 shader_parameter/Repeat = true
+shader_parameter/HorizontalMask = null
+shader_parameter/VerticalMask = null
 
 [node name="LoadingIcon5" type="TextureRect"]
 material = SubResource("ShaderMaterial_talfe")

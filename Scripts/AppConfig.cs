@@ -12,7 +12,7 @@ public static class AppConfig
         if(configFile is null)
         {
             configFile = new();
-            var error = configFile.Load("appConfig");
+            var error = configFile.Load("user://appConfig");
             if(error!=Error.Ok)
                 GD.Print(error);
         }
@@ -24,12 +24,12 @@ public static class AppConfig
         if (configFile is null)
         {
             configFile = new();
-            var error = configFile.Load("appConfig");
+            var error = configFile.Load("user://appConfig");
             if (error != Error.Ok)
                 GD.Print(error);
         }
         configFile.SetValue(section, key, value);
         OnConfigChanged?.Invoke(section, key, value);
-        configFile.Save("appConfig");
+        configFile.Save("user://appConfig");
     }
 }

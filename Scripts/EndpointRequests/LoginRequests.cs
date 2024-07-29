@@ -45,6 +45,8 @@ static class LoginRequests
 
     static bool loginInProgress;
 
+    public static bool IsOffline { get; private set; }
+
     public static async Task<bool> LoginWithOneTimeCode(string oneTimeCode)
     {
         if(string.IsNullOrWhiteSpace(oneTimeCode))
@@ -64,7 +66,14 @@ static class LoginRequests
                 $"grant_type=authorization_code&code={oneTimeCode}",
                 clientHeader
             );
-            OnRecieveAccountAuth(accountAuth);
+
+            if (accountAuth is not null)
+                OnRecieveAccountAuth(accountAuth);
+            else
+            {
+                IsOffline = true;
+                GD.Print("OFFLINE");
+            }
         }
         finally
         {
@@ -98,13 +107,20 @@ static class LoginRequests
             )
         )?.AsObject();
 
+        if(returnedDetails is null)
+        {
+            IsOffline = true;
+            GD.Print("OFFLINE");
+            return;
+        }
+
         if (!DeviceDetailsSchemaValid(returnedDetails))
         {
             GD.Print("invalid devide auth recieved:\n" + returnedDetails?.ToString());
             return;
         }
 
-        GD.Print($"Device auth retrieved");
+        GD.Print("Device auth retrieved");
         deviceDetails = returnedDetails;
         //return on invalid response
         SaveDeviceDetails();
@@ -151,7 +167,7 @@ static class LoginRequests
         string fullPath = ProjectSettings.GlobalizePath(deviceDetailsFilePath);
         if (!File.Exists(fullPath))
         {
-            GD.Print($"Failed to load device auth: {fullPath}");
+            GD.Print($"Failed to load device auth");
             return null;
         }
 
@@ -195,7 +211,7 @@ static class LoginRequests
         //return on invalid data
         if (!DeviceDetailsSchemaValid(resultDetails))
         {
-            GD.Print("invalid devide auth loaded:\n" + deviceDetalsString);
+            GD.Print("invalid devide auth found");
             return null;
         }
         deviceDetails = resultDetails;
@@ -246,7 +262,13 @@ static class LoginRequests
                 clientHeader
             );
 
-            OnRecieveAccountAuth(accountAuth);
+            if (accountAuth is not null)
+                OnRecieveAccountAuth(accountAuth);
+            else
+            {
+                IsOffline = true;
+                GD.Print("OFFLINE");
+            }
         }
         finally
         {
@@ -276,7 +298,6 @@ static class LoginRequests
         if (AccountAuthSchemaValid(accountAuthObj))
         {
             accountAccessToken = accountAuthObj;
-            GD.Print("tok:"+accountAccessToken["access_token"].ToString());
             accountAuthHeader = new("Bearer", accountAccessToken["access_token"].ToString());
             authExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + accountAccessToken["expires_in"].GetValue<int>()-10;
             GD.Print("authentication successful");

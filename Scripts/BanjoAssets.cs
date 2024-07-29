@@ -35,17 +35,17 @@ public static class BanjoAssets
             ["Type"] = splitType[0],
             ["Name"] = splitType[1],
         };
-        if(description is not null)
+        if (description is not null)
             toReturn["Description"] = description;
-        if(iconPath is not null)
-            toReturn["ImagePaths"] = new JsonObject() { ["SmallPreview"] =  iconPath };
+        if (iconPath is not null)
+            toReturn["ImagePaths"] = new JsonObject() { ["SmallPreview"] = iconPath };
         return toReturn;
     }
 
     public static bool TryGetTemplate(this JsonNode possibleItemId, out JsonObject itemTemplate)
     {
         itemTemplate = null;
-        if(possibleItemId is JsonValue itemIdJson)
+        if (possibleItemId is JsonValue itemIdJson)
         {
             if (TryGetTemplate(itemIdJson.ToString(), out itemTemplate))
             {
@@ -54,7 +54,7 @@ public static class BanjoAssets
             //GD.Print("Itemisation failed on id: "+itemIdJson);
         }
         //GD.PushWarning("Itemisation failed on possible id: " + possibleItemId);
-        return  false;
+        return false;
     }
 
     public static JsonObject TryGetTemplate(string itemID) => TryGetTemplate(itemID, out var result) ? result : null;
@@ -87,7 +87,7 @@ public static class BanjoAssets
         if (itemInstance["template"] is JsonObject cachedTemplate)
             return cachedTemplate;
 
-        if(itemInstance["template"]?.ToString() is string templateID)
+        if (itemInstance["template"]?.ToString() is string templateID)
             itemInstance["templateId"] = templateID;
 
         if (itemInstance["itemType"]?.ToString() is string itemType)
@@ -102,7 +102,7 @@ public static class BanjoAssets
     }
     public static void GenerateItemSearchTags(this JsonNode itemInstance) =>
         itemInstance["searchTags"] = GenerateItemTemplateSearchTags(itemInstance.GetTemplate());
-    public static JsonArray GenerateItemTemplateSearchTags(string itemID) => 
+    public static JsonArray GenerateItemTemplateSearchTags(string itemID) =>
         GenerateItemTemplateSearchTags(TryGetTemplate(itemID));
     public static JsonArray GenerateItemTemplateSearchTags(JsonNode template)
     {
@@ -115,17 +115,34 @@ public static class BanjoAssets
             template["Personality"]?.ToString()[2..]
         };
 
-        return new JsonArray(tags.Select(t=>(JsonNode)t).ToArray());
+        return new JsonArray(tags.Select(t => (JsonNode)t).ToArray());
     }
 
     static readonly Dictionary<string, JsonObject> dataSources = new();
+    static JsonObject banjoFile = null;
 
-    public static void PreloadSourcesParalell()
+    static string[] requiredSources = new string[]
     {
-        GD.Print(Helpers.ProperlyGlobalisePath(banjoFolderPath));
-        DirAccess banjoDir = DirAccess.Open(Helpers.ProperlyGlobalisePath(banjoFolderPath));
+        "Hero",
+        "CardPack",
+        "Schematic",
+        "Defender",
+        "Worker",
+        "AccountResource",
+    };
+
+    public static bool PreloadSourcesParalell()
+    {
+        string path = Helpers.ProperlyGlobalisePath(banjoFolderPath);
+        if (!DirAccess.DirExistsAbsolute(path))
+            return false;
+        //GD.Print(path);
+        //return TryLoadJsonFile(path+"/assets.json", out banjoFile);
+        DirAccess banjoDir = DirAccess.Open(path);
         var allFiles = banjoDir.GetFiles();
-        var result = Parallel.ForEach(allFiles, file =>
+        if(!requiredSources.All(s=>allFiles.Contains($"/{s}.json")))
+            return false;
+        Parallel.ForEach(allFiles, file =>
         {
             file = file.Split("/")[^1][..^5];
             if (TryLoadJsonFile(file, out var json))
@@ -136,12 +153,19 @@ public static class BanjoAssets
                 }
             }
         });
+        return true;
     }
 
     public static bool TryGetSource(string namedDataSource, out JsonObject source)
     {
+        //if (banjoFile.ContainsKey(namedDataSource))
+        //    source = banjoFile[namedDataSource].AsObject();
+        //else
+        //    source = banjoFile["NamedItems"].AsObject();
+        //return banjoFile is not null;
+
         bool exists = dataSources.ContainsKey(namedDataSource);
-        if(!exists && TryLoadJsonFile(namedDataSource, out var json))
+        if (!exists && TryLoadJsonFile(namedDataSource, out var json))
         {
             dataSources[namedDataSource] = source = json;
             return true;
@@ -155,7 +179,7 @@ public static class BanjoAssets
         if (!TryGetSource(namedDataSource, out var source))
             return null;
         filter ??= item => true;
-        return source.Select(kvp=>kvp.Value.AsObject()).Where(val=>filter(val)).ToArray();
+        return source.Select(kvp => kvp.Value.AsObject()).Where(val => filter(val)).ToArray();
     }
 
     public static string GetIDFromTemplate(this JsonObject template) => template["Type"].ToString() + ":" + template["Name"].ToString().ToLower();
@@ -188,9 +212,9 @@ public static class BanjoAssets
                 return GetSubtypeTexture("Survivor", fallbackIcon);
         }
 
-        if(TryGetTexturePathFromItem(itemTemplate, textureType, out var texturePath))
+        if (TryGetTexturePathFromItem(itemTemplate, textureType, out var texturePath))
             return GetReservedTexture(texturePath);
-        else 
+        else
             return fallbackIcon;
     }
 
@@ -270,7 +294,7 @@ public static class BanjoAssets
                 else
                     return GetSubtypeTexture(itemTemplate["SubType"]?.ToString() ?? "", fallbackIcon);
             case "Worker":
-                if(itemTemplate["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false)
+                if (itemTemplate["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false)
                     return null;
                 else
                 {
@@ -289,10 +313,10 @@ public static class BanjoAssets
         if (itemTemplate["Type"].ToString() != "Schematic")
             return fallbackIcon;
 
-        if(itemTemplate["Category"]?.ToString() == "Trap")
+        if (itemTemplate["Category"]?.ToString() == "Trap")
             return GetSubtypeTexture(itemTemplate["SubType"]?.ToString() ?? "", fallbackIcon);
 
-        if(itemTemplate["RangedWeaponStats"]?["AmmoType"]?.ToString() is string ammoType && supplimentaryData.AmmoIcons.ContainsKey(ammoType))
+        if (itemTemplate["RangedWeaponStats"]?["AmmoType"]?.ToString() is string ammoType && supplimentaryData.AmmoIcons.ContainsKey(ammoType))
             return supplimentaryData.AmmoIcons[ammoType];
 
         return fallbackIcon;
@@ -420,7 +444,7 @@ public static class BanjoAssets
 
             var ratingKey = template.GetCompactRarityAndRating();
 
-            if (ratingKey.Length<5)
+            if (ratingKey.Length < 5)
                 return 0;
 
             var ratingSet = ratings[ratingCategory]["Tiers"][ratingKey];
@@ -432,7 +456,7 @@ public static class BanjoAssets
                 if (template["SubType"]?.ToString() is string leadType)
                 {
                     //check for synergy match
-                    if (supplimentaryData.SynergyToSquadId[leadType.Replace(" ","")] == squadId)
+                    if (supplimentaryData.SynergyToSquadId[leadType.Replace(" ", "")] == squadId)
                         rating *= 2;
                 }
                 else
@@ -455,7 +479,7 @@ public static class BanjoAssets
                             _ => 3
                         };
 
-                        int rarityPenalty = (leaderRarity=="Mythic") ? 2 : 0;
+                        int rarityPenalty = (leaderRarity == "Mythic") ? 2 : 0;
 
                         string targetPersonality = leadSurvivor["attributes"]["personality"].ToString().Split(".")[^1];
                         string currentPersonality = itemInstance["attributes"]["personality"].ToString().Split(".")[^1];
@@ -474,10 +498,18 @@ public static class BanjoAssets
         }
         return 0;
     }
-
+    static readonly List<string> collectableTypess = new()
+    {
+        "Hero",
+        "Worker",
+        "Defender",
+        "Schematic"
+    };
     public static async Task<JsonObject> SetItemRewardNotification(this JsonObject itemData)
     {
         var itemTemplate = itemData.GetTemplate();
+        if (itemData["attributes"]?["item_seen"] is not null)
+            itemData["attributes"]["item_seen"] = false;
 
         if (itemTemplate["Type"].ToString()== "Accolades")
         {
@@ -492,34 +524,56 @@ public static class BanjoAssets
             return itemData;
         }
 
-        bool existsInAccountInventory = await ProfileRequests.ProfileItemExists(FnProfiles.AccountItems, kvp =>
-        {
-            if(kvp.Value?.GetTemplate() is not JsonObject qTemplate)
-                return false;
-            if(itemTemplate["Name"]?.ToString()== "Campaign_Event_Currency")
-            {
-                return qTemplate["Name"]?.ToString().StartsWith("EventCurrency") ?? false;
-            }
-            else if (itemTemplate["Name"]?.ToString() == "Currency_MtxSwap")
-            {
-                return qTemplate["Name"]?.ToString() != "Currency_XRayLlama";
-            }
-            else if(qTemplate["DisplayName"]?.ToString() != itemTemplate["DisplayName"]?.ToString())
-                return false;
-            bool rarityMatch = qTemplate.GetItemRarity() >= itemTemplate.GetItemRarity();
-
-            return rarityMatch;
-        }, true);
-        bool existsInBackpack = false;
+        bool exists = false;
+        var itemName = itemTemplate["Name"]?.ToString();
         if (itemTemplate["Type"].ToString() == "Weapon")
         {
-            existsInBackpack = await ProfileRequests.ProfileItemExists(FnProfiles.Backpack, kvp =>
+            exists = await ProfileRequests.ProfileItemExists(FnProfiles.Backpack, kvp =>
             {
                 return kvp.Value["templateId"]?.ToString() == itemData["templateId"]?.ToString();
             }, true);
         }
+        else
+        {
+            exists = await ProfileRequests.ProfileItemExists(FnProfiles.AccountItems, kvp =>
+            {
+                string qName = (kvp.Value["itemName"]?.ToString() ?? kvp.Value["templateId"]?.ToString())?.Split(":")[^1].ToLower();
+                if (itemName == "Campaign_Event_Currency")
+                    return qName?.StartsWith("eventcurrency") ?? false;
+
+                else if (itemName == "Currency_MtxSwap")
+                    return qName != "currency_xrayllama";
+
+                if (kvp.Value?.GetTemplate() is not JsonObject qTemplate)
+                    return false;
+
+                else if (qTemplate["DisplayName"]?.ToString() != itemTemplate["DisplayName"]?.ToString())
+                    return false;
+
+                bool rarityMatch = qTemplate.GetItemRarity() >= itemTemplate.GetItemRarity();
+
+                return rarityMatch;
+            }, true);
+            if (!exists && collectableTypess.Contains(itemTemplate["Type"].ToString()))
+            {
+                exists = await ProfileRequests.ProfileItemExists(
+                    itemTemplate["Type"].ToString() == "Schematic" ? FnProfiles.SchematicCollection : FnProfiles.PeopleCollection
+                    , kvp =>
+                    {
+                        if (kvp.Value?.GetTemplate() is not JsonObject qTemplate)
+                            return false;
+
+                        else if (qTemplate["DisplayName"]?.ToString() != itemTemplate["DisplayName"]?.ToString())
+                            return false;
+
+                        bool rarityMatch = qTemplate.GetItemRarity() >= itemTemplate.GetItemRarity();
+
+                        return rarityMatch;
+                    }, true);
+            }
+        }
         itemData["attributes"] ??= new JsonObject();
-        itemData["attributes"]["item_seen"] = existsInAccountInventory || existsInBackpack;
+        itemData["attributes"]["item_seen"] = exists;
         return itemData;
     }
 

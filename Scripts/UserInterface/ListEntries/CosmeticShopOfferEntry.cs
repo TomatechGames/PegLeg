@@ -223,8 +223,8 @@ public partial class CosmeticShopOfferEntry : Control
         if (cellSize.X > 2 || entryData["cars"] is JsonArray)
         {
             resourceOffset = new(
-                (resourceMat["scalings"]?["OffsetImage_X"].GetValue<float>() ?? 0) / 100f,
-               (resourceMat["scalings"]?["OffsetImage_Y"].GetValue<float>() ?? 0) / 100f
+                (resourceMat["scalings"]?["OffsetImage_X"]?.GetValue<float>() ?? 0) / 100f,
+               (resourceMat["scalings"]?["OffsetImage_Y"]?.GetValue<float>() ?? 0) / 100f
                );
             //entryData["cars"] is not JsonArray && 
             if (resourceMat["scalings"]?["ZoomImage_Percent"]?.GetValue<float>() is float scalePercent && scalePercent > 0)

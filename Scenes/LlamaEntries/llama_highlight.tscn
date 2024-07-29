@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2sah8mggjcus"]
+
+[ext_resource type="Texture2D" uid="uid://furde0e0enip" path="res://Images/Llamas/PinataGold.png" id="1_3u34y"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="2_2wjsr"]
+
+[node name="LlamaHighlight" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 128)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = -10
+theme_override_constants/margin_right = -10
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("1_3u34y")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -68.5
+offset_top = -20.0
+offset_right = 68.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Llama Type"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FreeObj" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="PriceNumberLabel2" type="Label" parent="FreeObj"]
+layout_mode = 2
+offset_top = 4.0
+offset_right = 57.0
+offset_bottom = 40.0
+rotation = -0.164061
+theme_override_colors/font_color = Color(0.929412, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "FREE"
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="." instance=ExtResource("2_2wjsr")]
+layout_mode = 2

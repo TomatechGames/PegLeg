@@ -34,7 +34,7 @@ public partial class HeroAbilityEntry : Node
     public void SetAbility(JsonObject heroAbility, bool locked = false, string warning = null)
 	{
         string name = heroAbility["DisplayName"].ToString();
-        string description = heroAbility["Description"].ToString();
+        string description = heroAbility["Description"]?.ToString();
         //JsonObject abilityStats = heroAbility["AbilityStats"]?.AsObject() ?? new();
 
         //description = description.Replace("+[Damage]",          "+" + (ScalarAsPercentage(abilityStats["Damage"]        ?.GetValue<float>()) ?? "?") + "%");

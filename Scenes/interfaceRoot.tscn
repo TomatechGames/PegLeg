@@ -1,4 +1,4 @@
-[gd_scene load_steps=130 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=141 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
@@ -24,25 +24,34 @@
 [ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="11_nhe6x"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="11_toubj"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="12_rlxg4"]
+[ext_resource type="Texture2D" uid="uid://div6ssxx4btc8" path="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png" id="12_tuvkq"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/LlamaEntry.cs" id="13_ouhxc"]
 [ext_resource type="Texture2D" uid="uid://b1p0g5okeg641" path="res://Images/InterfaceIcons/T-Icon-Manage-Upgrade-32.png" id="14_07m3a"]
-[ext_resource type="Texture2D" uid="uid://b35r5xqqes6tt" path="res://Images/MissionZoneBackgrounds/FORT_Load_WatchTheSkies.png" id="14_gvqct"]
 [ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="14_p8xhf"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="15_5u8nd"]
 [ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="15_fool5"]
 [ext_resource type="PackedScene" uid="uid://bje4f7reoc8da" path="res://Scenes/LoadoutEntries/survivor_squad.tscn" id="15_qmadc"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="16_8vm7r"]
+[ext_resource type="Script" path="res://Scripts/UIElements/ColumnStackContainer.cs" id="16_acwd2"]
 [ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="16_cu2sv"]
+[ext_resource type="Script" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="16_mawwv"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="16_o064n"]
+[ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="17_p0nl0"]
 [ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="17_u4ds1"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="18_jt4k8"]
 [ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="18_l7w75"]
 [ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://Themes/LineEditLargeTheme.tres" id="19_xrrp5"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="20_0bx3d"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="20_qa7a1"]
+[ext_resource type="Texture2D" uid="uid://by37hi27b3842" path="res://Images/MissionZoneBackgrounds/Desert_(Save_the_World)_-_Biome_-_Fortnite.webp" id="21_7pseg"]
+[ext_resource type="Texture2D" uid="uid://c7fsof1cm3rkp" path="res://Images/MissionZoneBackgrounds/FORT_Load_DeployTheProbe_Arid.png" id="22_bmg7o"]
+[ext_resource type="PackedScene" uid="uid://d2sah8mggjcus" path="res://Scenes/LlamaEntries/llama_highlight.tscn" id="24_a8522"]
 [ext_resource type="Texture2D" uid="uid://gak2hv6itgoo" path="res://Images/InterfaceIcons/T-Icon-Survivor-Leader-CARD.png" id="24_trcxm"]
 [ext_resource type="Script" path="res://Scripts/WindowSizeDragger.cs" id="25_3cufh"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="25_26oh8"]
 [ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="25_hxjuc"]
+[ext_resource type="PackedScene" uid="uid://31ck1j8euqq7" path="res://Scenes/QuestEntries/quest_highlight.tscn" id="25_nry6e"]
 [ext_resource type="PackedScene" uid="uid://buf6p8qyydofm" path="res://Scenes/Overlays/game_item_viewer.tscn" id="25_r7yrq"]
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="26_86eqc"]
 [ext_resource type="Texture2D" uid="uid://dn8kyw5a3ibc4" path="res://Images/InterfaceIcons/T-Items-Reagent-C-T02-L.png" id="27_o6528"]
@@ -84,7 +93,6 @@
 [ext_resource type="StyleBox" uid="uid://b2ou1v5mjbih6" path="res://Themes/Styleboxes/CheckButton/SelectedHoveredCheck.tres" id="50_nlryh"]
 [ext_resource type="PackedScene" uid="uid://bcop5fmp7fh1d" path="res://Scripts/UIElements/test_recycle_element.tscn" id="50_nw81e"]
 [ext_resource type="PackedScene" uid="uid://bu88x28im6m6h" path="res://Scenes/QuestEntries/quest_group_foldout.tscn" id="52_6qush"]
-[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://Themes/Styleboxes/Heavy/HeavyBox.tres" id="52_54ohv"]
 [ext_resource type="Texture2D" uid="uid://bfm8vt42cetpl" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Outfit.png" id="52_kfx5x"]
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/T_UI_ICON_S22_SR_SupplyDropMin.png" id="52_vhxpv"]
 [ext_resource type="PackedScene" uid="uid://c5in0c8tv1sfq" path="res://Scenes/QuestEntries/quest_objective.tscn" id="53_oesjd"]
@@ -120,6 +128,66 @@ shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 10.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yxwuj"]
+resource_local_to_scene = true
+shader = ExtResource("12_rlxg4")
+shader_parameter/ControlSize = Vector2(258, 64)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oe5eo"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t1hwb"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+skew = Vector2(0.5, 0)
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sk8cl"]
+resource_local_to_scene = true
+shader = ExtResource("12_rlxg4")
+shader_parameter/ControlSize = Vector2(258, 64)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ggxhy"]
+resource_local_to_scene = true
+shader = ExtResource("12_rlxg4")
+shader_parameter/ControlSize = Vector2(258, 64)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8py8c"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.145098, 0.145098, 0.145098, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b8v0j"]
+bg_color = Color(1, 1, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 0, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_nlo3j"]
 resource_name = "MissionZoneFilter"
 
@@ -133,37 +201,6 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 metadata/_snap_enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g045t"]
-resource_local_to_scene = true
-shader = ExtResource("25_26oh8")
-shader_parameter/ControlSize = Vector2(256, 256)
-shader_parameter/SliceAmount = Vector2(10, 10)
-shader_parameter/FPS = 30.0
-shader_parameter/CellCount = 0
-shader_parameter/Fit = true
-shader_parameter/Repeat = null
-shader_parameter/HorizontalMask = null
-shader_parameter/VerticalMask = null
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ba735"]
-resource_local_to_scene = true
-shader = ExtResource("25_26oh8")
-shader_parameter/ControlSize = Vector2(256, 256)
-shader_parameter/SliceAmount = Vector2(10, 10)
-shader_parameter/FPS = 30.0
-shader_parameter/CellCount = 0
-shader_parameter/Fit = true
-shader_parameter/Repeat = null
-shader_parameter/HorizontalMask = null
-shader_parameter/VerticalMask = null
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ceiy"]
-bg_color = Color(0.101563, 0.101563, 0.101563, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ewrca"]
 shader = ExtResource("16_cu2sv")
 shader_parameter/IconTint = Color(0.101961, 0.101961, 0.101961, 1)
@@ -173,7 +210,7 @@ shader_parameter/IconTint = Color(0.101961, 0.101961, 0.101961, 1)
 [sub_resource type="ButtonGroup" id="ButtonGroup_rebq2"]
 resource_name = "CosmeticTimeFilter"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1uyx3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yr5gu"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(696, 66)
@@ -182,22 +219,10 @@ shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
 shader_parameter/Fit = true
 shader_parameter/Repeat = true
-shader_parameter/HorizontalMask = 0.1
-shader_parameter/VerticalMask = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mclrw"]
-resource_local_to_scene = true
-shader = ExtResource("25_26oh8")
-shader_parameter/ControlSize = Vector2(256, 256)
-shader_parameter/SliceAmount = Vector2(10, 10)
-shader_parameter/FPS = 30.0
-shader_parameter/CellCount = 0
-shader_parameter/Fit = true
-shader_parameter/Repeat = null
-shader_parameter/HorizontalMask = null
+shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7awe0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_udfvn"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -272,23 +297,18 @@ volume_db = 10.0
 mix_target = 1
 bus = &"Music"
 
-[node name="Contents" type="MarginContainer" parent="."]
-texture_repeat = 2
+[node name="BG" type="TextureRect" parent="."]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+z_index = -10
+material = SubResource("ShaderMaterial_wyb1b")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(-1799, 208)
-
-[node name="BG" type="TextureRect" parent="Contents"]
-self_modulate = Color(0.5, 0.5, 0.5, 1)
-z_index = -10
-material = SubResource("ShaderMaterial_wyb1b")
-layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("14_gvqct")
+texture = ExtResource("12_tuvkq")
 expand_mode = 1
 script = ExtResource("15_fool5")
 
@@ -302,6 +322,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="OldStuff" type="Control" parent="MainApp"]
+process_mode = 4
 visible = false
 anchors_preset = 0
 offset_right = 40.0
@@ -552,20 +573,1064 @@ theme_override_constants/margin_bottom = 3
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TabContainer" type="TabContainer" parent="MainApp"]
+[node name="WIPStuff" type="Control" parent="MainApp"]
+process_mode = 4
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Timeline" type="MarginContainer" parent="MainApp/WIPStuff"]
+visible = false
+layout_mode = 2
+offset_top = 30.0
+offset_bottom = 48.0
+
+[node name="PanelContainer" type="PanelContainer" parent="MainApp/WIPStuff/Timeline"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainApp/WIPStuff/Timeline/PanelContainer"]
+layout_mode = 2
+scroll_horizontal_custom_step = 320.0
+scroll_vertical_custom_step = 320.0
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Weeks" type="HBoxContainer" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TimelineWeek" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
+layout_mode = 2
+
+[node name="TimelineWeek2" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
+layout_mode = 2
+
+[node name="TimelineWeek3" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
+layout_mode = 2
+
+[node name="TimelineWeek4" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control"]
 layout_mode = 1
 anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+theme_override_constants/margin_bottom = 30
+
+[node name="EventRows" type="Control" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="TimelineShop" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
+layout_mode = 1
+offset_top = -134.0
+offset_right = 304.0
+offset_bottom = -70.0
+
+[node name="TimelineShop2" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
+layout_mode = 1
+offset_left = 350.0
+offset_top = -134.0
+offset_right = 654.0
+offset_bottom = -70.0
+
+[node name="TimelineShop3" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
+layout_mode = 1
+offset_left = 700.0
+offset_top = -134.0
+offset_right = 1004.0
+offset_bottom = -70.0
+
+[node name="TimelineShop4" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
+layout_mode = 1
+offset_left = 1050.0
+offset_top = -134.0
+offset_right = 1354.0
+offset_bottom = -70.0
+
+[node name="TimelineEvent" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("44_fhpgq")]
+layout_mode = 1
+offset_top = -204.0
+offset_right = 700.0
+offset_bottom = -140.0
+
+[node name="TimelineEvent2" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("44_fhpgq")]
+layout_mode = 1
+offset_left = 700.0
+offset_top = -204.0
+offset_right = 1400.0
+offset_bottom = -140.0
+
+[node name="TimelineSeason" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("46_wnti5")]
+layout_mode = 1
+offset_right = 1400.0
+
+[node name="Months" type="HBoxContainer" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control"]
+layout_mode = 2
+offset_right = 6400.0
+offset_bottom = 32.0
+size_flags_vertical = 0
+
+[node name="TimelineMonth2" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/Months" instance=ExtResource("45_741pr")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 353.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
+theme_override_constants/line_spacing = 0
+text = "x:xx:xx:xx"
+vertical_alignment = 1
+
+[node name="Dashboard" type="MarginContainer" parent="MainApp/WIPStuff"]
+layout_mode = 2
 anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 61.0
+offset_right = 1235.0
+offset_bottom = 25.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainApp/WIPStuff/Dashboard"]
+custom_minimum_size = Vector2(1270, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Container" type="Container" parent="MainApp/WIPStuff/Dashboard/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("16_acwd2")
+columns = 2
+
+[node name="MissionHighlights" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container"]
+custom_minimum_size = Vector2(632.5, 235)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights"]
+layout_mode = 2
+theme_type_variation = &"TransparantPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mission Highlights"
+
+[node name="Button" type="Button" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Go to Missions"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HFlowContainer" type="HFlowContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="MissionHighlightEntry" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="BGTexture" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_yxwuj")
+layout_mode = 2
+texture = ExtResource("17_p0nl0")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("52_vhxpv")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="PowerLevel" type="Control" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/PowerLevel"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 10.0
+offset_right = 19.0
+offset_bottom = 31.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oe5eo")
+
+[node name="Panel2" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_t1hwb")
+
+[node name="HBoxContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry/PowerLevel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+
+[node name="MissionHighlightEntry2" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="BGTexture" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_sk8cl")
+layout_mode = 2
+texture = ExtResource("21_7pseg")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("52_vhxpv")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="PowerLevel" type="Control" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/PowerLevel"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 10.0
+offset_right = 19.0
+offset_bottom = 31.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oe5eo")
+
+[node name="Panel2" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_t1hwb")
+
+[node name="HBoxContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry2/PowerLevel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+
+[node name="MissionHighlightEntry3" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="BGTexture" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_ggxhy")
+layout_mode = 2
+texture = ExtResource("22_bmg7o")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("52_vhxpv")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="PowerLevel" type="Control" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/PowerLevel"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 10.0
+offset_right = 19.0
+offset_bottom = 31.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oe5eo")
+
+[node name="Panel2" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_t1hwb")
+
+[node name="HBoxContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry3/PowerLevel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+
+[node name="MissionHighlightEntry4" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="BGTexture" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_ggxhy")
+layout_mode = 2
+texture = ExtResource("22_bmg7o")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("52_vhxpv")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="PowerLevel" type="Control" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/PowerLevel"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 10.0
+offset_right = 19.0
+offset_bottom = 31.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oe5eo")
+
+[node name="Panel2" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_t1hwb")
+
+[node name="HBoxContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry4/PowerLevel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+
+[node name="MissionHighlightEntry5" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="BGTexture" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_ggxhy")
+layout_mode = 2
+texture = ExtResource("22_bmg7o")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("52_vhxpv")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="PowerLevel" type="Control" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/PowerLevel"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 10.0
+offset_right = 19.0
+offset_bottom = 31.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oe5eo")
+
+[node name="Panel2" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_t1hwb")
+
+[node name="HBoxContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry5/PowerLevel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+
+[node name="MissionHighlightEntry6" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="BGTexture" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6"]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_ggxhy")
+layout_mode = 2
+texture = ExtResource("22_bmg7o")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("52_vhxpv")
+expand_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("20_qa7a1")]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+
+[node name="PowerLevel" type="Control" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/PowerLevel"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 10.0
+offset_right = 19.0
+offset_bottom = 31.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_oe5eo")
+
+[node name="Panel2" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_t1hwb")
+
+[node name="HBoxContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MissionHighlights/MarginContainer/VBoxContainer/MarginContainer/HFlowContainer/MissionHighlightEntry6/PowerLevel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+
+[node name="LlamaHighlights" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container"]
+custom_minimum_size = Vector2(632.5, 160)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights"]
+layout_mode = 2
+theme_type_variation = &"TransparantPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Llama Highlights"
+
+[node name="Button" type="Button" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Go to Llamas"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="LlamaHighlight" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("24_a8522")]
+layout_mode = 2
+
+[node name="LlamaHighlight2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("24_a8522")]
+layout_mode = 2
+
+[node name="LlamaHighlight3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("24_a8522")]
+layout_mode = 2
+
+[node name="LlamaHighlight4" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/LlamaHighlights/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("24_a8522")]
+layout_mode = 2
+
+[node name="ScheduledQuestHighlights" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container"]
+custom_minimum_size = Vector2(632.5, 240)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights"]
+layout_mode = 2
+theme_type_variation = &"TransparantPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Scheduled Quest Highlights"
+
+[node name="Button" type="Button" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Go to Quests"
+
+[node name="DailiesAndWeeklies" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="QuestHighlight" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("25_nry6e")]
+layout_mode = 2
+useFirstRewardAsIcon = true
+
+[node name="QuestHighlight2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("25_nry6e")]
+layout_mode = 2
+useFirstRewardAsIcon = true
+
+[node name="QuestHighlight3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("25_nry6e")]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HFlowContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/DailiesAndWeeklies"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 0
+alignment = 1
+
+[node name="QuestHighlight" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/DailiesAndWeeklies/HBoxContainer2" instance=ExtResource("25_nry6e")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="QuestHighlight2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/DailiesAndWeeklies/HBoxContainer2" instance=ExtResource("25_nry6e")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="QuestHighlight3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/DailiesAndWeeklies/HBoxContainer2" instance=ExtResource("25_nry6e")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="WargamesAndEndurance" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="WargamesQuests" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance"]
+layout_mode = 2
+
+[node name="QuestHighlight" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance/WargamesQuests" instance=ExtResource("25_nry6e")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="QuestHighlight2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance/WargamesQuests" instance=ExtResource("25_nry6e")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="QuestHighlight3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance/WargamesQuests" instance=ExtResource("25_nry6e")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="QuestHighlight4" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance/WargamesQuests" instance=ExtResource("25_nry6e")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = -2
+alignment = 1
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance/VBoxContainer"]
+layout_mode = 2
+text = "Endurance: Stonewood"
+
+[node name="ProgressBar" type="ProgressBar" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/ScheduledQuestHighlights/MarginContainer/VBoxContainer/WargamesAndEndurance/VBoxContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_8py8c")
+theme_override_styles/fill = SubResource("StyleBoxFlat_b8v0j")
+max_value = 1.0
+value = 0.75
+show_percentage = false
+
+[node name="CosmeticShopHighlights" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container"]
+custom_minimum_size = Vector2(632.5, 200)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights"]
+layout_mode = 2
+theme_type_variation = &"TransparantPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cosmetic Shop Highlights"
+
+[node name="Button" type="Button" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Go to Cosmetic Shop"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_top = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="CosmeticShopEntry" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("47_aqmhh")]
+layout_mode = 2
+
+[node name="CosmeticShopEntry2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("expiryTimerText", "loadingCubes", "resourceTarget") instance=ExtResource("47_aqmhh")]
+layout_mode = 2
+expiryTimerText = NodePath("../CosmeticShopEntry/Overlays/VBoxContainer/LeavingTimer/HBoxContainer/LeavingLabel")
+loadingCubes = NodePath("../CosmeticShopEntry/ItemBG/CosmeticLoadingIcon")
+resourceTarget = NodePath("../CosmeticShopEntry/ItemBG/ItemIcon")
+
+[node name="CosmeticShopEntry3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("expiryTimerText", "loadingCubes", "resourceTarget") instance=ExtResource("47_aqmhh")]
+layout_mode = 2
+expiryTimerText = NodePath("../CosmeticShopEntry/Overlays/VBoxContainer/LeavingTimer/HBoxContainer/LeavingLabel")
+loadingCubes = NodePath("../CosmeticShopEntry/ItemBG/CosmeticLoadingIcon")
+resourceTarget = NodePath("../CosmeticShopEntry/ItemBG/ItemIcon")
+
+[node name="CosmeticShopEntry4" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("expiryTimerText", "loadingCubes", "resourceTarget") instance=ExtResource("47_aqmhh")]
+layout_mode = 2
+expiryTimerText = NodePath("../CosmeticShopEntry/Overlays/VBoxContainer/LeavingTimer/HBoxContainer/LeavingLabel")
+loadingCubes = NodePath("../CosmeticShopEntry/ItemBG/CosmeticLoadingIcon")
+resourceTarget = NodePath("../CosmeticShopEntry/ItemBG/ItemIcon")
+
+[node name="EventShopHighlights" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container"]
+custom_minimum_size = Vector2(632.5, 180)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights"]
+layout_mode = 2
+theme_type_variation = &"TransparantPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Event Shop Highlights"
+
+[node name="Button" type="Button" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Go to Event Shop"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+size_flags_vertical = 4
+alignment = 1
+
+[node name="RegularShopEntry" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("38_w7j3j")]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+
+[node name="RegularShopEntry2" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry") instance=ExtResource("38_w7j3j")]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+grantedItemEntry = NodePath("../RegularShopEntry/DetailsArea")
+priceEntry = NodePath("../RegularShopEntry/DetailsArea/PriceBox")
+
+[node name="RegularShopEntry3" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry") instance=ExtResource("38_w7j3j")]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+grantedItemEntry = NodePath("../RegularShopEntry/DetailsArea")
+priceEntry = NodePath("../RegularShopEntry/DetailsArea/PriceBox")
+
+[node name="RegularShopEntry4" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry") instance=ExtResource("38_w7j3j")]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+grantedItemEntry = NodePath("../RegularShopEntry/DetailsArea")
+priceEntry = NodePath("../RegularShopEntry/DetailsArea/PriceBox")
+
+[node name="RegularShopEntry5" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry") instance=ExtResource("38_w7j3j")]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+grantedItemEntry = NodePath("../RegularShopEntry/DetailsArea")
+priceEntry = NodePath("../RegularShopEntry/DetailsArea/PriceBox")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Event shop resetting in: "
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "?:??:??:??"
+horizontal_alignment = 1
+
+[node name="MorePanelsPlanned" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container"]
+custom_minimum_size = Vector2(632.5, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MorePanelsPlanned"]
+layout_mode = 2
+theme_type_variation = &"TransparantPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MorePanelsPlanned"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="MainApp/WIPStuff/Dashboard/ScrollContainer/Container/MorePanelsPlanned/MarginContainer"]
+layout_mode = 2
+text = "More Dashboard panels are planned for the future"
+horizontal_alignment = 1
+
+[node name="LoadingIcon" parent="MainApp/WIPStuff/Dashboard" instance=ExtResource("30_sx8jl")]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TabContainer" type="TabContainer" parent="MainApp"]
+custom_minimum_size = Vector2(1280, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
 anchor_bottom = 1.0
 offset_top = 30.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
-current_tab = 5
+script = ExtResource("16_hsemp")
 
 [node name="Missions" type="PanelContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemSearchToggle", "itemFilterButtons", "missionList", "loadingIcon")]
-visible = false
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 script = ExtResource("3_mfw8j")
@@ -1039,7 +2104,6 @@ spacing = Vector2(10, 10)
 layout_mode = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Missions/VBoxContainer/Control" instance=ExtResource("30_sx8jl")]
-material = SubResource("ShaderMaterial_g045t")
 layout_mode = 1
 offset_top = -128.0
 offset_bottom = 128.0
@@ -1061,8 +2125,8 @@ selectedLlamaEntryPath = NodePath("Llama Contents/PanelContainer/MarginContainer
 selectedOpenPanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel")
 selectedPurchasePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel")
 selectedBrokePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/CantAffordPanel")
-selectedPriceIconPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer/Icon")
-selectedPriceLabelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer/PriceText")
+selectedPriceIconPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer/Icon")
+selectedPriceLabelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer/PriceText")
 selectedPurchaseCountSpinner = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox")
 selectedItemEntryParentPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/RewardsContainer")
 selectedSurprisePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SurpriseContainer")
@@ -1140,7 +2204,7 @@ layout_mode = 2
 mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Llamas/Llama Selector/ShopLlamas/ScrollContainer/MarginContainer/Center" instance=ExtResource("30_sx8jl")]
-material = SubResource("ShaderMaterial_ba735")
+visible = false
 layout_mode = 1
 
 [node name="InventoryLlamas" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector"]
@@ -1171,14 +2235,14 @@ theme_override_constants/margin_bottom = 5
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer"]
-layout_mode = 2
-
-[node name="OpenAllButton" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(118, 0)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_5ceiy")
 
-[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer/OpenAllButton"]
+[node name="Panel" type="Panel" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Open
@@ -1186,7 +2250,7 @@ All"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer/OpenAllButton" instance=ExtResource("15_5u8nd")]
+[node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer" instance=ExtResource("15_5u8nd")]
 layout_mode = 2
 holdTime = 5.0
 
@@ -1208,7 +2272,6 @@ theme_override_constants/margin_bottom = 10
 [node name="SelectedLlama" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer"]
 layout_mode = 2
 script = ExtResource("13_ouhxc")
-includeAmountInName = true
 includeAmountInName = true
 
 [node name="LlamaName" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
@@ -1325,59 +2388,60 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PurchasePanel" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+[node name="PurchasePanel" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 10
 
-[node name="PurchaseButton" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel"]
+[node name="Panel" type="Panel" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_5ceiy")
+theme_type_variation = &"PanelButton"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel"]
 layout_mode = 2
 theme_override_constants/separation = -5
 
-[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer"]
+[node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Purchase"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer"]
+[node name="Icon" type="TextureRect" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 texture = ExtResource("16_mawwv")
 expand_mode = 3
 
-[node name="PriceText" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer"]
+[node name="PriceText" type="Label" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "2500"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton" instance=ExtResource("15_5u8nd")]
+[node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel" instance=ExtResource("15_5u8nd")]
 layout_mode = 2
 holdTime = 2.0
 
 [node name="OpenPanel" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
-visible = false
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="OpenButton" type="PanelContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel"]
+[node name="OpenButton" type="MarginContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_5ceiy")
+
+[node name="Panel" type="Panel" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton"]
 layout_mode = 2
@@ -1612,6 +2676,7 @@ eventRegularParent = NodePath("TabContainer/Event Shop/ScrollContainer/MarginCon
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_tgevh")
 tab_alignment = 1
+script = ExtResource("16_hsemp")
 
 [node name="Weekly Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer"]
 layout_mode = 2
@@ -2294,14 +3359,13 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="FilterBlocker" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer/MarginContainer"]
-visible = false
 layout_mode = 2
 mouse_filter = 0
 theme_override_constants/margin_top = -20
 theme_override_constants/margin_bottom = -20
 
 [node name="LoadingIcon5" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer/MarginContainer/FilterBlocker" instance=ExtResource("62_dhqk7")]
-material = SubResource("ShaderMaterial_1uyx3")
+material = SubResource("ShaderMaterial_yr5gu")
 custom_minimum_size = Vector2(0, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -2348,11 +3412,12 @@ mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_mclrw")
+material = SubResource("ShaderMaterial_udfvn")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
 [node name="Quests" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("nodeController", "questViewer", "foldoutParent", "questListLayout", "loadingIcon")]
+visible = false
 layout_mode = 2
 script = ExtResource("64_mksrq")
 nodeController = NodePath("HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController")
@@ -2397,6 +3462,7 @@ size_flags_horizontal = 4
 
 [node name="Panel" type="Panel" parent="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
+theme_type_variation = &"PanelButton"
 
 [node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
@@ -2417,7 +3483,6 @@ layout_mode = 2
 holdTime = 1.0
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList" instance=ExtResource("30_sx8jl")]
-material = SubResource("ShaderMaterial_7awe0")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -2463,7 +3528,7 @@ layout_mode = 2
 
 [node name="Panel" type="Panel" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestViewer/MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("52_54ohv")
+theme_type_variation = &"SecondaryPanel"
 
 [node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestViewer/MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer"]
 layout_mode = 2
@@ -2645,7 +3710,7 @@ stretch_mode = 5
 
 [node name="Button" type="Button" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer"]
 layout_mode = 2
-theme_type_variation = &"TinyButton"
+theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 128
 
 [node name="TextureRect3" type="TextureRect" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer/Button"]
@@ -2710,7 +3775,7 @@ expand_mode = 3
 
 [node name="Button" type="Button" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer2"]
 layout_mode = 2
-theme_type_variation = &"TinyButton"
+theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 128
 
 [node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestNodeController/MarginContainer2/Button"]
@@ -2723,124 +3788,6 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("75_q1lfg")
 expand_mode = 5
-
-[node name="Timeline" type="MarginContainer" parent="MainApp/TabContainer"]
-visible = false
-layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="MainApp/TabContainer/Timeline"]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MainApp/TabContainer/Timeline/PanelContainer"]
-layout_mode = 2
-scroll_horizontal_custom_step = 320.0
-scroll_vertical_custom_step = 320.0
-vertical_scroll_mode = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="Weeks" type="HBoxContainer" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="TimelineWeek" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
-layout_mode = 2
-
-[node name="TimelineWeek2" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
-layout_mode = 2
-
-[node name="TimelineWeek3" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
-layout_mode = 2
-
-[node name="TimelineWeek4" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Weeks" instance=ExtResource("42_sdemw")]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
-theme_override_constants/margin_bottom = 30
-
-[node name="EventRows" type="Control" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 8
-
-[node name="TimelineShop" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
-layout_mode = 1
-offset_top = -134.0
-offset_right = 304.0
-offset_bottom = -70.0
-
-[node name="TimelineShop2" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
-layout_mode = 1
-offset_left = 350.0
-offset_top = -134.0
-offset_right = 654.0
-offset_bottom = -70.0
-
-[node name="TimelineShop3" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
-layout_mode = 1
-offset_left = 700.0
-offset_top = -134.0
-offset_right = 1004.0
-offset_bottom = -70.0
-
-[node name="TimelineShop4" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("43_6uol2")]
-layout_mode = 1
-offset_left = 1050.0
-offset_top = -134.0
-offset_right = 1354.0
-offset_bottom = -70.0
-
-[node name="TimelineEvent" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("44_fhpgq")]
-layout_mode = 1
-offset_top = -204.0
-offset_right = 700.0
-offset_bottom = -140.0
-
-[node name="TimelineEvent2" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("44_fhpgq")]
-layout_mode = 1
-offset_left = 700.0
-offset_top = -204.0
-offset_right = 1400.0
-offset_bottom = -140.0
-
-[node name="TimelineSeason" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/MarginContainer/EventRows" instance=ExtResource("46_wnti5")]
-layout_mode = 1
-offset_right = 1400.0
-
-[node name="Months" type="HBoxContainer" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control"]
-layout_mode = 2
-offset_right = 6400.0
-offset_bottom = 32.0
-size_flags_vertical = 0
-
-[node name="TimelineMonth2" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control/Months" instance=ExtResource("45_741pr")]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MainApp/TabContainer/Timeline/PanelContainer/ScrollContainer/MarginContainer/Control"]
-custom_minimum_size = Vector2(100, 0)
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 353.0
-grow_vertical = 0
-theme_override_colors/font_color = Color(0.5, 0.5, 0.5, 1)
-theme_override_constants/line_spacing = 0
-text = "x:xx:xx:xx"
-vertical_alignment = 1
 
 [node name="OverlayWindows" type="Control" parent="."]
 layout_mode = 1
@@ -2893,7 +3840,7 @@ theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 script = ExtResource("2_3ot56")
-background = NodePath("../Contents/BG")
+background = NodePath("../BG")
 settingsWindow = NodePath("../OverlayWindows/SettingsWindow")
 sizeDraggers = [NodePath("../ResizeGrabber/BottomGrabber"), NodePath("../ResizeGrabber/TopGrabber"), NodePath("../ResizeGrabber/LeftGrabber"), NodePath("../ResizeGrabber/RightGrabber")]
 
@@ -3207,11 +4154,11 @@ layout_mode = 2
 [connection signal="pressed" from="MainApp/OldStuff/OldLoginScreen/VBoxContainer/ApplySettingsPresetBtn" to="MainApp/OldStuff/OldLoginScreen/VBoxContainer" method="LoadGameSettingsPreset"]
 [connection signal="pressed" from="MainApp/OldStuff/OldLoginScreen/VBoxContainer/TempClearPinnedQuestsBtn2" to="MainApp/OldStuff/OldLoginScreen/VBoxContainer" method="ClearPinnedQuests"]
 [connection signal="pressed" from="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/Button" to="MainApp/TabContainer/Missions" method="ForceReloadMissions"]
-[connection signal="HoldPressed" from="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer/OpenAllButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="BulkOpenAllCardpacks"]
+[connection signal="HoldPressed" from="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="BulkOpenAllCardpacks"]
 [connection signal="IconChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata" method="set_texture"]
 [connection signal="NameChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/LlamaName" method="set_text"]
 [connection signal="SubtypeIconChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata/Icon" method="set_texture"]
-[connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/PurchaseButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="PurchaseLlama"]
+[connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="PurchaseLlama"]
 [connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="OpenSelectedCardpack"]
 [connection signal="value_changed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox" to="MainApp/TabContainer/Llamas" method="SpinnerChanged"]
 [connection signal="HoldPressed" from="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/Responsive Button Area" to="MainApp/TabContainer/Quests" method="ClearPinnedQuests"]

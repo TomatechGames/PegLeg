@@ -92,7 +92,7 @@ public partial class CardPackOpener : Control
         base._Ready();
         VisibilityChanged += async () =>
         {
-            if (!Visible)
+            if (!Visible || !IsInsideTree())
                 return;
             await this.WaitForFrame();
             //smallOffsetAmount = Mathf.FloorToInt(topCard.Size.Y) + smallCardParent.GetThemeConstant("separation");
@@ -111,11 +111,13 @@ public partial class CardPackOpener : Control
         backgroundImage.SetShaderFloat(0, "Transparancy");
         choiceCanvas.Scale = Vector2.Zero;
         choiceCanvas.SelfModulate = Colors.Transparent;
+        ProcessMode = ProcessModeEnum.Disabled;
     }
 
     bool supplyCrateActive = false;
     void PlaySupplyAnimation()
     {
+        ProcessMode = ProcessModeEnum.Inherit;
         MusicController.StopMusic();
         supplyCrateActive = true;
 
@@ -734,5 +736,6 @@ public partial class CardPackOpener : Control
         queuedItems.Clear();
         clickArea.Visible = false;
         isPulling = false;
+        ProcessMode = ProcessModeEnum.Disabled;
     }
 }

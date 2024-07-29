@@ -242,7 +242,7 @@ layout_mode = 2
 
 [connection signal="AmountChanged" from="." to="MarginContainer/HBoxContainer/Pinata/AmountLabel" method="set_text"]
 [connection signal="IsFreeChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeObj" method="set_visible"]
-[connection signal="IsFreeChanged" from="." to="Control/LeavingTimer" method="set_visible"]
+[connection signal="IsLimitedTimeChanged" from="." to="Control/LeavingTimer" method="set_visible"]
 [connection signal="NameChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/NameLabel" method="set_text"]
 [connection signal="DescriptionChanged" from="MarginContainer" to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="IconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/Pinata" method="set_texture"]

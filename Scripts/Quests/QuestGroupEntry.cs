@@ -115,7 +115,11 @@ public partial class QuestGroupEntry : Control
                 QuestData newData = new(currentQuestId, questTemplate) { questItem = questHandle };
                 questDataList.Add(newData);
             }
-            hasAvailableQuests = questDataList.Exists(q => q.questItem is not null);
+            hasAvailableQuests = questDataList.Exists(q => q.isUnlocked);
+
+            if(questDataList.FirstOrDefault(q => q.isUnlocked)?.questTemplate["DisplayName"].ToString() is string firstQuestName && firstQuestName.EndsWith("Wave 5"))
+                EmitSignal(SignalName.NameChanged, firstQuestName[..^7]);
+
             UpdateNotificationAndIcon();
             return;
         }

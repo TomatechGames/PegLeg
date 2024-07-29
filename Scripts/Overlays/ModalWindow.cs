@@ -24,7 +24,6 @@ public partial class ModalWindow : Control
 
     public override void _Ready()
     {
-
         backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
         mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
         backgroundPanel.SelfModulate = Colors.Transparent;
@@ -33,18 +32,15 @@ public partial class ModalWindow : Control
         {
             windowCanvas.SelfModulate = Colors.Transparent;
             windowCanvas.Scale = Vector2.One * shrunkScale;
-            windowCanvas.Visible = false;
         }
         if (windowControl is not null)
         {
             windowControl.Modulate = Colors.Transparent;
             windowControl.Scale = Vector2.One * shrunkScale;
-            windowControl.Visible = false;
         }
 
         if (startOpen)
             SetWindowOpen(true);
-        Visible = true;
     }
 
     public override void _Process(double delta)
@@ -68,10 +64,10 @@ public partial class ModalWindow : Control
         {
             backgroundPanel.MouseFilter = MouseFilterEnum.Stop;
             mouseBlockPanel.MouseFilter = MouseFilterEnum.Stop;
-            if (windowCanvas is not null)
-                windowCanvas.Visible = true;
+            Visible = true;
+            ProcessMode = ProcessModeEnum.Inherit;
             if (windowControl is not null)
-                windowControl.Visible = true;
+                windowControl.PivotOffset = windowControl.Size * 0.5f;
         }
 
         var newSize = openState ? 1 : shrunkScale;
@@ -96,10 +92,8 @@ public partial class ModalWindow : Control
             {
                 backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
                 mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
-                if (windowCanvas is not null)
-                    windowCanvas.Visible = false;
-                if (windowControl is not null)
-                    windowControl.Visible = false;
+                Visible = false;
+                ProcessMode = ProcessModeEnum.Disabled;
             }
         };
     }

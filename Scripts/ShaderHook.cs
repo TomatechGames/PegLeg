@@ -14,12 +14,29 @@ public partial class ShaderHook : Control
     [Export]
     bool syncControlSize = false;
 
+    public override void _Ready()
+    {
+        ItemRectChanged += OnRectUpdated;
+    }
+
+    private void OnRectUpdated()
+    {
+        if (syncControlSize)
+            SetShaderVector(Size, "ControlSize");
+    }
+
+    float syncTimeUntil = -1;
+    public void StartSyncingTimeFor(float duration)
+    {
+        float currentTime = Time.GetTicksMsec() * 0.001f;
+        syncTimeUntil = currentTime + duration;
+    }
+
     public override void _Process(double delta)
     {
-        if (syncTimeProperty)
-            SetShaderFloat(Time.GetTicksMsec() * 0.001f, "time");
-        if(syncControlSize)
-            SetShaderVector(Size, "ControlSize");
+        float currentTime = Time.GetTicksMsec() * 0.001f;
+        if (syncTimeProperty || syncTimeUntil > currentTime)
+            SetShaderFloat(currentTime, "time");
     }
 
     public void SetShaderBool(bool val, string property)

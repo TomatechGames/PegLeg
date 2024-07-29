@@ -48,9 +48,14 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 alignment = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
+theme_type_variation = &"PanelContainerButton"
+
+[node name="Panel" type="Panel" parent="PanelContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
 
 [node name="MainButton" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2

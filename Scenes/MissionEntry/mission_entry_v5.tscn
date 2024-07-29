@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="9_n2b4n"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_drqcc"]
-resource_local_to_scene = true
 shader = ExtResource("2_0xdrf")
 shader_parameter/ControlSize = Vector2(400, 125)
 shader_parameter/Fit = null
@@ -194,7 +193,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RewardEntryHorizontalSmall3" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("8_j2jwh")]
-visible = false
 layout_mode = 2
 
 [node name="RewardEntryHorizontalSmall4" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("8_j2jwh")]
@@ -261,6 +259,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="RewardEntryHorizontalSmall6" parent="HBoxContainer/AlertRewards/HBoxContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("8_j2jwh")]
+visible = false
 layout_mode = 2
 
 [node name="PowerLevel" type="Control" parent="."]

@@ -53,16 +53,21 @@ public partial class MissionEntry : Control, IRecyclableEntry
         SetMissionData(missionProvider.GetRecycleElement(index));
     }
 
-    public void SetMissionData(MissionData missionData)
+    MissionData currentMissionData = null;
+    public void SetMissionData(MissionData missionData_)
 	{
+        if (currentMissionData != null)
+            currentMissionData.OnRewardsCompleted -= UpdateRewards;
+        currentMissionData = missionData_;
+        currentMissionData.OnRewardsCompleted += UpdateRewards;
         //apply data to element
-        var generator = missionData.missionJson["missionGenerator"].AsObject();
-        var tile = missionData.missionJson["tile"].AsObject();
+        var generator = currentMissionData.missionJson["missionGenerator"].AsObject();
+        var tile = currentMissionData.missionJson["tile"].AsObject();
         var zoneTheme = tile["zoneTheme"].AsObject();
 
         EmitSignal(SignalName.IconChanged, generator.GetItemTexture(BanjoAssets.TextureType.Icon));
-        EmitSignal(SignalName.VenturesIndicatorVisible, missionData.theaterCat == "v");
-        EmitSignal(SignalName.PowerLevelChanged, missionData.powerLevel.ToString());
+        EmitSignal(SignalName.VenturesIndicatorVisible, currentMissionData.theaterCat == "v");
+        EmitSignal(SignalName.PowerLevelChanged, currentMissionData.powerLevel.ToString());
 
         if (generator.GetItemTexture(null, BanjoAssets.TextureType.LoadingScreen) is Texture2D missionLoadingScreen)
             EmitSignal(SignalName.BackgroundChanged, missionLoadingScreen);
@@ -77,9 +82,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
 
         EmitSignal(SignalName.TooltipChanged, $"{generator["DisplayName"]}\n{generator["Description"]}\nLocated in: {tile["zoneTheme"]["DisplayName"]}");
 
-        ApplyItems(missionData.missionJson["missionRewards"].AsArray(), missionRewardParent);
-
-        if (missionData.missionJson["missionAlert"] is JsonObject missionAlert)
+        if (currentMissionData.missionJson["missionAlert"] is JsonObject missionAlert)
         {
             var alertModifiers = missionAlert["modifiers"].AsArray();
             for (int i = 0; i < alertModifierParent.GetChildCount(); i++)
@@ -88,9 +91,11 @@ public partial class MissionEntry : Control, IRecyclableEntry
                 if (alertModifiers.Count <= i)
                 {
                     controlChild.Visible = false;
+                    controlChild.ProcessMode = ProcessModeEnum.Disabled;
                     continue;
                 }
                 controlChild.Visible = true;
+                controlChild.ProcessMode = ProcessModeEnum.Inherit;
                 var itemData = alertModifiers[i].GetTemplate();
 
                 controlChild.Texture = itemData.GetItemTexture();
@@ -104,15 +109,29 @@ public partial class MissionEntry : Control, IRecyclableEntry
                 seventhChild.SelfModulate = Colors.Transparent;
             }
 
-            ApplyItems(missionAlert["rewards"].AsArray(), alertRewardParent);
-
             alertRewardLayout.Visible = true;
+            alertRewardLayout.ProcessMode = ProcessModeEnum.Inherit;
             alertModifierLayout.Visible = true;
+            alertModifierLayout.ProcessMode = ProcessModeEnum.Inherit;
         }
         else
         {
             alertRewardLayout.Visible = false;
+            alertRewardLayout.ProcessMode = ProcessModeEnum.Disabled;
             alertModifierLayout.Visible = false;
+            alertModifierLayout.ProcessMode = ProcessModeEnum.Disabled;
+        }
+
+        UpdateRewards();
+        currentMissionData.SetRewardNotifications();
+    }
+
+    void UpdateRewards()
+    {
+        ApplyItems(currentMissionData.missionJson["missionRewards"].AsArray(), missionRewardParent);
+        if (currentMissionData.missionJson["missionAlert"] is JsonObject missionAlert)
+        {
+            ApplyItems(missionAlert["rewards"].AsArray(), alertRewardParent);
         }
     }
 
@@ -124,9 +143,11 @@ public partial class MissionEntry : Control, IRecyclableEntry
             if (itemArray.Count <= i)
             {
                 controlChild.Visible = false;
+                controlChild.ProcessMode = ProcessModeEnum.Disabled;
                 continue;
             }
             controlChild.Visible = true;
+            controlChild.ProcessMode = ProcessModeEnum.Inherit;
 
             bool isRewardBundle = itemArray[i].GetTemplate()["Name"].ToString().ToLower().StartsWith("zcp_");
             controlChild.addXToAmount = isRewardBundle;

@@ -282,8 +282,8 @@ public static class ProfileRequests
     {
         if (forceRefresh && validProfiles.Contains(profileId))
             validProfiles.Remove(profileId);
-        if (!validProfiles.Contains(profileId))
-            GD.Print("profile invalid");
+        //if (!validProfiles.Contains(profileId))
+        //    GD.Print("profile invalid");
         await PerformProfileOperation(profileId, "QueryProfile");
         return profileCache[profileId];
     }
@@ -319,9 +319,12 @@ public static class ProfileRequests
     {
         //if this profile has been accessed between sending the query and getting past the sephamore, return the profile
         if (operation == "QueryProfile" && validProfiles.Contains(profileId) && profileCache.ContainsKey(profileId) && profileCache[profileId] is JsonObject cachedProfile)
+        {
+            //GD.Print("using cached profile");
             return cachedProfile;
+        }
 
-        GD.Print("requestingProfile");
+        GD.Print("requesting profile");
         GD.Print(operation);
         GD.Print(profileId);
         GD.Print(operation == "QueryProfile");

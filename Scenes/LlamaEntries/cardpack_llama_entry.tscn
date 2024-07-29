@@ -25,10 +25,14 @@ shader_parameter/IconTint = Color(0.1, 0.1, 0.1, 1)
 [node name="Cardpack Llama Entry" type="MarginContainer"]
 script = ExtResource("1_5w7bn")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="PanelContainer" type="MarginContainer" parent="."]
 clip_contents = true
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
+
+[node name="Panel" type="Panel" parent="PanelContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 layout_mode = 2

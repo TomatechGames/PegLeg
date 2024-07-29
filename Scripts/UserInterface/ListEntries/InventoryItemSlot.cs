@@ -112,4 +112,10 @@ public partial class InventoryItemSlot : Node
         OnSlottedItemChanged?.Invoke(slottedItem);
     }
 
+    public override void _ExitTree()
+    {
+        slottedItem?.Unlink();
+        base._ExitTree();
+    }
+
 }

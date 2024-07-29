@@ -117,27 +117,30 @@ public partial class QuestNodeController : Control
         this.useArrows = useArrows;
 
         nodesPerPage = maxNodesPerPage;
-		if (questDataList.Count > nodesPerPage)
+        GD.Print("COUNT "+ questDataList.Count);
+        if (questDataList.Count > nodesPerPage)
 		{
 			while ((questDataList.Count % nodesPerPage) < (nodesPerPage / 2))
 			{
 				nodesPerPage--;
 				if (nodesPerPage < 5)
-					break;//this should never happen
+                {
+                    GD.Print("Nodes Per Page less than 5");
+                    break;//this should never happen
+                }
             }
 		}
 		else
 			nodesPerPage = questDataList.Count;
 
-        var focusNode = questDataList.FirstOrDefault(q => !q.isComplete) ?? questDataList[^1];
+        var focusNode = questDataList.FirstOrDefault(q => !q.isComplete, null) ?? questDataList[^1];
         if(!useArrows)
             focusNode = questDataList.FirstOrDefault(q => q.isPinned) ?? questDataList[0];
 
-        int firstIndex = questDataList.IndexOf(focusNode);
-		currentPage = firstIndex / nodesPerPage;
+        currentQuestIndex = questDataList.IndexOf(focusNode);
+		currentPage = currentQuestIndex / nodesPerPage;
         maxPage = (questDataList.Count - 1) / nodesPerPage;
         SetPage(currentPage);
-        questNodeList[firstIndex - (currentPage * nodesPerPage)].Press();
     }
 
     void RefreshSelectedQuestVisuals()
@@ -153,14 +156,15 @@ public partial class QuestNodeController : Control
         int pageStartIndex = currentPage * nodesPerPage;
         currentQuestIndex = pageStartIndex + nodeIndex;
         isQuestOnPage = true;
-        EmitSignal(SignalName.Pressed);
         questViewer.SetupQuest(questDataList[currentQuestIndex]);
         if (questDataList[currentQuestIndex].questItem is ProfileItemHandle itemHandle && itemHandle.GetItemUnsafe()?["attributes"]?["item_seen"]?.GetValue<bool>()!=true)
         {
             itemHandle.GetItemUnsafe()["attributes"]["item_seen"] = true;
+            GD.Print($"test: {itemHandle.GetItemUnsafe()["attributes"]?["item_seen"]?.GetValue<bool>()}");
             string content = @$"{{""itemIds"": [""{itemHandle.profileItem.uuid}""]}}";
             ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "MarkItemSeen", content).RunSafely();
         }
+        EmitSignal(SignalName.Pressed);
     }
 
     public void NextPage() => AddPage(1);

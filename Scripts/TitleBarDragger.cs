@@ -10,11 +10,11 @@ public partial class TitleBarDragger : Control
 	Vector2I windowStart;
     Vector2I mouseStart;
     [Export]
+    bool maximiseAtRoof = true;
+    [Export]
     AdaptivePanelController background;
     [Export]
     ModalWindow settingsWindow;
-    [Export]
-    PackedScene interfaceRoot;
     [Export(PropertyHint.ArrayType)]
     WindowSizeDragger[] sizeDraggers = Array.Empty<WindowSizeDragger>();
 
@@ -23,6 +23,16 @@ public partial class TitleBarDragger : Control
     Vector2I preMaximisedPos = Vector2I.Zero;
     Vector2I preMaximisedSize = Vector2I.Zero;
 
+    public override async void _Ready()
+    {
+        bool hasLoadingOverlay = IsInstanceValid(LoadingOverlay.Instance);
+
+        if(hasLoadingOverlay)
+        LoadingOverlay.Instance.AddLoadingKey("TempLockout");
+        await this.WaitForTimer(1);
+        if (hasLoadingOverlay)
+            LoadingOverlay.Instance.RemoveLoadingKey("TempLockout");
+    }
 
     public override void _GuiInput(InputEvent @event)
     {
@@ -41,10 +51,14 @@ public partial class TitleBarDragger : Control
                     window.Position += new Vector2I(Mathf.FloorToInt(offsetScalar*xSizeDifference),0);
                     window.Size = preMaximisedSize;
                     isMaximised = false;
-                    background.SetShaderBool(true, "UseCorners");
+                    foreach (var dragger in sizeDraggers)
+                    {
+                        dragger.Visible = true;
+                    }
+                    background?.SetShaderBool(true, "UseCorners");
                 }
                 windowStart = window.Position;
-                if (wasDragging && !isDragging && mouseStart.Y < 10)
+                if (wasDragging && !isDragging && mouseStart.Y < 10 && maximiseAtRoof)
                 {
                     MaximiseApp();
                 }
@@ -97,7 +111,7 @@ public partial class TitleBarDragger : Control
             isMaximised = true;
         }
 
-        background.SetShaderBool(!isMaximised, "UseCorners");
+        background?.SetShaderBool(!isMaximised, "UseCorners");
     }
 
     public static event Action PerformRefresh;

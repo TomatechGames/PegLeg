@@ -81,6 +81,8 @@ static class CalenderRequests
     public static async Task<DateTime> EventShopRefreshTime()
     {
         await EnsureCalender(false);
+        if (calenderCache?["state"]?["stwEventStoreEnd"] is null)
+            await GenericConfirmationWindow.ShowErrorForWebResult(calenderCache);
         return DateTime.Parse(calenderCache["state"]["stwEventStoreEnd"].ToString(), null, DateTimeStyles.RoundtripKind);
     }
 

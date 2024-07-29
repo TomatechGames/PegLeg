@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://buf6p8qyydofm"]
+[gd_scene load_steps=24 format=3 uid="uid://buf6p8qyydofm"]
 
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer.cs" id="1_5fxot"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_croo3"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://cb15vvccjgrdk" path="res://Scenes/PerkAndAbilityEntries/hero_ability_entry.tscn" id="11_bxa5o"]
 [ext_resource type="PackedScene" uid="uid://bgyk3guex13ch" path="res://Scenes/PerkAndAbilityEntries/hero_perk_entry.tscn" id="12_pygth"]
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="15_8sk0j"]
+[ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="15_pox86"]
 [ext_resource type="Texture2D" uid="uid://dnqbqca02sqwq" path="res://Images/InterfaceIcons/T-Pattern-OrArrow-128.png" id="16_3ck4t"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="17_5dqmp"]
 [ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://Themes/LineEditLargeTheme.tres" id="18_4mdgc"]
@@ -27,6 +28,8 @@ bg_color = Color(0.453125, 0.496094, 0.644531, 1)
 skew = Vector2(0.5, 0)
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_wrarj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ys5or"]
 bg_color = Color(0.101563, 0.101563, 0.101563, 1)
@@ -508,7 +511,6 @@ auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 
 [node name="ItemChoiceSelector" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="1"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 
@@ -537,7 +539,7 @@ alignment = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 
-[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control" index="0" instance=ExtResource("15_8sk0j")]
+[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control" index="0" node_paths=PackedStringArray("selectionGraphics") instance=ExtResource("15_8sk0j")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -550,6 +552,37 @@ pivot_offset = Vector2(32, 32)
 compactifyAmount = true
 interactableByDefault = true
 autoLinkToViewer = false
+selectionGraphics = NodePath("../CheckButton")
+
+[node name="CheckButton" type="CheckButton" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control" index="1"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+button_pressed = true
+button_group = SubResource("ButtonGroup_wrarj")
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton" index="0"]
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+pivot_offset = Vector2(12, 12)
+texture = ExtResource("15_pox86")
+expand_mode = 1
 
 [node name="ORTexture" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer" index="1"]
 layout_mode = 2
@@ -573,7 +606,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 
-[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2" index="0" instance=ExtResource("15_8sk0j")]
+[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2" index="0" node_paths=PackedStringArray("selectionGraphics") instance=ExtResource("15_8sk0j")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -586,6 +619,37 @@ pivot_offset = Vector2(32, 32)
 compactifyAmount = true
 interactableByDefault = true
 autoLinkToViewer = false
+selectionGraphics = NodePath("../CheckButton")
+
+[node name="CheckButton" type="CheckButton" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2" index="1"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+button_group = SubResource("ButtonGroup_wrarj")
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton" index="0"]
+visible = false
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+pivot_offset = Vector2(12, 12)
+texture = ExtResource("15_pox86")
+expand_mode = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer" index="3"]
 visible = false
@@ -614,7 +678,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 
-[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3" index="0" instance=ExtResource("15_8sk0j")]
+[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3" index="0" node_paths=PackedStringArray("selectionGraphics") instance=ExtResource("15_8sk0j")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -627,6 +691,37 @@ pivot_offset = Vector2(32, 32)
 compactifyAmount = true
 interactableByDefault = true
 autoLinkToViewer = false
+selectionGraphics = NodePath("../CheckButton")
+
+[node name="CheckButton" type="CheckButton" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3" index="1"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+button_group = SubResource("ButtonGroup_wrarj")
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton" index="0"]
+visible = false
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+pivot_offset = Vector2(12, 12)
+texture = ExtResource("15_pox86")
+expand_mode = 1
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer" index="4"]
 visible = false
@@ -655,7 +750,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 
-[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4" index="0" instance=ExtResource("15_8sk0j")]
+[node name="RewardEntryHorizontal" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4" index="0" node_paths=PackedStringArray("selectionGraphics") instance=ExtResource("15_8sk0j")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -668,6 +763,37 @@ pivot_offset = Vector2(32, 32)
 compactifyAmount = true
 interactableByDefault = true
 autoLinkToViewer = false
+selectionGraphics = NodePath("../CheckButton")
+
+[node name="CheckButton" type="CheckButton" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4" index="1"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+button_group = SubResource("ButtonGroup_wrarj")
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton" index="0"]
+visible = false
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+pivot_offset = Vector2(12, 12)
+texture = ExtResource("15_pox86")
+expand_mode = 1
 
 [node name="ActionButtons" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="2"]
 visible = false
@@ -890,4 +1016,8 @@ size_flags_horizontal = 4
 [connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" method="set_tooltip_text"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/BackButton" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks" method="ClosePerkChanger"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/ApplyButton" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks" method="ApplyReplacementPerk"]
+[connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton/TextureRect" method="set_visible"]
+[connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton/TextureRect" method="set_visible"]
+[connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton/TextureRect" method="set_visible"]
+[connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton/TextureRect" method="set_visible"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/Responsive Button Area" to="." method="PurchaseItem"]

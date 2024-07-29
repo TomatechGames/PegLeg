@@ -12,13 +12,16 @@ config_version=5
 
 config/name="PegLegGD"
 run/main_scene="res://Scenes/desktopLogin.tscn"
+config/custom_user_dir_name="Tomatech Games/PegLeg"
 config/features=PackedStringArray("4.2", "C#")
 run/low_processor_mode=true
+run/low_processor_mode_sleep_usec=8000
 boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/image="res://Images/InterfaceIcons/PegLegIcon256.png"
 boot_splash/fullsize=false
 config/icon="res://Images/InterfaceIcons/PegLegIcon256.png"
 config/windows_native_icon="res://Images/InterfaceIcons/PegLegICO.ico"
+config/use_custom_user_dir.release=true
 
 [autoload]
 
@@ -80,9 +83,20 @@ ui_down={
 ]
 }
 
+[input_devices]
+
+pointing/android/enable_pan_and_scale_gestures=true
+
+[physics]
+
+3d/android/enable_pan_and_scale_gestures=false
+3d/size/transparent=true
+3d/transparent_background=true
+
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
 textures/lossless_compression/force_png=true
 textures/webp_compression/compression_method=0
 environment/ssao/quality=0

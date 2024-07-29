@@ -30,7 +30,6 @@ public partial class QuestInterface : Control
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
-
         VisibilityChanged += () =>
         {
             if (Visible)
@@ -62,7 +61,7 @@ public partial class QuestInterface : Control
     bool hasGeneratedQuests = false;
 	async void LoadQuests()
     {
-        if (!await LoginRequests.TryLogin() || hasGeneratedQuests)
+        if (!await LoginRequests.TryLogin() || hasGeneratedQuests || !IsInstanceValid(this))
             return;
         questListLayout.Visible = false;
         loadingIcon.Visible = true;
@@ -78,7 +77,6 @@ public partial class QuestInterface : Control
         await this.WaitForFrame();
 
         ButtonGroup questButtonGroup = new();
-
         foreach (var collection in generatedQuestGroups)
         {
             //create foldout
@@ -100,8 +98,6 @@ public partial class QuestInterface : Control
                 //foldout.GetInstanceId();
                 groupEntry.Pressed += () =>
                 {
-                    GD.Print($"Group {groupEntry}");
-
                     currentEntry = groupEntry;
                     currentFoldout = foldout;
                     currentQuestGroups = groupsInFoldout;
@@ -121,6 +117,8 @@ public partial class QuestInterface : Control
 
     async void RefreshCurrentSelection()
     {
+        //if a profile operation is in progress, this will wait for it to complete
+        await ProfileRequests.GetProfile(FnProfiles.AccountItems);
         await this.WaitForFrame();
         currentEntry.UpdateNotificationAndIcon();
         currentFoldout.SetNotification(currentQuestGroups.Any(g => g.HasNotification));

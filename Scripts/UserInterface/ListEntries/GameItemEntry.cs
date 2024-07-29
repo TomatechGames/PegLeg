@@ -89,6 +89,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public bool showSingleItemAmount = false;
     [Export]
     public bool useSurvivorBoosts = false;
+    [Export]
+    CheckButton selectionGraphics;
 
     /* Bad
     public struct VisibleItemData
@@ -204,7 +206,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     protected string compositeItemOverride;
     protected virtual void UpdateItemData(JsonObject itemInstance)
     {
-        if (!IsInsideTree())
+        if (!IsInstanceValid(this) || !IsInsideTree())
             return;
         var template = itemInstance.GetTemplate();
         int amount = itemInstance["quantity"].GetValue<int>();
@@ -332,6 +334,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public virtual void EmitPressedSignal()
     {
+        if (selectionGraphics is not null)
+            selectionGraphics.ButtonPressed = true;
         EmitSignal(SignalName.Pressed);
     }
 

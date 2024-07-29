@@ -138,14 +138,15 @@ static class Helpers
     public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
     {
         using var result = await MakeRequestRaw(endpoint, request, disregardStatusCode);
-        return JsonNode.Parse(await result.Content.ReadAsStringAsync());
+        return result is not null ? JsonNode.Parse(await result.Content.ReadAsStringAsync()) : null;
     }
 
     public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
     {
-        HttpResponseMessage response = await endpoint.SendAsync(request);
+        HttpResponseMessage response = null;
         try
         {
+            response = await endpoint.SendAsync(request); 
             if (true)
                 response.EnsureSuccessStatusCode();
         }
@@ -153,7 +154,7 @@ static class Helpers
         {
             GD.Print("\nException Caught!");
             GD.Print($"Message :{ex.Message} ");
-            GD.Print($"Response :{await response.Content.ReadAsStringAsync()} ");
+            GD.Print($"Response :{(response is not null ? (await response.Content.ReadAsStringAsync()) : "null response")} ");
         }
         return response;
     }

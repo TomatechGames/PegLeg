@@ -14,6 +14,8 @@ public partial class ShopOfferEntry : Control
     [Signal]
     public delegate void IsFreeChangedEventHandler(bool isFree);
     [Signal]
+    public delegate void IsLimitedTimeChangedEventHandler(bool isLimitedTime);
+    [Signal]
     public delegate void PressedEventHandler(string linkedOfferId);
 
     [Export]
@@ -85,8 +87,11 @@ public partial class ShopOfferEntry : Control
         priceTemplate = priceTemplate.Reserialise();
         priceTemplate["Description"] = inInventory + "/" + price;
 
+        bool isBirthday = name.ToLower().Contains("birthday");
+
         EmitSignal(SignalName.IsFreeChanged, price == 0);
-        skipHourTimer = price != 0;
+        skipHourTimer = price != 0 || isBirthday;
+        EmitSignal(SignalName.IsLimitedTimeChanged, !skipHourTimer);
 
         if (price == 0)
             priceEntry.ClearItem(null);

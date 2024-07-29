@@ -10,8 +10,6 @@ public partial class LlamaEntry : GameItemEntry
     public delegate void LlamaPressedEventHandler(string itemId);
 
     [Export]
-    bool includeAmountInName = false;
-    [Export]
     bool includeNameInDescription = true;
 
     public void SetLinkedItemId(string value) => linkedItemId = value;

@@ -187,6 +187,7 @@ public partial class GameItemViewer : ModalWindow
                 itemChoiceLayoutSections[i].Visible = false;
 
             await SetDisplayItem(choices[0]);
+            itemChoiceEntries[0].EmitPressedSignal();
         }
         else
         {
