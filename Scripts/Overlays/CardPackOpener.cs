@@ -247,6 +247,7 @@ public partial class CardPackOpener : Control
     {
         if (queuedItems.Count > 0 || queuedChoices.Count > 0)
             return;
+        isClosing = false;
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
         clickArea.Visible = true;
         pullButton.Visible = false;
@@ -460,7 +461,7 @@ public partial class CardPackOpener : Control
 
     void SetSingleCardItem(int index, GameItemEntry card)
     {
-        GD.Print("INDEX: " + index);
+        //GD.Print("INDEX: " + index);
         if (index>=queuedItems.Count)
         {
             index -= queuedItems.Count;
@@ -719,9 +720,10 @@ public partial class CardPackOpener : Control
         PullCard();
     }
 
+    bool isClosing = false;
     async Task CloseMenu()
     {
-        MusicController.ResumeMusic(1);
+        MusicController.ResumeMusic();
         var exitAnim = GetTree().CreateTween().SetParallel();
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.Transparent, 0.25f);
         exitAnim.TweenMethod(Callable.From<float>(val => backgroundImage.SetShaderFloat(val, "Transparancy")), 1f, 0f, 0.25)
@@ -730,12 +732,18 @@ public partial class CardPackOpener : Control
         exitAnim.TweenProperty(music, "volume_db", -80, 1)
             .SetTrans(Tween.TransitionType.Expo)
             .SetEase(Tween.EaseType.In);
-
+        isClosing = true;
         await this.WaitForTimer(0.25f);
+        if (!isClosing)
+            return;
         queuedChoices.Clear();
         queuedItems.Clear();
         clickArea.Visible = false;
         isPulling = false;
+        await this.WaitForTimer(1);
+
+        if (!isClosing)
+            return;
         ProcessMode = ProcessModeEnum.Disabled;
     }
 }

@@ -115,6 +115,7 @@ public partial class InventoryItemSlot : Node
     public override void _ExitTree()
     {
         slottedItem?.Unlink();
+        ProfileRequests.OnItemUpdated -= UpdateSlot;
         base._ExitTree();
     }
 

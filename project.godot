@@ -25,7 +25,7 @@ config/use_custom_user_dir.release=true
 
 [autoload]
 
-TooltipHook="*res://Scripts/TooltipHook.cs"
+GlobalScene="*res://Scenes/globalScene.tscn"
 
 [display]
 

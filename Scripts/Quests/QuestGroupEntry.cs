@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection.Metadata;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 public class QuestData
 {
@@ -60,7 +61,7 @@ public partial class QuestGroupEntry : Control
     List<QuestData> questDataList = new();
     public List<QuestData> QuestDataList => questDataList;
 
-    public async void SetupQuestGroup(string name, JsonObject questGroup)
+    public async Task SetupQuestGroup(string name, JsonObject questGroup)
     {
         EmitSignal(SignalName.NameChanged, name);
         questDataList.Clear();

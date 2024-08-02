@@ -97,7 +97,7 @@ public partial class MusicController : Node
             if (currentTransition?.IsValid() ?? false)
                 currentTransition.Kill();
             currentTransition = GetTree().CreateTween().SetTrans(Tween.TransitionType.Expo);
-            currentTransition.Parallel().TweenProperty(musicA, "volume_db", 0, transitionTime).SetEase(Tween.EaseType.Out);
+            currentTransition.Parallel().TweenProperty(musicA, "volume_db", 0, resumeTime == 0 ? transitionTime : resumeTime).SetEase(Tween.EaseType.Out);
             return;
         }
         loopsSinceLastSwitch++;

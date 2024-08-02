@@ -13,11 +13,9 @@ public partial class ResponsiveButtonArea : BaseButton
     public delegate void HoldReleasedEventHandler();
 
     [Export]
-    bool autoAttach = true;
-    [Export]
     bool circleMode;
     [Export]
-    ShaderHook outlineObject;
+    bool useHold;
     [Export]
     float outlinePadding = 0;
     [Export]
@@ -25,53 +23,58 @@ public partial class ResponsiveButtonArea : BaseButton
     [Export]
     float hoverTime = 0.1f;
     [Export]
-    float holdTime = 0.1f;
+    float pressTime = 0.1f;
     [Export]
-    bool cancelHoldOnMouseExit = true;
+    float holdTime = 1.5f;
     [Export]
-    bool alwaysSendHoldReleasedWhenPressed = false;
+    float holdRecoverTime = 1f;
     [Export]
-    Control target;
+    float holdTriggerTime = 0.3f;
 
     [ExportGroup("Anchor Offsets")]
-    [Export]
-    bool useOffset = true;
     [Export]
     int baseOffset = 10;
     [Export]
     int hoverOffset = 0;
     [Export]
-    int holdOffset = -2;
-
-    [ExportGroup("Colour")]
-    [Export]
-    bool useColor = true;
-    [Export]
-    Color baseColor = Colors.Transparent;
-    [Export]
-    Color hoverColor = Colors.White;
-    [Export]
-    Color holdColor = Colors.White;
+    int pressOffset = -2;
 
     [ExportGroup("Line Size")]
-    [Export]
-    bool useLineSize = true;
     [Export]
     int baseLineSize = 0;
     [Export]
     int hoverLineSize = 3;
     [Export]
-    int holdLineSize = 3;
-    //[ExportGroup("Anchors")]
-    //[Export]
-    //bool useAnchors = false;
-    //[Export]
-    //Vector4I fromAnchors;
-    //[Export]
-    //Vector4I toAnchors;
+    int pressLineSize = 3;
 
-    Callable outlineFunction;
-    Tween currentTween;
+    [ExportGroup("Sounds")]
+    [Export]
+    bool useHoverSound = true;
+    [Export]
+    bool useHoldSound = true;
+    [Export]
+    bool usePressSound = true;
+
+    [ExportGroup("Nodes")]
+    [Export]
+    Control target;
+    [Export]
+    ShaderHook outlineObject;
+
+    [ExportGroup("Other Settings")]
+    [Export]
+    bool autoAttach = true;
+    [Export]
+    bool cancelHoldOnMouseExit = true;
+    [Export]
+    bool cancelHoverOnHoldPress = true;
+    [Export]
+    Color holdActivationColor = Colors.Yellow;
+    [Export]
+    bool alwaysSendHoldReleasedWhenPressed = false;
+
+    Tween outlineTween;
+    Tween holdTween;
     Timer holdTimer;
 
 
@@ -79,6 +82,11 @@ public partial class ResponsiveButtonArea : BaseButton
     {
         get => outlineObject?.GetShaderFloat("LineSize") ?? 0;
         set=> outlineObject?.SetShaderFloat(value, "LineSize");
+    }
+    float FillAmount
+    {
+        get => outlineObject?.GetShaderFloat("Progress") ?? 0;
+        set => outlineObject?.SetShaderFloat(value, "Progress");
     }
 
     // Called when the node enters the scene tree for the first time.
@@ -88,13 +96,10 @@ public partial class ResponsiveButtonArea : BaseButton
         holdTimer = new();
         holdTimer.Timeout += OnHoldPerformed;
         AddChild(holdTimer);
-        if (useOffset)
-        {
-            target.OffsetTop = -baseOffset;
-            target.OffsetBottom = baseOffset;
-            target.OffsetLeft = -baseOffset;
-            target.OffsetRight = baseOffset;
-        }
+        target.OffsetTop = -baseOffset;
+        target.OffsetBottom = baseOffset;
+        target.OffsetLeft = -baseOffset;
+        target.OffsetRight = baseOffset;
         //if (useAnchors)
         //{
         //    target.AnchorTop = fromAnchors.W;
@@ -102,13 +107,11 @@ public partial class ResponsiveButtonArea : BaseButton
         //    target.AnchorLeft = fromAnchors.Y;
         //    target.AnchorRight = fromAnchors.Z;
         //}
-        if (useColor)
-            target.Modulate = baseColor;
-
-        if (useLineSize)
-        {
-            outlineObject?.SetShaderFloat(0, "LineSize");
-        }
+        target.Modulate = Colors.Transparent;
+        outlineObject?.SetShaderFloat(baseLineSize, "LineSize");
+        outlineObject?.SetShaderFloat(0, "Progress");
+        if(circleMode)
+            outlineObject?.SetShaderBool(true, "Circle");
 
         if (autoAttach)
         {
@@ -119,25 +122,35 @@ public partial class ResponsiveButtonArea : BaseButton
             ButtonDown += () => SetHeldState(true);
             ButtonUp += () => SetHeldState(false);
         }
+        ItemRectChanged += UpdateTargetSize;
+        UpdateTargetSize();
+    }
 
+    private void UpdateTargetSize()
+    {
+        outlineObject?.SetShaderVector(circleMode ? Vector2.Zero : (Size - new Vector2(outlinePadding, outlinePadding)), "TargetSize");
     }
 
     private void OnHoldPerformed()
     {
         holdTimer.Stop();
-        holdPrepped = true;
-        //GD.Print("Press");
+        holdActive = true;
+        //GD.Print("Hold Pressed");
         EmitSignal(SignalName.HoldPressed);
+        if (usePressSound)
+            UISounds.PlaySound("ButtonHoldComplete");
+        target.Modulate = holdActivationColor;
+        var holdPressTween = GetTree().CreateTween().SetParallel();
+        holdPressTween.TweenProperty(target, "modulate", Colors.White, holdTriggerTime);
+        holdPressTween.Finished += () =>
+        {
+            SetHoverState(false);
+        };
     }
     private void OnHoldReleased()
     {
-        //GD.Print("Release");
+        //GD.Print("Hold Release");
         EmitSignal(SignalName.HoldReleased);
-    }
-
-    public override void _Process(double delta)
-    {
-        outlineObject?.SetShaderVector(circleMode ? Vector2.Zero : (Size-new Vector2(outlinePadding, outlinePadding)), "TargetSize");
     }
 
     public void SetHoverState(bool newHovered)
@@ -145,90 +158,132 @@ public partial class ResponsiveButtonArea : BaseButton
         //prevents accidental highlights when using spinbox, in which case hover events wouldnt change anyway
         if (Input.MouseMode == Input.MouseModeEnum.Captured)
             return;
-        if (hovered != newHovered)
-            EmitSignal(SignalName.HoverChanged, newHovered);
+        if (hovered == newHovered)
+            return;
 
+        EmitSignal(SignalName.HoverChanged, newHovered);
         if (cancelHoldOnMouseExit && !newHovered && held)
         {
-            holdTimer.Stop();
             held = false;
-            if (alwaysSendHoldReleasedWhenPressed && holdPrepped)
-                OnHoldReleased();
-            holdPrepped = false;
-            EmitSignal(SignalName.HoldChanged, false);
+            if (useHold)
+            {
+                holdTimer.Stop();
+                SetHoldTween(false);
+                if (alwaysSendHoldReleasedWhenPressed && holdActive)
+                    OnHoldReleased();
+                if (useHoldSound)
+                {
+                    UISounds.StopSound("ButtonHold");
+                    UISounds.PlaySound("ButtonHoldCancel");
+                }
+                holdActive = false;
+                EmitSignal(SignalName.HoldChanged, false);
+            }
         }
 
         hovered = newHovered;
+        if (hovered && useHoverSound)
+            UISounds.PlaySound("Hover");
         UpdateTweenState();
     }
 
     public void SetHeldState(bool newHeld)
     {
-        if (newHeld && holdTimer.IsStopped())
+        if (held == newHeld)
+            return;
+        bool skipHoldSound = false;
+        if (useHold)
         {
-            holdTimer.WaitTime = holdTime;
-            holdTimer.Start();
+            if (newHeld && holdTimer.IsStopped())
+            {
+                holdTimer.WaitTime = holdTime;
+                holdTimer.Start();
+            }
+            if (!newHeld && !holdTimer.IsStopped())
+                holdTimer.Stop();
+            if (!newHeld && holdActive)
+            {
+                if (held || alwaysSendHoldReleasedWhenPressed)
+                    OnHoldReleased();
+                holdActive = false;
+            }
+            if (held != newHeld)
+            {
+                EmitSignal(SignalName.HoldChanged, newHeld);
+                SetHoldTween(newHeld);
+            }
         }
-        if (!newHeld && !holdTimer.IsStopped())
-            holdTimer.Stop();
-        if (!newHeld && holdPrepped)
-        {
-            if(held || alwaysSendHoldReleasedWhenPressed)
-                OnHoldReleased();
-            holdPrepped = false;
-        }
-        if (held != newHeld)
-            EmitSignal(SignalName.HoldChanged, newHeld);
         held = newHeld;
+        if (held && !hovered)
+        {
+            hovered = true;
+            if (useHoverSound)
+                UISounds.PlaySound("Hover");
+            EmitSignal(SignalName.HoverChanged, true);
+        }
+        if (useHold)
+        {
+            if (useHoldSound)
+            {
+                if (held)
+                    UISounds.PlaySound("ButtonHold");
+                else if (!skipHoldSound)
+                {
+                    UISounds.StopSound("ButtonHold");
+                    UISounds.PlaySound("ButtonHoldCancel");
+                }
+            }
+        }
+        else
+        {
+            if (!held && usePressSound)
+                UISounds.PlaySound("ButtonPress");
+        }
         UpdateTweenState();
+    }
+
+    void SetHoldTween(bool value)
+    {
+        if (holdTween?.IsRunning() ?? false)
+            holdTween.Kill();
+        holdTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quad).SetEase(Tween.EaseType.Out);
+        if (value)
+        {
+            holdTween.TweenProperty(this, "FillAmount", 1, holdTime);
+        }
+        else
+        {
+            holdTween.TweenProperty(this, "FillAmount", 0, holdRecoverTime).SetTrans(Tween.TransitionType.Expo);
+        }
     }
 
     bool hovered = false;
     bool held = false;
-    bool holdPrepped;
-    public T StateCheck<T>(T onHold, T onHover, T onBase)=> held ? onHold : (hovered ? onHover : onBase);
+    bool holdActive;
+    public T StateCheck<T>(T onPress, T onHover, T onBase)=> held ? onPress : (hovered ? onHover : onBase);
     public void UpdateTweenState()
     {
-
-        float offsetTarget = StateCheck(holdOffset, hoverOffset, baseOffset);
-        Color colorTarget = StateCheck(holdColor, hoverColor, baseColor);
-        float lineSizeTarget = StateCheck(holdLineSize, hoverLineSize, baseLineSize);
-        float duration = StateCheck(holdTime - 0.05f, hoverTime, resetTime);
+        float offsetTarget = StateCheck(pressOffset, hoverOffset, baseOffset);
+        Color colorTarget = StateCheck(Colors.White, Colors.White, Colors.Transparent);
+        float lineSizeTarget = StateCheck(pressLineSize, hoverLineSize, baseLineSize);
+        float duration = StateCheck(pressTime, hoverTime, resetTime);
         PerformTween(offsetTarget, colorTarget, lineSizeTarget, duration);
     }
 
     public void PerformTween(float offsetTarget, Color colorTarget, float lineSizeTarget, float duration)
     {
-        if (currentTween?.IsRunning() ?? false)
-            currentTween.Kill();
-        currentTween = GetTree().CreateTween().SetParallel();
+        if (outlineTween?.IsRunning() ?? false)
+            outlineTween.Kill();
+        outlineTween = GetTree().CreateTween().SetParallel();
 
-        //if (useAnchors)
-        //{
-        //    Vector4I newAnchors = hovered ? toAnchors : fromAnchors;
-        //    currentHoverTween.TweenProperty(target, "anchor_top", newAnchors.W, hoverTime);
-        //    currentHoverTween.TweenProperty(target, "anchor_bottom", newAnchors.X, hoverTime);
-        //    currentHoverTween.TweenProperty(target, "anchor_left", newAnchors.Y, hoverTime);
-        //    currentHoverTween.TweenProperty(target, "anchor_right", newAnchors.Z, hoverTime);
-        //}
+        outlineTween.TweenProperty(target, "offset_top", -offsetTarget, duration);
+        outlineTween.TweenProperty(target, "offset_bottom", offsetTarget, duration);
+        outlineTween.TweenProperty(target, "offset_left", -offsetTarget, duration);
+        outlineTween.TweenProperty(target, "offset_right", offsetTarget, duration);
 
-        if (useOffset)
-        {
-            currentTween.TweenProperty(target, "offset_top", -offsetTarget, duration);
-            currentTween.TweenProperty(target, "offset_bottom", offsetTarget, duration);
-            currentTween.TweenProperty(target, "offset_left", -offsetTarget, duration);
-            currentTween.TweenProperty(target, "offset_right", offsetTarget, duration);
-        }
+        outlineTween.TweenProperty(target, "modulate", colorTarget, duration);
 
-        if (useColor)
-        {
-            currentTween.TweenProperty(target, "modulate", colorTarget, duration);
-        }
-
-        if (useLineSize)
-        {
-            currentTween.TweenProperty(this, "LineSize", lineSizeTarget, duration);
-        }
+        outlineTween.TweenProperty(this, "LineSize", lineSizeTarget, duration);
     }
 
 }

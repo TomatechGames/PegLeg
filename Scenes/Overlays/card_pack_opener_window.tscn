@@ -1,14 +1,14 @@
-[gd_scene load_steps=31 format=3 uid="uid://b5elx1mhn5ahk"]
+[gd_scene load_steps=32 format=3 uid="uid://b5elx1mhn5ahk"]
 
 [ext_resource type="PackedScene" uid="uid://c47svw0ruq2i3" path="res://Scenes/GameItemEntry/reward_entry_card.tscn" id="1_4na64"]
 [ext_resource type="Script" path="res://Scripts/Overlays/CardPackOpener.cs" id="1_7ayxj"]
-[ext_resource type="AudioStream" uid="uid://pp2evr3c3ty" path="res://Audio/SFX/sfx_supplydrop_reticle_appear.wav" id="2_t7mpn"]
-[ext_resource type="AudioStream" uid="uid://b5yktju6n3mv5" path="res://Audio/SFX/SupplyDrop_Falling_Loop_Mono.wav" id="3_453dg"]
+[ext_resource type="AudioStream" uid="uid://pp2evr3c3ty" path="res://Audio/SFX/CardpackOpen/sfx_supplydrop_reticle_appear.wav" id="2_t7mpn"]
+[ext_resource type="AudioStream" uid="uid://b5yktju6n3mv5" path="res://Audio/SFX/CardpackOpen/SupplyDrop_Falling_Loop_Mono.wav" id="3_453dg"]
 [ext_resource type="Texture2D" uid="uid://ppx4lkl3gdw8" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip.tres" id="3_gev0u"]
-[ext_resource type="AudioStream" uid="uid://bsii483wtc3y4" path="res://Audio/SFX/supply_drop_land3_Reverb.wav" id="4_ccx0t"]
-[ext_resource type="AudioStream" uid="uid://cp87usj1hhnd1" path="res://Audio/SFX/supply_drop_radio.wav" id="5_62ahg"]
-[ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="6_8xk2d"]
+[ext_resource type="AudioStream" uid="uid://bsii483wtc3y4" path="res://Audio/SFX/CardpackOpen/supply_drop_land3_Reverb.wav" id="4_ccx0t"]
+[ext_resource type="AudioStream" uid="uid://cp87usj1hhnd1" path="res://Audio/SFX/CardpackOpen/supply_drop_radio.wav" id="5_62ahg"]
 [ext_resource type="Texture2D" uid="uid://dxrre7seon0uy" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenBG.png" id="8_4oqsw"]
+[ext_resource type="AudioStream" uid="uid://cb1h7anfymfsu" path="res://Audio/Music (move to external folder)/Fort_Building_Outpost_Main_Loop_Fixed.wav" id="8_j6imm"]
 [ext_resource type="Shader" uid="uid://b78lxdhf2v56q" path="res://Shaders/GradientMaskedBackground.tres" id="9_8g8yp"]
 [ext_resource type="Texture2D" uid="uid://ofyoqhupoowa" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenFG.png" id="9_jsr57"]
 [ext_resource type="Texture2D" uid="uid://c4tescxyper60" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateLid.png" id="10_k5gyc"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="17_knkpm"]
 [ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/InterfaceIcons/ChoiceCardV2/LabelUV-sheet.png" id="18_5uyrt"]
 [ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/InterfaceIcons/ChoiceCardV2/Base-sheet.png" id="19_fhj62"]
+[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="21_w5401"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_walck"]
 shader = ExtResource("9_8g8yp")
@@ -51,7 +52,7 @@ shader = ExtResource("16_x2r4a")
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/UseManual = null
 shader_parameter/ManualControl = null
-shader_parameter/time = 141592.0
+shader_parameter/time = 50788.8
 shader_parameter/StartTime = null
 shader_parameter/Started = true
 shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
@@ -131,6 +132,7 @@ skipChoiceButton = NodePath("ClickArea/ActionButtons/VBoxContainer/SkipChoiceBut
 
 [node name="SpawnAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("2_t7mpn")
+volume_db = 12.0
 bus = &"SFX"
 
 [node name="FallingAudio" type="AudioStreamPlayer" parent="Audio"]
@@ -140,7 +142,6 @@ bus = &"SFX"
 
 [node name="LandAudio" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("4_ccx0t")
-volume_db = -10.0
 bus = &"SFX"
 
 [node name="RadioAudio" type="AudioStreamPlayer" parent="Audio"]
@@ -153,7 +154,7 @@ stream = ExtResource("4_ccx0t")
 bus = &"SFX"
 
 [node name="Music" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("6_8xk2d")
+stream = ExtResource("8_j6imm")
 bus = &"MusicOvr"
 
 [node name="BG" type="Control" parent="."]
@@ -508,7 +509,7 @@ mouse_filter = 2
 texture = ExtResource("11_pxkh0")
 expand_mode = 1
 
-[node name="CrateOpen" parent="ClickArea/SupplyDrop" instance=ExtResource("16_88i1x")]
+[node name="CrateOpenOld" parent="ClickArea/SupplyDrop" instance=ExtResource("16_88i1x")]
 visible = false
 custom_minimum_size = Vector2(330, 330)
 layout_mode = 1
@@ -519,6 +520,21 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_top = -15.0
 offset_bottom = -15.0
+
+[node name="CrateOpen" parent="ClickArea/SupplyDrop" instance=ExtResource("21_w5401")]
+visible = false
+custom_minimum_size = Vector2(350, 350)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = -25.0
+useHold = true
+holdTime = 0.75
+holdRecoverTime = 0.25
 
 [node name="PullButton" type="Button" parent="ClickArea"]
 custom_minimum_size = Vector2(0, 100)
@@ -532,6 +548,7 @@ offset_left = 450.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 24
 text = "Pull"
 
@@ -610,7 +627,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Skip Choice"
 
-[connection signal="pressed" from="ClickArea/SupplyDrop/CrateOpen" to="." method="PlaySupplyOpenAnimation"]
+[connection signal="pressed" from="ClickArea/SupplyDrop/CrateOpenOld" to="." method="PlaySupplyOpenAnimation"]
+[connection signal="HoldPressed" from="ClickArea/SupplyDrop/CrateOpen" to="." method="PlaySupplyOpenAnimation"]
 [connection signal="button_down" from="ClickArea/PullButton" to="." method="StartPullCard"]
 [connection signal="button_up" from="ClickArea/PullButton" to="." method="EndPullCard"]
 [connection signal="pressed" from="ClickArea/ActionButtons/VBoxContainer/SkipChoiceButton" to="." method="SkipChoice"]

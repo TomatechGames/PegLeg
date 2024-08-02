@@ -140,8 +140,14 @@ public static class BanjoAssets
         //return TryLoadJsonFile(path+"/assets.json", out banjoFile);
         DirAccess banjoDir = DirAccess.Open(path);
         var allFiles = banjoDir.GetFiles();
-        if(!requiredSources.All(s=>allFiles.Contains($"/{s}.json")))
-            return false;
+        foreach (var requiredSource in requiredSources)
+        {
+            if (!allFiles.Any(f => f==$"{requiredSource}.json"))
+            {
+                GD.Print($"Missing {requiredSource}");
+                return false;
+            }
+        }
         Parallel.ForEach(allFiles, file =>
         {
             file = file.Split("/")[^1][..^5];
@@ -397,32 +403,50 @@ public static class BanjoAssets
 
     static string[] rarityIds = new string[]
     {
-        "C",
-        "UC",
-        "R",
-        "VR",
-        "SR",
-        "UR"
+        "_UC_",
+        "_VR_",
+        "_SR_",
+        "_UR_",
+        "_R_",
+        "_C_",
+
+        "_UC",
+        "_VR",
+        "_SR",
+        "_UR",
+        "_R",
+        "_C",
+
+        "UC_",
+        "VR_",
+        "SR_",
+        "UR_",
+        "R_",
+        "C_",
     };
 
     static string[] tierIds = new string[]
     {
-        "T01",
-        "T02",
-        "T03",
-        "T04",
-        "T05"
+        "_T01",
+        "_T02",
+        "_T03",
+        "_T04",
+        "_T05",
     };
 
-    static string GetCompactRarityAndRating(this JsonObject template)
+    static string GetCompactRarityAndTier(this JsonObject template, int givenTier = 0)
     {
         var name = template["Name"].ToString().ToUpper();
         var rarityId = rarityIds.FirstOrDefault(val => name.Contains(val));
-        var tierId = tierIds.FirstOrDefault(val => name.Contains(val));
-        return rarityId + "_" + tierId;
+        if(rarityId.StartsWith("_"))
+            rarityId = rarityId[1..];
+        if (rarityId.EndsWith("_"))
+            rarityId = rarityId[..^1];
+        var tierId = givenTier <= 0 ? tierIds.FirstOrDefault(val => name.Contains(val)) : tierIds[givenTier-1];
+        return rarityId + tierId;
     }
 
-    public static float GetItemRating(this JsonObject itemInstance, bool useSurvivorBoosts = false)
+    public static float GetItemRating(this JsonObject itemInstance, bool useSurvivorBoosts = false, bool debug = false)
     {
         if (TryGetSource("ItemRatings", out var ratings))
         {
@@ -441,8 +465,11 @@ public static class BanjoAssets
                 else
                     ratingCategory = "Survivor";
             }
-
-            var ratingKey = template.GetCompactRarityAndRating();
+            if (debug)
+                GD.Print("ratingCat: " + ratingCategory);
+            var ratingKey = template.GetCompactRarityAndTier();
+            if (debug)
+                GD.Print($"ratingKey: {ratingKey}");
 
             if (ratingKey.Length < 5)
                 return 0;
@@ -456,8 +483,15 @@ public static class BanjoAssets
                 if (template["SubType"]?.ToString() is string leadType)
                 {
                     //check for synergy match
-                    if (supplimentaryData.SynergyToSquadId[leadType.Replace(" ", "")] == squadId)
+                    var matchedSquadID = supplimentaryData.SynergyToSquadId[leadType.Replace(" ", "")];
+                    if (matchedSquadID == squadId)
+                    {
+                        if (debug)
+                            GD.Print("lead synergy boost");
                         rating *= 2;
+                    }
+                    else if (debug)
+                        GD.Print($"no lead synergy boost ({matchedSquadID} != {squadId})");
                 }
                 else
                 {
@@ -465,33 +499,42 @@ public static class BanjoAssets
                         kvp.Value?["attributes"]?["squad_id"]?.ToString() == squadId &&
                         kvp.Value["attributes"]["squad_slot_idx"].GetValue<int>() == 0
                     ).FirstOrDefault().Value?.AsObject();
-                    if (leadSurvivor is not null)
+
+                    string leaderRarity = leadSurvivor?.GetTemplate()["Rarity"].ToString() ?? "";
+                    int rarityBoost = leaderRarity switch
                     {
-                        string leaderRarity = leadSurvivor.GetTemplate()["Rarity"].ToString();
-                        int rarityBoost = leaderRarity switch
-                        {
-                            "Mythic" => 8,
-                            "Legendary" => 8,
-                            "Epic" => 5,
-                            "Rare" => 4,
-                            "Uncommon" => 3,
-                            "Common" => 2,
-                            _ => 3
-                        };
+                        "Mythic" => 8,
+                        "Legendary" => 8,
+                        "Epic" => 5,
+                        "Rare" => 4,
+                        "Uncommon" => 3,
+                        "Common" => 2,
+                        _ => 3
+                    };
 
-                        int rarityPenalty = (leaderRarity == "Mythic") ? 2 : 0;
+                    int rarityPenalty = (leaderRarity == "Mythic") ? 2 : 0;
 
-                        string targetPersonality = leadSurvivor["attributes"]["personality"].ToString().Split(".")[^1];
-                        string currentPersonality = itemInstance["attributes"]["personality"].ToString().Split(".")[^1];
+                    string targetPersonality = leadSurvivor?["attributes"]["personality"].ToString().Split(".")[^1] ?? "";
+                    string currentPersonality = itemInstance["attributes"]["personality"].ToString().Split(".")[^1];
 
-                        if (currentPersonality == targetPersonality)
-                            rating += rarityBoost;
-                        else
-                            rating -= rarityPenalty;
-
-                        rating = Mathf.Max(rating, 1);
+                    if (currentPersonality == targetPersonality)
+                    {
+                        if (debug)
+                            GD.Print($"personality boost: {rarityBoost}");
+                        rating += rarityBoost;
                     }
-                    //check for personality match
+                    else
+                    {
+                        if (debug)
+                        {
+                            GD.Print($"no personality boost ({targetPersonality} != {currentPersonality})");
+                            if (rarityPenalty > 0)
+                                GD.Print($"personality penalty: {rarityPenalty}");
+                        }
+                        rating -= rarityPenalty;
+                    }
+
+                    rating = Mathf.Max(rating, 1);
                 }
             }
             return rating;
@@ -507,6 +550,11 @@ public static class BanjoAssets
     };
     public static async Task<JsonObject> SetItemRewardNotification(this JsonObject itemData)
     {
+        //temporarily disabled until i figure out a workaround to the lag spikes
+        itemData["attributes"] ??= new JsonObject();
+        itemData["attributes"]["item_seen"] = true;
+        return itemData;
+
         var itemTemplate = itemData.GetTemplate();
         if (itemData["attributes"]?["item_seen"] is not null)
             itemData["attributes"]["item_seen"] = false;
@@ -615,16 +663,28 @@ public static class BanjoAssets
 
 
     static readonly DataTable heroStatsDataTable = new("res://External/DataTables/AttributesHeroScaling.json");
-    public static float GetHeroStat(this JsonObject heroInstance, string statType)
+    public static float GetHeroStat(this JsonObject heroInstance, string stat, int givenLevel = 0, int givenTier = 0)
     {
+        if (TryGetSource("HeroStats", out var stats))
+        {
+            JsonObject template = heroInstance.GetTemplate();
+            if (givenLevel <= 0)
+            {
+                givenLevel = heroInstance["attributes"]?["level"]?.GetValue<int>() ?? 1;
+                givenTier = (int)template["Tier"];
+            }
+            string heroSubType = template["SubType"].ToString();
+            string heroStatType = template["HeroStatType"].ToString();
+            string heroRarityAndTier = template.GetCompactRarityAndTier(givenTier);
+            GD.Print(template["Name"]);
+            GD.Print($"{heroSubType}_{heroStatType}/{heroRarityAndTier}/{stat}");
+            var statLookup = stats["Types"]?[$"{heroSubType}_{heroStatType}"]?[heroRarityAndTier]?[stat]?.AsObject();
+            if (statLookup is null)
+                return 0;
+            int statKey = Mathf.Clamp(givenLevel - (int)statLookup["FirstLevel"], 0, statLookup["Values"].AsArray().Count - 1);
+            return (float)statLookup["Values"][statKey];
+        }
         return 0;
-        JsonObject template = heroInstance.GetTemplate();
-        string heroStatType = template["HeroStatLine"].ToString();
-        string heroSubType = template["SubType"].ToString();
-        string statRowKey = $"{heroSubType}.{heroSubType}_{heroStatType}_{template.GetCompactRarityAndRating().Replace("0", "")}.{statType}";
-
-        int sampleTime = heroInstance["attributes"]?["level"]?.GetValue<int>() ?? 1;
-        return heroStatsDataTable[statRowKey].Sample(sampleTime);
     }
     
     public static JsonObject CreateInstanceOfItem(this JsonObject itemTemplate, int quantity = 1, JsonObject attributes = null, string overrideItem = null)
@@ -684,8 +744,21 @@ public static class HeroStats
     public const string MaxShields = "FortHealthSet.Shield";
     public const string HealthRegenRate = "FortRegenHealthSet.HealthRegenRate";
     public const string ShieldRegenRate = "FortRegenHealthSet.ShieldRegenRate";
-    public const string AbilityDamage = "FortRegenHealthSet.ShieldRegenRate";
-    public const string HealingModifier = "FortRegenHealthSet.ShieldRegenRate";
+    public const string AbilityDamage = "FortDamageSet.OutgoingBaseAbilityDamageMultiplier";
+    public const string HealingModifier = "FortHealthSet.HealingSourceBaseMultiplier";
+}
+public static class SurvivorBonus
+{
+    public const string MaxHealth = "IsFortitudeLow";
+    public const string MaxShields = "IsResistanceLow";
+    public const string ShieldRegenRate = "IsShieldRegenLow";
+
+    public const string RangedDamage = "IsRangedDamageLow";
+    public const string MeleeDamage = "IsMeleeDamageLow";
+    public const string AbilityDamage = "IsAbilityDamageLow";
+    public const string TrapDamage = "IsTrapDamageLow";
+
+    public const string TrapDurability = "IsTrapDurabilityHigh";
 }
 
 class DataTable

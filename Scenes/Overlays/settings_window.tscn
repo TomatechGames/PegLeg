@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dd6fc218gb2da"]
+[gd_scene load_steps=5 format=3 uid="uid://dd6fc218gb2da"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/Settings/AccountSettings.cs" id="2_dybhj"]
+[ext_resource type="Script" path="res://Scripts/VolumeHook.cs" id="2_y75ef"]
+[ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="3_dewmg"]
 
 [node name="SettingsWindow" node_paths=PackedStringArray("windowControl") instance=ExtResource("1_p7b2a")]
 windowControl = NodePath("Control/WindowContents/CenterContainer")
@@ -17,38 +19,243 @@ grow_vertical = 2
 use_top_left = true
 
 [node name="TabContainer" type="TabContainer" parent="Control/WindowContents/CenterContainer" index="0"]
+visible = false
 custom_minimum_size = Vector2(350, 450)
 layout_mode = 2
 tab_alignment = 1
 
-[node name="Audio" type="MarginContainer" parent="Control/WindowContents/CenterContainer/TabContainer" index="1"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer" index="1"]
+custom_minimum_size = Vector2(350, 450)
 layout_mode = 2
 
-[node name="Theme" type="MarginContainer" parent="Control/WindowContents/CenterContainer/TabContainer" index="2"]
-visible = false
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/MarginContainer" index="0"]
 layout_mode = 2
 
-[node name="Dashboard" type="MarginContainer" parent="Control/WindowContents/CenterContainer/TabContainer" index="3"]
-visible = false
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer" index="0"]
 layout_mode = 2
 
-[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/TabContainer" index="4" node_paths=PackedStringArray("forgetLoginButton", "goToLoginButton")]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[node name="HSeparator" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="1"]
+layout_mode = 2
+
+[node name="Audio" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Volume"
+
+[node name="Master" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+script = ExtResource("2_y75ef")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Master"
+
+[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+min_value = -80.0
+max_value = -20.0
+value = -20.0
+rounded = true
+
+[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Mute/Unmute"
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_dewmg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Music" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="2"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+script = ExtResource("2_y75ef")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Music"
+
+[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+min_value = -80.0
+max_value = 0.0
+rounded = true
+
+[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Mute/Unmute"
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_dewmg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SFX" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="3"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+script = ExtResource("2_y75ef")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" index="0"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sound FX"
+
+[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+min_value = -80.0
+max_value = 0.0
+rounded = true
+
+[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Mute/Unmute"
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_dewmg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HSeparator2" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="3"]
+layout_mode = 2
+
+[node name="Theme" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Theme" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Theme"
+
+[node name="HSeparator3" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="5"]
+layout_mode = 2
+
+[node name="Filters" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="6"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Filters" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Filters"
+
+[node name="HSeparator4" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="7"]
+layout_mode = 2
+
+[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="8" node_paths=PackedStringArray("forgetLoginButton", "goToLoginButton")]
 layout_mode = 2
 script = ExtResource("2_dybhj")
 loginSceneFilePath = "res://Scenes/desktopLogin.tscn"
 forgetLoginButton = NodePath("VBoxContainer/Button")
 goToLoginButton = NodePath("VBoxContainer/Button2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/TabContainer/Account" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account" index="0"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="Control/WindowContents/CenterContainer/TabContainer/Account/VBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Account"
+
+[node name="Button" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account/VBoxContainer" index="1"]
 layout_mode = 2
 text = "Forget Login"
 
-[node name="Button2" type="Button" parent="Control/WindowContents/CenterContainer/TabContainer/Account/VBoxContainer" index="1"]
+[node name="Button2" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account/VBoxContainer" index="2"]
 layout_mode = 2
 text = "Return to Login Screen"
 
 [connection signal="pressed" from="BG" to="." method="CloseWindow"]
+[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/HSlider" method="set_value_no_signal"]
+[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" method="SetVolume"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" method="ToggleMute"]
+[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/HSlider" method="set_value_no_signal"]
+[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" method="SetVolume"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" method="ToggleMute"]
+[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" method="set_value_no_signal"]
+[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="SetVolume"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="ToggleMute"]

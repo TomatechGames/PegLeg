@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://yo2wf58ok7uf"
+path="res://.godot/imported/Fort_Building_Day_Main_Loop_Fixed.wav-eefd539cf902cf78e77d4947524e180e.sample"
+
+[deps]
+
+source_file="res://Audio/Music (move to external folder)/Fort_Building_Day_Main_Loop_Fixed.wav"
+dest_files=["res://.godot/imported/Fort_Building_Day_Main_Loop_Fixed.wav-eefd539cf902cf78e77d4947524e180e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=512500
+edit/loop_end=-1
+compress/mode=0

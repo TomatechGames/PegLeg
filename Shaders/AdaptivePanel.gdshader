@@ -8,10 +8,6 @@ uniform bool Fit;
 uniform bool UseCorners;
 uniform float CornerRadius = 10.0;
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
-
 void fragment() {
 	vec2 adaptedUV = adaptToAspect(ControlSize, ShiftDirection,1.0/TEXTURE_PIXEL_SIZE,UV,Fit);
 	

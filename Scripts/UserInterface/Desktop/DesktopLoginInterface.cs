@@ -100,12 +100,14 @@ public partial class DesktopLoginInterface : LoginInterface
             appSettingsFile.StoreString(appSettingsObj.ToString());
         }
 
-        string generatorProgramPath = Helpers.ProperlyGlobalisePath(programFolder + "/BanjoBotAssets.exe");
+        string realProgramFolder = Helpers.ProperlyGlobalisePath(programFolder);
+
+        string generatorProgramPath = realProgramFolder + "/BanjoBotAssets.exe";
         var banjoProcess = Process.Start(new ProcessStartInfo()
         {
             FileName = generatorProgramPath,
             UseShellExecute = true,
-            WorkingDirectory = programFolder
+            WorkingDirectory = realProgramFolder
         });
 
         await banjoProcess.WaitForExitAsync();

@@ -100,6 +100,13 @@ public partial class HomebasePowerLevel : Control
         return await instance.RecalculateFORTStats();
     }
 
+    public static FORTStats GetFORTStatsUnsafe()
+    {
+        if (currentFortStats.HasValue)
+            return currentFortStats.Value;
+        return new();
+    }
+
     bool isRecalculating = false;
     public async Task<FORTStats> RecalculateFORTStats()
     {
@@ -122,8 +129,25 @@ public partial class HomebasePowerLevel : Control
 
         float LookupWorkers(string squadId)
         {
-            var matchingWorkers = profileStatAndWorkerItems.Where(item => item.Value["attributes"].AsObject().ContainsKey("squad_id") && item.Value["attributes"]["squad_id"].ToString() == squadId);
-            return matchingWorkers?.Select(kvp=> kvp.Value?.AsObject()?.GetItemRating(true) ?? 0).Sum() ?? 0;
+            var matchingWorkers = profileStatAndWorkerItems
+                .Where(item => 
+                    item.Value["attributes"]?["squad_id"]?.ToString() == squadId
+                    )
+                .OrderBy(item => item.Value["attributes"]["squad_slot_idx"].GetValue<int>())
+                .ToArray();
+
+            List<float> contributions = new();
+            //GD.Print($"\n");
+            for (int i = 0; i < matchingWorkers.Length; i++)
+            {
+                float thisContribution = matchingWorkers[i].Value?.AsObject()?.GetItemRating(true) ?? 0;
+                //GD.Print($"{squadId}[{i}] contributes {thisContribution} ({matchingWorkers[i].Key})\n");
+                contributions.Add(thisContribution);
+            }
+
+            var squadContribution = contributions.Sum();
+            //GD.Print($"{squadId} in total contributes {squadContribution}");
+            return squadContribution;
         }
 
         //+ profileStats["fortitude"].GetValue<int>()
@@ -131,6 +155,12 @@ public partial class HomebasePowerLevel : Control
         float offense = LookupStatItem("Stat:offense") + LookupStatItem("Stat:offense_team") + LookupWorkers("squad_attribute_arms_fireteamalpha") + LookupWorkers("squad_attribute_arms_closeassaultsquad");
         float resistance = LookupStatItem("Stat:resistance") + LookupStatItem("Stat:resistance_team") + LookupWorkers("squad_attribute_scavenging_scoutingparty") + LookupWorkers("squad_attribute_scavenging_gadgeteers");
         float technology = LookupStatItem("Stat:technology") + LookupStatItem("Stat:technology_team") + LookupWorkers("squad_attribute_synthesis_corpsofengineering") + LookupWorkers("squad_attribute_synthesis_thethinktank");
+
+
+        GD.Print($"FORTITUDE: {fortitude}");
+        GD.Print($"OFFENCE: {offense}");
+        GD.Print($"RESISTANCE: {resistance}");
+        GD.Print($"TECH: {technology}");
 
         currentFortStats = new(fortitude, offense, resistance, technology);
         fortStatsAreDirty = false;

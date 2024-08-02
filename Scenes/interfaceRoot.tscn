@@ -1,27 +1,19 @@
-[gd_scene load_steps=141 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=133 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
+[ext_resource type="Script" path="res://Scripts/AutoButtonSounds.cs" id="2_db3cl"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="3_mfw8j"]
 [ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
-[ext_resource type="AudioStream" uid="uid://7fphnqpacyx4" path="res://Audio/Music/Pirate_Cove_Amb_Day_Light_Loop_01.wav" id="4_1n6kc"]
-[ext_resource type="Script" path="res://Scripts/MusicController.cs" id="4_7htls"]
 [ext_resource type="Texture2D" uid="uid://ybhd24tgs2aq" path="res://Images/InterfaceIcons/minimise.png" id="4_v4447"]
 [ext_resource type="Texture2D" uid="uid://cn31q5216hi64" path="res://Images/InterfaceIcons/LoadingIconAnim.tres" id="5_8qgoo"]
 [ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="5_f3eja"]
-[ext_resource type="AudioStream" uid="uid://d3beupkquslmk" path="res://Audio/Music/Pirate_Cove_Amb_Day_Loop_02.wav" id="5_is11q"]
 [ext_resource type="Script" path="res://Scripts/DynamicGridContainer.cs" id="5_uxiwu"]
-[ext_resource type="AudioStream" uid="uid://sv2r2ydjua8g" path="res://Audio/Music/Pirate_Cove_Amb_Day_Light_Loop_02.wav" id="6_rkeoa"]
-[ext_resource type="AudioStream" uid="uid://bno77bt3pn5nn" path="res://Audio/Music/Pirate_Cove_Amb_Day_Light_Loop_03.wav" id="7_wdyu3"]
 [ext_resource type="Texture2D" uid="uid://bq8vrrjy47iav" path="res://Images/InterfaceIcons/maximise.png" id="7_we7j1"]
 [ext_resource type="PackedScene" uid="uid://b0uxwtxndd6x3" path="res://Scenes/LlamaEntries/catalog_llama_entry.tscn" id="8_47m5v"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/LlamaInterface.cs" id="8_c8p7o"]
 [ext_resource type="Script" path="res://Scripts/CurrencyHighlight.cs" id="9_23he5"]
 [ext_resource type="PackedScene" uid="uid://bgn5vgsvgrb1u" path="res://Scenes/LlamaEntries/cardpack_llama_entry.tscn" id="9_ewgu3"]
-[ext_resource type="AudioStream" uid="uid://bg3v8qgqhgyhu" path="res://Audio/Music/Pirate_Cove_Amb_Day_Loop_03.wav" id="9_nlp8y"]
-[ext_resource type="AudioStream" uid="uid://dte2m4hjkekwx" path="res://Audio/Music/Pirate_Cove_Amb_Day_Loop_04.wav" id="10_t8qfg"]
-[ext_resource type="AudioStream" uid="uid://ov6cpaj54n11" path="res://Audio/Music/Route99_Day_Ambient_01_Loop.wav" id="11_2txu7"]
-[ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="11_nhe6x"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="11_toubj"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="12_rlxg4"]
 [ext_resource type="Texture2D" uid="uid://div6ssxx4btc8" path="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png" id="12_tuvkq"]
@@ -101,7 +93,7 @@
 [ext_resource type="Texture2D" uid="uid://cl65b2bsn0dhl" path="res://Images/InterfaceIcons/LockerIcons/T-Icon-Emotes-E-Dance-L.png" id="55_2jgv1"]
 [ext_resource type="Texture2D" uid="uid://48pk4tnhdqms" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Wrap.png" id="56_mesd3"]
 [ext_resource type="Texture2D" uid="uid://b1e36epnmrfm2" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Music.png" id="57_5m3jj"]
-[ext_resource type="Script" path="res://Scripts/AudioController.cs" id="58_7yvd6"]
+[ext_resource type="Script" path="res://Scripts/VolumeHook.cs" id="58_7yvd6"]
 [ext_resource type="Texture2D" uid="uid://r0cockkqemn7" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Instrument.png" id="58_w31ab"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="59_87sqg"]
 [ext_resource type="Texture2D" uid="uid://duxxsyrww1ycc" path="res://Images/InterfaceIcons/LockerIcons/T_Icon_Body.png" id="59_r64bh"]
@@ -131,7 +123,7 @@ shader_parameter/CornerRadius = 10.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yxwuj"]
 resource_local_to_scene = true
 shader = ExtResource("12_rlxg4")
-shader_parameter/ControlSize = Vector2(258, 64)
+shader_parameter/ControlSize = Vector2(200, 64)
 shader_parameter/Fit = null
 shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
@@ -149,7 +141,7 @@ corner_radius_bottom_right = 3
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sk8cl"]
 resource_local_to_scene = true
 shader = ExtResource("12_rlxg4")
-shader_parameter/ControlSize = Vector2(258, 64)
+shader_parameter/ControlSize = Vector2(200, 64)
 shader_parameter/Fit = null
 shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
@@ -158,7 +150,7 @@ shader_parameter/CornerRadius = 5.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ggxhy"]
 resource_local_to_scene = true
 shader = ExtResource("12_rlxg4")
-shader_parameter/ControlSize = Vector2(258, 64)
+shader_parameter/ControlSize = Vector2(200, 64)
 shader_parameter/Fit = null
 shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
@@ -222,7 +214,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_udfvn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5p5r"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -270,32 +262,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_3bqtb")
 
-[node name="MusicController" type="Node" parent="."]
-script = ExtResource("4_7htls")
-lightMusic = [ExtResource("4_1n6kc"), ExtResource("6_rkeoa"), ExtResource("7_wdyu3")]
-fullMusic = [ExtResource("5_is11q"), ExtResource("9_nlp8y"), ExtResource("10_t8qfg")]
-simpleMusic = ExtResource("11_2txu7")
-simpleMode = true
-musicAPath = NodePath("MusicA")
-musicBPath = NodePath("MusicB")
-musicCPath = NodePath("MusicC")
-
-[node name="MusicA" type="AudioStreamPlayer" parent="MusicController"]
-stream = ExtResource("11_2txu7")
-volume_db = -8.0
-mix_target = 1
-bus = &"Music"
-
-[node name="MusicB" type="AudioStreamPlayer" parent="MusicController"]
-stream = ExtResource("5_is11q")
-mix_target = 1
-bus = &"Music"
-
-[node name="MusicC" type="AudioStreamPlayer" parent="MusicController"]
-stream = ExtResource("11_nhe6x")
-volume_db = 10.0
-mix_target = 1
-bus = &"Music"
+[node name="AutoButtonSounds" type="Node" parent="."]
+script = ExtResource("2_db3cl")
 
 [node name="BG" type="TextureRect" parent="."]
 self_modulate = Color(0.5, 0.5, 0.5, 1)
@@ -701,13 +669,11 @@ text = "x:xx:xx:xx"
 vertical_alignment = 1
 
 [node name="Dashboard" type="MarginContainer" parent="MainApp/WIPStuff"]
+visible = false
 layout_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 5.0
-offset_top = 61.0
-offset_right = 1235.0
-offset_bottom = 25.0
+offset_top = 30.0
+offset_right = 1270.0
+offset_bottom = 30.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MainApp/WIPStuff/Dashboard"]
 custom_minimum_size = Vector2(1270, 0)
@@ -1628,9 +1594,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
+current_tab = 1
 script = ExtResource("16_hsemp")
 
 [node name="Missions" type="PanelContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemSearchToggle", "itemFilterButtons", "missionList", "loadingIcon")]
+visible = false
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 script = ExtResource("3_mfw8j")
@@ -2109,7 +2077,6 @@ offset_top = -128.0
 offset_bottom = 128.0
 
 [node name="Llamas" type="HSplitContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("selectedPurchaseCountSpinner")]
-visible = false
 layout_mode = 2
 split_offset = 585
 script = ExtResource("8_c8p7o")
@@ -2252,7 +2219,7 @@ vertical_alignment = 1
 
 [node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer" instance=ExtResource("15_5u8nd")]
 layout_mode = 2
-holdTime = 5.0
+useHold = true
 
 [node name="Llama Contents" type="MarginContainer" parent="MainApp/TabContainer/Llamas"]
 layout_mode = 2
@@ -2427,6 +2394,7 @@ vertical_alignment = 1
 
 [node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel" instance=ExtResource("15_5u8nd")]
 layout_mode = 2
+useHold = true
 holdTime = 2.0
 
 [node name="OpenPanel" type="HBoxContainer" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
@@ -2457,6 +2425,7 @@ vertical_alignment = 1
 
 [node name="Responsive Button Area" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton" instance=ExtResource("15_5u8nd")]
 layout_mode = 2
+useHold = true
 
 [node name="PurchaseSpinBox" type="SpinBox" parent="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
 visible = false
@@ -3412,7 +3381,7 @@ mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_udfvn")
+material = SubResource("ShaderMaterial_s5p5r")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
@@ -3480,7 +3449,7 @@ vertical_alignment = 1
 
 [node name="Responsive Button Area" parent="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("15_5u8nd")]
 layout_mode = 2
-holdTime = 1.0
+useHold = true
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList" instance=ExtResource("30_sx8jl")]
 custom_minimum_size = Vector2(256, 256)
@@ -3936,14 +3905,13 @@ texture = ExtResource("103_l32pl")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MuteBtn" type="Button" parent="StatusBar/Right" node_paths=PackedStringArray("muteTextureTarget")]
+[node name="MuteBtn" type="Button" parent="StatusBar/Right"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Mute/Unmute"
 theme_type_variation = &"TinyButton"
 script = ExtResource("58_7yvd6")
-muteTextureTarget = NodePath("TextureRect")
 targetBusName = "Master"
 
 [node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MuteBtn"]
@@ -4158,8 +4126,8 @@ layout_mode = 2
 [connection signal="IconChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata" method="set_texture"]
 [connection signal="NameChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/LlamaName" method="set_text"]
 [connection signal="SubtypeIconChanged" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata/Icon" method="set_texture"]
-[connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="PurchaseLlama"]
-[connection signal="pressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="OpenSelectedCardpack"]
+[connection signal="HoldPressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="PurchaseLlama"]
+[connection signal="HoldPressed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton/Responsive Button Area" to="MainApp/TabContainer/Llamas" method="OpenSelectedCardpack"]
 [connection signal="value_changed" from="MainApp/TabContainer/Llamas/Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox" to="MainApp/TabContainer/Llamas" method="SpinnerChanged"]
 [connection signal="HoldPressed" from="MainApp/TabContainer/Quests/HSplitContainer/QuestGroupList/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/Responsive Button Area" to="MainApp/TabContainer/Quests" method="ClearPinnedQuests"]
 [connection signal="CompleteVisible" from="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestViewer" to="MainApp/TabContainer/Quests/HSplitContainer/MarginContainer/VBoxContainer/QuestViewer/MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/Icon/CompleteIcon" method="set_visible"]
@@ -4172,6 +4140,7 @@ layout_mode = 2
 [connection signal="IconChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/Icon" method="set_texture"]
 [connection signal="NameChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency" method="set_tooltip_text"]
 [connection signal="pressed" from="StatusBar/Right/SettingsButton" to="StatusBar" method="OpenSettings"]
+[connection signal="UpdateMuteIcon" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn/TextureRect" method="set_texture"]
 [connection signal="pressed" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn" method="ToggleMute"]
 [connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="StatusBar" method="Refresh"]
 [connection signal="pressed" from="StatusBar/Right/MinimiseBtn" to="StatusBar" method="MinimiseApp"]

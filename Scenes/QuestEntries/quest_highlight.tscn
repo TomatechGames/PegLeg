@@ -7,6 +7,17 @@
 
 [node name="QuestHighlight" type="MarginContainer"]
 custom_minimum_size = Vector2(0, 128)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1_hvd2p")
 
@@ -49,6 +60,8 @@ texture_progress = ExtResource("2_7husn")
 
 [node name="Responsive Button Circle" parent="." instance=ExtResource("3_k5n5p")]
 layout_mode = 2
+useHold = true
+baseLineSize = 0
 
 [connection signal="ColorChanged" from="." to="MarginContainer2/TextureProgressBar" method="set_self_modulate"]
 [connection signal="IconChanged" from="." to="MarginContainer2/MarginContainer/TextureRect" method="set_texture"]

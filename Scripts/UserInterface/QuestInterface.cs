@@ -32,7 +32,7 @@ public partial class QuestInterface : Control
 	{
         VisibilityChanged += () =>
         {
-            if (Visible)
+            if (IsVisibleInTree())
                 LoadQuests();
         };
         nodeController.Pressed += RefreshCurrentSelection;
@@ -58,14 +58,14 @@ public partial class QuestInterface : Control
         LoadingOverlay.Instance.RemoveLoadingKey("pinnedQuest");
     }
 
-    bool hasGeneratedQuests = false;
+    bool hasStartedGeneratingQuests = false;
 	async void LoadQuests()
     {
-        if (!await LoginRequests.TryLogin() || hasGeneratedQuests || !IsInstanceValid(this))
+        if (!await LoginRequests.TryLogin() || hasStartedGeneratingQuests)
             return;
         questListLayout.Visible = false;
         loadingIcon.Visible = true;
-        hasGeneratedQuests = true;
+        hasStartedGeneratingQuests = true;
         await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
         var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
 
@@ -86,7 +86,7 @@ public partial class QuestInterface : Control
             foreach (var group in collection["groupGens"].AsObject())
             {
                 var groupEntry = questGroupScene.Instantiate<QuestGroupEntry>();
-                groupEntry.SetupQuestGroup(group.Key, group.Value.AsObject());
+                await groupEntry.SetupQuestGroup(group.Key, group.Value.AsObject());
                 if (!groupEntry.HasAvailableQuests)
                 {
                     groupEntry.QueueFree();

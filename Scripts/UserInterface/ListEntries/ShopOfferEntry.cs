@@ -16,6 +16,8 @@ public partial class ShopOfferEntry : Control
     [Signal]
     public delegate void IsLimitedTimeChangedEventHandler(bool isLimitedTime);
     [Signal]
+    public delegate void IsBirthdayChangedEventHandler(bool isBirthday);
+    [Signal]
     public delegate void PressedEventHandler(string linkedOfferId);
 
     [Export]
@@ -87,10 +89,10 @@ public partial class ShopOfferEntry : Control
         priceTemplate = priceTemplate.Reserialise();
         priceTemplate["Description"] = inInventory + "/" + price;
 
-        bool isBirthday = name.ToLower().Contains("birthday");
+        EmitSignal(SignalName.IsBirthdayChanged, name.ToLower().Contains("birthday"));
 
         EmitSignal(SignalName.IsFreeChanged, price == 0);
-        skipHourTimer = price != 0 || isBirthday;
+        skipHourTimer = linkedOfferId != "B9B0CE758A5049F898773C1A47A69ED4";//offerId of random free llamas which only last 1 hour
         EmitSignal(SignalName.IsLimitedTimeChanged, !skipHourTimer);
 
         if (price == 0)

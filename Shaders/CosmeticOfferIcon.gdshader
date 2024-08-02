@@ -10,10 +10,6 @@ uniform float CosmeticScale;
 uniform sampler2D Cosmetic;
 uniform bool Fit;
 
-void vertex() {
-	// Called for every vertex the material is visible on.
-}
-
 void fragment() {
 	vec2 adaptedUV = adaptToAspect(ControlSize, ShiftDirection,1.0/TEXTURE_PIXEL_SIZE,UV,Fit);
 	adaptedUV-=CosmeticOffset;

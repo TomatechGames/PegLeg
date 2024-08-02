@@ -1,9 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdpcqsytlgikh"]
+[gd_scene load_steps=4 format=3 uid="uid://bdpcqsytlgikh"]
 
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="1_bivth"]
+[ext_resource type="Shader" path="res://Shaders/ButtonOutlineShader.gdshader" id="2_fb0ou"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yp0ak"]
+resource_local_to_scene = true
+shader = ExtResource("2_fb0ou")
+shader_parameter/ControlSize = Vector2(1290, 685)
+shader_parameter/TargetSize = Vector2(1200, 675)
+shader_parameter/LineSize = 3.0
+shader_parameter/ProgressFade = 0.02
+shader_parameter/Progress = 0.0
+shader_parameter/Circle = false
 
 [node name="Responsive Button Circle" instance=ExtResource("1_bivth")]
 circleMode = true
 
 [node name="MarginContainer" parent="." index="0"]
 anchors_preset = -1
+
+[node name="TextureRect" parent="MarginContainer" index="0"]
+material = SubResource("ShaderMaterial_yp0ak")

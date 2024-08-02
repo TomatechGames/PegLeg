@@ -58,6 +58,7 @@ theme_override_constants/separation = 8
 [node name="CancelBtn" type="Button" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 24
 text = "Cancel"
 

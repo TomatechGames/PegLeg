@@ -132,6 +132,24 @@ public static class ProfileRequests
             .ToArray();
     }
 
+    public static float GetSurvivorBonusUnsafe(string bonusID, int perSquadRequirement = 2, float boostBase = 5)
+    {
+        var matchingSurvivors = GetCachedProfileItems(FnProfiles.AccountItems, kvp =>
+        {
+            if (!kvp.Value["templateId"].ToString().StartsWith("Worker"))
+                return false;
+            if (kvp.Value["attributes"]["squad_id"] is null || kvp.Value["attributes"]["set_bonus"] is null)
+                return false;
+            var thisBonus = kvp.Value["attributes"]["set_bonus"].ToString().Split(".")[^1];
+            return thisBonus == bonusID;
+        })
+        .GroupBy(kvp=> kvp.Value["attributes"]["squad_id"].ToString());
+
+        int boostMatchCount = matchingSurvivors.Select(g => g.Count() / perSquadRequirement).Sum();
+
+        return boostBase * boostMatchCount;
+    }
+
     public enum OrderRange
     {
         Daily,
@@ -302,6 +320,18 @@ public static class ProfileRequests
     public static event Action<string, JsonObject> OnNotification;
     public static async Task<JsonObject> PerformProfileOperation(string profileId, string operation, string content = "{}")
     {
+        if(operation == "MarkItemSeen" && profileCache.ContainsKey(profileId))
+        {
+            var targetItems = JsonNode.Parse(content)["itemIds"].AsArray();
+            var targetProfile = profileCache[profileId];
+            foreach (var itemId in targetItems)
+            {
+                targetProfile["profileChanges"][0]["profile"]["items"][itemId.ToString()]["attributes"]["item_seen"] = true;
+            }
+            profileCache[profileId] = targetProfile;
+            PerformProfileOperationUnsafe(profileId, operation, content).RunSafely();
+            return profileCache[profileId];
+        }
         await profileOperationSephamore.WaitAsync();
         try
         {
@@ -324,15 +354,15 @@ public static class ProfileRequests
             return cachedProfile;
         }
 
-        GD.Print("requesting profile");
-        GD.Print(operation);
-        GD.Print(profileId);
-        GD.Print(operation == "QueryProfile");
-        GD.Print(validProfiles.Contains(profileId));
-        GD.Print(profileCache.ContainsKey(profileId));
+        string logMsg = $"requesting profile ({operation}, {profileId}, {operation == "QueryProfile"}, {validProfiles.Contains(profileId)} {profileCache.ContainsKey(profileId)})";
+        //GD.PushWarning(logMsg);
+        GD.Print(logMsg);
 
         if (!await LoginRequests.TryLogin())
+        {
+            GD.Print("profile request failed: not logged in");
             return null;
+        }
 
         bool publicMode = (operation == "QueryPublicProfile");
         string route = publicMode ? "public" : "client";
@@ -359,8 +389,8 @@ public static class ProfileRequests
         JsonObject changelog = null;
         if (profileCache.ContainsKey(profileId) && profileCache[profileId] is not null)
             changelog = await GenerateChangelog(profileCache[profileId], result);
-        else
-            GD.Print("no cached profile");
+        //else
+            //GD.Print("no cached profile");
 
         profileCache[profileId] = result;
         if (result.ContainsKey("notifications"))
@@ -381,6 +411,7 @@ public static class ProfileRequests
         if (!validProfiles.Contains(profileId))
             GD.Print("profile invalid WJHAR");
 
+        GD.Print("request complete");
         return profileCache[profileId];
     }
 

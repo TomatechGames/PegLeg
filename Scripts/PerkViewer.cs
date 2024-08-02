@@ -279,6 +279,7 @@ public partial class PerkViewer : Control
         }
         reperkApplyButton.Visible = false;
 
+        UISounds.PlaySound("WipeAppear");
         interactionBlocker.MouseFilter = MouseFilterEnum.Stop;
         var tween = GetTree().CreateTween().Parallel();
         tween.SetTrans(Tween.TransitionType.Linear);
@@ -346,6 +347,7 @@ public partial class PerkViewer : Control
 
     public void ClosePerkChanger()
     {
+        UISounds.PlaySound("WipeDisappear");
         interactionBlocker.MouseFilter = MouseFilterEnum.Stop;
         var tween = GetTree().CreateTween();
         tween.Parallel().TweenProperty(realPerkArea, "anchor_left", 0, tweenDuration).SetEase(Tween.EaseType.In);

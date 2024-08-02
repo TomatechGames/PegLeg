@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static HomebasePowerLevel;
 
 public partial class GameItemViewer : ModalWindow
 {
@@ -51,6 +52,11 @@ public partial class GameItemViewer : ModalWindow
     [Export]
     NodePath heroCommanderPerkEntryPath;
     HeroAbilityEntry heroCommanderPerkEntry;
+
+    [Export]
+    Slider tierSlider;
+    [Export]
+    Slider levelSlider;
 
 
     //TODO: set up hero perks and stuff
@@ -119,6 +125,9 @@ public partial class GameItemViewer : ModalWindow
 
         this.GetNodeOrNull(devTextPath, out devText);
         this.GetNodeOrNull(itemChoiceParentPath, out itemChoiceParent);
+
+        levelSlider.ValueChanged += _ => RefreshHeroStats();
+        tierSlider.ValueChanged += _ => RefreshHeroStats();
 
         purchaseCountSpinner.ValueChanged += SpinnerChanged;
 
@@ -195,12 +204,15 @@ public partial class GameItemViewer : ModalWindow
         }
     }
 
+    JsonObject latestItem = null;
     async Task SetDisplayItem(JsonObject itemInstance)
     {
         Visible = true;
         devText.Text = itemInstance.ToString();
         primaryItemEntry.SetItemData(itemInstance);
         var template = itemInstance.GetTemplate();
+        latestItem = itemInstance;
+        await GetFORTStats();
 
         //TODO: add extra icons for survivors, and fix descriptions
 
@@ -221,20 +233,9 @@ public partial class GameItemViewer : ModalWindow
             heroPerkEntry.SetAbility(heroItems["HeroPerk"].AsObject(), false);
             heroCommanderPerkEntry.SetAbility(heroItems["CommanderPerk"].AsObject(), tier<2);
 
-            var fortStats = await HomebasePowerLevel.GetFORTStats();
+            RefreshHeroStats();
+
             statsTree.Visible = true;
-            statsTree.Clear();
-            statsTree.Columns = 3;
-            statsTree.SetColumnTitle(0, "Stat");
-            statsTree.SetColumnTitle(1, "Value");
-            statsTree.SetColumnTitle(2, "Scaled Value");
-            var root = statsTree.CreateItem();
-            AddStatTreeEntry(root, "Health",               itemInstance.GetHeroStat(HeroStats.MaxHealth),          fortStats.fortitude);
-            AddStatTreeEntry(root, "Shield",               itemInstance.GetHeroStat(HeroStats.MaxShields),         fortStats.resistance);
-            AddStatTreeEntry(root, "Health Regen Rate",    itemInstance.GetHeroStat(HeroStats.HealthRegenRate),    fortStats.fortitude);
-            AddStatTreeEntry(root, "Shield Regen Rate",    itemInstance.GetHeroStat(HeroStats.ShieldRegenRate),    fortStats.resistance);
-            AddStatTreeEntry(root, "Ability Damage",       itemInstance.GetHeroStat(HeroStats.AbilityDamage),      fortStats.technology);
-            AddStatTreeEntry(root, "Healing Modifier",     itemInstance.GetHeroStat(HeroStats.HealingModifier),    fortStats.technology);
             statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(10, 0);
         }
         else if (template["Type"].ToString() == "Schematic")
@@ -277,13 +278,30 @@ public partial class GameItemViewer : ModalWindow
         devText.FoldLine(1);
     }
 
-    static void AddStatTreeEntry(TreeItem parent, string name, float baseValue, float scalar = 0)
+    void RefreshHeroStats()
+    {
+        var fortStats = GetFORTStatsUnsafe();
+        statsTree.Clear();
+        statsTree.Columns = 3;
+        statsTree.SetColumnTitle(0, "Stat");
+        statsTree.SetColumnTitle(1, "Value");
+        statsTree.SetColumnTitle(2, "Scaled Value");
+        var root = statsTree.CreateItem();
+        AddStatTreeEntry(root, "Health", latestItem.GetHeroStat(HeroStats.MaxHealth, (int)levelSlider.Value, (int) tierSlider.Value), fortStats.fortitude + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.MaxHealth));
+        AddStatTreeEntry(root, "Shield", latestItem.GetHeroStat(HeroStats.MaxShields, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.resistance + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.MaxShields));
+        AddStatTreeEntry(root, "Health Regen Rate", latestItem.GetHeroStat(HeroStats.HealthRegenRate, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.fortitude);
+        AddStatTreeEntry(root, "Shield Regen Rate", latestItem.GetHeroStat(HeroStats.ShieldRegenRate, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.resistance + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.ShieldRegenRate));
+        AddStatTreeEntry(root, "Ability Damage", latestItem.GetHeroStat(HeroStats.AbilityDamage, (int)levelSlider.Value, (int)tierSlider.Value), 0, 10); //ingame UI doesnt scale these by tech, should it?
+        AddStatTreeEntry(root, "Healing Modifier", latestItem.GetHeroStat(HeroStats.HealingModifier, (int)levelSlider.Value, (int)tierSlider.Value), 0, 100);
+    }
+
+    static void AddStatTreeEntry(TreeItem parent, string name, float baseValue = 5, float scalar = 0, int roundingDivisor = 1)
     {
         var row = parent.CreateChild();
         row.SetText(0, name);
-        row.SetText(1, baseValue.ToString());
+        row.SetText(1, (Mathf.Round(baseValue*roundingDivisor)/roundingDivisor).ToString());
         if (scalar != 0)
-            row.SetText(2, (baseValue*((scalar/100)+1)).ToString());
+            row.SetText(2, (Mathf.Round(baseValue*((scalar/100)+1)*roundingDivisor)/roundingDivisor).ToString());
     }
 
     //todo: display final values as scaled by FORT stats

@@ -38,7 +38,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="GameItemViewer" node_paths=PackedStringArray("itemChoiceEntries", "itemChoiceLayoutSections", "purchasePanel", "outOfStockPanel", "cantAffordPanel", "purchaseCountSpinner", "priceIcon", "priceLabel") instance=ExtResource("1_iqrw2")]
+[node name="GameItemViewer" node_paths=PackedStringArray("tierSlider", "levelSlider", "itemChoiceEntries", "itemChoiceLayoutSections", "purchasePanel", "outOfStockPanel", "cantAffordPanel", "purchaseCountSpinner", "priceIcon", "priceLabel") instance=ExtResource("1_iqrw2")]
 theme = ExtResource("1_croo3")
 script = ExtResource("1_5fxot")
 primaryItemEntryPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical")
@@ -50,6 +50,8 @@ heroDetailsPanelPath = NodePath("Control/WindowContents/CenterContainer/window/M
 heroAbilityEntryPaths = [NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry2"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry3")]
 heroPerkEntryPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HeroPerkEntry")
 heroCommanderPerkEntryPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/CommanderPerkEntry")
+tierSlider = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TierSlider")
+levelSlider = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/LevelSlider")
 recycleButtonPanelPath = null
 levelupButtonPanelPath = null
 evolveButtonPanelPath = null
@@ -200,7 +202,7 @@ progress_bar_delay = 100
 
 [node name="ItemStats" type="Tree" parent="Control/WindowContents/CenterContainer/window/MainContent" index="1"]
 visible = false
-custom_minimum_size = Vector2(200, 300)
+custom_minimum_size = Vector2(260, 300)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 3
@@ -422,7 +424,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="HeroDetails" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent" index="3"]
-visible = false
 custom_minimum_size = Vector2(300, 350)
 layout_mode = 2
 
@@ -480,6 +481,20 @@ expand_mode = 3
 [node name="Label2" type="Label" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk/HBoxContainer" index="2"]
 layout_mode = 2
 text = "Blakebeards Stash"
+
+[node name="TierSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="4"]
+layout_mode = 2
+max_value = 5.0
+rounded = true
+tick_count = 6
+ticks_on_borders = true
+
+[node name="LevelSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="5"]
+layout_mode = 2
+max_value = 60.0
+rounded = true
+tick_count = 7
+ticks_on_borders = true
 
 [node name="DevDetails" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent" index="4"]
 visible = false
@@ -945,6 +960,7 @@ vertical_alignment = 1
 
 [node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton" index="1" instance=ExtResource("3_f2ac1")]
 layout_mode = 2
+useHold = true
 
 [node name="PurchaseSpinBox" type="SpinBox" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="1"]
 layout_mode = 2
@@ -1020,4 +1036,4 @@ size_flags_horizontal = 4
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton/TextureRect" method="set_visible"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/Responsive Button Area" to="." method="PurchaseItem"]
+[connection signal="HoldReleased" from="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/Responsive Button Area" to="." method="PurchaseItem"]

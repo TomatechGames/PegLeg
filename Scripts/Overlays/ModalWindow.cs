@@ -21,6 +21,8 @@ public partial class ModalWindow : Control
     float shrunkScale = 0.5f;
     [Export]
     bool startOpen;
+    [Export]
+    bool useSounds = true;
 
     public override void _Ready()
     {
@@ -62,6 +64,8 @@ public partial class ModalWindow : Control
 
         if (openState)
         {
+            if (useSounds)
+                UISounds.PlaySound("PanelAppear");
             backgroundPanel.MouseFilter = MouseFilterEnum.Stop;
             mouseBlockPanel.MouseFilter = MouseFilterEnum.Stop;
             Visible = true;
@@ -69,6 +73,8 @@ public partial class ModalWindow : Control
             if (windowControl is not null)
                 windowControl.PivotOffset = windowControl.Size * 0.5f;
         }
+        else if (useSounds)
+            UISounds.PlaySound("PanelDisappear");
 
         var newSize = openState ? 1 : shrunkScale;
         var newColour = openState ? Colors.White : Colors.Transparent;

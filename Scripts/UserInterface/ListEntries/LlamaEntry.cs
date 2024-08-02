@@ -35,6 +35,7 @@ public partial class LlamaEntry : GameItemEntry
         SetCardPack(itemInstance);
     }
 
+    public static readonly Color miniLlamaColor = Color.FromString("#ff8080", Colors.White);
     public static readonly Color[] llamaTierColors = new Color[]
     {
         Color.FromString("#0064ff", Colors.White),
@@ -84,7 +85,8 @@ public partial class LlamaEntry : GameItemEntry
         }
 
         var packIcon = cardPackTemplate.GetItemTexture(null, BanjoAssets.TextureType.PackImage);
-        if (name?.StartsWith("Mini") ?? true)
+        bool isMini = name?.StartsWith("Mini") ?? true;
+        if (isMini)
             packIcon = null;
 
         if (cardPackInstance?["attributes"]?.AsObject().ContainsKey("options") ?? false)
@@ -95,8 +97,8 @@ public partial class LlamaEntry : GameItemEntry
 
         EmitSignal(SignalName.IconChanged, pinataIcon);
         EmitSignal(SignalName.SubtypeIconChanged, packIcon);
-
-        EmitSignal(SignalName.RarityChanged, llamaTierColors[llamaTier]);
+        
+        EmitSignal(SignalName.RarityChanged, isMini ? miniLlamaColor : llamaTierColors[llamaTier]);
     }
 
     public override void ClearItem()
