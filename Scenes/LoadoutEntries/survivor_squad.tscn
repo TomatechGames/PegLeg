@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bje4f7reoc8da"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/SurvivorSquadEntry.cs" id="1_crhol"]
-[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/T-Icon-Hero-Soldier-CARD.png" id="1_i6sy6"]
+[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Hero-Soldier-CARD.png" id="1_i6sy6"]
 [ext_resource type="PackedScene" uid="uid://dljot1ntapg7q" path="res://Scenes/GameItemEntry/inventory_slot.tscn" id="2_0x38l"]
 
 [node name="SurvivorSquad" type="MarginContainer" node_paths=PackedStringArray("squadNameLabel", "squadIcon", "fortPointsLabel", "fortPointsIcon", "leadSurvivorSlot", "survivorSlots")]

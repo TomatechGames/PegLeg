@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bbqb2ns66gsfp" path="res://Images/InterfaceIcons/T_QuestNode_Generic.png" id="1_e6ctj"]
 [ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="2_3mdch"]
 [ext_resource type="Script" path="res://Scripts/Quests/QuestNode.cs" id="2_g20t6"]
-[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/T_UI_ICON_S22_SR_SupplyDropMin.png" id="3_c6yyq"]
+[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="3_c6yyq"]
 [ext_resource type="Texture2D" uid="uid://lhe8ded54hsv" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Pin_128.png" id="4_a24oo"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="5_ccihg"]
 

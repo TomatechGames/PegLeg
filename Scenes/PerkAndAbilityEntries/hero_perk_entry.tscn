@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bgyk3guex13ch"]
 
-[ext_resource type="StyleBox" uid="uid://c2skfgtbdx32l" path="res://Themes/Styleboxes/Light/LightBox.tres" id="1_qadmb"]
+[ext_resource type="StyleBox" uid="uid://c2skfgtbdx32l" path="res://GodotThemes/Styleboxes/Light/LightBox.tres" id="1_qadmb"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/HeroAbilityEntry.cs" id="2_hixd1"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_ibav2"]
 [ext_resource type="Texture2D" uid="uid://b7xndv3hrkxn6" path="res://Images/InterfaceIcons/T-Icon-Lock-64.png" id="4_5t0gn"]

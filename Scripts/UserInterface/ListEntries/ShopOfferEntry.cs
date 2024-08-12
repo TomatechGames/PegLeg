@@ -28,8 +28,6 @@ public partial class ShopOfferEntry : Control
     bool includeAmountInName = false;
     [Export]
     bool requireGreaterThanOne = false;
-    [Export]
-    Label temporaryTimerLabel;
 
     string linkedOfferId = "";
 
@@ -92,8 +90,7 @@ public partial class ShopOfferEntry : Control
         EmitSignal(SignalName.IsBirthdayChanged, name.ToLower().Contains("birthday"));
 
         EmitSignal(SignalName.IsFreeChanged, price == 0);
-        skipHourTimer = linkedOfferId != "B9B0CE758A5049F898773C1A47A69ED4";//offerId of random free llamas which only last 1 hour
-        EmitSignal(SignalName.IsLimitedTimeChanged, !skipHourTimer);
+        EmitSignal(SignalName.IsLimitedTimeChanged, linkedOfferId == "B9B0CE758A5049F898773C1A47A69ED4");//offerId of random free llamas which only last 1 hour
 
         if (price == 0)
             priceEntry.ClearItem(null);
@@ -105,25 +102,5 @@ public partial class ShopOfferEntry : Control
     public void EmitPressedSignal()
     {
         EmitSignal(SignalName.Pressed, linkedOfferId);
-    }
-
-    bool skipHourTimer = true;
-    public override void _Process(double delta)
-    {
-        if (skipHourTimer || Engine.GetProcessFrames()%30!=1)
-            return;
-
-        DateTime nextHourTime = DateTime.Now.AddHours(1);
-        nextHourTime = nextHourTime.AddSeconds(-nextHourTime.Second).AddMinutes(-nextHourTime.Minute);
-        var nextHourTimeSpan = nextHourTime - DateTime.Now;
-
-        if (nextHourTimeSpan.TotalMinutes < 1)
-            temporaryTimerLabel.SelfModulate = Colors.Red;
-        else if (nextHourTimeSpan.TotalMinutes < 15)
-            temporaryTimerLabel.SelfModulate = Colors.Orange;
-        else
-            temporaryTimerLabel.SelfModulate = Colors.White;
-
-        temporaryTimerLabel.Text = nextHourTimeSpan.FormatTime();
     }
 }

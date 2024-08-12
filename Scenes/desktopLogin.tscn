@@ -1,20 +1,23 @@
-[gd_scene load_steps=13 format=3 uid="uid://cd46kdw5i45cu"]
+[gd_scene load_steps=16 format=3 uid="uid://cd46kdw5i45cu"]
 
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="1_7xbjg"]
 [ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="1_s3ots"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/Desktop/DesktopLoginInterface.cs" id="1_yqctf"]
-[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://Themes/Styleboxes/Heavy/HeavyBox.tres" id="2_c5h7f"]
-[ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://Themes/Styleboxes/CheckButton/CheckSeparator.tres" id="2_d8lrk"]
-[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://Themes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_hui55"]
+[ext_resource type="Script" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_0vif4"]
+[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="2_c5h7f"]
+[ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://GodotThemes/Styleboxes/CheckButton/CheckSeparator.tres" id="2_d8lrk"]
+[ext_resource type="AudioStream" uid="uid://cb1h7anfymfsu" path="res://Audio/Music/Fort_Building_Outpost_Main_Loop_Fixed.wav" id="3_6re0q"]
+[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_hui55"]
 [ext_resource type="Texture2D" uid="uid://v5jh4e32gee6" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Folder_128.png" id="4_tyj7c"]
 [ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="7_p1a3c"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="8_6q70k"]
-[ext_resource type="Script" path="res://Scripts/VolumeHook.cs" id="8_42nsr"]
+[ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="8_42nsr"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="9_gp42o"]
+[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_6kqv5"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_rx0xh"]
 
-[node name="DesktopLogin" type="Control" node_paths=PackedStringArray("sizeTarget", "sizeSource", "loginControls", "banjoControls", "logo", "loginText", "gameFolderDialog", "gameFolderPath", "generateCodeButton", "pasteButton", "oneTimeCodeLine", "loginButton", "usePersistantLogin")]
+[node name="DesktopLogin" type="Control" node_paths=PackedStringArray("sizeTarget", "sizeSource", "loginControls", "banjoControls", "logo", "loginText", "gameFolderDialog", "gameFolderPath", "loginContent", "loadingIcon", "music", "generateCodeButton", "pasteButton", "oneTimeCodeLine", "loginButton", "usePersistantLogin")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,11 +34,31 @@ logo = NodePath("CenterContainer/Viewport/AppIcon")
 loginText = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/Label")
 gameFolderDialog = NodePath("FileDialog")
 gameFolderPath = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/VBoxContainer/HBoxContainer/LineEdit")
+loginContent = NodePath("CenterContainer/Viewport/Control/Content")
+loadingIcon = NodePath("CenterContainer/Viewport/Control/LoadingIcon")
+music = NodePath("Music")
 generateCodeButton = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/LoginCodeSection/GenerateCode")
 pasteButton = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/LoginCodeSection/HBoxContainer/PasteCode")
 oneTimeCodeLine = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/LoginCodeSection/HBoxContainer/LineEdit")
 loginButton = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/Button2")
 usePersistantLogin = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer/CheckButton")
+
+[node name="AutoButtonSounds" type="Node" parent="."]
+script = ExtResource("2_0vif4")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6re0q")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+size = Vector2i(413, 154)
+transparent = true
+popup_window = true
+ok_button_text = "Select Current Folder"
+dialog_hide_on_ok = true
+file_mode = 2
+access = 2
+use_native_dialog = true
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -144,7 +167,7 @@ layout_mode = 2
 [node name="LineEdit" type="LineEdit" parent="CenterContainer/Viewport/Control/Content/VBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Paste Game folder path here"
+placeholder_text = "Paste /FortniteGame/ path here"
 
 [node name="FolderBrowser" type="Button" parent="CenterContainer/Viewport/Control/Content/VBoxContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
@@ -213,6 +236,16 @@ theme_type_variation = &"ActionButton"
 theme_override_font_sizes/font_size = 24
 text = "Login"
 
+[node name="LoadingIcon" parent="CenterContainer/Viewport/Control" instance=ExtResource("11_6kqv5")]
+visible = false
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 1
+anchors_preset = -1
+offset_left = -100.0
+offset_top = -85.0
+offset_right = 100.0
+offset_bottom = 115.0
+
 [node name="CloseBtn" type="Button" parent="CenterContainer/Viewport/Control"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 1
@@ -279,17 +312,6 @@ mouse_filter = 0
 texture = ExtResource("1_7xbjg")
 script = ExtResource("8_6q70k")
 maximiseAtRoof = false
-
-[node name="FileDialog" type="FileDialog" parent="."]
-title = "Open a Directory"
-size = Vector2i(413, 154)
-transparent = true
-popup_window = true
-ok_button_text = "Select Current Folder"
-dialog_hide_on_ok = true
-file_mode = 2
-access = 2
-use_native_dialog = true
 
 [connection signal="pressed" from="CenterContainer/Viewport/Control/Content/VBoxContainer/VBoxContainer/Button" to="." method="RunBanjoGenerator"]
 [connection signal="pressed" from="CenterContainer/Viewport/Control/Content/VBoxContainer/VBoxContainer/HBoxContainer/FolderBrowser" to="FileDialog" method="show"]

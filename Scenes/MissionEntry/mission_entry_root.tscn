@@ -1,22 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://ctvb148sxh7ht"]
+[gd_scene load_steps=11 format=3 uid="uid://ctvb148sxh7ht"]
 
-[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_oqrak"]
-[ext_resource type="Texture2D" uid="uid://b57flomv1w1kn" path="res://External/Icons/Mission/T-Icon-4Player-RepairTheShelter-128.png" id="1_ygfqt"]
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_oqrak"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="2_ldfyk"]
-[ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="3_gksdc"]
-[ext_resource type="Texture2D" uid="uid://qo8gr8lcnhwe" path="res://External/Icons/Mission/T-Icon-Replay-Timeline-L.png" id="4_v50ia"]
-[ext_resource type="Texture2D" uid="uid://7ufybuxv5ka1" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Escalation-128.png" id="4_ytwif"]
-[ext_resource type="Texture2D" uid="uid://c4ws7nelc40k3" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Elemental-Water-128.png" id="5_so40f"]
-[ext_resource type="Texture2D" uid="uid://cu7ogl6fefksj" path="res://External/Icons/MissionRewards/T-Items-WeaponPerkup-Epic-L.png" id="5_u2dso"]
-[ext_resource type="Texture2D" uid="uid://bbbt4kdbwl3m6" path="res://External/Icons/Mission/T_Icon_ProtectThePresent_128.png" id="6_kieuh"]
-[ext_resource type="Texture2D" uid="uid://cm44cfj810nv6" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Pos-AssaultRifle-DamageBuff-128.png" id="6_paxbb"]
-[ext_resource type="Texture2D" uid="uid://671ho5mj72at" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-128.png" id="7_gwati"]
-[ext_resource type="Texture2D" uid="uid://cqb476ao8r15" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Pos-Axe-Buff-128.png" id="7_yjuno"]
-[ext_resource type="Texture2D" uid="uid://dah6pctd8iger" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Pos-Ninja-AbilityRate-Buff-128.png" id="8_5np88"]
-[ext_resource type="Texture2D" uid="uid://chap5n4pu50av" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Enemy-OnHitWeakenBuildings-128.png" id="8_r4rn3"]
-[ext_resource type="Texture2D" uid="uid://cpm4mi4gb1r3v" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-OnDeath-Explode-128.png" id="9_tlcbl"]
-[ext_resource type="Texture2D" uid="uid://cj75oubx4pkq" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-Neg-Miniboss-128.png" id="10_nwnrv"]
-[ext_resource type="Texture2D" uid="uid://iaxpx37qxrsk" path="res://External/Icons/PersistentResources/T-Items-WeaponPerkup-Legendary-L.png" id="12_h6i3t"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="3_m1x5x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_537ep"]
 content_margin_left = 0.0
@@ -74,19 +60,16 @@ size_flags_vertical = 3
 theme = ExtResource("1_oqrak")
 theme_override_styles/panel = SubResource("StyleBoxFlat_537ep")
 script = ExtResource("2_ldfyk")
-powerLevelLabel = NodePath("Front/Panel/PowerLevelLabel")
-missionIcon = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MissionIconSection/PanelContainer/TextureRect")
-missionRewardParent = NodePath("MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer")
-alertModifierParent = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer")
-alertRewardParent = NodePath("MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer")
 alertModifierLayout = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection")
+alertModifierParent = NodePath("MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer")
+missionRewardParent = NodePath("MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer")
 alertRewardLayout = NodePath("MarginContainer/VBoxContainer/OneTimeRewardsSection")
-backgroundTexture = NodePath("TextureRect")
+alertRewardParent = NodePath("MarginContainer/VBoxContainer/OneTimeRewardsSection/VBoxContainer/PanelContainer/GridContainer")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0.5, 0.5, 0.5, 1)
 layout_mode = 2
-texture = ExtResource("3_gksdc")
+texture = ExtResource("3_m1x5x")
 expand_mode = 1
 stretch_mode = 6
 
@@ -119,7 +102,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_snwau")
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
 size_flags_horizontal = 3
-texture = ExtResource("1_ygfqt")
 expand_mode = 3
 stretch_mode = 5
 
@@ -152,55 +134,46 @@ columns = 3
 [node name="Modifier" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("4_ytwif")
 expand_mode = 1
 
 [node name="Modifier8" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("6_paxbb")
 expand_mode = 1
 
 [node name="Modifier9" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("7_yjuno")
 expand_mode = 1
 
 [node name="Modifier3" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("8_5np88")
 expand_mode = 1
 
 [node name="Modifier2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_so40f")
 expand_mode = 1
 
 [node name="Modifier4" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("7_gwati")
 expand_mode = 1
 
 [node name="Modifier5" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("8_r4rn3")
 expand_mode = 1
 
 [node name="Modifier6" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("9_tlcbl")
 expand_mode = 1
 
 [node name="Modifier7" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/MissionAlertsSection/HBoxContainer/PanelContainer/GridContainer"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("10_nwnrv")
 expand_mode = 1
 
 [node name="OneTimeRewardsSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -216,7 +189,6 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/OneTimeRewardsSection/HBoxContainer4"]
 layout_mode = 2
-texture = ExtResource("4_v50ia")
 expand_mode = 3
 stretch_mode = 4
 
@@ -277,7 +249,6 @@ offset_right = -1.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("12_h6i3t")
 expand_mode = 4
 stretch_mode = 4
 
@@ -335,7 +306,6 @@ offset_right = -1.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("12_h6i3t")
 expand_mode = 4
 stretch_mode = 4
 
@@ -393,7 +363,6 @@ offset_right = -1.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("12_h6i3t")
 expand_mode = 4
 stretch_mode = 4
 
@@ -451,7 +420,6 @@ offset_right = -1.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("12_h6i3t")
 expand_mode = 4
 stretch_mode = 4
 
@@ -509,7 +477,6 @@ offset_right = -1.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("12_h6i3t")
 expand_mode = 4
 stretch_mode = 4
 
@@ -567,7 +534,6 @@ offset_right = -1.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 0
-texture = ExtResource("12_h6i3t")
 expand_mode = 4
 stretch_mode = 4
 
@@ -600,7 +566,6 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer2"]
 layout_mode = 2
-texture = ExtResource("6_kieuh")
 expand_mode = 3
 stretch_mode = 4
 
@@ -633,7 +598,6 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_u2dso")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward"]
@@ -651,7 +615,6 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward2"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_u2dso")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward2"]
@@ -669,7 +632,6 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward3"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_u2dso")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward3"]
@@ -687,7 +649,6 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward4"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_u2dso")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward4"]
@@ -705,7 +666,6 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward5"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_u2dso")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward5"]
@@ -723,7 +683,6 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward6"]
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-texture = ExtResource("5_u2dso")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/RepeatableRewardsSection/HBoxContainer3/PanelContainer/GridContainer/RepeatableReward6"]

@@ -1,7 +1,5 @@
 using Godot;
-using System;
 using System.Text.Json.Nodes;
-using System.Xml.Linq;
 
 //TODO: extend gameItemEntry and rename to cardPackEntry
 public partial class LlamaEntry : GameItemEntry

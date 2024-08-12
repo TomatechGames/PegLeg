@@ -1,4 +1,5 @@
 shader_type canvas_item;
+#include "Includes/CornerMask.gdshaderinc"
 
 uniform vec2 ControlSize = vec2(100.0, 100.0);
 uniform vec2 TargetSize = vec2(90.0, 90.0);
@@ -25,19 +26,7 @@ void fragment() {
 	float radius = max(5,max(sizeDiff.x, sizeDiff.y)/2.0);
 	//vec2 shrunkSize = ControlSize - vec2(radius);
 	
-	//generate UV
-	vec2 worldUV = (UV*ControlSize);
-	
-	if(worldUV.x>radius)
-	{
-		worldUV = vec2(max(worldUV.x-(ControlSize.x-(radius*2.0)), radius),worldUV.y);
-	}
-	if(worldUV.y>radius)
-	{
-		worldUV = vec2(worldUV.x, max(worldUV.y-(ControlSize.y-(radius*2.0)), radius));
-	}
-	
-	float dist = distance(worldUV/(radius*2.0), vec2(0.5));
+	float dist = cornerGradient(UV, radius, ControlSize);
 	
 	float finalLineSize = max(min(LineSize, radius),0.0001);
 	float lineScale = 0.5-((finalLineSize*0.5)/radius);

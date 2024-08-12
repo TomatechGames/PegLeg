@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 static class CalenderRequests
 {
+    //this endpoint has been unreliable, will probably remove this class soon
+
     static JsonObject calenderCache;
 
     static Task<JsonObject> activeCalenderRequest = null;

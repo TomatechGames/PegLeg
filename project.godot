@@ -45,15 +45,15 @@ project/assembly_name="PegLegGD"
 [file_customization]
 
 folder_colors={
+"res://GodotThemes/": "pink",
 "res://Scenes/": "green",
 "res://Scripts/": "purple",
-"res://Shaders/": "blue",
-"res://Themes/": "pink"
+"res://Shaders/": "blue"
 }
 
 [gui]
 
-theme/custom="res://Themes/BasicTheme.tres"
+theme/custom="res://GodotThemes/BasicTheme.tres"
 
 [input]
 

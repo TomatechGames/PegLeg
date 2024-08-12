@@ -1,14 +1,14 @@
-[gd_scene load_steps=133 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=157 format=3 uid="uid://u5ag0k8n6eqm"]
 
-[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_3bqtb"]
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
-[ext_resource type="Script" path="res://Scripts/AutoButtonSounds.cs" id="2_db3cl"]
+[ext_resource type="Script" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_db3cl"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="3_mfw8j"]
+[ext_resource type="Script" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
 [ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
 [ext_resource type="Texture2D" uid="uid://ybhd24tgs2aq" path="res://Images/InterfaceIcons/minimise.png" id="4_v4447"]
-[ext_resource type="Texture2D" uid="uid://cn31q5216hi64" path="res://Images/InterfaceIcons/LoadingIconAnim.tres" id="5_8qgoo"]
 [ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="5_f3eja"]
-[ext_resource type="Script" path="res://Scripts/DynamicGridContainer.cs" id="5_uxiwu"]
+[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="5_uxiwu"]
 [ext_resource type="Texture2D" uid="uid://bq8vrrjy47iav" path="res://Images/InterfaceIcons/maximise.png" id="7_we7j1"]
 [ext_resource type="PackedScene" uid="uid://b0uxwtxndd6x3" path="res://Scenes/LlamaEntries/catalog_llama_entry.tscn" id="8_47m5v"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/LlamaInterface.cs" id="8_c8p7o"]
@@ -21,23 +21,20 @@
 [ext_resource type="Texture2D" uid="uid://b1p0g5okeg641" path="res://Images/InterfaceIcons/T-Icon-Manage-Upgrade-32.png" id="14_07m3a"]
 [ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="14_p8xhf"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="15_5u8nd"]
-[ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="15_fool5"]
 [ext_resource type="PackedScene" uid="uid://bje4f7reoc8da" path="res://Scenes/LoadoutEntries/survivor_squad.tscn" id="15_qmadc"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="16_8vm7r"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ColumnStackContainer.cs" id="16_acwd2"]
 [ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="16_cu2sv"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
-[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="16_mawwv"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Currency-X-RayLlama.png" id="16_mawwv"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="16_o064n"]
-[ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="17_p0nl0"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="16_rir5i"]
 [ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="17_u4ds1"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="18_jt4k8"]
 [ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="18_l7w75"]
-[ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://Themes/LineEditLargeTheme.tres" id="19_xrrp5"]
+[ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="19_xrrp5"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="20_0bx3d"]
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="20_qa7a1"]
-[ext_resource type="Texture2D" uid="uid://by37hi27b3842" path="res://Images/MissionZoneBackgrounds/Desert_(Save_the_World)_-_Biome_-_Fortnite.webp" id="21_7pseg"]
-[ext_resource type="Texture2D" uid="uid://c7fsof1cm3rkp" path="res://Images/MissionZoneBackgrounds/FORT_Load_DeployTheProbe_Arid.png" id="22_bmg7o"]
 [ext_resource type="PackedScene" uid="uid://d2sah8mggjcus" path="res://Scenes/LlamaEntries/llama_highlight.tscn" id="24_a8522"]
 [ext_resource type="Texture2D" uid="uid://gak2hv6itgoo" path="res://Images/InterfaceIcons/T-Icon-Survivor-Leader-CARD.png" id="24_trcxm"]
 [ext_resource type="Script" path="res://Scripts/WindowSizeDragger.cs" id="25_3cufh"]
@@ -45,7 +42,7 @@
 [ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="25_hxjuc"]
 [ext_resource type="PackedScene" uid="uid://31ck1j8euqq7" path="res://Scenes/QuestEntries/quest_highlight.tscn" id="25_nry6e"]
 [ext_resource type="PackedScene" uid="uid://buf6p8qyydofm" path="res://Scenes/Overlays/game_item_viewer.tscn" id="25_r7yrq"]
-[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="26_86eqc"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="26_86eqc"]
 [ext_resource type="Texture2D" uid="uid://dn8kyw5a3ibc4" path="res://Images/InterfaceIcons/T-Items-Reagent-C-T02-L.png" id="27_o6528"]
 [ext_resource type="Texture2D" uid="uid://gfhrrk7epybx" path="res://Images/InterfaceIcons/T-Items-Reagent-C-T01-L.png" id="28_5f7ml"]
 [ext_resource type="Texture2D" uid="uid://djcvidllqfmt5" path="res://Images/InterfaceIcons/T_UI_LevelManagement_Trashcan_Icon.png" id="28_eu0j4"]
@@ -75,30 +72,31 @@
 [ext_resource type="PackedScene" uid="uid://cfut7jqglsle3" path="res://Scenes/TimelineEntries/timeline_season.tscn" id="46_wnti5"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="47_6bd6x"]
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="47_aqmhh"]
-[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://Themes/Styleboxes/CheckButton/UnselectedCheck.tres" id="47_c3lbu"]
-[ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://Themes/Styleboxes/CheckButton/CheckContainer.tres" id="47_pojk8"]
-[ext_resource type="StyleBox" uid="uid://biqx82867v22n" path="res://Themes/Styleboxes/CheckButton/SelectedCheck.tres" id="48_dyhi4"]
+[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="47_c3lbu"]
+[ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://GodotThemes/Styleboxes/CheckButton/CheckContainer.tres" id="47_pojk8"]
+[ext_resource type="StyleBox" uid="uid://biqx82867v22n" path="res://GodotThemes/Styleboxes/CheckButton/SelectedCheck.tres" id="48_dyhi4"]
 [ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="48_xqgon"]
-[ext_resource type="StyleBox" uid="uid://dr65gsxfjpkwp" path="res://Themes/Styleboxes/CheckButton/HoveredCheck.tres" id="49_0vyx7"]
+[ext_resource type="StyleBox" uid="uid://dr65gsxfjpkwp" path="res://GodotThemes/Styleboxes/CheckButton/HoveredCheck.tres" id="49_0vyx7"]
 [ext_resource type="Texture2D" uid="uid://lhe8ded54hsv" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Pin_128.png" id="49_03c84"]
 [ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="49_3lkc1"]
-[ext_resource type="StyleBox" uid="uid://b2ou1v5mjbih6" path="res://Themes/Styleboxes/CheckButton/SelectedHoveredCheck.tres" id="50_nlryh"]
+[ext_resource type="StyleBox" uid="uid://b2ou1v5mjbih6" path="res://GodotThemes/Styleboxes/CheckButton/SelectedHoveredCheck.tres" id="50_nlryh"]
 [ext_resource type="PackedScene" uid="uid://bcop5fmp7fh1d" path="res://Scripts/UIElements/test_recycle_element.tscn" id="50_nw81e"]
 [ext_resource type="PackedScene" uid="uid://bu88x28im6m6h" path="res://Scenes/QuestEntries/quest_group_foldout.tscn" id="52_6qush"]
 [ext_resource type="Texture2D" uid="uid://bfm8vt42cetpl" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Outfit.png" id="52_kfx5x"]
-[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/T_UI_ICON_S22_SR_SupplyDropMin.png" id="52_vhxpv"]
+[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="52_vhxpv"]
 [ext_resource type="PackedScene" uid="uid://c5in0c8tv1sfq" path="res://Scenes/QuestEntries/quest_objective.tscn" id="53_oesjd"]
 [ext_resource type="Texture2D" uid="uid://df1h55n2choqy" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Pickaxe.png" id="53_uoeqt"]
 [ext_resource type="Texture2D" uid="uid://w60p2sjlmkvk" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Glider.png" id="54_q5pb6"]
 [ext_resource type="Texture2D" uid="uid://cl65b2bsn0dhl" path="res://Images/InterfaceIcons/LockerIcons/T-Icon-Emotes-E-Dance-L.png" id="55_2jgv1"]
 [ext_resource type="Texture2D" uid="uid://48pk4tnhdqms" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Wrap.png" id="56_mesd3"]
 [ext_resource type="Texture2D" uid="uid://b1e36epnmrfm2" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Music.png" id="57_5m3jj"]
-[ext_resource type="Script" path="res://Scripts/VolumeHook.cs" id="58_7yvd6"]
+[ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="58_7yvd6"]
 [ext_resource type="Texture2D" uid="uid://r0cockkqemn7" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Instrument.png" id="58_w31ab"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="59_87sqg"]
 [ext_resource type="Texture2D" uid="uid://duxxsyrww1ycc" path="res://Images/InterfaceIcons/LockerIcons/T_Icon_Body.png" id="59_r64bh"]
 [ext_resource type="PackedScene" uid="uid://x2n7sj7hjmla" path="res://Scenes/general_testing.tscn" id="62_dhqk7"]
-[ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://Themes/Styleboxes/CheckButton/CheckSeparator.tres" id="63_qevm7"]
+[ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="62_kuf7g"]
+[ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://GodotThemes/Styleboxes/CheckButton/CheckSeparator.tres" id="63_qevm7"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/QuestInterface.cs" id="64_mksrq"]
 [ext_resource type="PackedScene" uid="uid://b7bfdlitheyn0" path="res://Scenes/QuestEntries/quest_group.tscn" id="66_4mrvf"]
 [ext_resource type="Script" path="res://Scripts/Quests/QuestViewer.cs" id="68_ni4al"]
@@ -109,6 +107,7 @@
 [ext_resource type="Texture2D" uid="uid://b2prelv5a2wnx" path="res://Images/AspectRatios/1x2Aspect.png" id="74_wl78o"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="75_q1lfg"]
 [ext_resource type="Script" path="res://Scripts/RegexTest.cs" id="83_rdrjc"]
+[ext_resource type="PackedScene" uid="uid://dpd06j33s360w" path="res://Scenes/Overlays/shop_purchase_animation.tscn" id="96_2bhmt"]
 [ext_resource type="PackedScene" uid="uid://dd6fc218gb2da" path="res://Scenes/Overlays/settings_window.tscn" id="99_hfy7e"]
 [ext_resource type="Texture2D" uid="uid://boywmwfvrbmwp" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Cogs_128.png" id="103_l32pl"]
 
@@ -180,6 +179,106 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_y851b"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_eieob"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_phnn8"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kruod"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5yncv"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_86ldy"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yacje"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7jvq7"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_06c6i"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_oahhq"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8p625"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ehl0w"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gjdrs"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qjjo7"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fqoc8"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xj0qe"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hdexm"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4hvyb"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5ixy2"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ytivp"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jen7r"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qjw4u"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ltlu3"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ydjnk"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_05pmy"]
+resource_local_to_scene = true
+frames = 24
+speed_scale = 24.0
+frame_0/texture = SubResource("CompressedTexture2D_y851b")
+frame_1/texture = SubResource("CompressedTexture2D_eieob")
+frame_1/duration = 1.0
+frame_2/texture = SubResource("CompressedTexture2D_gjdrs")
+frame_2/duration = 1.0
+frame_3/texture = SubResource("CompressedTexture2D_4hvyb")
+frame_3/duration = 1.0
+frame_4/texture = SubResource("CompressedTexture2D_5ixy2")
+frame_4/duration = 1.0
+frame_5/texture = SubResource("CompressedTexture2D_ytivp")
+frame_5/duration = 1.0
+frame_6/texture = SubResource("CompressedTexture2D_jen7r")
+frame_6/duration = 1.0
+frame_7/texture = SubResource("CompressedTexture2D_qjw4u")
+frame_7/duration = 1.0
+frame_8/texture = SubResource("CompressedTexture2D_ltlu3")
+frame_8/duration = 1.0
+frame_9/texture = SubResource("CompressedTexture2D_ydjnk")
+frame_9/duration = 1.0
+frame_10/texture = SubResource("CompressedTexture2D_phnn8")
+frame_10/duration = 1.0
+frame_11/texture = SubResource("CompressedTexture2D_kruod")
+frame_11/duration = 1.0
+frame_12/texture = SubResource("CompressedTexture2D_5yncv")
+frame_12/duration = 1.0
+frame_13/texture = SubResource("CompressedTexture2D_86ldy")
+frame_13/duration = 1.0
+frame_14/texture = SubResource("CompressedTexture2D_yacje")
+frame_14/duration = 1.0
+frame_15/texture = SubResource("CompressedTexture2D_7jvq7")
+frame_15/duration = 1.0
+frame_16/texture = SubResource("CompressedTexture2D_06c6i")
+frame_16/duration = 1.0
+frame_17/texture = SubResource("CompressedTexture2D_oahhq")
+frame_17/duration = 1.0
+frame_18/texture = SubResource("CompressedTexture2D_8p625")
+frame_18/duration = 1.0
+frame_19/texture = SubResource("CompressedTexture2D_ehl0w")
+frame_19/duration = 1.0
+frame_20/texture = SubResource("CompressedTexture2D_qjjo7")
+frame_20/duration = 1.0
+frame_21/texture = SubResource("CompressedTexture2D_fqoc8")
+frame_21/duration = 1.0
+frame_22/texture = SubResource("CompressedTexture2D_xj0qe")
+frame_22/duration = 1.0
+frame_23/texture = SubResource("CompressedTexture2D_hdexm")
+frame_23/duration = 1.0
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_nlo3j"]
 resource_name = "MissionZoneFilter"
 
@@ -214,7 +313,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5p5r"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_owwq5"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -265,7 +364,19 @@ theme = ExtResource("1_3bqtb")
 [node name="AutoButtonSounds" type="Node" parent="."]
 script = ExtResource("2_db3cl")
 
-[node name="BG" type="TextureRect" parent="."]
+[node name="BGController" type="Control" parent="." node_paths=PackedStringArray("bgMain", "bgOverlay")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_sy4n4")
+bgMain = NodePath("BG")
+bgOverlay = NodePath("BGFade")
+
+[node name="BG" type="TextureRect" parent="BGController"]
 self_modulate = Color(0.5, 0.5, 0.5, 1)
 z_index = -10
 material = SubResource("ShaderMaterial_wyb1b")
@@ -278,7 +389,23 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("12_tuvkq")
 expand_mode = 1
-script = ExtResource("15_fool5")
+script = ExtResource("18_jt4k8")
+
+[node name="BGFade" type="TextureRect" parent="BGController"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+z_index = -10
+material = SubResource("ShaderMaterial_wyb1b")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("16_rir5i")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
 
 [node name="MainApp" type="Control" parent="."]
 custom_minimum_size = Vector2(700, 300)
@@ -733,7 +860,7 @@ layout_mode = 2
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_yxwuj")
 layout_mode = 2
-texture = ExtResource("17_p0nl0")
+texture = ExtResource("16_rir5i")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
 syncControlSize = true
@@ -819,7 +946,7 @@ layout_mode = 2
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_sk8cl")
 layout_mode = 2
-texture = ExtResource("21_7pseg")
+texture = ExtResource("16_rir5i")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
 syncControlSize = true
@@ -905,7 +1032,7 @@ layout_mode = 2
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_ggxhy")
 layout_mode = 2
-texture = ExtResource("22_bmg7o")
+texture = ExtResource("16_rir5i")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
 syncControlSize = true
@@ -992,7 +1119,7 @@ layout_mode = 2
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_ggxhy")
 layout_mode = 2
-texture = ExtResource("22_bmg7o")
+texture = ExtResource("16_rir5i")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
 syncControlSize = true
@@ -1079,7 +1206,7 @@ layout_mode = 2
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_ggxhy")
 layout_mode = 2
-texture = ExtResource("22_bmg7o")
+texture = ExtResource("16_rir5i")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
 syncControlSize = true
@@ -1166,7 +1293,7 @@ layout_mode = 2
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_ggxhy")
 layout_mode = 2
-texture = ExtResource("22_bmg7o")
+texture = ExtResource("16_rir5i")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
 syncControlSize = true
@@ -1594,7 +1721,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
-current_tab = 1
+current_tab = 4
 script = ExtResource("16_hsemp")
 
 [node name="Missions" type="PanelContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemSearchToggle", "itemFilterButtons", "missionList", "loadingIcon")]
@@ -1654,7 +1781,7 @@ offset_left = -1066.0
 offset_right = -866.0
 offset_bottom = 24.0
 text = "Favourites"
-icon = ExtResource("5_8qgoo")
+icon = SubResource("AnimatedTexture_05pmy")
 expand_icon = true
 item_count = 1
 popup/item_0/text = "test"
@@ -2077,6 +2204,7 @@ offset_top = -128.0
 offset_bottom = 128.0
 
 [node name="Llamas" type="HSplitContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("selectedPurchaseCountSpinner")]
+visible = false
 layout_mode = 2
 split_offset = 585
 script = ExtResource("8_c8p7o")
@@ -2084,7 +2212,6 @@ catalogLlamaEntryScene = ExtResource("8_47m5v")
 cardpackLlamaEntryScene = ExtResource("9_ewgu3")
 itemEntryScene = ExtResource("14_p8xhf")
 loadingIconPath = NodePath("Llama Selector/ShopLlamas/ScrollContainer/MarginContainer/Center/LoadingIcon")
-llamaTimerLabelPath = NodePath("Llama Selector/Header/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/TimeLabel")
 catalogLlamaParentPath = NodePath("Llama Selector/ShopLlamas/ScrollContainer/MarginContainer/XRayLlamas")
 cardpackLlamaPanelPath = NodePath("Llama Selector/InventoryLlamas/HBoxContainer")
 cardpackLlamaParentPath = NodePath("Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/CardPackParent")
@@ -2134,6 +2261,8 @@ text = "Llamas refresh in: "
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "???"
+script = ExtResource("62_kuf7g")
+timerType = 1
 
 [node name="Label" type="Label" parent="MainApp/TabContainer/Llamas/Llama Selector/Header/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -2627,17 +2756,14 @@ synergy = "Inventor"
 visible = false
 layout_mode = 2
 
-[node name="Item Shop" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("weeklyTimer", "weeklyHighlightParent", "weeklyRegularParent", "eventTimer", "eventHighlightParent", "eventRegularParent")]
-visible = false
+[node name="Item Shop" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("weeklyHighlightParent", "weeklyRegularParent", "eventHighlightParent", "eventRegularParent")]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("36_0ynuk")
 regularShopElement = ExtResource("38_w7j3j")
 highlightShopElement = ExtResource("38_w7j3j")
-weeklyTimer = NodePath("TabContainer/Weekly Shop/Timer/PanelContainer/MarginContainer/HBoxContainer/Label2")
 weeklyHighlightParent = NodePath("TabContainer/Weekly Shop/ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
 weeklyRegularParent = NodePath("TabContainer/Weekly Shop/ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
-eventTimer = NodePath("TabContainer/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer/Label2")
 eventHighlightParent = NodePath("TabContainer/Event Shop/ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
 eventRegularParent = NodePath("TabContainer/Event Shop/ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
 
@@ -2645,9 +2771,11 @@ eventRegularParent = NodePath("TabContainer/Event Shop/ScrollContainer/MarginCon
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_tgevh")
 tab_alignment = 1
+current_tab = 1
 script = ExtResource("16_hsemp")
 
 [node name="Weekly Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2679,6 +2807,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "???"
 vertical_alignment = 1
+script = ExtResource("62_kuf7g")
+timerType = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Weekly Shop"]
 layout_mode = 2
@@ -2718,7 +2848,6 @@ minCols = 2
 spacing = Vector2(10, 10)
 
 [node name="Event Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2750,6 +2879,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "???"
 vertical_alignment = 1
+script = ExtResource("62_kuf7g")
+timerType = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Event Shop"]
 layout_mode = 2
@@ -2789,7 +2920,7 @@ script = ExtResource("5_uxiwu")
 minCols = 2
 spacing = Vector2(10, 10)
 
-[node name="Cosmetic Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer" node_paths=PackedStringArray("testingTree", "splitContainer", "navContainer", "navigationPane", "pageParent", "simpleShopParent", "shopRefreshLabel", "sacButton", "filterBlocker", "simpleShopMode", "verticalScrollBox", "requireAddedToday", "requireLeavingSoon", "excludeDiscountBundles", "resetTypeFilters", "newOrOldFilters", "typeFilters")]
+[node name="Cosmetic Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer" node_paths=PackedStringArray("testingTree", "splitContainer", "navContainer", "navigationPane", "pageParent", "simpleShopParent", "sacButton", "filterBlocker", "simpleShopMode", "verticalScrollBox", "requireAddedToday", "requireLeavingSoon", "excludeDiscountBundles", "resetTypeFilters", "newOrOldFilters", "typeFilters")]
 visible = false
 layout_mode = 2
 script = ExtResource("42_1vsyr")
@@ -2803,7 +2934,6 @@ shopRowScene = ExtResource("42_j0311")
 shopEntryScene = ExtResource("47_aqmhh")
 pageParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/VBoxContainer")
 simpleShopParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/MarginContainer/HFlowContainer")
-shopRefreshLabel = NodePath("TimerAndSAC/PanelContainer/MarginContainer/HBoxContainer/Label2")
 sacButton = NodePath("TimerAndSAC/PanelContainer/MarginContainer/HBoxContainer/Button")
 filterBlocker = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBlocker")
 simpleShopMode = NodePath("HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/SimpleShopModePanel/MarginContainer/SimpleShopMode")
@@ -2843,6 +2973,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "???"
 vertical_alignment = 1
+script = ExtResource("62_kuf7g")
+timerType = 1
 
 [node name="Control" type="Control" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/TimerAndSAC/PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -2862,6 +2994,8 @@ text = "???"
 [node name="HSplitContainer" type="HSplitContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop"]
 layout_mode = 2
 size_flags_vertical = 3
+split_offset = 460
+dragger_visibility = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer"]
 custom_minimum_size = Vector2(250, 0)
@@ -3381,7 +3515,7 @@ mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_s5p5r")
+material = SubResource("ShaderMaterial_owwq5")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
@@ -3788,14 +3922,18 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 
-[node name="LoadingOverlay" parent="OverlayWindows" instance=ExtResource("31_v6low")]
+[node name="ShopPurchaseAnimation" parent="OverlayWindows" instance=ExtResource("96_2bhmt")]
 visible = false
 layout_mode = 1
-startOpen = false
 
 [node name="SettingsWindow" parent="OverlayWindows" instance=ExtResource("99_hfy7e")]
 visible = false
 layout_mode = 1
+
+[node name="LoadingOverlay" parent="OverlayWindows" instance=ExtResource("31_v6low")]
+visible = false
+layout_mode = 1
+startOpen = false
 
 [node name="StatusBar" type="MarginContainer" parent="." node_paths=PackedStringArray("background", "settingsWindow", "sizeDraggers")]
 layout_mode = 1
@@ -3809,7 +3947,7 @@ theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 script = ExtResource("2_3ot56")
-background = NodePath("../BG")
+background = NodePath("../BGController")
 settingsWindow = NodePath("../OverlayWindows/SettingsWindow")
 sizeDraggers = [NodePath("../ResizeGrabber/BottomGrabber"), NodePath("../ResizeGrabber/TopGrabber"), NodePath("../ResizeGrabber/LeftGrabber"), NodePath("../ResizeGrabber/RightGrabber")]
 

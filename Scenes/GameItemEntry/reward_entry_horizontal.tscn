@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://byv58kd1qnkw5"]
 
-[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_yisoq"]
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_yisoq"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="2_3h6ln"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_4j5k2"]
-[ext_resource type="Script" path="res://Scripts/UIParticleScaler.cs" id="3_ruu74"]
+[ext_resource type="Script" path="res://Scripts/UIElements/UIParticleScaler.cs" id="3_ruu74"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="4_8ibqa"]
 [ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="5_yqoxp"]
 

@@ -11,47 +11,31 @@ public partial class GameItemViewer : ModalWindow
     public static GameItemViewer Instance { get; private set; }
 
     [Export]
-    NodePath primaryItemEntryPath;
     GameItemEntry primaryItemEntry;
-
-    //[Export]
-    //RichTextLabel descriptionText;
-
     [Export]
-    NodePath extraIconsRootPath;
-    Control extraIconsRoot;
-
-    [Export]
-    NodePath statsTreePath;
     Tree statsTree;
-
     [Export]
-    NodePath devTextPath;
     CodeEdit devText;
 
     [ExportGroup("Perk Details")]
     [Export]
-    NodePath perkDetailsPanelPath;
     PerkViewer perkDetailsPanel;
-
-    //TODO: set up weapon/defender perks and stuff
 
     [ExportGroup("Hero Details")]
     [Export]
-    NodePath heroDetailsPanelPath;
     Control heroDetailsPanel;
 
     [Export(PropertyHint.ArrayType)]
-    NodePath[] heroAbilityEntryPaths = new NodePath[3];
     HeroAbilityEntry[] heroAbilityEntries;
 
     [Export]
-    NodePath heroPerkEntryPath;
     HeroAbilityEntry heroPerkEntry;
 
     [Export]
-    NodePath heroCommanderPerkEntryPath;
     HeroAbilityEntry heroCommanderPerkEntry;
+
+    [Export]
+    GameItemEntry teamPerkEntry;
 
     [Export]
     Slider tierSlider;
@@ -64,24 +48,16 @@ public partial class GameItemViewer : ModalWindow
     [ExportGroup("Buttons")]
 
     [Export]
-    NodePath recycleButtonPanelPath;
     Control recycleButtonPanel;
-
     [Export]
-    NodePath levelupButtonPanelPath;
     Control levelupButtonPanel;
-
     [Export]
-    NodePath evolveButtonPanelPath;
     Control evolveButtonPanel;
-
     [Export]
-    NodePath rarityupButtonPanelPath;
     Control rarityupButtonPanel;
 
     [ExportGroup("Choices")]
     [Export]
-    NodePath itemChoiceParentPath;
     Control itemChoiceParent;
     [Export]
     GameItemEntry[] itemChoiceEntries;
@@ -106,25 +82,6 @@ public partial class GameItemViewer : ModalWindow
     {
         base._Ready();
         Instance = this;
-
-        this.GetNodeOrNull(primaryItemEntryPath, out primaryItemEntry);
-        this.GetNodeOrNull(extraIconsRootPath, out extraIconsRoot);
-
-        this.GetNodeOrNull(statsTreePath, out statsTree);
-        this.GetNodeOrNull(perkDetailsPanelPath, out perkDetailsPanel);
-
-        this.GetNodeOrNull(heroDetailsPanelPath, out heroDetailsPanel);
-        this.GetNodesOrNull(heroAbilityEntryPaths, out heroAbilityEntries);
-        this.GetNodeOrNull(heroCommanderPerkEntryPath, out heroCommanderPerkEntry);
-        this.GetNodeOrNull(heroPerkEntryPath, out heroPerkEntry);
-
-        this.GetNodeOrNull(recycleButtonPanelPath, out recycleButtonPanel);
-        this.GetNodeOrNull(levelupButtonPanelPath, out levelupButtonPanel);
-        this.GetNodeOrNull(evolveButtonPanelPath, out evolveButtonPanel);
-        this.GetNodeOrNull(rarityupButtonPanelPath, out rarityupButtonPanel);
-
-        this.GetNodeOrNull(devTextPath, out devText);
-        this.GetNodeOrNull(itemChoiceParentPath, out itemChoiceParent);
 
         levelSlider.ValueChanged += _ => RefreshHeroStats();
         tierSlider.ValueChanged += _ => RefreshHeroStats();
@@ -186,7 +143,8 @@ public partial class GameItemViewer : ModalWindow
                 var thisChoice = optionsArr[i];
                 BanjoAssets.TryGetTemplate(thisChoice["itemType"].ToString().Replace("Weapon:w", "Schematic:s"), out var itemTemplate);
                 var itemStack = itemTemplate.CreateInstanceOfItem(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
-                itemChoiceEntries[i].SetItemData(await itemStack.SetItemRewardNotification());
+                itemChoiceEntries[i].SetItemData(itemStack);
+                itemChoiceEntries[i].SetRewardNotification();
                 choices[i] = itemStack;
             }
 
@@ -209,7 +167,15 @@ public partial class GameItemViewer : ModalWindow
     {
         Visible = true;
         devText.Text = itemInstance.ToString();
-        primaryItemEntry.SetItemData(itemInstance);
+        if (linkedProfileItem is null)
+        {
+            primaryItemEntry.SetItemData(itemInstance);
+            primaryItemEntry.SetRewardNotification();
+        }
+        else
+        {
+            primaryItemEntry.LinkProfileItem(linkedProfileItem);
+        }
         var template = itemInstance.GetTemplate();
         latestItem = itemInstance;
         await GetFORTStats();
@@ -232,6 +198,13 @@ public partial class GameItemViewer : ModalWindow
             }
             heroPerkEntry.SetAbility(heroItems["HeroPerk"].AsObject(), false);
             heroCommanderPerkEntry.SetAbility(heroItems["CommanderPerk"].AsObject(), tier<2);
+            if (template["UnlocksTeamPerk"]?.ToString() is string teamPerk)
+            {
+                teamPerkEntry.SetItemData(BanjoAssets.TryGetTemplate(teamPerk).CreateInstanceOfItem());
+                teamPerkEntry.Visible = true;
+            }
+            else
+                teamPerkEntry.Visible = false;
 
             RefreshHeroStats();
 
@@ -391,6 +364,10 @@ public partial class GameItemViewer : ModalWindow
         if (linkedShopOffer is null)
             return;
         GD.Print("attempting to purchase offer: " + linkedShopOffer);
+        //fake it to test purchase animation
+        GD.Print("FAKE PURCHASE");
+        ShopPurchaseAnimation.PlayAnimation(latestItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
+        return;
 
         JsonObject body = new()
         {
@@ -408,8 +385,10 @@ public partial class GameItemViewer : ModalWindow
         SetWindowOpen(false);
         LoadingOverlay.Instance.RemoveLoadingKey("ItemPurchase");
 
-        var resultItems = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"].AsArray();
-        await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());
+        var resultItem = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"][0];
+        //await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());
+
+        ShopPurchaseAnimation.PlayAnimation(resultItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
         purchaseCallback?.Invoke();
         purchaseCallback = null;
     }

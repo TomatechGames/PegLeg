@@ -6,7 +6,7 @@ using System.Text.Json.Nodes;
 
 public static class QuestGroupGenerator
 {
-    const string questGeneratorPath = "res://External/questgroupgenerators.json";
+    const string questGeneratorPath = "res://External/questGroupGenerators.json";
     static JsonArray generatedQuests;
     public static JsonArray GetQuestGroups()
     {

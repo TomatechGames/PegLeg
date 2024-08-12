@@ -37,6 +37,12 @@ public partial class QuestInterface : Control
         };
         nodeController.Pressed += RefreshCurrentSelection;
         questViewer.OnRefreshNeeded += RefreshCurrentSelection;
+        RefreshTimerController.OnDayChanged += () =>
+        {
+            questsNeedUpdate = true;
+            if (IsVisibleInTree())
+                LoadQuests();
+        };
     }
 
     public static event Action OnPinnedQuestsCleared;
@@ -58,14 +64,16 @@ public partial class QuestInterface : Control
         LoadingOverlay.Instance.RemoveLoadingKey("pinnedQuest");
     }
 
-    bool hasStartedGeneratingQuests = false;
-	async void LoadQuests()
+    bool questsNeedUpdate = true;
+    bool isGeneratingQuests = false;
+    async void LoadQuests()
     {
-        if (!await LoginRequests.TryLogin() || hasStartedGeneratingQuests)
+        if (!await LoginRequests.TryLogin() || isGeneratingQuests || !questsNeedUpdate)
             return;
         questListLayout.Visible = false;
         loadingIcon.Visible = true;
-        hasStartedGeneratingQuests = true;
+        isGeneratingQuests = true;
+        questsNeedUpdate = false;
         await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
         var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
 
@@ -113,6 +121,9 @@ public partial class QuestInterface : Control
 
         questListLayout.Visible = true;
         loadingIcon.Visible = false;
+        isGeneratingQuests = false;
+        if (questsNeedUpdate)
+            LoadQuests();
     }
 
     async void RefreshCurrentSelection()

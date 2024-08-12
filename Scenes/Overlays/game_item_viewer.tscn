@@ -1,24 +1,24 @@
 [gd_scene load_steps=24 format=3 uid="uid://buf6p8qyydofm"]
 
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer.cs" id="1_5fxot"]
-[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_croo3"]
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_croo3"]
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_iqrw2"]
 [ext_resource type="PackedScene" uid="uid://3kvmnkrrkqf1" path="res://Scenes/GameItemEntry/reward_entry_vertical.tscn" id="1_vbhfu"]
-[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/T-Icon-Hero-Soldier-CARD.png" id="2_151di"]
+[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Hero-Soldier-CARD.png" id="2_151di"]
 [ext_resource type="PackedScene" uid="uid://be5lic7x1too2" path="res://Scenes/PerkAndAbilityEntries/weapon_perk_selector_entry.tscn" id="2_t0h0p"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="3_f2ac1"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_fwu0d"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/RarityGameItemEntry.cs" id="5_1irhc"]
 [ext_resource type="Script" path="res://Scripts/PerkViewer.cs" id="7_14t7q"]
-[ext_resource type="StyleBox" uid="uid://c2skfgtbdx32l" path="res://Themes/Styleboxes/Light/LightBox.tres" id="8_70ac8"]
+[ext_resource type="StyleBox" uid="uid://c2skfgtbdx32l" path="res://GodotThemes/Styleboxes/Light/LightBox.tres" id="8_70ac8"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="10_c8yg2"]
 [ext_resource type="PackedScene" uid="uid://cb15vvccjgrdk" path="res://Scenes/PerkAndAbilityEntries/hero_ability_entry.tscn" id="11_bxa5o"]
 [ext_resource type="PackedScene" uid="uid://bgyk3guex13ch" path="res://Scenes/PerkAndAbilityEntries/hero_perk_entry.tscn" id="12_pygth"]
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="15_8sk0j"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="15_pox86"]
 [ext_resource type="Texture2D" uid="uid://dnqbqca02sqwq" path="res://Images/InterfaceIcons/T-Pattern-OrArrow-128.png" id="16_3ck4t"]
-[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="17_5dqmp"]
-[ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://Themes/LineEditLargeTheme.tres" id="18_4mdgc"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Currency-X-RayLlama.png" id="17_5dqmp"]
+[ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="18_4mdgc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wvde"]
 bg_color = Color(0.453125, 0.496094, 0.644531, 1)
@@ -38,25 +38,21 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="GameItemViewer" node_paths=PackedStringArray("tierSlider", "levelSlider", "itemChoiceEntries", "itemChoiceLayoutSections", "purchasePanel", "outOfStockPanel", "cantAffordPanel", "purchaseCountSpinner", "priceIcon", "priceLabel") instance=ExtResource("1_iqrw2")]
+[node name="GameItemViewer" node_paths=PackedStringArray("primaryItemEntry", "statsTree", "devText", "perkDetailsPanel", "heroDetailsPanel", "heroAbilityEntries", "heroPerkEntry", "heroCommanderPerkEntry", "teamPerkEntry", "tierSlider", "levelSlider", "itemChoiceParent", "itemChoiceEntries", "itemChoiceLayoutSections", "purchasePanel", "outOfStockPanel", "cantAffordPanel", "purchaseCountSpinner", "priceIcon", "priceLabel") instance=ExtResource("1_iqrw2")]
 theme = ExtResource("1_croo3")
 script = ExtResource("1_5fxot")
-primaryItemEntryPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical")
-extraIconsRootPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/ExtraIcons")
-statsTreePath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/ItemStats")
-devTextPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/DevDetails/CodeEdit")
-perkDetailsPanelPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/ItemPerks")
-heroDetailsPanelPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails")
-heroAbilityEntryPaths = [NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry2"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry3")]
-heroPerkEntryPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HeroPerkEntry")
-heroCommanderPerkEntryPath = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/CommanderPerkEntry")
+primaryItemEntry = NodePath("Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical")
+statsTree = NodePath("Control/WindowContents/CenterContainer/window/MainContent/ItemStats")
+devText = NodePath("Control/WindowContents/CenterContainer/window/MainContent/DevDetails/CodeEdit")
+perkDetailsPanel = NodePath("Control/WindowContents/CenterContainer/window/MainContent/ItemPerks")
+heroDetailsPanel = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails")
+heroAbilityEntries = [NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry2"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry3")]
+heroPerkEntry = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HeroPerkEntry")
+heroCommanderPerkEntry = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/CommanderPerkEntry")
+teamPerkEntry = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk")
 tierSlider = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TierSlider")
 levelSlider = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/LevelSlider")
-recycleButtonPanelPath = null
-levelupButtonPanelPath = null
-evolveButtonPanelPath = null
-rarityupButtonPanelPath = null
-itemChoiceParentPath = NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector")
+itemChoiceParent = NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector")
 itemChoiceEntries = [NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/RewardEntryHorizontal")]
 itemChoiceLayoutSections = [NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3")]
 purchasePanel = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel")
@@ -404,7 +400,7 @@ text = "8888/8888"
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
 
-[node name="BackButton" type="Button" parent="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" index="0"]
+[node name="BackButton" type="Button" parent="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" index="0" groups=["ExcludePressSounds"]]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Back"
@@ -454,16 +450,16 @@ lockText = "Evolve Hero to 2 Stars to unlock this Ability"
 layout_mode = 2
 lockText = "Evolve Hero to 3 Stars to unlock this Ability"
 
-[node name="HeroPerkEntry" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="1" instance=ExtResource("12_pygth")]
+[node name="CommanderPerkEntry" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="1" instance=ExtResource("12_pygth")]
 layout_mode = 2
 
-[node name="CommanderPerkEntry" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="2" instance=ExtResource("12_pygth")]
+[node name="HeroPerkEntry" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="2" instance=ExtResource("12_pygth")]
 layout_mode = 2
 
 [node name="TeamPerk" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="3"]
-visible = false
 layout_mode = 2
 theme_override_styles/panel = ExtResource("8_70ac8")
+script = ExtResource("10_c8yg2")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk" index="0"]
 layout_mode = 2
@@ -483,6 +479,7 @@ layout_mode = 2
 text = "Blakebeards Stash"
 
 [node name="TierSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="4"]
+visible = false
 layout_mode = 2
 max_value = 5.0
 rounded = true
@@ -490,6 +487,7 @@ tick_count = 6
 ticks_on_borders = true
 
 [node name="LevelSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer" index="5"]
+visible = false
 layout_mode = 2
 max_value = 60.0
 rounded = true
@@ -1032,8 +1030,10 @@ size_flags_horizontal = 4
 [connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" method="set_tooltip_text"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/BackButton" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks" method="ClosePerkChanger"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/ApplyButton" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks" method="ApplyReplacementPerk"]
+[connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk" to="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk/HBoxContainer/TextureRect" method="set_texture"]
+[connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk" to="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk/HBoxContainer/Label2" method="set_text"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton/TextureRect" method="set_visible"]
-[connection signal="HoldReleased" from="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/Responsive Button Area" to="." method="PurchaseItem"]
+[connection signal="HoldPressed" from="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/Responsive Button Area" to="." method="PurchaseItem"]

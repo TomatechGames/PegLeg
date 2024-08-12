@@ -12,7 +12,7 @@ public partial class TitleBarDragger : Control
     [Export]
     bool maximiseAtRoof = true;
     [Export]
-    AdaptivePanelController background;
+    BackgroundController background;
     [Export]
     ModalWindow settingsWindow;
     [Export(PropertyHint.ArrayType)]
@@ -55,7 +55,7 @@ public partial class TitleBarDragger : Control
                     {
                         dragger.Visible = true;
                     }
-                    background?.SetShaderBool(true, "UseCorners");
+                    background.SetCorners(true);
                 }
                 windowStart = window.Position;
                 if (wasDragging && !isDragging && mouseStart.Y < 10 && maximiseAtRoof)
@@ -111,7 +111,7 @@ public partial class TitleBarDragger : Control
             isMaximised = true;
         }
 
-        background?.SetShaderBool(!isMaximised, "UseCorners");
+        background.SetCorners(!isMaximised);
     }
 
     public static event Action PerformRefresh;
@@ -130,7 +130,8 @@ public partial class TitleBarDragger : Control
 
     public void OpenSettings()
     {
-        settingsWindow.SetWindowOpen(true);
+        if (!LoadingOverlay.Instance.IsOpen)
+            settingsWindow.SetWindowOpen(true);
     }
 
     public void CloseApp()

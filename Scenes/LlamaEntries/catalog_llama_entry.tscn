@@ -1,6 +1,6 @@
-[gd_scene load_steps=22 format=3 uid="uid://b0uxwtxndd6x3"]
+[gd_scene load_steps=23 format=3 uid="uid://b0uxwtxndd6x3"]
 
-[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_vtoeo"]
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_vtoeo"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/ShopOfferEntry.cs" id="2_dhih1"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/LlamaEntry.cs" id="2_e282y"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="3_2od7b"]
@@ -13,7 +13,8 @@
 [ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="6_5bd7b"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="6_7i7f0"]
 [ext_resource type="Shader" path="res://Shaders/LlamaTriangleEffect.gdshader" id="6_41bjr"]
-[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="6_n8hwd"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Currency-X-RayLlama.png" id="6_n8hwd"]
+[ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="8_8g41e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b18q1"]
 bg_color = Color(0.501961, 0.501961, 0.501961, 1)
@@ -66,7 +67,7 @@ corner_radius_bottom_left = 3
 shader = ExtResource("6_5bd7b")
 shader_parameter/IconTint = Color(0.1, 0.1, 0.1, 1)
 
-[node name="Catalog Llama Entry" type="MarginContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry", "temporaryTimerLabel")]
+[node name="Catalog Llama Entry" type="MarginContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry")]
 custom_minimum_size = Vector2(350, 0)
 offset_right = 350.0
 offset_bottom = 120.0
@@ -76,7 +77,6 @@ theme = ExtResource("1_vtoeo")
 script = ExtResource("2_dhih1")
 grantedItemEntry = NodePath("MarginContainer")
 priceEntry = NodePath("MarginContainer/HBoxContainer/VBoxContainer/LlamaCost")
-temporaryTimerLabel = NodePath("Control/LeavingTimer/HBoxContainer/LeavingLabel")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2
@@ -168,6 +168,7 @@ theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 12
 text = "59:59"
+script = ExtResource("8_8g41e")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

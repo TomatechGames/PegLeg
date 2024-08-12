@@ -60,7 +60,6 @@ public partial class QuestViewer : Control
     };
 
     QuestData currentQuest;
-    QuestData rewardTaskQuest;
     public async void UpdatePinnedState()
     {
         if (currentQuest is null || !currentQuest.isUnlocked)
@@ -159,33 +158,26 @@ public partial class QuestViewer : Control
             rewards.Insert(0, choiceReward);
         }
 
-        async void SetRewards()
+
+        rewardParent.Visible = false;
+        for (int i = 0; i < rewards.Count; i++)
         {
-            rewardTaskQuest = currentQuest;
-            rewardParent.Visible = false;
-            for (int i = 0; i < rewards.Count; i++)
+            if (i >= rewardEntries.Count)
             {
-                if (i >= rewardEntries.Count)
-                {
-                    var newEntry = rewardScene.Instantiate<GameItemEntry>();
-                    rewardParent.AddChild(newEntry);
-                    rewardEntries.Add(newEntry);
-                }
-                await rewards[i].SetItemRewardNotification();
-                if (currentQuest != rewardTaskQuest)
-                    return;
-                rewardEntries[i].SetItemData(rewards[i]);
-                rewardEntries[i].SetInteractableSmart();
-                rewardEntries[i].Visible = true;
+                var newEntry = rewardScene.Instantiate<GameItemEntry>();
+                rewardParent.AddChild(newEntry);
+                rewardEntries.Add(newEntry);
             }
-            for (int i = rewards.Count; i < rewardEntries.Count; i++)
-            {
-                rewardEntries[i].Visible = false;
-            }
-            rewardParent.Visible = true;
+            rewardEntries[i].SetItemData(rewards[i]);
+            rewardEntries[i].SetRewardNotification();
+            rewardEntries[i].SetInteractableSmart();
+            rewardEntries[i].Visible = true;
         }
-        if (rewardTaskQuest != currentQuest)
-            SetRewards();
+        for (int i = rewards.Count; i < rewardEntries.Count; i++)
+        {
+            rewardEntries[i].Visible = false;
+        }
+        rewardParent.Visible = true;
 
         var objectives = quest.questTemplate["Objectives"].AsArray();
         for (int i = 0; i < objectives.Count; i++)
@@ -197,6 +189,11 @@ public partial class QuestViewer : Control
                 objectiveEntries.Add(newEntry);
             }
             var objective = objectives[i].AsObject();
+            if (objective["Hidden"]?.GetValue<bool>() ?? false)
+            {
+                objectiveEntries[i].Visible = false;
+                continue;
+            }
             int currentProgress = quest.isUnlocked ? (quest.questItem.GetItemUnsafe()["attributes"]["completion_" + objective["BackendName"].ToString()]?.GetValue<int>() ?? 0) : 0;
             objectiveEntries[i].SetupObjective(objective, currentProgress);
             objectiveEntries[i].Visible = true;

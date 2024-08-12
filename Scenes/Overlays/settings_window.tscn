@@ -1,9 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://dd6fc218gb2da"]
+[gd_scene load_steps=13 format=3 uid="uid://dd6fc218gb2da"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/Settings/AccountSettings.cs" id="2_dybhj"]
-[ext_resource type="Script" path="res://Scripts/VolumeHook.cs" id="2_y75ef"]
+[ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="2_y75ef"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="3_dewmg"]
+[ext_resource type="Texture2D" uid="uid://3tdi5dsdkw7t" path="res://Images/AspectRatios/3x1Aspect.png" id="4_cr0bi"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/Settings/ThemeSettings.cs" id="4_kkpd6"]
+[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="5_1lymk"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="5_7ebkc"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_wim73"]
+[ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="8_nh2gq"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="9_yv42k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mjqpy"]
+shader = ExtResource("5_1lymk")
+shader_parameter/ControlSize = Vector2(330, 110)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/Fit = null
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 10.0
 
 [node name="SettingsWindow" node_paths=PackedStringArray("windowControl") instance=ExtResource("1_p7b2a")]
 windowControl = NodePath("Control/WindowContents/CenterContainer")
@@ -25,7 +40,7 @@ layout_mode = 2
 tab_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer" index="1"]
-custom_minimum_size = Vector2(350, 450)
+custom_minimum_size = Vector2(350, 500)
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/MarginContainer" index="0"]
@@ -41,44 +56,53 @@ theme_override_constants/margin_bottom = 5
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer" index="0"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer" index="0"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Settings"
 
-[node name="HSeparator" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="1"]
+[node name="HSeparator" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
 
-[node name="Audio" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="2"]
+[node name="Audio" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="2"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Volume"
 
-[node name="Master" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="1"]
+[node name="Master" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer" index="1"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 script = ExtResource("2_y75ef")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Master"
 
-[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="1"]
+[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="1"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -88,14 +112,14 @@ max_value = -20.0
 value = -20.0
 rounded = true
 
-[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="2"]
+[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer" index="2"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Mute/Unmute"
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn" index="0"]
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn" index="0"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -110,20 +134,20 @@ texture = ExtResource("3_dewmg")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Music" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="2"]
+[node name="Music" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer" index="2"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 script = ExtResource("2_y75ef")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Music"
 
-[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="1"]
+[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="1"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -132,14 +156,14 @@ min_value = -80.0
 max_value = 0.0
 rounded = true
 
-[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="2"]
+[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer" index="2"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Mute/Unmute"
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn" index="0"]
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn" index="0"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -154,20 +178,20 @@ texture = ExtResource("3_dewmg")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="SFX" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer" index="3"]
+[node name="SFX" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer" index="3"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 script = ExtResource("2_y75ef")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" index="0"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Sound FX"
 
-[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="1"]
+[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="1"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -176,14 +200,14 @@ min_value = -80.0
 max_value = 0.0
 rounded = true
 
-[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="2"]
+[node name="MuteBtn" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer" index="2"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Mute/Unmute"
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" index="0"]
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" index="0"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -198,64 +222,167 @@ texture = ExtResource("3_dewmg")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="HSeparator2" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="3"]
+[node name="HSeparator2" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="Theme" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="4"]
+[node name="Theme" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="4" node_paths=PackedStringArray("themeOptions", "backgroundPreview")]
+layout_mode = 2
+script = ExtResource("4_kkpd6")
+themeOptions = NodePath("VBoxContainer/OptionButton")
+backgroundPreview = NodePath("VBoxContainer/Aspect/TextureRect")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Theme" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Theme"
 
-[node name="HSeparator3" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="5"]
+[node name="OptionButton" type="OptionButton" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="1"]
+layout_mode = 2
+item_count = 4
+selected = 0
+popup/item_0/text = "Default (Current Seasonal Zone)"
+popup/item_0/id = 0
+popup/item_1/text = "Themes"
+popup/item_1/id = 1
+popup/item_1/separator = true
+popup/item_2/text = "some theme here"
+popup/item_2/id = 2
+popup/item_3/text = "another theme here"
+popup/item_3/id = 3
+
+[node name="Aspect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="2"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("4_cr0bi")
+expand_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/Aspect" index="0"]
+material = SubResource("ShaderMaterial_mjqpy")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_7ebkc")
+expand_mode = 1
+script = ExtResource("7_wim73")
+syncControlSize = true
+
+[node name="MusicPreviewButton" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/Aspect" index="1"]
+visible = false
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -5.0
+offset_bottom = -5.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/Aspect/MusicPreviewButton" index="0"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_nh2gq")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="Filters" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="6"]
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer" index="1"]
+layout_mode = 2
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_bottom = 3
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer/MarginContainer" index="0"]
+layout_mode = 2
+text = "Apply"
+horizontal_alignment = 1
+
+[node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer" index="2" instance=ExtResource("9_yv42k")]
+layout_mode = 2
+useHold = true
+cancelHoverOnHoldPress = false
+
+[node name="HSeparator3" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="5"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Filters" index="0"]
+[node name="Filters" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="6"]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Filters" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Filters"
 
-[node name="HSeparator4" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="7"]
+[node name="HSeparator4" type="HSeparator" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="7"]
+visible = false
 layout_mode = 2
 
-[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer" index="8" node_paths=PackedStringArray("forgetLoginButton", "goToLoginButton")]
+[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="8" node_paths=PackedStringArray("generateBanjoAssets", "gameFolderDialog", "goToLoginButton")]
 layout_mode = 2
 script = ExtResource("2_dybhj")
 loginSceneFilePath = "res://Scenes/desktopLogin.tscn"
-forgetLoginButton = NodePath("VBoxContainer/Button")
+generateBanjoAssets = NodePath("VBoxContainer/Button")
+gameFolderDialog = NodePath("FileDialog")
 goToLoginButton = NodePath("VBoxContainer/Button2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="0"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account/VBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Account"
+text = "Misc"
 
-[node name="Button" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account/VBoxContainer" index="1"]
+[node name="Button" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="1"]
 layout_mode = 2
-text = "Forget Login"
+text = "Extract Game Assets"
 
-[node name="Button2" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Account/VBoxContainer" index="2"]
+[node name="Button2" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="2"]
 layout_mode = 2
 text = "Return to Login Screen"
 
+[node name="FileDialog" type="FileDialog" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="1"]
+title = "Select FortniteGame Directory"
+size = Vector2i(374, 134)
+ok_button_text = "Generate"
+file_mode = 2
+access = 2
+use_native_dialog = true
+
+[connection signal="WindowOpened" from="." to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme" method="UpdateActiveTheme"]
 [connection signal="pressed" from="BG" to="." method="CloseWindow"]
-[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
-[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/HSlider" method="set_value_no_signal"]
-[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" method="SetVolume"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Master" method="ToggleMute"]
-[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
-[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/HSlider" method="set_value_no_signal"]
-[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" method="SetVolume"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/Music" method="ToggleMute"]
-[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
-[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" method="set_value_no_signal"]
-[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="SetVolume"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="ToggleMute"]
+[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/HSlider" method="set_value_no_signal"]
+[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master" method="SetVolume"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Master" method="ToggleMute"]
+[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/HSlider" method="set_value_no_signal"]
+[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music" method="SetVolume"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Music" method="ToggleMute"]
+[connection signal="UpdateMuteIcon" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="UpdateVolumeState" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" method="set_value_no_signal"]
+[connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="SetVolume"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="ToggleMute"]
+[connection signal="HoldPressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer/Responsive Button Area" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme" method="ApplyTheme"]

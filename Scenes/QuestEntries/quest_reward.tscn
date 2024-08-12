@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ud6lqq36e5me"]
 
-[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://Themes/Styleboxes/Heavy/HeavyBox.tres" id="1_klwx7"]
+[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="1_klwx7"]
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="2_34uyv"]
 
 [node name="QuestReward" type="MarginContainer"]

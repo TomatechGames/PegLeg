@@ -1,0 +1,25 @@
+{
+    "backgrounds":
+    [
+        "FORT_Load_Missions_IntoTheMist.png",
+        "T_Hex_HauntedForest.png",
+        "T-LS-StW-HauntedHotel.png",
+        "T-LS-StW-Starlight.png",
+        "T-LS-StW-Swamp.png"
+    ],
+    "music":
+    [
+        {
+            "intros":
+            [
+                "Fortnitemares_Lobby_Intro_01.wav",
+                "Fortnitemares_Lobby_Intro_02.wav"
+            ],
+            "tracks":"Fortnitemares_Lobby_Music_01_Loop.wav"
+        },
+        [
+            "Fortnitemares_Amb_Day_Music_01_Loop.wav",
+            "Fortnitemares_Amb_Day_Music_02_Loop.wav"
+        ]
+    ]
+}

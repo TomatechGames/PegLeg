@@ -1,0 +1,15 @@
+{
+    "backgrounds": 
+    [
+        "T_Autumn_Foothills.png",
+        "T_Autumn_Industrial.png",
+        "T_Autumn_Lakeside.png",
+        "T_Autumn_Suburbia.png"
+    ],
+    "music": 
+    [
+        "Music_Autumn_Amb_Day_A_Loop.wav",
+        "Music_Autumn_Amb_Day_B_Loop.wav",
+        "Music_Autumn_Amb_Night_A_Loop.wav"
+    ]
+}

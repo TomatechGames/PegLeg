@@ -112,8 +112,12 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
         missionList.SetProvider(this);
 
-        if (IsVisibleInTree())
-            LoadMissions();
+        RefreshTimerController.OnDayChanged += () =>
+        {
+            missionsUpToDate = false;
+            if (IsVisibleInTree())
+                LoadMissions();
+        };
     }
 
     PLSearch.Instruction[] currentMissionSearchInstructions;
@@ -127,12 +131,14 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
     public void ForceReloadMissions() => LoadMissions(true);
 
+    bool missionsUpToDate = false;
     bool isLoadingMissions = false;
     bool hasMissions = false;
     async void LoadMissions(bool force = false)
     {
         if (isLoadingMissions || !await LoginRequests.TryLogin())
             return;
+        missionsUpToDate = true;
         isLoadingMissions = true;
         if (MissionRequests.MissionsRequireUpdate() || force || !hasMissions)
         {
@@ -146,43 +152,19 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
                 var allMissionData = await MissionRequests.GetMissions(force);
                 await this.WaitForFrame();
                 allMissions = allMissionData["missions"].AsArray().Select(m=>new MissionData(m.AsObject())).ToList();
-
-                //foreach (var mission in allMissions)
-                //{
-                //    mission.OnRewardsCompleted += FilterMissionGrid;
-                //}
-                //PassivelyGenerateRewards();
             }
             finally
             {
                 missionList.Visible = true;
                 loadingIcon.Visible = false;
-                isLoadingMissions = false;
             }
             hasMissions = true;
         }
 
         FilterMissionGrid();
-    }
-
-    //need to find a better way to set these notifications over time so that they can be filtered with NEW
-    async void PassivelyGenerateRewards()
-    {
-        foreach (var item in allMissions)
-        {
-            if (item.rewardsGenerated)
-                continue;
-            bool currentCompleted = false;
-            void ThisItemComplated() => currentCompleted = true;
-            item.OnRewardsCompleted += ThisItemComplated;
-            item.SetRewardNotifications();
-            while (!currentCompleted)
-            {
-                await this.WaitForFrame();
-            }
-            item.OnRewardsCompleted -= ThisItemComplated;
-        }
-        GD.Print("ALLDONE");
+        isLoadingMissions = false;
+        if(!missionsUpToDate)
+            LoadMissions();
     }
 
     void GenerateSearchInstructions(string searchText)
@@ -230,7 +212,6 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
 public class MissionData
 {
-    public event Action OnRewardsCompleted;
     public int powerLevel { get; private set; }
     public string theaterCat { get; private set; }
 
@@ -275,30 +256,6 @@ public class MissionData
                 rewardItems.Add(item.AsObject());
             }
         }
-    }
-
-    public bool rewardsGenerated { get; private set; } = false;
-    bool startedGeneratingNotifications = false;
-    public async void SetRewardNotifications()
-    {
-        if (startedGeneratingNotifications)
-            return;
-        startedGeneratingNotifications = true;
-        foreach (var item in rewardItems)
-        {
-            await item.SetItemRewardNotification();
-        }
-        rewardsGenerated = true;
-        OnRewardsCompleted?.Invoke();
-        //for (int i = 0; i < missionJson["missionRewards"].AsArray().Count; i++)
-        //{
-        //    missionJson["missionRewards"][i] = await missionJson["missionRewards"][i].AsObject().SetItemRewardNotification();
-        //}
-
-        //for (int i = 0; i < (missionJson["missionAlert"]?["rewards"].AsArray().Count ?? 0); i++)
-        //{
-        //    missionJson["missionAlert"]["rewards"][i] = await missionJson["missionAlert"]["rewards"][i].AsObject().SetItemRewardNotification();
-        //}
     }
 
     public bool Filter(PLSearch.Instruction[] missionInstructions, PLSearch.Instruction[] itemInstructions, string theaterFilter, string[] extraItemFilters)

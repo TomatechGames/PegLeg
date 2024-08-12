@@ -204,34 +204,36 @@ public partial class CosmeticShopOfferEntry : Control
         outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
         var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?[0]?.AsObject();
 
-        if (resourceMat is null)
+        if (resourceMat is null || resourceMat["images"]?["CarTexture"] is not null)
         {
-            resourceUrl = 
+            resourceUrl =
                 entryData.GetFirstCosmeticItem()["images"]?["featured"]?.ToString() ??
                 entryData.GetFirstCosmeticItem()["images"]?["large"]?.ToString() ??
                 entryData.GetFirstCosmeticItem()["images"]?["small"]?.ToString() ??
                 entryData.GetFirstCosmeticItem()["images"]?["icon"]?.ToString() ??
                 entryData.GetFirstCosmeticItem()["images"]?["smallIcon"]?.ToString();
-            return;
         }
-        resourceUrl = 
-            resourceMat["images"]["Background"]?.ToString() ?? 
-            resourceMat["images"]["OfferImage"]?.ToString();
-
-        //resourceFit = entryData.GetFirstCosmeticItem()["type"]?["displayValue"].ToString() != "Emote";
-        resourceFit = false;
-        if (cellSize.X > 2 || entryData["cars"] is JsonArray)
+        else
         {
-            resourceOffset = new(
-                (resourceMat["scalings"]?["OffsetImage_X"]?.GetValue<float>() ?? 0) / 100f,
-               (resourceMat["scalings"]?["OffsetImage_Y"]?.GetValue<float>() ?? 0) / 100f
-               );
-            //entryData["cars"] is not JsonArray && 
-            if (resourceMat["scalings"]?["ZoomImage_Percent"]?.GetValue<float>() is float scalePercent && scalePercent > 0)
-                resourceScale = scalePercent / 100f;
+            resourceUrl =
+                resourceMat["images"]["Background"]?.ToString() ??
+                resourceMat["images"]["OfferImage"]?.ToString();
+
+            //resourceFit = entryData.GetFirstCosmeticItem()["type"]?["displayValue"].ToString() != "Emote";
+            resourceFit = false;
+            if (cellSize.X > 2 || entryData["cars"] is JsonArray)
+            {
+                resourceOffset = new(
+                    (resourceMat["scalings"]?["OffsetImage_X"]?.GetValue<float>() ?? 0) / 100f,
+                   (resourceMat["scalings"]?["OffsetImage_Y"]?.GetValue<float>() ?? 0) / 100f
+                   );
+                //entryData["cars"] is not JsonArray && 
+                if (resourceMat["scalings"]?["ZoomImage_Percent"]?.GetValue<float>() is float scalePercent && scalePercent > 0)
+                    resourceScale = scalePercent / 100f;
+            }
         }
 
-        if (CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
+        if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
             ApplyResource(tex);
     }
 
@@ -347,7 +349,7 @@ public partial class CosmeticShopOfferEntry : Control
         }
 
         lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
-        isAddedToday = inDate == DateTime.UtcNow.Date;
+        isAddedToday = inDate == DateTime.UtcNow.Date && lastSeenDaysAgo > 1;
         isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
         isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
         isOld = lastSeenDaysAgo > 500;
@@ -383,7 +385,7 @@ public partial class CosmeticShopOfferEntry : Control
         }
 
         EmitSignal(SignalName.BonusTextVisibility, isRecentlyNew || isAddedToday);
-        EmitSignal(SignalName.LastSeenVisibility, lastSeenDaysAgo > 0);
+        EmitSignal(SignalName.LastSeenVisibility, lastSeenDaysAgo > 1);
         EmitSignal(SignalName.LastSeenText, $"{lastSeenDaysAgo}");
         EmitSignal(SignalName.LastSeenAlertVisibility, isOld);
         EmitSignal(SignalName.AlmostAYearVisibility, isVeryOld);

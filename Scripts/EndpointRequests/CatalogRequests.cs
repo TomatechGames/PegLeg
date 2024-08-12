@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 static class CatalogRequests
@@ -175,6 +176,9 @@ static class CatalogRequests
         };
     }
 
+    static string ParseLayoutName(string basis) =>
+        Regex.Replace(basis, "([a-z0-9])([A-Z])", "$1 $2");
+
     static JsonObject ProcessCosmetics(JsonObject cosmeticDisplayData)
     {
         var shopOfferList = storefrontCache[WeeklyCosmeticShopCatalog].AsArray().ToList();
@@ -190,37 +194,18 @@ static class CatalogRequests
             cosmeticDisplayData[offer.Key]["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null;
             cosmeticDisplayData[offer.Key]["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null;
 
+            //sometimes these are just missing
+            cosmeticDisplayData[offer.Key]["layoutId"] ??= offer.Value["meta"]?["LayoutId"].ToString() ?? "?";
+            cosmeticDisplayData[offer.Key]["layout"] ??= new JsonObject();
+            cosmeticDisplayData[offer.Key]["layout"]["name"] ??= ParseLayoutName(offer.Value["meta"]?["AnalyticOfferGroupId"].ToString() ?? "?");
+            cosmeticDisplayData[offer.Key]["layout"]["index"] = int.TryParse(cosmeticDisplayData[offer.Key]["layoutId"].ToString().Split(".")[^1], out int result) ? result : 0;
+            
+
             if (offer.Value.AsObject().ContainsKey("dynamicBundleInfo"))
                 cosmeticDisplayData[offer.Key]["dynamicBundleInfo"] = offer.Value["dynamicBundleInfo"].Reserialise();
 
             if ((offer.Value["prices"]?.AsArray().Count ?? 0) > 0)
                 cosmeticDisplayData[offer.Key]["prices"] = offer.Value["prices"].Reserialise();
-
-            //removals
-            //if (cosmeticDisplayData[offer.Key]["newDisplayAsset"]?["materialInstances"] is not null)
-            //    cosmeticDisplayData[offer.Key]["newDisplayAsset"].AsObject().Remove("materialInstances");
-
-            //void RemoveHistoryFromItemList(string listKey)
-            //{
-            //    if (cosmeticDisplayData[offer.Key][listKey] is JsonArray itemList)
-            //    {
-            //        foreach (var item in itemList)
-            //        {
-            //            if (item["shopHistory"] is JsonArray shopHistory)
-            //            {
-            //                item["firstShopAppearance"] = shopHistory[0].ToString();
-            //                if (shopHistory.Count > 1)
-            //                    item["lastRecentShopAppearance"] = shopHistory[^2].ToString();
-            //            }
-            //            item.AsObject().Remove("shopHistory");
-            //        }
-            //    }
-            //}
-            //RemoveHistoryFromItemList("brItems");
-            //RemoveHistoryFromItemList("tracks");
-            //RemoveHistoryFromItemList("instruments");
-            //RemoveHistoryFromItemList("cars");
-            //RemoveHistoryFromItemList("legoKits");
 
             //jam tracks are funky, gotta reformat them
             if (cosmeticDisplayData[offer.Key]["tracks"] is JsonArray trackList)
@@ -258,8 +243,8 @@ static class CatalogRequests
             .OrderBy(n => -n.Value["sortPriority"].GetValue<int>())// sort by offer index (descending)
             .GroupBy(n => n.Value["layoutId"].ToString())// group into pages
             .OrderBy(p => -int.Parse(p.Key.Split(".")[^1]))// sort by page index (descending)
-            .GroupBy(p => p.First().Value["layout"]["name"].ToString())// group by page header
-            .OrderBy(g => g.First().First().Value["layout"]["index"].GetValue<int>())// sort by page header index
+            .GroupBy(p => p.First().Value["layout"]?["name"]?.ToString())// group by page header
+            .OrderBy(g => g.First().First().Value["layout"]?["index"]?.GetValue<int>())// sort by page header index
             .GroupBy(g => g.First().First().Value["layout"]?["category"]?.ToString() ?? "Uncategorised");// group by page category
 
         //partiallyOrganisedCosmetics.Select(g =>
@@ -351,7 +336,7 @@ static class CatalogRequests
         JsonNode cosmeticDisplayData = await Helpers.MakeRequest(
                 HttpMethod.Get,
                 ExternalEndpoints.cosmeticsEndpoint,
-                "v2/shop",
+                "v2/shop?responseFlags=4", // 1 = paths, 2 = gameplayTags, 4 = shop history
                 "",
                 null,
                 addCosmeticHeader:true
@@ -398,7 +383,7 @@ static class CatalogRequests
 
     public static ImageTexture GetLocalCosmeticResource(string serverPath)
     {
-        if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath].GetRef().Obj is ImageTexture cachedTexture)
+        if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath]?.GetRef().Obj is ImageTexture cachedTexture)
             return cachedTexture;
 
         string localPath = cacheFolderPath + serverPath[fnapiLinkPrefix.Length..].Replace("/", "-");

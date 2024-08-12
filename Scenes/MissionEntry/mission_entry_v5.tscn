@@ -1,12 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://dd5q64xdgxtxp"]
+[gd_scene load_steps=16 format=3 uid="uid://dd5q64xdgxtxp"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_qqdn1"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="2_0xdrf"]
 [ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="2_bhxmy"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_33f1f"]
-[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/T_UI_ICON_S22_SR_SupplyDropMin.png" id="5_hktn8"]
-[ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="6_tr4nm"]
-[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://Themes/Styleboxes/WindowBGTransparant.tres" id="7_dm8tq"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_v6ev0"]
+[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="5_hktn8"]
+[ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="6_tr4nm"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="7_dm8tq"]
 [ext_resource type="PackedScene" uid="uid://fcp6vypncmbj" path="res://Scenes/GameItemEntry/reward_entry_horizontal_small.tscn" id="8_j2jwh"]
 [ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="9_n2b4n"]
 
@@ -55,7 +56,7 @@ defaultBackground = ExtResource("2_bhxmy")
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_drqcc")
 layout_mode = 2
-texture = ExtResource("2_bhxmy")
+texture = ExtResource("4_v6ev0")
 expand_mode = 1
 script = ExtResource("4_33f1f")
 syncControlSize = true

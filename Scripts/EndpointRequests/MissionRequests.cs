@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
@@ -20,7 +21,8 @@ static class MissionRequests
             return true;
         if ((missionsCache["version"]?.GetValue<int>() ?? 0) < MissionVersion)
             return true;
-        var refreshTime = DateTime.Parse(missionsCache["expiryDate"]?.ToString() ?? "1987-07-22T06:00:00.000Z");
+        var refreshTime = DateTime.Parse(missionsCache["expiryDate"]?.ToString() ?? "1987-07-22T06:00:00.000Z", CultureInfo.InvariantCulture);
+        GD.Print($"MissionRefresh = {refreshTime} ({DateTime.UtcNow})");
         return DateTime.UtcNow.CompareTo(refreshTime) >= 0;
     }
 
@@ -271,7 +273,7 @@ static class MissionRequests
         JsonObject toReturn = new()
         {
             ["version"] = MissionVersion,
-            ["expiryDate"] = missionList[0]["availableUntil"].ToString(),
+            ["expiryDate"] = missionList[0]["availableUntil"].ToString()[..^1], //the Z messes with daylight savings time
             ["missions"] = new JsonArray(
                     missionList
                     .OrderBy(n => n["powerLevel"].GetValue<int>())

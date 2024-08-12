@@ -13,15 +13,11 @@ public partial class ItemShopInterface : Control
 
     [ExportGroup("Weekly")]
     [Export]
-    Label weeklyTimer;
-    [Export]
     Control weeklyHighlightParent;
     [Export]
     Control weeklyRegularParent;
 
     [ExportGroup("Event")]
-    [Export]
-    Label eventTimer;
     [Export]
     Control eventHighlightParent;
     [Export]
@@ -32,18 +28,17 @@ public partial class ItemShopInterface : Control
     {
         VisibilityChanged += async () =>
         {
-            if (Visible)
+            if (IsVisibleInTree())
             {
-                //load shop
                 await LoadShop();
                 CurrencyHighlight.Instance.SetCurrencyType("AccountResource:eventcurrency_scaling");
             }
         };
 
-        TitleBarDragger.PerformRefresh += async () =>
+        RefreshTimerController.OnDayChanged += async () =>
         {
-            //load shop
-            await LoadShop();
+            if (IsVisibleInTree())
+                await LoadShop();
         };
     }
 
@@ -54,17 +49,12 @@ public partial class ItemShopInterface : Control
     List<ShopOfferEntry> eventRegularPool = new();
     Dictionary<string, JsonObject> activeOffers = new();
 
-    DateTime weeklyRefreshTime;
-    DateTime eventRefreshTime;
     public async Task LoadShop(bool force = false)
     {
         if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0) || !await LoginRequests.TryLogin())
             return;
         activeOffers.Clear();
         isLoadingShop = true;
-
-        weeklyRefreshTime = await CalenderRequests.WeeklyShopRefreshTime();
-        eventRefreshTime = await CalenderRequests.EventShopRefreshTime();
 
         var weeklyShop = await CatalogRequests.GetWeeklyShop();
         var eventShop = await CatalogRequests.GetEventShop();
@@ -104,51 +94,5 @@ public partial class ItemShopInterface : Control
         var offerItem = activeOffers[offerId]["itemGrants"][0].AsObject();
         await GameItemViewer.Instance.SetItem(offerItem);
         await GameItemViewer.Instance.LinkShopOffer(activeOffers[offerId].AsObject(), async ()=> await LoadShop(true));
-    }
-
-    public override void _Process(double delta)
-    {
-        bool refresh = false;
-
-        if (weeklyRefreshTime != default)
-        {
-            var remainingTime = (weeklyRefreshTime - DateTime.UtcNow);
-
-            if (remainingTime.TotalHours < 1)
-                weeklyTimer.SelfModulate = Colors.Red;
-            else if (remainingTime.TotalDays < 1)
-                weeklyTimer.SelfModulate = Colors.Orange;
-            else
-                weeklyTimer.SelfModulate = Colors.White;
-
-            weeklyTimer.Text = remainingTime.FormatTime();
-            if (DateTime.UtcNow.CompareTo(weeklyRefreshTime) >= 0)
-            {
-                weeklyRefreshTime = default;
-                refresh = true;
-            }
-        }
-
-        if (eventRefreshTime != default)
-        {
-            var remainingTime = (eventRefreshTime - DateTime.UtcNow);
-
-            if (remainingTime.TotalDays < 1)
-                eventTimer.SelfModulate = Colors.Red;
-            else if (remainingTime.TotalDays < 7)
-                eventTimer.SelfModulate = Colors.Orange;
-            else
-                eventTimer.SelfModulate = Colors.White;
-
-            eventTimer.Text = remainingTime.FormatTime();
-            if (DateTime.UtcNow.CompareTo(eventRefreshTime) >= 0)
-            {
-                eventRefreshTime = default;
-                refresh = true;
-            }
-        }
-
-        if (Visible && refresh)
-            LoadShop().RunSafely();
     }
 }

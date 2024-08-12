@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_bjivd"]
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemSelector.cs" id="2_msbn1"]
 [ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="3_p3a1g"]
-[ext_resource type="Script" path="res://Scripts/DynamicGridContainer.cs" id="4_2yqeq"]
+[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_2yqeq"]
 [ext_resource type="PackedScene" uid="uid://ch7kqyndhfgvs" path="res://Scenes/GameItemEntry/inventory_entry_large.tscn" id="4_7jdcp"]
 
 [node name="GameItemSelector" node_paths=PackedStringArray("container", "windowControl") instance=ExtResource("1_bjivd")]

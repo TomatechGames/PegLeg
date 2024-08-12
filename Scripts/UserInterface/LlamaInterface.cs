@@ -19,10 +19,6 @@ public partial class LlamaInterface : Control
     Control loadingIcon;
 
     [Export]
-    NodePath llamaTimerLabelPath;
-    Label llamaTimerLabel;
-
-    [Export]
     NodePath catalogLlamaParentPath;
     Control catalogLlamaParent;
 
@@ -82,9 +78,6 @@ public partial class LlamaInterface : Control
     Queue<LlamaEntry> pooledCardpackLlamas = new();
     List<GameItemEntry> pooledGameItems = new();
 
-    bool llamasNeedRefresh = true;
-    DateTime llamaRefreshTime;
-
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
@@ -101,13 +94,12 @@ public partial class LlamaInterface : Control
         this.GetNodeOrNull(selectedSurprisePanelPath, out selectedSurprisePanel);
         this.GetNodeOrNull(selectedNoStockPanelPath, out selectedNoStockPanel);
         this.GetNodeOrNull(cardpackLlamaPanelPath, out cardpackLlamaPanel);
-        this.GetNodeOrNull(llamaTimerLabelPath, out llamaTimerLabel);
 
         availableCardPacks.Clear();
 
         VisibilityChanged += async () =>
         {
-            if (Visible)
+            if (IsVisibleInTree())
             {
                 await LoadLlamas();
                 if (!string.IsNullOrWhiteSpace(currentPurchaseSelection) && activeOffers.ContainsKey(currentPurchaseSelection))
@@ -129,17 +121,11 @@ public partial class LlamaInterface : Control
             }
         };
 
-        TitleBarDragger.PerformRefresh += async () =>
+        RefreshTimerController.OnHourChanged += async () =>
         {
-            await LoadLlamas();
-            if (Visible && !string.IsNullOrWhiteSpace(currentPurchaseSelection) && activeOffers.ContainsKey(currentPurchaseSelection))
-            {
-                var offer = activeOffers[currentPurchaseSelection];
-                string priceType = offer["prices"][0]["currencySubType"].ToString();
-                CurrencyHighlight.Instance.SetCurrencyType(priceType);
-            }
+            if(IsVisibleInTree())
+                await LoadLlamas();
         };
-
     }
 
     public override void _ExitTree()
@@ -291,13 +277,12 @@ public partial class LlamaInterface : Control
 
     bool isLoadingLlamas = false;
     Dictionary<string, JsonObject> activeOffers = new();
-    public async Task LoadLlamas(bool force = false, bool clearSelection = true)
+    async Task LoadLlamas(bool force = false, bool clearSelection = true)
     {
         if (isLoadingLlamas || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count==0) || !await LoginRequests.TryLogin())
             return;
         isLoadingLlamas = true;
-        llamaRefreshTime = await CalenderRequests.DailyShopRefreshTime();
-        GD.Print("Llamas refresh at: "+llamaRefreshTime);
+
         loadingIcon.Visible = true;
         activeOffers.Clear();
         if (clearSelection)
@@ -473,7 +458,7 @@ public partial class LlamaInterface : Control
         }
     }
 
-    async void SetSelectedLlamaItems(JsonArray items)
+    void SetSelectedLlamaItems(JsonArray items)
     {
         if (items is not null)
         {
@@ -497,7 +482,8 @@ public partial class LlamaInterface : Control
                     continue;
                 }
                 pooledGameItems[i].Visible = true;
-                pooledGameItems[i].SetItemData(await sortedItems[i].AsObject().SetItemRewardNotification());
+                pooledGameItems[i].SetItemData(sortedItems[i].AsObject());
+                pooledGameItems[i].SetRewardNotification();
                 pooledGameItems[i].SetInteractableSmart();
             }
             for (int i = items.Count; i < pooledGameItems.Count; i++)
@@ -617,7 +603,6 @@ public partial class LlamaInterface : Control
         //await BulkOpenCardpacks(handles.Select(val=>val.uuid).ToArray());
         await CardPackOpener.Instance.StartOpening(handles);
 
-
         if (depletesSelected)
             ClearSelection();
         else
@@ -662,28 +647,5 @@ public partial class LlamaInterface : Control
         GD.Print(result["notifications"]);
         //GD.Print(result["multiUpdate"]);
         LoadingOverlay.Instance.RemoveLoadingKey("LlamaOpenBulk");
-    }
-
-    public override void _Process(double delta)
-    {
-        if(llamaRefreshTime != default && llamaTimerLabel is not null)
-        {
-            var remainingTime = (llamaRefreshTime - DateTime.UtcNow);
-
-            if (remainingTime.TotalMinutes < 1)
-                llamaTimerLabel.SelfModulate = Colors.Red;
-            else if (remainingTime.TotalHours < 1)
-                llamaTimerLabel.SelfModulate = Colors.Orange;
-            else
-                llamaTimerLabel.SelfModulate = Colors.White;
-
-            llamaTimerLabel.Text = remainingTime.FormatTime();
-            if (DateTime.UtcNow.CompareTo(llamaRefreshTime) >= 0)
-            {
-                llamaRefreshTime = default;
-                if (Visible)
-                    LoadLlamas().RunSafely();
-            }
-        }
     }
 }

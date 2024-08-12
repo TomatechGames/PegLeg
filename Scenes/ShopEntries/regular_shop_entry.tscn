@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="2_rx7yy"]
 [ext_resource type="Texture2D" uid="uid://bkqoyh11npn7c" path="res://Images/InterfaceIcons/TriangleScroll.png" id="3_c82yr"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_qji8a"]
-[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="5_wjuhi"]
-[ext_resource type="Texture2D" uid="uid://bkj1uu2syehgg" path="res://Images/InterfaceIcons/T-Item-GoldBars.png" id="7_bv0ye"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="5_wjuhi"]
+[ext_resource type="Texture2D" uid="uid://bkj1uu2syehgg" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Item-GoldBars.png" id="7_bv0ye"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="8_ahbeu"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="8_ocl4j"]
 

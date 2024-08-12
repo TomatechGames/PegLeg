@@ -1,9 +1,9 @@
 [gd_scene load_steps=14 format=3 uid="uid://df66i164ovyld"]
 
-[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://Themes/BasicTheme.tres" id="1_lh5ab"]
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_lh5ab"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="2_fahct"]
-[ext_resource type="Texture2D" uid="uid://d1sgahybai425" path="res://Images/MissionZoneBackgrounds/FORT_Load_STWIrwinBuild.png" id="3_cn3qa"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="3_w6ueb"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_w3ofu"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_3nior"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="5_38lly"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="6_ih4qj"]
@@ -14,6 +14,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_grr01"]
 shader = ExtResource("3_w6ueb")
 shader_parameter/ControlSize = Vector2(385, 170)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 5.0
 
@@ -26,7 +28,7 @@ bg_color = Color(0.453125, 0.496094, 0.644531, 1)
 skew = Vector2(0.5, 0)
 corner_radius_bottom_right = 3
 
-[node name="mission_entry_v3" type="MarginContainer" node_paths=PackedStringArray("powerLevelLabel", "missionIcon", "missionRewardParent", "alertModifierParent", "alertRewardParent", "alertModifierLayout", "alertRewardLayout")]
+[node name="mission_entry_v3" type="MarginContainer" node_paths=PackedStringArray("alertModifierLayout", "alertModifierParent", "missionRewardParent", "alertRewardLayout", "alertRewardParent")]
 custom_minimum_size = Vector2(455, 175)
 offset_right = 452.0
 offset_bottom = 172.0
@@ -34,19 +36,17 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_lh5ab")
 script = ExtResource("2_fahct")
-powerLevelLabel = NodePath("Control/MarginContainer/HBoxContainer/PowerLevelLabel")
-missionIcon = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/PanelContainer/MissionIcon")
-missionRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/RepeatableRewards/PanelContainer/MarginContainer/RepeatableRewardParent")
-alertModifierParent = NodePath("MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent")
-alertRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent")
 alertModifierLayout = NodePath("MarginContainer/HBoxContainer/AlertModifiers2")
+alertModifierParent = NodePath("MarginContainer/HBoxContainer/AlertModifiers2/VBoxContainer/PanelContainer/MarginContainer/ModifierParent")
+missionRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/RepeatableRewards/PanelContainer/MarginContainer/RepeatableRewardParent")
 alertRewardLayout = NodePath("MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards")
+alertRewardParent = NodePath("MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/PanelContainer/OneTimeRewardParent")
 
 [node name="BGTexture" type="TextureRect" parent="."]
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_grr01")
 layout_mode = 2
-texture = ExtResource("3_cn3qa")
+texture = ExtResource("4_w3ofu")
 expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

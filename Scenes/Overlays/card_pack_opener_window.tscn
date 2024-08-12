@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://bsii483wtc3y4" path="res://Audio/SFX/CardpackOpen/supply_drop_land3_Reverb.wav" id="4_ccx0t"]
 [ext_resource type="AudioStream" uid="uid://cp87usj1hhnd1" path="res://Audio/SFX/CardpackOpen/supply_drop_radio.wav" id="5_62ahg"]
 [ext_resource type="Texture2D" uid="uid://dxrre7seon0uy" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenBG.png" id="8_4oqsw"]
-[ext_resource type="AudioStream" uid="uid://cb1h7anfymfsu" path="res://Audio/Music (move to external folder)/Fort_Building_Outpost_Main_Loop_Fixed.wav" id="8_j6imm"]
+[ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="8_8qitq"]
 [ext_resource type="Shader" uid="uid://b78lxdhf2v56q" path="res://Shaders/GradientMaskedBackground.tres" id="9_8g8yp"]
 [ext_resource type="Texture2D" uid="uid://ofyoqhupoowa" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenFG.png" id="9_jsr57"]
 [ext_resource type="Texture2D" uid="uid://c4tescxyper60" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateLid.png" id="10_k5gyc"]
@@ -52,7 +52,7 @@ shader = ExtResource("16_x2r4a")
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/UseManual = null
 shader_parameter/ManualControl = null
-shader_parameter/time = 50788.8
+shader_parameter/time = 97550.2
 shader_parameter/StartTime = null
 shader_parameter/Started = true
 shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
@@ -154,7 +154,8 @@ stream = ExtResource("4_ccx0t")
 bus = &"SFX"
 
 [node name="Music" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("8_j6imm")
+stream = ExtResource("8_8qitq")
+volume_db = 5.0
 bus = &"MusicOvr"
 
 [node name="BG" type="Control" parent="."]

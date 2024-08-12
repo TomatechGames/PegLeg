@@ -1,0 +1,284 @@
+[gd_resource type="Theme" load_steps=71 format=3 uid="uid://cd7qoq3gay1op"]
+
+[ext_resource type="FontVariation" uid="uid://buoopfdou8nvh" path="res://fixedBurbank.tres" id="1_36sps"]
+[ext_resource type="StyleBox" uid="uid://cuvmk7mkkb3yl" path="res://GodotThemes/Styleboxes/ActionButton/ActionButtonDisabled.tres" id="1_bx6da"]
+[ext_resource type="Texture2D" uid="uid://bk2p5bnrq7ek2" path="res://Images/InterfaceIcons/SliderTicks.png" id="1_ervll"]
+[ext_resource type="StyleBox" uid="uid://bpnhj7qesksqo" path="res://GodotThemes/Styleboxes/ActionButton/ActionButtonHover.tres" id="2_5u1oq"]
+[ext_resource type="StyleBox" uid="uid://cam4t61h3jmpx" path="res://GodotThemes/Styleboxes/ActionButton/ActionButton.tres" id="3_oygvm"]
+[ext_resource type="StyleBox" uid="uid://cdriape1gyuxg" path="res://GodotThemes/Styleboxes/ActionButton/ActionButtonPress.tres" id="4_18yn3"]
+[ext_resource type="StyleBox" uid="uid://b7leunog81kpk" path="res://GodotThemes/Styleboxes/Light/Button/LightBoxButtonDisabled.tres" id="5_6cjcu"]
+[ext_resource type="StyleBox" uid="uid://x08qhid1dw1b" path="res://GodotThemes/Styleboxes/Light/Button/LightBoxButtonHover.tres" id="6_ibt6s"]
+[ext_resource type="StyleBox" uid="uid://b86p3t732221v" path="res://GodotThemes/Styleboxes/Heavy/HeavyBoxButton.tres" id="7_iaw26"]
+[ext_resource type="StyleBox" uid="uid://btxjvf1bcfrjy" path="res://GodotThemes/Styleboxes/Light/Button/LightBoxButton.tres" id="7_yqq06"]
+[ext_resource type="StyleBox" uid="uid://f4g0fgls7658" path="res://GodotThemes/Styleboxes/Light/Button/LightBoxButtonPress.tres" id="8_r6qd1"]
+[ext_resource type="StyleBox" uid="uid://dr65gsxfjpkwp" path="res://GodotThemes/Styleboxes/CheckButton/HoveredCheck.tres" id="9_bc172"]
+[ext_resource type="StyleBox" uid="uid://b2ou1v5mjbih6" path="res://GodotThemes/Styleboxes/CheckButton/SelectedHoveredCheck.tres" id="10_rm02j"]
+[ext_resource type="StyleBox" uid="uid://wf5aopk2bqf1" path="res://GodotThemes/Styleboxes/Medium/MediumBox.tres" id="11_gd6lt"]
+[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="11_j4jj6"]
+[ext_resource type="StyleBox" uid="uid://47tx134bxtb7" path="res://GodotThemes/Styleboxes/Tabs/HoveredTab.tres" id="12_7h673"]
+[ext_resource type="StyleBox" uid="uid://biqx82867v22n" path="res://GodotThemes/Styleboxes/CheckButton/SelectedCheck.tres" id="12_a0ked"]
+[ext_resource type="StyleBox" uid="uid://u6vjr3k2dpbq" path="res://GodotThemes/Styleboxes/TooltipBox.tres" id="13_bju25"]
+[ext_resource type="StyleBox" uid="uid://bi8agnda46hpt" path="res://GodotThemes/Styleboxes/Tabs/SelectedTab.tres" id="13_dn3xi"]
+[ext_resource type="StyleBox" uid="uid://dd6qho8cpfosj" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftHoveredCheck.tres" id="14_d16eg"]
+[ext_resource type="StyleBox" uid="uid://ciuc6avkdaaov" path="res://GodotThemes/Styleboxes/Tabs/UnselectedTab.tres" id="14_r0sac"]
+[ext_resource type="StyleBox" uid="uid://b6r78g45jmtb6" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftSelectedHoveredCheck.tres" id="15_dbfbl"]
+[ext_resource type="StyleBox" uid="uid://c3817848h1qch" path="res://GodotThemes/Styleboxes/Light/LargeButton/LightBoxButtonLargeDisabled.tres" id="16_ifrdn"]
+[ext_resource type="StyleBox" uid="uid://di28lqtyev8al" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftUnselectedCheck.tres" id="16_wyq3a"]
+[ext_resource type="StyleBox" uid="uid://cnmionh64752s" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftSelectedCheck.tres" id="17_ny1jq"]
+[ext_resource type="StyleBox" uid="uid://b2yyui1hllqlc" path="res://GodotThemes/Styleboxes/Light/LargeButton/LightBoxButtonLargeHover.tres" id="17_ugm6l"]
+[ext_resource type="StyleBox" uid="uid://cndug15ttdxk3" path="res://GodotThemes/Styleboxes/Light/LargeButton/LightBoxButtonLarge.tres" id="18_mdlkh"]
+[ext_resource type="Texture2D" uid="uid://xcnetq4h582o" path="res://Images/TextureResources/BlankTexture.tres" id="19_0ka8y"]
+[ext_resource type="StyleBox" uid="uid://dolbs7r7d0cp4" path="res://GodotThemes/Styleboxes/Light/LargeButton/LightBoxButtonLargePress.tres" id="19_pyc6l"]
+[ext_resource type="StyleBox" uid="uid://dim5hw1gcd6k4" path="res://GodotThemes/Styleboxes/CheckButton/Middle/MiddleHoveredCheck.tres" id="19_wutoq"]
+[ext_resource type="StyleBox" uid="uid://b8pn2mqnule0l" path="res://GodotThemes/Styleboxes/CheckButton/Middle/MiddleSelectedHoveredCheck.tres" id="20_7ag33"]
+[ext_resource type="StyleBox" uid="uid://bilb3lhdjminv" path="res://GodotThemes/Styleboxes/Light/LightBoxLineEdit.tres" id="20_7qla8"]
+[ext_resource type="StyleBox" uid="uid://c12gk82qaxksm" path="res://GodotThemes/Styleboxes/CheckButton/Middle/MiddleUnselectedCheck.tres" id="21_nw0wt"]
+[ext_resource type="StyleBox" uid="uid://b7dxw8xd3e1s8" path="res://GodotThemes/Styleboxes/Light/LightBoxLineEditDisabled.tres" id="21_o1akw"]
+[ext_resource type="StyleBox" uid="uid://bcjtrltbna38a" path="res://GodotThemes/Styleboxes/CheckButton/Middle/MiddleSelectedCheck.tres" id="22_4y3kj"]
+[ext_resource type="StyleBox" uid="uid://dp08s20l7y10u" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightHoveredCheck.tres" id="24_e4a1j"]
+[ext_resource type="StyleBox" uid="uid://d2mlslepcqqv1" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightSelectedHoveredCheck.tres" id="25_h0d8y"]
+[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="26_0d32j"]
+[ext_resource type="StyleBox" uid="uid://vpxwlki3d403" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightUnselectedCheck.tres" id="26_3ma2l"]
+[ext_resource type="StyleBox" uid="uid://beg45o7ecf2np" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightSelectedCheck.tres" id="27_l0gjp"]
+[ext_resource type="StyleBox" uid="uid://ci1lr3jnte2w2" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTinyDisabled.tres" id="34_da0wn"]
+[ext_resource type="StyleBox" uid="uid://c75ospsnssftd" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTinyHover.tres" id="35_h2vhl"]
+[ext_resource type="StyleBox" uid="uid://bkpntc38743ge" path="res://GodotThemes/Styleboxes/Heavy/HeavyBoxTabPanel.tres" id="35_xdfpj"]
+[ext_resource type="StyleBox" uid="uid://vcj0kglkd4xb" path="res://GodotThemes/Styleboxes/Light/LightBoxTextEdit.tres" id="35_yuub7"]
+[ext_resource type="StyleBox" uid="uid://di3wragjgm1rs" path="res://GodotThemes/Styleboxes/Light/LightBoxTextEditDisabled.tres" id="36_2opty"]
+[ext_resource type="StyleBox" uid="uid://bbt0vymv5cm04" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/DisabledContainerTab.tres" id="36_mm1pl"]
+[ext_resource type="StyleBox" uid="uid://d0lwbt7ri5mu1" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTiny.tres" id="36_oln61"]
+[ext_resource type="StyleBox" uid="uid://o5ml7lthvyb6" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTinyPress.tres" id="37_gk46m"]
+[ext_resource type="StyleBox" uid="uid://t8wxv3sfhwoc" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/HoveredContainerTab.tres" id="37_w5dqx"]
+[ext_resource type="StyleBox" uid="uid://do88pe3uqwrwa" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/SelectedContainerTab.tres" id="38_sekc1"]
+[ext_resource type="StyleBox" uid="uid://eox0na6koe10" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/UnselectedContainerTab.tres" id="39_dn4oj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6kcuu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pbgaf"]
+
+[sub_resource type="Image" id="Image_7u7jh"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 133, 254, 254, 254, 209, 254, 254, 254, 244, 254, 254, 254, 244, 254, 254, 254, 209, 254, 254, 254, 132, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 21, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 133, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 130, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 207, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 206, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 132, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 129, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 254, 254, 254, 243, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 242, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 21, 254, 254, 254, 130, 254, 254, 254, 207, 254, 254, 254, 243, 254, 254, 254, 242, 254, 254, 254, 206, 254, 254, 254, 129, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_ld0ou"]
+image = SubResource("Image_7u7jh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pxcoq"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htjhy"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_id01w"]
+content_margin_left = 3.0
+content_margin_top = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eaktt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jjk8y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qiyor"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lex7"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0.027451, 0, 0.501961)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0, 0, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8upmj"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0.027451, 0.270588, 1)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0, 0, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nrywe"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 0.101961, 1)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(1, 1, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2hxyw"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0.027451, 0.270588, 0.501961)
+border_width_left = 2
+border_width_right = 2
+border_color = Color(0, 0, 0, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pnv3j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fmsy4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xwndi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cda43"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.145098, 0.145098, 0.145098, 0.709804)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h4wr3"]
+
+[resource]
+default_font = ExtResource("1_36sps")
+ActionButton/base_type = &"Button"
+ActionButton/colors/font_color = Color(0, 0, 0.25098, 1)
+ActionButton/colors/font_disabled_color = Color(0, 0, 0.25098, 0.501961)
+ActionButton/colors/font_focus_color = Color(0, 0, 0.25098, 1)
+ActionButton/colors/font_hover_color = Color(0, 0, 0.25098, 1)
+ActionButton/colors/font_hover_pressed_color = Color(0, 0, 0.25098, 1)
+ActionButton/colors/font_pressed_color = Color(0, 0, 0.25098, 1)
+ActionButton/styles/disabled = ExtResource("1_bx6da")
+ActionButton/styles/hover = ExtResource("2_5u1oq")
+ActionButton/styles/normal = ExtResource("3_oygvm")
+ActionButton/styles/pressed = ExtResource("4_18yn3")
+Button/styles/disabled = ExtResource("5_6cjcu")
+Button/styles/focus = SubResource("StyleBoxEmpty_6kcuu")
+Button/styles/hover = ExtResource("6_ibt6s")
+Button/styles/normal = ExtResource("7_yqq06")
+Button/styles/pressed = ExtResource("8_r6qd1")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_pbgaf")
+CheckButton/styles/hover = ExtResource("9_bc172")
+CheckButton/styles/hover_pressed = ExtResource("10_rm02j")
+CheckButton/styles/normal = ExtResource("11_j4jj6")
+CheckButton/styles/pressed = ExtResource("12_a0ked")
+EmptyCheckButton/base_type = &"CheckButton"
+EmptyCheckButton/icons/checked = ExtResource("19_0ka8y")
+EmptyCheckButton/icons/checked_disabled = ExtResource("19_0ka8y")
+EmptyCheckButton/icons/checked_disabled_mirrored = ExtResource("19_0ka8y")
+EmptyCheckButton/icons/checked_mirrored = ExtResource("19_0ka8y")
+EmptyCheckButton/icons/unchecked = ExtResource("19_0ka8y")
+EmptyCheckButton/icons/unchecked_disabled = ExtResource("19_0ka8y")
+EmptyCheckButton/icons/unchecked_disabled_mirrored = ExtResource("19_0ka8y")
+EmptyCheckButton/icons/unchecked_mirrored = ExtResource("19_0ka8y")
+HSlider/icons/grabber = SubResource("ImageTexture_ld0ou")
+HSlider/icons/tick = ExtResource("1_ervll")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_pxcoq")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_htjhy")
+HSlider/styles/slider = SubResource("StyleBoxFlat_id01w")
+ItemList/styles/focus = SubResource("StyleBoxEmpty_eaktt")
+ItemList/styles/panel = ExtResource("7_iaw26")
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.501961)
+Label/constants/shadow_offset_x = 2
+Label/constants/shadow_offset_y = 2
+LargeButton/base_type = &"Button"
+LargeButton/styles/disabled = ExtResource("16_ifrdn")
+LargeButton/styles/hover = ExtResource("17_ugm6l")
+LargeButton/styles/normal = ExtResource("18_mdlkh")
+LargeButton/styles/pressed = ExtResource("19_pyc6l")
+LeftCheckButton/base_type = &"EmptyCheckButton"
+LeftCheckButton/styles/hover = ExtResource("14_d16eg")
+LeftCheckButton/styles/hover_pressed = ExtResource("15_dbfbl")
+LeftCheckButton/styles/normal = ExtResource("16_wyq3a")
+LeftCheckButton/styles/pressed = ExtResource("17_ny1jq")
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_jjk8y")
+LineEdit/styles/normal = ExtResource("20_7qla8")
+LineEdit/styles/read_only = ExtResource("21_o1akw")
+MenuTabContainer/base_type = &"TabContainer"
+MenuTabContainer/colors/font_hovered_color = Color(1, 1, 1, 1)
+MenuTabContainer/colors/font_selected_color = Color(0, 0.027451, 0.270588, 1)
+MenuTabContainer/colors/font_unselected_color = Color(0.85098, 0.85098, 0.85098, 1)
+MenuTabContainer/styles/panel = SubResource("StyleBoxEmpty_qiyor")
+MenuTabContainer/styles/tab_disabled = SubResource("StyleBoxFlat_7lex7")
+MenuTabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_8upmj")
+MenuTabContainer/styles/tab_selected = SubResource("StyleBoxFlat_nrywe")
+MenuTabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_2hxyw")
+MiddleCheckButton/base_type = &"EmptyCheckButton"
+MiddleCheckButton/styles/hover = ExtResource("19_wutoq")
+MiddleCheckButton/styles/hover_pressed = ExtResource("20_7ag33")
+MiddleCheckButton/styles/normal = ExtResource("21_nw0wt")
+MiddleCheckButton/styles/pressed = ExtResource("22_4y3kj")
+Panel/styles/panel = ExtResource("26_0d32j")
+PanelButton/base_type = &"Panel"
+PanelButton/styles/panel = ExtResource("18_mdlkh")
+PanelContainer/styles/panel = ExtResource("26_0d32j")
+PanelContainerButton/base_type = &"PanelContainer"
+PanelContainerButton/styles/panel = ExtResource("18_mdlkh")
+RightCheckButton/base_type = &"EmptyCheckButton"
+RightCheckButton/styles/hover = ExtResource("24_e4a1j")
+RightCheckButton/styles/hover_pressed = ExtResource("25_h0d8y")
+RightCheckButton/styles/normal = ExtResource("26_3ma2l")
+RightCheckButton/styles/pressed = ExtResource("27_l0gjp")
+SecondaryPanel/base_type = &"Panel"
+SecondaryPanel/styles/panel = ExtResource("11_gd6lt")
+TabBar/styles/tab_focus = SubResource("StyleBoxEmpty_pnv3j")
+TabBar/styles/tab_hovered = ExtResource("12_7h673")
+TabBar/styles/tab_selected = ExtResource("13_dn3xi")
+TabBar/styles/tab_unselected = ExtResource("14_r0sac")
+TabButton/base_type = &"CheckButton"
+TabButton/icons/checked = null
+TabButton/icons/checked_disabled = null
+TabButton/icons/checked_disabled_mirrored = null
+TabButton/icons/checked_mirrored = null
+TabButton/icons/unchecked = null
+TabButton/icons/unchecked_disabled = null
+TabButton/icons/unchecked_disabled_mirrored = null
+TabButton/icons/unchecked_mirrored = null
+TabContainer/styles/panel = ExtResource("35_xdfpj")
+TabContainer/styles/tab_disabled = ExtResource("36_mm1pl")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_fmsy4")
+TabContainer/styles/tab_hovered = ExtResource("37_w5dqx")
+TabContainer/styles/tab_selected = ExtResource("38_sekc1")
+TabContainer/styles/tab_unselected = ExtResource("39_dn4oj")
+TextEdit/styles/focus = SubResource("StyleBoxEmpty_xwndi")
+TextEdit/styles/normal = ExtResource("35_yuub7")
+TextEdit/styles/read_only = ExtResource("36_2opty")
+TinyButton/base_type = &"Button"
+TinyButton/styles/disabled = ExtResource("34_da0wn")
+TinyButton/styles/hover = ExtResource("35_h2vhl")
+TinyButton/styles/normal = ExtResource("36_oln61")
+TinyButton/styles/pressed = ExtResource("37_gk46m")
+TooltipPanel/base_type = &"PopupPanel"
+TooltipPanel/styles/panel = ExtResource("13_bju25")
+TransparantPanel/base_type = &"Panel"
+TransparantPanel/styles/panel = SubResource("StyleBoxFlat_cda43")
+Tree/styles/focus = SubResource("StyleBoxEmpty_h4wr3")
+Tree/styles/panel = ExtResource("35_xdfpj")

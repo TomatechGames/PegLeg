@@ -29,8 +29,6 @@ public partial class CosmeticShopInterface : Control
     [Export]
     Control simpleShopParent;
     [Export]
-    Label shopRefreshLabel;
-    [Export]
     Button sacButton;
     [Export]
     Control filterBlocker;
@@ -60,17 +58,18 @@ public partial class CosmeticShopInterface : Control
             if (IsVisibleInTree())
             {
                 //load shop
-                sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : (await ProfileRequests.GetSACCode());
                 await LoadShop();
                 CurrencyHighlight.Instance.SetCurrencyType("AccountResource:eventcurrency_scaling");
             }
         };
 
-        TitleBarDragger.PerformRefresh += async () =>
+        RefreshTimerController.OnHourChanged += async () =>
         {
             //load shop
-            await LoadShop();
+            if (IsVisibleInTree())
+                await LoadShop();
         };
+
         testingTree.CellSelected += () =>
         {
             GD.Print(testingTree.GetSelected().GetMetadata(testingTree.GetSelectedColumn()));
@@ -102,29 +101,6 @@ public partial class CosmeticShopInterface : Control
             }
             ApplyFilters();
         };
-    }
-
-    public override void _Process(double delta)
-    {
-        if (shopRefreshTime != default && shopRefreshLabel is not null)
-        {
-            var remainingTime = (shopRefreshTime.AddSeconds(3) - DateTime.UtcNow);
-
-            if (remainingTime.TotalMinutes < 1)
-                shopRefreshLabel.SelfModulate = Colors.Red;
-            else if (remainingTime.TotalHours < 1)
-                shopRefreshLabel.SelfModulate = Colors.Orange;
-            else
-                shopRefreshLabel.SelfModulate = Colors.White;
-
-            shopRefreshLabel.Text = remainingTime.FormatTime();
-            if (DateTime.UtcNow.CompareTo(shopRefreshTime) >= 0)
-            {
-                shopRefreshLabel = default;
-                if (Visible)
-                    LoadShop().RunSafely();
-            }
-        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -209,7 +185,6 @@ public partial class CosmeticShopInterface : Control
     public void RegisterOffer(CosmeticShopOfferEntry newOffer) => activeOffers.Add(newOffer);
 
     bool isLoadingShop = false;
-    DateTime shopRefreshTime;
     List<CosmeticShopOfferEntry> activeOffers = new();
     List<CosmeticShopOfferEntry> onScreenOffers = new();
     List<PageGrouping> activePages = new();
@@ -219,6 +194,9 @@ public partial class CosmeticShopInterface : Control
     {
         if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0) || !await LoginRequests.TryLogin())
             return;
+
+        sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : (await ProfileRequests.GetSACCode());
+
         isLoadingShop = true;
         filterBlocker.Visible = true;
 
@@ -227,7 +205,6 @@ public partial class CosmeticShopInterface : Control
         activePages.Clear();
         navigationPane.Clear();
 
-        shopRefreshTime = await CalenderRequests.DailyShopRefreshTime();
         var cosmeticShop = await CatalogRequests.GetCosmeticShop();
 
         foreach (var pageChild in pageParent.GetChildren())
@@ -418,6 +395,8 @@ public partial class CosmeticShopInterface : Control
         "Keytar",
         "Wheels",
         "Car Body",
+        "Body",
+        "Skin",
         "Decal",
         "Boost",
         "Trail",
@@ -479,7 +458,7 @@ public partial class CosmeticShopInterface : Control
             return true;
         if (typeMasks[6] && MatchAnyFilterIndex(types, 11, 5))
             return true;
-        if (typeMasks[7] && MatchAnyFilterIndex(types, 16, 5))
+        if (typeMasks[7] && MatchAnyFilterIndex(types, 16, 7))
             return true;
         if (typeMasks[8] && !MatchAnyFilter(types))
             return true;

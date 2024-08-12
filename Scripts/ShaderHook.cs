@@ -4,15 +4,25 @@ using System;
 [Tool]
 public partial class ShaderHook : Control
 {
-
-    [Signal]
-    public delegate void IconChangedEventHandler(Texture2D icon);
-
     protected ShaderMaterial shaderMat;
     [Export]
     bool syncTimeProperty = false;
     [Export]
     bool syncControlSize = false;
+
+    //for Labels
+    public string Text
+    {
+        get => Get("text").As<string>();
+        set => Set("text", value);
+    }
+
+    //for TextureRects
+    public Texture2D Texture
+    {
+        get => Get("texture").As<Texture2D>();
+        set => Set("texture", value);
+    }
 
     public override void _Ready()
     {
@@ -73,10 +83,5 @@ public partial class ShaderHook : Control
     {
         shaderMat ??= Material as ShaderMaterial;
         shaderMat.SetShaderParameter(property, val);
-    }
-
-    public void SetMainTexture(Texture val)
-    {
-        EmitSignal(SignalName.IconChanged, val);
     }
 }

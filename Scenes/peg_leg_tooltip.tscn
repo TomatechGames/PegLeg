@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cw7vho56e5eoe"]
 
-[ext_resource type="StyleBox" uid="uid://u6vjr3k2dpbq" path="res://Themes/Styleboxes/TooltipBox.tres" id="1_t0onv"]
+[ext_resource type="StyleBox" uid="uid://u6vjr3k2dpbq" path="res://GodotThemes/Styleboxes/TooltipBox.tres" id="1_t0onv"]
 
 [node name="PegLegTooltip" type="PanelContainer"]
 offset_right = 53.0

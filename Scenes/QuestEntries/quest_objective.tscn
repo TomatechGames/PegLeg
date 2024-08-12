@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c5in0c8tv1sfq"]
 
-[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://Themes/Styleboxes/Heavy/HeavyBox.tres" id="1_332se"]
+[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="1_332se"]
 [ext_resource type="Script" path="res://Scripts/Quests/QuestObjective.cs" id="1_u26dx"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="2_hawdj"]
 

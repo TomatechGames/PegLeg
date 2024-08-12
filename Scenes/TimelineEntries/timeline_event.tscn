@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="1_1enid"]
 [ext_resource type="Shader" uid="uid://c7qw0gc6a1mip" path="res://Shaders/TimelineIconMask.tres" id="2_bk21o"]
-[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="3_xc4li"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="3_xc4li"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_un3qd"]
 bg_color = Color(0.9, 0.9, 0.9, 1)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopOfferEntry.cs" id="1_a2plt"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="2_655vb"]
-[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="2_g5hsk"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="2_g5hsk"]
 [ext_resource type="Texture2D" uid="uid://cs86xfdq8mxiw" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Disconnected_128.png" id="2_ydd6l"]
 [ext_resource type="Texture2D" uid="uid://chrwn7nsdg50k" path="res://Images/InterfaceIcons/DefaultCosmeticGradient.tres" id="3_8yx3v"]
 [ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="3_atps8"]
@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_4aip3"]
 [ext_resource type="Shader" path="res://Shaders/CosmeticOfferIcon.gdshader" id="5_4iypr"]
 [ext_resource type="PackedScene" uid="uid://bnbph4c6t2sui" path="res://Scenes/cosmetic_loading_icon.tscn" id="5_5xuyv"]
-[ext_resource type="Texture2D" uid="uid://xcnetq4h582o" path="res://Images/InterfaceIcons/BlankTexture.tres" id="6_c6mc2"]
+[ext_resource type="Texture2D" uid="uid://xcnetq4h582o" path="res://Images/TextureResources/BlankTexture.tres" id="6_c6mc2"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="6_yu1fs"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_yjpnu"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="9_7kwsg"]

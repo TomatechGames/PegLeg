@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://1ixqc8hojkjr" path="res://Images/InterfaceIcons/o5hq54xvrat91.jpg" id="1_kxac6"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionRow.cs" id="1_lh2hr"]
-[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://Themes/Styleboxes/WindowBGTransparant.tres" id="2_bp3mp"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="2_bp3mp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gy1wa"]
 bg_color = Color(1, 1, 1, 1)

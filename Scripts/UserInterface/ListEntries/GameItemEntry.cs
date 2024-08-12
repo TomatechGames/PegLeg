@@ -203,11 +203,13 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     }
 
     protected JsonObject currentItemData;
+    protected RewardNotifications.Request rewardNotificationRequest;
     protected string compositeItemOverride;
     protected virtual void UpdateItemData(JsonObject itemInstance)
     {
         if (!IsInstanceValid(this) || !IsInsideTree())
             return;
+        rewardNotificationRequest?.Cancel();
         var template = itemInstance.GetTemplate();
         int amount = itemInstance["quantity"].GetValue<int>();
         if (template["Type"].ToString() == "Accolades")
@@ -231,6 +233,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         string description = template["Description"]?.ToString();
         string type = template["Type"].ToString();
         var mainIcon = itemInstance.GetItemTexture() ?? BanjoAssets.defaultIcon;
+        if (type == "TeamPerk")
+            mainIcon = itemInstance.GetItemTexture(BanjoAssets.TextureType.Icon);
 
         description ??= "";
         description = description.Replace("{Gender}|gender(him, her)", "them");
@@ -313,6 +317,20 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.NotificationChanged, !(itemInstance?["attributes"]?["item_seen"]?.GetValue<bool>() ?? false));
         EmitSignal(SignalName.TierChanged, tier);
         EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel);
+    }
+
+    public void SetRewardNotification()
+    {
+        if (currentItemData is null || (currentItemData["rewardNotifSet"]?.GetValue<bool>() ?? false))
+            return;
+        rewardNotificationRequest?.Cancel();
+        EmitSignal(SignalName.NotificationChanged, false);
+        rewardNotificationRequest = RewardNotifications.RequestNotification(currentItemData, itemInstance =>
+        {
+            itemInstance["rewardNotifSet"] = true;
+            EmitSignal(SignalName.NotificationChanged, !(itemInstance?["attributes"]?["item_seen"]?.GetValue<bool>() ?? false));
+            rewardNotificationRequest = null;
+        });
     }
 
     public Color LatestRarityColor { get; private set; }

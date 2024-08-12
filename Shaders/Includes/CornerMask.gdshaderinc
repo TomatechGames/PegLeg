@@ -15,3 +15,19 @@ float cornerMask(vec2 uv, float cornerRadius, vec2 controlSize)
 	
 	return 1.0-clamp(min(cornerOnlyMask, edgeOnlyMask),0.0,1.0);
 }
+
+float cornerGradient(vec2 uv, float cornerRadius, vec2 controlSize)
+{
+	vec2 worldUV = (uv*controlSize);
+	
+	if(worldUV.x>cornerRadius)
+	{
+		worldUV = vec2(max(worldUV.x-(controlSize.x-(cornerRadius*2.0)), cornerRadius),worldUV.y);
+	}
+	if(worldUV.y>cornerRadius)
+	{
+		worldUV = vec2(worldUV.x, max(worldUV.y-(controlSize.y-(cornerRadius*2.0)), cornerRadius));
+	}
+	
+	return distance(worldUV/(cornerRadius*2.0), vec2(0.5));
+}

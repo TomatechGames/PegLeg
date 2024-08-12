@@ -25,6 +25,12 @@ public partial class DesktopLoginInterface : LoginInterface
     [Export]
     LineEdit gameFolderPath;
     [Export]
+    Control loginContent;
+    [Export]
+    Control loadingIcon;
+    [Export]
+    AudioStreamPlayer music;
+    [Export]
     float windowOpenDuration = 0.25f;
 
     Vector2I existingSize;
@@ -34,6 +40,8 @@ public partial class DesktopLoginInterface : LoginInterface
     bool hasBanjoAssets = false;
     protected override async Task ReadyTask()
     {
+        loginContent.Visible = true;
+        loadingIcon.Visible = false;
         gameFolderDialog.DirSelected += ApplyFolder;
         GetTree().Root.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
         sizeTarget.CustomMinimumSize = Vector2.Zero;
@@ -63,11 +71,21 @@ public partial class DesktopLoginInterface : LoginInterface
         }
         else
         {
+            MusicController.StopMusic();
+
+            music.VolumeDb = -80;
+            var musicFadeout = GetTree().CreateTween().SetParallel();
+            musicFadeout.TweenProperty(music, "volume_db", 0, 1)
+                .SetTrans(Tween.TransitionType.Expo)
+                .SetEase(Tween.EaseType.Out);
+            music.Play();
+
             loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsOffline ? "OFFLINE" : "Not Logged In");
 
             loginControls.Visible = !isLoggedIn;
-            //banjoControls.Visible = !hasBanjoAssets;
+            banjoControls.Visible = !hasBanjoAssets;
             loginButton.Disabled = !hasBanjoAssets;
+            loginButton.TooltipText = !hasBanjoAssets ? "Game Assets must be\ngenerated before continuing" : "";
 
             if (isLoggedIn)
                 loginButton.Text = "Continue";
@@ -83,38 +101,16 @@ public partial class DesktopLoginInterface : LoginInterface
 
     public async void RunBanjoGenerator()
     {
-        string programFolder = "res://External/BanjoGenerator/Release/net8.0";
-
-        JsonObject appSettingsObj = new();
-        using (var appSettingsFile = FileAccess.Open(programFolder+"/appsettings.json", FileAccess.ModeFlags.Read))
-        {
-            appSettingsObj = JsonNode.Parse(appSettingsFile.GetAsText()).AsObject();
-        }
-
-        JsonArray gameDirArray = appSettingsObj["GameFileOptions"]["GameDirectories"].AsArray();
-        gameDirArray.Clear();
-        gameDirArray.Add(gameFolderPath.Text);
-
-        using (var appSettingsFile = FileAccess.Open(programFolder + "/appsettings.json", FileAccess.ModeFlags.Write))
-        {
-            appSettingsFile.StoreString(appSettingsObj.ToString());
-        }
-
-        string realProgramFolder = Helpers.ProperlyGlobalisePath(programFolder);
-
-        string generatorProgramPath = realProgramFolder + "/BanjoBotAssets.exe";
-        var banjoProcess = Process.Start(new ProcessStartInfo()
-        {
-            FileName = generatorProgramPath,
-            UseShellExecute = true,
-            WorkingDirectory = realProgramFolder
-        });
-
-        await banjoProcess.WaitForExitAsync();
+        loginContent.Visible = false;
+        loadingIcon.Visible = true;
+        await BanjoAssets.GenerateAssets(gameFolderPath.Text);
+        loginContent.Visible = true;
+        loadingIcon.Visible = false;
 
         hasBanjoAssets = BanjoAssets.PreloadSourcesParalell();
-        //banjoControls.Visible = !hasBanjoAssets;
+        banjoControls.Visible = !hasBanjoAssets;
         loginButton.Disabled = !hasBanjoAssets;
+        loginButton.TooltipText = !hasBanjoAssets ? "Game Assets must be\ngenerated before continuing" : "";
     }
 
     void TweenWindowOpen()
@@ -126,16 +122,28 @@ public partial class DesktopLoginInterface : LoginInterface
 
     public override async Task Login()
     {
-        loginButton.Disabled = true;
+        loginContent.Visible = false;
+        loadingIcon.Visible = true;
         await base.Login();
         if (await LoginRequests.TryLogin())
+        {
+            var musicFadeout = GetTree().CreateTween().SetParallel();
+            musicFadeout.TweenProperty(music, "volume_db", -80, 1)
+                .SetTrans(Tween.TransitionType.Expo)
+                .SetEase(Tween.EaseType.In);
+            await this.WaitForTimer(1);
             SwitchToMainInterface();
+        }
         else
-            loginButton.Disabled = false;
+        {
+            loginContent.Visible = true;
+            loadingIcon.Visible = false;
+        }
     }
 
     async void SwitchToMainInterface()
     {
+        MusicController.ResumeMusic();
         var sizeDiff = existingSize - smallSize;
         GetWindow().Size = existingSize;
         GetWindow().Position -= sizeDiff / 2;

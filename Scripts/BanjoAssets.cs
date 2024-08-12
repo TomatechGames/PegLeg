@@ -24,7 +24,55 @@ public static class BanjoAssets
     }
 
     public static T Reserialise<T>(this T toReserialise) where T : JsonNode =>
-        toReserialise is not null ? (T)JsonNode.Parse(toReserialise.ToString()) : null;
+        toReserialise is not null ? (T)JsonNode.Parse(toReserialise.ToJsonString()) : null;
+
+    public static async Task GenerateAssets(string gamePath, Func<Task> waitTask = null)
+    {
+        if (!DirAccess.DirExistsAbsolute(gamePath + "/Content/Paks"))
+            return;
+
+        string programFolder = "res://External/BanjoGenerator/Release/net8.0";
+
+        JsonObject appSettingsObj = null;
+        using (var appSettingsFile = FileAccess.Open(programFolder + "/appsettings.json", FileAccess.ModeFlags.Read))
+        {
+            appSettingsObj = JsonNode.Parse(appSettingsFile.GetAsText()).AsObject();
+        }
+
+        JsonArray gameDirArray = appSettingsObj["GameFileOptions"]["GameDirectories"].AsArray();
+        gameDirArray.Clear();
+        gameDirArray.Add(gamePath + "/Content/Paks");
+
+        using (var appSettingsFile = FileAccess.Open(programFolder + "/appsettings.json", FileAccess.ModeFlags.Write))
+        {
+            appSettingsFile.StoreString(appSettingsObj.ToString());
+        }
+
+        //TODO: copy existing json files into a backup folder
+
+        string realProgramFolder = Helpers.ProperlyGlobalisePath(programFolder);
+
+        string generatorProgramPath = realProgramFolder + "/BanjoBotAssets.exe";
+        var banjoProcess = Process.Start(new ProcessStartInfo()
+        {
+            FileName = generatorProgramPath,
+            UseShellExecute = true,
+            WorkingDirectory = realProgramFolder
+        });
+
+        if (waitTask == null)
+        {
+            await banjoProcess.WaitForExitAsync();
+        }
+        else
+        {
+            while (!banjoProcess.HasExited)
+            {
+                await waitTask();
+            }
+        }
+        PreloadSourcesParalell();
+    }
 
     public static JsonObject CreateTemplate(string name, string description = null, string type = "Custom:item", string iconPath = null)
     {
@@ -110,16 +158,18 @@ public static class BanjoAssets
         {
             template["DisplayName"]?.ToString(),
             template["Rarity"]?.ToString(),
+            template["Type"]?.ToString(),
             template["SubType"]?.ToString(),
             template["Category"]?.ToString(),
             template["Personality"]?.ToString()[2..]
         };
-
-        return new JsonArray(tags.Select(t => (JsonNode)t).ToArray());
+        if (tags.Contains("Worker"))
+            tags.Add("Survivor");
+        var result = new JsonArray(tags.Select(t => (JsonNode)t).ToArray());
+        return result;
     }
 
     static readonly Dictionary<string, JsonObject> dataSources = new();
-    static JsonObject banjoFile = null;
 
     static string[] requiredSources = new string[]
     {
@@ -541,89 +591,6 @@ public static class BanjoAssets
         }
         return 0;
     }
-    static readonly List<string> collectableTypess = new()
-    {
-        "Hero",
-        "Worker",
-        "Defender",
-        "Schematic"
-    };
-    public static async Task<JsonObject> SetItemRewardNotification(this JsonObject itemData)
-    {
-        //temporarily disabled until i figure out a workaround to the lag spikes
-        itemData["attributes"] ??= new JsonObject();
-        itemData["attributes"]["item_seen"] = true;
-        return itemData;
-
-        var itemTemplate = itemData.GetTemplate();
-        if (itemData["attributes"]?["item_seen"] is not null)
-            itemData["attributes"]["item_seen"] = false;
-
-        if (itemTemplate["Type"].ToString()== "Accolades")
-        {
-            itemData["attributes"] ??= new JsonObject();
-            itemData["attributes"]["item_seen"] = true;
-            return itemData;
-        }
-        if (itemTemplate["Type"].ToString() == "CardPack")
-        {
-            itemData["attributes"] ??= new JsonObject();
-            itemData["attributes"]["item_seen"] = true;
-            return itemData;
-        }
-
-        bool exists = false;
-        var itemName = itemTemplate["Name"]?.ToString();
-        if (itemTemplate["Type"].ToString() == "Weapon")
-        {
-            exists = await ProfileRequests.ProfileItemExists(FnProfiles.Backpack, kvp =>
-            {
-                return kvp.Value["templateId"]?.ToString() == itemData["templateId"]?.ToString();
-            }, true);
-        }
-        else
-        {
-            exists = await ProfileRequests.ProfileItemExists(FnProfiles.AccountItems, kvp =>
-            {
-                string qName = (kvp.Value["itemName"]?.ToString() ?? kvp.Value["templateId"]?.ToString())?.Split(":")[^1].ToLower();
-                if (itemName == "Campaign_Event_Currency")
-                    return qName?.StartsWith("eventcurrency") ?? false;
-
-                else if (itemName == "Currency_MtxSwap")
-                    return qName != "currency_xrayllama";
-
-                if (kvp.Value?.GetTemplate() is not JsonObject qTemplate)
-                    return false;
-
-                else if (qTemplate["DisplayName"]?.ToString() != itemTemplate["DisplayName"]?.ToString())
-                    return false;
-
-                bool rarityMatch = qTemplate.GetItemRarity() >= itemTemplate.GetItemRarity();
-
-                return rarityMatch;
-            }, true);
-            if (!exists && collectableTypess.Contains(itemTemplate["Type"].ToString()))
-            {
-                exists = await ProfileRequests.ProfileItemExists(
-                    itemTemplate["Type"].ToString() == "Schematic" ? FnProfiles.SchematicCollection : FnProfiles.PeopleCollection
-                    , kvp =>
-                    {
-                        if (kvp.Value?.GetTemplate() is not JsonObject qTemplate)
-                            return false;
-
-                        else if (qTemplate["DisplayName"]?.ToString() != itemTemplate["DisplayName"]?.ToString())
-                            return false;
-
-                        bool rarityMatch = qTemplate.GetItemRarity() >= itemTemplate.GetItemRarity();
-
-                        return rarityMatch;
-                    }, true);
-            }
-        }
-        itemData["attributes"] ??= new JsonObject();
-        itemData["attributes"]["item_seen"] = exists;
-        return itemData;
-    }
 
     static readonly Color[] rarityColours = new Color[]
     {
@@ -676,8 +643,6 @@ public static class BanjoAssets
             string heroSubType = template["SubType"].ToString();
             string heroStatType = template["HeroStatType"].ToString();
             string heroRarityAndTier = template.GetCompactRarityAndTier(givenTier);
-            GD.Print(template["Name"]);
-            GD.Print($"{heroSubType}_{heroStatType}/{heroRarityAndTier}/{stat}");
             var statLookup = stats["Types"]?[$"{heroSubType}_{heroStatType}"]?[heroRarityAndTier]?[stat]?.AsObject();
             if (statLookup is null)
                 return 0;

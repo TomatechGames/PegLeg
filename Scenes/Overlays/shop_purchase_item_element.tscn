@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://x00u75ii63ly"]
+
+[ext_resource type="Texture2D" uid="uid://ihyud6tj4umi" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Evolverarity-Legend-L.png" id="1_mk4b5"]
+
+[node name="ShopPurchaseItemElement" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+texture = ExtResource("1_mk4b5")
+expand_mode = 1

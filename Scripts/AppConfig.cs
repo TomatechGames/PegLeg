@@ -7,7 +7,7 @@ public static class AppConfig
 
     static ConfigFile configFile;
 
-    public static Variant Get(string section, string key, Variant @fallback = default)
+    public static Variant Get(string section, string key, Variant fallback = default)
     {
         if(configFile is null)
         {
@@ -16,7 +16,7 @@ public static class AppConfig
             if(error!=Error.Ok)
                 GD.Print(error);
         }
-        return configFile.GetValue(section, key, @fallback);
+        return configFile.GetValue(section, key, fallback);
     }
 
     public static void Set(string section, string key, Variant value)

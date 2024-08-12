@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dta7ntrychbp1"]
 
 [ext_resource type="Script" path="res://Scripts/Overlays/ModalWindow.cs" id="1_oupub"]
-[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://Themes/Styleboxes/WindowBGTransparant.tres" id="2_ferkv"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="2_ferkv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6l75"]
 bg_color = Color(0.301961, 0.301961, 0.301961, 0)
@@ -44,7 +44,7 @@ grow_vertical = 2
 theme_override_styles/normal = ExtResource("2_ferkv")
 theme_override_styles/hover = ExtResource("2_ferkv")
 theme_override_styles/pressed = ExtResource("2_ferkv")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_k6l75")
+theme_override_styles/disabled = ExtResource("2_ferkv")
 theme_override_styles/focus = SubResource("StyleBoxFlat_k6l75")
 
 [node name="Control" type="Control" parent="."]

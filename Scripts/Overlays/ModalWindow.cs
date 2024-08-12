@@ -3,15 +3,17 @@ using System;
 
 public partial class ModalWindow : Control
 {
+    [Signal]
+    public delegate void WindowOpenedEventHandler();
+    [Signal]
+    public delegate void WindowClosedEventHandler();
+
     [Export]
     Control mouseBlockPanel;
-
     [Export]
     Control backgroundPanel;
-
     [Export]
     CanvasGroup windowCanvas;
-
     [Export]
     Control windowControl;
 
@@ -52,7 +54,7 @@ public partial class ModalWindow : Control
             windowControl.PivotOffset = windowControl.Size * 0.5f;
         }
     }
-
+    public bool IsOpen { get; private set; }
     void CloseWindow() => SetWindowOpen(false);
 
     Tween currentTween;
@@ -62,6 +64,7 @@ public partial class ModalWindow : Control
             currentTween.Kill();
         currentTween = GetTree().CreateTween().SetParallel();
 
+        IsOpen = openState;
         if (openState)
         {
             if (useSounds)
@@ -72,9 +75,14 @@ public partial class ModalWindow : Control
             ProcessMode = ProcessModeEnum.Inherit;
             if (windowControl is not null)
                 windowControl.PivotOffset = windowControl.Size * 0.5f;
+            EmitSignal(SignalName.WindowOpened);
         }
-        else if (useSounds)
-            UISounds.PlaySound("PanelDisappear");
+        else
+        {
+            if (useSounds)
+                UISounds.PlaySound("PanelDisappear");
+            EmitSignal(SignalName.WindowClosed);
+        }
 
         var newSize = openState ? 1 : shrunkScale;
         var newColour = openState ? Colors.White : Colors.Transparent;

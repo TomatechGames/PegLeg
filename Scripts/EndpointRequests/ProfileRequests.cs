@@ -50,13 +50,9 @@ public static class ProfileRequests
     }
     public static async Task<bool> ProfileItemExists(string profileID, ProfileItemPredicate predicate, bool preferCache = false)
     {
-        if (profileCache.ContainsKey(profileID) && preferCache)
-            return ProfileItemExistsUnsafe(profileID, predicate);
-       return (await GetProfile(profileID))
-            ["profileChanges"][0]["profile"]["items"]
-            .AsObject()
-            .Select(kvp => KeyValuePair.Create(kvp.Key, kvp.Value.AsObject()))
-            .Any(kvp => predicate(kvp));
+        if (!profileCache.ContainsKey(profileID) || !preferCache)
+            await GetProfile(profileID);
+       return ProfileItemExistsUnsafe(profileID, predicate);
     }
     public static bool ProfileItemExistsUnsafe(string profileID, ProfileItemPredicate predicate)
     {
@@ -165,10 +161,10 @@ public static class ProfileRequests
         _ => throw new NotImplementedException(),
     };
 
-    static async Task<DateTime> OrderRangeToInterval(OrderRange range) => range switch
+    static DateTime OrderRangeToInterval(OrderRange range) => range switch
     {
-        OrderRange.Daily => (await CalenderRequests.DailyShopRefreshTime()).AddDays(-1),
-        OrderRange.Weekly => (await CalenderRequests.WeeklyShopRefreshTime()).AddDays(-7),
+        OrderRange.Daily => RefreshTimerController.GetRefreshTime(RefreshTimeType.Daily).AddDays(-1),
+        OrderRange.Weekly => RefreshTimerController.GetRefreshTime(RefreshTimeType.Weekly).AddDays(-7),
         _ => throw new NotImplementedException(),
     };
 
@@ -176,7 +172,7 @@ public static class ProfileRequests
     {
         var orderRange = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"][OrderRangeToAttribute(range)];
         var lastIntervalTime = DateTime.Parse(orderRange["lastInterval"].ToString(), null, DateTimeStyles.RoundtripKind);
-        if (lastIntervalTime != await OrderRangeToInterval(range))
+        if (lastIntervalTime != OrderRangeToInterval(range))
             return null;
         return orderRange["purchaseList"].AsObject();
     }
@@ -296,6 +292,108 @@ public static class ProfileRequests
             ["profileChanges"][0]["profile"]["stats"]["attributes"]["quest_manager"]["dailyQuestRerolls"].GetValue<int>() > 0;
     }
 
+    static readonly List<string> collectableTypess = new()
+    {
+        "Hero",
+        "Worker",
+        "Defender",
+        "Schematic"
+    };
+
+    struct RewardNotificationCheck
+    {
+        public string typeAndName { get; init; }
+        public int rarity { get; init; }
+
+        public RewardNotificationCheck(string typeAndName, int rarity)
+        {
+            this.typeAndName = typeAndName;
+            this.rarity = rarity;
+        }
+
+        public bool IsMatch(RewardNotificationCheck itemToCheck)
+        {
+            //if(itemToCheck.typeAndName == typeAndName)
+            //{
+            //    GD.Print($"partial match \"{typeAndName}\":({rarity}/{itemToCheck.rarity})");
+            //}
+            return itemToCheck.typeAndName == typeAndName && rarity >= itemToCheck.rarity;
+        }
+    }
+    static readonly Dictionary<string, List<RewardNotificationCheck>> rewardNotificationChecks = new();
+
+    public static async Task<JsonObject> SetItemRewardNotification(this JsonObject itemData)
+    {
+        //temporarily disabled until i figure out a workaround to the lag spikes
+        //itemData["attributes"] ??= new JsonObject();
+        //itemData["attributes"]["item_seen"] = true;
+        //return itemData;
+        var itemTemplate = itemData.GetTemplate();
+        if (itemData["attributes"]?["item_seen"] is not null)
+            itemData["attributes"]["item_seen"] = false;
+
+        if (itemTemplate["Type"].ToString() == "Accolades")
+        {
+            itemData["attributes"] ??= new JsonObject();
+            itemData["attributes"]["item_seen"] = true;
+            return itemData;
+        }
+        if (itemTemplate["Type"].ToString() == "CardPack")
+        {
+            itemData["attributes"] ??= new JsonObject();
+            itemData["attributes"]["item_seen"] = true;
+            return itemData;
+        }
+        if (itemTemplate["Name"].ToString() == "Campaign_Event_Currency")
+        {
+            itemData["attributes"] ??= new JsonObject();
+            itemData["attributes"]["item_seen"] = true;
+            return itemData;
+        }
+        if (itemTemplate["Name"].ToString() == "Currency_MtxSwap")
+        {
+            itemData["attributes"] ??= new JsonObject();
+            itemData["attributes"]["item_seen"] = true;
+            return itemData;
+        }
+
+        bool exists = false;
+        var notificationKey = GenerateRewardNotificationKey(itemTemplate);
+        if (itemTemplate["Type"].ToString() == "Weapon")
+        {
+            if (!rewardNotificationChecks.ContainsKey(FnProfiles.Backpack))
+                await GetProfile(FnProfiles.Backpack);
+
+            lock (rewardNotificationChecks)
+            {
+                exists = rewardNotificationChecks[FnProfiles.Backpack]?.Any(c => c.IsMatch(notificationKey)) ?? false;
+            }
+        }
+        else
+        {
+            if (!rewardNotificationChecks.ContainsKey(FnProfiles.AccountItems))
+                await GetProfile(FnProfiles.AccountItems);
+            lock (rewardNotificationChecks)
+            {
+                exists = rewardNotificationChecks[FnProfiles.AccountItems]?.Any(c => c.IsMatch(notificationKey)) ?? false;
+            }
+            if (!exists && collectableTypess.Contains(itemTemplate["Type"].ToString()))
+            {
+                var collectionProfile = itemTemplate["Type"].ToString() == "Schematic" ? FnProfiles.SchematicCollection : FnProfiles.PeopleCollection;
+
+                if (!rewardNotificationChecks.ContainsKey(collectionProfile))
+                    await GetProfile(collectionProfile);
+                lock (rewardNotificationChecks)
+                {
+                    exists = rewardNotificationChecks[collectionProfile]?.Any(c => c.IsMatch(notificationKey)) ?? false;
+                }
+            }
+        }
+        itemData["attributes"] ??= new JsonObject();
+        itemData["attributes"]["item_seen"] = exists;
+        return itemData;
+    }
+
     public static async Task<JsonObject> GetProfile(string profileId, bool forceRefresh = false)
     {
         if (forceRefresh && validProfiles.Contains(profileId))
@@ -342,8 +440,6 @@ public static class ProfileRequests
             profileOperationSephamore.Release();
         }
     }
-
-
 
     public static async Task<JsonObject> PerformProfileOperationUnsafe(string profileId, string operation, string content = "{}")
     {
@@ -393,6 +489,15 @@ public static class ProfileRequests
             //GD.Print("no cached profile");
 
         profileCache[profileId] = result;
+        lock (rewardNotificationChecks)
+        {
+            if (!rewardNotificationChecks.ContainsKey(profileId))
+                rewardNotificationChecks[profileId] = new();
+            var checks = GenerateRewardNotificationChecks(result);
+            rewardNotificationChecks[profileId] = checks;
+            var trimmedChecks = checks.ToArray()[..Mathf.Min(10, checks.Count)];
+            GD.Print($"{profileId}: [{trimmedChecks.Select(n=>n.typeAndName+":"+n.rarity).ToArray().Join(", ")}]");
+        }
         if (result.ContainsKey("notifications"))
         {
             var notifications = result["notifications"].AsArray();
@@ -481,6 +586,30 @@ public static class ProfileRequests
             ["profileId"] = newProfile["profileChanges"][0]["profile"]["profileId"].ToString(),
             ["profileChanges"] = profileChanges
         };
+    }
+
+    static List<RewardNotificationCheck> GenerateRewardNotificationChecks(JsonObject newProfile)
+    {
+        var items = newProfile?["profileChanges"]?[0]?["profile"]?["items"]?.AsObject();
+        if (items is null)
+            return new();
+        return items
+            .GroupBy(i => GenerateRewardNotificationKey(i.Value.GetTemplate()))
+            .Select(g => g.Key)
+            .ToList();
+    }
+
+    static RewardNotificationCheck GenerateRewardNotificationKey(JsonObject itemTemplate)
+    {
+        string type = itemTemplate?["Type"]?.ToString();
+        string name = itemTemplate?["Name"]?.ToString();
+        string displayName = itemTemplate?["DisplayName"]?.ToString();
+        if (name?.StartsWith("eventcurrency") ?? false)
+            displayName = "Campaign Event Currency";
+        if (name == "currency_xrayllama")
+            displayName = "V-Bucks Voucher";
+
+        return new($"{type}_{displayName}", itemTemplate?.GetItemRarity() ?? 0);
     }
 
     public static event Action<ProfileItemId> OnItemAdded;

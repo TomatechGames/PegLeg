@@ -1,0 +1,22 @@
+{
+    "backgrounds":
+    [
+        "FORT_Load_Missions_BorealBase.png",
+        "FORT_Load_Missions_ChillyCove.png",
+        "FORT_Load_Missions_WinterRTL.png",
+        "T-LS-StW-EndlessWinter3.png"
+    ],
+    "music":
+    [
+        [
+            "Winter_Ambient_Day_VAR_A_Loop.wav",
+            "Winter_Ambient_Day_VAR_B_Loop.wav",
+            "Winter_Ambient_Day_VAR_C_Loop.wav"
+        ],
+        [
+            "Winter_Ambient_NIght_VAR_A_Loop.wav",
+            "Winter_Ambient_NIght_VAR_B_Loop.wav",
+            "Winter_Ambient_NIght_VAR_C_Loop.wav"
+        ]
+    ]
+}

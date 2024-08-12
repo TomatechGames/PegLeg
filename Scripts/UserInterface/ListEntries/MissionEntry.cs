@@ -56,10 +56,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
     MissionData currentMissionData = null;
     public void SetMissionData(MissionData missionData_)
 	{
-        if (currentMissionData != null)
-            currentMissionData.OnRewardsCompleted -= UpdateRewards;
         currentMissionData = missionData_;
-        currentMissionData.OnRewardsCompleted += UpdateRewards;
         //apply data to element
         var generator = currentMissionData.missionJson["missionGenerator"].AsObject();
         var tile = currentMissionData.missionJson["tile"].AsObject();
@@ -113,6 +110,8 @@ public partial class MissionEntry : Control, IRecyclableEntry
             alertRewardLayout.ProcessMode = ProcessModeEnum.Inherit;
             alertModifierLayout.Visible = true;
             alertModifierLayout.ProcessMode = ProcessModeEnum.Inherit;
+
+            ApplyItems(missionAlert["rewards"].AsArray(), alertRewardParent);
         }
         else
         {
@@ -122,17 +121,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
             alertModifierLayout.ProcessMode = ProcessModeEnum.Disabled;
         }
 
-        UpdateRewards();
-        currentMissionData.SetRewardNotifications();
-    }
-
-    void UpdateRewards()
-    {
         ApplyItems(currentMissionData.missionJson["missionRewards"].AsArray(), missionRewardParent);
-        if (currentMissionData.missionJson["missionAlert"] is JsonObject missionAlert)
-        {
-            ApplyItems(missionAlert["rewards"].AsArray(), alertRewardParent);
-        }
     }
 
     static void ApplyItems(JsonArray itemArray, Control parent)
@@ -155,6 +144,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
             controlChild.includeAmountInName = !isRewardBundle;
 
             controlChild.SetItemData(itemArray[i].AsObject());
+            controlChild.SetRewardNotification();
 
             if (!isRewardBundle)
                 controlChild.SetInteractableSmart();
