@@ -1,4 +1,4 @@
-[gd_scene load_steps=157 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=156 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
@@ -49,7 +49,6 @@
 [ext_resource type="Texture2D" uid="uid://de4vkpc5d58on" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Legendary-L.png" id="29_1wg7d"]
 [ext_resource type="Texture2D" uid="uid://jipvjhedh7jy" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Epic-L.png" id="30_ds0x6"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="30_sx8jl"]
-[ext_resource type="Texture2D" uid="uid://d8v0v7pbda3c" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Metal-Brightcore-L.png" id="31_10uyu"]
 [ext_resource type="PackedScene" uid="uid://c4lt6qwfc4cou" path="res://Scenes/Overlays/loading_overlay.tscn" id="31_v6low"]
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="32_lpbgg"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ItemShopInterface.cs" id="36_0ynuk"]
@@ -313,7 +312,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_owwq5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qu7yh"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -2131,7 +2130,7 @@ offset_left = 7.0
 offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("31_10uyu")
+texture = ExtResource("38_jegii")
 expand_mode = 1
 stretch_mode = 5
 
@@ -2144,7 +2143,7 @@ offset_top = 2.0
 offset_right = -7.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("38_jegii")
+texture = ExtResource("16_mawwv")
 expand_mode = 1
 stretch_mode = 5
 
@@ -3516,7 +3515,7 @@ mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_owwq5")
+material = SubResource("ShaderMaterial_qu7yh")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 

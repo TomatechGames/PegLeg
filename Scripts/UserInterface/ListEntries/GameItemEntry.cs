@@ -63,6 +63,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public delegate void RarityChangedEventHandler(Color rarityColour);
 
     [Signal]
+    public delegate void MaxTierChangedEventHandler(int maxTier);
+
+    [Signal]
     public delegate void TierChangedEventHandler(int tier);
 
     [Signal]
@@ -310,13 +313,15 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         //if (!(data.rarity < 7 && data.rarity >= 0))
         //    rarity = 0;
 
-        LatestRarityColor = itemInstance.GetTemplate().GetItemRarityColor();
+        LatestRarityColor = template.GetItemRarityColor();
         if (itemInstance["templateId"].ToString().StartsWith("CardPack:zcp"))
             LatestRarityColor = Colors.Transparent;
         EmitSignal(SignalName.RarityChanged, LatestRarityColor);
         EmitSignal(SignalName.NotificationChanged, !(itemInstance?["attributes"]?["item_seen"]?.GetValue<bool>() ?? false));
+
+        EmitSignal(SignalName.MaxTierChanged, Mathf.Min(template.GetItemRarity() + 1, 5));
         EmitSignal(SignalName.TierChanged, tier);
-        EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel);
+        EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel/2);
     }
 
     public void SetRewardNotification()

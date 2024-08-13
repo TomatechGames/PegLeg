@@ -90,7 +90,7 @@ public partial class ShopOfferEntry : Control
         EmitSignal(SignalName.IsBirthdayChanged, name.ToLower().Contains("birthday"));
 
         EmitSignal(SignalName.IsFreeChanged, price == 0);
-        EmitSignal(SignalName.IsLimitedTimeChanged, linkedOfferId == "B9B0CE758A5049F898773C1A47A69ED4");//offerId of random free llamas which only last 1 hour
+        EmitSignal(SignalName.IsLimitedTimeChanged, linkedOfferId == "D46EC225FA1149ADB00B4B17B2ABAB70");//offerId of random free llamas which only last 1 hour
 
         if (price == 0)
             priceEntry.ClearItem(null);

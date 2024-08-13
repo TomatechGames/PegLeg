@@ -222,7 +222,7 @@ min_value = -0.06
 max_value = 1.0
 show_percentage = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer" node_paths=PackedStringArray("tierImages")]
+[node name="TierController" type="HBoxContainer" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer" node_paths=PackedStringArray("tierImages")]
 custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
 theme_override_constants/separation = 0
@@ -231,28 +231,28 @@ script = ExtResource("8_f4ssv")
 tierImages = [NodePath("TextureRect"), NodePath("TextureRect2"), NodePath("TextureRect3"), NodePath("TextureRect4"), NodePath("TextureRect5")]
 superchargeColor = Color(0, 0.708333, 0.85, 1)
 
-[node name="TextureRect" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController"]
 self_modulate = Color(0, 0.708333, 0.85, 1)
 layout_mode = 2
 texture = ExtResource("8_mm71c")
 expand_mode = 3
 
-[node name="TextureRect2" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController"]
 layout_mode = 2
 texture = ExtResource("8_mm71c")
 expand_mode = 3
 
-[node name="TextureRect3" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect3" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController"]
 layout_mode = 2
 texture = ExtResource("8_mm71c")
 expand_mode = 3
 
-[node name="TextureRect4" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect4" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController"]
 layout_mode = 2
 texture = ExtResource("8_mm71c")
 expand_mode = 3
 
-[node name="TextureRect5" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect5" type="TextureRect" parent="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController"]
 layout_mode = 2
 texture = ExtResource("8_mm71c")
 expand_mode = 3
@@ -270,6 +270,7 @@ outlinePadding = 0.0
 [connection signal="IconChanged" from="." to="ItemIcon" method="set_texture"]
 [connection signal="InteractableChanged" from="." to="Responsive Button Area" method="set_visible"]
 [connection signal="LevelProgressChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/ProgressBar" method="set_value"]
+[connection signal="MaxTierChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController" method="SetMaxTier"]
 [connection signal="PersonalityIconChanged" from="." to="GameItem/MarginContainer/MarginContainer/HBoxContainer/Subtype" method="set_texture"]
 [connection signal="RarityChanged" from="." to="RarityGradient" method="set_self_modulate"]
 [connection signal="RarityChanged" from="." to="GameItem/TierAndXp/TextureRect" method="set_self_modulate"]
@@ -278,7 +279,7 @@ outlinePadding = 0.0
 [connection signal="RatingChanged" from="." to="GameItem/Space/PowerLevel/HBoxContainer/PowerLevelLabel" method="set_text"]
 [connection signal="RatingVisibility" from="." to="GameItem/Space/PowerLevel" method="set_visible"]
 [connection signal="SubtypeIconChanged" from="." to="GameItem/MarginContainer/MarginContainer/HBoxContainer/Subtype" method="set_texture"]
-[connection signal="SuperchargeChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer" method="SetSuperchargedTier"]
+[connection signal="SuperchargeChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController" method="SetSuperchargedTier"]
 [connection signal="SurvivorBoostIconChanged" from="." to="GameItem/MarginContainer/MarginContainer/HBoxContainer/Tersiary" method="set_texture"]
-[connection signal="TierChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/HBoxContainer" method="SetTier"]
+[connection signal="TierChanged" from="." to="GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController" method="SetTier"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]
