@@ -1,18 +1,40 @@
 name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+run-name: Diggung up a new release (${{ github.actor }})
+            
+on: 
+  push:
+    tags:
+      - "v*"
 jobs:
-  Explore-GitHub-Actions:
+  # job id, can be anything
+  export_app:
+    # Always use ubuntu-latest for this action
     runs-on: ubuntu-latest
+    # Add permission for release creation. Can be made narrower according to your needs
+    permissions: write-all
+    # Job name, can be anything
+    name: Export PegLeg
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      # Always include the checkout step so that 
+      # your project is available for Godot to export
+    - name: checkout
+      uses: actions/checkout@v3.3.0
+  
+    - name: export game
+      id: export
+      # Use latest version (see releases for all versions)
+      uses: firebelley/godot-export@v5.2.1
+      with:
+        # Defining all the required inputs
+        godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/4.0/Godot_v4.0-stable_linux.x86_64.zip
+        godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.0/Godot_v4.0-stable_export_templates.tpz
+        relative_project_path: ./
+        archive_output: true
+
+      # This release action has worked well for me. However, you can most likely use any release action of your choosing.
+      # https://github.com/ncipollo/release-action
+    - name: create release
+      uses: ncipollo/release-action@v1.12.0
+      with:
+        generateReleaseNotes: true
+        artifacts: ${{ steps.export.outputs.archive_directory }}/*
