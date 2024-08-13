@@ -1,5 +1,6 @@
 External/Banjo/
 External/BanjoGenerator/Debug
+Build/
 
 # Godot 4+ specific ignores
 .godot/

@@ -53,15 +53,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
             "AccountResource:reagent_c_t04",
         },
         new string[] {
-            "Ingredient:ingredient_ore_copper",
-            "Ingredient:ingredient_ore_silver",
-            "Ingredient:ingredient_ore_malachite",
-            "Ingredient:ingredient_ore_obsidian",
-            "Ingredient:ingredient_ore_brightcore",
-
-            "Ingredient:ingredient_crystal_quartz",
-            "Ingredient:Ingredient:ingredient_crystal_shadowshard",
-            "Ingredient:ingredient_crystal_sunbeam",
+            "AccountResource:currency_mtxswap",
         },
         new string[]
         {
@@ -74,8 +66,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
         },
         new string[]
         {
-            "Worker:workerbasic_sr_t01",
-            "MYTHICLEAD",
+            "Worker:*",
         }
     };
 

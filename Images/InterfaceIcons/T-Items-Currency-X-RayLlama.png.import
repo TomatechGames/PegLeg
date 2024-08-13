@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://da88fnanf35ju"
-path="res://.godot/imported/T-Items-Currency-X-RayLlama.png-1892cd2dc938140e5ec4bd80d88a42dd.ctex"
+path="res://.godot/imported/T-Items-Currency-X-RayLlama.png-16ec5155519c0fbeb862f2fb4164b55b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Currency-X-RayLlama.png"
-dest_files=["res://.godot/imported/T-Items-Currency-X-RayLlama.png-1892cd2dc938140e5ec4bd80d88a42dd.ctex"]
+source_file="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png"
+dest_files=["res://.godot/imported/T-Items-Currency-X-RayLlama.png-16ec5155519c0fbeb862f2fb4164b55b.ctex"]
 
 [params]
 

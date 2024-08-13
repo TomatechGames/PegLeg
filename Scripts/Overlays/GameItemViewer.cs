@@ -365,9 +365,9 @@ public partial class GameItemViewer : ModalWindow
             return;
         GD.Print("attempting to purchase offer: " + linkedShopOffer);
         //fake it to test purchase animation
-        GD.Print("FAKE PURCHASE");
-        ShopPurchaseAnimation.PlayAnimation(latestItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
-        return;
+        //GD.Print("FAKE PURCHASE");
+        //ShopPurchaseAnimation.PlayAnimation(latestItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
+        //return;
 
         JsonObject body = new()
         {

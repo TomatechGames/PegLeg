@@ -13,7 +13,7 @@
 [ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="6_5bd7b"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="6_7i7f0"]
 [ext_resource type="Shader" path="res://Shaders/LlamaTriangleEffect.gdshader" id="6_41bjr"]
-[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Currency-X-RayLlama.png" id="6_n8hwd"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="6_n8hwd"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="8_8g41e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b18q1"]

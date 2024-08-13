@@ -26,7 +26,7 @@
 [ext_resource type="Script" path="res://Scripts/UIElements/ColumnStackContainer.cs" id="16_acwd2"]
 [ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="16_cu2sv"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
-[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Currency-X-RayLlama.png" id="16_mawwv"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="16_mawwv"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="16_o064n"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="16_rir5i"]
 [ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="17_u4ds1"]
@@ -51,10 +51,10 @@
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="30_sx8jl"]
 [ext_resource type="Texture2D" uid="uid://d8v0v7pbda3c" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Metal-Brightcore-L.png" id="31_10uyu"]
 [ext_resource type="PackedScene" uid="uid://c4lt6qwfc4cou" path="res://Scenes/Overlays/loading_overlay.tscn" id="31_v6low"]
-[ext_resource type="Texture2D" uid="uid://cubygayq8llga" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Red-L.png" id="32_8x8td"]
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="32_lpbgg"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ItemShopInterface.cs" id="36_0ynuk"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/TempCompendiumInterface.cs" id="36_us3cw"]
+[ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="38_jegii"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/SurvivorLoadoutInterface.cs" id="38_sek5r"]
 [ext_resource type="PackedScene" uid="uid://wb5ukb74fot1" path="res://Scenes/ShopEntries/regular_shop_entry.tscn" id="38_w7j3j"]
 [ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
@@ -1721,18 +1721,16 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
-current_tab = 4
 script = ExtResource("16_hsemp")
 
 [node name="Missions" type="PanelContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemSearchToggle", "itemFilterButtons", "missionList", "loadingIcon")]
-visible = false
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 script = ExtResource("3_mfw8j")
 zoneFilterTabBar = NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer/MarginContainer2/HBoxContainer/ZoneFilters")
 searchBar = NodePath("VBoxContainer/HBoxContainer/HBoxContainer/TextEdit")
 itemSearchToggle = NodePath("VBoxContainer/HBoxContainer/HBoxContainer/CheckButton")
-itemFilterButtons = [NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton5"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton4"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton6"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton2"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton3"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton")]
+itemFilterButtons = [NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton5"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton4"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton6"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton2"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton3"), NodePath("VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton")]
 missionList = NodePath("VBoxContainer/Control/ScrollContainer")
 loadingIcon = NodePath("VBoxContainer/Control/LoadingIcon")
 
@@ -1963,36 +1961,32 @@ theme_type_variation = &"RightCheckButton"
 button_group = SubResource("ButtonGroup_nlo3j")
 text = " V"
 
-[node name="MarginContainer2" type="HBoxContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2"]
-layout_mode = 2
-theme_override_constants/separation = 2
-alignment = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2"]
+[node name="MarginContainer3" type="MarginContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer"]
+[node name="Panel" type="Panel" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("47_pojk8")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Legendary Survivors
 Mythic Lead Survivors"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton"]
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton"]
+visible = false
 self_modulate = Color(1, 1, 0, 1)
 layout_mode = 1
 anchors_preset = -1
@@ -2006,7 +2000,7 @@ texture = SubResource("GradientTexture2D_bncug")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton"]
+[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2019,13 +2013,13 @@ texture = ExtResource("24_trcxm")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CheckButton2" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton2" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Schematics"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton2"]
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2038,14 +2032,14 @@ texture = ExtResource("25_hxjuc")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CheckButton3" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton3" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Heros
 Defenders"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton3"]
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton3"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2058,13 +2052,13 @@ texture = ExtResource("26_86eqc")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CheckButton4" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton4" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Upgrade Materials"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton4"]
+[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton4"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2077,7 +2071,7 @@ texture = ExtResource("27_o6528")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton4"]
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton4"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2090,13 +2084,13 @@ texture = ExtResource("28_5f7ml")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CheckButton5" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton5" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Perk-Up"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton5"]
+[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton5"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2109,7 +2103,7 @@ texture = ExtResource("29_1wg7d")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton5"]
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton5"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2122,13 +2116,13 @@ texture = ExtResource("30_ds0x6")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CheckButton6" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton6" type="CheckButton" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Crafting Resources"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton6"]
+[node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton6"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2141,7 +2135,7 @@ texture = ExtResource("31_10uyu")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer/MarginContainer/HBoxContainer/CheckButton6"]
+[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton6"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -2150,9 +2144,15 @@ offset_top = 2.0
 offset_right = -7.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("32_8x8td")
+texture = ExtResource("38_jegii")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="MarginContainer2" type="HBoxContainer" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 2
 
 [node name="Control" type="Control" parent="MainApp/TabContainer/Missions/VBoxContainer"]
 layout_mode = 2
@@ -2757,6 +2757,7 @@ visible = false
 layout_mode = 2
 
 [node name="Item Shop" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("weeklyHighlightParent", "weeklyRegularParent", "eventHighlightParent", "eventRegularParent")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("36_0ynuk")
