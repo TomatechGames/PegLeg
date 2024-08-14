@@ -281,16 +281,6 @@ frame_23/duration = 1.0
 [sub_resource type="ButtonGroup" id="ButtonGroup_nlo3j"]
 resource_name = "MissionZoneFilter"
 
-[sub_resource type="Gradient" id="Gradient_4wivf"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_bncug"]
-gradient = SubResource("Gradient_4wivf")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0.5, 0)
-metadata/_snap_enabled = true
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ewrca"]
 shader = ExtResource("16_cu2sv")
 shader_parameter/IconTint = Color(0.101961, 0.101961, 0.101961, 1)
@@ -312,7 +302,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qu7yh"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wcr4r"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -336,6 +326,16 @@ fill_to = Vector2(0.5, 0)
 metadata/_snap_enabled = true
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_njcgx"]
+
+[sub_resource type="Gradient" id="Gradient_4wivf"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bncug"]
+gradient = SubResource("Gradient_4wivf")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyvnw"]
 bg_color = Color(0.15, 0.15, 0.15, 1)
@@ -1984,21 +1984,6 @@ tooltip_text = "Legendary Survivors
 Mythic Lead Survivors"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton"]
-visible = false
-self_modulate = Color(1, 1, 0, 1)
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2.0
-offset_right = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = SubResource("GradientTexture2D_bncug")
-expand_mode = 1
-stretch_mode = 5
-
 [node name="TextureRect2" type="TextureRect" parent="MainApp/TabContainer/Missions/VBoxContainer/HBoxContainer/HBoxContainer2/MarginContainer3/MarginContainer/HBoxContainer/CheckButton"]
 layout_mode = 1
 anchors_preset = -1
@@ -3515,7 +3500,7 @@ mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_qu7yh")
+material = SubResource("ShaderMaterial_wcr4r")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
@@ -3934,6 +3919,23 @@ layout_mode = 1
 visible = false
 layout_mode = 1
 startOpen = false
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1111.0
+offset_top = 63.0
+offset_right = 1107.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_bncug")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="StatusBar" type="MarginContainer" parent="." node_paths=PackedStringArray("background", "settingsWindow", "sizeDraggers")]
 layout_mode = 1
