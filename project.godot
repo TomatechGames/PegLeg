@@ -22,7 +22,6 @@ boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/image="res://Images/InterfaceIcons/PegLegIcon256.png"
 boot_splash/fullsize=false
 config/icon="res://Images/InterfaceIcons/PegLegIcon256.png"
-config/windows_native_icon="res://Images/InterfaceIcons/PegLegICO.ico"
 config/use_custom_user_dir.release=true
 
 [autoload]
@@ -43,6 +42,10 @@ window/stretch/aspect="expand"
 [dotnet]
 
 project/assembly_name="PegLegGD"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/external_folder_exporter/plugin.cfg")
 
 [file_customization]
 
