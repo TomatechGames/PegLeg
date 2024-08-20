@@ -37,12 +37,19 @@ public partial class QuestInterface : Control
         };
         nodeController.Pressed += RefreshCurrentSelection;
         questViewer.OnRefreshNeeded += RefreshCurrentSelection;
-        RefreshTimerController.OnDayChanged += () =>
-        {
-            questsNeedUpdate = true;
-            if (IsVisibleInTree())
-                LoadQuests();
-        };
+        RefreshTimerController.OnDayChanged += OnDayChanged;
+    }
+
+    private void OnDayChanged()
+    {
+        questsNeedUpdate = true;
+        if (IsVisibleInTree())
+            LoadQuests();
+    }
+
+    public override void _ExitTree()
+    {
+        RefreshTimerController.OnDayChanged -= OnDayChanged;
     }
 
     public static event Action OnPinnedQuestsCleared;

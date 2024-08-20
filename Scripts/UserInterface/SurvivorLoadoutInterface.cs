@@ -159,12 +159,13 @@ public partial class SurvivorLoadoutInterface : Node
                     continue;
                 }
 
-                if (
-                    existingWorkers.ContainsKey(workerKey) &&
-                    existingWorkers[workerKey]["attributes"]["squad_id"].ToString() == squad.Key &&
-                    existingWorkers[workerKey]["attributes"]["squad_slot_idx"].GetValue<int>() == i
-                    )
-                    continue;
+                //if (
+                //    existingWorkers.ContainsKey(workerKey) &&
+                //    existingWorkers[workerKey]["attributes"]["squad_id"].ToString() == squad.Key &&
+                //    existingWorkers[workerKey]["attributes"]["squad_slot_idx"].GetValue<int>() == i
+                //    )
+                //    continue;
+
                 flattenedLoadout["characterIds"].AsArray().Add(workerKey);
                 flattenedLoadout["squadIds"].AsArray().Add(squad.Key);
                 flattenedLoadout["slotIndices"].AsArray().Add(i);

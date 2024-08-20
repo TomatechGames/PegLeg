@@ -30,7 +30,7 @@ shader_parameter/CornerRadius = 10.0
 resource_local_to_scene = true
 shader = ExtResource("5_4iypr")
 shader_parameter/ControlSize = Vector2(150, 150)
-shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/ShiftDirection = Vector2(0.5, 0)
 shader_parameter/CornerRadius = 10.0
 shader_parameter/CosmeticOffset = Vector2(0, 0)
 shader_parameter/CosmeticScale = 0.0
@@ -426,6 +426,7 @@ anchor_right = 1.0
 grow_horizontal = 0
 
 [node name="Label" type="Label" parent="Overlays/AlmostAYear"]
+z_index = 2
 layout_mode = 0
 offset_left = -115.0
 offset_top = -7.0

@@ -1,11 +1,14 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
 public partial class CosmeticShopRow : Control
 {
+    [Export]
+    bool v2Mode = false;
     [Export]
     PackedScene cosmeticShopEntry;
     [Export]
@@ -28,6 +31,12 @@ public partial class CosmeticShopRow : Control
     float largeContentSize = 325;
     [Export]
     float smallContentSize = 175;
+    [Export]
+    float v2MaxWidth = 800;
+    [Export]
+    float v2Height = 300;
+    [Export]
+    bool v2Expand = false;
 
     public JsonObject PageData { get; set; }
 
@@ -40,6 +49,11 @@ public partial class CosmeticShopRow : Control
     List<CosmeticShopOfferEntry> activeEntries = new();
     public async Task PopulatePage(CosmeticShopInterface parent)
     {
+        if (v2Mode)
+        {
+            await PopulatePageV2(parent);
+            return;
+        }
         if (PageData is null)
             return;
         int offerCount = 0;
@@ -53,6 +67,36 @@ public partial class CosmeticShopRow : Control
             var splitCellText = offer.Value["tileSize"].ToString().Split("_");
             Vector2 cellSize = new(int.Parse(splitCellText[1]), int.Parse(splitCellText[3]));
             Vector2 finalSize = (cellSize * (cellUnits + cellSpacing)) - cellSpacing;
+            entry.CustomMinimumSize = finalSize;
+            entry.PopulateEntry(offer.Value.AsObject(), cellSize);
+            entryParent.AddChild(entry);
+            parent.RegisterOffer(entry);
+            activeEntries.Add(entry);
+
+            await this.WaitForFrame();
+        }
+        jamTrackViewerButton.Visible = useJamTrackViewer;
+        entryParent.Visible = true;
+        loadingCubes.Visible = false;
+    }
+
+    async Task PopulatePageV2(CosmeticShopInterface parent)
+    {
+        if (PageData is null)
+            return;
+        int offerCount = 0;
+        bool useJamTrackViewer = PageData.Count > 4;
+        int maxVisibleOffers = v2Expand ? Mathf.Min(PageData.Select(o => int.Parse(o.Value["tileSize"].ToString().Split("_")[1])).Sum(), 4) : 4;
+        Vector2 cellUnitsV2 = new((v2MaxWidth - (cellSpacing.X * (maxVisibleOffers - 1))) / maxVisibleOffers, v2Height);
+        foreach (var offer in PageData)
+        {
+            offerCount++;
+            if (offerCount > 3 && useJamTrackViewer)
+                break;
+            var entry = cosmeticShopEntry.Instantiate<CosmeticShopOfferEntry>();
+            var splitCellText = offer.Value["tileSize"].ToString().Split("_");
+            Vector2 cellSize = new(int.Parse(splitCellText[1]), int.Parse(splitCellText[3]));
+            Vector2 finalSize = (cellSize * (cellUnitsV2 + cellSpacing)) - cellSpacing;
             entry.CustomMinimumSize = finalSize;
             entry.PopulateEntry(offer.Value.AsObject(), cellSize);
             entryParent.AddChild(entry);
@@ -88,6 +132,8 @@ public partial class CosmeticShopRow : Control
 
     void SetSmall(bool small)
     {
+        if (v2Mode)
+            return;
         if (small)
         {
             CustomMinimumSize = -Vector2.Up * smallSize;

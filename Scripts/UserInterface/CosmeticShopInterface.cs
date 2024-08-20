@@ -63,12 +63,7 @@ public partial class CosmeticShopInterface : Control
             }
         };
 
-        RefreshTimerController.OnHourChanged += async () =>
-        {
-            //load shop
-            if (IsVisibleInTree())
-                await LoadShop();
-        };
+        RefreshTimerController.OnHourChanged += OnHourChanged;
 
         testingTree.CellSelected += () =>
         {
@@ -107,6 +102,17 @@ public partial class CosmeticShopInterface : Control
     {
         if (Visible && (Engine.GetPhysicsFrames() % 5) == 1)//only do this every 5 physics ticks
             UpdateShopOfferResourceLoading();
+    }
+
+    public override void _ExitTree()
+    {
+        RefreshTimerController.OnHourChanged -= OnHourChanged;
+    }
+
+    private async void OnHourChanged()
+    {
+        if (IsVisibleInTree())
+            await LoadShop();
     }
 
     async void OpenSACPrompt()

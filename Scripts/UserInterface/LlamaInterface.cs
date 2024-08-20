@@ -121,16 +121,19 @@ public partial class LlamaInterface : Control
             }
         };
 
-        RefreshTimerController.OnHourChanged += async () =>
-        {
-            if(IsVisibleInTree())
-                await LoadLlamas();
-        };
+        RefreshTimerController.OnHourChanged += OnHourChanged;
     }
 
     public override void _ExitTree()
     {
+        RefreshTimerController.OnHourChanged -= OnHourChanged;
         cardPackListener?.Unlink();
+    }
+
+    private async void OnHourChanged()
+    {
+        if (IsVisibleInTree())
+            await LoadLlamas();
     }
 
     ProfileListener cardPackListener;

@@ -58,7 +58,6 @@
 [ext_resource type="PackedScene" uid="uid://wb5ukb74fot1" path="res://Scenes/ShopEntries/regular_shop_entry.tscn" id="38_w7j3j"]
 [ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/CosmeticShopInterface.cs" id="42_1vsyr"]
-[ext_resource type="PackedScene" uid="uid://bxtg4b3d8bebd" path="res://Scenes/ShopEntries/cosmetic_shop_row.tscn" id="42_j0311"]
 [ext_resource type="PackedScene" uid="uid://c6ih4milkcxr8" path="res://Scenes/TimelineEntries/timeline_week.tscn" id="42_sdemw"]
 [ext_resource type="PackedScene" uid="uid://btkd1lcscyrac" path="res://Scenes/TimelineEntries/timeline_shop.tscn" id="43_6uol2"]
 [ext_resource type="Script" path="res://Scripts/HomebasePowerLevel.cs" id="44_3p6h5"]
@@ -93,6 +92,7 @@
 [ext_resource type="Texture2D" uid="uid://r0cockkqemn7" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Instrument.png" id="58_w31ab"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="59_87sqg"]
 [ext_resource type="Texture2D" uid="uid://duxxsyrww1ycc" path="res://Images/InterfaceIcons/LockerIcons/T_Icon_Body.png" id="59_r64bh"]
+[ext_resource type="PackedScene" uid="uid://ce4nh58o1rsd6" path="res://Scenes/ShopEntries/cosmetic_shop_row_v2.tscn" id="61_cfd8n"]
 [ext_resource type="PackedScene" uid="uid://x2n7sj7hjmla" path="res://Scenes/general_testing.tscn" id="62_dhqk7"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="62_kuf7g"]
 [ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://GodotThemes/Styleboxes/CheckButton/CheckSeparator.tres" id="63_qevm7"]
@@ -293,7 +293,7 @@ resource_name = "CosmeticTimeFilter"
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yr5gu"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
-shader_parameter/ControlSize = Vector2(696, 66)
+shader_parameter/ControlSize = Vector2(48, 0)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
@@ -302,7 +302,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wcr4r"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jgfmq"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -1720,9 +1720,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
+current_tab = 4
 script = ExtResource("16_hsemp")
 
 [node name="Missions" type="PanelContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemSearchToggle", "itemFilterButtons", "missionList", "loadingIcon")]
+visible = false
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 script = ExtResource("3_mfw8j")
@@ -2741,7 +2743,6 @@ visible = false
 layout_mode = 2
 
 [node name="Item Shop" type="MarginContainer" parent="MainApp/TabContainer" node_paths=PackedStringArray("weeklyHighlightParent", "weeklyRegularParent", "eventHighlightParent", "eventRegularParent")]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("36_0ynuk")
@@ -2756,7 +2757,7 @@ eventRegularParent = NodePath("TabContainer/Event Shop/ScrollContainer/MarginCon
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_tgevh")
 tab_alignment = 1
-current_tab = 1
+current_tab = 2
 script = ExtResource("16_hsemp")
 
 [node name="Weekly Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer"]
@@ -2833,6 +2834,7 @@ minCols = 2
 spacing = Vector2(10, 10)
 
 [node name="Event Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -2906,7 +2908,6 @@ minCols = 2
 spacing = Vector2(10, 10)
 
 [node name="Cosmetic Shop" type="VBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer" node_paths=PackedStringArray("testingTree", "splitContainer", "navContainer", "navigationPane", "pageParent", "simpleShopParent", "sacButton", "filterBlocker", "simpleShopMode", "verticalScrollBox", "requireAddedToday", "requireLeavingSoon", "excludeDiscountBundles", "resetTypeFilters", "newOrOldFilters", "typeFilters")]
-visible = false
 layout_mode = 2
 script = ExtResource("42_1vsyr")
 testingTree = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/TestingTree")
@@ -2915,7 +2916,7 @@ navContainer = NodePath("HSplitContainer/MarginContainer")
 navigationPane = NodePath("HSplitContainer/MarginContainer/NavTree")
 navButtonTexture = ExtResource("5_f3eja")
 shopHeaderScene = ExtResource("44_modet")
-shopRowScene = ExtResource("42_j0311")
+shopRowScene = ExtResource("61_cfd8n")
 shopEntryScene = ExtResource("47_aqmhh")
 pageParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/VBoxContainer")
 simpleShopParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/MarginContainer/HFlowContainer")
@@ -2979,7 +2980,7 @@ text = "???"
 [node name="HSplitContainer" type="HSplitContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop"]
 layout_mode = 2
 size_flags_vertical = 3
-split_offset = 460
+split_offset = 420
 dragger_visibility = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer"]
@@ -3500,7 +3501,7 @@ mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_wcr4r")
+material = SubResource("ShaderMaterial_jgfmq")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 

@@ -35,11 +35,18 @@ public partial class ItemShopInterface : Control
             }
         };
 
-        RefreshTimerController.OnDayChanged += async () =>
-        {
-            if (IsVisibleInTree())
-                await LoadShop();
-        };
+        RefreshTimerController.OnDayChanged += OnDayChanged;
+    }
+
+    public override void _ExitTree()
+    {
+        RefreshTimerController.OnDayChanged -= OnDayChanged;
+    }
+
+    private async void OnDayChanged()
+    {
+        if (IsVisibleInTree())
+            await LoadShop();
     }
 
     bool isLoadingShop = false;

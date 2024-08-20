@@ -103,12 +103,21 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
         missionList.SetProvider(this);
 
-        RefreshTimerController.OnDayChanged += () =>
-        {
-            missionsUpToDate = false;
-            if (IsVisibleInTree())
-                LoadMissions();
-        };
+        RefreshTimerController.OnDayChanged += OnDayChanged;
+        if (IsVisibleInTree())
+            LoadMissions();
+    }
+
+    public override void _ExitTree()
+    {
+        RefreshTimerController.OnDayChanged -= OnDayChanged;
+    }
+
+    private void OnDayChanged()
+    {
+        missionsUpToDate = false;
+        if (IsVisibleInTree())
+            LoadMissions();
     }
 
     PLSearch.Instruction[] currentMissionSearchInstructions;

@@ -12,9 +12,13 @@
     ],
     "music":
     [
-        "Route99_Day_Ambient_01_Loop.wav",
-        "Route99_Day_Ambient_02_Loop.wav",
-        "Route99_Day_Ambient_03_Loop.wav",
-        "Route99_Day_Ambient_04_Loop.wav"
+        [
+            [
+                "Route99_Day_Ambient_01_Loop.wav",
+                "Route99_Day_Ambient_02_Loop.wav",
+                "Route99_Day_Ambient_03_Loop.wav",
+                "Route99_Day_Ambient_04_Loop.wav"
+            ]
+        ]
     ]
 }
