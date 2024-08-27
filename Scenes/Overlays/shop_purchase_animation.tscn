@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://dpd06j33s360w"]
+[gd_scene load_steps=13 format=3 uid="uid://dpd06j33s360w"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_f51aj"]
 [ext_resource type="Script" path="res://Scripts/Overlays/ShopPurchaseAnimation.cs" id="2_jxg4g"]
 [ext_resource type="Texture2D" uid="uid://by27usoarfre0" path="res://Images/InterfaceIcons/PegLegShoppingCartInside.png" id="2_x56qt"]
 [ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/Overlays/shop_purchase_item_element.tscn" id="3_h11w1"]
 [ext_resource type="Texture2D" uid="uid://dgyw7mbhfodhy" path="res://Images/InterfaceIcons/PegLegShoppingCart.png" id="4_0gyrh"]
+[ext_resource type="AudioStream" uid="uid://bu3vc152hx7ks" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.wav" id="4_5c6ij"]
 [ext_resource type="Shader" path="res://Shaders/AdvancedLabel.gdshader" id="6_abafb"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="6_g43va"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_gi68h"]
@@ -34,7 +35,12 @@ shader_parameter/gradientHorizontal = null
 [node name="BG" parent="." index="1"]
 disabled = true
 
-[node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0" node_paths=PackedStringArray("modalWindow", "cartScaleNode", "cartRotationNode", "itemParent", "finalText")]
+[node name="PurchaseSound" type="AudioStreamPlayer" parent="Control/WindowContents" index="0"]
+stream = ExtResource("4_5c6ij")
+max_polyphony = 3
+bus = &"SFX"
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="1" node_paths=PackedStringArray("modalWindow", "cartScaleNode", "cartRotationNode", "itemParent", "finalText")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -217,3 +223,5 @@ theme_override_font_sizes/font_size = 96
 text = "Complete"
 horizontal_alignment = 1
 script = ExtResource("7_gi68h")
+
+[connection signal="WindowOpened" from="." to="Control/WindowContents/PurchaseSound" method="play" binds= [0.0]]

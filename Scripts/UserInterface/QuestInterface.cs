@@ -28,7 +28,7 @@ public partial class QuestInterface : Control
     List<QuestGroupEntry> currentQuestGroups = new();
 
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public override async void _Ready()
 	{
         VisibilityChanged += () =>
         {
@@ -38,11 +38,14 @@ public partial class QuestInterface : Control
         nodeController.Pressed += RefreshCurrentSelection;
         questViewer.OnRefreshNeeded += RefreshCurrentSelection;
         RefreshTimerController.OnDayChanged += OnDayChanged;
+        if (await LoginRequests.TryLogin())
+            await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
     }
 
-    private void OnDayChanged()
+    private async void OnDayChanged()
     {
         questsNeedUpdate = true;
+        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
         if (IsVisibleInTree())
             LoadQuests();
     }
@@ -81,7 +84,6 @@ public partial class QuestInterface : Control
         loadingIcon.Visible = true;
         isGeneratingQuests = true;
         questsNeedUpdate = false;
-        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
         var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
 
         foreach (var node in questGroupCollections)

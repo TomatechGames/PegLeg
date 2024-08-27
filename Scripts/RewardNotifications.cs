@@ -92,6 +92,8 @@ public partial class RewardNotifications : Node
         while (completedItems.Count>0)
         {
             var completedItem = completedItems.Dequeue();
+            if (completedItem?.itemInstance is null)
+                continue;
             completedItem.onComplete?.Invoke(completedItem.itemInstance);
         }
     }

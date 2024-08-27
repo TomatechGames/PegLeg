@@ -293,7 +293,7 @@ resource_name = "CosmeticTimeFilter"
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yr5gu"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
-shader_parameter/ControlSize = Vector2(48, 0)
+shader_parameter/ControlSize = Vector2(696, 66)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
@@ -302,7 +302,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jgfmq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ne74r"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -675,10 +675,13 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Timeline" type="MarginContainer" parent="MainApp/WIPStuff"]
-visible = false
 layout_mode = 2
-offset_top = 30.0
-offset_bottom = 48.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 61.0
+offset_right = -5.0
+offset_bottom = 39.0
 
 [node name="PanelContainer" type="PanelContainer" parent="MainApp/WIPStuff/Timeline"]
 layout_mode = 2
@@ -2755,6 +2758,7 @@ eventRegularParent = NodePath("TabContainer/Event Shop/ScrollContainer/MarginCon
 
 [node name="TabContainer" type="TabContainer" parent="MainApp/TabContainer/Item Shop"]
 layout_mode = 2
+theme_type_variation = &"MenuTabContainer"
 theme_override_styles/panel = SubResource("StyleBoxEmpty_tgevh")
 tab_alignment = 1
 current_tab = 2
@@ -2768,6 +2772,7 @@ size_flags_vertical = 3
 
 [node name="Timer" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Weekly Shop"]
 layout_mode = 2
+theme_override_constants/margin_top = 5
 
 [node name="PanelContainer" type="PanelContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Weekly Shop/Timer"]
 layout_mode = 2
@@ -2841,6 +2846,7 @@ size_flags_vertical = 3
 
 [node name="Timer" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Event Shop"]
 layout_mode = 2
+theme_override_constants/margin_top = 5
 
 [node name="PanelContainer" type="PanelContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Event Shop/Timer"]
 layout_mode = 2
@@ -2914,7 +2920,6 @@ testingTree = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginC
 splitContainer = NodePath("HSplitContainer")
 navContainer = NodePath("HSplitContainer/MarginContainer")
 navigationPane = NodePath("HSplitContainer/MarginContainer/NavTree")
-navButtonTexture = ExtResource("5_f3eja")
 shopHeaderScene = ExtResource("44_modet")
 shopRowScene = ExtResource("61_cfd8n")
 shopEntryScene = ExtResource("47_aqmhh")
@@ -2934,6 +2939,7 @@ typeFilters = [NodePath("HSplitContainer/VBoxContainer/MarginContainer/HBoxConta
 
 [node name="TimerAndSAC" type="MarginContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop"]
 layout_mode = 2
+theme_override_constants/margin_top = 5
 
 [node name="PanelContainer" type="PanelContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/TimerAndSAC"]
 layout_mode = 2
@@ -3042,7 +3048,7 @@ layout_mode = 2
 [node name="OnlyLeaving" type="CheckButton" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/MiscFilters/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "Only Newly Added Items"
+tooltip_text = "Leaving Soon"
 theme_type_variation = &"EmptyCheckButton"
 text = " "
 
@@ -3066,14 +3072,14 @@ stretch_mode = 5
 [node name="OnlyAdded" type="CheckButton" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/MiscFilters/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "Only Newly Added Items"
+tooltip_text = "Newly Added"
 theme_type_variation = &"EmptyCheckButton"
 text = "  #"
 
 [node name="IncludeDiscounts" type="CheckButton" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/MiscFilters/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "Include Bundles"
+tooltip_text = "Discounts"
 theme_type_variation = &"EmptyCheckButton"
 theme_override_styles/normal = ExtResource("47_c3lbu")
 theme_override_styles/pressed = ExtResource("48_dyhi4")
@@ -3495,13 +3501,28 @@ layout_mode = 2
 columns = 3
 hide_root = true
 
+[node name="HBoxContainer" type="HBoxContainer" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Encrypted Cosmetics may not be listed. You can view and purchase all item shop elements at"
+
+[node name="LinkButton" type="LinkButton" parent="MainApp/TabContainer/Item Shop/TabContainer/Cosmetic Shop/HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "fortnite.com/shop"
+uri = "https://www.fortnite.com/shop"
+
 [node name="CenterContainer" type="CenterContainer" parent="MainApp/TabContainer/Item Shop"]
 layout_mode = 2
 mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_jgfmq")
+material = SubResource("ShaderMaterial_ne74r")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
@@ -3879,6 +3900,7 @@ texture = ExtResource("75_q1lfg")
 expand_mode = 5
 
 [node name="OverlayWindows" type="Control" parent="."]
+z_index = 2
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

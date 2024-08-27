@@ -45,7 +45,7 @@ public partial class Foldout : Control
 		bool hasChanged = newSize != totalSize;
         totalSize = newSize;
         if (currentFoldoutState && !(foldoutTween?.IsRunning() ?? false) && hasChanged)
-            foldoutTarget.CustomMinimumSize = Vector2.Up * (newSize);
+            foldoutTarget.CustomMinimumSize = Vector2.Up * newSize;
     }
 
 	Tween foldoutTween = null;

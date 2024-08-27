@@ -10,7 +10,7 @@ using static ThemeController;
 
 public partial class ThemeController : Node
 {
-	static readonly DateTime referenceStartDate = new(2024, 1, 22);
+	static readonly DateTime referenceStartDate = new(2024, 1, 25);
 	static readonly int[] seasonLengths = new int[]
 	{
 		10,
@@ -58,7 +58,7 @@ public partial class ThemeController : Node
     static string GetSeasonTheme()
     {
         //TODO: timeline-related logic should be moved to a timeline class
-        int weekCount = ((DateTime.UtcNow.Date - referenceStartDate).Days / 7) % weeksInSeasonalYear;
+        int weekCount = ((RefreshTimerController.RightNow.Date - referenceStartDate).Days / 7) % weeksInSeasonalYear;
         int seasonIndex = -1;
         for (int i = 0; i < seasonLengths.Length; i++)
         {

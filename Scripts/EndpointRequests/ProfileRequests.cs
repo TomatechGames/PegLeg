@@ -496,7 +496,7 @@ public static class ProfileRequests
             var checks = GenerateRewardNotificationChecks(result);
             rewardNotificationChecks[profileId] = checks;
             var trimmedChecks = checks.ToArray()[..Mathf.Min(10, checks.Count)];
-            GD.Print($"{profileId}: [{trimmedChecks.Select(n=>n.typeAndName+":"+n.rarity).ToArray().Join(", ")}]");
+            //GD.Print($"{profileId}: [{trimmedChecks.Select(n=>n.typeAndName+":"+n.rarity).ToArray().Join(", ")}]");
         }
         if (result.ContainsKey("notifications"))
         {

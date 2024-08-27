@@ -54,7 +54,7 @@ public partial class RefreshTimerHook : Label
     {
         if (!IsVisibleInTree())
             return;
-        var remainingTime = (refreshTime - DateTime.UtcNow);
+        var remainingTime = (refreshTime - RefreshTimerController.RightNow);
         if (remainingTime.TotalMinutes < criticalCountdownTime)
             SelfModulate = Colors.Red;
         else if (remainingTime.TotalMinutes < warningCountdownTime)

@@ -496,6 +496,7 @@ public static class BanjoAssets
         return rarityId + tierId;
     }
 
+    //todo, allow evaluating survivors with an override squad and slot
     public static float GetItemRating(this JsonObject itemInstance, bool useSurvivorBoosts = false, bool debug = false)
     {
         if (TryGetSource("ItemRatings", out var ratings))

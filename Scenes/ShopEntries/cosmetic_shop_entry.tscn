@@ -298,6 +298,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tkqcf")
 
 [node name="Responsive Button Area" parent="." instance=ExtResource("5_4aip3")]
+visible = false
 layout_mode = 2
 outlinePadding = 20.0
 

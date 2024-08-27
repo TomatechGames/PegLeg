@@ -17,8 +17,6 @@ public partial class CosmeticShopInterface : Control
     [Export]
     Tree navigationPane;
     [Export]
-    Texture2D navButtonTexture;
-    [Export]
     PackedScene shopHeaderScene;
     [Export]
     PackedScene shopRowScene;
@@ -84,9 +82,11 @@ public partial class CosmeticShopInterface : Control
         {
             button.Pressed += ApplyFilters;
         }
+        simpleShopMode.ButtonPressed = AppConfig.Get("item_shop", "simple_cosmetics", false).AsBool();
         simpleShopMode.Pressed += async () =>
         {
-             await LoadShop(true);
+            AppConfig.Set("item_shop", "simple_cosmetics", simpleShopMode.ButtonPressed);
+            await LoadShop(true);
         };
         resetTypeFilters.Pressed += () =>
         {
@@ -294,15 +294,15 @@ public partial class CosmeticShopInterface : Control
             foreach (var section in category.Value.AsObject())
             {
                 //spawn shop header
-                var navSec = navCat.CreateChild();
-                navSec.SetText(0, section.Key);
+                var navSection = navCat.CreateChild();
+                navSection.SetText(0, section.Key);
                 var header = shopHeaderScene.Instantiate<Control>();
                 firstHeader ??= header;
                 pageParent.AddChild(header);
                 if (header.FindChild("HeaderLabel", true) is Label headerLabel)
                     headerLabel.Text = section.Key;
                 //navSec.AddButton(1, navButtonTexture);
-                navSec.SetMetadata(0, header);
+                navSection.SetMetadata(0, header);
                 List<CosmeticShopRow> pageRows = new();
                 //spawn shop pages
                 foreach (var page in section.Value.AsArray())
@@ -434,7 +434,7 @@ public partial class CosmeticShopInterface : Control
             return false;
         if (requireAddedToday.ButtonPressed && !entry.isAddedToday)
             return false;
-        if (!excludeDiscountBundles.ButtonPressed && entry.isMultiBundle)
+        if (!excludeDiscountBundles.ButtonPressed && entry.isDiscountBundle)
             return false;
 
         if (!(newOrOldFilterValue switch
@@ -475,103 +475,199 @@ public partial class CosmeticShopInterface : Control
         return true;
     }
 
-    /* old testing stuff
-    public void BuildTestingTree(TreeItem fromBranch, JsonNode fromNode, string fromKey, int depth)
+    public class CosmeticShopOfferData
     {
-        if (fromNode is JsonObject fromObject){
-            if (fromKey is not null)
-                fromBranch.SetMetadata(0, fromKey + " : " + fromObject.Count);
-            foreach (var item in fromObject)
-            {
-                if (depth == 0)
-                {
-                    var leaf = fromBranch.CreateChild();
-                    if (item.Value["bundle"] is not null)
-                        FormatBundleName(leaf, item.Value.AsObject());
-                    else
-                        FormatItemName(leaf, item.Value.AsObject());
-                }
-                else if (item.Key == "Uncategorised")
-                {
-                    BuildTestingTree(fromBranch, item.Value, item.Key, depth - 1);
-                }
-                else if (fromObject.Count == 1 && fromKey == item.Key)
-                {
-                    BuildTestingTree(fromBranch, item.Value, item.Key, depth - 1);
-                }
-                else
-                {
-                    var newBranch = fromBranch.CreateChild();
-                    newBranch.SetText(0, item.Key);
-                    BuildTestingTree(newBranch, item.Value, item.Key, depth - 1);
-                    newBranch.Collapsed = true;
-                }
-            }
-        }
-        else if (fromNode is JsonArray fromArray)
+        JsonObject entryData;
+        JsonObject dynBundleInfo;
+        string resourceUrl = null;
+
+        public string offerId { get; private set; }
+        public List<string> itemTypes { get; private set; } = new();
+        public string displayName { get; private set; }
+        public string displayType { get; private set; }
+        public string tooltip { get; private set; }
+        public string bonusText { get; private set; }
+        public int price { get; private set; }
+        public int lastSeenDaysAgo { get; private set; }
+        public bool isRecentlyNew { get; private set; }
+        public bool isAddedToday { get; private set; }
+        public bool isLeavingSoon { get; private set; }
+        public bool isOld { get; private set; }
+        public bool isVeryOld { get; private set; }
+        public bool isDiscountBundle { get; private set; }
+        public DateTime outDate { get; private set; }
+        public int cellWidth { get; private set; }
+        public Vector2 resourceShift { get; private set; } = new(0.5f, 0.5f);
+
+        public bool isOwned { get; private set; }
+        public int discountAmount { get; private set; }
+        public Texture2D resourceTex { get; private set; }
+
+        public CosmeticShopOfferData(JsonObject entryData, Vector2 cellSize)
         {
-            if (fromKey is not null)
-                fromBranch.SetMetadata(0, fromKey + " : " + fromArray.Count);
-            if (fromArray.Count==1)
+            this.entryData = entryData;
+            offerId = entryData["offerId"].ToString();
+            outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
+            cellWidth = (int)cellSize.X;
+            dynBundleInfo = entryData["dynamicBundleInfo"]?.AsObject();
+
+            JsonArray allItems = entryData.MergeCosmeticItems();
+            JsonObject firstItem = allItems[0].AsObject();
+            displayName = 
+                entryData["bundle"]?["name"].ToString() ??
+                firstItem["name"]?.ToString();
+
+            displayType = entryData["bundle"] is not null ?
+                $"Bundle [{allItems.Count} items]" :
+                (firstItem["type"]?["displayValue"].ToString() + (allItems.Count > 1 ? $" (+{allItems.Count - 1})" : ""));
+
+            string mainType = entryData["bundle"] is not null ? 
+                "Bundle" : 
+                firstItem["type"]?["displayValue"].ToString();
+
+            foreach (var item in allItems)
             {
-                var item = fromArray[0];
-                BuildTestingTree(fromBranch, item, fromKey, depth - 1);
+                string type = item["type"]["displayValue"].ToString();
+                if (!itemTypes.Contains(type))
+                    itemTypes.Add(type);
+            }
+
+            tooltip = $"{displayName} - {mainType}";
+            if (allItems.Count > 1)
+            {
+                tooltip += "\nContents include: "+ allItems
+                    .GroupBy(i => i["type"]?["displayValue"].ToString())
+                    .Select(g => g.Key + (g.Count() > 1 ? " x" + g.Count() : ""))
+                    .ToArray()
+                    .Join(", ");
+            }
+
+            if (cellSize.X == 4)
+                resourceShift = new Vector2(0.5f, 0.125f);
+            else if (cellSize.X == 3)
+                resourceShift = new Vector2(0.5f, 0f);
+            else
+                resourceShift = new Vector2(0.5f, 0f);
+
+            var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?[0]?.AsObject();
+            if (resourceMat is null)
+            {
+                resourceUrl =
+                    firstItem["images"]?["featured"]?.ToString() ??
+                    firstItem["images"]?["large"]?.ToString() ??
+                    firstItem["images"]?["small"]?.ToString() ??
+                    firstItem["images"]?["icon"]?.ToString() ??
+                    firstItem["images"]?["smallIcon"]?.ToString();
+                resourceShift = new Vector2(0.5f, 0.5f);
+            }
+            else if (resourceMat["images"]?["CarTexture"] is not null)
+            {
+                resourceUrl =
+                    resourceMat["images"]?["CarTexture"]?.ToString();
+                resourceShift = new Vector2(0.5f, 0.5f);
             }
             else
             {
-                for (int i = 0; i < fromArray.Count; i++)
+                resourceUrl =
+                    resourceMat["images"]["Background"]?.ToString() ??
+                    resourceMat["images"]["OfferImage"]?.ToString();
+            }
+
+            if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
+            {
+                resourceTex = tex;
+                resourceLoadStarted = true;
+                resourceLoadComplete = true;
+            }
+
+            price = entryData["regularPrice"].GetValue<int>();
+            isDiscountBundle = entryData["finalPrice"].GetValue<int>() != price;
+            discountAmount = -(dynBundleInfo?["discountedBasePrice"]?.GetValue<int>() ?? 0);
+            if (!isDiscountBundle)
+            {
+                string firstAddedDateText = firstItem["shopHistory"]?[0]?.ToString();
+                DateTime firstAddedDate = firstAddedDateText is not null ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
+                DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
+                DateTime? lastAddedDate = null;
+                var shopHistory = firstItem["shopHistory"]?.AsArray();
+                if (shopHistory is not null)
                 {
-                    var item = fromArray[i];
-                    var newBranch = fromBranch.CreateChild();
-                    newBranch.SetText(0, "Page " + (i + 1));
-                    BuildTestingTree(newBranch, item, "Page " + (i + 1), depth - 1);
-                    newBranch.Collapsed = true;
+                    for (int i = shopHistory.Count - 1; i >= 0; i--)
+                    {
+                        DateTime shopDate = DateTime.Parse(shopHistory[i].ToString()).ToUniversalTime();
+                        if (shopDate.CompareTo(inDate) == -1)
+                        {
+                            lastAddedDate = shopDate;
+                            break;
+                        }
+                    }
                 }
+
+                lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
+                isAddedToday = inDate == DateTime.UtcNow.Date && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate);
+                isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
+                isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
+                isOld = lastSeenDaysAgo > 500;
+                isVeryOld = lastSeenDaysAgo > 1000;
+
+                if (isRecentlyNew && isAddedToday)
+                    bonusText = " # NEW";
+                else if (isRecentlyNew)
+                    bonusText = "NEW";
+                else if (isAddedToday)
+                    bonusText = " # ";
+            }
+            else
+            {
+                bonusText = cellWidth > 1 ? $"Save {discountAmount} VBucks!" : $"-{discountAmount}";
             }
         }
-    }
 
-    public void FormatBundleName(TreeItem leaf, JsonObject offer)
-    {
-        leaf.SetText(0, offer["bundle"]["name"].ToString());
-        leaf.SetMetadata(0, offer.ToString());
-
-        leaf.SetText(1, offer["finalPrice"].ToString()+" VBucks");
-        leaf.SetMetadata(1, offer["pricing"]?.ToString() ?? "");
-
-        leaf.SetText(2, "Bundle [" + offer.GetCosmeticItemCounts().ToString()+" items]");
-        leaf.SetTooltipText(2, offer.MergeCosmeticItems()
-            .GroupBy(i => i["type"]?["displayValue"].ToString())
-            .Select(g => g.Key + (g.Count() > 1 ? " x" + g.Count() : ""))
-            .ToArray()
-            .Join(", "));
-        leaf.SetMetadata(2, offer.MergeCosmeticItems()?.ToString() ?? offer.ToString());
-    }
-
-    public void FormatItemName(TreeItem leaf, JsonObject offer)
-    {
-        if(offer.GetFirstCosmeticItem() is not JsonObject firstItem)
+        bool ownershipLoadStarted;
+        public bool ownershipLoadComplete { get; private set; }
+        public event Action OnOwnershipLoaded;
+        public async void LoadOwnership()
         {
-            leaf.SetText(0, offer["offerId"].ToString());
-            leaf.SetMetadata(0, offer.ToString());
-            return;
+            if (ownershipLoadStarted)
+            {
+                if (ownershipLoadComplete)
+                    OnOwnershipLoaded?.Invoke();
+                return;
+            }
+            ownershipLoadStarted = true;
+            if (isDiscountBundle)
+            {
+                //TODO: determine discount amount based on dynamic bundle data
+                discountAmount = price - entryData["finalPrice"].GetValue<int>();
+            }
+            isOwned = false;
+            OnOwnershipLoaded?.Invoke();
+            ownershipLoadComplete = true;
         }
 
-        leaf.SetText(0, firstItem["name"]?.ToString() ?? offer["offerId"].ToString());
-        leaf.SetMetadata(0, offer.ToString());
+        bool resourceLoadStarted;
+        public bool resourceLoadComplete { get; private set; }
+        public event Action OnResourceLoaded;
+        public async void LoadResource()
+        {
+            if (resourceLoadStarted)
+            {
+                if (resourceLoadComplete)
+                    OnResourceLoaded?.Invoke();
+                return;
+            }
+            resourceLoadStarted = true;
 
-        leaf.SetText(1, offer["finalPrice"].ToString() + " VBucks");
-        leaf.SetMetadata(1, offer["pricing"]?.ToString());
+            if (resourceUrl != null)
+            {
+                var tex = await CatalogRequests.GetCosmeticResource(resourceUrl);
+                if (tex is not null)
+                    resourceTex = tex;
+            }
 
-        int totalItemCount = offer.GetCosmeticItemCounts();
-        leaf.SetText(2, firstItem["type"]?["displayValue"].ToString() + (totalItemCount > 1 ? $" (+{totalItemCount - 1})" : ""));
-        leaf.SetTooltipText(2, offer.MergeCosmeticItems()
-            .GroupBy(i => i["type"]?["displayValue"].ToString())
-            .Select(g => g.Key + (g.Count()>1?" x" + g.Count():""))
-            .ToArray()
-            .Join(", "));
-        leaf.SetMetadata(2, firstItem.ToString());
+            resourceLoadComplete = true;
+
+            OnResourceLoaded?.Invoke();
+        }
     }
-
-    */
 }

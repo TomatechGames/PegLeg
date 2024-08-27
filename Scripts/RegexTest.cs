@@ -16,9 +16,9 @@ public partial class RegexTest : Control
     public override void _Ready()
     {
         base._Ready();
-        GD.Print($"LogicTest: {true && false || true}");
-        GD.Print($"LogicTest: {true && false || true && true}");
-        GD.Print($"LogicTest: {true && false || true && false || true && true}");
+        //GD.Print($"LogicTest: {true && false || true}");
+        //GD.Print($"LogicTest: {true && false || true && true}");
+        //GD.Print($"LogicTest: {true && false || true && false || true && true}");
         source.TextSubmitted += EvaluateRegex;
     }
 

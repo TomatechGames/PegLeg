@@ -196,6 +196,9 @@ static class CatalogRequests
             cosmeticDisplayData[offer.Key]["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null;
             cosmeticDisplayData[offer.Key]["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null;
 
+            if (offer.Value["dynamicBundleInfo"] is JsonObject dynBundleInfo)
+                cosmeticDisplayData[offer.Key]["dynamicBundleInfo"] = dynBundleInfo.Reserialise();
+
             //sometimes these are just missing
             cosmeticDisplayData[offer.Key]["layoutId"] ??= offer.Value["meta"]?["LayoutId"].ToString() ?? "?";
             cosmeticDisplayData[offer.Key]["layout"] ??= new JsonObject();
@@ -208,6 +211,9 @@ static class CatalogRequests
 
             if ((offer.Value["prices"]?.AsArray().Count ?? 0) > 0)
                 cosmeticDisplayData[offer.Key]["prices"] = offer.Value["prices"].Reserialise();
+
+            if(!(cosmeticDisplayData[offer.Key]["layout"]["category"]?.ToString() is string cat && !string.IsNullOrWhiteSpace(cat)))
+                cosmeticDisplayData[offer.Key]["layout"]["category"] = "Uncategorised";
 
             //jam tracks are funky, gotta reformat them
             if (cosmeticDisplayData[offer.Key]["tracks"] is JsonArray trackList)
@@ -246,8 +252,8 @@ static class CatalogRequests
             .GroupBy(n => n.Value["layoutId"].ToString())// group into pages
             .OrderBy(p => -int.Parse(p.Key.Split(".")[^1]))// sort by page index (descending)
             .GroupBy(p => p.First().Value["layout"]?["name"]?.ToString())// group by page header
-            .OrderBy(g => g.First().First().Value["layout"]?["index"]?.GetValue<int>())// sort by page header index
-            .GroupBy(g => g.First().First().Value["layout"]?["category"]?.ToString() ?? "Uncategorised");// group by page category
+            .OrderBy(g => g.First().First().Value["layout"]["index"]?.GetValue<int>())// sort by page header index
+            .GroupBy(g => g.First().First().Value["layout"]["category"]?.ToString() ?? "Uncategorised");// group by page category
 
         //partiallyOrganisedCosmetics.Select(g =>
         //{

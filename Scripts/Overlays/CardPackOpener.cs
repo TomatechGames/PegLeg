@@ -98,7 +98,7 @@ public partial class CardPackOpener : Control
             //smallOffsetAmount = Mathf.FloorToInt(topCard.Size.Y) + smallCardParent.GetThemeConstant("separation");
             smallCardParent.AddThemeConstantOverride("separation", gapBetweenCards-Mathf.FloorToInt(topCard.Size.Y));
             smallOffsetAmount = gapBetweenCards;
-            GD.Print($"smallOffset: {smallOffsetAmount} ({Mathf.FloorToInt(topCard.Size.Y)}+{smallCardParent.GetThemeConstant("separation")})");
+            //GD.Print($"smallOffset: {smallOffsetAmount} ({Mathf.FloorToInt(topCard.Size.Y)}+{smallCardParent.GetThemeConstant("separation")})");
         };
         if (Visible)
         {
