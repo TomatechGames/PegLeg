@@ -82,7 +82,7 @@ public partial class CosmeticShopInterface : Control
         {
             button.Pressed += ApplyFilters;
         }
-        simpleShopMode.ButtonPressed = AppConfig.Get("item_shop", "simple_cosmetics", false).AsBool();
+        simpleShopMode.ButtonPressed = AppConfig.Get("item_shop", "simple_cosmetics", false);
         simpleShopMode.Pressed += async () =>
         {
             AppConfig.Set("item_shop", "simple_cosmetics", simpleShopMode.ButtonPressed);

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Text.Json.Nodes;
 
 public partial class VolumeHook : Node
 {
@@ -27,15 +28,15 @@ public partial class VolumeHook : Node
         EmitSignal(SignalName.UpdateVolumeState, VolumeController.GetBusVolume(targetBusName));
     }
 
-    void CheckConfigUpdate(string section, string key, Variant value)
+    void CheckConfigUpdate(string section, string key, JsonValue value)
     {
         if (section != "audio")
             return;
 
         if (key == $"{targetBusName}_muted")
-            EmitSignal(SignalName.UpdateMuteIcon, value.AsBool() ? soundOffTexture : soundOnTexture);
+            EmitSignal(SignalName.UpdateMuteIcon, value.GetValue<bool>() ? soundOffTexture : soundOnTexture);
         if (key == $"{targetBusName}_volume")
-            EmitSignal(SignalName.UpdateVolumeState, value);
+            EmitSignal(SignalName.UpdateVolumeState, value.GetValue<float>());
     }
 
     public void SetVolume(float newValue) => 

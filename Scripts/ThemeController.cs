@@ -40,7 +40,7 @@ public partial class ThemeController : Node
 	{
         seasonTheme = GetSeasonTheme();
         GenerateThemeData();
-        SetActiveTheme(AppConfig.Get("theme", "current", "").AsString());
+        SetActiveTheme(AppConfig.Get("theme", "current", ""));
         RefreshTimerController.OnDayChanged += CheckForNewSeason;
     }
 
@@ -51,7 +51,7 @@ public partial class ThemeController : Node
         {
             seasonTheme = newSeasonTheme;
             if (currentThemeName == "")
-                SetActiveTheme(AppConfig.Get("theme", "current", "").AsString());
+                SetActiveTheme(AppConfig.Get("theme", "current", ""));
         }
     }
 
@@ -101,7 +101,7 @@ public partial class ThemeController : Node
             return;
         themeDataSet = new();
 
-        using (DirAccess customThemes = DirAccess.Open(customThemePath))
+        using (DirAccess customThemes = DirAccess.Open(Helpers.ProperlyGlobalisePath(customThemePath)))
         foreach (var themeDir in customThemes.GetDirectories())
         {
             var themeFullDir = customThemes.GetCurrentDir() + "/" + themeDir;
@@ -111,7 +111,7 @@ public partial class ThemeController : Node
             themeDataSet.Add(themeDir, new(JsonNode.Parse(themeFile.GetAsText()), themeDir));
         }
 
-        using DirAccess builtInThemes = DirAccess.Open(builtInThemePath);
+        using DirAccess builtInThemes = DirAccess.Open(Helpers.ProperlyGlobalisePath(builtInThemePath));
         foreach (var themeName in builtInThemes.GetDirectories())
         {
             if (themeDataSet.ContainsKey(themeName))

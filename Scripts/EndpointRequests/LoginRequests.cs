@@ -45,7 +45,8 @@ static class LoginRequests
 
     static bool loginInProgress;
 
-    public static bool IsOffline { get; private set; }
+    public static bool IsDisconnected { get; private set; }
+    public static string LatestErrorMessage { get; private set; }
 
     public static async Task<bool> LoginWithOneTimeCode(string oneTimeCode)
     {
@@ -67,13 +68,24 @@ static class LoginRequests
                 clientHeader
             );
 
-            if (accountAuth is not null)
-                OnRecieveAccountAuth(accountAuth);
-            else
+
+            if (accountAuth is null)
             {
-                IsOffline = true;
                 GD.Print("OFFLINE");
+                LatestErrorMessage = "No Response";
+                IsDisconnected = true;
+                return AuthTokenValid;
             }
+
+            if (accountAuth["errorMessage"] is JsonValue errorMessage)
+            {
+                IsDisconnected = true;
+                LatestErrorMessage = errorMessage.ToString();
+                GD.Print("Error: " + LatestErrorMessage);
+                return AuthTokenValid;
+            }
+
+            OnRecieveAccountAuth(accountAuth);
         }
         finally
         {
@@ -109,8 +121,17 @@ static class LoginRequests
 
         if(returnedDetails is null)
         {
-            IsOffline = true;
+            IsDisconnected = true;
+            LatestErrorMessage = "No Response";
             GD.Print("OFFLINE");
+            return;
+        }
+
+        if (returnedDetails["errorMessage"] is JsonValue errorMessage)
+        {
+            IsDisconnected = true;
+            LatestErrorMessage = errorMessage.ToString();
+            GD.Print("Error: " + LatestErrorMessage);
             return;
         }
 
@@ -262,13 +283,22 @@ static class LoginRequests
                 clientHeader
             );
 
-            if (accountAuth is not null)
-                OnRecieveAccountAuth(accountAuth);
-            else
+            if (accountAuth is null)
             {
-                IsOffline = true;
+                IsDisconnected = true;
                 GD.Print("OFFLINE");
+                return AuthTokenValid;
             }
+
+            if (accountAuth["errorMessage"] is JsonValue errorMessage)
+            {
+                IsDisconnected = true;
+                LatestErrorMessage = errorMessage.ToString();
+                GD.Print("Error: " + LatestErrorMessage);
+                return AuthTokenValid;
+            }
+
+            OnRecieveAccountAuth(accountAuth);
         }
         finally
         {

@@ -1,35 +1,56 @@
 using Godot;
 using System;
+using System.Text.Json.Nodes;
 
 public static class AppConfig
 {
-    public static event Action<string, string, Variant> OnConfigChanged;
+    public static event Action<string, string, JsonValue> OnConfigChanged;
 
-    static ConfigFile configFile;
+    //static ConfigFile configFile;
+    const string configPath = "user://appConfig.json";
+    static JsonObject configData;
 
-    public static Variant Get(string section, string key, Variant fallback = default)
+    public static T Get<T>(string section, string key, T fallback = default)
     {
-        if(configFile is null)
-        {
-            configFile = new();
-            var error = configFile.Load("user://appConfig");
-            if(error!=Error.Ok)
-                GD.Print(error);
-        }
-        return configFile.GetValue(section, key, fallback);
+        LoadConfig();
+        var possibleVal = configData[section]?[key]?.AsValue();
+        if (possibleVal is JsonValue val)
+            return val.TryGetValue<T>(out var typedVal) ? typedVal : fallback;
+        return fallback;
     }
 
-    public static void Set(string section, string key, Variant value)
+    public static void Set(string section, string key, AdaptiveJsonValue value)
     {
-        if (configFile is null)
+        LoadConfig();
+        configData[section] ??= new JsonObject();
+        configData[section][key] = value.JsonValue;
+        GD.Print($"Applying Change ({section}:{key} = {value.JsonValue})");
+        OnConfigChanged?.Invoke(section, key, value.JsonValue);
+
+        using var configFile = FileAccess.Open(configPath, FileAccess.ModeFlags.Write);
+        configFile.StoreString(configData.ToString());
+    }
+
+    static void LoadConfig()
+    {
+        if (configData is not null)
+            return;
+        using var configFile = FileAccess.Open(configPath, FileAccess.ModeFlags.Read);
+        if (configFile is not null)
+            configData = JsonNode.Parse(configFile.GetAsText())?.AsObject();
+        configData ??= new();
+    }
+
+    public readonly struct AdaptiveJsonValue
+    {
+        public JsonValue JsonValue { get; private init; }
+        public AdaptiveJsonValue(JsonValue val)
         {
-            configFile = new();
-            var error = configFile.Load("user://appConfig");
-            if (error != Error.Ok)
-                GD.Print(error);
+            JsonValue = val;
         }
-        configFile.SetValue(section, key, value);
-        OnConfigChanged?.Invoke(section, key, value);
-        configFile.Save("user://appConfig");
+        public static implicit operator AdaptiveJsonValue(bool value) => new(JsonValue.Create(value));
+        public static implicit operator AdaptiveJsonValue(int value) => new(JsonValue.Create(value));
+        public static implicit operator AdaptiveJsonValue(float value) => new(JsonValue.Create(value));
+        public static implicit operator AdaptiveJsonValue(string value) => new(JsonValue.Create(value));
     }
 }

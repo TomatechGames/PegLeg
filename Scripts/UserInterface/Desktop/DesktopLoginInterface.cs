@@ -65,10 +65,7 @@ public partial class DesktopLoginInterface : LoginInterface
         isLoggedIn = await loginTask;
 
         if (!hasAutoLoggedIn && isLoggedIn)
-        {
-            hasAutoLoggedIn = true;
             SwitchToMainInterface();
-        }
         else
         {
             MusicController.StopMusic();
@@ -80,7 +77,7 @@ public partial class DesktopLoginInterface : LoginInterface
                 .SetEase(Tween.EaseType.Out);
             music.Play();
 
-            loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsOffline ? "OFFLINE" : "Not Logged In");
+            loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsDisconnected ? "OFFLINE" : "Not Logged In");
 
             loginControls.Visible = !isLoggedIn;
             banjoControls.Visible = !hasBanjoAssets;
@@ -143,6 +140,7 @@ public partial class DesktopLoginInterface : LoginInterface
 
     async void SwitchToMainInterface()
     {
+        hasAutoLoggedIn = true;
         MusicController.ResumeMusic();
         var sizeDiff = existingSize - smallSize;
         GetWindow().Size = existingSize;

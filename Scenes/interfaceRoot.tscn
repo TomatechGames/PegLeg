@@ -302,7 +302,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ne74r"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ytqrn"]
 resource_local_to_scene = true
 shader = ExtResource("25_26oh8")
 shader_parameter/ControlSize = Vector2(256, 256)
@@ -3522,7 +3522,7 @@ mouse_filter = 2
 
 [node name="LoadingIcon" parent="MainApp/TabContainer/Item Shop/CenterContainer" instance=ExtResource("30_sx8jl")]
 visible = false
-material = SubResource("ShaderMaterial_ne74r")
+material = SubResource("ShaderMaterial_ytqrn")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
