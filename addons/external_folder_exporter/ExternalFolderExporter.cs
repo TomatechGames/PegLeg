@@ -12,6 +12,8 @@ public partial class ExternalFolderExporter : EditorExportPlugin
         "Banjo",
     };
 
+    public override string _GetName() => "ExternalExporter";
+
     public override void _ExportBegin(string[] features, bool isDebug, string path, uint flags)
     {
         string exportFolderPath = "res://"+path.Split("/")[..^1].Join("/");

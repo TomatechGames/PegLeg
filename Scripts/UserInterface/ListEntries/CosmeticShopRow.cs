@@ -104,6 +104,8 @@ public partial class CosmeticShopRow : Control
             activeEntries.Add(entry);
 
             await this.WaitForFrame();
+            if (!IsInsideTree())
+                return;
         }
         jamTrackViewerButton.Visible = useJamTrackViewer;
         entryParent.Visible = true;

@@ -16,7 +16,6 @@ config/version="0.1.0"
 run/main_scene="res://Scenes/desktopLogin.tscn"
 config/custom_user_dir_name="Tomatech Games/PegLeg"
 config/features=PackedStringArray("4.2", "C#")
-run/low_processor_mode=true
 run/low_processor_mode_sleep_usec=8000
 boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/image="res://Images/InterfaceIcons/PegLegIcon256.png"
@@ -36,6 +35,7 @@ window/size/initial_position_type=3
 window/size/borderless=true
 window/size/transparent=true
 window/energy_saving/keep_screen_on=false
+window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -59,6 +59,7 @@ folder_colors={
 [gui]
 
 theme/custom="res://GodotThemes/BasicTheme.tres"
+timers/tooltip_delay_sec.release=0.5
 
 [input]
 
@@ -95,8 +96,6 @@ pointing/android/enable_pan_and_scale_gestures=true
 [physics]
 
 3d/android/enable_pan_and_scale_gestures=false
-3d/size/transparent=true
-3d/transparent_background=true
 
 [rendering]
 

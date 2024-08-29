@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cd46kdw5i45cu"]
+[gd_scene load_steps=17 format=3 uid="uid://cd46kdw5i45cu"]
 
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="1_7xbjg"]
 [ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="1_s3ots"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="8_42nsr"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="9_gp42o"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_6kqv5"]
+[ext_resource type="Texture2D" uid="uid://ybhd24tgs2aq" path="res://Images/InterfaceIcons/minimise.png" id="11_obgx8"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_rx0xh"]
 
@@ -70,7 +71,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Viewport" type="Control" parent="CenterContainer"]
-custom_minimum_size = Vector2(300, 310)
+custom_minimum_size = Vector2(300, 330)
 layout_mode = 2
 
 [node name="Control" type="Control" parent="CenterContainer/Viewport"]
@@ -92,7 +93,7 @@ grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_c5h7f")
 
 [node name="Content" type="MarginContainer" parent="CenterContainer/Viewport/Control"]
-custom_minimum_size = Vector2(300, 310)
+custom_minimum_size = Vector2(300, 330)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -237,6 +238,13 @@ theme_type_variation = &"ActionButton"
 theme_override_font_sizes/font_size = 24
 text = "Login"
 
+[node name="Label2" type="Label" parent="CenterContainer/Viewport/Control/Content/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_font_sizes/font_size = 12
+text = "PegLeg is not affiliated with Epic Games"
+horizontal_alignment = 1
+
 [node name="ErrorMessage" type="MarginContainer" parent="CenterContainer/Viewport/Control/Content"]
 visible = false
 layout_mode = 2
@@ -308,7 +316,7 @@ texture = ExtResource("7_p1a3c")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MuteBtn" type="Button" parent="CenterContainer/Viewport/Control"]
+[node name="MinimiseBtn" type="Button" parent="CenterContainer/Viewport/Control"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 1
 anchors_preset = -1
@@ -316,6 +324,29 @@ anchor_left = 1.0
 anchor_right = 1.0
 offset_top = 4.0
 offset_right = -24.0
+grow_horizontal = 0
+size_flags_vertical = 4
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/Viewport/Control/MinimiseBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_obgx8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MuteBtn" type="Button" parent="CenterContainer/Viewport/Control"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 4.0
+offset_right = -44.0
 grow_horizontal = 0
 size_flags_vertical = 4
 tooltip_text = "Mute/Unmute"
@@ -359,5 +390,6 @@ maximiseAtRoof = false
 [connection signal="pressed" from="CenterContainer/Viewport/Control/Content/VBoxContainer/VBoxContainer/HBoxContainer/FolderBrowser" to="FileDialog" method="show"]
 [connection signal="pressed" from="CenterContainer/Viewport/Control/Content/ErrorMessage/ErrorContent/VBoxContainer/Button" to="CenterContainer/Viewport/Control/Content/ErrorMessage" method="set_visible" binds= [false]]
 [connection signal="pressed" from="CenterContainer/Viewport/Control/CloseBtn" to="CenterContainer/Viewport/AppIcon" method="CloseApp"]
+[connection signal="pressed" from="CenterContainer/Viewport/Control/MinimiseBtn" to="CenterContainer/Viewport/AppIcon" method="MinimiseApp"]
 [connection signal="UpdateMuteIcon" from="CenterContainer/Viewport/Control/MuteBtn" to="CenterContainer/Viewport/Control/MuteBtn/TextureRect" method="set_texture"]
 [connection signal="pressed" from="CenterContainer/Viewport/Control/MuteBtn" to="CenterContainer/Viewport/Control/MuteBtn" method="ToggleMute"]

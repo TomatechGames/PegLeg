@@ -263,7 +263,12 @@ public class MissionData
         if (!theaterFilter.Contains(theaterCat[0]))
             return false;
         if(!PLSearch.EvaluateInstructions(missionInstructions, missionJson))
-            return false;
+        {
+            if (itemInstructions.Length == 0)
+                itemInstructions = missionInstructions;
+            else
+                return false;
+        }
 
         //GD.Print("matching: "+itemFilter);
         bool matchesItemFilter = true;

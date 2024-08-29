@@ -42,10 +42,10 @@ public partial class AutoButtonSounds : Node
             {
                 if (useHoverSounds)
                     tabContainer.TabHovered += i =>
-                {
-                    if (!tabContainer.IsTabDisabled((int)i))
-                        UISounds.PlaySound(customHoverSound ?? "Hover");
-                };
+                    {
+                        if (!tabContainer.IsTabDisabled((int)i))
+                            UISounds.PlaySound(customHoverSound ?? "Hover");
+                    };
                 if (usePressSounds)
                     tabContainer.TabClicked += i => UISounds.PlaySound(customPressSound ?? "Hover");
                 return false;
@@ -54,10 +54,10 @@ public partial class AutoButtonSounds : Node
             {
                 if (useHoverSounds)
                     tabBar.TabHovered += i =>
-                {
-                    if (!tabBar.IsTabDisabled((int)i))
-                        UISounds.PlaySound(customHoverSound ?? "Hover");
-                };
+                    {
+                        if (!tabBar.IsTabDisabled((int)i))
+                            UISounds.PlaySound(customHoverSound ?? "Hover");
+                    };
                 if (usePressSounds)
                     tabBar.TabClicked += i => UISounds.PlaySound(customPressSound ?? "Hover");
                 return true;

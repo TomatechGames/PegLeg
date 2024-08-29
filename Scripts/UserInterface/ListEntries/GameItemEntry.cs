@@ -167,6 +167,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public override void _ExitTree()
     {
+        rewardNotificationRequest?.Cancel();
         if (profileItem is not null)
             profileItem.OnChanged -= UpdateLinkedProfileItem;
         profileItem?.Unlink();

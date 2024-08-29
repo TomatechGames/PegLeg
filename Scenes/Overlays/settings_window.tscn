@@ -253,7 +253,39 @@ popup/item_2/id = 2
 popup/item_3/text = "another theme here"
 popup/item_3/id = 3
 
-[node name="Aspect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="2"]
+visible = false
+layout_mode = 2
+
+[node name="Left" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+text = "<"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+theme_type_variation = &"PanelButtonSlanted"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer/MarginContainer" index="1"]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer/MarginContainer/MarginContainer" index="0"]
+layout_mode = 2
+text = "testing"
+horizontal_alignment = 1
+
+[node name="Right" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+text = ">"
+
+[node name="Aspect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="3"]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 texture = ExtResource("4_cr0bi")
@@ -301,7 +333,7 @@ grow_vertical = 2
 texture = ExtResource("8_nh2gq")
 expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="3"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="4"]
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer" index="0"]
@@ -364,9 +396,9 @@ layout_mode = 2
 text = "Return to Login Screen"
 
 [node name="FileDialog" type="FileDialog" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="1"]
-title = "Select FortniteGame Directory"
-size = Vector2i(374, 134)
-ok_button_text = "Generate"
+title = "Open a Directory"
+size = Vector2i(374, 154)
+ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 use_native_dialog = true
