@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=3 uid="uid://dpd06j33s360w"]
 
-[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_f51aj"]
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_f51aj"]
 [ext_resource type="Script" path="res://Scripts/Overlays/ShopPurchaseAnimation.cs" id="2_jxg4g"]
 [ext_resource type="Texture2D" uid="uid://by27usoarfre0" path="res://Images/InterfaceIcons/PegLegShoppingCartInside.png" id="2_x56qt"]
-[ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/Overlays/shop_purchase_item_element.tscn" id="3_h11w1"]
+[ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/Desktop/Overlays/shop_purchase_item_element.tscn" id="3_h11w1"]
 [ext_resource type="Texture2D" uid="uid://dgyw7mbhfodhy" path="res://Images/InterfaceIcons/PegLegShoppingCart.png" id="4_0gyrh"]
 [ext_resource type="AudioStream" uid="uid://bu3vc152hx7ks" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.wav" id="4_5c6ij"]
 [ext_resource type="Shader" path="res://Shaders/AdvancedLabel.gdshader" id="6_abafb"]

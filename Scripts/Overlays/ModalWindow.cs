@@ -49,6 +49,7 @@ public partial class ModalWindow : Control
 
     public override void _Process(double delta)
     {
+        openedThisFrame = false;
         if (windowControl is not null)
         {
             windowControl.PivotOffset = windowControl.Size * 0.5f;
@@ -58,12 +59,24 @@ public partial class ModalWindow : Control
     void CloseWindow() => SetWindowOpen(false);
 
     Tween currentTween;
+    bool openedThisFrame = false;
     public virtual void SetWindowOpen(bool openState)
     {
         if (currentTween is not null && currentTween.IsRunning())
             currentTween.Kill();
+        if (openedThisFrame && !openState)
+        {
+            openedThisFrame = false;
+            backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
+            mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
+            Visible = false;
+            UISounds.StopSound("PanelAppear");
+            ProcessMode = ProcessModeEnum.Disabled;
+            return;
+        }
+        if (openState)
+            openedThisFrame = true;
         currentTween = GetTree().CreateTween().SetParallel();
-
         IsOpen = openState;
         if (openState)
         {

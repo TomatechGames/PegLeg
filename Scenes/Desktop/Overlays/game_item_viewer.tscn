@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer.cs" id="1_5fxot"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_croo3"]
-[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_iqrw2"]
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_iqrw2"]
 [ext_resource type="PackedScene" uid="uid://3kvmnkrrkqf1" path="res://Scenes/GameItemEntry/reward_entry_vertical.tscn" id="1_vbhfu"]
 [ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Hero-Soldier-CARD.png" id="2_151di"]
 [ext_resource type="PackedScene" uid="uid://be5lic7x1too2" path="res://Scenes/PerkAndAbilityEntries/weapon_perk_selector_entry.tscn" id="2_t0h0p"]

@@ -9,7 +9,7 @@ public partial class ExternalFolderExporter : EditorExportPlugin
     static List<string> excludeFiles = new()
     {
         ".gdignore",
-        "Banjo",
+        //"Banjo",
     };
 
     public override string _GetName() => "ExternalExporter";

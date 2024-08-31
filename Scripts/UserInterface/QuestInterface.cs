@@ -6,9 +6,7 @@ using System.Linq;
 public partial class QuestInterface : Control
 {
     [Export]
-    QuestNodeController nodeController;
-    [Export]
-    QuestViewer questViewer;
+    QuestGroupViewer questGroupViewer;
     [Export]
     Control foldoutParent;
     [Export]
@@ -23,10 +21,6 @@ public partial class QuestInterface : Control
     List<Foldout> questGroupCollections = new();
     List<QuestGroupEntry> questGroups = new();
 
-    Foldout currentFoldout;
-    QuestGroupEntry currentEntry;
-    List<QuestGroupEntry> currentQuestGroups = new();
-
     // Called when the node enters the scene tree for the first time.
     public override async void _Ready()
 	{
@@ -35,8 +29,6 @@ public partial class QuestInterface : Control
             if (IsVisibleInTree())
                 LoadQuests();
         };
-        nodeController.Pressed += RefreshCurrentSelection;
-        questViewer.OnRefreshNeeded += RefreshCurrentSelection;
         RefreshTimerController.OnDayChanged += OnDayChanged;
         if (await LoginRequests.TryLogin())
             await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
@@ -55,24 +47,8 @@ public partial class QuestInterface : Control
         RefreshTimerController.OnDayChanged -= OnDayChanged;
     }
 
-    public static event Action OnPinnedQuestsCleared;
-    async void ClearPinnedQuests()
-    {
-        LoadingOverlay.Instance.AddLoadingKey("pinnedQuest");
-        
-        await ProfileRequests.ClearPinnedQuests();
-
-        await this.WaitForFrame();
-
-        OnPinnedQuestsCleared?.Invoke();
-
-        foreach (var entry in questGroups)
-        {
-            entry.UpdateNotificationAndIcon();
-        }
-
-        LoadingOverlay.Instance.RemoveLoadingKey("pinnedQuest");
-    }
+    public void ClearPinnedQuests()=>
+        ProfileRequests.ClearPinnedQuests();
 
     bool questsNeedUpdate = true;
     bool isGeneratingQuests = false;
@@ -80,6 +56,7 @@ public partial class QuestInterface : Control
     {
         if (!await LoginRequests.TryLogin() || isGeneratingQuests || !questsNeedUpdate)
             return;
+        questGroupViewer.Visible = false;
         questListLayout.Visible = false;
         loadingIcon.Visible = true;
         isGeneratingQuests = true;
@@ -115,17 +92,18 @@ public partial class QuestInterface : Control
                 //foldout.GetInstanceId();
                 groupEntry.Pressed += () =>
                 {
-                    currentEntry = groupEntry;
-                    currentFoldout = foldout;
-                    currentQuestGroups = groupsInFoldout;
-
-                    nodeController.SetQuestNodes(groupEntry.QuestDataList, groupEntry.IsChain ||  group.Key == "Daily Endurance", !groupEntry.IsChain);
-                    RefreshCurrentSelection();
+                    questGroupViewer.Visible = true;
+                    questGroupViewer.SetQuestNodes(groupEntry.QuestDataList, groupEntry.IsChain ||  group.Key == "Daily Endurance", !groupEntry.IsChain);
+                };
+                groupEntry.NotificationVisible += _ =>
+                {
+                    foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
                 };
                 foldout.AddFoldoutChild(groupEntry);
             }
             foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
             foldoutParent.AddChild(foldout);
+            questGroupCollections.Add(foldout);
         }
 
         questListLayout.Visible = true;
@@ -133,14 +111,5 @@ public partial class QuestInterface : Control
         isGeneratingQuests = false;
         if (questsNeedUpdate)
             LoadQuests();
-    }
-
-    async void RefreshCurrentSelection()
-    {
-        //if a profile operation is in progress, this will wait for it to complete
-        await ProfileRequests.GetProfile(FnProfiles.AccountItems);
-        await this.WaitForFrame();
-        currentEntry.UpdateNotificationAndIcon();
-        currentFoldout.SetNotification(currentQuestGroups.Any(g => g.HasNotification));
     }
 }

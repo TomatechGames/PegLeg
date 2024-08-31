@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://dmxb4fns6x2fm"]
 
-[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_ydvvi"]
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_ydvvi"]
 [ext_resource type="Texture2D" uid="uid://chrwn7nsdg50k" path="res://Images/InterfaceIcons/DefaultCosmeticGradient.tres" id="2_3e4tx"]
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="2_n7tcl"]
 [ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="4_6dg1j"]

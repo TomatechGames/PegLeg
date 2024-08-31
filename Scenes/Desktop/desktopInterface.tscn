@@ -1,0 +1,578 @@
+[gd_scene load_steps=44 format=3 uid="uid://u5ag0k8n6eqm"]
+
+[ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
+[ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
+[ext_resource type="Script" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_db3cl"]
+[ext_resource type="Script" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
+[ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
+[ext_resource type="Texture2D" uid="uid://ybhd24tgs2aq" path="res://Images/InterfaceIcons/minimise.png" id="4_v4447"]
+[ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="5_f3eja"]
+[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="5_uxiwu"]
+[ext_resource type="Texture2D" uid="uid://bq8vrrjy47iav" path="res://Images/InterfaceIcons/maximise.png" id="7_we7j1"]
+[ext_resource type="Script" path="res://Scripts/CurrencyHighlight.cs" id="9_23he5"]
+[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="12_rlxg4"]
+[ext_resource type="Texture2D" uid="uid://div6ssxx4btc8" path="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png" id="12_tuvkq"]
+[ext_resource type="Texture2D" uid="uid://b1p0g5okeg641" path="res://Images/InterfaceIcons/T-Icon-Manage-Upgrade-32.png" id="14_07m3a"]
+[ext_resource type="Script" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="16_rir5i"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="18_jt4k8"]
+[ext_resource type="PackedScene" uid="uid://c78gt6b2m1utg" path="res://Scenes/Desktop/Views/desktopMissionView.tscn" id="22_qlkcq"]
+[ext_resource type="PackedScene" uid="uid://4hei03rcfvmu" path="res://Scenes/Desktop/Views/desktopLlamaView.tscn" id="23_b4gaj"]
+[ext_resource type="PackedScene" uid="uid://q7ic84srvgy5" path="res://Scenes/Desktop/Views/desktopCollectionBookView.tscn" id="24_sj3vv"]
+[ext_resource type="Script" path="res://Scripts/WindowSizeDragger.cs" id="25_3cufh"]
+[ext_resource type="PackedScene" uid="uid://bwunyntryyu6o" path="res://Scenes/Desktop/Views/desktopLoadoutsView.tscn" id="25_ag48h"]
+[ext_resource type="PackedScene" uid="uid://buf6p8qyydofm" path="res://Scenes/Desktop/Overlays/game_item_viewer.tscn" id="25_r7yrq"]
+[ext_resource type="PackedScene" uid="uid://c6ftxiyts6lrg" path="res://Scenes/Desktop/Views/desktopItemShopView.tscn" id="26_fltvm"]
+[ext_resource type="PackedScene" uid="uid://cochrwi38s2xb" path="res://Scenes/Desktop/Views/desktopQuestGroupListView.tscn" id="28_rt2uq"]
+[ext_resource type="PackedScene" uid="uid://c4lt6qwfc4cou" path="res://Scenes/Desktop/Overlays/loading_overlay.tscn" id="31_v6low"]
+[ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Desktop/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
+[ext_resource type="Script" path="res://Scripts/HomebasePowerLevel.cs" id="44_3p6h5"]
+[ext_resource type="PackedScene" uid="uid://cvc7hj4ng7c04" path="res://Scenes/Desktop/Overlays/game_item_selector.tscn" id="44_m211x"]
+[ext_resource type="PackedScene" uid="uid://outqvmv6p0pm" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_line_edit_window.tscn" id="45_vujc8"]
+[ext_resource type="PackedScene" uid="uid://2okdom0nii2b" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_confirmation_window.tscn" id="46_fbpme"]
+[ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="47_6bd6x"]
+[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="49_3lkc1"]
+[ext_resource type="PackedScene" uid="uid://bcop5fmp7fh1d" path="res://Scripts/UIElements/test_recycle_element.tscn" id="50_nw81e"]
+[ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="58_7yvd6"]
+[ext_resource type="PackedScene" uid="uid://dpd06j33s360w" path="res://Scenes/Desktop/Overlays/shop_purchase_animation.tscn" id="96_2bhmt"]
+[ext_resource type="PackedScene" uid="uid://dd6fc218gb2da" path="res://Scenes/Desktop/Overlays/settings_window.tscn" id="99_hfy7e"]
+[ext_resource type="Texture2D" uid="uid://boywmwfvrbmwp" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Cogs_128.png" id="103_l32pl"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wyb1b"]
+shader = ExtResource("12_rlxg4")
+shader_parameter/ControlSize = Vector2(1280, 675)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tgevh"]
+
+[sub_resource type="Gradient" id="Gradient_4wivf"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bncug"]
+gradient = SubResource("Gradient_4wivf")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyvnw"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_65fgs"]
+bg_color = Color(0.4514, 0.74, 0.71114, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Root" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3bqtb")
+
+[node name="AutoButtonSounds" type="Node" parent="."]
+script = ExtResource("2_db3cl")
+
+[node name="BGController" type="Control" parent="." node_paths=PackedStringArray("bgMain", "bgOverlay")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_sy4n4")
+bgMain = NodePath("BG")
+bgOverlay = NodePath("BGFade")
+
+[node name="BG" type="TextureRect" parent="BGController"]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+z_index = -10
+material = SubResource("ShaderMaterial_wyb1b")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_tuvkq")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+
+[node name="BGFade" type="TextureRect" parent="BGController"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+z_index = -10
+material = SubResource("ShaderMaterial_wyb1b")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("16_rir5i")
+expand_mode = 1
+script = ExtResource("18_jt4k8")
+
+[node name="MainApp" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(700, 300)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 30
+
+[node name="TabContainer" type="TabContainer" parent="MainApp"]
+custom_minimum_size = Vector2(1280, 0)
+layout_mode = 2
+theme_type_variation = &"MenuTabContainer"
+tab_alignment = 1
+script = ExtResource("16_hsemp")
+
+[node name="Missions" parent="MainApp/TabContainer" instance=ExtResource("22_qlkcq")]
+layout_mode = 2
+
+[node name="Llamas" parent="MainApp/TabContainer" instance=ExtResource("23_b4gaj")]
+visible = false
+layout_mode = 2
+
+[node name="Compendium" parent="MainApp/TabContainer" instance=ExtResource("24_sj3vv")]
+visible = false
+layout_mode = 2
+
+[node name="Loadouts" parent="MainApp/TabContainer" instance=ExtResource("25_ag48h")]
+visible = false
+layout_mode = 2
+
+[node name="Item Shop" type="MarginContainer" parent="MainApp/TabContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TabContainer" type="TabContainer" parent="MainApp/TabContainer/Item Shop"]
+layout_mode = 2
+theme_type_variation = &"MenuTabContainer"
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tgevh")
+tab_alignment = 1
+script = ExtResource("16_hsemp")
+
+[node name="Weekly Shop" parent="MainApp/TabContainer/Item Shop/TabContainer" instance=ExtResource("26_fltvm")]
+layout_mode = 2
+
+[node name="Event Shop" parent="MainApp/TabContainer/Item Shop/TabContainer" instance=ExtResource("26_fltvm")]
+visible = false
+layout_mode = 2
+useEventShop = true
+
+[node name="Label" parent="MainApp/TabContainer/Item Shop/TabContainer/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+text = "Event Shop Resets: "
+
+[node name="Quests" parent="MainApp/TabContainer" instance=ExtResource("28_rt2uq")]
+visible = false
+layout_mode = 2
+
+[node name="OverlayWindows" type="Control" parent="."]
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CardPackOpenerWindow" parent="OverlayWindows" instance=ExtResource("41_alhak")]
+visible = false
+layout_mode = 1
+
+[node name="GameItemSelector" parent="OverlayWindows" instance=ExtResource("44_m211x")]
+visible = false
+layout_mode = 1
+
+[node name="GameItemViewer" parent="OverlayWindows" instance=ExtResource("25_r7yrq")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+
+[node name="GenericLineEditWindow" parent="OverlayWindows" instance=ExtResource("45_vujc8")]
+visible = false
+layout_mode = 1
+
+[node name="GenericConfirmationWindow" parent="OverlayWindows" instance=ExtResource("46_fbpme")]
+visible = false
+layout_mode = 1
+
+[node name="ShopPurchaseAnimation" parent="OverlayWindows" instance=ExtResource("96_2bhmt")]
+visible = false
+layout_mode = 1
+
+[node name="SettingsWindow" parent="OverlayWindows" instance=ExtResource("99_hfy7e")]
+visible = false
+layout_mode = 1
+
+[node name="LoadingOverlay" parent="OverlayWindows" instance=ExtResource("31_v6low")]
+visible = false
+layout_mode = 1
+startOpen = false
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1111.0
+offset_top = 63.0
+offset_right = 1107.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_bncug")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StatusBar" type="MarginContainer" parent="." node_paths=PackedStringArray("background", "settingsWindow", "sizeDraggers")]
+z_index = 5
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 6
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+script = ExtResource("2_3ot56")
+background = NodePath("../BGController")
+settingsWindow = NodePath("../OverlayWindows/SettingsWindow")
+sizeDraggers = [NodePath("../ResizeGrabber/BottomGrabber"), NodePath("../ResizeGrabber/TopGrabber"), NodePath("../ResizeGrabber/LeftGrabber"), NodePath("../ResizeGrabber/RightGrabber")]
+
+[node name="Left" type="HBoxContainer" parent="StatusBar"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 0
+
+[node name="PowerLevel" type="HBoxContainer" parent="StatusBar/Left" node_paths=PackedStringArray("homebaseNumberLabel", "homebaseNumberProgressBar")]
+layout_mode = 2
+script = ExtResource("44_3p6h5")
+homebaseNumberLabel = NodePath("PowerLevelNumber")
+homebaseNumberProgressBar = NodePath("PowerLevelProgressBar")
+
+[node name="PowerLevelIocn" type="TextureRect" parent="StatusBar/Left/PowerLevel"]
+layout_mode = 2
+texture = ExtResource("3_wfagk")
+expand_mode = 3
+
+[node name="PowerLevelNumber" type="Label" parent="StatusBar/Left/PowerLevel"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 16
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PowerLevelProgressBar" type="ProgressBar" parent="StatusBar/Left/PowerLevel"]
+custom_minimum_size = Vector2(80, 15)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_font_sizes/font_size = 12
+theme_override_styles/background = SubResource("StyleBoxFlat_lyvnw")
+theme_override_styles/fill = SubResource("StyleBoxFlat_65fgs")
+max_value = 1.0
+
+[node name="VSeparator" type="VSeparator" parent="StatusBar/Left"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ActiveCurrency" type="HBoxContainer" parent="StatusBar/Left"]
+layout_mode = 2
+alignment = 1
+script = ExtResource("9_23he5")
+showSingleItemAmount = true
+
+[node name="Icon" type="TextureRect" parent="StatusBar/Left/ActiveCurrency"]
+layout_mode = 2
+expand_mode = 3
+
+[node name="AmountText" type="Label" parent="StatusBar/Left/ActiveCurrency"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="StatusBar"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 0.0
+text = "PegLeg"
+horizontal_alignment = 1
+
+[node name="Right" type="HBoxContainer" parent="StatusBar"]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 0
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="SettingsButton" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Settings"
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/SettingsButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("103_l32pl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MuteBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Mute/Unmute"
+theme_type_variation = &"TinyButton"
+script = ExtResource("58_7yvd6")
+targetBusName = "Master"
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MuteBtn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("47_6bd6x")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RefreshBtn" type="Button" parent="StatusBar/Right"]
+visible = false
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/RefreshBtn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_07m3a")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MinimiseBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MinimiseBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_v4447")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MaximiseBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MaximiseBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_we7j1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CloseBtn" type="Button" parent="StatusBar/Right"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/CloseBtn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_f3eja")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ResizeGrabber" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BottomGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 9
+script = ExtResource("25_3cufh")
+grabberType = 2
+
+[node name="TopGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 5.0
+grow_horizontal = 2
+mouse_default_cursor_shape = 9
+script = ExtResource("25_3cufh")
+
+[node name="LeftGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 5.0
+grow_vertical = 2
+mouse_default_cursor_shape = 10
+script = ExtResource("25_3cufh")
+grabberType = 1
+
+[node name="RightGrabber" type="Control" parent="ResizeGrabber"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+grow_horizontal = 0
+grow_vertical = 2
+mouse_default_cursor_shape = 10
+script = ExtResource("25_3cufh")
+grabberType = 3
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel" node_paths=PackedStringArray("linkedGrid", "offsetControl", "paddingControl", "elementParent")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("49_3lkc1")
+elementSpace = 5.0
+linkedGrid = NodePath("MarginContainer/VBoxContainer/Container")
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/Container")
+elementScene = ExtResource("50_nw81e")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Offset" type="Control" parent="Panel/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Container" type="Container" parent="Panel/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("5_uxiwu")
+compressSpacing = true
+spacing = Vector2(10, 10)
+
+[node name="Padding" type="Control" parent="Panel/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[connection signal="AmountChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/AmountText" method="set_text"]
+[connection signal="IconChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/Icon" method="set_texture"]
+[connection signal="NameChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency" method="set_tooltip_text"]
+[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="StatusBar" method="OpenSettings"]
+[connection signal="UpdateMuteIcon" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="pressed" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn" method="ToggleMute"]
+[connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="StatusBar" method="Refresh"]
+[connection signal="pressed" from="StatusBar/Right/MinimiseBtn" to="StatusBar" method="MinimiseApp"]
+[connection signal="pressed" from="StatusBar/Right/MaximiseBtn" to="StatusBar" method="MaximiseApp"]
+[connection signal="pressed" from="StatusBar/Right/CloseBtn" to="StatusBar" method="CloseApp"]
+
+[editable path="MainApp/TabContainer/Item Shop/TabContainer/Event Shop"]

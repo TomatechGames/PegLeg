@@ -9,25 +9,27 @@ using System.Threading.Tasks;
 public partial class CosmeticShopInterface : Control
 {
     [Export]
-    Tree testingTree;
+    Button sacButton;
     [Export]
     SplitContainer splitContainer;
+    [Export]
+    ScrollContainer verticalScrollBox;
     [Export]
     Control navContainer;
     [Export]
     Tree navigationPane;
+    [Export]
+    Control pageParent;
+    [Export]
+    Control simpleShopParent;
+    [ExportGroup("Scenes")]
     [Export]
     PackedScene shopHeaderScene;
     [Export]
     PackedScene shopRowScene;
     [Export]
     PackedScene shopEntryScene;
-    [Export]
-    Control pageParent;
-    [Export]
-    Control simpleShopParent;
-    [Export]
-    Button sacButton;
+    [ExportGroup("Filter Bar")]
     [Export]
     Control filterBlocker;
     [Export]
@@ -35,19 +37,17 @@ public partial class CosmeticShopInterface : Control
     [Export]
     int simpleOpsPerFrame = 30;
     [Export]
-    ScrollContainer verticalScrollBox;
+    CheckButton requireLeavingSoon;
     [Export]
     CheckButton requireAddedToday;
     [Export]
-    CheckButton requireLeavingSoon;
-    [Export]
-    CheckButton excludeDiscountBundles;
-    [Export]
-    Button resetTypeFilters;
+    CheckButton includeDiscountBundles;
     [Export(PropertyHint.ArrayType)]
     CheckButton[] newOrOldFilters = Array.Empty<CheckButton>();
     [Export(PropertyHint.ArrayType)]
     CheckButton[] typeFilters = Array.Empty<CheckButton>();
+    [Export]
+    Button resetTypeFilters;
 
     public override void _Ready()
     {
@@ -62,18 +62,13 @@ public partial class CosmeticShopInterface : Control
         };
 
         RefreshTimerController.OnHourChanged += OnHourChanged;
-
-        testingTree.CellSelected += () =>
-        {
-            GD.Print(testingTree.GetSelected().GetMetadata(testingTree.GetSelectedColumn()));
-        };
         navigationPane.ButtonClicked += OnNavButton;
         navigationPane.CellSelected += OnNavCell;
         sacButton.Pressed += OpenSACPrompt;
 
         requireAddedToday.Pressed += ApplyFilters;
         requireLeavingSoon.Pressed += ApplyFilters;
-        excludeDiscountBundles.Pressed += ApplyFilters;
+        includeDiscountBundles.Pressed += ApplyFilters;
         foreach (var button in newOrOldFilters)
         {
             button.Pressed += ApplyFilters;
@@ -434,7 +429,7 @@ public partial class CosmeticShopInterface : Control
             return false;
         if (requireAddedToday.ButtonPressed && !entry.isAddedToday)
             return false;
-        if (!excludeDiscountBundles.ButtonPressed && entry.isDiscountBundle)
+        if (!includeDiscountBundles.ButtonPressed && entry.isDiscountBundle)
             return false;
 
         if (!(newOrOldFilterValue switch

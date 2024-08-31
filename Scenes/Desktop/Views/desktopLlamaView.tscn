@@ -1,0 +1,409 @@
+[gd_scene load_steps=17 format=3 uid="uid://4hei03rcfvmu"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/LlamaInterface.cs" id="1_n8h1q"]
+[ext_resource type="PackedScene" uid="uid://b0uxwtxndd6x3" path="res://Scenes/LlamaEntries/catalog_llama_entry.tscn" id="2_eeobp"]
+[ext_resource type="PackedScene" uid="uid://bgn5vgsvgrb1u" path="res://Scenes/LlamaEntries/cardpack_llama_entry.tscn" id="3_h03df"]
+[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="4_1u5ij"]
+[ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="5_bcyag"]
+[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="6_2af65"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_wlhx3"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/LlamaEntry.cs" id="8_4nkxo"]
+[ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="9_ifcvm"]
+[ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="10_c6rar"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="11_avnw0"]
+[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="12_h8kct"]
+[ext_resource type="Texture2D" uid="uid://djcvidllqfmt5" path="res://Images/InterfaceIcons/T_UI_LevelManagement_Trashcan_Icon.png" id="13_0ilaw"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="14_ynnau"]
+[ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="15_rwvm7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jf1jp"]
+shader = ExtResource("10_c6rar")
+shader_parameter/IconTint = Color(0.101961, 0.101961, 0.101961, 1)
+
+[node name="Llamas" type="HSplitContainer" node_paths=PackedStringArray("selectedPurchaseCountSpinner", "selectedOpenCountSpinner")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 585
+script = ExtResource("1_n8h1q")
+catalogLlamaEntryScene = ExtResource("2_eeobp")
+cardpackLlamaEntryScene = ExtResource("3_h03df")
+itemEntryScene = ExtResource("4_1u5ij")
+loadingIconPath = NodePath("Llama Selector/ShopLlamas/ScrollContainer/MarginContainer/Center/LoadingIcon")
+catalogLlamaParentPath = NodePath("Llama Selector/ShopLlamas/ScrollContainer/MarginContainer/XRayLlamas")
+cardpackLlamaPanelPath = NodePath("Llama Selector/InventoryLlamas/HBoxContainer")
+cardpackLlamaParentPath = NodePath("Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/CardPackParent")
+selectedLlamaEntryPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama")
+selectedOpenPanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel")
+selectedPurchasePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel")
+selectedBrokePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/CantAffordPanel")
+selectedPriceIconPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer/Icon")
+selectedPriceLabelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer/PriceText")
+selectedPurchaseCountSpinner = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox")
+selectedOpenCountSpinner = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox")
+selectedItemEntryParentPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/RewardsContainer")
+selectedSurprisePanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SurpriseContainer")
+selectedNoStockPanelPath = NodePath("Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SoldOutContainer")
+
+[node name="Llama Selector" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Header" type="MarginContainer" parent="Llama Selector"]
+layout_mode = 2
+theme_override_constants/margin_right = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="Llama Selector/Header"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Llama Selector/Header/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Llama Selector/Header/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Llama Selector/Header/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextLabel" type="Label" parent="Llama Selector/Header/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Llamas refresh in: "
+
+[node name="TimeLabel" type="Label" parent="Llama Selector/Header/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "???"
+script = ExtResource("5_bcyag")
+timerType = 1
+
+[node name="Label" type="Label" parent="Llama Selector/Header/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+text = "Note: Free Llamas can appear at the start of every hour, and only stick around for an hour"
+
+[node name="ShopLlamas" type="MarginContainer" parent="Llama Selector"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Llama Selector/ShopLlamas"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Llama Selector/ShopLlamas/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="XRayLlamas" type="VBoxContainer" parent="Llama Selector/ShopLlamas/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Center" type="Control" parent="Llama Selector/ShopLlamas/ScrollContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="LoadingIcon" parent="Llama Selector/ShopLlamas/ScrollContainer/MarginContainer/Center" instance=ExtResource("6_2af65")]
+visible = false
+layout_mode = 1
+
+[node name="InventoryLlamas" type="MarginContainer" parent="Llama Selector"]
+layout_mode = 2
+theme_override_constants/margin_right = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Llama Selector/InventoryLlamas"]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Llama Selector/InventoryLlamas/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+vertical_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="CardPackParent" type="HBoxContainer" parent="Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer2/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Llama Selector/InventoryLlamas/HBoxContainer"]
+custom_minimum_size = Vector2(118, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+
+[node name="Label" type="Label" parent="Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Open
+All"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer" instance=ExtResource("7_wlhx3")]
+layout_mode = 2
+useHold = true
+
+[node name="Llama Contents" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="Llama Contents"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Llama Contents/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SelectedLlama" type="VBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer"]
+layout_mode = 2
+script = ExtResource("8_4nkxo")
+includeAmountInName = true
+
+[node name="LlamaName" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Select a Llama"
+text_overrun_behavior = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -80
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = -80
+theme_override_constants/margin_bottom = 20
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Pinata" type="TextureRect" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer"]
+self_modulate = Color(0.5, 0.5, 0.5, 1)
+layout_mode = 2
+texture = ExtResource("9_ifcvm")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata"]
+self_modulate = Color(0.101961, 0.101961, 0.101961, 1)
+material = SubResource("ShaderMaterial_jf1jp")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33
+anchor_top = 0.55
+anchor_right = 0.46
+anchor_bottom = 0.68
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_avnw0")
+expand_mode = 1
+
+[node name="Items" type="ScrollContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="HBoxContainer" type="MarginContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="RewardsContainer" type="Container" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+script = ExtResource("12_h8kct")
+compressSpacing = true
+spacing = Vector2(5, 0)
+
+[node name="SurpriseContainer" type="VBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SurpriseContainer"]
+layout_mode = 2
+texture = ExtResource("11_avnw0")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SurpriseContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "It's a surprise..."
+horizontal_alignment = 1
+
+[node name="SoldOutContainer" type="VBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SoldOutContainer"]
+layout_mode = 2
+texture = ExtResource("13_0ilaw")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/Items/HBoxContainer/SoldOutContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Sold Out :/"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+visible = false
+layout_mode = 2
+text = "Your Currency: 5000 (x10)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="HBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PurchasePanel" type="MarginContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel"]
+layout_mode = 2
+theme_override_constants/separation = -5
+
+[node name="Label" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Purchase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("14_ynnau")
+expand_mode = 3
+
+[node name="PriceText" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "2500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel" instance=ExtResource("7_wlhx3")]
+layout_mode = 2
+useHold = true
+holdTime = 2.0
+
+[node name="OpenPanel" type="HBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="OpenButton" type="MarginContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton"]
+layout_mode = 2
+theme_override_constants/separation = -5
+alignment = 1
+
+[node name="Label" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "Open"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Responsive Button Area" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton" instance=ExtResource("7_wlhx3")]
+layout_mode = 2
+useHold = true
+
+[node name="PurchaseSpinBox" type="SpinBox" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("15_rwvm7")
+theme_type_variation = &"LineEditLarge"
+min_value = 1.0
+max_value = 10.0
+value = 1.0
+
+[node name="CantAffordPanel" type="HBoxContainer" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Label" type="Label" parent="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/CantAffordPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "Can't Afford"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="HoldPressed" from="Llama Selector/InventoryLlamas/HBoxContainer/MarginContainer/Responsive Button Area" to="." method="BulkOpenAllCardpacks"]
+[connection signal="IconChanged" from="Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata" method="set_texture"]
+[connection signal="NameChanged" from="Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/LlamaName" method="set_text"]
+[connection signal="SubtypeIconChanged" from="Llama Contents/PanelContainer/MarginContainer/SelectedLlama" to="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/MarginContainer/MarginContainer/AspectRatioContainer/Pinata/Icon" method="set_texture"]
+[connection signal="HoldPressed" from="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchasePanel/Responsive Button Area" to="." method="PurchaseLlama"]
+[connection signal="HoldPressed" from="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/OpenPanel/OpenButton/Responsive Button Area" to="." method="OpenSelectedCardpack"]
+[connection signal="value_changed" from="Llama Contents/PanelContainer/MarginContainer/SelectedLlama/VBoxContainer/VBoxContainer/PurchaseSpinBox" to="." method="SpinnerChanged"]

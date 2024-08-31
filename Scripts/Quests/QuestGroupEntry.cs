@@ -2,8 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Reflection.Metadata;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -15,25 +13,36 @@ public class QuestData
         this.questTemplate = questTemplate;
     }
 
-    public void ReplaceQuest(ProfileItemHandle newQuestItem)
+    public void LinkQuestItem(ProfileItemHandle newQuestItem)
     {
-        if (newQuestItem is null)
-            return;
+        if (questItem is not null)
+            questItem.OnChanged -= ProfileItemChanged;
         questItem = newQuestItem;
+        if (questItem is null)
+            return;
+        questItem.OnChanged += ProfileItemChanged;
         questTemplate = newQuestItem.GetItemUnsafe().GetTemplate();
         questID = newQuestItem.GetItemUnsafe()["templateId"].ToString();
     }
 
+    void ProfileItemChanged(ProfileItemHandle handle)
+    {
+        OnPropertiesUpdated?.Invoke();
+    }
+
     public string questID { get; private set; }
     public JsonObject questTemplate { get; private set; }
+    public ProfileItemHandle questItem { get; private set; }
 
-    public ProfileItemHandle questItem;
-    public bool hasNotif => isUnlocked && !(questItem.GetItemUnsafe()["attributes"]["item_seen"]?.GetValue<bool>() ?? false);
+    public event Action OnPropertiesUpdated;
+
     public bool isUnlocked => questItem is not null;
+    public bool isNew => !(questItem?.ItemSeen ?? true);
+    public bool isPinned => isUnlocked && ProfileRequests.HasPinnedQuest(questItem.profileItem.uuid);
     public bool isComplete => questItem?.GetItemUnsafe()["attributes"]["quest_state"]?.ToString() == "Claimed";
     public bool isRerollable => isUnlocked && questItem?.GetItemUnsafe().GetTemplate()["Category"].ToString() == "DailyQuests";
-    public bool isPinned => isUnlocked && ProfileRequests.HasPinnedQuestUnsafe(questItem.profileItem.uuid);
 }
+
 public partial class QuestGroupEntry : Control
 {
     [Signal]
@@ -86,7 +95,9 @@ public partial class QuestGroupEntry : Control
 
                     JsonObject questTemplate = BanjoAssets.TryGetTemplate(currentQuestId);
 
-                    QuestData newData = new(currentQuestId, questTemplate) {questItem = questHandle};
+                    QuestData newData = new(currentQuestId, questTemplate);
+                    newData.LinkQuestItem(questHandle);
+                    newData.OnPropertiesUpdated += UpdateNotificationAndIcon;
                     questDataList.Add(newData);
 
                     if(i==qline.Count-1 && newData.isComplete)
@@ -113,7 +124,9 @@ public partial class QuestGroupEntry : Control
                 if (await ProfileRequests.GetFirstProfileItem(FnProfiles.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
                     questHandle = ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, currentQuest["uuid"].ToString()));
 
-                QuestData newData = new(currentQuestId, questTemplate) { questItem = questHandle };
+                QuestData newData = new(currentQuestId, questTemplate);
+                newData.LinkQuestItem(questHandle);
+                newData.OnPropertiesUpdated += UpdateNotificationAndIcon;
                 questDataList.Add(newData);
             }
             hasAvailableQuests = questDataList.Exists(q => q.isUnlocked);
@@ -132,7 +145,7 @@ public partial class QuestGroupEntry : Control
     
     public void UpdateNotificationAndIcon()
     {
-        hasNotification = questDataList.Any(questData => questData.hasNotif && (isChain || !questData.isComplete));
+        hasNotification = questDataList.Any(questData => questData.isNew && (isChain || !questData.isComplete));
         EmitSignal(SignalName.NotificationVisible, hasNotification);
         bool isPinned = questDataList.Any(q => q.isPinned);
         bool isComplete = questDataList.All(q => q.isComplete);
@@ -144,13 +157,23 @@ public partial class QuestGroupEntry : Control
         else
             EmitSignal(SignalName.IconChanged, (Texture2D)null);
     }
+
     public void LinkButtonGroup(ButtonGroup buttonGroup)
     {
         highlightCheck.ButtonGroup = buttonGroup;
     }
+
     public void Press()
     {
         highlightCheck.ButtonPressed = true;
         EmitSignal(SignalName.Pressed);
+    }
+
+    public override void _ExitTree()
+    {
+        foreach (var questData in questDataList)
+        {
+            questData.LinkQuestItem(null);
+        }
     }
 }

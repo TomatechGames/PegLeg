@@ -59,9 +59,6 @@ public partial class LlamaInterface : Control
     SpinBox selectedPurchaseCountSpinner;
 
     [Export]
-    SpinBox selectedOpenCountSpinner;
-
-    [Export]
     NodePath selectedItemEntryParentPath;
     Control selectedItemEntryParent;
 

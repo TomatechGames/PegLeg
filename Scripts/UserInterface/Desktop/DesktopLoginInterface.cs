@@ -80,9 +80,9 @@ public partial class DesktopLoginInterface : LoginInterface
             loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsDisconnected ? "OFFLINE" : "Not Logged In");
 
             loginControls.Visible = !isLoggedIn;
-            banjoControls.Visible = !hasBanjoAssets;
+            banjoControls.Visible = false;
             loginButton.Disabled = !hasBanjoAssets;
-            loginButton.TooltipText = !hasBanjoAssets ? "Game Assets must be\ngenerated before continuing" : "";
+            loginButton.TooltipText = !hasBanjoAssets ? "Banjo Assets are missing or incomplete, please\nplace banjo assets in the \"External/Banjo\" folder and restart" : "";
 
             if (isLoggedIn)
                 loginButton.Text = "Continue";
@@ -98,6 +98,7 @@ public partial class DesktopLoginInterface : LoginInterface
 
     public async void RunBanjoGenerator()
     {
+        return;
         loginContent.Visible = false;
         loadingIcon.Visible = true;
         await BanjoAssets.GenerateAssets(gameFolderPath.Text);

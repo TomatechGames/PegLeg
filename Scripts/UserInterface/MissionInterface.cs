@@ -12,8 +12,6 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
     VirtualTabBar zoneFilterTabBar;
     [Export]
 	LineEdit searchBar;
-    [Export]
-    Button itemSearchToggle;
 
     [Export]
     CheckButton[] itemFilterButtons = Array.Empty<CheckButton>();

@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://dd6fc218gb2da"]
 
-[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/Settings/AccountSettings.cs" id="2_dybhj"]
 [ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="2_y75ef"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="3_dewmg"]
@@ -375,9 +375,9 @@ layout_mode = 2
 layout_mode = 2
 script = ExtResource("2_dybhj")
 loginSceneFilePath = "res://Scenes/desktopLogin.tscn"
-generateBanjoAssets = NodePath("VBoxContainer/Button")
+generateBanjoAssets = NodePath("VBoxContainer/Banjo")
 gameFolderDialog = NodePath("FileDialog")
-goToLoginButton = NodePath("VBoxContainer/Button2")
+goToLoginButton = NodePath("VBoxContainer/Login")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="0"]
 layout_mode = 2
@@ -387,11 +387,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Misc"
 
-[node name="Button" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="1"]
+[node name="Banjo" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="1"]
+visible = false
 layout_mode = 2
 text = "Extract Game Assets"
 
-[node name="Button2" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="2"]
+[node name="Login" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="2"]
 layout_mode = 2
 text = "Return to Login Screen"
 

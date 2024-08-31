@@ -1,0 +1,231 @@
+[gd_scene load_steps=10 format=3 uid="uid://dlby27o4y2c0o"]
+
+[ext_resource type="Script" path="res://Scripts/Quests/QuestViewer.cs" id="1_v67fr"]
+[ext_resource type="PackedScene" uid="uid://c5in0c8tv1sfq" path="res://Scenes/QuestEntries/quest_objective.tscn" id="2_2pmaq"]
+[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="3_q0o1l"]
+[ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="4_6x6uw"]
+[ext_resource type="Texture2D" uid="uid://0dsm5rygx6qr" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_checkmark_64.png" id="5_oqt08"]
+[ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="6_n7evw"]
+[ext_resource type="Texture2D" uid="uid://lhe8ded54hsv" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Pin_128.png" id="7_b1vfe"]
+
+[sub_resource type="Gradient" id="Gradient_hyobt"]
+offsets = PackedFloat32Array(0.902367, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ueara"]
+gradient = SubResource("Gradient_hyobt")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[node name="QuestViewer" type="MarginContainer" node_paths=PackedStringArray("objectiveParent", "pinButton", "rerollButton", "rewardParent")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+script = ExtResource("1_v67fr")
+objectiveParent = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer/Objectives/ScrollContainer/VBoxContainer2")
+objectiveScene = ExtResource("2_2pmaq")
+pinButton = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/VBoxContainer/PinButton")
+rerollButton = NodePath("MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/VBoxContainer/RerollButton")
+rewardParent = NodePath("MarginContainer/HSplitContainer/Rewards/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer")
+rewardScene = ExtResource("3_q0o1l")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+split_offset = 150
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"SecondaryPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+texture = ExtResource("4_6x6uw")
+expand_mode = 5
+
+[node name="CompleteIcon" type="TextureRect" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/Icon"]
+self_modulate = Color(0, 1, 0, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = SubResource("GradientTexture2D_ueara")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/Icon/CompleteIcon"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.8
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_oqt08")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 22
+text = "Mission Veteran (Constructor)"
+autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="RerollButton" type="Button" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Reroll"
+theme_type_variation = &"SlantedButton"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/VBoxContainer/RerollButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_n7evw")
+expand_mode = 1
+
+[node name="PinButton" type="CheckButton" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 8
+tooltip_text = "Pinned"
+theme_type_variation = &"EmptyCheckButton"
+button_pressed = true
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/VBoxContainer/PinButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_b1vfe")
+expand_mode = 1
+
+[node name="VSplitContainer" type="VSplitContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Description" type="RichTextLabel" parent="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 20
+text = "This is a Daily Quest. You can have up to three Daily Quests at a time. You can swap out one Daily Quest per day using the Replace Quest button."
+
+[node name="Objectives" type="VBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer/Objectives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Objectives:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer/Objectives"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer/Objectives/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Rewards" type="MarginContainer" parent="MarginContainer/HSplitContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/Rewards"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HSplitContainer/Rewards/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Rewards:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/Rewards/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HSplitContainer/Rewards/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="HFlowContainer" parent="MarginContainer/HSplitContainer/Rewards/VBoxContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[connection signal="CompleteVisible" from="." to="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/Icon/CompleteIcon" method="set_visible"]
+[connection signal="DescriptionChanged" from="." to="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer/Description" method="set_text"]
+[connection signal="IconChanged" from="." to="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/Icon" method="set_texture"]
+[connection signal="NameChanged" from="." to="MarginContainer/HSplitContainer/VBoxContainer2/MarginContainer/MarginContainer/HBoxContainer/Label" method="set_text"]

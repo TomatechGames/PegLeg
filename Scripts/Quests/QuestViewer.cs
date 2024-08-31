@@ -14,8 +14,6 @@ public partial class QuestViewer : Control
     public delegate void DescriptionChangedEventHandler(string description);
     [Signal]
     public delegate void CompleteVisibleEventHandler(bool visible);
-    [Signal]
-    public delegate void OnRefreshNeededEventHandler();
 
     [Export]
     Control objectiveParent;
@@ -29,8 +27,6 @@ public partial class QuestViewer : Control
     Button rerollButton;
 
     [Export]
-    Control rewardLoadingIcon;
-    [Export]
     Control rewardParent;
     [Export]
     PackedScene rewardScene;
@@ -40,13 +36,6 @@ public partial class QuestViewer : Control
     {
         pinButton.Pressed += UpdatePinnedState;
         rerollButton.Pressed += RerollQuest;
-        Visible = false;
-        QuestInterface.OnPinnedQuestsCleared += () =>
-        {
-            if (currentQuest is null || !currentQuest.isUnlocked)
-                return;
-            pinButton.ButtonPressed = currentQuest.isPinned;
-        };
     }
 
     static readonly string[] cardPackFromRarity = new string[]
@@ -60,32 +49,31 @@ public partial class QuestViewer : Control
     };
 
     QuestData currentQuest;
-    public async void UpdatePinnedState()
+    async void UpdatePinnedState()
     {
-        if (currentQuest is null || !currentQuest.isUnlocked)
+        if (currentQuest is null || !currentQuest.isUnlocked || currentQuest.isComplete)
             return;
         LoadingOverlay.Instance.AddLoadingKey("pinnedQuest");
-        await this.WaitForFrame();
+
         if (pinButton.ButtonPressed)
             await ProfileRequests.AddPinnedQuest(currentQuest.questItem.profileItem.uuid);
         else
             await ProfileRequests.RemovePinnedQuest(currentQuest.questItem.profileItem.uuid);
 
-        EmitSignal(SignalName.OnRefreshNeeded);
         pinButton.ButtonPressed = currentQuest.isPinned;
-
         LoadingOverlay.Instance.RemoveLoadingKey("pinnedQuest");
     }
-    public async void RerollQuest()
+
+    async void RerollQuest()
     {
         if (currentQuest is null || !currentQuest.isUnlocked)
             return;
         LoadingOverlay.Instance.AddLoadingKey("rerollQuest");
         
         var newQuest = await ProfileRequests.RerollQuest(currentQuest.questItem.profileItem.uuid);
-        currentQuest.ReplaceQuest(newQuest);
+        currentQuest.LinkQuestItem(newQuest);
 
-        EmitSignal(SignalName.OnRefreshNeeded);
+        SetupQuest(currentQuest);
         rerollButton.Visible = ProfileRequests.CanRerollQuestUnsafe();
 
         LoadingOverlay.Instance.RemoveLoadingKey("rerollQuest");
@@ -93,23 +81,15 @@ public partial class QuestViewer : Control
 
     public void SetupQuest(QuestData quest)
     {
-        Visible = true;
         currentQuest = quest;
         EmitSignal(SignalName.NameChanged, quest.questTemplate["DisplayName"].ToString());
         EmitSignal(SignalName.DescriptionChanged, quest.questTemplate["Description"].ToString());
         EmitSignal(SignalName.IconChanged, quest.questTemplate.GetItemTexture());
+        EmitSignal(SignalName.CompleteVisible, quest.isComplete);
 
         rerollButton.Visible = quest.isRerollable && ProfileRequests.CanRerollQuestUnsafe();
-
-        pinButton.Visible = false;
-        EmitSignal(SignalName.CompleteVisible, false);
-        if (quest.isUnlocked)
-        {
-            if (quest.isComplete)
-                EmitSignal(SignalName.CompleteVisible, true);
-            pinButton.Visible = true;
-            pinButton.ButtonPressed = quest.isPinned;
-        }
+        pinButton.Visible = quest.isUnlocked && !quest.isComplete;
+        pinButton.ButtonPressed = quest.isPinned;
 
 
         var allRewards = quest.questTemplate["Rewards"]
@@ -118,30 +98,14 @@ public partial class QuestViewer : Control
 
         var rewards = allRewards
             .Where(r => !r["Selectable"].GetValue<bool>())
-            .Select(r => 
-            {
-                //if (r["Item"].ToString().StartsWith("STWAccoladeReward"))
-                //{
-                //    var accoladeID = r["Item"].ToString().Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
-                //    GD.Print(accoladeID);
-                //    var accoladeTemplate = BanjoAssets.TryGetTemplate(accoladeID);
-                //    return accoladeTemplate?.CreateInstanceOfItem(1) ?? r.AsObject();
-                //}
-                return BanjoAssets.TryGetTemplate(r["Item"].ToString())?.CreateInstanceOfItem(r["Quantity"].GetValue<int>()) ?? r.AsObject();
-            })
-            .Where(r =>
-            {
-                bool isBadReward = r["Item"] is not null;
-                if (isBadReward)
-                    GD.Print("bad reward detected: " + r);
-                return !isBadReward;
-            })
+            .Select(r => BanjoAssets.TryGetTemplate(r["Item"].ToString())?.CreateInstanceOfItem(r["Quantity"].GetValue<int>()) ?? r.AsObject())
+            .Where(r => r["Item"] is null)
             .ToList();
 
         var dynamicRewards = allRewards
             .Where(r => r["Selectable"].GetValue<bool>());
 
-        if (dynamicRewards.Count()>0)
+        if (dynamicRewards.Any())
         {
             //fake a cardpack to show a choice reward
             var cardpackID = cardPackFromRarity[dynamicRewards.Select(q=>BanjoAssets.TryGetTemplate(q["Item"].ToString()).GetItemRarity()).Max()];
