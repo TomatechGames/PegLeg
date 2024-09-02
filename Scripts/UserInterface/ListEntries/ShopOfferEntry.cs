@@ -100,7 +100,7 @@ public partial class ShopOfferEntry : Control
         var grantedQuantity = grantedItem["quantity"].GetValue<int>();
         if (grantedQuantity > 1 && stockLimit != 0)
             amountText = grantedQuantity + amountText;
-        EmitSignal(SignalName.AmountNeeded, false);
+        EmitSignal(SignalName.AmountNeeded, amountText!="");
         EmitSignal(SignalName.AmountChanged, amountText);
 
         if (includeAmountInName)
