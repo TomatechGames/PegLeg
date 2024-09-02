@@ -94,31 +94,33 @@ public partial class LlamaInterface : Control
 
         availableCardPacks.Clear();
 
-        VisibilityChanged += async () =>
-        {
-            if (IsVisibleInTree())
-            {
-                await LoadLlamas();
-                if (!string.IsNullOrWhiteSpace(currentPurchaseSelection) && activeOffers.ContainsKey(currentPurchaseSelection))
-                {
-                    var offer = activeOffers[currentPurchaseSelection];
-                    string priceType = offer["prices"][0]["currencySubType"].ToString();
-                    CurrencyHighlight.Instance.SetCurrencyType(priceType);
-                }
-                if(cardPackListener is null)
-                {
-                    cardPackListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, "CardPack");
-                    cardPackListener.OnAdded += AddCardPackEntry;
-                    cardPackListener.OnRemoved += RemoveCardPackEntry;
-                    foreach (var item in cardPackListener.Items)
-                    {
-                        AddCardPackEntry(item);
-                    }
-                }
-            }
-        };
+        VisibilityChanged += OnVisibilityChanged;
+        OnVisibilityChanged();
 
         RefreshTimerController.OnHourChanged += OnHourChanged;
+    }
+
+    async void OnVisibilityChanged()
+    {
+        if (!IsVisibleInTree())
+            return;
+        await LoadLlamas();
+        if (!string.IsNullOrWhiteSpace(currentPurchaseSelection) && activeOffers.ContainsKey(currentPurchaseSelection))
+        {
+            var offer = activeOffers[currentPurchaseSelection];
+            string priceType = offer["prices"][0]["currencySubType"].ToString();
+            CurrencyHighlight.Instance.SetCurrencyType(priceType);
+        }
+        if (cardPackListener is null)
+        {
+            cardPackListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, "CardPack");
+            cardPackListener.OnAdded += AddCardPackEntry;
+            cardPackListener.OnRemoved += RemoveCardPackEntry;
+            foreach (var item in cardPackListener.Items)
+            {
+                AddCardPackEntry(item);
+            }
+        }
     }
 
     public override void _ExitTree()

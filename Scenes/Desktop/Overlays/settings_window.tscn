@@ -371,13 +371,12 @@ text = "Filters"
 visible = false
 layout_mode = 2
 
-[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="8" node_paths=PackedStringArray("generateBanjoAssets", "gameFolderDialog", "goToLoginButton")]
+[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="8" node_paths=PackedStringArray("generateBanjoAssets", "gameFolderDialog")]
 layout_mode = 2
 script = ExtResource("2_dybhj")
-loginSceneFilePath = "res://Scenes/desktopLogin.tscn"
+loginSceneFilePath = "res://Scenes/Desktop/desktopLogin.tscn"
 generateBanjoAssets = NodePath("VBoxContainer/Banjo")
 gameFolderDialog = NodePath("FileDialog")
-goToLoginButton = NodePath("VBoxContainer/Login")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="0"]
 layout_mode = 2
@@ -395,6 +394,16 @@ text = "Extract Game Assets"
 [node name="Login" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="2"]
 layout_mode = 2
 text = "Return to Login Screen"
+
+[node name="ForgetLoginDebug" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="3"]
+visible = false
+layout_mode = 2
+text = "Forget Login (Debug)"
+
+[node name="ForgetRefreshDebug" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="4"]
+visible = false
+layout_mode = 2
+text = "Forget Refresh (Debug)"
 
 [node name="FileDialog" type="FileDialog" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="1"]
 title = "Open a Directory"
@@ -419,3 +428,6 @@ use_native_dialog = true
 [connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="SetVolume"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="ToggleMute"]
 [connection signal="HoldPressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer/Responsive Button Area" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme" method="ApplyTheme"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer/Login" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" method="ReturnToLogin"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer/ForgetLoginDebug" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" method="ForgetAuthDebug"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer/ForgetRefreshDebug" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" method="ForgetRefreshDebug"]

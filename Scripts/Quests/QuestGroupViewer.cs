@@ -35,7 +35,7 @@ public partial class QuestGroupViewer : Control
     List<ShaderHook> questArrowList;
 
     [Export]
-    int maxNodesPerPage = 10;
+    int maxNodesPerPage = 20;
 	int nodesPerPage;
 	List<QuestData> questDataList;
 	int currentPage;

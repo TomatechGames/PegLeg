@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
-using CosmeticShopOfferData = CosmeticShopInterface.CosmeticShopOfferData;
 
 public partial class CosmeticShopOfferEntry : Control
 {
@@ -114,13 +113,13 @@ public partial class CosmeticShopOfferEntry : Control
     private async void StartResourceLoadSequence()
     {
         resourceLoadTimer.Stop();
-        if (!resourceLoadStarted)
+        if (resourceLoadStarted)
             return;
         resourceLoadStarted = true;
         if(currentOfferData is not null)
         {
             if (!currentOfferData.resourceLoadComplete)
-                currentOfferData.LoadResource();
+                ApplyOfferResource();
             return;
         }
 

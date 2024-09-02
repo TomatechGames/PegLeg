@@ -1,8 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://c78gt6b2m1utg"]
+[gd_scene load_steps=24 format=3 uid="uid://c78gt6b2m1utg"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
+[ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="2_rrtg2"]
 [ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="4_ebt37"]
+[ext_resource type="Texture2D" uid="uid://bao6ptsdb0lxd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_FloppyDisc_128.png" id="4_tmf5n"]
 [ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://GodotThemes/Styleboxes/CheckButton/CheckContainer.tres" id="5_njejm"]
 [ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="6_bo112"]
 [ext_resource type="Texture2D" uid="uid://gak2hv6itgoo" path="res://Images/InterfaceIcons/T-Icon-Survivor-Leader-CARD.png" id="7_lvf0s"]
@@ -18,6 +20,13 @@
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="17_eyhau"]
 [ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="18_phyx5"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="19_xbd21"]
+
+[sub_resource type="Gradient" id="Gradient_08e2c"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_60hgg"]
+gradient = SubResource("Gradient_08e2c")
+width = 1
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_fb3nj"]
 resource_name = "MissionZoneFilter"
@@ -43,16 +52,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
-[node name="SearchBox" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Search in missions"
-clear_button_enabled = true
-
 [node name="ForceRefresh" type="Button" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(26, 0)
 layout_mode = 2
 tooltip_text = "Force Reload"
+theme_type_variation = &"LargeButton"
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ForceRefresh"]
 layout_mode = 1
@@ -67,6 +71,85 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_88mxw")
 expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_right = 10
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = " Missions Reset: "
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "99:99:99"
+vertical_alignment = 1
+script = ExtResource("2_rrtg2")
+timerType = 1
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 0)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
+theme_override_icons/arrow = SubResource("GradientTexture1D_60hgg")
+alignment = 2
+text_overrun_behavior = 2
+item_count = 8
+selected = 1
+fit_to_longest_item = false
+popup/item_0/text = "preset the first"
+popup/item_0/id = 0
+popup/item_1/text = "preset the second"
+popup/item_1/id = 1
+popup/item_2/text = "preset the third"
+popup/item_2/id = 2
+popup/item_3/text = ""
+popup/item_3/id = 3
+popup/item_3/separator = true
+popup/item_4/text = "Create New Preset"
+popup/item_4/id = 5
+popup/item_5/text = "Save Preset"
+popup/item_5/id = 4
+popup/item_6/text = "Rename Preset"
+popup/item_6/id = 7
+popup/item_7/text = "Delete Preset"
+popup/item_7/id = 6
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/OptionButton"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(10, 10)
+texture = ExtResource("4_tmf5n")
+expand_mode = 1
+
+[node name="SearchBox" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search in missions"
+clear_button_enabled = true
 
 [node name="ZoneFilters" type="MarginContainer" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("checkButtonParent")]
 layout_mode = 2

@@ -112,7 +112,7 @@ public partial class CosmeticShopInterface : Control
 
     async void OpenSACPrompt()
     {
-        string subtext = GD.Randf() > 0.95f ?
+        string subtext = GD.Randf() > 0.85f ?
             "Your selected code normally disappears after 2 weeks, but PegLeg can automatically re-select the code on launch!" :
             "Whoever you choose to support will recieve 5% of the cost of any Real-Money or VBuck purchases you make";
         var response = await GenericLineEditWindow.OpenLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
@@ -470,199 +470,199 @@ public partial class CosmeticShopInterface : Control
         return true;
     }
 
-    public class CosmeticShopOfferData
+}
+public class CosmeticShopOfferData
+{
+    JsonObject entryData;
+    JsonObject dynBundleInfo;
+    string resourceUrl = null;
+
+    public string offerId { get; private set; }
+    public List<string> itemTypes { get; private set; } = new();
+    public string displayName { get; private set; }
+    public string displayType { get; private set; }
+    public string tooltip { get; private set; }
+    public string bonusText { get; private set; }
+    public int price { get; private set; }
+    public int lastSeenDaysAgo { get; private set; }
+    public bool isRecentlyNew { get; private set; }
+    public bool isAddedToday { get; private set; }
+    public bool isLeavingSoon { get; private set; }
+    public bool isOld { get; private set; }
+    public bool isVeryOld { get; private set; }
+    public bool isDiscountBundle { get; private set; }
+    public DateTime outDate { get; private set; }
+    public int cellWidth { get; private set; }
+    public Vector2 resourceShift { get; private set; } = new(0.5f, 0.5f);
+    public bool isOwned { get; private set; }
+    public int discountAmount { get; private set; }
+    public Texture2D resourceTex { get; private set; }
+
+    public CosmeticShopOfferData(JsonObject entryData, Vector2 cellSize)
     {
-        JsonObject entryData;
-        JsonObject dynBundleInfo;
-        string resourceUrl = null;
+        this.entryData = entryData;
+        offerId = entryData["offerId"].ToString();
+        outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
+        cellWidth = (int)cellSize.X;
+        dynBundleInfo = entryData["dynamicBundleInfo"]?.AsObject();
 
-        public string offerId { get; private set; }
-        public List<string> itemTypes { get; private set; } = new();
-        public string displayName { get; private set; }
-        public string displayType { get; private set; }
-        public string tooltip { get; private set; }
-        public string bonusText { get; private set; }
-        public int price { get; private set; }
-        public int lastSeenDaysAgo { get; private set; }
-        public bool isRecentlyNew { get; private set; }
-        public bool isAddedToday { get; private set; }
-        public bool isLeavingSoon { get; private set; }
-        public bool isOld { get; private set; }
-        public bool isVeryOld { get; private set; }
-        public bool isDiscountBundle { get; private set; }
-        public DateTime outDate { get; private set; }
-        public int cellWidth { get; private set; }
-        public Vector2 resourceShift { get; private set; } = new(0.5f, 0.5f);
+        price = entryData["regularPrice"].GetValue<int>();
+        isDiscountBundle = entryData["finalPrice"].GetValue<int>() != price;
 
-        public bool isOwned { get; private set; }
-        public int discountAmount { get; private set; }
-        public Texture2D resourceTex { get; private set; }
+        JsonArray allItems = entryData.MergeCosmeticItems();
+        JsonObject firstItem = allItems[0].AsObject();
+        displayName =
+            entryData["bundle"]?["name"].ToString() ??
+            firstItem["name"]?.ToString();
 
-        public CosmeticShopOfferData(JsonObject entryData, Vector2 cellSize)
+        displayType = isDiscountBundle ?
+            $"Bundle [{allItems.Count} items]" :
+            (firstItem["type"]?["displayValue"].ToString() + (allItems.Count > 1 ? $" (+{allItems.Count - 1})" : ""));
+
+        string mainType = entryData["bundle"] is not null ?
+            "Bundle" :
+            firstItem["type"]?["displayValue"].ToString();
+
+        foreach (var item in allItems)
         {
-            this.entryData = entryData;
-            offerId = entryData["offerId"].ToString();
-            outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
-            cellWidth = (int)cellSize.X;
-            dynBundleInfo = entryData["dynamicBundleInfo"]?.AsObject();
+            string type = item["type"]["displayValue"].ToString();
+            if (!itemTypes.Contains(type))
+                itemTypes.Add(type);
+        }
 
-            JsonArray allItems = entryData.MergeCosmeticItems();
-            JsonObject firstItem = allItems[0].AsObject();
-            displayName = 
-                entryData["bundle"]?["name"].ToString() ??
-                firstItem["name"]?.ToString();
+        tooltip = $"{displayName} - {mainType}";
+        if (allItems.Count > 1)
+        {
+            tooltip += "\nContents include: " + allItems
+                .GroupBy(i => i["type"]?["displayValue"].ToString())
+                .Select(g => g.Key + (g.Count() > 1 ? " x" + g.Count() : ""))
+                .ToArray()
+                .Join(", ");
+        }
 
-            displayType = entryData["bundle"] is not null ?
-                $"Bundle [{allItems.Count} items]" :
-                (firstItem["type"]?["displayValue"].ToString() + (allItems.Count > 1 ? $" (+{allItems.Count - 1})" : ""));
+        if (cellSize.X == 4)
+            resourceShift = new Vector2(0.5f, 0.125f);
+        else if (cellSize.X == 3)
+            resourceShift = new Vector2(0.5f, 0f);
+        else
+            resourceShift = new Vector2(0.5f, 0f);
 
-            string mainType = entryData["bundle"] is not null ? 
-                "Bundle" : 
-                firstItem["type"]?["displayValue"].ToString();
+        var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?[0]?.AsObject();
+        if (resourceMat is null)
+        {
+            resourceUrl =
+                firstItem["images"]?["featured"]?.ToString() ??
+                firstItem["images"]?["large"]?.ToString() ??
+                firstItem["images"]?["small"]?.ToString() ??
+                firstItem["images"]?["icon"]?.ToString() ??
+                firstItem["images"]?["smallIcon"]?.ToString();
+            resourceShift = new Vector2(0.5f, 0.5f);
+        }
+        else if (resourceMat["images"]?["CarTexture"] is not null)
+        {
+            resourceUrl =
+                resourceMat["images"]?["CarTexture"]?.ToString();
+            resourceShift = new Vector2(0.5f, 0.5f);
+        }
+        else
+        {
+            resourceUrl =
+                resourceMat["images"]["Background"]?.ToString() ??
+                resourceMat["images"]["OfferImage"]?.ToString();
+        }
 
-            foreach (var item in allItems)
+        if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
+        {
+            resourceTex = tex;
+            resourceLoadStarted = true;
+            resourceLoadComplete = true;
+        }
+
+        discountAmount = -(dynBundleInfo?["discountedBasePrice"]?.GetValue<int>() ?? 0);
+        if (!isDiscountBundle)
+        {
+            string firstAddedDateText = firstItem["shopHistory"]?[0]?.ToString();
+            DateTime firstAddedDate = firstAddedDateText is not null ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
+            DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
+            DateTime? lastAddedDate = null;
+            var shopHistory = firstItem["shopHistory"]?.AsArray();
+            if (shopHistory is not null)
             {
-                string type = item["type"]["displayValue"].ToString();
-                if (!itemTypes.Contains(type))
-                    itemTypes.Add(type);
-            }
-
-            tooltip = $"{displayName} - {mainType}";
-            if (allItems.Count > 1)
-            {
-                tooltip += "\nContents include: "+ allItems
-                    .GroupBy(i => i["type"]?["displayValue"].ToString())
-                    .Select(g => g.Key + (g.Count() > 1 ? " x" + g.Count() : ""))
-                    .ToArray()
-                    .Join(", ");
-            }
-
-            if (cellSize.X == 4)
-                resourceShift = new Vector2(0.5f, 0.125f);
-            else if (cellSize.X == 3)
-                resourceShift = new Vector2(0.5f, 0f);
-            else
-                resourceShift = new Vector2(0.5f, 0f);
-
-            var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?[0]?.AsObject();
-            if (resourceMat is null)
-            {
-                resourceUrl =
-                    firstItem["images"]?["featured"]?.ToString() ??
-                    firstItem["images"]?["large"]?.ToString() ??
-                    firstItem["images"]?["small"]?.ToString() ??
-                    firstItem["images"]?["icon"]?.ToString() ??
-                    firstItem["images"]?["smallIcon"]?.ToString();
-                resourceShift = new Vector2(0.5f, 0.5f);
-            }
-            else if (resourceMat["images"]?["CarTexture"] is not null)
-            {
-                resourceUrl =
-                    resourceMat["images"]?["CarTexture"]?.ToString();
-                resourceShift = new Vector2(0.5f, 0.5f);
-            }
-            else
-            {
-                resourceUrl =
-                    resourceMat["images"]["Background"]?.ToString() ??
-                    resourceMat["images"]["OfferImage"]?.ToString();
-            }
-
-            if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
-            {
-                resourceTex = tex;
-                resourceLoadStarted = true;
-                resourceLoadComplete = true;
-            }
-
-            price = entryData["regularPrice"].GetValue<int>();
-            isDiscountBundle = entryData["finalPrice"].GetValue<int>() != price;
-            discountAmount = -(dynBundleInfo?["discountedBasePrice"]?.GetValue<int>() ?? 0);
-            if (!isDiscountBundle)
-            {
-                string firstAddedDateText = firstItem["shopHistory"]?[0]?.ToString();
-                DateTime firstAddedDate = firstAddedDateText is not null ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
-                DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
-                DateTime? lastAddedDate = null;
-                var shopHistory = firstItem["shopHistory"]?.AsArray();
-                if (shopHistory is not null)
+                for (int i = shopHistory.Count - 1; i >= 0; i--)
                 {
-                    for (int i = shopHistory.Count - 1; i >= 0; i--)
+                    DateTime shopDate = DateTime.Parse(shopHistory[i].ToString()).ToUniversalTime();
+                    if (shopDate.CompareTo(inDate) == -1)
                     {
-                        DateTime shopDate = DateTime.Parse(shopHistory[i].ToString()).ToUniversalTime();
-                        if (shopDate.CompareTo(inDate) == -1)
-                        {
-                            lastAddedDate = shopDate;
-                            break;
-                        }
+                        lastAddedDate = shopDate;
+                        break;
                     }
                 }
-
-                lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
-                isAddedToday = inDate == DateTime.UtcNow.Date && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate);
-                isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
-                isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
-                isOld = lastSeenDaysAgo > 500;
-                isVeryOld = lastSeenDaysAgo > 1000;
-
-                if (isRecentlyNew && isAddedToday)
-                    bonusText = " # NEW";
-                else if (isRecentlyNew)
-                    bonusText = "NEW";
-                else if (isAddedToday)
-                    bonusText = " # ";
             }
-            else
-            {
-                bonusText = cellWidth > 1 ? $"Save {discountAmount} VBucks!" : $"-{discountAmount}";
-            }
+
+            lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
+            isAddedToday = inDate == DateTime.UtcNow.Date && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate);
+            isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
+            isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
+            isOld = lastSeenDaysAgo > 500;
+            isVeryOld = lastSeenDaysAgo > 1000;
+
+            if (isRecentlyNew && isAddedToday)
+                bonusText = " # NEW";
+            else if (isRecentlyNew)
+                bonusText = "NEW";
+            else if (isAddedToday)
+                bonusText = " # ";
         }
-
-        bool ownershipLoadStarted;
-        public bool ownershipLoadComplete { get; private set; }
-        public event Action OnOwnershipLoaded;
-        public async void LoadOwnership()
+        else
         {
-            if (ownershipLoadStarted)
-            {
-                if (ownershipLoadComplete)
-                    OnOwnershipLoaded?.Invoke();
-                return;
-            }
-            ownershipLoadStarted = true;
-            if (isDiscountBundle)
-            {
-                //TODO: determine discount amount based on dynamic bundle data
-                discountAmount = price - entryData["finalPrice"].GetValue<int>();
-            }
-            isOwned = false;
-            OnOwnershipLoaded?.Invoke();
-            ownershipLoadComplete = true;
+            bonusText = cellWidth > 1 ? $"Save {discountAmount} VBucks!" : $"-{discountAmount}";
         }
+    }
 
-        bool resourceLoadStarted;
-        public bool resourceLoadComplete { get; private set; }
-        public event Action OnResourceLoaded;
-        public async void LoadResource()
+    bool ownershipLoadStarted;
+    public bool ownershipLoadComplete { get; private set; }
+    public event Action OnOwnershipLoaded;
+    public async void LoadOwnership()
+    {
+        if (ownershipLoadStarted)
         {
-            if (resourceLoadStarted)
-            {
-                if (resourceLoadComplete)
-                    OnResourceLoaded?.Invoke();
-                return;
-            }
-            resourceLoadStarted = true;
-
-            if (resourceUrl != null)
-            {
-                var tex = await CatalogRequests.GetCosmeticResource(resourceUrl);
-                if (tex is not null)
-                    resourceTex = tex;
-            }
-
-            resourceLoadComplete = true;
-
-            OnResourceLoaded?.Invoke();
+            if (ownershipLoadComplete)
+                OnOwnershipLoaded?.Invoke();
+            return;
         }
+        ownershipLoadStarted = true;
+        if (isDiscountBundle)
+        {
+            //TODO: determine discount amount based on dynamic bundle data
+            discountAmount = price - entryData["finalPrice"].GetValue<int>();
+        }
+        isOwned = false;
+        OnOwnershipLoaded?.Invoke();
+        ownershipLoadComplete = true;
+    }
+
+    bool resourceLoadStarted;
+    public bool resourceLoadComplete { get; private set; }
+    public event Action OnResourceLoaded;
+    public async void LoadResource()
+    {
+        if (resourceLoadStarted)
+        {
+            if (resourceLoadComplete)
+                OnResourceLoaded?.Invoke();
+            return;
+        }
+        resourceLoadStarted = true;
+
+        if (resourceUrl != null)
+        {
+            var tex = await CatalogRequests.GetCosmeticResource(resourceUrl);
+            if (tex is not null)
+                resourceTex = tex;
+        }
+
+        resourceLoadComplete = true;
+
+        OnResourceLoaded?.Invoke();
     }
 }

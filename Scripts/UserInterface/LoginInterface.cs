@@ -112,7 +112,7 @@ public partial class LoginInterface : Control
 
     public virtual async Task Login()
     {
-        if (!await LoginRequests.TryLogin())
+        if (!await LoginRequests.TryLogin(false))
         {
             if (LoginRequests.HasDeviceDetails)
             {

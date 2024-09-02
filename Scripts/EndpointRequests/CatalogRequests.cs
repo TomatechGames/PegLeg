@@ -398,7 +398,10 @@ static class CatalogRequests
     public static ImageTexture GetLocalCosmeticResource(string serverPath)
     {
         if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath]?.GetRef().Obj is ImageTexture cachedTexture)
+        {
+            //GD.Print("cache exists");
             return cachedTexture;
+        }
         
         bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
         string localPath = cacheFolderPath +
@@ -411,9 +414,13 @@ static class CatalogRequests
         if (!FileAccess.FileExists(localPath))
             return null;
 
+        //GD.Print("file exists");
         Image resourceImage = new();
         using var imageFile = FileAccess.Open(localPath, FileAccess.ModeFlags.ReadWrite);
-        LoadImageWithCtx(resourceImage, imageFile.GetBuffer((long)imageFile.GetLength()), localPath);
+        var error = LoadImageWithCtx(resourceImage, imageFile.GetBuffer((long)imageFile.GetLength()), localPath);
+        if (error != Error.Ok)
+            return null;
+        //GD.Print("file loaded");
 
         //make a fake modification to change the modified date when the file is disposed
         imageFile.SeekEnd(-1);
@@ -423,6 +430,7 @@ static class CatalogRequests
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
         activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        imageTex.ResourceName = serverPath;
 
         return imageTex;
     }
@@ -431,15 +439,18 @@ static class CatalogRequests
     {
         var localImageTex = GetLocalCosmeticResource(serverPath);
         if(localImageTex is not null)
+        {
+            //GD.Print("using local");
             return localImageTex;
+        }
 
         bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
-        if (isJamTrack)
-        {
-            GD.Print("Interpreting as Jam Track");
-            GD.Print("/tracks/" + serverPath[fnapiJamTrackPrefix.Length..]);
-            GD.Print(ExternalEndpoints.jamTracksEndpoint);
-        }
+        //if (isJamTrack)
+        //{
+        //    GD.Print("Interpreting as Jam Track");
+        //    GD.Print("/tracks/" + serverPath[fnapiJamTrackPrefix.Length..]);
+        //    GD.Print(ExternalEndpoints.jamTracksEndpoint);
+        //}
         string localPath = cacheFolderPath + 
             ( 
                 isJamTrack ?
@@ -462,12 +473,14 @@ static class CatalogRequests
             GD.Print(result);
             return null;
         }
+        //GD.Print("remote file exists");
 
         Image resourceImage = new();
         byte[] imageBuffer = await result.Content.ReadAsByteArrayAsync();
         var error = LoadImageWithCtx(resourceImage, imageBuffer, serverPath);
         if (error != Error.Ok)
             return null;
+        //GD.Print("remote file loaded");
 
         if (!DirAccess.DirExistsAbsolute(cacheFolderPath))
             DirAccess.MakeDirAbsolute(cacheFolderPath);
@@ -480,6 +493,7 @@ static class CatalogRequests
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
         activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        imageTex.ResourceName = serverPath;
 
         return imageTex;
     }

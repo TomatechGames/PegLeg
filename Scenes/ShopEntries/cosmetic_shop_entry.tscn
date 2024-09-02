@@ -463,6 +463,7 @@ expand_mode = 1
 [connection signal="OldPriceVisibility" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer/FinalPrice/OriginalPrice" method="set_visible"]
 [connection signal="OwnedVisibility" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/OwnedLabel" method="set_visible"]
 [connection signal="PriceAmount" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer/FinalPrice" method="set_text"]
+[connection signal="TooltipChanged" from="." to="Outline" method="set_tooltip_text"]
 [connection signal="TooltipChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="TypeChanged" from="." to="DetailsArea/NameBox/VBoxContainer/TypeLabel" method="set_text"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

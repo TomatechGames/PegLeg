@@ -74,6 +74,8 @@ public partial class ModalWindow : Control
             ProcessMode = ProcessModeEnum.Disabled;
             return;
         }
+        if (!IsInstanceValid(this))
+            return;
         if (openState)
             openedThisFrame = true;
         currentTween = GetTree().CreateTween().SetParallel();
@@ -115,7 +117,7 @@ public partial class ModalWindow : Control
 
         currentTween.Finished += () =>
         {
-            if (!openState)
+            if (!openState && IsInstanceValid(this))
             {
                 backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
                 mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;

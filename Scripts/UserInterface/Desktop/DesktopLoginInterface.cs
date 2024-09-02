@@ -60,7 +60,7 @@ public partial class DesktopLoginInterface : LoginInterface
         ConnectButtons();
         await this.WaitForFrame();
         hasBanjoAssets = BanjoAssets.PreloadSourcesParalell();
-        var loginTask = LoginRequests.TryLogin();
+        var loginTask = LoginRequests.TryLogin(false);
         await this.WaitForTimer(0.25f);
         isLoggedIn = await loginTask;
 
@@ -77,7 +77,7 @@ public partial class DesktopLoginInterface : LoginInterface
                 .SetEase(Tween.EaseType.Out);
             music.Play();
 
-            loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsDisconnected ? "OFFLINE" : "Not Logged In");
+            loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsOffline ? "OFFLINE" : "Not Logged In");
 
             loginControls.Visible = !isLoggedIn;
             banjoControls.Visible = false;
@@ -123,7 +123,7 @@ public partial class DesktopLoginInterface : LoginInterface
         loginContent.Visible = false;
         loadingIcon.Visible = true;
         await base.Login();
-        if (await LoginRequests.TryLogin())
+        if (LoginRequests.AuthTokenValid)
         {
             var musicFadeout = GetTree().CreateTween().SetParallel();
             musicFadeout.TweenProperty(music, "volume_db", -80, 1)

@@ -10,8 +10,6 @@ public partial class AccountSettings : Control
     Button generateBanjoAssets;
     [Export]
     FileDialog gameFolderDialog;
-    [Export]
-    Button goToLoginButton;
 
     public override void _Ready()
 	{
@@ -25,10 +23,25 @@ public partial class AccountSettings : Control
             await BanjoAssets.GenerateAssets(gameDir, () => this.WaitForFrame());
             GetTree().ReloadCurrentScene();
         };
-        goToLoginButton.Pressed += () =>
-        {
-			GetTree().ChangeSceneToFile(loginSceneFilePath);
-        };
+        LoginRequests.OnLoginFailAlertPressed += ReturnToLogin;
+    }
 
+    public void ForgetAuthDebug()
+    {
+        LoginRequests.DebugClearToken();
+    }
+    public void ForgetRefreshDebug()
+    {
+        LoginRequests.DebugClearRefresh();
+    }
+
+    public void ReturnToLogin()
+    {
+        GetTree().ChangeSceneToFile(loginSceneFilePath);
+    }
+
+    public override void _ExitTree()
+    {
+        LoginRequests.OnLoginFailAlertPressed -= ReturnToLogin;
     }
 }

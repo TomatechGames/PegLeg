@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=71 format=3 uid="uid://cd7qoq3gay1op"]
+[gd_resource type="Theme" load_steps=72 format=3 uid="uid://cd7qoq3gay1op"]
 
 [ext_resource type="FontVariation" uid="uid://buoopfdou8nvh" path="res://fixedBurbank.tres" id="1_36sps"]
 [ext_resource type="StyleBox" uid="uid://cuvmk7mkkb3yl" path="res://GodotThemes/Styleboxes/ActionButton/ActionButtonDisabled.tres" id="1_bx6da"]
@@ -147,6 +147,8 @@ border_width_right = 2
 border_color = Color(0, 0, 0, 0)
 corner_detail = 5
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2i1qb"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pnv3j"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fmsy4"]
@@ -249,6 +251,7 @@ PanelButtonSlanted/styles/panel = ExtResource("7_yqq06")
 PanelContainer/styles/panel = ExtResource("26_0d32j")
 PanelContainerButton/base_type = &"PanelContainer"
 PanelContainerButton/styles/panel = ExtResource("18_mdlkh")
+PopupPanel/styles/panel = SubResource("StyleBoxEmpty_2i1qb")
 RightCheckButton/base_type = &"EmptyCheckButton"
 RightCheckButton/styles/hover = ExtResource("24_e4a1j")
 RightCheckButton/styles/hover_pressed = ExtResource("25_h0d8y")
