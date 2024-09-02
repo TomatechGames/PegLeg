@@ -57,8 +57,8 @@ public partial class LlamaEntry : GameItemEntry
         EmitSignal(SignalName.NameChanged, name);
 
         string description = cardPackTemplate["Description"]?.ToString();
-        description = description?.Replace(". ", ".\n");
-        description = description?.Replace("! ", "!\n");
+        //description = description?.Replace(". ", ".\n");
+        //description = description?.Replace("! ", "!\n");
         if (includeNameInDescription)
             description = name + "\n" + description;
         EmitSignal(SignalName.DescriptionChanged, description);

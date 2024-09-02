@@ -105,7 +105,7 @@ public partial class QuestGroupViewer : Control
         this.useArrows = useArrows;
 
         nodesPerPage = maxNodesPerPage;
-        GD.Print("COUNT "+ questDataList.Count);
+        //GD.Print("COUNT "+ questDataList.Count);
         if (questDataList.Count > nodesPerPage)
 		{
             while ((questDataList.Count % nodesPerPage) < (nodesPerPage * 0.6f))

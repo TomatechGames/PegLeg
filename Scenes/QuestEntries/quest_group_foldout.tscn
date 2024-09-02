@@ -18,14 +18,15 @@ foldoutChildParent = NodePath("FoldoutVisibleBox/Control/MarginContainer/VBoxCon
 rotationTarget = NodePath("PanelContainer/MainButton/HBoxContainer/TextureRect/TextureRect2")
 notification = NodePath("PanelContainer/NotificationArea")
 openRotation = 90.0
+extraSpace = 11.0
 foldoutTime = 0.2
 
 [node name="FoldoutVisibleBox" type="MarginContainer" parent="."]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = -10
-theme_override_constants/margin_bottom = -10
+theme_override_constants/margin_right = -5
+theme_override_constants/margin_bottom = -5
 
 [node name="Control" type="Control" parent="FoldoutVisibleBox"]
 clip_contents = true
@@ -49,6 +50,7 @@ layout_mode = 2
 alignment = 2
 
 [node name="PanelContainer" type="MarginContainer" parent="."]
+z_index = 2
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"PanelContainerButton"

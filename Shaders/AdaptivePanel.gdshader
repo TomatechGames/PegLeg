@@ -10,9 +10,9 @@ uniform float CornerRadius = 10.0;
 
 void fragment() {
 	vec2 adaptedUV = adaptToAspect(ControlSize, ShiftDirection,1.0/TEXTURE_PIXEL_SIZE,UV,Fit);
-	
+
 	COLOR = texture(TEXTURE, adaptedUV);
-	
+
 	if(UseCorners)
 	{
 		COLOR.a *= cornerMask(UV,CornerRadius,ControlSize);

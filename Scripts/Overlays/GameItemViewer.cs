@@ -209,7 +209,7 @@ public partial class GameItemViewer : ModalWindow
             RefreshHeroStats();
 
             statsTree.Visible = true;
-            statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(10, 0);
+            //statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(10, 0);
         }
         else if (template["Type"].ToString() == "Schematic")
         {
@@ -225,6 +225,10 @@ public partial class GameItemViewer : ModalWindow
             statsTree.Columns = 2;
             statsTree.SetColumnTitle(0, "Stat");
             statsTree.SetColumnTitle(1, "Value");
+            statsTree.SetColumnClipContent(0, false);
+            statsTree.SetColumnClipContent(1, false);
+            statsTree.SetColumnExpand(1, false);
+            statsTree.SetColumnCustomMinimumWidth(1, 90);
             var root = statsTree.CreateItem();
             JsonObject statsJson = null;
             if (template.ContainsKey("RangedWeaponStats"))
@@ -234,7 +238,7 @@ public partial class GameItemViewer : ModalWindow
             else if (template.ContainsKey("TrapStats"))
                 statsJson = template["TrapStats"].AsObject();
             GenerateTreeFromJson(statsJson, root);
-            statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(35, 0);
+            //statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(35, 0);
         }
         else if (template["Type"].ToString() == "Defender")
         {
@@ -247,6 +251,7 @@ public partial class GameItemViewer : ModalWindow
             else
                 perkDetailsPanel.Visible = false;
         }
+
         //should fold template line
         devText.FoldLine(1);
     }
@@ -259,6 +264,13 @@ public partial class GameItemViewer : ModalWindow
         statsTree.SetColumnTitle(0, "Stat");
         statsTree.SetColumnTitle(1, "Value");
         statsTree.SetColumnTitle(2, "Scaled Value");
+        statsTree.SetColumnClipContent(0, false);
+        statsTree.SetColumnClipContent(1, false);
+        statsTree.SetColumnClipContent(2, false);
+        statsTree.SetColumnExpand(1, false);
+        statsTree.SetColumnExpand(2, false);
+        statsTree.SetColumnCustomMinimumWidth(1, 40);
+        statsTree.SetColumnCustomMinimumWidth(2, 75);
         var root = statsTree.CreateItem();
         AddStatTreeEntry(root, "Health", latestItem.GetHeroStat(HeroStats.MaxHealth, (int)levelSlider.Value, (int) tierSlider.Value), fortStats.fortitude + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.MaxHealth));
         AddStatTreeEntry(root, "Shield", latestItem.GetHeroStat(HeroStats.MaxShields, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.resistance + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.MaxShields));
@@ -288,7 +300,7 @@ public partial class GameItemViewer : ModalWindow
             if (item.Value is JsonObject childObject)
             {
                 GenerateTreeFromJson(childObject, entry);
-                entry.Collapsed = true;
+                //entry.Collapsed = true;
             }
             else
             {

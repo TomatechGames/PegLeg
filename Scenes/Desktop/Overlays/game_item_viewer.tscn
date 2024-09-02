@@ -198,11 +198,11 @@ threaded = true
 progress_bar_delay = 100
 
 [node name="ItemStats" type="Tree" parent="Control/WindowContents/CenterContainer/window/MainContent" index="1"]
-visible = false
-custom_minimum_size = Vector2(260, 300)
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 3
+hide_folding = true
 hide_root = true
 select_mode = 1
 scroll_horizontal_enabled = false

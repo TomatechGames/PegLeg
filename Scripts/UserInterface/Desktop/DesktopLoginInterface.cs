@@ -36,6 +36,7 @@ public partial class DesktopLoginInterface : LoginInterface
     Vector2I existingSize;
     Vector2I smallSize;
 
+    bool hasShrunk = false;
     bool isLoggedIn = false;
     bool hasBanjoAssets = false;
     protected override async Task ReadyTask()
@@ -47,16 +48,6 @@ public partial class DesktopLoginInterface : LoginInterface
         sizeTarget.CustomMinimumSize = Vector2.Zero;
         logo.Scale = Vector2.One;
 
-        await this.WaitForFrame();
-        await this.WaitForFrame();
-        smallSize = ((Vector2I)sizeSource.Size)+(Vector2I.Down*128);
-        existingSize = GetWindow().Size;
-        var sizeDiff = existingSize - smallSize;
-        GetWindow().Size = smallSize;
-        GetWindow().Position += sizeDiff / 2;
-        await this.WaitForFrame();
-        await this.WaitForFrame();
-
         ConnectButtons();
         await this.WaitForFrame();
         hasBanjoAssets = BanjoAssets.PreloadSourcesParalell();
@@ -64,11 +55,19 @@ public partial class DesktopLoginInterface : LoginInterface
         await this.WaitForTimer(0.25f);
         isLoggedIn = await loginTask;
 
-        if (!hasAutoLoggedIn && isLoggedIn)
+        if (!hasAutoLoggedIn && isLoggedIn && hasBanjoAssets)
             SwitchToMainInterface();
         else
         {
             MusicController.StopMusic();
+
+
+            smallSize = ((Vector2I)sizeSource.Size) + (Vector2I.Down * 128);
+            existingSize = GetWindow().Size;
+            var sizeDiff = existingSize - smallSize;
+            GetWindow().Size = smallSize;
+            GetWindow().Position += sizeDiff / 2;
+            hasShrunk = true;
 
             music.VolumeDb = -80;
             var musicFadeout = GetTree().CreateTween().SetParallel();
@@ -143,10 +142,12 @@ public partial class DesktopLoginInterface : LoginInterface
     {
         hasAutoLoggedIn = true;
         MusicController.ResumeMusic();
-        var sizeDiff = existingSize - smallSize;
-        GetWindow().Size = existingSize;
-        GetWindow().Position -= sizeDiff / 2;
-        await this.WaitForFrame();
+        if (hasShrunk)
+        {
+            var sizeDiff = existingSize - smallSize;
+            GetWindow().Size = existingSize;
+            GetWindow().Position -= sizeDiff / 2;
+        }
         await this.WaitForFrame();
         GetTree().Root.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
         GetTree().ChangeSceneToFile(desktopMainInterfacePath);

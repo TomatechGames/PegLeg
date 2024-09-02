@@ -25,7 +25,7 @@ vec4 triangleShift(vec2 baseUV, float speed, sampler2D tex)
 
 void fragment() {
 	vec2 adaptedUV = adaptToAspect(ControlSize, vec2(0,0.5), 1.0/TEXTURE_PIXEL_SIZE, UV, true)*vec2(1);
-	
+
 	float dist = (1.0-(distance(UV/vec2(2,1),vec2(0,0.5))));
 	if(Birthday)
 	{
