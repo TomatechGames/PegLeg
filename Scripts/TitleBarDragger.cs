@@ -115,11 +115,9 @@ public partial class TitleBarDragger : Control
     }
 
     public static event Action PerformRefresh;
-    public async void Refresh()
+    public void Refresh()
     {
-        LoadingOverlay.Instance.AddLoadingKey("RefreshButton");
-        await ProfileRequests.RevalidateProfiles();
-        GetTree().ReloadCurrentScene();
+        GetWindow().Visible=false;
         /*
         LoadingOverlay.Instance.AddLoadingKey("RefreshButton");
         await ProfileRequests.RevalidateProfiles();

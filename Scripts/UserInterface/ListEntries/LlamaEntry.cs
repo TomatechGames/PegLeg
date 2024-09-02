@@ -110,6 +110,8 @@ public partial class LlamaEntry : GameItemEntry
 
     public override void EmitPressedSignal()
     {
+        if (selectionGraphics is not null)
+            selectionGraphics.ButtonPressed = true;
         EmitSignal(SignalName.LlamaPressed, linkedItemId);
     }
 }

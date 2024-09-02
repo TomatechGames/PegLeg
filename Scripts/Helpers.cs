@@ -16,6 +16,15 @@ class MissingTreeException : Exception
 }
 static class Helpers
 {
+    public static void Unpress(this ButtonGroup group)
+    {
+        bool allowUnpress = group.AllowUnpress;
+        group.AllowUnpress = true;
+        if (group.GetPressedButton() is BaseButton button)
+            button.ButtonPressed = false;
+        group.AllowUnpress = allowUnpress;
+    }
+
     public static void SetVisibleIfHasContent(this Label label)
     {
         label.Visible = !string.IsNullOrWhiteSpace(label.Text);

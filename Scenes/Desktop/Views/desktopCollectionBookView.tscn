@@ -35,6 +35,5 @@ fixed_icon_size = Vector2i(48, 48)
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Yes, this screen is bad. I intend to replace this screen
-with a proper Collection Book screen in the future"
+text = "Yes, this screen is bad. I intend to replace this screen with a proper Collection Book screen in the future"
 horizontal_alignment = 1

@@ -30,6 +30,9 @@ public partial class LlamaInterface : Control
     NodePath cardpackLlamaParentPath;
     Control cardpackLlamaParent;
 
+    [Export]
+    ButtonGroup groupToReset;
+
     [ExportGroup("Selected")]
     [Export]
     NodePath selectedLlamaEntryPath;
@@ -93,6 +96,7 @@ public partial class LlamaInterface : Control
         this.GetNodeOrNull(cardpackLlamaPanelPath, out cardpackLlamaPanel);
 
         availableCardPacks.Clear();
+        groupToReset?.Unpress();
 
         VisibilityChanged += OnVisibilityChanged;
         OnVisibilityChanged();
@@ -383,6 +387,7 @@ public partial class LlamaInterface : Control
         selectedPurchaseCountSpinner.Visible = false;
 
         selectedCardPackEntry.ClearItem();
+        groupToReset?.Unpress();
 
         currentPurchaseSelection = "";
         currentCardpackSelection = null;
@@ -533,7 +538,6 @@ public partial class LlamaInterface : Control
 
         var resultItems = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"].AsArray().Select(var=>var.AsObject()).ToArray();
         await CardPackOpener.Instance.StartOpeningShopResults(resultItems);
-
     }
 
     CardPackGroup currentCardpackSelection = null;

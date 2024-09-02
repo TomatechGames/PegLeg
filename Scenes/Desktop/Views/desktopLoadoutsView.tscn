@@ -146,7 +146,3 @@ synergy = "Engineer"
 [node name="SurvivorSquad8" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "Inventor"
-
-[node name="WIP" type="MarginContainer" parent="TabContainer"]
-visible = false
-layout_mode = 2

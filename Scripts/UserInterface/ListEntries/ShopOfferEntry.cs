@@ -25,6 +25,8 @@ public partial class ShopOfferEntry : Control
     [Export]
     GameItemEntry priceEntry;
     [Export]
+    CheckButton selectionGraphics;
+    [Export]
     bool includeAmountInName = false;
     [Export]
     bool requireGreaterThanOne = false;
@@ -115,6 +117,8 @@ public partial class ShopOfferEntry : Control
 
     public void EmitPressedSignal()
     {
+        if (selectionGraphics is not null)
+            selectionGraphics.ButtonPressed = true;
         EmitSignal(SignalName.Pressed, linkedOfferId);
     }
 }

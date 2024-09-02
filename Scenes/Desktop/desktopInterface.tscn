@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=41 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="5_f3eja"]
 [ext_resource type="Texture2D" uid="uid://bq8vrrjy47iav" path="res://Images/InterfaceIcons/maximise.png" id="7_we7j1"]
 [ext_resource type="Script" path="res://Scripts/CurrencyHighlight.cs" id="9_23he5"]
+[ext_resource type="ButtonGroup" uid="uid://cm7rmga74vyve" path="res://Scenes/LlamaEntries/LlamaChoices.tres" id="10_p0wrm"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="12_rlxg4"]
 [ext_resource type="Texture2D" uid="uid://div6ssxx4btc8" path="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png" id="12_tuvkq"]
 [ext_resource type="Texture2D" uid="uid://b1p0g5okeg641" path="res://Images/InterfaceIcons/T-Icon-Manage-Upgrade-32.png" id="14_07m3a"]
@@ -134,6 +135,7 @@ script = ExtResource("16_hsemp")
 
 [node name="Llamas" parent="MainApp/TabContainer" instance=ExtResource("23_b4gaj")]
 layout_mode = 2
+groupToReset = ExtResource("10_p0wrm")
 
 [node name="Missions" parent="MainApp/TabContainer" instance=ExtResource("22_qlkcq")]
 visible = false
@@ -179,7 +181,7 @@ visible = false
 layout_mode = 2
 
 [node name="OverlayWindows" type="Control" parent="."]
-z_index = 2
+z_index = 5
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -356,7 +358,6 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="RefreshBtn" type="Button" parent="StatusBar/Right"]
-visible = false
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4

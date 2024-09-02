@@ -93,7 +93,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool useSurvivorBoosts = false;
     [Export]
-    CheckButton selectionGraphics;
+    protected CheckButton selectionGraphics;
 
     /* Bad
     public struct VisibleItemData

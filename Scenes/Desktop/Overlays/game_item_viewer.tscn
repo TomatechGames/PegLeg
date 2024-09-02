@@ -30,6 +30,7 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_wrarj"]
+resource_name = "ItemViewerChoices"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ys5or"]
 bg_color = Color(0.101563, 0.101563, 0.101563, 1)
@@ -583,6 +584,7 @@ button_group = SubResource("ButtonGroup_wrarj")
 
 [node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton" index="0"]
 self_modulate = Color(1, 0, 0, 1)
+z_index = 2
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 1
 anchors_preset = -1
@@ -593,7 +595,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
+scale = Vector2(0.6, 1.5)
 pivot_offset = Vector2(12, 12)
+mouse_filter = 2
 texture = ExtResource("15_pox86")
 expand_mode = 1
 
@@ -650,6 +654,7 @@ button_group = SubResource("ButtonGroup_wrarj")
 [node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton" index="0"]
 visible = false
 self_modulate = Color(1, 0, 0, 1)
+z_index = 2
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 1
 anchors_preset = -1
@@ -660,7 +665,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
+scale = Vector2(0.6, 1.5)
 pivot_offset = Vector2(12, 12)
+mouse_filter = 2
 texture = ExtResource("15_pox86")
 expand_mode = 1
 
@@ -722,6 +729,7 @@ button_group = SubResource("ButtonGroup_wrarj")
 [node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton" index="0"]
 visible = false
 self_modulate = Color(1, 0, 0, 1)
+z_index = 2
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 1
 anchors_preset = -1
@@ -732,7 +740,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
+scale = Vector2(0.6, 1.5)
 pivot_offset = Vector2(12, 12)
+mouse_filter = 2
 texture = ExtResource("15_pox86")
 expand_mode = 1
 
@@ -794,6 +804,7 @@ button_group = SubResource("ButtonGroup_wrarj")
 [node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton" index="0"]
 visible = false
 self_modulate = Color(1, 0, 0, 1)
+z_index = 2
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 1
 anchors_preset = -1
@@ -804,7 +815,9 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 rotation = -1.5708
+scale = Vector2(0.6, 1.5)
 pivot_offset = Vector2(12, 12)
+mouse_filter = 2
 texture = ExtResource("15_pox86")
 expand_mode = 1
 
