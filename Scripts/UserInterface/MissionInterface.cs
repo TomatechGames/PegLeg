@@ -37,21 +37,9 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
     static readonly string[][] itemFilters = new string[][]
     {
-        new string[] {
-            "AccountResource:reagent_alteration_generic",
-            "AccountResource:reagent_alteration_upgrade_uc", 
-            "AccountResource:reagent_alteration_upgrade_r",
-            "AccountResource:reagent_alteration_upgrade_vr",
-            "AccountResource:reagent_alteration_upgrade_sr",
-        },
-        new string[] {
-            "AccountResource:reagent_c_t01",
-            "AccountResource:reagent_c_t02",
-            "AccountResource:reagent_c_t03",
-            "AccountResource:reagent_c_t04",
-        },
-        new string[] {
-            "AccountResource:currency_mtxswap",
+        new string[]
+        {
+            "Worker:*",
         },
         new string[]
         {
@@ -62,10 +50,22 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
             "Hero:*",
             "Defender:*",
         },
-        new string[]
-        {
-            "Worker:*",
-        }
+        new string[] {
+            "AccountResource:reagent_c_t01",
+            "AccountResource:reagent_c_t02",
+            "AccountResource:reagent_c_t03",
+            "AccountResource:reagent_c_t04",
+        },
+        new string[] {
+            "AccountResource:reagent_alteration_generic",
+            "AccountResource:reagent_alteration_upgrade_uc", 
+            "AccountResource:reagent_alteration_upgrade_r",
+            "AccountResource:reagent_alteration_upgrade_vr",
+            "AccountResource:reagent_alteration_upgrade_sr",
+        },
+        new string[] {
+            "AccountResource:currency_mtxswap",
+        },
     };
 
 
