@@ -68,7 +68,7 @@ public partial class Foldout : Control
 		foldoutTween.TweenProperty(rotationTarget, "rotation",Mathf.DegToRad(value ? openRotation : closedRotation), foldoutTime);
     }
 
-    public void SetName(string name) => EmitSignal(SignalName.NameChanged, name);
+    public void SetFoldoutName(string name) => EmitSignal(SignalName.NameChanged, name);
     public void SetNotification(bool visible) => EmitSignal(SignalName.NotificationVisible, visible);
 
 	public void AddFoldoutChild(Node node) => foldoutChildParent.AddChild(node);

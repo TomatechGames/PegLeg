@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text.Json.Nodes;
 
 public partial class CosmeticShopOfferEntry : Control
@@ -12,12 +13,11 @@ public partial class CosmeticShopOfferEntry : Control
     public delegate void TypeChangedEventHandler(string type);
     [Signal]
     public delegate void TooltipChangedEventHandler(string tooltip);
+    [Signal]
+    public delegate void OutlineChangedEventHandler(Color outline);
 
     [Signal]
     public delegate void OwnedVisibilityEventHandler(bool visible);
-
-    [Signal]
-    public delegate void ReminingTimeVisibilityEventHandler(bool visible);
 
     [Signal]
     public delegate void BonusTextVisibilityEventHandler(bool visible);
@@ -35,6 +35,9 @@ public partial class CosmeticShopOfferEntry : Control
     public delegate void OldPriceVisibilityEventHandler(bool visible);
 
     [Signal]
+    public delegate void ReminingTimeVisibilityEventHandler(bool visible);
+
+    [Signal]
     public delegate void LastSeenTextEventHandler(string amount);
     [Signal]
     public delegate void LastSeenVisibilityEventHandler(bool visible);
@@ -49,14 +52,23 @@ public partial class CosmeticShopOfferEntry : Control
     [Export]
     Control loadingCubes;
     [Export]
+    ShaderHook backgroundGradientTexture;
+    [Export]
     float waitTimeToLoadResources = 0.5f;
     [Export]
     ShaderHook resourceTarget;
     [Export]
     Texture2D fallbackTexture;
+    [Export]
+    bool useOutlineColor;
+    [Export]
+    Color fallbackOutlineColor;
     Timer resourceLoadTimer;
 
     CosmeticShopOfferData currentOfferData;
+    Gradient bgGradient;
+    Color[] bgGradientDefaultColors;
+    static readonly float[] bgGradientDefaultOffsets = new float[] { 0, 1 };
 
     public override void _Ready()
     {
@@ -65,7 +77,8 @@ public partial class CosmeticShopOfferEntry : Control
         resourceLoadTimer = new() {WaitTime = waitTimeToLoadResources};
         AddChild(resourceLoadTimer);
         resourceLoadTimer.Timeout += StartResourceLoadSequence;
-
+        bgGradient = (backgroundGradientTexture.Texture as GradientTexture2D).Gradient;
+        bgGradientDefaultColors = bgGradient.Colors;
         //resourceRequest = new();
         //AddChild(resourceRequest);
         //resourceRequest.RequestCompleted += CompleteResourceLoadSequence;
@@ -147,9 +160,12 @@ public partial class CosmeticShopOfferEntry : Control
     void ApplyResource(Texture2D tex)
     {
         Vector2 shift = tex is null ? new(0.5f, 0.5f) : resourceShift;
+        bool fit = tex is not null && resourceFit;
         tex ??= fallbackTexture;
-        resourceTarget.SetShaderTexture(tex, "Cosmetic");
+        //resourceTarget.SetShaderTexture(tex, "Cosmetic");
+        resourceTarget.Texture = tex;
         resourceTarget.SetShaderVector(shift, "ShiftDirection");
+        resourceTarget.SetShaderBool(fit, "Fit");
         resourceLoadStarted = true;
         loadingCubes.Visible = false;
         resourceTarget.Visible = true;
@@ -215,6 +231,7 @@ public partial class CosmeticShopOfferEntry : Control
 
     string resourceUrl = null;
     Vector2 resourceShift = new(0.5f, 0.5f);
+    bool resourceFit = false;
 
     public string offerId { get; private set; }
     public List<string> itemTypes { get; private set; } = new();
@@ -246,7 +263,8 @@ public partial class CosmeticShopOfferEntry : Control
         }
 
         outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
-        var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?[0]?.AsObject();
+        var resourceRender = entryData["newDisplayAsset"]?["renderImages"]?.AsArray()?.FirstOrDefault()?.AsObject();
+        var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?.AsArray()?.FirstOrDefault()?.AsObject();
 
         if (cellSize.X == 4)
             resourceShift = new Vector2(0.5f, 0.125f);
@@ -254,8 +272,60 @@ public partial class CosmeticShopOfferEntry : Control
             resourceShift = new Vector2(0.5f, 0f);
         else
             resourceShift = new Vector2(0.5f, 0f);
+        resourceFit = false;
 
-        if (resourceMat is null)
+        bgGradient ??= (backgroundGradientTexture.Texture as GradientTexture2D).Gradient;
+        bgGradientDefaultColors ??= bgGradient.Colors;
+        if (entryData["colors"] is JsonObject colors)
+        {
+            List<Color> bgColorList = new();
+            for (int i = 1; i <= 3; i++)
+            {
+                if (colors["color"+i] is JsonValue colorVal)
+                    bgColorList.Add(Color.FromHtml(colorVal.ToString()));
+            }
+            bgGradient.Colors = bgColorList.ToArray();
+            List<float> bgOffsetList = new();
+
+            for (int i = 0; i < bgColorList.Count; i++)
+            {
+                bgOffsetList.Add((float)i / (bgColorList.Count - 1));
+            }
+        }
+        else
+        {
+            bgGradient.Colors = bgGradientDefaultColors;
+            bgGradient.Offsets = bgGradientDefaultOffsets;
+        }
+        Color outlineColor = fallbackOutlineColor;
+        if (entryData["colors"]?["textBackgroundColor"] is JsonValue outlineColorVal)
+            outlineColor = Color.FromHtml(outlineColorVal.ToString());
+        if (useOutlineColor)
+            EmitSignal(SignalName.OutlineChanged, outlineColor);
+
+        if (resourceRender is not null)
+        {
+            resourceUrl =
+                resourceRender["image"]?.ToString();
+            if(resourceRender["productTag"]?.ToString()== "Product.DelMar")
+            {
+                //TODO: stretch image
+                resourceShift = new Vector2(0.5f, 0.5f);
+            }
+        }
+        else if (resourceMat?["images"]?["CarTexture"] is not null)
+        {
+            resourceUrl =
+                resourceMat["images"]?["CarTexture"]?.ToString();
+            resourceShift = new Vector2(0.5f, 0.5f);
+        }
+        else if (resourceMat is not null)
+        {
+            resourceUrl =
+                resourceMat["images"]["Background"]?.ToString() ??
+                resourceMat["images"]["OfferImage"]?.ToString();
+        }
+        else
         {
             resourceUrl =
                 entryData.GetFirstCosmeticItem()["images"]?["featured"]?.ToString() ??
@@ -265,21 +335,19 @@ public partial class CosmeticShopOfferEntry : Control
                 entryData.GetFirstCosmeticItem()["images"]?["smallIcon"]?.ToString();
             resourceShift = new Vector2(0.5f, 0.5f);
         }
-        else if (resourceMat["images"]?["CarTexture"] is not null)
+
+        var nonLobbyMusicItems = allItems.Where(i => i["type"]?["displayValue"].ToString() != "Lobby Music").ToArray();
+        if (nonLobbyMusicItems.Length == 1 && nonLobbyMusicItems[0]["type"]?["displayValue"].ToString() == "Jam Track")
         {
-            resourceUrl =
-                resourceMat["images"]?["CarTexture"]?.ToString();
-            resourceShift = new Vector2(0.5f, 0.5f);
-        }
-        else
-        {
-            resourceUrl =
-                resourceMat["images"]["Background"]?.ToString() ??
-                resourceMat["images"]["OfferImage"]?.ToString();
+            resourceFit = true;
+            resourceShift = new Vector2(0.5f, 0f);
+            //TODO: if jam track, use dedicated jam track tile format
         }
 
         if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
             ApplyResource(tex);
+        else
+            resourceTarget.Texture = null;
     }
 
     public int discountAmount { get; private set; }

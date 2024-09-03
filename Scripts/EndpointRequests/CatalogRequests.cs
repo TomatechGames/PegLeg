@@ -250,7 +250,7 @@ static class CatalogRequests
             .Select(n => KeyValuePair.Create(n.Key, n.Value.Reserialise()))
             .OrderBy(n => -n.Value["sortPriority"].GetValue<int>())// sort by offer index (descending)
             .GroupBy(n => n.Value["layoutId"].ToString())// group into pages
-            .OrderBy(p => -int.Parse(p.Key.Split(".")[^1]))// sort by page index (descending)
+            .OrderBy(p => PagePriorityFromLayoutID(p.Key))// sort by page index (descending)
             .GroupBy(p => p.First().Value["layout"]?["name"]?.ToString())// group by page header
             .OrderBy(g => g.First().First().Value["layout"]["index"]?.GetValue<int>())// sort by page header index
             .GroupBy(g => g.First().First().Value["layout"]["category"]?.ToString() ?? "Uncategorised");// group by page category
@@ -278,6 +278,18 @@ static class CatalogRequests
         }
 
         return organisedCosmeticsJson;
+    }
+
+    static int PagePriorityFromLayoutID(string layoutID)
+    {
+        if (int.TryParse(layoutID.Split(".")[^1], out int parseResult))
+            return -parseResult;
+        else if (int.TryParse(layoutID[^2..], out int fallbackParseResult))
+        {
+            GD.Print("Layout Priority fallback: " + fallbackParseResult);
+            return -fallbackParseResult;
+        }
+        return -100;
     }
 
     public static bool StorefrontRequiresUpdate()

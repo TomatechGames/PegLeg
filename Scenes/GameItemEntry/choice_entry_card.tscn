@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://tso3qs0wxppc"]
+[gd_scene load_steps=13 format=3 uid="uid://tso3qs0wxppc"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_j3td7"]
 [ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="2_op652"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="8_hciuj"]
 [ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="9_tm7mh"]
 [ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="10_pu46j"]
+[ext_resource type="Texture2D" uid="uid://csbd78stcd271" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Magnifier_128.png" id="11_oobe8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_86ebe"]
 resource_local_to_scene = true
@@ -56,8 +57,8 @@ offset_right = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 5
 theme_override_constants/line_spacing = 0
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 24
 text = "Name Name Name"
 horizontal_alignment = 1
@@ -74,7 +75,7 @@ anchor_bottom = 0.911
 
 [node name="InspectArea" type="Control" parent="Control"]
 layout_mode = 1
-anchor_left = 0.65
+anchor_left = 0.6
 anchor_top = 0.15
 anchor_right = 0.8
 anchor_bottom = 0.3
@@ -83,7 +84,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="Control/InspectArea"]
-self_modulate = Color(1, 1, 0, 1)
+self_modulate = Color(0.4, 0.4, 0.4, 1)
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -96,6 +97,7 @@ texture = ExtResource("9_tm7mh")
 expand_mode = 5
 
 [node name="Label" type="Label" parent="Control/InspectArea/TextureRect"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -111,11 +113,42 @@ text = "?"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer" type="MarginContainer" parent="Control/InspectArea/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="TextureRect" type="TextureRect" parent="Control/InspectArea/TextureRect/MarginContainer"]
+self_modulate = Color(0, 0, 0, 0.501961)
+layout_mode = 2
+texture = ExtResource("11_oobe8")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Control/InspectArea/TextureRect/MarginContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_oobe8")
+expand_mode = 1
+
 [node name="Responsive Button Circle" parent="Control/InspectArea/TextureRect" instance=ExtResource("10_pu46j")]
 layout_mode = 1
 offset_left = 1.0
 offset_right = 1.0
-circleMode = true
 outlinePadding = 0.0
 
 [connection signal="IconChanged" from="." to="ChoiceCardTexture" method="SetShaderTexture" binds= ["IconTexture"]]

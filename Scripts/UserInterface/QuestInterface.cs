@@ -75,7 +75,7 @@ public partial class QuestInterface : Control
         {
             //create foldout
             var foldout = foldoutScene.Instantiate<Foldout>();
-            foldout.SetName(collection["name"].ToString());
+            foldout.SetFoldoutName(collection["name"].ToString());
             List<QuestGroupEntry> groupsInFoldout = new();
             foreach (var group in collection["groupGens"].AsObject())
             {

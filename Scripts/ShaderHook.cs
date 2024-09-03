@@ -47,6 +47,8 @@ public partial class ShaderHook : Control
         float currentTime = Time.GetTicksMsec() * 0.001f;
         if (syncTimeProperty || syncTimeUntil > currentTime)
             SetShaderFloat(currentTime, "time");
+        if(Engine.IsEditorHint())
+            SetShaderVector(Size, "ControlSize");
     }
 
     public void SetShaderBool(bool val, string property)

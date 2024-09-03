@@ -114,10 +114,9 @@ public partial class TitleBarDragger : Control
         background.SetCorners(!isMaximised);
     }
 
-    public static event Action PerformRefresh;
     public void Refresh()
     {
-        GetWindow().Visible=false;
+        //GetWindow().Visible=false;
         /*
         LoadingOverlay.Instance.AddLoadingKey("RefreshButton");
         await ProfileRequests.RevalidateProfiles();

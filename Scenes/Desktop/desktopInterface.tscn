@@ -371,6 +371,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="RefreshBtn" type="Button" parent="StatusBar/Right"]
+visible = false
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
@@ -500,6 +501,7 @@ grabberType = 3
 tooltip = "Amogus"
 icon = ExtResource("37_5b0rm")
 menu = NodePath("PopupMenu")
+visible = false
 script = ExtResource("38_s33ws")
 
 [node name="PopupMenu" type="PopupMenu" parent="StatusIndicator"]

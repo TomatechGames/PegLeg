@@ -547,8 +547,26 @@ public class CosmeticShopOfferData
         else
             resourceShift = new Vector2(0.5f, 0f);
 
+        var resourceRender = entryData["newDisplayAsset"]?["renderImages"]?[0]?.AsObject();
         var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?[0]?.AsObject();
-        if (resourceMat is null)
+        if (resourceRender is not null)
+        {
+            resourceUrl =
+                resourceRender["image"]?.ToString();
+        }
+        else if (resourceMat["images"]?["CarTexture"] is not null)
+        {
+            resourceUrl =
+                resourceMat["images"]?["CarTexture"]?.ToString();
+            resourceShift = new Vector2(0.5f, 0.5f);
+        }
+        else if(resourceMat is not null)
+        {
+            resourceUrl =
+                resourceMat["images"]["Background"]?.ToString() ??
+                resourceMat["images"]["OfferImage"]?.ToString();
+        }
+        else
         {
             resourceUrl =
                 firstItem["images"]?["featured"]?.ToString() ??
@@ -558,18 +576,8 @@ public class CosmeticShopOfferData
                 firstItem["images"]?["smallIcon"]?.ToString();
             resourceShift = new Vector2(0.5f, 0.5f);
         }
-        else if (resourceMat["images"]?["CarTexture"] is not null)
-        {
-            resourceUrl =
-                resourceMat["images"]?["CarTexture"]?.ToString();
-            resourceShift = new Vector2(0.5f, 0.5f);
-        }
-        else
-        {
-            resourceUrl =
-                resourceMat["images"]["Background"]?.ToString() ??
-                resourceMat["images"]["OfferImage"]?.ToString();
-        }
+
+        //TODO: handle background colors
 
         if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
         {

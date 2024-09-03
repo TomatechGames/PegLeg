@@ -52,7 +52,7 @@ shader = ExtResource("16_x2r4a")
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/UseManual = null
 shader_parameter/ManualControl = null
-shader_parameter/time = 667.405
+shader_parameter/time = 85741.3
 shader_parameter/StartTime = null
 shader_parameter/Started = true
 shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
@@ -118,9 +118,9 @@ crateOpenButton = NodePath("ClickArea/SupplyDrop/CrateOpen")
 topCard = NodePath("ClickArea/Cards/RewardEntryCardTop")
 prevCard = NodePath("ClickArea/Cards/RewardEntryCardPrev")
 mainCardsParent = NodePath("ClickArea/Cards")
-smallCardsOffset = NodePath("ClickArea/Cards/CardPullAnchor/Control/offset")
-smallCardParent = NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer")
-smallCards = [NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard2"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard3"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard4"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard5"), NodePath("ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer/RewardEntryCard6")]
+smallCardsOffset = NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset")
+smallCardParent = NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack")
+smallCards = [NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard"), NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard2"), NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard3"), NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard4"), NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard5"), NodePath("ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard6")]
 choiceCanvas = NodePath("ClickArea/ChoiceArea/ChoiceCanvas")
 choiceCards = [NodePath("ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard"), NodePath("ClickArea/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard2")]
 choiceResultCard = NodePath("ClickArea/ChoiceResultBackgroundLayer/ChoiceResultCardTexture")
@@ -310,7 +310,7 @@ offset_top = 240.0
 offset_bottom = 240.0
 grow_horizontal = 2
 
-[node name="offset" type="Control" parent="ClickArea/Cards/CardPullAnchor/Control"]
+[node name="Offset" type="Control" parent="ClickArea/Cards/CardPullAnchor/Control"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -320,7 +320,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="ClickArea/Cards/CardPullAnchor/Control/offset"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="ClickArea/Cards/CardPullAnchor/Control/Offset"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -334,26 +334,26 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2"]
+[node name="CardStack" type="VBoxContainer" parent="ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2"]
 layout_mode = 2
-theme_override_constants/separation = -210
+theme_override_constants/separation = -234
 
-[node name="RewardEntryCard" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
-layout_mode = 2
-
-[node name="RewardEntryCard2" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+[node name="RewardEntryCard" parent="ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack" instance=ExtResource("1_4na64")]
 layout_mode = 2
 
-[node name="RewardEntryCard3" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+[node name="RewardEntryCard2" parent="ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack" instance=ExtResource("1_4na64")]
 layout_mode = 2
 
-[node name="RewardEntryCard4" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+[node name="RewardEntryCard3" parent="ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack" instance=ExtResource("1_4na64")]
 layout_mode = 2
 
-[node name="RewardEntryCard5" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+[node name="RewardEntryCard4" parent="ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack" instance=ExtResource("1_4na64")]
 layout_mode = 2
 
-[node name="RewardEntryCard6" parent="ClickArea/Cards/CardPullAnchor/Control/offset/VBoxContainer2/VBoxContainer" instance=ExtResource("1_4na64")]
+[node name="RewardEntryCard5" parent="ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack" instance=ExtResource("1_4na64")]
+layout_mode = 2
+
+[node name="RewardEntryCard6" parent="ClickArea/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack" instance=ExtResource("1_4na64")]
 layout_mode = 2
 
 [node name="SupplyDrop" type="Control" parent="ClickArea"]
@@ -626,7 +626,7 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Skip Choice"
+text = " Skip Choice "
 
 [connection signal="pressed" from="ClickArea/SupplyDrop/CrateOpenOld" to="." method="PlaySupplyOpenAnimation"]
 [connection signal="HoldPressed" from="ClickArea/SupplyDrop/CrateOpen" to="." method="PlaySupplyOpenAnimation"]

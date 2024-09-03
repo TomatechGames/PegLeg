@@ -212,10 +212,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Discounts"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 text = " "
 
@@ -313,10 +313,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Outfits and Back Blings"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Outfit"]
@@ -341,10 +341,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "pickaxes"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Pickaxe"]
@@ -369,10 +369,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Gliders and Contrails"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Glider"]
 layout_mode = 1
@@ -398,10 +398,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Emotes"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Emote"]
@@ -426,10 +426,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Wraps"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Wrap"]
@@ -454,10 +454,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Music Packs and Jam Tracks"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Music"]
 layout_mode = 1
@@ -481,10 +481,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Instruments"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Instrument"]
 layout_mode = 1
@@ -508,10 +508,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Car Parts"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Car"]
 layout_mode = 1
@@ -535,10 +535,10 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Miscellaneous"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/normal = ExtResource("8_l3vt8")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/hover = ExtResource("10_lwt61")
 theme_override_styles/hover_pressed = ExtResource("11_se178")
+theme_override_styles/hover = ExtResource("10_lwt61")
+theme_override_styles/pressed = ExtResource("9_jmcpo")
+theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Misc"]
 layout_mode = 1

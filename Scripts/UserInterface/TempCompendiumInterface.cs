@@ -33,7 +33,9 @@ public partial class TempCompendiumInterface : Control
 		public string templateId;
 		public int rarity;
 		public bool isHero;
-		public string extraSearchTerm;
+        public string category;
+        public string subtype;
+        public string extraSearchTerm;
 	}
 
 	void GenerateCompendiumEntries()
@@ -65,7 +67,9 @@ public partial class TempCompendiumInterface : Control
 							texture = item.Value.AsObject().GetItemTexture(),
 							templateId = item.Key,
 							rarity = item.Value.AsObject().GetItemRarity(),
-							extraSearchTerm = extraSearchTerm
+                            category = item.Value.AsObject()["Category"]?.ToString() ?? "Hero",
+                            subtype = item.Value.AsObject()["SubType"].ToString(),
+                            extraSearchTerm = extraSearchTerm
 						};
 						lock (compendiumEntries)
                         {
@@ -77,7 +81,13 @@ public partial class TempCompendiumInterface : Control
                 });
             }
         }
-		compendiumEntries = compendiumEntries.OrderBy(val => val.isHero ? 0 : 1).ThenBy(val => -val.rarity).ThenBy(val => val.displayName.StartsWith("The ") ? val.displayName[4..] : val.displayName).ToList();
+		compendiumEntries = compendiumEntries
+			.OrderBy(val => val.isHero ? 0 : 1)
+			.ThenBy(val => -val.rarity)
+			.ThenBy(val => val.category)
+			.ThenBy(val => val.subtype)
+			.ThenBy(val => val.displayName.StartsWith("The ") ? val.displayName[4..] : val.displayName)
+			.ToList();
 		FilterItems("");
     }
 
@@ -94,6 +104,7 @@ public partial class TempCompendiumInterface : Control
 				continue;
             var index = itemList.AddItem("", item.texture);
             itemList.SetItemMetadata(index, item.templateId);
+			itemList.SetItemTooltip(index, item.displayName);
 			itemList.SetItemCustomFgColor(index, Colors.Black);
 			var color = BanjoAssets.GetRarityColor(item.rarity);
 			color.A *= 0.5f;

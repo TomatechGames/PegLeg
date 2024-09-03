@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://di7sji85prg2e"]
+
+[ext_resource type="Shader" path="res://Shaders/CardpackRenderer.gdshader" id="1_v5ddb"]
+[ext_resource type="Script" path="res://Scripts/CardPackTilter.cs" id="1_vygss"]
+[ext_resource type="Texture2D" uid="uid://furde0e0enip" path="res://Images/Llamas/PinataGold.png" id="2_etlm7"]
+
+[sub_resource type="Gradient" id="Gradient_06ix8"]
+offsets = PackedFloat32Array(0, 0.254642, 0.522546, 0.708223, 1)
+colors = PackedColorArray(0.0500002, 0, 1, 1, 0.85064, 0.93, 0.3348, 1, 0.970609, 0.351043, 0.704665, 1, 0, 0.99, 0.528, 1, 1, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2od0j"]
+noise_type = 0
+frequency = 0.0036
+fractal_octaves = 1
+metadata/_preview_in_3d_space_ = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xyf4o"]
+color_ramp = SubResource("Gradient_06ix8")
+noise = SubResource("FastNoiseLite_2od0j")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yoo04"]
+shader = ExtResource("1_v5ddb")
+shader_parameter/ControlSize = Vector2(300, 500)
+shader_parameter/Transformation = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/CornerRadius = 10.0
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/Fit = null
+shader_parameter/BGUVOffset = Vector2(0, 0)
+shader_parameter/BGUVScale = 0.8
+shader_parameter/BGTex = SubResource("NoiseTexture2D_xyf4o")
+
+[node name="TextureRect" type="TextureRect"]
+material = SubResource("ShaderMaterial_yoo04")
+custom_minimum_size = Vector2(300, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_etlm7")
+expand_mode = 1
+script = ExtResource("1_vygss")
