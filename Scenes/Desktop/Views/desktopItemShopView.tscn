@@ -1,0 +1,88 @@
+[gd_scene load_steps=5 format=3 uid="uid://c6ftxiyts6lrg"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ItemShopInterface.cs" id="1_kwhsc"]
+[ext_resource type="PackedScene" uid="uid://wb5ukb74fot1" path="res://Scenes/ShopEntries/regular_shop_entry.tscn" id="2_g1chj"]
+[ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="3_l6e2c"]
+[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_xaiqb"]
+
+[node name="Item Shop" type="VBoxContainer" node_paths=PackedStringArray("highlightParent", "regularParent")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_kwhsc")
+regularShopElement = ExtResource("2_g1chj")
+highlightShopElement = ExtResource("2_g1chj")
+highlightParent = NodePath("ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
+regularParent = NodePath("ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
+
+[node name="Timer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="Timer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Timer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Timer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Timer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Weekly Shop Resets: "
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Timer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "???"
+vertical_alignment = 1
+script = ExtResource("3_l6e2c")
+timerType = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="HighlightItems" type="Container" parent="ScrollContainer/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("4_xaiqb")
+minCols = 2
+spacing = Vector2(5, 5)
+
+[node name="HSeparator" type="HSeparator" parent="ScrollContainer/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="RegularItems" type="Container" parent="ScrollContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+script = ExtResource("4_xaiqb")
+minCols = 2
+spacing = Vector2(10, 10)

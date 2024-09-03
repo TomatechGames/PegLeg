@@ -16,7 +16,7 @@ public partial class LoadingOverlay : ModalWindow
     public void AddLoadingKey(string key)
     {
         loadingKeys.Add(key);
-        SetWindowOpen(loadingKeys.Count>0);
+        SetWindowOpen(loadingKeys.Count > 0);
     }
 
     public void RemoveLoadingKey(string key)

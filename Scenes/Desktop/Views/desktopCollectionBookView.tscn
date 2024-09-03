@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://q7ic84srvgy5"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/TempCompendiumInterface.cs" id="1_bi7hy"]
+
+[node name="Compendium" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bi7hy")
+itemList = NodePath("VBoxContainer/ItemList")
+searchBox = NodePath("VBoxContainer/LineEdit")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+clear_button_enabled = true
+
+[node name="ItemList" type="ItemList" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_hovered_color = Color(1, 1, 0, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+allow_reselect = true
+allow_search = false
+max_columns = 100
+same_column_width = true
+fixed_icon_size = Vector2i(48, 48)
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Yes, this screen is bad. I intend to replace this screen with a proper Collection Book screen in the future"
+horizontal_alignment = 1

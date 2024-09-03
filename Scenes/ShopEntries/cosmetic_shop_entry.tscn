@@ -1,17 +1,15 @@
-[gd_scene load_steps=26 format=3 uid="uid://khtmsxilpw3n"]
+[gd_scene load_steps=24 format=3 uid="uid://khtmsxilpw3n"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopOfferEntry.cs" id="1_a2plt"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="2_655vb"]
-[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="2_g5hsk"]
 [ext_resource type="Texture2D" uid="uid://cs86xfdq8mxiw" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Disconnected_128.png" id="2_ydd6l"]
 [ext_resource type="Texture2D" uid="uid://chrwn7nsdg50k" path="res://Images/InterfaceIcons/DefaultCosmeticGradient.tres" id="3_8yx3v"]
-[ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="3_atps8"]
 [ext_resource type="Texture2D" uid="uid://bite5sw5cyx0l" path="res://Images/InterfaceIcons/T-Items-MTX.png" id="4_dvpr2"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_4aip3"]
-[ext_resource type="Shader" path="res://Shaders/CosmeticOfferIcon.gdshader" id="5_4iypr"]
 [ext_resource type="PackedScene" uid="uid://bnbph4c6t2sui" path="res://Scenes/cosmetic_loading_icon.tscn" id="5_5xuyv"]
-[ext_resource type="Texture2D" uid="uid://xcnetq4h582o" path="res://Images/TextureResources/BlankTexture.tres" id="6_c6mc2"]
+[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="6_x3vll"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="6_yu1fs"]
+[ext_resource type="Texture2D" uid="uid://1ixqc8hojkjr" path="res://Images/InterfaceIcons/o5hq54xvrat91.jpg" id="7_2gaoe"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_yjpnu"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="9_7kwsg"]
 [ext_resource type="Texture2D" uid="uid://bwn62my2lt8k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Calendar_128.png" id="14_n2okj"]
@@ -28,14 +26,14 @@ shader_parameter/CornerRadius = 10.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7eerc"]
 resource_local_to_scene = true
-shader = ExtResource("5_4iypr")
+shader = ExtResource("6_x3vll")
 shader_parameter/ControlSize = Vector2(150, 150)
-shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/ShiftDirection = Vector2(0.5, 0)
+shader_parameter/Fit = true
+shader_parameter/UseCorners = true
+shader_parameter/ApplyCornersToFit = true
 shader_parameter/CornerRadius = 10.0
-shader_parameter/CosmeticOffset = Vector2(0, 0)
-shader_parameter/CosmeticScale = 0.0
-shader_parameter/Fit = false
-shader_parameter/Cosmetic = ExtResource("6_c6mc2")
+shader_parameter/ClipOOB = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_shqsb"]
 resource_local_to_scene = true
@@ -108,7 +106,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="CosmeticShopEntry" type="MarginContainer" node_paths=PackedStringArray("expiryTimerText", "loadingCubes", "resourceTarget")]
+[node name="CosmeticShopEntry" type="MarginContainer" node_paths=PackedStringArray("expiryTimerText", "loadingCubes", "backgroundGradientTexture", "resourceTarget")]
 custom_minimum_size = Vector2(150, 150)
 offset_right = 150.0
 offset_bottom = 150.0
@@ -117,8 +115,11 @@ size_flags_vertical = 4
 script = ExtResource("1_a2plt")
 expiryTimerText = NodePath("Overlays/VBoxContainer/LeavingTimer/HBoxContainer/LeavingLabel")
 loadingCubes = NodePath("ItemBG/CosmeticLoadingIcon")
+backgroundGradientTexture = NodePath("ItemBG")
 resourceTarget = NodePath("ItemBG/ItemIcon")
 fallbackTexture = ExtResource("2_ydd6l")
+useOutlineColor = true
+fallbackOutlineColor = Color(0, 0.0705882, 0.231373, 1)
 
 [node name="ItemBG" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_eh405")
@@ -126,7 +127,8 @@ clip_contents = true
 layout_mode = 2
 texture = ExtResource("3_8yx3v")
 expand_mode = 1
-script = ExtResource("3_atps8")
+script = ExtResource("7_yjpnu")
+syncControlSize = true
 
 [node name="ItemIcon" type="TextureRect" parent="ItemBG"]
 material = SubResource("ShaderMaterial_7eerc")
@@ -136,7 +138,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_g5hsk")
+texture = ExtResource("7_2gaoe")
 expand_mode = 1
 script = ExtResource("7_yjpnu")
 syncControlSize = true
@@ -173,9 +175,9 @@ theme_override_constants/separation = -3
 [node name="TypeLabel" type="Label" parent="DetailsArea/NameBox/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/line_spacing = 0
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 10
 text = "Outfit"
 horizontal_alignment = 1
@@ -185,9 +187,9 @@ text_overrun_behavior = 3
 [node name="NameLabel" type="Label" parent="DetailsArea/NameBox/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 16
 text = "Tomatech"
 horizontal_alignment = 1
@@ -254,9 +256,9 @@ expand_mode = 3
 
 [node name="FinalPrice" type="Label" parent="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "10,000"
 
@@ -270,9 +272,9 @@ anchor_bottom = 0.25
 offset_top = -20.0
 grow_vertical = 0
 theme_override_colors/font_color = Color(0.458824, 0.458824, 0.458824, 1)
+theme_override_constants/line_spacing = 0
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 text = "25,000"
 vertical_alignment = 2
@@ -298,6 +300,7 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tkqcf")
 
 [node name="Responsive Button Area" parent="." instance=ExtResource("5_4aip3")]
+visible = false
 layout_mode = 2
 outlinePadding = 20.0
 
@@ -412,9 +415,9 @@ expand_mode = 3
 
 [node name="HeadlineLabel" type="Label" parent="Overlays/HeadlinePanel/HBoxContainer"]
 layout_mode = 2
+theme_override_constants/line_spacing = -1
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = -1
 theme_override_font_sizes/font_size = 12
 text = " # "
 
@@ -426,6 +429,7 @@ anchor_right = 1.0
 grow_horizontal = 0
 
 [node name="Label" type="Label" parent="Overlays/AlmostAYear"]
+z_index = 2
 layout_mode = 0
 offset_left = -115.0
 offset_top = -7.0
@@ -459,9 +463,12 @@ expand_mode = 1
 [connection signal="NameChanged" from="." to="DetailsArea/NameBox/VBoxContainer/NameLabel" method="set_text"]
 [connection signal="OldPriceAmount" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer/FinalPrice/OriginalPrice" method="set_text"]
 [connection signal="OldPriceVisibility" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer/FinalPrice/OriginalPrice" method="set_visible"]
+[connection signal="OutlineChanged" from="." to="DetailsArea/MarginContainer/PriceBox/Control/Control/SlantPanel" method="set_self_modulate"]
+[connection signal="OutlineChanged" from="." to="DetailsArea/MarginContainer/PriceBox/Control/CornerPanel" method="set_self_modulate"]
+[connection signal="OutlineChanged" from="." to="Outline" method="set_self_modulate"]
 [connection signal="OwnedVisibility" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/OwnedLabel" method="set_visible"]
 [connection signal="PriceAmount" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer/FinalPrice" method="set_text"]
-[connection signal="PriceVisibility" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer" method="set_visible"]
+[connection signal="TooltipChanged" from="." to="Outline" method="set_tooltip_text"]
 [connection signal="TooltipChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="TypeChanged" from="." to="DetailsArea/NameBox/VBoxContainer/TypeLabel" method="set_text"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

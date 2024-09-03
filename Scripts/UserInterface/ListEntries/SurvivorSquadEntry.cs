@@ -26,7 +26,7 @@ public partial class SurvivorSquadEntry : Control
 
     public override void _Ready()
     {
-        GD.Print($"{synergy} ({BanjoAssets.supplimentaryData.SquadNames.ContainsKey(synergy)})");
+        //GD.Print($"{synergy} ({BanjoAssets.supplimentaryData.SquadNames.ContainsKey(synergy)})");
         squadNameLabel.Text = BanjoAssets.supplimentaryData.SquadNames[synergy];
         squadIcon.Texture = BanjoAssets.supplimentaryData.SquadIcons[synergy];
         fortPointsIcon.Texture = BanjoAssets.supplimentaryData.SquadFortIcons[synergy];

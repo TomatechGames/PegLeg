@@ -156,7 +156,7 @@ static class CatalogRequests
 
     static JsonObject ProcessShop(string shopId)
     {
-        var shopOffers = storefrontCache[shopId].AsArray().Reserialise();
+        var shopOffers = storefrontCache[shopId]?.AsArray().Reserialise();
         JsonArray highlights = new();
         for (int i = 0; i < shopOffers.Count; i++)
         {
@@ -181,7 +181,9 @@ static class CatalogRequests
 
     static JsonObject ProcessCosmetics(JsonObject cosmeticDisplayData)
     {
-        var shopOfferList = storefrontCache[WeeklyCosmeticShopCatalog].AsArray().ToList();
+        var shopOfferList = storefrontCache[WeeklyCosmeticShopCatalog]?.AsArray().ToList();
+        if(shopOfferList is null)
+            return null;
         shopOfferList.AddRange(storefrontCache[DailyCosmeticShopCatalog].AsArray());
         var shopOfferDict = shopOfferList.ToDictionary(n => n["offerId"].ToString());
 
@@ -193,6 +195,9 @@ static class CatalogRequests
             //additions
             cosmeticDisplayData[offer.Key]["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null;
             cosmeticDisplayData[offer.Key]["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null;
+
+            if (offer.Value["dynamicBundleInfo"] is JsonObject dynBundleInfo)
+                cosmeticDisplayData[offer.Key]["dynamicBundleInfo"] = dynBundleInfo.Reserialise();
 
             //sometimes these are just missing
             cosmeticDisplayData[offer.Key]["layoutId"] ??= offer.Value["meta"]?["LayoutId"].ToString() ?? "?";
@@ -206,6 +211,9 @@ static class CatalogRequests
 
             if ((offer.Value["prices"]?.AsArray().Count ?? 0) > 0)
                 cosmeticDisplayData[offer.Key]["prices"] = offer.Value["prices"].Reserialise();
+
+            if(!(cosmeticDisplayData[offer.Key]["layout"]["category"]?.ToString() is string cat && !string.IsNullOrWhiteSpace(cat)))
+                cosmeticDisplayData[offer.Key]["layout"]["category"] = "Uncategorised";
 
             //jam tracks are funky, gotta reformat them
             if (cosmeticDisplayData[offer.Key]["tracks"] is JsonArray trackList)
@@ -242,10 +250,10 @@ static class CatalogRequests
             .Select(n => KeyValuePair.Create(n.Key, n.Value.Reserialise()))
             .OrderBy(n => -n.Value["sortPriority"].GetValue<int>())// sort by offer index (descending)
             .GroupBy(n => n.Value["layoutId"].ToString())// group into pages
-            .OrderBy(p => -int.Parse(p.Key.Split(".")[^1]))// sort by page index (descending)
+            .OrderBy(p => PagePriorityFromLayoutID(p.Key))// sort by page index (descending)
             .GroupBy(p => p.First().Value["layout"]?["name"]?.ToString())// group by page header
-            .OrderBy(g => g.First().First().Value["layout"]?["index"]?.GetValue<int>())// sort by page header index
-            .GroupBy(g => g.First().First().Value["layout"]?["category"]?.ToString() ?? "Uncategorised");// group by page category
+            .OrderBy(g => g.First().First().Value["layout"]["index"]?.GetValue<int>())// sort by page header index
+            .GroupBy(g => g.First().First().Value["layout"]["category"]?.ToString() ?? "Uncategorised");// group by page category
 
         //partiallyOrganisedCosmetics.Select(g =>
         //{
@@ -270,6 +278,18 @@ static class CatalogRequests
         }
 
         return organisedCosmeticsJson;
+    }
+
+    static int PagePriorityFromLayoutID(string layoutID)
+    {
+        if (int.TryParse(layoutID.Split(".")[^1], out int parseResult))
+            return -parseResult;
+        else if (int.TryParse(layoutID[^2..], out int fallbackParseResult))
+        {
+            GD.Print("Layout Priority fallback: " + fallbackParseResult);
+            return -fallbackParseResult;
+        }
+        return -100;
     }
 
     public static bool StorefrontRequiresUpdate()
@@ -322,6 +342,11 @@ static class CatalogRequests
                 "",
                 LoginRequests.AccountAuthHeader
             );
+        if (fullStorefront["errorCode"] is not null)
+        {
+            await GenericConfirmationWindow.ShowErrorForWebResult(fullStorefront.AsObject());
+            return null;
+        }
         storefrontCache = SimplifyStorefront(fullStorefront);
         //save to file
         //using FileAccess storefrontFile = FileAccess.Open(storefrontCacheSavePath, FileAccess.ModeFlags.Write);
@@ -378,25 +403,36 @@ static class CatalogRequests
     }
 
     const string fnapiLinkPrefix = "https://fortnite-api.com/images/cosmetics/";
+    const string fnapiJamTrackPrefix = "https://cdn.fortnite-api.com/tracks/";
     const string cacheFolderPath = "user://cosmetic_images/";
     static readonly Dictionary<string, WeakRef> activeResourceCache = new();
 
     public static ImageTexture GetLocalCosmeticResource(string serverPath)
     {
         if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath]?.GetRef().Obj is ImageTexture cachedTexture)
+        {
+            //GD.Print("cache exists");
             return cachedTexture;
-
-        string localPath = cacheFolderPath + serverPath[fnapiLinkPrefix.Length..].Replace("/", "-");
+        }
+        
+        bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
+        string localPath = cacheFolderPath +
+            (
+                isJamTrack ?
+                    serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-") :
+                    serverPath[fnapiLinkPrefix.Length..].Replace("/", "-")
+            );
 
         if (!FileAccess.FileExists(localPath))
             return null;
 
+        //GD.Print("file exists");
         Image resourceImage = new();
         using var imageFile = FileAccess.Open(localPath, FileAccess.ModeFlags.ReadWrite);
-        if (localPath.EndsWith(".png"))
-            resourceImage.LoadPngFromBuffer(imageFile.GetBuffer((long)imageFile.GetLength()));
-        else if (localPath.EndsWith(".webp"))
-            resourceImage.LoadWebpFromBuffer(imageFile.GetBuffer((long)imageFile.GetLength()));
+        var error = LoadImageWithCtx(resourceImage, imageFile.GetBuffer((long)imageFile.GetLength()), localPath);
+        if (error != Error.Ok)
+            return null;
+        //GD.Print("file loaded");
 
         //make a fake modification to change the modified date when the file is disposed
         imageFile.SeekEnd(-1);
@@ -406,6 +442,7 @@ static class CatalogRequests
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
         activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        imageTex.ResourceName = serverPath;
 
         return imageTex;
     }
@@ -414,37 +451,61 @@ static class CatalogRequests
     {
         var localImageTex = GetLocalCosmeticResource(serverPath);
         if(localImageTex is not null)
+        {
+            //GD.Print("using local");
             return localImageTex;
+        }
 
-        string localPath = cacheFolderPath + serverPath[fnapiLinkPrefix.Length..].Replace("/", "-");
+        bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
+        //if (isJamTrack)
+        //{
+        //    GD.Print("Interpreting as Jam Track");
+        //    GD.Print("/tracks/" + serverPath[fnapiJamTrackPrefix.Length..]);
+        //    GD.Print(ExternalEndpoints.jamTracksEndpoint);
+        //}
+        string localPath = cacheFolderPath + 
+            ( 
+                isJamTrack ?
+                    serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-") : 
+                    serverPath[fnapiLinkPrefix.Length..].Replace("/", "-")
+            );
 
         using var request =
         new HttpRequestMessage(
             HttpMethod.Get,
-            "/images/cosmetics/"+serverPath[fnapiLinkPrefix.Length..]
+            isJamTrack ? 
+                "/tracks/" + serverPath[fnapiJamTrackPrefix.Length..] : 
+                "/images/cosmetics/" + serverPath[fnapiLinkPrefix.Length..]
         );
 
         GD.Print($"Requesting cosmetic \"{serverPath}\"");
-        using var result = await Helpers.MakeRequestRaw(ExternalEndpoints.cosmeticsEndpoint, request);
+        using var result = await Helpers.MakeRequestRaw(isJamTrack ? ExternalEndpoints.jamTracksEndpoint : ExternalEndpoints.cosmeticsEndpoint, request);
         if (!result.IsSuccessStatusCode)
         {
             GD.Print(result);
             return null;
         }
+        //GD.Print("remote file exists");
 
         Image resourceImage = new();
         byte[] imageBuffer = await result.Content.ReadAsByteArrayAsync();
         var error = LoadImageWithCtx(resourceImage, imageBuffer, serverPath);
         if (error != Error.Ok)
             return null;
+        //GD.Print("remote file loaded");
 
         if (!DirAccess.DirExistsAbsolute(cacheFolderPath))
             DirAccess.MakeDirAbsolute(cacheFolderPath);
-        using var imageFile = FileAccess.Open(localPath, FileAccess.ModeFlags.Write);
-        imageFile.StoreBuffer(imageBuffer);
+
+        using (var imageFile = FileAccess.Open(localPath, FileAccess.ModeFlags.Write))
+        {
+            GD.Print($"Caching cosmetic: \"{localPath}\"");
+            imageFile.StoreBuffer(imageBuffer);
+        }
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
         activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        imageTex.ResourceName = serverPath;
 
         return imageTex;
     }
@@ -458,6 +519,8 @@ static class CatalogRequests
                 return image.LoadPngFromBuffer(data);
             case "webp":
                 return image.LoadWebpFromBuffer(data);
+            case "jpg":
+                return image.LoadJpgFromBuffer(data);
             default:
                 return Error.Failed;
         }

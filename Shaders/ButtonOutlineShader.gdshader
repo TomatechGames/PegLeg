@@ -25,31 +25,31 @@ void fragment() {
 	vec2 sizeDiff = ControlSize-max(TargetSize, vec2(0,0));
 	float radius = max(5,max(sizeDiff.x, sizeDiff.y)/2.0);
 	//vec2 shrunkSize = ControlSize - vec2(radius);
-	
+
 	float dist = cornerGradient(UV, radius, ControlSize);
-	
+
 	float finalLineSize = max(min(LineSize, radius),0.0001);
 	float lineScale = 0.5-((finalLineSize*0.5)/radius);
 	dist = remap(lineScale,0.5,0.0,1.0,dist);
 	float outline = dist;
-	
+
 	if(outline>0.5)
 	{
 		outline = 1.0-outline;
 	}
-	
+
 	outline = clamp(outline*(finalLineSize),0, 1);
-	
+
 	float fillGradient = UV.x;
 	if(Circle)
 		fillGradient = distance(UV,vec2(0.5))*2.1;
-	
+
 	float inverseProgressFase = 1.0/ProgressFade;
 	float progressAdditive = (Progress*(1.0+ProgressFade))-ProgressFade;
 	float fill = (1.0-(fillGradient*inverseProgressFase))+(progressAdditive*inverseProgressFase);
 	fill *= 1.0-clamp((dist*10.0)-5.0,0,1);
 	fill = clamp(fill, 0, 1)*0.5 * COLOR.a;
-	
+
 	COLOR.a *= max(outline+fill, 0);
 }
 

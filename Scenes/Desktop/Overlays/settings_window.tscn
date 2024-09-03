@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://dd6fc218gb2da"]
 
-[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/Settings/AccountSettings.cs" id="2_dybhj"]
 [ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="2_y75ef"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="3_dewmg"]
@@ -253,7 +253,39 @@ popup/item_2/id = 2
 popup/item_3/text = "another theme here"
 popup/item_3/id = 3
 
-[node name="Aspect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="2"]
+visible = false
+layout_mode = 2
+
+[node name="Left" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+text = "<"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+theme_type_variation = &"PanelButtonSlanted"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer/MarginContainer" index="1"]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer/MarginContainer/MarginContainer" index="0"]
+layout_mode = 2
+text = "testing"
+horizontal_alignment = 1
+
+[node name="Right" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+text = ">"
+
+[node name="Aspect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="3"]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 texture = ExtResource("4_cr0bi")
@@ -301,7 +333,7 @@ grow_vertical = 2
 texture = ExtResource("8_nh2gq")
 expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="3"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="4"]
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer" index="0"]
@@ -339,13 +371,12 @@ text = "Filters"
 visible = false
 layout_mode = 2
 
-[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="8" node_paths=PackedStringArray("generateBanjoAssets", "gameFolderDialog", "goToLoginButton")]
+[node name="Account" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="8" node_paths=PackedStringArray("generateBanjoAssets", "gameFolderDialog")]
 layout_mode = 2
 script = ExtResource("2_dybhj")
-loginSceneFilePath = "res://Scenes/desktopLogin.tscn"
-generateBanjoAssets = NodePath("VBoxContainer/Button")
+loginSceneFilePath = "res://Scenes/Desktop/desktopLogin.tscn"
+generateBanjoAssets = NodePath("VBoxContainer/Banjo")
 gameFolderDialog = NodePath("FileDialog")
-goToLoginButton = NodePath("VBoxContainer/Button2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="0"]
 layout_mode = 2
@@ -355,18 +386,29 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Misc"
 
-[node name="Button" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="1"]
+[node name="Banjo" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="1"]
+visible = false
 layout_mode = 2
 text = "Extract Game Assets"
 
-[node name="Button2" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="2"]
+[node name="Login" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="2"]
 layout_mode = 2
 text = "Return to Login Screen"
 
+[node name="ForgetLoginDebug" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="3"]
+visible = false
+layout_mode = 2
+text = "Forget Login (Debug)"
+
+[node name="ForgetRefreshDebug" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer" index="4"]
+visible = false
+layout_mode = 2
+text = "Forget Refresh (Debug)"
+
 [node name="FileDialog" type="FileDialog" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" index="1"]
-title = "Select FortniteGame Directory"
-size = Vector2i(374, 134)
-ok_button_text = "Generate"
+title = "Open a Directory"
+size = Vector2i(374, 154)
+ok_button_text = "Select Current Folder"
 file_mode = 2
 access = 2
 use_native_dialog = true
@@ -386,3 +428,6 @@ use_native_dialog = true
 [connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="SetVolume"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/SFX" method="ToggleMute"]
 [connection signal="HoldPressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/MarginContainer/Responsive Button Area" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme" method="ApplyTheme"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer/Login" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" method="ReturnToLogin"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer/ForgetLoginDebug" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" method="ForgetAuthDebug"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account/VBoxContainer/ForgetRefreshDebug" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Account" method="ForgetRefreshDebug"]

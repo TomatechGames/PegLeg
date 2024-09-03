@@ -30,6 +30,9 @@ public partial class LlamaInterface : Control
     NodePath cardpackLlamaParentPath;
     Control cardpackLlamaParent;
 
+    [Export]
+    ButtonGroup groupToReset;
+
     [ExportGroup("Selected")]
     [Export]
     NodePath selectedLlamaEntryPath;
@@ -57,9 +60,6 @@ public partial class LlamaInterface : Control
 
     [Export]
     SpinBox selectedPurchaseCountSpinner;
-
-    [Export]
-    SpinBox selectedOpenCountSpinner;
 
     [Export]
     NodePath selectedItemEntryParentPath;
@@ -96,41 +96,47 @@ public partial class LlamaInterface : Control
         this.GetNodeOrNull(cardpackLlamaPanelPath, out cardpackLlamaPanel);
 
         availableCardPacks.Clear();
+        groupToReset?.Unpress();
 
-        VisibilityChanged += async () =>
+        VisibilityChanged += OnVisibilityChanged;
+        OnVisibilityChanged();
+
+        RefreshTimerController.OnHourChanged += OnHourChanged;
+    }
+
+    async void OnVisibilityChanged()
+    {
+        if (!IsVisibleInTree())
+            return;
+        await LoadLlamas();
+        if (!string.IsNullOrWhiteSpace(currentPurchaseSelection) && activeOffers.ContainsKey(currentPurchaseSelection))
         {
-            if (IsVisibleInTree())
+            var offer = activeOffers[currentPurchaseSelection];
+            string priceType = offer["prices"][0]["currencySubType"].ToString();
+            CurrencyHighlight.Instance.SetCurrencyType(priceType);
+        }
+        if (cardPackListener is null)
+        {
+            cardPackListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, "CardPack");
+            cardPackListener.OnAdded += AddCardPackEntry;
+            cardPackListener.OnRemoved += RemoveCardPackEntry;
+            foreach (var item in cardPackListener.Items)
             {
-                await LoadLlamas();
-                if (!string.IsNullOrWhiteSpace(currentPurchaseSelection) && activeOffers.ContainsKey(currentPurchaseSelection))
-                {
-                    var offer = activeOffers[currentPurchaseSelection];
-                    string priceType = offer["prices"][0]["currencySubType"].ToString();
-                    CurrencyHighlight.Instance.SetCurrencyType(priceType);
-                }
-                if(cardPackListener is null)
-                {
-                    cardPackListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, "CardPack");
-                    cardPackListener.OnAdded += AddCardPackEntry;
-                    cardPackListener.OnRemoved += RemoveCardPackEntry;
-                    foreach (var item in cardPackListener.Items)
-                    {
-                        AddCardPackEntry(item);
-                    }
-                }
+                AddCardPackEntry(item);
             }
-        };
-
-        RefreshTimerController.OnHourChanged += async () =>
-        {
-            if(IsVisibleInTree())
-                await LoadLlamas();
-        };
+        }
     }
 
     public override void _ExitTree()
     {
+        RefreshTimerController.OnHourChanged -= OnHourChanged;
         cardPackListener?.Unlink();
+    }
+
+    private async void OnHourChanged()
+    {
+        if (IsVisibleInTree())
+            await LoadLlamas();
     }
 
     ProfileListener cardPackListener;
@@ -381,6 +387,7 @@ public partial class LlamaInterface : Control
         selectedPurchaseCountSpinner.Visible = false;
 
         selectedCardPackEntry.ClearItem();
+        groupToReset?.Unpress();
 
         currentPurchaseSelection = "";
         currentCardpackSelection = null;
@@ -531,7 +538,6 @@ public partial class LlamaInterface : Control
 
         var resultItems = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"].AsArray().Select(var=>var.AsObject()).ToArray();
         await CardPackOpener.Instance.StartOpeningShopResults(resultItems);
-
     }
 
     CardPackGroup currentCardpackSelection = null;

@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://bgn5vgsvgrb1u"]
+[gd_scene load_steps=11 format=3 uid="uid://bgn5vgsvgrb1u"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/LlamaEntry.cs" id="1_5w7bn"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="2_78u63"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="2_gakw8"]
 [ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="2_vqg28"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_tsuv0"]
+[ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="5_vtxue"]
+[ext_resource type="ButtonGroup" uid="uid://cm7rmga74vyve" path="res://Scenes/LlamaEntries/LlamaChoices.tres" id="5_wfxsh"]
 
 [sub_resource type="Gradient" id="Gradient_flatg"]
 interpolation_mode = 2
@@ -22,8 +24,9 @@ metadata/_snap_enabled = true
 shader = ExtResource("2_vqg28")
 shader_parameter/IconTint = Color(0.1, 0.1, 0.1, 1)
 
-[node name="Cardpack Llama Entry" type="MarginContainer"]
+[node name="Cardpack Llama Entry" type="MarginContainer" node_paths=PackedStringArray("selectionGraphics")]
 script = ExtResource("1_5w7bn")
+selectionGraphics = NodePath("Control/CheckButton")
 
 [node name="PanelContainer" type="MarginContainer" parent="."]
 clip_contents = true
@@ -95,6 +98,41 @@ horizontal_alignment = 2
 vertical_alignment = 2
 autowrap_mode = 3
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="Control"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+button_group = ExtResource("5_wfxsh")
+
+[node name="TextureRect" type="TextureRect" parent="Control/CheckButton"]
+visible = false
+self_modulate = Color(1, 0, 0, 1)
+z_index = 2
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+pivot_offset = Vector2(12, 12)
+mouse_filter = 2
+texture = ExtResource("5_vtxue")
+expand_mode = 1
+
 [node name="Responsive Button Area" parent="." instance=ExtResource("2_gakw8")]
 layout_mode = 2
 
@@ -103,4 +141,5 @@ layout_mode = 2
 [connection signal="IconChanged" from="." to="PanelContainer/IconContainer/Pinata" method="set_texture"]
 [connection signal="RarityChanged" from="." to="PanelContainer/GradientContainer/Gradient" method="set_self_modulate"]
 [connection signal="SubtypeIconChanged" from="." to="PanelContainer/IconContainer/Pinata/Icon" method="set_texture"]
+[connection signal="toggled" from="Control/CheckButton" to="Control/CheckButton/TextureRect" method="set_visible"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

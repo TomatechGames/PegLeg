@@ -236,6 +236,8 @@ static class MissionRequests
                     missionObj["missionGenerator"]["DisplayName"].ToString(),
                     missionObj["tile"]["zoneTheme"]["DisplayName"].ToString(),
                 };
+                if (theaterCat == "v")
+                    tags.Add("ventures");
 
                 if (missionAlertDict.ContainsKey(tileIndex))
                 {

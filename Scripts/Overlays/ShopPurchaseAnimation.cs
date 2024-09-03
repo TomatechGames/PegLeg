@@ -56,7 +56,7 @@ public partial class ShopPurchaseAnimation : Control
         lockAnimation = true;
         //too many items will cause issues
         count = Mathf.Min(count, 40);
-        bool fastAnimations = AppConfig.Get("misc", "fastAnimations", false).AsBool();
+        bool fastAnimations = AppConfig.Get("misc", "fastAnimations", false);
         GD.Print(fastAnimations);
         modalWindow.SetWindowOpen(true);
         cartRotationNode.Modulate = Colors.White;

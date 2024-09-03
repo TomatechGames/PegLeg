@@ -10,7 +10,7 @@ using static ThemeController;
 
 public partial class ThemeController : Node
 {
-	static readonly DateTime referenceStartDate = new(2024, 1, 22);
+	static readonly DateTime referenceStartDate = new(2024, 1, 25);
 	static readonly int[] seasonLengths = new int[]
 	{
 		10,
@@ -40,7 +40,7 @@ public partial class ThemeController : Node
 	{
         seasonTheme = GetSeasonTheme();
         GenerateThemeData();
-        SetActiveTheme(AppConfig.Get("theme", "current", "").AsString());
+        SetActiveTheme(AppConfig.Get("theme", "current", ""));
         RefreshTimerController.OnDayChanged += CheckForNewSeason;
     }
 
@@ -51,14 +51,14 @@ public partial class ThemeController : Node
         {
             seasonTheme = newSeasonTheme;
             if (currentThemeName == "")
-                SetActiveTheme(AppConfig.Get("theme", "current", "").AsString());
+                SetActiveTheme(AppConfig.Get("theme", "current", ""));
         }
     }
 
     static string GetSeasonTheme()
     {
         //TODO: timeline-related logic should be moved to a timeline class
-        int weekCount = ((DateTime.UtcNow.Date - referenceStartDate).Days / 7) % weeksInSeasonalYear;
+        int weekCount = ((RefreshTimerController.RightNow.Date - referenceStartDate).Days / 7) % weeksInSeasonalYear;
         int seasonIndex = -1;
         for (int i = 0; i < seasonLengths.Length; i++)
         {
@@ -101,7 +101,7 @@ public partial class ThemeController : Node
             return;
         themeDataSet = new();
 
-        using (DirAccess customThemes = DirAccess.Open(customThemePath))
+        using (DirAccess customThemes = DirAccess.Open(Helpers.ProperlyGlobalisePath(customThemePath)))
         foreach (var themeDir in customThemes.GetDirectories())
         {
             var themeFullDir = customThemes.GetCurrentDir() + "/" + themeDir;
@@ -111,7 +111,7 @@ public partial class ThemeController : Node
             themeDataSet.Add(themeDir, new(JsonNode.Parse(themeFile.GetAsText()), themeDir));
         }
 
-        using DirAccess builtInThemes = DirAccess.Open(builtInThemePath);
+        using DirAccess builtInThemes = DirAccess.Open(Helpers.ProperlyGlobalisePath(builtInThemePath));
         foreach (var themeName in builtInThemes.GetDirectories())
         {
             if (themeDataSet.ContainsKey(themeName))

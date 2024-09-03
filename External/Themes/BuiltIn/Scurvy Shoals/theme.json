@@ -3,16 +3,18 @@
     "music":
     [
         [
-            "Pirate_Cove_Amb_Day_Loop_02.wav",
-            "Pirate_Cove_Amb_Day_Light_Loop_01.wav"
-        ],
-        [
-            "Pirate_Cove_Amb_Day_Loop_03.wav",
-            "Pirate_Cove_Amb_Day_Light_Loop_02.wav"
-        ],
-        [
-            "Pirate_Cove_Amb_Day_Loop_04.wav",
-            "Pirate_Cove_Amb_Day_Light_Loop_03.wav"
+            [
+                "Pirate_Cove_Amb_Day_Loop_02.wav",
+                "Pirate_Cove_Amb_Day_Light_Loop_01.wav"
+            ],
+            [
+                "Pirate_Cove_Amb_Day_Loop_03.wav",
+                "Pirate_Cove_Amb_Day_Light_Loop_02.wav"
+            ],
+            [
+                "Pirate_Cove_Amb_Day_Loop_04.wav",
+                "Pirate_Cove_Amb_Day_Light_Loop_03.wav"
+            ]
         ]
     ]
 }

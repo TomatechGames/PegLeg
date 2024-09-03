@@ -7,21 +7,17 @@ using System.Threading.Tasks;
 public partial class ItemShopInterface : Control
 {
     [Export]
+    bool useEventShop = false;
+
+    [Export]
     PackedScene regularShopElement;
     [Export]
     PackedScene highlightShopElement;
 
-    [ExportGroup("Weekly")]
     [Export]
-    Control weeklyHighlightParent;
+    Control highlightParent;
     [Export]
-    Control weeklyRegularParent;
-
-    [ExportGroup("Event")]
-    [Export]
-    Control eventHighlightParent;
-    [Export]
-    Control eventRegularParent;
+    Control regularParent;
 
 
     public override void _Ready()
@@ -35,18 +31,24 @@ public partial class ItemShopInterface : Control
             }
         };
 
-        RefreshTimerController.OnDayChanged += async () =>
-        {
-            if (IsVisibleInTree())
-                await LoadShop();
-        };
+        RefreshTimerController.OnDayChanged += OnDayChanged;
+    }
+
+    public override void _ExitTree()
+    {
+        RefreshTimerController.OnDayChanged -= OnDayChanged;
+    }
+
+    private async void OnDayChanged()
+    {
+        activeOffers.Clear();
+        if (IsVisibleInTree())
+            await LoadShop();
     }
 
     bool isLoadingShop = false;
-    List<ShopOfferEntry> weeklyHighlightPool = new();
-    List<ShopOfferEntry> weeklyRegularPool = new();
-    List<ShopOfferEntry> eventHighlightPool = new();
-    List<ShopOfferEntry> eventRegularPool = new();
+    List<ShopOfferEntry> highlightPool = new();
+    List<ShopOfferEntry> regularPool = new();
     Dictionary<string, JsonObject> activeOffers = new();
 
     public async Task LoadShop(bool force = false)
@@ -56,13 +58,9 @@ public partial class ItemShopInterface : Control
         activeOffers.Clear();
         isLoadingShop = true;
 
-        var weeklyShop = await CatalogRequests.GetWeeklyShop();
-        var eventShop = await CatalogRequests.GetEventShop();
-
-        PopulateShopSubsection(weeklyShop["highlights"].AsArray(), weeklyHighlightParent, highlightShopElement, weeklyHighlightPool);
-        PopulateShopSubsection(weeklyShop["regular"].AsArray(), weeklyRegularParent, regularShopElement, weeklyRegularPool);
-        PopulateShopSubsection(eventShop["highlights"].AsArray(), eventHighlightParent, highlightShopElement, eventHighlightPool);
-        PopulateShopSubsection(eventShop["regular"].AsArray(), eventRegularParent, regularShopElement, eventRegularPool);
+        var thisShop = useEventShop ? await CatalogRequests.GetEventShop() : await CatalogRequests.GetWeeklyShop();
+        PopulateShopSubsection(thisShop["highlights"].AsArray(), highlightParent, highlightShopElement, highlightPool);
+        PopulateShopSubsection(thisShop["regular"].AsArray(), regularParent, regularShopElement, regularPool);
 
         isLoadingShop = false;
     }

@@ -183,7 +183,7 @@ render_mode blend_mix;
 uniform vec2 ControlSize = vec2(100.000000, 100.000000);
 
 // Varyings
-varying vec4 modulate;
+varying vec4 var_modulate;
 
 uniform bool Fit;
 uniform vec2 shiftDirection = vec2(0.500000, 0.500000);
@@ -215,14 +215,14 @@ void vertex() {
 
 
 // VaryingSetter:2
-	modulate = n_out3p0;
+	var_modulate = n_out3p0;
 
 
 }
 
 void fragment() {
 // VaryingGetter:135
-	vec4 n_out135p0 = modulate;
+	vec4 n_out135p0 = var_modulate;
 
 
 // Input:15

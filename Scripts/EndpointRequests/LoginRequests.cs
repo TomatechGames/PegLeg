@@ -6,8 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 
 static class LoginRequests
@@ -21,43 +23,57 @@ static class LoginRequests
     const string fortIOSClientId = "3446cd72694c4a4485d81b77adbb2141";
     const string fortIOSSecret = "9209d4a5e25a457fb9b07489d313b41a";
 
-    public static string fortPCAuthString = ClientAuthHeaderFromKeys(fortPCClientId, fortPCSecret);
-    public static string fortIOSAuthString = ClientAuthHeaderFromKeys(fortIOSClientId, fortIOSSecret);
+    static readonly string fortPCAuthString = ClientAuthHeaderFromKeys(fortPCClientId, fortPCSecret);
+    static readonly string fortIOSAuthString = ClientAuthHeaderFromKeys(fortIOSClientId, fortIOSSecret);
 
     public static string ClientID => fortIOSClientId;
     public static string B64AuthString => fortIOSAuthString;
 
-
-    static AuthenticationHeaderValue clientHeader = new("Basic", B64AuthString);
+    static readonly AuthenticationHeaderValue clientHeader = new("Basic", B64AuthString);
 
     static AuthenticationHeaderValue accountAuthHeader;
     public static AuthenticationHeaderValue AccountAuthHeader => accountAuthHeader;
     static int authExpiresAt = -999999;
     public static bool AuthTokenValid => authExpiresAt > Time.GetTicksMsec() * 0.001;
+    static int refreshExpiresAt = -999999;
+    static bool RefreshTokenValid => refreshExpiresAt > Time.GetTicksMsec() * 0.001;
 
     static readonly AesContext deviceDetailEncryptor = new();
 
-    static JsonObject accountAccessToken;
+    static JsonObject accountAccessObj;
     static JsonObject deviceDetails;
+    static string refreshToken;
     public static bool HasDeviceDetails => LoadDeviceDetails() is not null;
-    public static string AccountID => accountAccessToken["account_id"].ToString();
-    public static string AccessToken = accountAccessToken?["access_token"]?.ToString();
-
-    static bool loginInProgress;
+    public static string AccountID => accountAccessObj?["account_id"]?.ToString();
+    public static string AccessToken = accountAccessObj?["access_token"]?.ToString();
 
     public static bool IsOffline { get; private set; }
+    public static string LatestErrorMessage { get; private set; }
+
+    public static void DebugClearToken()
+    {
+        accountAccessObj = null;
+        authExpiresAt = 0;
+    }
+    public static void DebugClearRefresh()
+    {
+        refreshToken = null;
+        refreshExpiresAt = 0;
+    }
+
+    public static async void TryLoginWithAlert()
+    {
+        await GenericConfirmationWindow.OpenConfirmation("Login Error", "Retry");
+    }
 
     public static async Task<bool> LoginWithOneTimeCode(string oneTimeCode)
     {
         if(string.IsNullOrWhiteSpace(oneTimeCode))
-            return AuthTokenValid;
+            return false;
 
-        if (await InterruptLogin())
-            return AuthTokenValid;
+        await loginSephamore.WaitAsync();
         try
         {
-            loginInProgress = true;
-
             GD.Print("authorising via one-time code...");
             JsonNode accountAuth = await Helpers.MakeRequest(
                 HttpMethod.Post,
@@ -67,28 +83,37 @@ static class LoginRequests
                 clientHeader
             );
 
-            if (accountAuth is not null)
-                OnRecieveAccountAuth(accountAuth);
-            else
+            if (accountAuth is null)
             {
-                IsOffline = true;
                 GD.Print("OFFLINE");
+                LatestErrorMessage = "No Response";
+                IsOffline = true;
+                return false;
             }
+
+            if (accountAuth["errorMessage"] is JsonValue errorMessage)
+            {
+                LatestErrorMessage = errorMessage.ToString();
+                GD.Print("Error: " + LatestErrorMessage);
+                return false;
+            }
+
+            OnRecieveAccountAuth(accountAuth);
+            return true;
         }
         finally
         {
-            loginInProgress = false;
+            loginSephamore.Release();
         }
-        return AuthTokenValid;
     }
 
-    public static async Task SetupDeviceAuth()          
+    public static async Task SetupDeviceAuth()
     {
         if (HasDeviceDetails)
             return;
         GD.Print($"Setting up device auth...");
         //needed for Account Id
-        if (accountAccessToken is null)
+        if (accountAccessObj is null)
         {
             GD.Print($"No access token has been provided");
             return;
@@ -110,7 +135,15 @@ static class LoginRequests
         if(returnedDetails is null)
         {
             IsOffline = true;
+            LatestErrorMessage = "No Response";
             GD.Print("OFFLINE");
+            return;
+        }
+
+        if (returnedDetails["errorMessage"] is JsonValue errorMessage)
+        {
+            LatestErrorMessage = errorMessage.ToString();
+            GD.Print("Error: " + LatestErrorMessage);
             return;
         }
 
@@ -219,7 +252,6 @@ static class LoginRequests
         return deviceDetails;
     }
 
-
     public static void DeleteDeviceDetails()
     {
         string fullPath = ProjectSettings.GlobalizePath(deviceDetailsFilePath);
@@ -231,22 +263,49 @@ static class LoginRequests
         }
     }
 
-    public static async Task<bool> TryLogin()
+    static SemaphoreSlim loginSephamore = new(1);
+    public static async Task<bool> TryLogin(bool withAlert = true)
     {
-        //return if already logged in or currently logging in
-        if (await InterruptLogin())
-            return AuthTokenValid;
+        await loginSephamore.WaitAsync();
         try
         {
-            loginInProgress = true;
-            if (deviceDetails is null)
-                LoadDeviceDetails();
+            if (AuthTokenValid)
+                return true;
 
-            if (deviceDetails is null)
+            if (RefreshTokenValid)
             {
-                GD.Print("something oopsied");
-                loginInProgress = false;
-                return AuthTokenValid;
+                GD.Print("attempting to refresh token");
+                JsonNode refresh = await Helpers.MakeRequest(
+                    HttpMethod.Post,
+                    FNEndpoints.loginEndpoint,
+                    "account/api/oauth/token",
+                    $"grant_type=refresh_token&" +
+                    $"refresh_token={refreshToken}&" +
+                    $"token_type=eg1",
+                    clientHeader
+                );
+
+                if(refresh is null)
+                {
+                    IsOffline = true;
+                    if (withAlert)
+                        ShowLoginFailAlert("Couldn't connect to the internet");
+                    return false;
+                }
+
+                if (refresh["errorMessage"] is null)
+                {
+                    OnRecieveAccountAuth(refresh);
+                    return true;
+                }
+            }
+
+            if (!HasDeviceDetails)
+            {
+                GD.Print("no tokens to login with");
+                if (withAlert)
+                    ShowLoginFailAlert("Your Authentication Code has expired, please generate a new one");
+                return false;
             }
 
             GD.Print("authorising via device auth...");
@@ -261,34 +320,41 @@ static class LoginRequests
                 $"secret={deviceDetails["secret"]}",
                 clientHeader
             );
-
-            if (accountAuth is not null)
-                OnRecieveAccountAuth(accountAuth);
-            else
+            
+            if (accountAuth is null)
             {
                 IsOffline = true;
                 GD.Print("OFFLINE");
+                if (withAlert)
+                    ShowLoginFailAlert("Couldn't connect to the internet");
+                return false;
             }
+
+            if (accountAuth["errorMessage"] is JsonValue errorMessage)
+            {
+                LatestErrorMessage = errorMessage.ToString();
+                GD.Print("Error: " + LatestErrorMessage);
+                if (withAlert)
+                    ShowLoginFailAlert();
+                return AuthTokenValid;
+            }
+
+            OnRecieveAccountAuth(accountAuth);
+            return true;
         }
         finally
         {
-            loginInProgress = false;
+            loginSephamore.Release();
         }
-        return AuthTokenValid;
     }
 
-
-    static async Task<bool> InterruptLogin()
+    public static event Action OnLoginFailAlertPressed;
+    static async void ShowLoginFailAlert(string message = null)
     {
-        int loginIterations = 0;
-        while (loginInProgress)
-        {
-            await Task.Delay(500);
-            loginIterations++;
-            if (loginIterations > 100)
-                return true;
-        }
-        return AuthTokenValid;
+        message ??= LatestErrorMessage;
+        await Task.Delay(100);
+        await GenericConfirmationWindow.OpenConfirmation("Login Error", "Return to Login Screen", contextText: message, allowCancel: false);
+        OnLoginFailAlertPressed?.Invoke();
     }
 
 
@@ -297,9 +363,14 @@ static class LoginRequests
         JsonObject accountAuthObj = accountAuth.AsObject();
         if (AccountAuthSchemaValid(accountAuthObj))
         {
-            accountAccessToken = accountAuthObj;
-            accountAuthHeader = new("Bearer", accountAccessToken["access_token"].ToString());
-            authExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + accountAccessToken["expires_in"].GetValue<int>()-10;
+            accountAccessObj = accountAuthObj;
+            accountAuthHeader = new("Bearer", accountAccessObj["access_token"].ToString());
+            authExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + accountAccessObj["expires_in"].GetValue<int>() - 10;
+            if (accountAccessObj["refresh_expires"]?.GetValue<int>() is int refreshExpires)
+            {
+                refreshExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + refreshExpires - 10;
+                refreshToken = accountAccessObj["refresh_token"].ToString();
+            }
             GD.Print("authentication successful");
         }
     }

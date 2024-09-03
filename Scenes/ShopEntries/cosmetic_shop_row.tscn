@@ -8,7 +8,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_egrdm"]
 resource_local_to_scene = true
 shader = ExtResource("3_bpa6m")
-shader_parameter/ControlSize = Vector2(1180, 313)
+shader_parameter/ControlSize = Vector2(1260, 313)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
@@ -77,7 +77,8 @@ grow_vertical = 2
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 24
 text = "View all
-Jam Tracks"
+Jam Tracks
+(WIP)"
 
 [node name="LoadingIcon5" parent="MarginContainer" instance=ExtResource("3_4athu")]
 material = SubResource("ShaderMaterial_egrdm")

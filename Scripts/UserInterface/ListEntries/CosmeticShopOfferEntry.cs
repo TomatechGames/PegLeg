@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text.Json.Nodes;
 
 public partial class CosmeticShopOfferEntry : Control
@@ -13,21 +14,29 @@ public partial class CosmeticShopOfferEntry : Control
     [Signal]
     public delegate void TooltipChangedEventHandler(string tooltip);
     [Signal]
-    public delegate void PriceVisibilityEventHandler(bool visible);
-    [Signal]
-    public delegate void OldPriceVisibilityEventHandler(bool visible);
+    public delegate void OutlineChangedEventHandler(Color outline);
+
     [Signal]
     public delegate void OwnedVisibilityEventHandler(bool visible);
-    [Signal]
-    public delegate void ReminingTimeVisibilityEventHandler(bool visible);
+
     [Signal]
     public delegate void BonusTextVisibilityEventHandler(bool visible);
     [Signal]
     public delegate void BonusTextChangedEventHandler(string name);
+
     [Signal]
     public delegate void PriceAmountEventHandler(string amount);
     [Signal]
+    public delegate void PriceVisibilityEventHandler(bool visible);
+
+    [Signal]
     public delegate void OldPriceAmountEventHandler(string amount);
+    [Signal]
+    public delegate void OldPriceVisibilityEventHandler(bool visible);
+
+    [Signal]
+    public delegate void ReminingTimeVisibilityEventHandler(bool visible);
+
     [Signal]
     public delegate void LastSeenTextEventHandler(string amount);
     [Signal]
@@ -43,14 +52,24 @@ public partial class CosmeticShopOfferEntry : Control
     [Export]
     Control loadingCubes;
     [Export]
+    ShaderHook backgroundGradientTexture;
+    [Export]
     float waitTimeToLoadResources = 0.5f;
     [Export]
     ShaderHook resourceTarget;
     [Export]
-    Texture fallbackTexture;
+    Texture2D fallbackTexture;
+    [Export]
+    bool useOutlineColor;
+    [Export]
+    Color fallbackOutlineColor;
     Timer resourceLoadTimer;
-    bool resourceLoadStarted;
-    //HttpRequest resourceRequest;
+
+    CosmeticShopOfferData currentOfferData;
+    Gradient bgGradient;
+    Color[] bgGradientDefaultColors;
+    static readonly float[] bgGradientDefaultOffsets = new float[] { 0, 1 };
+
     public override void _Ready()
     {
         base._Ready();
@@ -58,53 +77,65 @@ public partial class CosmeticShopOfferEntry : Control
         resourceLoadTimer = new() {WaitTime = waitTimeToLoadResources};
         AddChild(resourceLoadTimer);
         resourceLoadTimer.Timeout += StartResourceLoadSequence;
-
+        bgGradient = (backgroundGradientTexture.Texture as GradientTexture2D).Gradient;
+        bgGradientDefaultColors = bgGradient.Colors;
         //resourceRequest = new();
         //AddChild(resourceRequest);
         //resourceRequest.RequestCompleted += CompleteResourceLoadSequence;
+        RefreshTimerController.OnSecondChanged += UpdateOutTimer;
+    }
+
+    public override void _ExitTree()
+    {
+        ClearCosmeticOfferData();
+        RefreshTimerController.OnSecondChanged -= UpdateOutTimer;
     }
 
     DateTime? outDate;
-    public override void _Process(double delta)
+    private void UpdateOutTimer()
     {
-        if (outDate.HasValue)
-        {
+        if (!outDate.HasValue)
+            return;
             var remainingTime = (outDate.Value - DateTime.UtcNow);
-            if (remainingTime.TotalDays>2)
-            {
-                expiryTimerText.Text = Mathf.Floor(remainingTime.TotalDays) + " Days";
-            }
-            else if (remainingTime.TotalHours > 10)
-            {
-                expiryTimerText.Text = Mathf.Floor(remainingTime.TotalHours) + " Hours";
-            }
-            else if (remainingTime.TotalHours > 1.1)
-            {
-                string timerText = Mathf.FloorToInt(remainingTime.TotalHours * 10).ToString();
-                expiryTimerText.Text = $"{timerText[..^1]}.{timerText[^1]} Hours";
-            }
-            else
-            {
-                expiryTimerText.Text = Mathf.Floor(remainingTime.TotalMinutes) + " Mins";
-            }
+        if (remainingTime.TotalDays > 2)
+        {
+            expiryTimerText.Text = Mathf.Floor(remainingTime.TotalDays) + " Days";
+        }
+        else if (remainingTime.TotalHours > 10)
+        {
+            expiryTimerText.Text = Mathf.Floor(remainingTime.TotalHours) + " Hours";
+        }
+        else if (remainingTime.TotalHours > 1.1)
+        {
+            string timerText = Mathf.FloorToInt(remainingTime.TotalHours * 10).ToString();
+            expiryTimerText.Text = $"{timerText[..^1]}.{timerText[^1]} Hours";
+        }
+        else
+        {
+            expiryTimerText.Text = Mathf.Floor(remainingTime.TotalMinutes) + " Mins";
         }
     }
 
-    public void StartResourceLoadTimer()
-    {
-        if (!resourceLoadStarted)
-            resourceLoadTimer.Start();
-    }
+    public void StartResourceLoadTimer() =>
+        resourceLoadTimer.Start();
 
-    public void CancelResourceLoadTimer()
-    {
+    public void CancelResourceLoadTimer() =>
         resourceLoadTimer.Stop();
-    }
 
+    bool resourceLoadStarted;
     private async void StartResourceLoadSequence()
     {
         resourceLoadTimer.Stop();
+        if (resourceLoadStarted)
+            return;
         resourceLoadStarted = true;
+        if(currentOfferData is not null)
+        {
+            if (!currentOfferData.resourceLoadComplete)
+                ApplyOfferResource();
+            return;
+        }
+
         if (resourceUrl == null)
         {
             resourceTarget.SetShaderTexture(fallbackTexture, "Cosmetic");
@@ -112,15 +143,6 @@ public partial class CosmeticShopOfferEntry : Control
             loadingCubes.Visible = false;
             return;
         }
-        //var reqErr = resourceRequest.Request(resourceUrl);
-
-        //if (reqErr != Error.Ok)
-        //{
-        //    resourceTarget.SetShaderTexture(fallbackTexture, "Cosmetic");
-        //    GD.PushWarning("Image request failed");
-        //    loadingCubes.Visible = false;
-        //    return;
-        //}
         var tex = await CatalogRequests.GetCosmeticResource(resourceUrl);
         if (tex is not null)
             ApplyResource(tex);
@@ -129,55 +151,86 @@ public partial class CosmeticShopOfferEntry : Control
             resourceTarget.SetShaderTexture(fallbackTexture, "Cosmetic");
             GD.PushWarning("Image request failed");
             loadingCubes.Visible = false;
+            resourceTarget.Visible = true;
         }
     }
 
+    void ApplyResource() => 
+        ApplyResource(null);
     void ApplyResource(Texture2D tex)
     {
-        resourceTarget.SetShaderTexture(tex, "Cosmetic");
-        resourceTarget.SetShaderVector(resourceOffset, "CosmeticOffset");
-        resourceTarget.SetShaderFloat(resourceScale, "CosmeticScale");
-        resourceTarget.SetShaderBool(resourceFit, "Fit");
+        Vector2 shift = tex is null ? new(0.5f, 0.5f) : resourceShift;
+        bool fit = tex is not null && resourceFit;
+        tex ??= fallbackTexture;
+        //resourceTarget.SetShaderTexture(tex, "Cosmetic");
+        resourceTarget.Texture = tex;
+        resourceTarget.SetShaderVector(shift, "ShiftDirection");
+        resourceTarget.SetShaderBool(fit, "Fit");
         resourceLoadStarted = true;
         loadingCubes.Visible = false;
+        resourceTarget.Visible = true;
     }
 
-    //private void CompleteResourceLoadSequence(long result, long responseCode, string[] headers, byte[] body)
-    //{
-    //    var image = new Image();
-    //    var loadErr = LoadImageWithCtx(image, body);
-    //    if (loadErr != Error.Ok)
-    //    {
-    //        resourceTarget.SetShaderTexture(fallbackTexture, "Cosmetic");
-    //        GD.PushWarning("Image conversion failed");
-    //        loadingCubes.Visible = false;
-    //        return;
-    //    }
-    //    var tex = ImageTexture.CreateFromImage(image);
-    //    resourceTarget.SetShaderTexture(tex, "Cosmetic");
-    //    resourceTarget.SetShaderVector(resourceOffset, "CosmeticOffset");
-    //    resourceTarget.SetShaderFloat(resourceScale, "CosmeticScale");
-    //    resourceTarget.SetShaderBool(resourceFit, "Fit");
-    //    loadingCubes.Visible = false;
-    //}
+    void ApplyOfferResource() => 
+        ApplyResource(currentOfferData.resourceTex);
 
-    Error LoadImageWithCtx(Image image, byte[] data)
+    void ApplyOfferOwnership()
     {
-        var urlEnding = resourceUrl.Split(".")[^1].ToLower();
-        switch (urlEnding)
-        {
-            case "png":
-                return image.LoadPngFromBuffer(data);
-            case "webp":
-                return image.LoadWebpFromBuffer(data);
-            default:
-                return image.LoadJpgFromBuffer(data);
-        }
+        EmitSignal(SignalName.PriceVisibility, !currentOfferData.isOwned);
+        EmitSignal(SignalName.OldPriceVisibility, !currentOfferData.isOwned && currentOfferData.isDiscountBundle);
+        EmitSignal(SignalName.OldPriceAmount, (currentOfferData.price - currentOfferData.discountAmount).ToString());
+        EmitSignal(SignalName.OwnedVisibility, currentOfferData.isOwned);
+    }
+
+    public void SetCosmeticOfferData(CosmeticShopOfferData offerData)
+    {
+        ClearCosmeticOfferData();
+        currentOfferData = offerData;
+        currentOfferData.OnResourceLoaded += ApplyOfferResource;
+        currentOfferData.OnOwnershipLoaded += ApplyOfferOwnership;
+
+        outDate = offerData.outDate;
+        UpdateOutTimer();
+
+        EmitSignal(SignalName.NameChanged, offerData.displayName);
+        EmitSignal(SignalName.TypeChanged, offerData.displayType);
+        EmitSignal(SignalName.TooltipChanged, offerData.displayType);
+
+        EmitSignal(SignalName.PriceAmount, offerData.price.ToString());
+        EmitSignal(SignalName.PriceVisibility, true);
+        EmitSignal(SignalName.OldPriceAmount, (offerData.price-offerData.discountAmount).ToString());
+        EmitSignal(SignalName.OldPriceVisibility, offerData.isDiscountBundle);
+        EmitSignal(SignalName.OwnedVisibility, false);
+        if (offerData.ownershipLoadComplete)
+            ApplyOfferOwnership();
+
+        loadingCubes.Visible = true;
+        resourceTarget.Visible = false;
+        resourceShift = offerData.resourceShift;
+        if (offerData.resourceLoadComplete)
+            ApplyResource();
+
+        EmitSignal(SignalName.BonusTextVisibility, !string.IsNullOrWhiteSpace(offerData.bonusText));
+        EmitSignal(SignalName.BonusTextChanged, offerData.bonusText);
+
+        EmitSignal(SignalName.LastSeenVisibility, offerData.lastSeenDaysAgo > 1);
+        EmitSignal(SignalName.LastSeenText, $"{offerData.lastSeenDaysAgo}");
+        EmitSignal(SignalName.LastSeenAlertVisibility, offerData.isOld);
+        EmitSignal(SignalName.AlmostAYearVisibility, offerData.isVeryOld);
+    }
+
+    void ClearCosmeticOfferData()
+    {
+
+        if (currentOfferData is null)
+            return;
+        currentOfferData.OnResourceLoaded -= ApplyOfferResource;
+
+        currentOfferData = null;
     }
 
     string resourceUrl = null;
-    Vector2 resourceOffset = new();
-    float resourceScale = 0;
+    Vector2 resourceShift = new(0.5f, 0.5f);
     bool resourceFit = false;
 
     public string offerId { get; private set; }
@@ -187,6 +240,14 @@ public partial class CosmeticShopOfferEntry : Control
     {
         offerId = entryData["offerId"].ToString();
         cellWidth = (int)cellSize.X;
+
+        int oldPrice = entryData["regularPrice"].GetValue<int>();
+        int newPrice = entryData["finalPrice"].GetValue<int>();
+        isDiscountBundle = newPrice != oldPrice;
+        if (isDiscountBundle)
+            discountAmount = oldPrice - newPrice;
+        else
+            discountAmount = 0;
 
         JsonArray allItems = entryData.MergeCosmeticItems();
         if (entryData["bundle"] is not null)
@@ -202,9 +263,69 @@ public partial class CosmeticShopOfferEntry : Control
         }
 
         outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
-        var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?[0]?.AsObject();
+        var resourceRender = entryData["newDisplayAsset"]?["renderImages"]?.AsArray()?.FirstOrDefault()?.AsObject();
+        var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?.AsArray()?.FirstOrDefault()?.AsObject();
 
-        if (resourceMat is null || resourceMat["images"]?["CarTexture"] is not null)
+        if (cellSize.X == 4)
+            resourceShift = new Vector2(0.5f, 0.125f);
+        else if (cellSize.X == 3)
+            resourceShift = new Vector2(0.5f, 0f);
+        else
+            resourceShift = new Vector2(0.5f, 0f);
+        resourceFit = false;
+
+        bgGradient ??= (backgroundGradientTexture.Texture as GradientTexture2D).Gradient;
+        bgGradientDefaultColors ??= bgGradient.Colors;
+        if (entryData["colors"] is JsonObject colors)
+        {
+            List<Color> bgColorList = new();
+            for (int i = 1; i <= 3; i++)
+            {
+                if (colors["color"+i] is JsonValue colorVal)
+                    bgColorList.Add(Color.FromHtml(colorVal.ToString()));
+            }
+            bgGradient.Colors = bgColorList.ToArray();
+            List<float> bgOffsetList = new();
+
+            for (int i = 0; i < bgColorList.Count; i++)
+            {
+                bgOffsetList.Add((float)i / (bgColorList.Count - 1));
+            }
+        }
+        else
+        {
+            bgGradient.Colors = bgGradientDefaultColors;
+            bgGradient.Offsets = bgGradientDefaultOffsets;
+        }
+        Color outlineColor = fallbackOutlineColor;
+        if (entryData["colors"]?["textBackgroundColor"] is JsonValue outlineColorVal)
+            outlineColor = Color.FromHtml(outlineColorVal.ToString());
+        if (useOutlineColor)
+            EmitSignal(SignalName.OutlineChanged, outlineColor);
+
+        if (resourceRender is not null)
+        {
+            resourceUrl =
+                resourceRender["image"]?.ToString();
+            if(resourceRender["productTag"]?.ToString()== "Product.DelMar")
+            {
+                //TODO: stretch image
+                resourceShift = new Vector2(0.5f, 0.5f);
+            }
+        }
+        else if (resourceMat?["images"]?["CarTexture"] is not null)
+        {
+            resourceUrl =
+                resourceMat["images"]?["CarTexture"]?.ToString();
+            resourceShift = new Vector2(0.5f, 0.5f);
+        }
+        else if (resourceMat is not null)
+        {
+            resourceUrl =
+                resourceMat["images"]["Background"]?.ToString() ??
+                resourceMat["images"]["OfferImage"]?.ToString();
+        }
+        else
         {
             resourceUrl =
                 entryData.GetFirstCosmeticItem()["images"]?["featured"]?.ToString() ??
@@ -212,29 +333,21 @@ public partial class CosmeticShopOfferEntry : Control
                 entryData.GetFirstCosmeticItem()["images"]?["small"]?.ToString() ??
                 entryData.GetFirstCosmeticItem()["images"]?["icon"]?.ToString() ??
                 entryData.GetFirstCosmeticItem()["images"]?["smallIcon"]?.ToString();
+            resourceShift = new Vector2(0.5f, 0.5f);
         }
-        else
-        {
-            resourceUrl =
-                resourceMat["images"]["Background"]?.ToString() ??
-                resourceMat["images"]["OfferImage"]?.ToString();
 
-            //resourceFit = entryData.GetFirstCosmeticItem()["type"]?["displayValue"].ToString() != "Emote";
-            resourceFit = false;
-            if (cellSize.X > 2 || entryData["cars"] is JsonArray)
-            {
-                resourceOffset = new(
-                    (resourceMat["scalings"]?["OffsetImage_X"]?.GetValue<float>() ?? 0) / 100f,
-                   (resourceMat["scalings"]?["OffsetImage_Y"]?.GetValue<float>() ?? 0) / 100f
-                   );
-                //entryData["cars"] is not JsonArray && 
-                if (resourceMat["scalings"]?["ZoomImage_Percent"]?.GetValue<float>() is float scalePercent && scalePercent > 0)
-                    resourceScale = scalePercent / 100f;
-            }
+        var nonLobbyMusicItems = allItems.Where(i => i["type"]?["displayValue"].ToString() != "Lobby Music").ToArray();
+        if (nonLobbyMusicItems.Length == 1 && nonLobbyMusicItems[0]["type"]?["displayValue"].ToString() == "Jam Track")
+        {
+            resourceFit = true;
+            resourceShift = new Vector2(0.5f, 0f);
+            //TODO: if jam track, use dedicated jam track tile format
         }
 
         if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
             ApplyResource(tex);
+        else
+            resourceTarget.Texture = null;
     }
 
     public int discountAmount { get; private set; }
@@ -242,7 +355,7 @@ public partial class CosmeticShopOfferEntry : Control
     public bool isRecentlyNew { get; private set; }
     public bool isAddedToday { get; private set; }
     public bool isLeavingSoon { get; private set; }
-    public bool isMultiBundle { get; private set; }
+    public bool isDiscountBundle { get; private set; }
     public bool isOld { get; private set; }
     public bool isVeryOld { get; private set; }
 
@@ -265,17 +378,19 @@ public partial class CosmeticShopOfferEntry : Control
 
         string mainName = firstItem["name"]?.ToString();
         string mainType = firstItem["type"]?["displayValue"].ToString();
+        Name = mainName;
 
         EmitSignal(SignalName.NameChanged, firstItem["name"].ToString());
         EmitSignal(SignalName.TypeChanged, mainType + (extraItemsText ?? ""));
 
-        EmitSignal(SignalName.PriceAmount, entryData["finalPrice"].ToString());
+        int oldPrice = entryData["regularPrice"].GetValue<int>();
+        int newPrice = entryData["finalPrice"].GetValue<int>();
+
+        EmitSignal(SignalName.PriceAmount, newPrice.ToString());
+        EmitSignal(SignalName.OldPriceAmount, oldPrice.ToString());
 
         EmitSignal(SignalName.OwnedVisibility, false);
-        EmitSignal(SignalName.PriceVisibility, true);
-        EmitSignal(SignalName.OldPriceVisibility, false);
-
-        isMultiBundle = false;
+        EmitSignal(SignalName.OldPriceVisibility, newPrice < oldPrice);
 
         SetMetadata(firstItem, entryData);
         SetMetaVisuals();
@@ -301,17 +416,10 @@ public partial class CosmeticShopOfferEntry : Control
         EmitSignal(SignalName.PriceAmount, newPrice.ToString());
         EmitSignal(SignalName.OldPriceAmount, oldPrice.ToString());
 
-        EmitSignal(SignalName.PriceVisibility, true);
         EmitSignal(SignalName.OwnedVisibility, false);
         EmitSignal(SignalName.OldPriceVisibility, newPrice < oldPrice);
 
-        isMultiBundle = allItems.Count > 0;
-
-        if (newPrice<oldPrice)
-        {
-            discountAmount = oldPrice - newPrice;
-        }
-        else
+        if (!isDiscountBundle)
         {
             JsonObject firstItem = allItems[0].AsObject();
             SetMetadata(firstItem, entryData);
@@ -319,7 +427,7 @@ public partial class CosmeticShopOfferEntry : Control
         SetMetaVisuals();
 
         string tooltip = mainName + " - Bundle";
-        tooltip += "\nContents include: "+allItems
+        tooltip += "\nContents include: " + allItems
                 .GroupBy(i => i["type"]?["displayValue"].ToString())
                 .Select(g => g.Key + (g.Count() > 1 ? " x" + g.Count() : ""))
                 .ToArray()
@@ -349,20 +457,21 @@ public partial class CosmeticShopOfferEntry : Control
         }
 
         lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
-        isAddedToday = inDate == DateTime.UtcNow.Date && lastSeenDaysAgo > 1;
-        isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
+        isAddedToday = inDate == DateTime.UtcNow.Date && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate);
         isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
+        isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
         isOld = lastSeenDaysAgo > 500;
         isVeryOld = lastSeenDaysAgo > 1000;
-        discountAmount = 0;
+
+
     }
 
     void SetMetaVisuals()
     {
         if (discountAmount > 0)
         {
-            EmitSignal(SignalName.BonusTextChanged, $"Save {discountAmount} VBucks!");
-            EmitSignal(SignalName.BonusTextVisibility, cellWidth>1);
+            EmitSignal(SignalName.BonusTextChanged, cellWidth > 1 ? $"Save {discountAmount} VBucks!" : $"-{discountAmount}");
+            EmitSignal(SignalName.BonusTextVisibility, true);
             EmitSignal(SignalName.LastSeenVisibility, false);
             EmitSignal(SignalName.AlmostAYearVisibility, false);
             return;

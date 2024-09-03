@@ -33,15 +33,16 @@ theme_override_constants/margin_bottom = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
 [node name="InstructionLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(100, 44)
+custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/line_spacing = 0
+theme_override_constants/line_spacing = -1
 theme_override_font_sizes/font_size = 20
 text = "Complete 3 missions as a Constructor"
 vertical_alignment = 1
@@ -68,6 +69,9 @@ size_flags_vertical = 8
 tooltip_text = "Complete"
 texture = ExtResource("2_hawdj")
 expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 6)

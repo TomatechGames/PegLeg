@@ -25,6 +25,8 @@ public partial class ShopOfferEntry : Control
     [Export]
     GameItemEntry priceEntry;
     [Export]
+    CheckButton selectionGraphics;
+    [Export]
     bool includeAmountInName = false;
     [Export]
     bool requireGreaterThanOne = false;
@@ -36,37 +38,26 @@ public partial class ShopOfferEntry : Control
         linkedOfferId = shopOffer["offerId"].ToString();
         string priceType = shopOffer["prices"][0]["currencySubType"].ToString();
         int price = shopOffer["prices"][0]["finalPrice"].GetValue<int>();
-        int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
-
 
         var grantedItem = shopOffer["itemGrants"][0].AsObject();
-        int stockLimit = await shopOffer.GetPurchaseLimitFromOffer();
-        if (stockLimit == 999)
-            stockLimit = -1;
-
         string name = grantedItem.GetTemplate()?["DisplayName"]?.ToString();
-        if (includeAmountInName)
-        {
-            if (stockLimit > (requireGreaterThanOne ? 1 : 0))
-                name += " (" + stockLimit + " left)";
-            else if (stockLimit == 0)
-                name += " (Sold Out)";
-        }
         EmitSignal(SignalName.NameChanged, name);
 
-        string amountText = "x" + stockLimit;
-        if (stockLimit < 0)
-            amountText = "";
-        else if (stockLimit == 0)
-            amountText = "Sold Out";
-        var grantedQuantity = grantedItem["quantity"].GetValue<int>();
-        if (grantedQuantity > 1 && stockLimit != 0)
-            amountText = grantedQuantity + amountText;
 
-        EmitSignal(SignalName.AmountNeeded, amountText!="");
-        EmitSignal(SignalName.AmountChanged, amountText);
+        EmitSignal(SignalName.AmountNeeded, false);
 
-        grantedItem["shopQuantity"] = stockLimit;
+
+        BanjoAssets.TryGetTemplate(priceType, out var priceTemplate);
+        priceTemplate = priceTemplate.Reserialise();
+        priceTemplate["Description"] = price;
+
+        if (price == 0)
+            priceEntry.ClearItem(null);
+        else
+            priceEntry.SetItemData(priceTemplate.CreateInstanceOfItem(price));
+
+        grantedItem["shopQuantity"] = -1;
+        grantedItemEntry.SetItemData(grantedItem);
 
         if (grantedItem["templateId"].ToString().StartsWith("CardPack"))
         {
@@ -77,30 +68,57 @@ public partial class ShopOfferEntry : Control
                 tier = 2;
             grantedItem["template"]["Rarity"] = tier switch
             {
-                1=>"Epic",
-                2=>"Legendary",
-                _=>"Rare"
+                1 => "Epic",
+                2 => "Legendary",
+                _ => "Rare"
             };
         }
-
-        BanjoAssets.TryGetTemplate(priceType, out var priceTemplate);
-        priceTemplate = priceTemplate.Reserialise();
-        priceTemplate["Description"] = inInventory + "/" + price;
 
         EmitSignal(SignalName.IsBirthdayChanged, name.ToLower().Contains("birthday"));
 
         EmitSignal(SignalName.IsFreeChanged, price == 0);
         EmitSignal(SignalName.IsLimitedTimeChanged, linkedOfferId == "D46EC225FA1149ADB00B4B17B2ABAB70");//offerId of random free llamas which only last 1 hour
 
-        if (price == 0)
-            priceEntry.ClearItem(null);
-        else
+        //async stuff starts here
+
+        if (price > 0)
+        {
+            int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
+            priceTemplate["Description"] = inInventory + "/" + price;
             priceEntry.SetItemData(priceTemplate.CreateInstanceOfItem(price));
-        grantedItemEntry.SetItemData(grantedItem);
+        }
+
+        int stockLimit = await shopOffer.GetPurchaseLimitFromOffer();
+        if (stockLimit == 999)
+            stockLimit = -1;
+
+        grantedItem["shopQuantity"] = stockLimit;
+
+        string amountText = "x" + stockLimit;
+        if (stockLimit < 0)
+            amountText = "";
+        else if (stockLimit == 0)
+            amountText = "Sold Out";
+        var grantedQuantity = grantedItem["quantity"].GetValue<int>();
+        if (grantedQuantity > 1 && stockLimit != 0)
+            amountText = grantedQuantity + amountText;
+        EmitSignal(SignalName.AmountNeeded, amountText!="");
+        EmitSignal(SignalName.AmountChanged, amountText);
+
+        if (includeAmountInName)
+        {
+            if (stockLimit > (requireGreaterThanOne ? 1 : 0))
+                name += " (" + stockLimit + " left)";
+            else if (stockLimit == 0)
+                name += " (Sold Out)";
+        }
+        EmitSignal(SignalName.NameChanged, name);
     }
 
     public void EmitPressedSignal()
     {
+        if (selectionGraphics is not null)
+            selectionGraphics.ButtonPressed = true;
         EmitSignal(SignalName.Pressed, linkedOfferId);
     }
 }

@@ -1,11 +1,13 @@
 [gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://chrwn7nsdg50k"]
 
 [sub_resource type="Gradient" id="Gradient_a4t0s"]
+resource_local_to_scene = true
 colors = PackedColorArray(0, 0.196078, 0.501961, 1, 0, 0.745098, 1, 1)
 
 [resource]
+resource_local_to_scene = true
 gradient = SubResource("Gradient_a4t0s")
 fill = 1
-fill_from = Vector2(0.5, 0.5)
+fill_from = Vector2(0.5, 0.7)
 fill_to = Vector2(0, 0)
 metadata/_snap_enabled = true

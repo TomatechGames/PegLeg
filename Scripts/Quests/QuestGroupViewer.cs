@@ -2,11 +2,11 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
 
-public partial class QuestNodeController : Control
+public partial class QuestGroupViewer : Control
 {
+    [Signal]
+    public delegate void QuestUpdatedEventHandler();
     [Signal]
     public delegate void PressedEventHandler();
 
@@ -34,8 +34,8 @@ public partial class QuestNodeController : Control
     List<QuestNode> questNodeList;
     List<ShaderHook> questArrowList;
 
-
-    const int maxNodesPerPage = 10;
+    [Export]
+    int maxNodesPerPage = 20;
 	int nodesPerPage;
 	List<QuestData> questDataList;
 	int currentPage;
@@ -76,18 +76,6 @@ public partial class QuestNodeController : Control
             questNodeList[i].Pressed += () => OnQuestPressed(index);
         }
         ClearQuestNodes();
-        questViewer.OnRefreshNeeded += RefreshSelectedQuestVisuals;
-        QuestInterface.OnPinnedQuestsCleared += RefreshAllQuestVisuals;
-    }
-
-    private void RefreshAllQuestVisuals()
-    {
-        foreach (var item in questNodeList)
-        {
-            if (!item.Visible)
-                continue;
-            item.RefreshQuestNode();
-        }
     }
 
     public void ClearQuestNodes()
@@ -117,15 +105,15 @@ public partial class QuestNodeController : Control
         this.useArrows = useArrows;
 
         nodesPerPage = maxNodesPerPage;
-        GD.Print("COUNT "+ questDataList.Count);
+        //GD.Print("COUNT "+ questDataList.Count);
         if (questDataList.Count > nodesPerPage)
 		{
-			while ((questDataList.Count % nodesPerPage) < (nodesPerPage / 2))
+            while ((questDataList.Count % nodesPerPage) < (nodesPerPage * 0.6f))
 			{
 				nodesPerPage--;
-				if (nodesPerPage < 5)
+                if (nodesPerPage < (maxNodesPerPage * 0.6f))
                 {
-                    GD.Print("Nodes Per Page less than 5");
+                    GD.Print("Nodes Per Page gone weird");
                     break;//this should never happen
                 }
             }
@@ -143,13 +131,6 @@ public partial class QuestNodeController : Control
         SetPage(currentPage);
     }
 
-    void RefreshSelectedQuestVisuals()
-    {
-        if (!isQuestOnPage)
-            return;
-        questNodeList[currentNodeIndex].RefreshQuestNode();
-    }
-
     void OnQuestPressed(int nodeIndex)
     {
         currentNodeIndex = nodeIndex;
@@ -157,13 +138,8 @@ public partial class QuestNodeController : Control
         currentQuestIndex = pageStartIndex + nodeIndex;
         isQuestOnPage = true;
         questViewer.SetupQuest(questDataList[currentQuestIndex]);
-        if (questDataList[currentQuestIndex].questItem is ProfileItemHandle itemHandle && itemHandle.GetItemUnsafe()?["attributes"]?["item_seen"]?.GetValue<bool>()!=true)
-        {
-            itemHandle.GetItemUnsafe()["attributes"]["item_seen"] = true;
-            GD.Print($"test: {itemHandle.GetItemUnsafe()["attributes"]?["item_seen"]?.GetValue<bool>()}");
-            string content = @$"{{""itemIds"": [""{itemHandle.profileItem.uuid}""]}}";
-            ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "MarkItemSeen", content).RunSafely();
-        }
+        if (questDataList[currentQuestIndex].questItem is ProfileItemHandle itemHandle)
+            itemHandle.MarkItemSeen();
         EmitSignal(SignalName.Pressed);
     }
 

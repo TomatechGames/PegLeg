@@ -13,3 +13,11 @@ vec2 adaptToAspect(vec2 controlSize, vec2 shiftDirection, vec2 textureResolution
 	return result;
 	//return (scaledUV-scaledShift)/scaledResolution;
 }
+
+vec2 GetFitSize(vec2 controlSize, vec2 textureResolution)
+{
+	float horizontalRatio = textureResolution.x/controlSize.x;
+	float verticalRatio = textureResolution.y/controlSize.y;
+	float ratio = max(horizontalRatio,verticalRatio);
+	return textureResolution/ratio;
+}

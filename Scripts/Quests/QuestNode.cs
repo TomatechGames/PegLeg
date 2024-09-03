@@ -22,18 +22,21 @@ public partial class QuestNode : Control
     CheckButton selectedToggle;
     QuestData questData;
 
-    public void SetupQuestNode(QuestData questData, ButtonGroup buttonGroup)
+    public void SetupQuestNode(QuestData newQuestData, ButtonGroup buttonGroup)
     {
         selectedToggle.ButtonGroup = buttonGroup;
-        this.questData = questData;
+        if (questData is not null)
+            questData.OnPropertiesUpdated -= RefreshQuestNode;
+        questData = newQuestData;
+        questData.OnPropertiesUpdated += RefreshQuestNode;
         RefreshQuestNode();
     }
 
-    public void RefreshQuestNode()
+    void RefreshQuestNode()
     {
         EmitSignal(SignalName.NameChanged, questData.questTemplate["DisplayName"].ToString());
         EmitSignal(SignalName.IconChanged, questData.questTemplate.GetItemTexture());
-        EmitSignal(SignalName.NotificationVisible, questData.hasNotif);
+        EmitSignal(SignalName.NotificationVisible, questData.isNew);
         EmitSignal(SignalName.PinnedVisible, questData.isPinned);
 
         int colorIndex = 0;
@@ -49,5 +52,11 @@ public partial class QuestNode : Control
         selectedToggle.ButtonPressed = true;
         EmitSignal(SignalName.Pressed);
         EmitSignal(SignalName.NotificationVisible, false);
+    }
+
+    public override void _ExitTree()
+    {
+        if (questData is not null)
+            questData.OnPropertiesUpdated -= RefreshQuestNode;
     }
 }

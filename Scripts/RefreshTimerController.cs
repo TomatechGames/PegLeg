@@ -7,6 +7,14 @@ public partial class RefreshTimerController : Node
     public static event Action OnSecondChanged;
     public static event Action OnHourChanged;
     public static event Action OnDayChanged;
+    [Export]
+    int daysToAddDebug = 0;
+    [Export]
+    int monthsToAddDebug = 0;
+    [Export]
+    int yearsToAddDebug = 0;
+
+    static RefreshTimerController instance;
 
     public override void _Ready()
     {
@@ -19,6 +27,7 @@ public partial class RefreshTimerController : Node
         AddChild(perSecondTimer);
         perSecondTimer.Timeout += UpdateTimers;
         lastTime = DateTime.UtcNow;
+        instance = this;
     }
     DateTime lastTime;
     private void UpdateTimers()
@@ -32,7 +41,7 @@ public partial class RefreshTimerController : Node
         lastTime = currentTime;
     }
 
-    static readonly DateTime referenceStartDate = new(2024, 1, 22);
+    static readonly DateTime referenceStartDate = new(2024, 1, 25);
     static readonly int[] seasonLengths = new int[]
     {
         10,
@@ -43,37 +52,42 @@ public partial class RefreshTimerController : Node
     };
     static readonly int weeksInSeasonalYear = seasonLengths.Sum();
 
+    public static DateTime RightNow =>
+        DateTime.UtcNow
+            .AddDays(instance.daysToAddDebug)
+            .AddMonths(instance.monthsToAddDebug)
+            .AddYears(instance.yearsToAddDebug);
+
     public static DateTime GetRefreshTime(RefreshTimeType refreshType)
     {
+        var rightNow = RightNow;
+        var today = rightNow.Date;
         switch (refreshType)
         {
             case RefreshTimeType.Hourly:
-                return DateTime.UtcNow.Date.AddHours(DateTime.UtcNow.Hour + 1);
+                return today.AddHours(rightNow.Hour + 1);
             case RefreshTimeType.Daily:
-                return DateTime.UtcNow.Date.AddDays(1);
+                return today.AddDays(1);
             case RefreshTimeType.Weekly:
-                int utcDayOfWeek = (int)DateTime.UtcNow.DayOfWeek;
+                int utcDayOfWeek = (int)rightNow.DayOfWeek;
                 int daysUntilThursday = ((10 - utcDayOfWeek)) % 7;
-                return DateTime.UtcNow.Date.AddDays(daysUntilThursday + 1);
+                return today.AddDays(daysUntilThursday + 1);
         }
-        int dayCount = (DateTime.UtcNow.Date - referenceStartDate).Days;
-        GD.Print("DC: " + dayCount);
+        int dayCount = (today - referenceStartDate).Days;
         dayCount = dayCount % (weeksInSeasonalYear * 7);
-        GD.Print("DC2: " + dayCount);
         int daysRemaining = 0;
+        int startDayOffset = 0;
         for (int i = 0; i < seasonLengths.Length; i++)
         {
-            if (dayCount < seasonLengths[i]*7)
+            int reducedDayCount = dayCount - startDayOffset;
+            if (reducedDayCount < seasonLengths[i]*7)
             {
-                GD.Print("S: " + i);
-                daysRemaining = (seasonLengths[i] * 7) - dayCount;
+                daysRemaining = (seasonLengths[i] * 7) - reducedDayCount;
                 break;
             }
-            dayCount -= seasonLengths[i]*7;
+            startDayOffset += seasonLengths[i] * 7;
         }
-        GD.Print("R: " + daysRemaining);
-        var result = DateTime.UtcNow.Date.AddDays(daysRemaining + 1);
-        GD.Print("D: " + result);
+        var result = today.AddDays(daysRemaining);
         return result;
     }
 }

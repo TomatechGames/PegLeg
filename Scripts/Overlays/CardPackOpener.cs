@@ -95,10 +95,13 @@ public partial class CardPackOpener : Control
             if (!Visible || !IsInsideTree())
                 return;
             await this.WaitForFrame();
+            GD.Print("Test: "+smallCardParent.GetThemeConstant("separation"));
+            smallCardParent.AddThemeConstantOverride("separation", -123);
+            GD.Print("Test2: " + smallCardParent.GetThemeConstant("separation"));
             //smallOffsetAmount = Mathf.FloorToInt(topCard.Size.Y) + smallCardParent.GetThemeConstant("separation");
             smallCardParent.AddThemeConstantOverride("separation", gapBetweenCards-Mathf.FloorToInt(topCard.Size.Y));
             smallOffsetAmount = gapBetweenCards;
-            GD.Print($"smallOffset: {smallOffsetAmount} ({Mathf.FloorToInt(topCard.Size.Y)}+{smallCardParent.GetThemeConstant("separation")})");
+            //GD.Print($"smallOffset: {smallOffsetAmount} ({Mathf.FloorToInt(topCard.Size.Y)}+{smallCardParent.GetThemeConstant("separation")})");
         };
         if (Visible)
         {
@@ -161,7 +164,7 @@ public partial class CardPackOpener : Control
         confettiParticles.Restart();
         confettiParticles.Emitting = false;
 
-        smallCardParent.AddThemeConstantOverride("separation", -Mathf.FloorToInt(topCard.Size.Y));
+        smallCardParent.Visible=false;
 
         var fallingTransition = GetTree().CreateTween().SetParallel();
         fallingTransition.TweenProperty(fallingCrate, "self_modulate", Colors.White, 0.25);
@@ -170,6 +173,8 @@ public partial class CardPackOpener : Control
         //tween crate image down
         fallingTransition.Finished += () =>
         {
+            smallCardParent.Visible = true;
+            smallCardParent.AddThemeConstantOverride("separation", -Mathf.FloorToInt(topCard.Size.Y));
             landedCrate.Visible = true;
             landedCrateLid.Visible = true;
             fallingCrate.Visible = false;

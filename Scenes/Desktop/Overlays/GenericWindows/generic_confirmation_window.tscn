@@ -1,16 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://outqvmv6p0pm"]
+[gd_scene load_steps=3 format=3 uid="uid://2okdom0nii2b"]
 
-[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Overlays/basic_modal_window.tscn" id="1_m5vxe"]
-[ext_resource type="Script" path="res://Scripts/Overlays/GenericWindows/GenericLineEditWindow.cs" id="2_v5dtr"]
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_8rk17"]
+[ext_resource type="Script" path="res://Scripts/Overlays/GenericWindows/GenericConfirmationWindow.cs" id="2_xtj6o"]
 
-[node name="GenericLineEditWindow" node_paths=PackedStringArray("header", "content", "textBox", "cancelButton", "confirmButton", "warningLabel") instance=ExtResource("1_m5vxe")]
-script = ExtResource("2_v5dtr")
+[node name="GenericConfirmationWindow" node_paths=PackedStringArray("header", "content", "warningLabel", "cancelButton", "negativeButton", "positiveButton") instance=ExtResource("1_8rk17")]
+script = ExtResource("2_xtj6o")
 header = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Header")
 content = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Context")
-textBox = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LineEdit")
-cancelButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/CancelBtn")
-confirmButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/ConfirmBtn")
 warningLabel = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Warning")
+cancelButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/CancelBtn")
+negativeButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/NegativeBtn")
+positiveButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/PositiveBtn")
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0"]
 use_top_left = true
@@ -37,21 +37,16 @@ text = "Title Goes Here"
 [node name="Context" type="Label" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" index="1"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Extra context goes here"
+text = "Extra context goes here here here here here"
 autowrap_mode = 3
 
-[node name="LineEdit" type="LineEdit" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" index="2"]
-custom_minimum_size = Vector2(256, 0)
-layout_mode = 2
-placeholder_text = "Placeholder text here"
-
-[node name="Warning" type="Label" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" index="3"]
+[node name="Warning" type="Label" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" index="2"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.501961, 0, 1)
 text = "Warning: Goes here"
 autowrap_mode = 3
 
-[node name="Buttons" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" index="4"]
+[node name="Buttons" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" index="3"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
@@ -62,11 +57,18 @@ theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 24
 text = "Cancel"
 
-[node name="ConfirmBtn" type="Button" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons" index="1"]
+[node name="NegativeBtn" type="Button" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"LargeButton"
+theme_override_font_sizes/font_size = 24
+text = "Negative"
+
+[node name="PositiveBtn" type="Button" parent="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons" index="2"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"ActionButton"
 theme_override_font_sizes/font_size = 24
-text = "Confirm"
+text = "Positive"
 
 [connection signal="pressed" from="BG" to="." method="Cancel"]

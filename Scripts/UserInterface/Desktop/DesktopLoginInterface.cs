@@ -36,6 +36,7 @@ public partial class DesktopLoginInterface : LoginInterface
     Vector2I existingSize;
     Vector2I smallSize;
 
+    bool hasShrunk = false;
     bool isLoggedIn = false;
     bool hasBanjoAssets = false;
     protected override async Task ReadyTask()
@@ -47,31 +48,26 @@ public partial class DesktopLoginInterface : LoginInterface
         sizeTarget.CustomMinimumSize = Vector2.Zero;
         logo.Scale = Vector2.One;
 
-        await this.WaitForFrame();
-        await this.WaitForFrame();
-        smallSize = ((Vector2I)sizeSource.Size)+(Vector2I.Down*128);
-        existingSize = GetWindow().Size;
-        var sizeDiff = existingSize - smallSize;
-        GetWindow().Size = smallSize;
-        GetWindow().Position += sizeDiff / 2;
-        await this.WaitForFrame();
-        await this.WaitForFrame();
-
         ConnectButtons();
         await this.WaitForFrame();
         hasBanjoAssets = BanjoAssets.PreloadSourcesParalell();
-        var loginTask = LoginRequests.TryLogin();
+        var loginTask = LoginRequests.TryLogin(false);
         await this.WaitForTimer(0.25f);
         isLoggedIn = await loginTask;
 
-        if (!hasAutoLoggedIn && isLoggedIn)
-        {
-            hasAutoLoggedIn = true;
+        if (!hasAutoLoggedIn && isLoggedIn && hasBanjoAssets)
             SwitchToMainInterface();
-        }
         else
         {
             MusicController.StopMusic();
+
+
+            smallSize = ((Vector2I)sizeSource.Size) + (Vector2I.Down * 128);
+            existingSize = GetWindow().Size;
+            var sizeDiff = existingSize - smallSize;
+            GetWindow().Size = smallSize;
+            GetWindow().Position += sizeDiff / 2;
+            hasShrunk = true;
 
             music.VolumeDb = -80;
             var musicFadeout = GetTree().CreateTween().SetParallel();
@@ -83,9 +79,9 @@ public partial class DesktopLoginInterface : LoginInterface
             loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsOffline ? "OFFLINE" : "Not Logged In");
 
             loginControls.Visible = !isLoggedIn;
-            banjoControls.Visible = !hasBanjoAssets;
+            banjoControls.Visible = false;
             loginButton.Disabled = !hasBanjoAssets;
-            loginButton.TooltipText = !hasBanjoAssets ? "Game Assets must be\ngenerated before continuing" : "";
+            loginButton.TooltipText = !hasBanjoAssets ? "Banjo Assets are missing or incomplete, please\nplace banjo assets in the \"External/Banjo\" folder and restart" : "";
 
             if (isLoggedIn)
                 loginButton.Text = "Continue";
@@ -101,6 +97,7 @@ public partial class DesktopLoginInterface : LoginInterface
 
     public async void RunBanjoGenerator()
     {
+        return;
         loginContent.Visible = false;
         loadingIcon.Visible = true;
         await BanjoAssets.GenerateAssets(gameFolderPath.Text);
@@ -125,7 +122,7 @@ public partial class DesktopLoginInterface : LoginInterface
         loginContent.Visible = false;
         loadingIcon.Visible = true;
         await base.Login();
-        if (await LoginRequests.TryLogin())
+        if (LoginRequests.AuthTokenValid)
         {
             var musicFadeout = GetTree().CreateTween().SetParallel();
             musicFadeout.TweenProperty(music, "volume_db", -80, 1)
@@ -143,11 +140,14 @@ public partial class DesktopLoginInterface : LoginInterface
 
     async void SwitchToMainInterface()
     {
+        hasAutoLoggedIn = true;
         MusicController.ResumeMusic();
-        var sizeDiff = existingSize - smallSize;
-        GetWindow().Size = existingSize;
-        GetWindow().Position -= sizeDiff / 2;
-        await this.WaitForFrame();
+        if (hasShrunk)
+        {
+            var sizeDiff = existingSize - smallSize;
+            GetWindow().Size = existingSize;
+            GetWindow().Position -= sizeDiff / 2;
+        }
         await this.WaitForFrame();
         GetTree().Root.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
         GetTree().ChangeSceneToFile(desktopMainInterfacePath);

@@ -57,8 +57,8 @@ public partial class LlamaEntry : GameItemEntry
         EmitSignal(SignalName.NameChanged, name);
 
         string description = cardPackTemplate["Description"]?.ToString();
-        description = description?.Replace(". ", ".\n");
-        description = description?.Replace("! ", "!\n");
+        //description = description?.Replace(". ", ".\n");
+        //description = description?.Replace("! ", "!\n");
         if (includeNameInDescription)
             description = name + "\n" + description;
         EmitSignal(SignalName.DescriptionChanged, description);
@@ -110,6 +110,8 @@ public partial class LlamaEntry : GameItemEntry
 
     public override void EmitPressedSignal()
     {
+        if (selectionGraphics is not null)
+            selectionGraphics.ButtonPressed = true;
         EmitSignal(SignalName.LlamaPressed, linkedItemId);
     }
 }

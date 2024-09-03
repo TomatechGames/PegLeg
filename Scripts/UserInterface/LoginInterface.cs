@@ -14,7 +14,14 @@ using System.Threading.Tasks;
 
 public partial class LoginInterface : Control
 {
-	[Export]
+    [Signal]
+    public delegate void ShowErrorPanelEventHandler();
+    [Signal]
+    public delegate void ErrorHeaderChangedEventHandler(string header);
+    [Signal]
+    public delegate void ErrorContextChangedEventHandler(string context);
+
+    [Export]
     protected Button generateCodeButton;
 	[Export]
     protected Button pasteButton;
@@ -105,8 +112,23 @@ public partial class LoginInterface : Control
 
     public virtual async Task Login()
     {
-        if (!await LoginRequests.TryLogin())
-            await LoginRequests.LoginWithOneTimeCode(oneTimeCodeLine.Text);
+        if (!await LoginRequests.TryLogin(false))
+        {
+            if (LoginRequests.HasDeviceDetails)
+            {
+                EmitSignal(SignalName.ErrorContextChanged, LoginRequests.LatestErrorMessage);
+                EmitSignal(SignalName.ShowErrorPanel);
+                if (!usePersistantLogin.ButtonPressed)
+                    LoginRequests.DeleteDeviceDetails();
+                return;
+            }
+            if(!await LoginRequests.LoginWithOneTimeCode(oneTimeCodeLine.Text.Trim()))
+            {
+                EmitSignal(SignalName.ErrorContextChanged, LoginRequests.LatestErrorMessage);
+                EmitSignal(SignalName.ShowErrorPanel);
+                return;
+            }
+        }
         if (usePersistantLogin is null)
             return;
         if (!LoginRequests.HasDeviceDetails)

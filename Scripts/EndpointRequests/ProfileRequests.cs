@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Reflection.Metadata;
 
 public static class ProfileRequests
 {
@@ -219,62 +220,71 @@ public static class ProfileRequests
     //        .ToList();
     //}
 
-    public static async Task AddPinnedQuest(string uuid)
+    static List<string> localPinnedQuests;
+    static DateTime questsLastRefreshedAt = DateTime.MinValue;
+    static async Task CheckLocalPinnedQuests()
     {
-        var existingPinnedQuests = profileCache[FnProfiles.AccountItems]
+        bool outOfDate = (questsLastRefreshedAt - DateTime.UtcNow).TotalMinutes > 5;
+        if (localPinnedQuests != null && !outOfDate)
+            return;
+        
+        localPinnedQuests = (await GetProfile(FnProfiles.AccountItems, true))
             ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
             .AsArray()
             .Select(q => q.ToString())
             .ToList();
-        if (!existingPinnedQuests.Contains(uuid))
+    }
+
+    public static async Task AddPinnedQuest(string uuid)
+    {
+        await CheckLocalPinnedQuests();
+        if (!localPinnedQuests.Contains(uuid))
         {
-            existingPinnedQuests.Add(uuid);
-            JsonObject content = new()
-            {
-                ["pinnedQuestIds"] = new JsonArray(existingPinnedQuests.Select(q => (JsonValue)q.ToString()).ToArray())
-            };
-            GD.Print(content.ToString());
-            await PerformProfileOperation(FnProfiles.AccountItems, "SetPinnedQuests", content.ToString());
+            localPinnedQuests.Add(uuid);
+            OnItemUpdated?.Invoke(new(FnProfiles.AccountItems, uuid));
+            SendLocalPinnedQuests();
         }
     }
 
     public static async Task RemovePinnedQuest(string uuid)
     {
-        var existingPinnedQuests = profileCache[FnProfiles.AccountItems]
-            ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
-            .AsArray()
-            .Select(q => q.ToString())
-            .ToList();
-        if (existingPinnedQuests.Contains(uuid))
+        await CheckLocalPinnedQuests();
+        if (localPinnedQuests.Contains(uuid))
         {
-            existingPinnedQuests.Remove(uuid);
-            JsonObject content = new()
-            {
-                ["pinnedQuestIds"] = new JsonArray(existingPinnedQuests.Select(q => (JsonValue)q).ToArray())
-            };
-            GD.Print(content.ToString());
-            await PerformProfileOperation(FnProfiles.AccountItems, "SetPinnedQuests", content.ToString());
+            localPinnedQuests.Remove(uuid);
+            OnItemUpdated?.Invoke(new(FnProfiles.AccountItems, uuid));
+            SendLocalPinnedQuests();
         }
     }
 
-    public static async Task ClearPinnedQuests()
+    public static void ClearPinnedQuests()
     {
         GD.Print("clearing all pinned");
+        var unpinnedQuests = localPinnedQuests?.ToArray() ?? Array.Empty<string>();
+        localPinnedQuests?.Clear();
+        foreach (var uuid in unpinnedQuests)
+        {
+            OnItemUpdated?.Invoke(new(FnProfiles.AccountItems, uuid));
+        }
+        SendLocalPinnedQuests();
+    }
+
+    static async void SendLocalPinnedQuests()
+    {
+        localPinnedQuests ??= new();
         JsonObject content = new()
         {
-            ["pinnedQuestIds"] = new JsonArray()
+            ["pinnedQuestIds"] = new JsonArray(localPinnedQuests.Select(q => (JsonValue)q).ToArray())
         };
         await PerformProfileOperation(FnProfiles.AccountItems, "SetPinnedQuests", content.ToString());
     }
 
-    public static bool HasPinnedQuestUnsafe(string uuid)
+    public static bool HasPinnedQuest(string uuid)
     {
-        return profileCache[FnProfiles.AccountItems]
-            ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
-            .AsArray()
-            .Select(q=>q.ToString())
-            .Contains(uuid);
+        localPinnedQuests ??= new();
+        return localPinnedQuests.Contains(uuid);
     }
+
     public static async Task<ProfileItemHandle> RerollQuest(string uuid)
     {
         GD.Print("rerolling quest " + uuid);
@@ -489,6 +499,14 @@ public static class ProfileRequests
             //GD.Print("no cached profile");
 
         profileCache[profileId] = result;
+
+        if (profileId == FnProfiles.AccountItems)
+        {
+            localPinnedQuests ??= result["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
+                .AsArray()
+                .Select(q => q.ToString())
+                .ToList();
+        }
         lock (rewardNotificationChecks)
         {
             if (!rewardNotificationChecks.ContainsKey(profileId))
@@ -496,7 +514,7 @@ public static class ProfileRequests
             var checks = GenerateRewardNotificationChecks(result);
             rewardNotificationChecks[profileId] = checks;
             var trimmedChecks = checks.ToArray()[..Mathf.Min(10, checks.Count)];
-            GD.Print($"{profileId}: [{trimmedChecks.Select(n=>n.typeAndName+":"+n.rarity).ToArray().Join(", ")}]");
+            //GD.Print($"{profileId}: [{trimmedChecks.Select(n=>n.typeAndName+":"+n.rarity).ToArray().Join(", ")}]");
         }
         if (result.ContainsKey("notifications"))
         {
@@ -823,6 +841,18 @@ public class ProfileItemHandle
     public event Action<ProfileItemHandle> OnRemoved;
     public ProfileItemId profileItem { get; private set; }
     public bool isValid { get; private set; } = true;
+
+    bool overrideItemSeen;
+    public bool ItemSeen => overrideItemSeen || (GetItemUnsafe()["attributes"]?["item_seen"]?.GetValue<bool>() ?? false);
+    public async void MarkItemSeen()
+    {
+        if (!isValid || ItemSeen)
+            return;
+        overrideItemSeen = true;
+        OnChanged?.Invoke(this);
+        string content = @$"{{""itemIds"": [""{profileItem.uuid}""]}}";
+        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "MarkItemSeen", content);
+    }
 
     public static async Task<ProfileItemHandle> CreateHandle(ProfileItemId profileItem)
     {
