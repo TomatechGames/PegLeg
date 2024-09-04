@@ -21,10 +21,6 @@ public partial class DesktopLoginInterface : LoginInterface
     [Export]
     Label loginText;
     [Export]
-    FileDialog gameFolderDialog;
-    [Export]
-    LineEdit gameFolderPath;
-    [Export]
     Control loginContent;
     [Export]
     Control loadingIcon;
@@ -43,7 +39,6 @@ public partial class DesktopLoginInterface : LoginInterface
     {
         loginContent.Visible = true;
         loadingIcon.Visible = false;
-        gameFolderDialog.DirSelected += ApplyFolder;
         GetTree().Root.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
         sizeTarget.CustomMinimumSize = Vector2.Zero;
         logo.Scale = Vector2.One;
@@ -88,26 +83,6 @@ public partial class DesktopLoginInterface : LoginInterface
 
             TweenWindowOpen();
         }
-    }
-
-    private void ApplyFolder(string dir)
-    {
-        gameFolderPath.Text = dir;
-    }
-
-    public async void RunBanjoGenerator()
-    {
-        return;
-        loginContent.Visible = false;
-        loadingIcon.Visible = true;
-        await BanjoAssets.GenerateAssets(gameFolderPath.Text);
-        loginContent.Visible = true;
-        loadingIcon.Visible = false;
-
-        hasBanjoAssets = BanjoAssets.PreloadSourcesParalell();
-        banjoControls.Visible = !hasBanjoAssets;
-        loginButton.Disabled = !hasBanjoAssets;
-        loginButton.TooltipText = !hasBanjoAssets ? "Game Assets must be\ngenerated before continuing" : "";
     }
 
     void TweenWindowOpen()

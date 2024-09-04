@@ -101,17 +101,24 @@ public partial class ThemeController : Node
             return;
         themeDataSet = new();
 
-        using (DirAccess customThemes = DirAccess.Open(Helpers.ProperlyGlobalisePath(customThemePath)))
-        foreach (var themeDir in customThemes.GetDirectories())
+        string absoluteCustomThemePath = Helpers.ProperlyGlobalisePath(customThemePath);
+        if (DirAccess.DirExistsAbsolute(absoluteCustomThemePath))
         {
-            var themeFullDir = customThemes.GetCurrentDir() + "/" + themeDir;
-            if (!FileAccess.FileExists(themeFullDir + "/theme.json"))
-                continue;
-            using var themeFile = FileAccess.Open(themeFullDir + "/theme.json", FileAccess.ModeFlags.Read);
-            themeDataSet.Add(themeDir, new(JsonNode.Parse(themeFile.GetAsText()), themeDir));
+            using DirAccess customThemes = DirAccess.Open(absoluteCustomThemePath);
+            foreach (var themeDir in customThemes.GetDirectories())
+            {
+                var themeFullDir = customThemes.GetCurrentDir() + "/" + themeDir;
+                if (!FileAccess.FileExists(themeFullDir + "/theme.json"))
+                    continue;
+                using var themeFile = FileAccess.Open(themeFullDir + "/theme.json", FileAccess.ModeFlags.Read);
+                themeDataSet.Add(themeDir, new(JsonNode.Parse(themeFile.GetAsText()), themeDir));
+            }
         }
 
-        using DirAccess builtInThemes = DirAccess.Open(Helpers.ProperlyGlobalisePath(builtInThemePath));
+        string absoluteBuiltInThemePath = Helpers.ProperlyGlobalisePath(builtInThemePath);
+        if (!DirAccess.DirExistsAbsolute(absoluteCustomThemePath))
+            DirAccess.MakeDirAbsolute(absoluteCustomThemePath);
+        using DirAccess builtInThemes = DirAccess.Open(absoluteBuiltInThemePath);
         foreach (var themeName in builtInThemes.GetDirectories())
         {
             if (themeDataSet.ContainsKey(themeName))
