@@ -14,7 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6bvuf")
-questGroupViewer = NodePath("HSplitContainer/QuestGroupViewer")
+questGroupViewer = NodePath("HSplitContainer/MarginContainer/QuestGroupViewer")
 foldoutParent = NodePath("HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/QuestFoldouts")
 foldoutScene = ExtResource("2_j1c4c")
 questGroupScene = ExtResource("3_oo2ti")
@@ -79,7 +79,10 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="QuestGroupViewer" parent="HSplitContainer" instance=ExtResource("6_ai2ub")]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="QuestGroupViewer" parent="HSplitContainer/MarginContainer" instance=ExtResource("6_ai2ub")]
 layout_mode = 2
 
 [connection signal="HoldPressed" from="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/MarginContainer/Responsive Button Area" to="." method="ClearPinnedQuests"]

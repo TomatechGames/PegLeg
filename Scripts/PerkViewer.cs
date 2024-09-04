@@ -223,7 +223,9 @@ public partial class PerkViewer : Control
         string[] possibilities = perkPossibilities[index];
         string tierSource = baseAlteration?[^1..] ?? "";
         int.TryParse(tierSource, out int tier);
-        bool hasUpgrade = !(index == 5 && !isTrap) && tier > 0 && tier < 5;
+        if ((baseAlteration?[^2] ?? ' ') == 'v')
+            tier = 0;
+        bool hasUpgrade = (index != 5 || isTrap) && tier > 0 && tier < 5;
 
         if (!hasUpgrade && possibilities.Length==0)
         {
@@ -252,7 +254,7 @@ public partial class PerkViewer : Control
             string perk = possibilities[i];
             if (tier > 0)
                 perk = perk[..^1] + tier;
-            else if (index != 5)
+            else if (index != 5 || isTrap)
                 perk = perk[..^1] + 5;
 
             if (perk == baseAlteration)
