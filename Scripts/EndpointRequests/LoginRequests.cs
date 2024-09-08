@@ -22,12 +22,15 @@ static class LoginRequests
     const string fortPCSecret = "e1f31c211f28413186262d37a13fc84d";
     const string fortIOSClientId = "3446cd72694c4a4485d81b77adbb2141";
     const string fortIOSSecret = "9209d4a5e25a457fb9b07489d313b41a";
+    const string fortAndroidClientId = "3f69e56c7649492c8cc29f1af08a8a12";
+    const string fortAndroidSecret = "b51ee9cb12234f50a69efa67ef53812e";
 
     static readonly string fortPCAuthString = ClientAuthHeaderFromKeys(fortPCClientId, fortPCSecret);
     static readonly string fortIOSAuthString = ClientAuthHeaderFromKeys(fortIOSClientId, fortIOSSecret);
+    static readonly string fortAndroidAuthString = ClientAuthHeaderFromKeys(fortAndroidClientId, fortAndroidSecret);
 
-    public static string ClientID => fortIOSClientId;
-    public static string B64AuthString => fortIOSAuthString;
+    public static string ClientID => fortAndroidClientId;
+    public static string B64AuthString => fortAndroidAuthString;
 
     static readonly AuthenticationHeaderValue clientHeader = new("Basic", B64AuthString);
 
