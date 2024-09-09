@@ -90,7 +90,7 @@ public partial class ItemShopInterface : Control
     async void SelectShopItem(string offerId)
     {
         var offerItem = activeOffers[offerId]["itemGrants"][0].AsObject();
-        await GameItemViewer.Instance.SetItem(offerItem);
+        await GameItemViewer.Instance.ShowItem(offerItem);
         await GameItemViewer.Instance.LinkShopOffer(activeOffers[offerId].AsObject(), async ()=> await LoadShop(true));
     }
 }

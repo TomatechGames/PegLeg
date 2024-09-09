@@ -56,9 +56,9 @@ public partial class QuestViewer : Control
         LoadingOverlay.Instance.AddLoadingKey("pinnedQuest");
 
         if (pinButton.ButtonPressed)
-            await ProfileRequests.AddPinnedQuest(currentQuest.questItem.profileItem.uuid);
+            await ProfileRequests.AddPinnedQuest(currentQuest.questItem.itemID.uuid);
         else
-            await ProfileRequests.RemovePinnedQuest(currentQuest.questItem.profileItem.uuid);
+            await ProfileRequests.RemovePinnedQuest(currentQuest.questItem.itemID.uuid);
 
         pinButton.ButtonPressed = currentQuest.isPinned;
         LoadingOverlay.Instance.RemoveLoadingKey("pinnedQuest");
@@ -70,7 +70,7 @@ public partial class QuestViewer : Control
             return;
         LoadingOverlay.Instance.AddLoadingKey("rerollQuest");
         
-        var newQuest = await ProfileRequests.RerollQuest(currentQuest.questItem.profileItem.uuid);
+        var newQuest = await ProfileRequests.RerollQuest(currentQuest.questItem.itemID.uuid);
         currentQuest.LinkQuestItem(newQuest);
 
         SetupQuest(currentQuest);

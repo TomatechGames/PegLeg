@@ -24,7 +24,7 @@ public partial class DynamicGridContainer : Container
             return Vector2.Zero;
         }
 
-		Vector2 firstChildMinSize = GetChild<Control>(0).GetCombinedMinimumSize();
+		Vector2 firstChildMinSize = GetFirstChildMinSize();
 
 		int rowCount = CalcGrid(firstChildMinSize, visibleChildCount).Y;
 
@@ -36,7 +36,10 @@ public partial class DynamicGridContainer : Container
 		return newMinSize;
     }
 
-	bool disableSort = false;
+	public Vector2 GetFirstChildMinSize() => GetChild<Control>(0).GetCombinedMinimumSize();
+
+
+    bool disableSort = false;
 	public void SetDisableSort(bool value)
 	{
         disableSort = value;
@@ -64,7 +67,7 @@ public partial class DynamicGridContainer : Container
                 return;
             }
 
-			Vector2 firstChildMinSize = GetChild<Control>(0).GetCombinedMinimumSize();
+			Vector2 firstChildMinSize = GetFirstChildMinSize();
 
             var grid = CalcGrid(firstChildMinSize, visibleChildCount);
             int colCount = grid.X;

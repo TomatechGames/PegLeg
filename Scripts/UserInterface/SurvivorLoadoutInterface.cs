@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Linq;
 using System.Text.Json.Nodes;
+using static ProfileRequests;
 
 public partial class SurvivorLoadoutInterface : Node
 {
@@ -297,5 +298,30 @@ public partial class SurvivorLoadoutInterface : Node
         {
             loadoutSelector.AddItem(kvp.Key);
         }
+    }
+
+    [Export]
+    Texture2D recycleIcon;
+    [Export]
+    Texture2D collectionIcon;
+
+    static readonly ProfileItemPredicate recycleFilter = kvp =>
+        kvp.Value?["templateId"]?.ToString() is string templateID && templateID.Split(":")?[0] is string type &&
+        (type == "Worker" || type == "Schematic" || type == "Hero" || type == "Defender") && 
+        !templateID.Contains("_sr") && 
+        !templateID.Contains("ammo") && !templateID.Contains("floor_defender")&&
+        !templateID.Contains("player_jump_pad") && !templateID.Contains("ingredient");
+
+    async void DebugRecycle()
+    {
+        GameItemSelector.Instance.titleText = "Recycle";
+        GameItemSelector.Instance.confirmButtonText = "Confirm Recycle";
+        GameItemSelector.Instance.multiselectMode = true;
+        GameItemSelector.Instance.selectedMarkerTex = recycleIcon;
+        GameItemSelector.Instance.selectedTintColor = Colors.Red;
+        GameItemSelector.Instance.collectionMarkerTex = collectionIcon;
+        GameItemSelector.Instance.autoselectButtonTex = recycleIcon;
+        var recycleHandles = await GameItemSelector.Instance.OpenSelector(recycleFilter);
+        GD.Print("Handles: \n" + recycleHandles.Select(h => h.itemID.uuid).ToArray().Join("\n"));
     }
 }

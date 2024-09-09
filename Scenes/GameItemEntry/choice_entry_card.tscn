@@ -147,8 +147,6 @@ expand_mode = 1
 
 [node name="Responsive Button Circle" parent="Control/InspectArea/TextureRect" instance=ExtResource("10_pu46j")]
 layout_mode = 1
-offset_left = 1.0
-offset_right = 1.0
 outlinePadding = 0.0
 
 [connection signal="IconChanged" from="." to="ChoiceCardTexture" method="SetShaderTexture" binds= ["IconTexture"]]

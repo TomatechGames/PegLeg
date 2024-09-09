@@ -21,7 +21,7 @@ public partial class LlamaEntry : GameItemEntry
         ResourceLoader.Load<Texture2D>("res://Images/Llamas/PinataGold.png", "Texture2D"),
     };
 
-    protected override void UpdateItemData(JsonObject itemInstance)
+    protected override void UpdateItemData(JsonObject itemInstance, string _ = null)
     {
         if (itemInstance is null)
             return;

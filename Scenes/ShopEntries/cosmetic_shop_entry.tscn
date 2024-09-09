@@ -282,11 +282,13 @@ vertical_alignment = 2
 [node name="ColorRect" type="ColorRect" parent="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer/FinalPrice/OriginalPrice"]
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.68
-anchor_right = 1.0
-anchor_bottom = 0.72
+anchor_top = 0.565
+anchor_right = 1.05
+anchor_bottom = 0.645
 grow_horizontal = 2
 grow_vertical = 2
+rotation = 0.122173
+color = Color(0, 0, 0, 0.501961)
 
 [node name="OwnedLabel" type="Label" parent="DetailsArea/MarginContainer/PriceBox/MarginContainer"]
 visible = false

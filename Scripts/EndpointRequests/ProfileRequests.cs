@@ -14,20 +14,6 @@ using System.Reflection.Metadata;
 public static class ProfileRequests
 {
     static readonly Dictionary<string, JsonObject> profileCache = new();
-    static readonly List<string> validProfiles = new();
-
-    public static void InvalidateProfileCache(string profileId) => validProfiles.Remove(profileId);
-    public static void InvalidateProfileCache() => validProfiles.Clear();
-
-    public static async Task RevalidateProfiles()
-    {
-        var toBeValidated = validProfiles.ToArray();
-        validProfiles.Clear();
-        foreach (var item in toBeValidated)
-        {
-            await GetProfile(item);
-        }
-    }
 
     public static async Task<int> GetSumOfProfileItems(string profileID, string type) =>
         (await GetProfileItems(profileID, item => item.Value["templateId"].ToString().StartsWith(type))).Select(kvp => kvp.Value["quantity"].GetValue<int>()).Sum();
@@ -404,12 +390,14 @@ public static class ProfileRequests
         return itemData;
     }
 
+    public static bool? IsItemCollectedUnsafe(string itemId)
+    {
+        GD.PushWarning("TODO: implement collection book check");
+        return null;
+    }
+
     public static async Task<JsonObject> GetProfile(string profileId, bool forceRefresh = false)
     {
-        if (forceRefresh && validProfiles.Contains(profileId))
-            validProfiles.Remove(profileId);
-        //if (!validProfiles.Contains(profileId))
-        //    GD.Print("profile invalid");
         await PerformProfileOperation(profileId, "QueryProfile");
         return profileCache[profileId];
     }
@@ -426,9 +414,31 @@ public static class ProfileRequests
 
     static SemaphoreSlim profileOperationSephamore = new(1);
     public static event Action<string, JsonObject> OnNotification;
-    public static async Task<JsonObject> PerformProfileOperation(string profileId, string operation, string content = "{}")
+    public static async Task<JsonObject> PerformProfileOperation(string profileId, string operation, string content = "{}", bool queryIgnoreCache = false)
     {
-        if(operation == "MarkItemSeen" && profileCache.ContainsKey(profileId))
+        if (PerformProfileOperationWithCache(profileId, operation, content, queryIgnoreCache) is JsonObject cacheResult)
+            return cacheResult;
+        await profileOperationSephamore.WaitAsync();
+        try
+        {
+            return PerformProfileOperationWithCache(profileId, operation, content, queryIgnoreCache) ?? await PerformProfileOperationUnsafe(profileId, operation, content);
+        }
+        finally
+        {
+            profileOperationSephamore.Release();
+        }
+    }
+
+    static JsonObject PerformProfileOperationWithCache(string profileId, string operation, string content = "{}", bool queryIgnoreCache = false)
+    {
+        if (!profileCache.ContainsKey(profileId))
+            return null;
+
+        if (operation == "QueryProfile" && !queryIgnoreCache)
+        {
+            return profileCache[profileId];
+        }
+        if (operation == "MarkItemSeen")
         {
             var targetItems = JsonNode.Parse(content)["itemIds"].AsArray();
             var targetProfile = profileCache[profileId];
@@ -440,30 +450,11 @@ public static class ProfileRequests
             PerformProfileOperationUnsafe(profileId, operation, content).RunSafely();
             return profileCache[profileId];
         }
-        await profileOperationSephamore.WaitAsync();
-        try
-        {
-            return await PerformProfileOperationUnsafe(profileId, operation, content);
-        }
-        finally
-        {
-            profileOperationSephamore.Release();
-        }
+        return null;
     }
 
     public static async Task<JsonObject> PerformProfileOperationUnsafe(string profileId, string operation, string content = "{}")
     {
-        //if this profile has been accessed between sending the query and getting past the sephamore, return the profile
-        if (operation == "QueryProfile" && validProfiles.Contains(profileId) && profileCache.ContainsKey(profileId) && profileCache[profileId] is JsonObject cachedProfile)
-        {
-            //GD.Print("using cached profile");
-            return cachedProfile;
-        }
-
-        string logMsg = $"requesting profile ({operation}, {profileId}, {operation == "QueryProfile"}, {validProfiles.Contains(profileId)} {profileCache.ContainsKey(profileId)})";
-        //GD.PushWarning(logMsg);
-        GD.Print(logMsg);
-
         if (!await LoginRequests.TryLogin())
         {
             GD.Print("profile request failed: not logged in");
@@ -529,10 +520,6 @@ public static class ProfileRequests
         if (changelog is not null)
             multiUpdateArray.Add(changelog);
         HandleChanges(multiUpdateArray);
-        if (!validProfiles.Contains(profileId))
-            validProfiles.Add(profileId);
-        if (!validProfiles.Contains(profileId))
-            GD.Print("profile invalid WJHAR");
 
         GD.Print("request complete");
         return profileCache[profileId];
@@ -687,7 +674,7 @@ public static class ProfileRequests
 
 //listens to addition and remove events of a profile
 //when created, will do a full scan and run the OnAdded event for every matched item
-public class ProfileListener
+public partial class ProfileListener : RefCounted
 {
     public event Action<ProfileItemHandle> OnAdded;
     public event Action<ProfileItemHandle> OnUpdated;
@@ -696,16 +683,11 @@ public class ProfileListener
     public readonly ProfileRequests.ProfileItemPredicate predicate;
     readonly List<ProfileItemHandle> items = new();
 
-    public static async Task<ProfileListener> CreateListener(string profile, string type)
-    {
-        ProfileRequests.ProfileItemPredicate predicate = kvp => kvp.Value["templateId"]?.ToString()?.StartsWith(type) ?? false;
-        return new(profile, predicate, await ProfileRequests.GetProfileItems(profile, predicate));
-    }
+    public static async Task<ProfileListener> CreateListener(string profile, string type) =>
+        await CreateListener(profile, kvp => kvp.Value["templateId"]?.ToString()?.StartsWith(type) ?? false);
 
-    public static async Task<ProfileListener> CreateListener(string profile, ProfileRequests.ProfileItemPredicate predicate)
-    {
-        return new(profile, predicate, await ProfileRequests.GetProfileItems(profile, predicate));
-    }
+    public static async Task<ProfileListener> CreateListener(string profile, ProfileRequests.ProfileItemPredicate predicate)=>
+        new(profile, predicate, await ProfileRequests.GetProfileItems(profile, predicate));
 
     ProfileListener(string profile, ProfileRequests.ProfileItemPredicate predicate, JsonObject existingItems)
     {
@@ -721,22 +703,6 @@ public class ProfileListener
         }
     }
 
-    ~ProfileListener()
-    {
-        Unlink();
-    }
-
-    public void Unlink()
-    {
-        ProfileRequests.OnItemAdded -= ItemAddedDetector;
-        ProfileRequests.OnItemUpdated -= ItemUpdatedDetector;
-        ProfileRequests.OnItemRemoved -= ItemRemovalDetector;
-        foreach (var item in items)
-        {
-            item.Unlink();
-        }
-    }
-
     public ProfileItemHandle[] Items => items.ToArray();
 
     bool debug = false;
@@ -744,6 +710,8 @@ public class ProfileListener
 
     void ItemAddedDetector(ProfileItemId profileItem)
     {
+        if (GetReferenceCount() == 0)
+            return;
         var addedItem = ProfileRequests.GetCachedProfileItemInstance(profileItem);
         if (debug)
             GD.Print($"checking if added item ({profileItem.uuid}) is a match...");
@@ -758,6 +726,8 @@ public class ProfileListener
     }
     void ItemUpdatedDetector(ProfileItemId profileItem)
     {
+        if (GetReferenceCount() == 0)
+            return;
         var handle = items.FirstOrDefault(i => i.IsMatch(profileItem.uuid));
         if (debug)
             GD.Print($"checking if changed item ({profileItem.uuid}) is a match...");
@@ -768,9 +738,10 @@ public class ProfileListener
             OnUpdated?.Invoke(handle);
         }
     }
-
     void ItemRemovalDetector(ProfileItemId profileItem)
     {
+        if (GetReferenceCount() == 0)
+            return;
         var handle = items.FirstOrDefault(i=>i.IsMatch(profileItem.uuid));
         if (debug)
             GD.Print($"checking if removed item ({profileItem.uuid}) is a match...");
@@ -782,6 +753,17 @@ public class ProfileListener
             items.Remove(handle);
         }
     }
+
+    //protected void free()
+    //{
+    //    ProfileRequests.OnItemAdded -= ItemAddedDetector;
+    //    ProfileRequests.OnItemUpdated -= ItemUpdatedDetector;
+    //    ProfileRequests.OnItemRemoved -= ItemRemovalDetector;
+    //    foreach (var item in items)
+    //    {
+    //        item.Free();
+    //    }
+    //}
 }
 
 public readonly struct ProfileItemId
@@ -835,11 +817,11 @@ public readonly struct ProfileItemId
     public override readonly int GetHashCode() => HashCode.Combine(uuid, profile);
 }
 
-public class ProfileItemHandle
+public partial class ProfileItemHandle : RefCounted
 {
     public event Action<ProfileItemHandle> OnChanged;
     public event Action<ProfileItemHandle> OnRemoved;
-    public ProfileItemId profileItem { get; private set; }
+    public ProfileItemId itemID { get; private set; }
     public bool isValid { get; private set; } = true;
 
     bool overrideItemSeen;
@@ -850,51 +832,39 @@ public class ProfileItemHandle
             return;
         overrideItemSeen = true;
         OnChanged?.Invoke(this);
-        string content = @$"{{""itemIds"": [""{profileItem.uuid}""]}}";
+        string content = @$"{{""itemIds"": [""{itemID.uuid}""]}}";
         await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "MarkItemSeen", content);
     }
 
-    public static async Task<ProfileItemHandle> CreateHandle(ProfileItemId profileItem)
+    public static async Task<ProfileItemHandle> CreateHandle(ProfileItemId itemID)
     {
-        if((await ProfileRequests.GetProfileItemInstance(profileItem)) is not null)
-            return new ProfileItemHandle(profileItem);
+        if((await ProfileRequests.GetProfileItemInstance(itemID)) is not null)
+            return new ProfileItemHandle(itemID);
         return new ProfileItemHandle();
     }
-    public static ProfileItemHandle CreateHandleUnsafe(ProfileItemId profileItem) =>
-        new(profileItem);
+
+    public static ProfileItemHandle CreateHandleUnsafe(ProfileItemId itemID) =>
+        new(itemID);
 
     public ProfileItemHandle()
     {
         isValid = false;
     }
 
-    ProfileItemHandle(ProfileItemId profileItem)
+    ProfileItemHandle(ProfileItemId itemID)
     {
-        this.profileItem = profileItem;
+        this.itemID = itemID;
         ProfileRequests.OnItemUpdated += ItemChangeDetector;
         ProfileRequests.OnItemRemoved += ItemRemovalDetector;
     }
 
-    ~ProfileItemHandle()
-    {
-        Unlink();
-    }
-
-    public void Unlink()
-    {
-        isValid = false;
-        profileItem = new();
-        ProfileRequests.OnItemUpdated -= ItemChangeDetector;
-        ProfileRequests.OnItemRemoved -= ItemRemovalDetector;
-    }
-
     public async Task ReplaceWith(ProfileItemId profileItem)
     {
-        if (this.profileItem == profileItem)
+        if (itemID == profileItem)
             return;
         if ((await ProfileRequests.GetProfileItemInstance(profileItem)) is not null)
         {
-            this.profileItem = profileItem;
+            itemID = profileItem;
             isValid = true;
             OnChanged?.Invoke(this);
         }
@@ -902,26 +872,39 @@ public class ProfileItemHandle
 
     public bool IsMatch(string uuid)
     {
-        return !isValid || profileItem.uuid == uuid;
+        return !isValid || itemID.uuid == uuid;
     }
 
     void ItemChangeDetector(ProfileItemId profileItem)
     {
-        if (this.profileItem == profileItem)
+        if (GetReferenceCount() == 0)
+        {
+            isValid = false;
+            return;
+        }
+        if (itemID == profileItem && GetReferenceCount() != 0)
             OnChanged?.Invoke(this);
     }
 
     void ItemRemovalDetector(ProfileItemId profileItem)
     {
-        if (this.profileItem == profileItem)
+        if (itemID == profileItem)
         {
             isValid = false;
-            OnRemoved?.Invoke(this);
+            if (GetReferenceCount() != 0)
+                OnRemoved?.Invoke(this);
         }
     }
 
-    public async Task<JsonObject> GetItem() => isValid ? await ProfileRequests.GetProfileItemInstance(profileItem) : null;
-    public JsonObject GetItemUnsafe() => isValid ? ProfileRequests.GetCachedProfileItemInstance(profileItem) : null;
+    //protected void free()
+    //{
+    //    ProfileRequests.OnItemUpdated -= ItemChangeDetector;
+    //    ProfileRequests.OnItemRemoved -= ItemRemovalDetector;
+    //}
+    public KeyValuePair<string, JsonObject> CreateKVPUnsafe() => KeyValuePair.Create(itemID.uuid, GetItemUnsafe());
+
+    public async Task<JsonObject> GetItem() => isValid ? await ProfileRequests.GetProfileItemInstance(itemID) : null;
+    public JsonObject GetItemUnsafe() => isValid ? ProfileRequests.GetCachedProfileItemInstance(itemID) : null;
 }
 
 static class FnProfiles

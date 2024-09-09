@@ -140,7 +140,7 @@ public partial class HomebasePowerLevel : Control
             //GD.Print($"\n");
             for (int i = 0; i < matchingWorkers.Length; i++)
             {
-                float thisContribution = matchingWorkers[i].Value?.AsObject()?.GetItemRating(true) ?? 0;
+                float thisContribution = matchingWorkers[i].Value?.AsObject()?.GetItemRating() ?? 0;
                 //GD.Print($"{squadId}[{i}] contributes {thisContribution} ({matchingWorkers[i].Key})\n");
                 contributions.Add(thisContribution);
             }

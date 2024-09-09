@@ -46,10 +46,14 @@ static class Helpers
 
     public static async Task WaitForTimer(this Node owner, double time)
     {
+        if (!owner.IsInsideTree())
+            throw new MissingTreeException();
         await owner.ToSignal(owner.GetTree().CreateTimer(time), SceneTreeTimer.SignalName.Timeout);
     }
     public static async Task WaitForTimer(this Node owner, SceneTreeTimer timer)
     {
+        if (!owner.IsInsideTree())
+            throw new MissingTreeException();
         await owner.ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
     }
 

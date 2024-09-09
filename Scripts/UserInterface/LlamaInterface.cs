@@ -130,7 +130,7 @@ public partial class LlamaInterface : Control
     public override void _ExitTree()
     {
         RefreshTimerController.OnHourChanged -= OnHourChanged;
-        cardPackListener?.Unlink();
+        //cardPackListener?.Free();
     }
 
     private async void OnHourChanged()
@@ -144,7 +144,7 @@ public partial class LlamaInterface : Control
 
     class CardPackGroup
     {
-        public string PressData => linkedHandles.First().profileItem.uuid;
+        public string PressData => linkedHandles.First().itemID.uuid;
 
         public readonly string type;
         public readonly string customType;
@@ -167,7 +167,7 @@ public partial class LlamaInterface : Control
         }
 
         public bool Has(ProfileItemHandle handle) => linkedHandles.Contains(handle);
-        public bool Has(string uuid) => linkedHandles.Any(val => val.profileItem.uuid == uuid);
+        public bool Has(string uuid) => linkedHandles.Any(val => val.itemID.uuid == uuid);
 
         public int DisplayAmount => isKnown ? -1 : linkedHandles.Count;
 
@@ -222,7 +222,7 @@ public partial class LlamaInterface : Control
         {
             var nextHandle = linkedHandles.Last();
             llamaEntry.SetItemData(GetDisplayCardpack());
-            llamaEntry.SetLinkedItemId(nextHandle.profileItem.uuid);
+            llamaEntry.SetLinkedItemId(nextHandle.itemID.uuid);
         }
     }
 
@@ -612,7 +612,7 @@ public partial class LlamaInterface : Control
         if (depletesSelected)
             ClearSelection();
         else
-            SetCardPackLlama(currentCardpackSelection.linkedHandles.Last().profileItem.uuid);
+            SetCardPackLlama(currentCardpackSelection.linkedHandles.Last().itemID.uuid);
     }
 
     public async void BulkOpenAllCardpacks()

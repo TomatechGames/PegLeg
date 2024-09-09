@@ -7,6 +7,7 @@
 [node name="SurvivorSquad" type="MarginContainer" node_paths=PackedStringArray("squadNameLabel", "squadIcon", "fortPointsLabel", "fortPointsIcon", "leadSurvivorSlot", "survivorSlots")]
 script = ExtResource("1_crhol")
 synergy = "Doctor"
+slotRequirements = PackedStringArray("", "", "", "", "", "", "", "")
 squadNameLabel = NodePath("MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer/SquadNameLabel")
 squadIcon = NodePath("MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer/SquadIcon")
 fortPointsLabel = NodePath("MarginContainer/VBoxContainer/NameAndFortStat/HBoxContainer/FortLabel")
@@ -63,7 +64,7 @@ layout_mode = 2
 [node name="InventorySlot" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/Slots"]
 layout_mode = 2
@@ -72,43 +73,43 @@ layout_mode = 2
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="InventorySlot3" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="InventorySlot4" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="InventorySlot5" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="InventorySlot6" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="InventorySlot7" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="InventorySlot8" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
-useSurvivorBoosts = true
+showInspector = true
 
 [node name="Perks" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dljot1ntapg7q"]
+[gd_scene load_steps=11 format=3 uid="uid://dljot1ntapg7q"]
 
 [ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="1_gryht"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/InventoryItemSlot.cs" id="1_t20bs"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://wy0yh5wkf4u4" path="res://Scenes/GameItemEntry/inventory_entry.tscn" id="3_2k13d"]
 [ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="3_424rb"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="4_poxbv"]
+[ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="7_aq3yn"]
+[ext_resource type="Texture2D" uid="uid://csbd78stcd271" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Magnifier_128.png" id="8_1c0uy"]
+[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="9_xjln0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uapl"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -14,27 +17,17 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kjv2f"]
-bg_color = Color(1, 1, 0, 0)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 7
-corner_radius_top_right = 7
-corner_radius_bottom_right = 7
-corner_radius_bottom_left = 7
-
-[node name="InventorySlot" type="MarginContainer" node_paths=PackedStringArray("entry", "open", "locked")]
+[node name="InventorySlot" type="MarginContainer" node_paths=PackedStringArray("entry", "inspectArea", "open", "locked", "buttonControl")]
 custom_minimum_size = Vector2(100, 0)
 offset_right = 100.0
 offset_bottom = 150.0
 size_flags_vertical = 4
 script = ExtResource("1_t20bs")
 entry = NodePath("InventoryEntry")
+inspectArea = NodePath("Control/InspectArea")
 open = NodePath("OpenEntry")
 locked = NodePath("LockedEntry")
+buttonControl = NodePath("Responsive Button Area")
 
 [node name="AspectTexture" type="TextureRect" parent="."]
 self_modulate = Color(1, 1, 1, 0)
@@ -64,6 +57,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="LockedEntry" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="LockedEntry"]
@@ -84,28 +78,97 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="InventoryEntry" parent="." instance=ExtResource("3_2k13d")]
-visible = false
 layout_mode = 2
 preventInteractability = true
 autoLinkToRecycleSelection = false
 
-[node name="SelectionOutline" type="MarginContainer" parent="."]
-visible = false
+[node name="ClickBlocker" type="Control" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = -5
-theme_override_constants/margin_top = -5
-theme_override_constants/margin_right = -5
-theme_override_constants/margin_bottom = -5
-
-[node name="Panel" type="Panel" parent="SelectionOutline"]
-self_modulate = Color(1, 1, 0.4, 1)
-z_index = 1
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_kjv2f")
 
 [node name="Responsive Button Area" parent="." instance=ExtResource("4_poxbv")]
 layout_mode = 2
 outlinePadding = 0.0
 
-[connection signal="pressed" from="Responsive Button Area" to="." method="ChangeItem"]
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="InspectArea" type="Control" parent="Control"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = -2.0
+offset_right = 2.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control/InspectArea"]
+self_modulate = Color(0.4, 0.4, 0.4, 1)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_aq3yn")
+expand_mode = 5
+
+[node name="Label" type="Label" parent="Control/InspectArea/TextureRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/InspectArea/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="TextureRect" type="TextureRect" parent="Control/InspectArea/TextureRect/MarginContainer"]
+self_modulate = Color(0, 0, 0, 0.501961)
+layout_mode = 2
+texture = ExtResource("8_1c0uy")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Control/InspectArea/TextureRect/MarginContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_1c0uy")
+expand_mode = 1
+
+[node name="Responsive Button Circle" parent="Control/InspectArea/TextureRect" instance=ExtResource("9_xjln0")]
+layout_mode = 1
+outlinePadding = 0.0
+
+[connection signal="pressed" from="Responsive Button Area" to="." method="RequestChange"]
+[connection signal="pressed" from="Control/InspectArea/TextureRect/Responsive Button Circle" to="InventoryEntry" method="Inspect"]

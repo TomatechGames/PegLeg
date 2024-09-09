@@ -4,77 +4,184 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using ProfileItemPredicate = ProfileRequests.ProfileItemPredicate;
+using static ProfileRequests;
 
 public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<ProfileItemHandle>
 {
     public static GameItemSelector Instance { get; private set; }
 
+    [Signal]
+    public delegate void TitleChangedEventHandler(string title);
+    [Signal]
+    public delegate void ButtonChangedEventHandler(string buttonText);
+    [Signal]
+    public delegate void AutoselectChangedEventHandler(Texture2D autoselect);
+
     [Export]
-    protected RecycleListContainer container;
+    Texture2D defaultSelectionMarker;
+    [Export]
+    Control autoSelectButton;
+    [Export]
+    RecycleListContainer container;
+    [Export]
+    Control multiselectButtons;
 
     public override void _Ready()
 	{
 		base._Ready();
+        RestoreDefaults();
         container.SetProvider(this);
-		LinkInstance();
-	}
+        Instance = this;
+    }
 
-	protected virtual void LinkInstance() => Instance = this;
+    bool isSelecting;
+    List<ProfileItemHandle> itemHandles;
+    List<ProfileItemHandle> selectedHandles = new();
 
-    List<ProfileItemHandle> filteredHandles = null;
-    bool isSelecting = false;
-    ProfileItemHandle selectedChoice;
+    public bool multiselectMode;
+    public bool allowDeselect;
+    public string overrideSurvivorSquad;
+    public ProfileItemPredicate autoselectPredicate;
+
+    public string titleText;
+    public string confirmButtonText;
+    public Texture2D autoselectButtonTex;
+    public Color selectedTintColor;
+    public Color collectionTintColor;
+    public Texture2D selectedMarkerTex;
+    public Texture2D collectionMarkerTex;
+
 
     public override void SetWindowOpen(bool openState)
     {
-        base.SetWindowOpen(openState);
-        isSelecting &= openState;
+        if (isSelecting && !openState)
+        {
+            CancelSelection();
+        }
     }
 
-    public async Task<ProfileItemHandle> OpenSelector(ProfileItemPredicate filter)
+    public void RestoreDefaults()
     {
-        filteredHandles = (await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, filter))
-            .OrderBy(kvp=>-kvp.Value.AsObject().GetItemRating())
-            .Select(kvp=>ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, kvp.Key))).ToList();
+        multiselectMode = false;
+        allowDeselect = false;
+        overrideSurvivorSquad = null;
+        autoselectPredicate = null;
+
+        titleText = "Select an Item";
+        confirmButtonText = "Confirm";
+        autoselectButtonTex = null;
+        selectedTintColor = Colors.Orange;
+        selectedMarkerTex = defaultSelectionMarker;
+        collectionTintColor = Colors.Green;
+        collectionMarkerTex = defaultSelectionMarker;
+    }
+
+    public async Task<ProfileItemHandle[]> OpenSelector(ProfileItemPredicate filter)
+    {
+        var filteredHandles = (await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, filter))
+            .OrderBy(kvp => -kvp.Value.AsObject().GetItemRating(overrideSurvivorSquad))
+            .Select(kvp => ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, kvp.Key)));
+        var toReturn = await OpenSelector(filteredHandles, null);
+        //foreach (var item in filteredHandles)
+        //{
+        //    if (!toReturn.Contains(item))
+        //        item.Free();
+        //}
+        return toReturn;
+    }
+
+    public async Task<ProfileItemHandle[]> OpenSelector(IEnumerable<ProfileItemHandle> profileItems, IEnumerable<ProfileItemHandle> selectedItems = null)
+    {
+        EmitSignal(SignalName.TitleChanged, titleText);
+        EmitSignal(SignalName.ButtonChanged, confirmButtonText);
+        EmitSignal(SignalName.AutoselectChanged, autoselectButtonTex);
+        multiselectButtons.Visible = multiselectMode;
+        autoSelectButton.Visible = autoselectPredicate is not null;
+        allowDeselect &= !multiselectMode;
+        itemHandles = profileItems.ToList();
+        if(allowDeselect)
+            itemHandles.Insert(0, new());
+
+        if (multiselectMode)
+            selectedHandles = selectedItems?.ToList() ?? 
+                (autoselectPredicate is not null ? 
+                    itemHandles
+                        .Where(handle => autoselectPredicate(handle.CreateKVPUnsafe()))
+                        .ToList() : 
+                    new());
+        else
+            selectedHandles = new();
+
         container.UpdateList(true);
-        selectedChoice?.Unlink();
-        selectedChoice = null;
         isSelecting = true;
-        SetWindowOpen(true);
-        GD.Print($"opening with {filteredHandles.Count} items");
+        base.SetWindowOpen(true);
+        await this.WaitForFrame();
+        container.UpdateList(true);
+
+        //GD.Print($"opening selector with {itemHandles.Count} items");
         while (isSelecting)
             await this.WaitForFrame();
-        foreach (var item in filteredHandles)
-        {
-            if (item != selectedChoice)
-                item.Unlink();
-        }
-        SetWindowOpen(false);
-        GD.Print("closing");
-        return selectedChoice;
+
+        base.SetWindowOpen(false);
+        //GD.Print($"closing with {selectedHandles.Count} selected items");
+        var toReturn = selectedHandles.ToArray();
+        selectedHandles.Clear();
+        itemHandles.Clear();
+        RestoreDefaults();
+
+        return toReturn;
     }
 
-    public void SelectEmpty()
+    void AutoMarkSelection()
     {
-        if (isSelecting)
-        {
-            selectedChoice = new();
-            isSelecting = false;
-        }
+        if (!multiselectMode || autoselectPredicate is null)
+            return;
+        selectedHandles = itemHandles.Where(handle => autoselectPredicate(handle.CreateKVPUnsafe())).ToList();
+        container.UpdateList(true);
     }
+
+    void ConfirmSelection()
+    {
+        isSelecting = false;
+    }
+
+    void CancelSelection()
+    {
+        selectedHandles.Clear();
+        isSelecting = false;
+    }
+
+    void ClearSelection()
+    {
+        selectedHandles.Clear();
+        if (multiselectMode)
+            container.UpdateList(true);
+    }
+
+    public bool IndexIsSelected(int index) => multiselectMode && selectedHandles.Contains(itemHandles[index]);
 
     public void OnElementSelected(int index)
     {
         if (isSelecting)
         {
-            selectedChoice = filteredHandles[index];
-            isSelecting = false;
+            if (multiselectMode)
+            {
+                if(selectedHandles.Contains(itemHandles[index]))
+                    selectedHandles.Remove(itemHandles[index]);
+                else
+                    selectedHandles.Add(itemHandles[index]);
+            }
+            else
+            {
+                selectedHandles.Clear();
+                selectedHandles.Add(itemHandles[index]);
+                isSelecting = false;
+            }
         }
     }
 
     public ProfileItemHandle GetRecycleElement(int index) => 
-        ((filteredHandles?.Count ?? -1) > 0 && index < filteredHandles.Count && index >= 0) ? filteredHandles[index] : null;
+        ((itemHandles?.Count ?? -1) > 0 && index < itemHandles.Count && index >= 0) ? itemHandles[index] : null;
 
-    public int GetRecycleElementCount() => filteredHandles?.Count ?? 0;
+    public int GetRecycleElementCount() => itemHandles?.Count ?? 0;
 }

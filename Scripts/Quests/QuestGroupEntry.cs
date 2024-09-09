@@ -38,7 +38,7 @@ public class QuestData
 
     public bool isUnlocked => questItem is not null;
     public bool isNew => !(questItem?.ItemSeen ?? true);
-    public bool isPinned => isUnlocked && ProfileRequests.HasPinnedQuest(questItem.profileItem.uuid);
+    public bool isPinned => isUnlocked && ProfileRequests.HasPinnedQuest(questItem.itemID.uuid);
     public bool isComplete => questItem?.GetItemUnsafe()["attributes"]["quest_state"]?.ToString() == "Claimed";
     public bool isRerollable => isUnlocked && questItem?.GetItemUnsafe().GetTemplate()["Category"].ToString() == "DailyQuests";
 }

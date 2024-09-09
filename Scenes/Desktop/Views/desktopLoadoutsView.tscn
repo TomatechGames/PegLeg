@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwunyntryyu6o"]
+[gd_scene load_steps=5 format=3 uid="uid://bwunyntryyu6o"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/SurvivorLoadoutInterface.cs" id="1_txlwe"]
+[ext_resource type="Texture2D" uid="uid://l44adw334xao" path="res://Images/InterfaceIcons/T-SlotIcon-Recycle-128.png" id="2_8lg8b"]
 [ext_resource type="PackedScene" uid="uid://bje4f7reoc8da" path="res://Scenes/LoadoutEntries/survivor_squad.tscn" id="2_faoh8"]
+[ext_resource type="Texture2D" uid="uid://ddjxkaoe8stlj" path="res://Images/InterfaceIcons/T-Icon-ST-CollectionBook-128.png" id="3_ragaq"]
 
 [node name="Loadouts" type="MarginContainer"]
 anchors_preset = 15
@@ -14,6 +16,7 @@ grow_vertical = 2
 layout_mode = 2
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
+current_tab = 0
 
 [node name="Survivor Squads" type="MarginContainer" parent="TabContainer" node_paths=PackedStringArray("loadoutSelector", "saveLoadoutButton", "loadLoadoutButton", "renameLoadoutButton", "deleteLoadoutButton", "clearSquadButton")]
 layout_mode = 2
@@ -24,6 +27,9 @@ loadLoadoutButton = NodePath("VBoxContainer/MarginContainer/MarginContainer/HBox
 renameLoadoutButton = NodePath("VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/Rename")
 deleteLoadoutButton = NodePath("VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/Delete")
 clearSquadButton = NodePath("VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/Clear")
+recycleIcon = ExtResource("2_8lg8b")
+collectionIcon = ExtResource("3_ragaq")
+metadata/_tab_index = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Survivor Squads"]
 layout_mode = 2
@@ -51,8 +57,8 @@ alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 expand_icon = true
-item_count = 5
 selected = 0
+item_count = 5
 popup/item_0/text = "[Create New Loadout]"
 popup/item_0/id = 99999
 popup/item_1/text = "Loadouts"
@@ -88,6 +94,12 @@ layout_mode = 2
 disabled = true
 text = "Delete"
 
+[node name="DebugRecycle" type="Button" parent="TabContainer/Survivor Squads/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "DebugRecycle"
+
 [node name="Control" type="Control" parent="TabContainer/Survivor Squads/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -118,31 +130,41 @@ alignment = 1
 
 [node name="SurvivorSquad" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
+slotRequirements = PackedStringArray("Stonewood_Squad_SSD5", "Stonewood_Squad_SSD5", "Stonewood_Squad_SSD5", "Stonewood_Squad_SSD5", "CannyValley_Squad_SSD3", "CannyValley_Squad_SSD3", "CannyValley_Squad_SSD3", "CannyValley_Squad_SSD6")
 
 [node name="SurvivorSquad2" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "Trainer"
+slotRequirements = PackedStringArray("Plankerton_Squad_SSD3", "Plankerton_Squad_SSD3", "Plankerton_Squad_SSD3", "Plankerton_Squad_SSD6", "TwinePeaks_Squad_SSD3", "TwinePeaks_Squad_SSD3", "TwinePeaks_Squad_SSD3", "TwinePeaks_Squad_SSD6")
 
 [node name="SurvivorSquad3" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "Marksman"
+slotRequirements = PackedStringArray("Stonewood_Squad_SSD4", "Stonewood_Squad_SSD4", "Stonewood_Squad_SSD4", "Stonewood_Squad_SSD4", "CannyValley_Squad_SSD2", "CannyValley_Squad_SSD2", "CannyValley_Squad_SSD2", "CannyValley_Squad_SSD5")
 
 [node name="SurvivorSquad4" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "MartialArtist"
+slotRequirements = PackedStringArray("Plankerton_Squad_SSD2", "Plankerton_Squad_SSD2", "Plankerton_Squad_SSD2", "Plankerton_Squad_SSD5", "TwinePeaks_Squad_SSD2", "TwinePeaks_Squad_SSD2", "TwinePeaks_Squad_SSD2", "TwinePeaks_Squad_SSD5")
 
 [node name="SurvivorSquad5" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "Explorer"
+slotRequirements = PackedStringArray("Stonewood_Squad_SSD2", "Stonewood_Squad_SSD1", "Stonewood_Squad_SSD1", "Stonewood_Squad_SSD3", "CannyValley_Squad_SSD1", "CannyValley_Squad_SSD1", "CannyValley_Squad_SSD1", "CannyValley_Squad_SSD5")
 
 [node name="SurvivorSquad6" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "Gadgeteer"
+slotRequirements = PackedStringArray("Plankerton_Squad_SSD1", "Plankerton_Squad_SSD1", "Plankerton_Squad_SSD1", "Plankerton_Squad_SSD5", "TwinePeaks_Squad_SSD1", "TwinePeaks_Squad_SSD1", "TwinePeaks_Squad_SSD1", "TwinePeaks_Squad_SSD5")
 
 [node name="SurvivorSquad7" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "Engineer"
+slotRequirements = PackedStringArray("Stonewood_Squad_SSD6", "Stonewood_Squad_SSD6", "Stonewood_Squad_SSD6", "Stonewood_Squad_SSD6", "CannyValley_Squad_SSD4", "CannyValley_Squad_SSD4", "CannyValley_Squad_SSD4", "CannyValley_Squad_SSD6")
 
 [node name="SurvivorSquad8" parent="TabContainer/Survivor Squads/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer" instance=ExtResource("2_faoh8")]
 layout_mode = 2
 synergy = "Inventor"
+slotRequirements = PackedStringArray("Plankerton_Squad_SSD4", "Plankerton_Squad_SSD4", "Plankerton_Squad_SSD4", "Plankerton_Squad_SSD6", "TwinePeaks_Squad_SSD4", "TwinePeaks_Squad_SSD4", "TwinePeaks_Squad_SSD4", "TwinePeaks_Squad_SSD6")
+
+[connection signal="pressed" from="TabContainer/Survivor Squads/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/DebugRecycle" to="TabContainer/Survivor Squads" method="DebugRecycle"]

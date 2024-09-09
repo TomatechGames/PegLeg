@@ -116,6 +116,6 @@ public partial class TempCompendiumInterface : Control
     {
 		string templateId = (string)itemList.GetItemMetadata((int)index);
 		if (BanjoAssets.TryGetTemplate(templateId, out var template))
-			await GameItemViewer.Instance.SetItem(template.CreateInstanceOfItem(1, new() { ["item_seen"] = true }));
+			await GameItemViewer.Instance.ShowItem(template.CreateInstanceOfItem(1, new() { ["item_seen"] = true }));
     }
 }

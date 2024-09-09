@@ -6,6 +6,12 @@ using System.Text.Json.Nodes;
 public partial class GameItemEntry : Control, IRecyclableEntry
 {
     [Signal]
+    public delegate void ItemDoesExistEventHandler(bool value);
+
+    [Signal]
+    public delegate void ItemDoesNotExistEventHandler(bool value);
+
+    [Signal]
     public delegate void NameRelevantEventHandler(bool value);
 
     [Signal]
@@ -31,6 +37,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     [Signal]
     public delegate void SurvivorBoostIconChangedEventHandler(Texture2D icon); //squad synergy for leads, set bonus for non-leads
+
+    [Signal]
+    public delegate void CanBeLeveledChangedEventHandler(bool canBeLeveled);
 
     [Signal]
     public delegate void LevelChangedEventHandler(float level);
@@ -72,6 +81,12 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public delegate void SuperchargeChangedEventHandler(int supercharge);
 
     [Signal]
+    public delegate void SelectionMarkerChangedEventHandler(Texture2D marker);
+
+    [Signal]
+    public delegate void SelectionTintChangedEventHandler(Color rarityColour);
+
+    [Signal]
     public delegate void PressedEventHandler();
 
     [Export]
@@ -85,76 +100,17 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool interactableByDefault;
     [Export]
-    public bool autoLinkToViewer = true;
+    public bool allowInteractableWhenEmpty;
     [Export]
-    public bool autoLinkToRecycleSelection = false;
+    public bool autoLinkToViewer = true;
     [Export]
     public bool showSingleItemAmount = false;
     [Export]
-    public bool useSurvivorBoosts = false;
+    public bool autoLinkToRecycleSelection = false;
+    [Export]
+    public bool autoSelectOnPress = true;
     [Export]
     protected CheckButton selectionGraphics;
-
-    /* Bad
-    public struct VisibleItemData
-    {
-        public string name;
-        public Texture2D icon;
-        public string description;
-        public string type;
-        public int amount;
-        public int rarity;
-        public bool hasNotification;
-        public JsonObject sourceData;
-
-        public VisibleItemData()
-        {
-            name = "";
-            icon = null;
-            description = "";
-            type = "";
-            amount = 0;
-            rarity = 0;
-            hasNotification = false;
-            sourceData = null;
-        }
-
-        public VisibleItemData(string name, Texture2D icon, int amount = 1, string description = "", int rarity = 0)
-        {
-            this.name = name;
-            this.icon = icon;
-            this.description = description;
-            this.amount = amount;
-            this.rarity = rarity;
-            type = "";
-            hasNotification = false;
-            sourceData = null;
-        }
-
-        //TODO: replace VisibleItemData with a direct interpretation of item instances
-        public VisibleItemData(JsonObject itemInstance, BanjoAssets.TextureType iconHint = BanjoAssets.TextureType.Preview)
-        {
-            var template = itemInstance.GetTemplate().AsObject();
-            name = template["DisplayName"]?.ToString() ?? "?";
-            description = template["Description"]?.ToString() ?? "";
-            icon = template.GetItemTexture(iconHint);
-            amount = itemInstance["quantity"]?.GetValue<int>() ?? 1;
-            rarity = template.GetItemRarity();
-            hasNotification = itemInstance?["attributes"]?["item_seen"]?.GetValue<bool>() != true;
-            sourceData = itemInstance;
-            type = itemInstance?["templateId"]?.ToString().Split(":")[0] ?? "";
-        }
-
-        public async Task<VisibleItemData> SetRewardNotification()
-        {
-            if (sourceData is null)
-                return this;
-            bool existsInInventory = (await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, sourceData["templateId"].ToString())) > 0;
-            hasNotification = !existsInInventory;
-            return this;
-        }
-    }
-    */
 
     public override void _Ready()
     {
@@ -168,34 +124,48 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public override void _ExitTree()
     {
         rewardNotificationRequest?.Cancel();
-        if (profileItem is not null)
-            profileItem.OnChanged -= UpdateLinkedProfileItem;
-        profileItem?.Unlink();
+        //profileItem?.Free();
     }
 
-    ProfileItemHandle profileItem;
+    protected ProfileItemHandle profileItem;
 
+    public void UnlinkProfileItem() => LinkProfileItem(null);
     public void LinkProfileItem(ProfileItemHandle newProfileItem)
     {
         if(profileItem is not null)
+        {
             profileItem.OnChanged -= UpdateLinkedProfileItem;
+            profileItem.OnRemoved -= UpdateLinkedProfileItem;
+        }
         profileItem = newProfileItem;
-        profileItem.OnChanged += UpdateLinkedProfileItem;
+
+        if (profileItem is not null)
+        {
+            profileItem.OnChanged += UpdateLinkedProfileItem;
+            profileItem.OnRemoved += UpdateLinkedProfileItem;
+        }
+
         UpdateLinkedProfileItem(profileItem);
     }
 
-    public void UnlinkProfileItem()
-    {
-        if (profileItem is not null)
-            profileItem.OnChanged -= UpdateLinkedProfileItem;
-        profileItem = null;
-        ClearItem();
-    }
+    public void RefreshProfileItem() => UpdateLinkedProfileItem(profileItem);
 
     void UpdateLinkedProfileItem(ProfileItemHandle profileItem)
     {
-        currentItemData = profileItem.GetItemUnsafe();
-        UpdateItemData(currentItemData);
+        if(profileItem?.isValid == false)
+        {
+            UnlinkProfileItem();
+            return;
+        }
+        if (profileItem is not null)
+        {
+            currentItemData = profileItem.GetItemUnsafe();
+            UpdateItemData(currentItemData, selector?.overrideSurvivorSquad);
+        }
+        else
+        {
+            ClearItem();
+        }
     }
 
     public void SetItemData(JsonObject itemInstance)
@@ -208,19 +178,26 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     protected JsonObject currentItemData;
     protected RewardNotifications.Request rewardNotificationRequest;
-    protected string compositeItemOverride;
-    protected virtual void UpdateItemData(JsonObject itemInstance)
+    protected string inspectorOverride;
+    protected virtual void UpdateItemData(JsonObject itemInstance, string overrideSurvivorSquad = null)
     {
         if (!IsInstanceValid(this) || !IsInsideTree())
             return;
         rewardNotificationRequest?.Cancel();
         var template = itemInstance.GetTemplate();
+        if(template is null)
+        {
+            GD.Print("uh oh");
+            GD.Print(itemInstance);
+        }
+        bool isPermenant = template["IsPermanent"]?.GetValue<bool>() ?? false;
+
         int amount = itemInstance["quantity"].GetValue<int>();
         if (template["Type"].ToString() == "Accolades")
             amount = template["AccoladeXP"]?.GetValue<int>() ?? template["Tier"]?.GetValue<int>() ?? 1;
         string amountText = compactifyAmount ? amount.Compactify() : amount.ToString();
 
-        compositeItemOverride = itemInstance["attributes"]?["overrideItem"]?.ToString();
+        inspectorOverride = itemInstance["attributes"]?["overrideItem"]?.ToString();
 
         if (addXToAmount)
             amountText = "x" + amountText;
@@ -230,7 +207,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
         if (template?["DisplayName"]?.ToString() is null)
         {
-            GD.Print(itemInstance);
+            GD.Print("No Display Name:" + itemInstance);
         }
 
         string name = template["DisplayName"].ToString();
@@ -252,7 +229,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         if (type == "Worker")
             type = "Survivor";
 
-        float rating = itemInstance.GetItemRating(useSurvivorBoosts);
+        float rating = itemInstance.GetItemRating(overrideSurvivorSquad);
         string ratingText = rating == 0 ? "" : rating.ToString();
 
         int tier = template["Tier"]?.GetValue<int>() ?? 0;
@@ -279,6 +256,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             EmitSignal(SignalName.SurvivorBoostIconChanged, (Texture2D)null);
         }
 
+        EmitSignal(SignalName.ItemDoesExist, true);
+        EmitSignal(SignalName.ItemDoesNotExist, false);
+
         EmitSignal(SignalName.NameChanged, name + (includeAmountInName && amountNeeded ? $" ({(addXToAmount ? "x" : "") + amount})" : ""));
         //if (itemInstance["searchTags"] is JsonArray tagArray)
         //    EmitSignal(SignalName.NameChanged, tagArray.Select(t=>t?.ToString()).ToArray().Join("\n"));
@@ -296,6 +276,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.RatingChanged, ratingText);
         EmitSignal(SignalName.RatingVisibility, rating != 0);
 
+        EmitSignal(SignalName.CanBeLeveledChanged, !isPermenant);
         EmitSignal(SignalName.LevelChanged, level);
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
         EmitSignal(SignalName.LevelProgressChanged, levelProgress);
@@ -353,12 +334,12 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public void SetInteractable(bool interactable)
     {
-        EmitSignal(SignalName.InteractableChanged, interactable && !preventInteractability);
+        EmitSignal(SignalName.InteractableChanged, interactable && (allowInteractableWhenEmpty || currentItemData is not null) && !preventInteractability);
     }
 
     public virtual void EmitPressedSignal()
     {
-        if (selectionGraphics is not null)
+        if (selectionGraphics is not null && autoSelectOnPress)
             selectionGraphics.ButtonPressed = true;
         EmitSignal(SignalName.Pressed);
     }
@@ -367,7 +348,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public virtual void ClearItem(Texture2D clearIcon)
     {
         currentItemData = null;
-        compositeItemOverride = null;
+        inspectorOverride = null;
+        EmitSignal(SignalName.ItemDoesExist, false);
+        EmitSignal(SignalName.ItemDoesNotExist, true);
         EmitSignal(SignalName.NameChanged, "");
         EmitSignal(SignalName.DescriptionChanged, "");
         EmitSignal(SignalName.IconChanged, clearIcon);
@@ -377,23 +360,23 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.AmountChanged, "");
         LatestRarityColor = BanjoAssets.GetRarityColor(0);
         EmitSignal(SignalName.RarityChanged, LatestRarityColor);
-        EmitSignal(SignalName.InteractableChanged, false);
+        EmitSignal(SignalName.InteractableChanged, allowInteractableWhenEmpty && interactableByDefault && !preventInteractability);
         EmitSignal(SignalName.NotificationChanged, false);
     }
 
     public async void Inspect()
     {
-        if(compositeItemOverride is not null)
+        if(inspectorOverride is not null)
         {
-            await GameItemViewer.Instance.LinkItem(ProfileItemHandle.CreateHandleUnsafe(new(compositeItemOverride)));
+            await GameItemViewer.Instance.ShowItemHandle(ProfileItemHandle.CreateHandleUnsafe(new(inspectorOverride)));
             return;
         }
         if(profileItem is not null)
         {
-            await GameItemViewer.Instance.LinkItem(profileItem);
+            await GameItemViewer.Instance.ShowItemHandle(profileItem);
             return;
         }
-        await GameItemViewer.Instance.SetItem(currentItemData);
+        await GameItemViewer.Instance.ShowItem(currentItemData);
     }
 
     static readonly string[] reccomendedInteractableTypes = new string[]
@@ -407,28 +390,57 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public static bool TypeShouldBeInteractable(string type) => reccomendedInteractableTypes.Contains(type.ToLower());
 
-    IRecyclableElementProvider<ProfileItemHandle> handleProvider;
-    public void SetRecyclableElementProvider(IRecyclableElementProvider provider)
+    protected IRecyclableElementProvider<ProfileItemHandle> handleProvider;
+    protected GameItemSelector selector;
+    public virtual void SetRecyclableElementProvider(IRecyclableElementProvider provider)
     {
-        if (provider is IRecyclableElementProvider<ProfileItemHandle> newHandleProvider)
+        if (provider is GameItemSelector newSelector)
+        {
+            handleProvider = selector = newSelector;
+        }
+        else if (provider is IRecyclableElementProvider<ProfileItemHandle> newHandleProvider)
         {
             handleProvider = newHandleProvider;
         }
     }
 
-    int recycleIndex = 0;
-    public void SetRecycleIndex(int index)
+    protected int recycleIndex = 0;
+    public virtual void SetRecycleIndex(int index)
     {
         if (handleProvider is not null)
         {
             recycleIndex = index;
             LinkProfileItem(handleProvider.GetRecycleElement(index));
+            UpdateSelectionVisuals();
         }
     }
 
-    public void PerformRecycleSelection()
+    public virtual void PerformRecycleSelection()
     {
         if (handleProvider is not null)
+        {
             handleProvider.OnElementSelected(recycleIndex);
+            UpdateSelectionVisuals();
+        }
+    }
+
+    public virtual void ClearRecycleIndex()
+    {
+        UnlinkProfileItem();
+    }
+
+    void UpdateSelectionVisuals()
+    {
+        if (selector is null || selectionGraphics is null)
+            return;
+
+        bool isSelected = selector.IndexIsSelected(recycleIndex);
+        selectionGraphics.ButtonPressed = isSelected;
+        if (isSelected)
+        {
+            bool isCollectable = ProfileRequests.IsItemCollectedUnsafe(profileItem.itemID.Composite) ?? false;
+            EmitSignal(SignalName.SelectionTintChanged, isCollectable ? selector.collectionTintColor : selector.selectedTintColor);
+            EmitSignal(SignalName.SelectionMarkerChanged, isCollectable ? selector.collectionMarkerTex : selector.selectedMarkerTex);
+        }
     }
 }

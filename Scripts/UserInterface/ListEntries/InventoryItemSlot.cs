@@ -12,49 +12,60 @@ public partial class InventoryItemSlot : Node
     GameItemEntry entry;
 
     [Export]
+    Control inspectArea;
+
+    [Export]
     Control open;
 
     [Export]
     Control locked;
 
     [Export]
-    bool useSurvivorBoosts = false;
+    Control buttonControl;
 
-    public event Action<ProfileItemHandle> OnSlottedItemChanged;
+    [Export]
+    bool showInspector = false;
+
+    public event Action<InventoryItemSlot> OnItemChangeRequested;
+    public event Action<InventoryItemSlot> OnItemChanged;
+
+    public ProfileItemHandle slottedItem { get; private set; }
+    ProfileItemPredicate predicate;
+    bool isEmpty = true;
 
     public override void _Ready()
     {
-        entry.useSurvivorBoosts = useSurvivorBoosts;
+        locked.Visible = true;
+        entry.Visible = false;
+        inspectArea.Visible = false;
+        open.Visible = false;
+        buttonControl.Visible = false;
         ProfileRequests.OnItemUpdated += UpdateSlot;
     }
 
-    ProfileItemPredicate predicate;
-    public async void SetPredicate(ProfileItemPredicate newPredicate)
+    void SetEmpty(bool value)
     {
-        predicate = newPredicate;
-        var foundItem = (await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, predicate)).FirstOrDefault();
-        locked.Visible = false;
-        ValidateItem(new(FnProfiles.AccountItems, foundItem.Key), foundItem.Value?.AsObject());
+        isEmpty = value;
+        entry.Visible = !isEmpty;
+        inspectArea.Visible = !isEmpty && showInspector;
+        open.Visible = isEmpty;
     }
 
-    ProfileItemPredicate filter;
-    public void SetFilter(ProfileItemPredicate newFilter) => filter = newFilter;
+    public async Task SetPredicate(ProfileItemPredicate newPredicate)
+    {
+        predicate = newPredicate;
+        locked.Visible = false;
+        open.Visible = isEmpty;
+        buttonControl.Visible = true;
 
-    ProfileItemHandle slottedItem;
-
-    public async Task<JsonObject> GetSlottedItem() => slottedItem?.isValid ?? false ? await slottedItem?.GetItem() : null;
+        var foundItem = (await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, predicate)).FirstOrDefault();
+        ValidateItem(new(FnProfiles.AccountItems, foundItem.Key), foundItem.Value?.AsObject());
+    }
 
     public async void UpdateSlot(ProfileItemId profileItem)
     {
         if(predicate is null)
-        {
-            entry.Visible = false;
-            open.Visible = false;
-            locked.Visible = true;
             return;
-        }
-        locked.Visible = false;
-
         ValidateItem(profileItem, await ProfileRequests.GetProfileItemInstance(profileItem));
     }
 
@@ -62,59 +73,61 @@ public partial class InventoryItemSlot : Node
     {
         if(slottedItem?.isValid ?? false)
         {
-            await GameItemViewer.Instance.LinkItem(slottedItem);
+            await GameItemViewer.Instance.ShowItemHandle(slottedItem);
         }
     }
 
-    public void Relink()
+    public void Refresh()
     {
-        if (slottedItem?.isValid ?? false)
-        {
-            entry.LinkProfileItem(slottedItem);
-        }
+        entry.RefreshProfileItem();
     }
 
-    public void SetChangeAction(Action<ProfileItemHandle, ProfileItemHandle> newAction) => onChangeRequested = newAction;
-    Action<ProfileItemHandle, ProfileItemHandle> onChangeRequested;
-    public async void ChangeItem()
+    public void RequestChange()
     {
+        OnItemChangeRequested?.Invoke(this);
+        /*
         if (filter == null)
             return;
         var result = await GameItemSelector.Instance.OpenSelector(filter);
-        if (result is null)
+        var resultItem = result.FirstOrDefault();
+        if (resultItem is null)
             return;
-        GD.Print("changing slotted item to "+result.profileItem.uuid);
-        onChangeRequested?.Invoke(slottedItem, result);
+        GD.Print("changing slotted item to "+ resultItem.itemID.uuid);
+        onChangeRequested?.Invoke(slottedItem, resultItem);
+        */
     }
 
     void ValidateItem(ProfileItemId profileItem, JsonObject item)
     {
         bool isMatch = item is not null && predicate(new(profileItem.uuid, item));
-        bool wasSlotted = slottedItem?.profileItem == profileItem;
+        bool wasSlotted = slottedItem?.itemID == profileItem;
 
+        bool changed = false;
         if (isMatch)
         {
             if (wasSlotted)
                 return;
-            slottedItem?.Unlink();
+            //slottedItem?.Free();
             slottedItem = ProfileItemHandle.CreateHandleUnsafe(profileItem);
             entry.LinkProfileItem(slottedItem);
-            entry.Visible = true;
-            open.Visible = false;
+            SetEmpty(false);
+            changed = true;
         }
         else if (wasSlotted)
         {
             entry.UnlinkProfileItem();
+            //slottedItem.Free();
             slottedItem = null;
-            entry.Visible = false;
-            open.Visible = true;
+            SetEmpty(true);
+            changed = true;
         }
-        OnSlottedItemChanged?.Invoke(slottedItem);
+        if (changed)
+            OnItemChanged?.Invoke(this);
     }
 
     public override void _ExitTree()
     {
-        slottedItem?.Unlink();
+        //slottedItem?.Free();
         ProfileRequests.OnItemUpdated -= UpdateSlot;
         base._ExitTree();
     }

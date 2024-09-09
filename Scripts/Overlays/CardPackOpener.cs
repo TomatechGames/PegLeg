@@ -301,8 +301,8 @@ public partial class CardPackOpener : Control
         //step 2: send request to open all regular ones
         if (openableCardPacks.Count>0)
         {
-            JsonArray cardpacksToOpen = new(default, openableCardPacks.Select(val => (JsonNode)val.profileItem.uuid).ToArray());
-            GD.Print("opening all these cardpacks:\n- " + openableCardPacks.Select(val => val.profileItem.uuid).ToArray().Join("\n- "));
+            JsonArray cardpacksToOpen = new(default, openableCardPacks.Select(val => (JsonNode)val.itemID.uuid).ToArray());
+            GD.Print("opening all these cardpacks:\n- " + openableCardPacks.Select(val => val.itemID.uuid).ToArray().Join("\n- "));
             JsonObject body = new()
             {
                 ["cardPackItemIds"] = cardpacksToOpen
@@ -620,7 +620,7 @@ public partial class CardPackOpener : Control
         //start the request now and await later, asynchronism baby!
         JsonObject body = new()
         {
-            ["cardPackItemId"] = queuedChoices[nextChoiceIndex - 1].profileItem.uuid,
+            ["cardPackItemId"] = queuedChoices[nextChoiceIndex - 1].itemID.uuid,
             ["selectionIdx"] = index
         };
         var operationTask = ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "OpenCardPack", body.ToString());

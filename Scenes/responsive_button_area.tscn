@@ -24,6 +24,7 @@ grow_vertical = 2
 script = ExtResource("1_3bhad")
 outlinePadding = 10.0
 hoverTime = 0.075
+baseOffset = 5
 baseLineSize = 2
 outlineObject = NodePath("MarginContainer/TextureRect")
 

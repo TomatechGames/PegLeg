@@ -75,6 +75,7 @@ public partial class ResponsiveButtonArea : BaseButton
 
     Tween outlineTween;
     Tween holdTween;
+    Tween holdPressTween;
     Timer holdTimer;
 
 
@@ -136,16 +137,18 @@ public partial class ResponsiveButtonArea : BaseButton
         holdTimer.Stop();
         holdActive = true;
         //GD.Print("Hold Pressed");
-        EmitSignal(SignalName.HoldPressed);
         if (usePressSound)
             UISounds.PlaySound("ButtonHoldComplete");
+
         target.Modulate = holdActivationColor;
-        var holdPressTween = GetTree().CreateTween().SetParallel();
+
+        if (holdTween?.IsRunning() ?? false)
+            holdTween.Kill();
+        holdPressTween = GetTree().CreateTween().SetParallel();
         holdPressTween.TweenProperty(target, "modulate", Colors.White, holdTriggerTime);
-        holdPressTween.Finished += () =>
-        {
-            SetHoverState(false);
-        };
+        holdPressTween.Finished += () => SetHoverState(false);
+
+        EmitSignal(SignalName.HoldPressed);
     }
     private void OnHoldReleased()
     {
@@ -184,7 +187,7 @@ public partial class ResponsiveButtonArea : BaseButton
         hovered = newHovered;
         if (hovered && useHoverSound)
             UISounds.PlaySound("Hover");
-        UpdateTweenState();
+        UpdateOutlineState();
     }
 
     public void SetHeldState(bool newHeld)
@@ -239,7 +242,7 @@ public partial class ResponsiveButtonArea : BaseButton
             if (!held && usePressSound)
                 UISounds.PlaySound("ButtonPress");
         }
-        UpdateTweenState();
+        UpdateOutlineState();
     }
 
     void SetHoldTween(bool value)
@@ -261,7 +264,7 @@ public partial class ResponsiveButtonArea : BaseButton
     bool held = false;
     bool holdActive;
     public T StateCheck<T>(T onPress, T onHover, T onBase)=> held ? onPress : (hovered ? onHover : onBase);
-    public void UpdateTweenState()
+    public void UpdateOutlineState()
     {
         float offsetTarget = StateCheck(pressOffset, hoverOffset, baseOffset);
         Color colorTarget = StateCheck(Colors.White, Colors.White, Colors.Transparent);
@@ -274,6 +277,8 @@ public partial class ResponsiveButtonArea : BaseButton
     {
         if (outlineTween?.IsRunning() ?? false)
             outlineTween.Kill();
+        if (holdPressTween?.IsRunning() ?? false)
+            holdPressTween.Kill();
         outlineTween = GetTree().CreateTween().SetParallel();
 
         outlineTween.TweenProperty(target, "offset_top", -offsetTarget, duration);

@@ -98,14 +98,14 @@ public partial class GameItemViewer : ModalWindow
 
     public override void _ExitTree()
     {
-        linkedProfileItem?.Unlink();
+        //linkedProfileItem?.Free();
     }
 
     ProfileItemHandle linkedProfileItem;
     JsonObject linkedShopOffer;
     Action purchaseCallback;
 
-    public async Task LinkItem(ProfileItemHandle profileItem)
+    public async Task ShowItemHandle(ProfileItemHandle profileItem)
     {
         itemChoiceParent.Visible = false;
         linkedProfileItem = profileItem;
@@ -119,7 +119,7 @@ public partial class GameItemViewer : ModalWindow
     }
 
     JsonObject[] choices;
-    public async Task SetItem(JsonObject itemInstance)
+    public async Task ShowItem(JsonObject itemInstance)
     {
         itemChoiceParent.Visible = false;
         linkedProfileItem = null;

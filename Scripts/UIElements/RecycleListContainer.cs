@@ -59,6 +59,8 @@ public partial class RecycleListContainer : ScrollContainer
         try
         {
             var elementSize = basis.BasisSize;
+            if (linkedGrid is not null && linkedGrid.GetChildCount() > 0)
+                elementSize = linkedGrid.GetFirstChildMinSize();
             float elementHeight = elementSize.Y;
             int columns = linkedGrid?.CalcGrid(elementSize, 1).X ?? 1;
 
@@ -98,6 +100,7 @@ public partial class RecycleListContainer : ScrollContainer
                     //complete clear and relink
                     foreach (var item in activeEntries)
                     {
+                        item.Value.ClearRecycleIndex();
                         pooledEntries.Enqueue(item.Value);
                         item.Value.node.Visible = false;
                     }
@@ -121,6 +124,7 @@ public partial class RecycleListContainer : ScrollContainer
                         {
                             //GD.Print("removing " + i);
                             var item = activeEntries[i];
+                            activeEntries[i].ClearRecycleIndex();
                             pooledEntries.Enqueue(item);
                             activeEntries.Remove(i);
                             item.node.Visible = false;
@@ -133,6 +137,7 @@ public partial class RecycleListContainer : ScrollContainer
                         {
                             //GD.Print("removing " + i);
                             var item = activeEntries[i];
+                            activeEntries[i].ClearRecycleIndex();
                             pooledEntries.Enqueue(item);
                             activeEntries.Remove(i);
                             item.node.Visible = false;
@@ -222,6 +227,7 @@ public interface IRecyclableEntry
 
     public void SetRecyclableElementProvider(IRecyclableElementProvider provider);
     public void SetRecycleIndex(int index);
+    public void ClearRecycleIndex() { }
 }
 
 public interface IRecyclableElementProvider 

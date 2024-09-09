@@ -496,14 +496,14 @@ public static class BanjoAssets
         return rarityId + tierId;
     }
 
-    //todo, allow evaluating survivors with an override squad and slot
-    public static float GetItemRating(this JsonObject itemInstance, bool useSurvivorBoosts = false, bool debug = false)
+    public static float GetItemRating(this JsonObject itemInstance, string overrideSurviverSquad = null)
     {
         if (TryGetSource("ItemRatings", out var ratings))
         {
+            var survivorSquad = overrideSurviverSquad;
 
             var template = itemInstance.GetTemplate();
-            if (template["Tier"] is null)
+            if (template?["Tier"] is null)
                 return 0;
             var level = itemInstance["attributes"]?["level"]?.GetValue<int>() ?? ((template["Tier"].GetValue<int>() * 10) - 10);
             level = Mathf.Max(level, 1);
@@ -516,11 +516,9 @@ public static class BanjoAssets
                 else
                     ratingCategory = "Survivor";
             }
-            if (debug)
-                GD.Print("ratingCat: " + ratingCategory);
+            //GD.Print("ratingCat: " + ratingCategory);
             var ratingKey = template.GetCompactRarityAndTier();
-            if (debug)
-                GD.Print($"ratingKey: {ratingKey}");
+            //GD.Print($"ratingKey: {ratingKey}");
 
             if (ratingKey.Length < 5)
                 return 0;
@@ -529,25 +527,26 @@ public static class BanjoAssets
             int subLevel = level - ratingSet["FirstLevel"].GetValue<int>();
             var rating = ratingSet["Ratings"][subLevel].GetValue<float>();
 
-            if (useSurvivorBoosts && template["Type"].ToString() == "Worker" && itemInstance["attributes"]?["squad_id"]?.ToString() is string squadId)
+            if (survivorSquad is null && itemInstance["attributes"]?["squad_id"]?.ToString() is string squadId)
+                survivorSquad = squadId;
+            if (template["Type"].ToString() == "Worker" && survivorSquad is not null)
             {
                 if (template["SubType"]?.ToString() is string leadType)
                 {
                     //check for synergy match
                     var matchedSquadID = supplimentaryData.SynergyToSquadId[leadType.Replace(" ", "")];
-                    if (matchedSquadID == squadId)
+                    if (matchedSquadID == survivorSquad)
                     {
-                        if (debug)
-                            GD.Print("lead synergy boost");
+                        //GD.Print("lead synergy boost");
                         rating *= 2;
                     }
-                    else if (debug)
-                        GD.Print($"no lead synergy boost ({matchedSquadID} != {squadId})");
+                    //else
+                    //    GD.Print($"no lead synergy boost ({matchedSquadID} != {squadId})");
                 }
                 else
                 {
                     var leadSurvivor = ProfileRequests.GetCachedProfileItems(FnProfiles.AccountItems, kvp =>
-                        kvp.Value?["attributes"]?["squad_id"]?.ToString() == squadId &&
+                        kvp.Value?["attributes"]?["squad_id"]?.ToString() == survivorSquad &&
                         kvp.Value["attributes"]["squad_slot_idx"].GetValue<int>() == 0
                     ).FirstOrDefault().Value?.AsObject();
 
@@ -570,18 +569,14 @@ public static class BanjoAssets
 
                     if (currentPersonality == targetPersonality)
                     {
-                        if (debug)
-                            GD.Print($"personality boost: {rarityBoost}");
+                        //    GD.Print($"personality boost: {rarityBoost}");
                         rating += rarityBoost;
                     }
                     else
                     {
-                        if (debug)
-                        {
-                            GD.Print($"no personality boost ({targetPersonality} != {currentPersonality})");
-                            if (rarityPenalty > 0)
-                                GD.Print($"personality penalty: {rarityPenalty}");
-                        }
+                        //GD.Print($"no personality boost ({targetPersonality} != {currentPersonality})");
+                        //if (rarityPenalty > 0)
+                        //    GD.Print($"personality penalty: {rarityPenalty}");
                         rating -= rarityPenalty;
                     }
 
