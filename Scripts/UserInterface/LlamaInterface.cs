@@ -534,7 +534,7 @@ public partial class LlamaInterface : Control
         };
         var itemsKnown = offer["prerollData"]?["attributes"]["items"].AsArray() is not null;
         await CardPackOpener.Instance.StartOpening(null, selectedLlamaPanel, currentPurchaseItem, shopRequestBody, itemsKnown);
-        await LoadLlamas();
+        await LoadLlamas(true);
         SetCatalogLlama(currentPurchaseSelection);
     }
 
