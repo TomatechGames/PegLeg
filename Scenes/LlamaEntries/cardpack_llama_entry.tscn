@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://bgn5vgsvgrb1u"]
+[gd_scene load_steps=12 format=3 uid="uid://bgn5vgsvgrb1u"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/LlamaEntry.cs" id="1_5w7bn"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="2_78u63"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="2_gakw8"]
-[ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="2_vqg28"]
-[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_tsuv0"]
+[ext_resource type="Shader" path="res://Shaders/LlamaPinata.gdshader" id="2_q017l"]
+[ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="3_wu843"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_gboss"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="5_vtxue"]
 [ext_resource type="ButtonGroup" uid="uid://cm7rmga74vyve" path="res://Scenes/LlamaEntries/LlamaChoices.tres" id="5_wfxsh"]
 
@@ -20,9 +21,11 @@ fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ochn"]
-shader = ExtResource("2_vqg28")
-shader_parameter/IconTint = Color(0.1, 0.1, 0.1, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_me7u8"]
+resource_local_to_scene = true
+shader = ExtResource("2_q017l")
+shader_parameter/useMask = true
+shader_parameter/packIcon = ExtResource("3_wu843")
 
 [node name="Cardpack Llama Entry" type="MarginContainer" node_paths=PackedStringArray("selectionGraphics")]
 script = ExtResource("1_5w7bn")
@@ -59,22 +62,11 @@ theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="Pinata" type="TextureRect" parent="PanelContainer/IconContainer"]
+material = SubResource("ShaderMaterial_me7u8")
 layout_mode = 2
 texture = ExtResource("2_78u63")
 expand_mode = 3
-
-[node name="Icon" type="TextureRect" parent="PanelContainer/IconContainer/Pinata"]
-material = SubResource("ShaderMaterial_5ochn")
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.33
-anchor_top = 0.55
-anchor_right = 0.46
-anchor_bottom = 0.68
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_tsuv0")
-expand_mode = 1
+script = ExtResource("5_gboss")
 
 [node name="AmountLabel" type="Label" parent="PanelContainer/IconContainer/Pinata"]
 custom_minimum_size = Vector2(80, 0)
@@ -90,8 +82,8 @@ grow_horizontal = 0
 grow_vertical = 0
 size_flags_vertical = 8
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
 theme_override_constants/line_spacing = 0
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 25
 text = "x1"
 horizontal_alignment = 2
@@ -140,6 +132,6 @@ layout_mode = 2
 [connection signal="DescriptionChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="IconChanged" from="." to="PanelContainer/IconContainer/Pinata" method="set_texture"]
 [connection signal="RarityChanged" from="." to="PanelContainer/GradientContainer/Gradient" method="set_self_modulate"]
-[connection signal="SubtypeIconChanged" from="." to="PanelContainer/IconContainer/Pinata/Icon" method="set_texture"]
+[connection signal="SubtypeIconChanged" from="." to="PanelContainer/IconContainer/Pinata" method="SetShaderTexture" binds= ["packIcon"]]
 [connection signal="toggled" from="Control/CheckButton" to="Control/CheckButton/TextureRect" method="set_visible"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

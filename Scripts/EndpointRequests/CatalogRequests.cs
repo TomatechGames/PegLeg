@@ -105,6 +105,15 @@ static class CatalogRequests
         var cosmeticDisplayData = await RequestCosmeticDisplayData();
         await storefrontTask;
 
+        if (Input.IsKeyPressed(Key.F1))
+        {
+            var combinedShop = storefrontCache[WeeklyCosmeticShopCatalog].AsArray().Union(storefrontCache[DailyCosmeticShopCatalog].AsArray());
+            var combinedShopArray = new JsonArray(combinedShop.Select(n=>n.Reserialise()).ToArray());
+
+            using var shopFile = FileAccess.Open("user://shopDebug.json", FileAccess.ModeFlags.Write);
+            shopFile.StoreString(combinedShopArray.ToString());
+        }
+
         return cosmeticCache = ProcessCosmetics(cosmeticDisplayData);
     }
 
@@ -190,9 +199,38 @@ static class CatalogRequests
         foreach (var offer in shopOfferDict)
         {
             if (!cosmeticDisplayData.ContainsKey(offer.Key))
+            {
+                var generatedDisplayData = new JsonObject()
+                {
+                    ["isGenerated"] = true,
+                    ["devName"] = offer.Value["devName"]?.ToString() ?? null,
+                    ["offerId"] = offer.Value["offerId"]?.ToString() ?? null,
+                    ["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null,
+                    ["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null,
+                    ["regularPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["regularPrice"]?.GetValue<int>() ?? null,
+                    ["finalPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["finalPrice"]?.GetValue<int>() ?? null,
+                    ["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null,
+                    ["layoutId"] = offer.Value["meta"]?["LayoutId"]?.ToString() ?? null,
+                    ["layout"] = new JsonObject()
+                    {
+                        ["id"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString() ?? null,
+                        ["name"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString() ?? null,
+                    },
+                    ["tileSize"] = offer.Value["meta"]?["TileSize"]?.ToString() ?? null,
+                    ["sortPriority"] = offer.Value["sortPriority"]?.GetValue<int>() ?? null,
+                };
+                if (offer.Value["dynamicBundleInfo"] is JsonObject bundleInfo)
+                {
+                    int totalPrice = bundleInfo["bundleItems"].AsArray().Select(n => n["regularPrice"].GetValue<int>()).Sum();
+                    generatedDisplayData["regularPrice"] = totalPrice;
+                    generatedDisplayData["finalPrice"] = totalPrice + bundleInfo["discountedBasePrice"].GetValue<int>();
+                }
+                cosmeticDisplayData.Add(offer.Key, generatedDisplayData);
                 continue;
+            }
 
             //additions
+            cosmeticDisplayData[offer.Key]["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null;
             cosmeticDisplayData[offer.Key]["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null;
             cosmeticDisplayData[offer.Key]["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null;
 
@@ -248,12 +286,12 @@ static class CatalogRequests
 
         var partiallyOrganisedCosmetics = cosmeticDisplayData
             .Select(n => KeyValuePair.Create(n.Key, n.Value.Reserialise()))
-            .OrderBy(n => -n.Value["sortPriority"].GetValue<int>())// sort by offer index (descending)
-            .GroupBy(n => n.Value["layoutId"].ToString())// group into pages
+            .OrderBy(n => -n.Value["sortPriority"]?.GetValue<int>() ?? 0)// sort by offer index (descending)
+            .GroupBy(n => n.Value["layoutId"]?.ToString() ?? "Unknown")// group into pages
             .OrderBy(p => PagePriorityFromLayoutID(p.Key))// sort by page index (descending)
-            .GroupBy(p => p.First().Value["layout"]?["name"]?.ToString())// group by page header
-            .OrderBy(g => g.First().First().Value["layout"]["index"]?.GetValue<int>())// sort by page header index
-            .GroupBy(g => g.First().First().Value["layout"]["category"]?.ToString() ?? "Uncategorised");// group by page category
+            .GroupBy(p => p.First().Value["layout"]?["name"]?.ToString() ?? "Unknown")// group by page header
+            .OrderBy(g => g.First().First().Value["layout"]?["index"]?.GetValue<int>())// sort by page header index
+            .GroupBy(g => g.First().First().Value["layout"]?["category"]?.ToString() ?? "Uncategorised");// group by page category
 
         //partiallyOrganisedCosmetics.Select(g =>
         //{

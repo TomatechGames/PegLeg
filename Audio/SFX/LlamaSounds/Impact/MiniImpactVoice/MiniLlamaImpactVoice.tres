@@ -1,0 +1,15 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://o0r1uu6u5fby"]
+
+[ext_resource type="AudioStream" uid="uid://bw8hclu4n60l0" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlama_f_01_Hover_030.wav" id="1_pgegj"]
+[ext_resource type="AudioStream" uid="uid://ckxkyr00blaqd" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlama_f_01_Hover_040.wav" id="2_bc6u4"]
+[ext_resource type="AudioStream" uid="uid://cyc202n3we8v0" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlama_f_01_Hover_050.wav" id="3_djy3x"]
+[ext_resource type="AudioStream" uid="uid://chcl6kmn1y4ou" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlama_f_01_Hover_060.wav" id="4_wyuou"]
+[ext_resource type="AudioStream" uid="uid://dg56xc1dwc5al" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlama_f_01_Hover_070.wav" id="5_qv88x"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_pgegj")
+stream_1/stream = ExtResource("2_bc6u4")
+stream_2/stream = ExtResource("3_djy3x")
+stream_3/stream = ExtResource("4_wyuou")
+stream_4/stream = ExtResource("5_qv88x")

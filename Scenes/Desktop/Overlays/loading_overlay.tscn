@@ -8,4 +8,7 @@
 script = ExtResource("2_qygb4")
 startOpen = true
 
+[node name="CloseBtn" parent="." index="1"]
+visible = false
+
 [node name="LoadingIcon" parent="Control/WindowContents" index="0" instance=ExtResource("3_bjdao")]

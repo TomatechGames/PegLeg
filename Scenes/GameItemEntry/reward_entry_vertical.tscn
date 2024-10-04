@@ -6,5 +6,9 @@
 size_flags_horizontal = 6
 size_flags_vertical = 1
 
+[node name="CPUParticles2D" parent="IconContainer/RarityIcon/ParticlePosition" index="0"]
+position = Vector2(0, 0)
+scale = Vector2(1e-05, 1e-05)
+
 [node name="TextureRect" parent="IconContainer/RarityIcon" index="2"]
 expand_mode = 5

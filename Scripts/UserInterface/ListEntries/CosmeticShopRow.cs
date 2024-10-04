@@ -147,4 +147,9 @@ public partial class CosmeticShopRow : Control
             contentNode.CustomMinimumSize = -Vector2.Up * largeContentSize;
         }
     }
+
+    void OpenJamTracks()
+    {
+        OS.ShellOpen("https://www.fortnite.com/item-shop/jam-tracks");
+    }
 }

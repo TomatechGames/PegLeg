@@ -51,6 +51,7 @@ public static class AppConfig
         public static implicit operator AdaptiveJsonValue(bool value) => new(JsonValue.Create(value));
         public static implicit operator AdaptiveJsonValue(int value) => new(JsonValue.Create(value));
         public static implicit operator AdaptiveJsonValue(float value) => new(JsonValue.Create(value));
+        public static implicit operator AdaptiveJsonValue(double value) => new(JsonValue.Create(value));
         public static implicit operator AdaptiveJsonValue(string value) => new(JsonValue.Create(value));
     }
 }

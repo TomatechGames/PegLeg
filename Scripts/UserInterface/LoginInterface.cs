@@ -44,10 +44,10 @@ public partial class LoginInterface : Control
     {
         ConnectButtons();
         await this.WaitForFrame();
-        LoadingOverlay.Instance.AddLoadingKey("loginPreload");
+        LoadingOverlay.AddLoadingKey("loginPreload");
         BanjoAssets.PreloadSourcesParalell();
         await LoginRequests.TryLogin();
-        LoadingOverlay.Instance.RemoveLoadingKey("loginPreload");
+        LoadingOverlay.RemoveLoadingKey("loginPreload");
     }
 
     protected void ConnectButtons()
@@ -57,7 +57,11 @@ public partial class LoginInterface : Control
         if (pasteButton is not null)
             pasteButton.Pressed += PasteLoginCode;
         if (loginButton is not null)
-            loginButton.Pressed += () => Login().RunSafely();
+            loginButton.Pressed += async () =>
+            {
+                await Login();
+                await OnLoginSucceeded();
+            };
         if (usePersistantLogin is not null && LoginRequests.HasDeviceDetails)
             usePersistantLogin.ButtonPressed = true;
     }
@@ -110,6 +114,13 @@ public partial class LoginInterface : Control
             oneTimeCodeLine.Text = DisplayServer.ClipboardGet();
     }
 
+    protected async Task OnLoginSucceeded()
+    {
+        await ProfileRequests.GetProfile(FnProfiles.AccountItems);
+        await ProfileRequests.GetProfile(FnProfiles.SchematicCollection);
+        await ProfileRequests.GetProfile(FnProfiles.PeopleCollection);
+    }
+
     public virtual async Task Login()
     {
         if (!await LoginRequests.TryLogin(false))
@@ -120,7 +131,8 @@ public partial class LoginInterface : Control
                 EmitSignal(SignalName.ShowErrorPanel);
                 if (!usePersistantLogin.ButtonPressed)
                     LoginRequests.DeleteDeviceDetails();
-                return;
+                if (oneTimeCodeLine.Text.Trim() == "")
+                    return;
             }
             if(!await LoginRequests.LoginWithOneTimeCode(oneTimeCodeLine.Text.Trim()))
             {

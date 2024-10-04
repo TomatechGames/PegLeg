@@ -51,11 +51,18 @@ enabled=PackedStringArray("res://addons/external_folder_exporter/plugin.cfg")
 [file_customization]
 
 folder_colors={
+"res://BuiltInData/": "yellow",
 "res://GodotThemes/": "pink",
 "res://Scenes/": "green",
 "res://Scripts/": "purple",
 "res://Shaders/": "blue"
 }
+
+[global_group]
+
+ExcludeHoverSounds="Excludes button hover events from being bound to the hover sound effect"
+ExcludePressSounds="Excludes button press events from being bound to the press sound effect"
+ExcludeButtonSounds="Excludes all button events from being bound to sound effects"
 
 [gui]
 
@@ -108,3 +115,10 @@ environment/ssao/quality=0
 environment/ssil/quality=0
 anti_aliasing/screen_space_roughness_limiter/enabled=false
 viewport/transparent_background=true
+
+[shader_globals]
+
+GlobalCorners={
+"type": "bool",
+"value": true
+}

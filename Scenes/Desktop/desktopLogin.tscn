@@ -10,7 +10,7 @@
 [ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_hui55"]
 [ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="7_p1a3c"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="8_6q70k"]
-[ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="8_42nsr"]
+[ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="8_42nsr"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="9_gp42o"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_6kqv5"]
 [ext_resource type="Texture2D" uid="uid://ybhd24tgs2aq" path="res://Images/InterfaceIcons/minimise.png" id="11_obgx8"]
@@ -347,7 +347,7 @@ pivot_offset = Vector2(128, 128)
 mouse_filter = 0
 texture = ExtResource("1_7xbjg")
 script = ExtResource("8_6q70k")
-maximiseAtRoof = false
+isMainWindow = false
 
 [connection signal="ErrorContextChanged" from="." to="CenterContainer/Viewport/Control/Content/ErrorMessage/ErrorContent/VBoxContainer/RichTextLabel" method="set_text"]
 [connection signal="ErrorHeaderChanged" from="." to="CenterContainer/Viewport/Control/Content/ErrorMessage/ErrorContent/VBoxContainer/Label" method="set_text"]

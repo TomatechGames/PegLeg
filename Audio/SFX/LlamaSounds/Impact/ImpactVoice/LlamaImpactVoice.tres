@@ -1,0 +1,13 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=5 format=3 uid="uid://b4h4wy2udm64f"]
+
+[ext_resource type="AudioStream" uid="uid://bx34kwag7fcva" path="res://Audio/SFX/LlamaSounds/Impact/ImpactVoice/JB_BasicLlama_PreHit_01.wav" id="1_fy1i7"]
+[ext_resource type="AudioStream" uid="uid://dpb4tnvagg52u" path="res://Audio/SFX/LlamaSounds/Impact/ImpactVoice/JB_BasicLlama_PreHit_02.wav" id="2_dg7ec"]
+[ext_resource type="AudioStream" uid="uid://onoumclwn2dj" path="res://Audio/SFX/LlamaSounds/Impact/ImpactVoice/JB_BasicLlama_PreHit_03.wav" id="3_7otww"]
+[ext_resource type="AudioStream" uid="uid://x1viw136klly" path="res://Audio/SFX/LlamaSounds/Impact/ImpactVoice/JB_BasicLlama_PreHit_04.wav" id="4_dmdg1"]
+
+[resource]
+streams_count = 4
+stream_0/stream = ExtResource("1_fy1i7")
+stream_1/stream = ExtResource("2_dg7ec")
+stream_2/stream = ExtResource("3_7otww")
+stream_3/stream = ExtResource("4_dmdg1")

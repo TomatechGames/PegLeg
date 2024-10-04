@@ -39,7 +39,9 @@ public partial class DesktopLoginInterface : LoginInterface
     {
         loginContent.Visible = true;
         loadingIcon.Visible = false;
-        GetTree().Root.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
+        var window = GetWindow();
+        window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
+        window.ContentScaleFactor = 1;
         sizeTarget.CustomMinimumSize = Vector2.Zero;
         logo.Scale = Vector2.One;
 
@@ -100,6 +102,7 @@ public partial class DesktopLoginInterface : LoginInterface
         loginContent.Visible = false;
         loadingIcon.Visible = true;
         await base.Login();
+
         if (LoginRequests.AuthTokenValid)
         {
             var musicFadeout = GetTree().CreateTween().SetParallel();
@@ -118,6 +121,7 @@ public partial class DesktopLoginInterface : LoginInterface
 
     async void SwitchToMainInterface()
     {
+        await OnLoginSucceeded();
         hasAutoLoggedIn = true;
         MusicController.ResumeMusic();
         if (hasShrunk)

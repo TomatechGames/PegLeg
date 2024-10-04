@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://c78gt6b2m1utg"]
+[gd_scene load_steps=28 format=3 uid="uid://c78gt6b2m1utg"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
@@ -20,6 +20,9 @@
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="17_eyhau"]
 [ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="18_phyx5"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="19_xbd21"]
+[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="20_dnnsf"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="21_6608v"]
+[ext_resource type="PackedScene" uid="uid://cbntw4mx14x6o" path="res://MissionHex/mission_hex_grid.tscn" id="22_6i1lp"]
 
 [sub_resource type="Gradient" id="Gradient_08e2c"]
 colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
@@ -30,6 +33,14 @@ width = 1
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_fb3nj"]
 resource_name = "MissionZoneFilter"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fyl58"]
+shader = ExtResource("20_dnnsf")
+shader_parameter/ControlSize = Vector2(0, 0)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 30.0
 
 [node name="Missions" type="PanelContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemFilterButtons", "missionList", "loadingIcon")]
 self_modulate = Color(1, 1, 1, 0)
@@ -102,25 +113,23 @@ timerType = 1
 visible = false
 custom_minimum_size = Vector2(26, 0)
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 0)
 theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 0)
+theme_override_colors/font_color = Color(0, 0, 0, 0)
 theme_override_icons/arrow = SubResource("GradientTexture1D_60hgg")
 alignment = 2
 text_overrun_behavior = 2
-item_count = 8
 selected = 1
 fit_to_longest_item = false
+item_count = 8
 popup/item_0/text = "preset the first"
-popup/item_0/id = 0
 popup/item_1/text = "preset the second"
 popup/item_1/id = 1
 popup/item_2/text = "preset the third"
 popup/item_2/id = 2
-popup/item_3/text = ""
 popup/item_3/id = 3
 popup/item_3/separator = true
 popup/item_4/text = "Create New Preset"
@@ -409,26 +418,22 @@ texture = ExtResource("15_618bo")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Control" type="Control" parent="VBoxContainer"]
+[node name="Control" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Control" node_paths=PackedStringArray("linkedGrid", "offsetControl", "paddingControl", "elementParent")]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+visible = false
+layout_mode = 2
 script = ExtResource("16_egkbm")
 elementSpace = 10.0
-linkedGrid = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
-offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
-paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
-elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+linkedGrid = NodePath("MarginContainer2/VBoxContainer/DynGridContainer")
+offsetControl = NodePath("MarginContainer2/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer2/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer2/VBoxContainer/DynGridContainer")
 elementScene = ExtResource("17_eyhau")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_left = 10
@@ -436,26 +441,51 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Control/ScrollContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Offset" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Offset" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 
-[node name="DynGridContainer" type="Container" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="DynGridContainer" type="Container" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 script = ExtResource("18_phyx5")
 minCols = 3
 compressSpacing = true
 spacing = Vector2(10, 10)
 
-[node name="Padding" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Padding" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 
+[node name="MissionHexViewer" type="MarginContainer" parent="VBoxContainer/Control"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/Control/MissionHexViewer"]
+material = SubResource("ShaderMaterial_fyl58")
+layout_mode = 2
+stretch = true
+script = ExtResource("21_6608v")
+syncControlSize = true
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Control/MissionHexViewer/SubViewportContainer"]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 0
+
+[node name="MissionHexGrid" parent="VBoxContainer/Control/MissionHexViewer/SubViewportContainer/SubViewport" instance=ExtResource("22_6i1lp")]
+
 [node name="LoadingIcon" parent="VBoxContainer/Control" instance=ExtResource("19_xbd21")]
-layout_mode = 1
-offset_top = -128.0
-offset_bottom = 128.0
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ForceRefresh" to="." method="ForceReloadMissions"]

@@ -6,9 +6,18 @@ uniform vec2 ControlSize = vec2(100.0, 100.0);
 uniform vec2 ShiftDirection = vec2(0.5,0.5);
 uniform bool Fit;
 uniform bool UseCorners;
+uniform bool UseGlobalCorners;
 uniform bool ApplyCornersToFit;
 uniform float CornerRadius = 10.0;
 uniform bool ClipOOB;
+global uniform bool GlobalCorners;
+
+varying vec4 modulate;
+
+void vertex()
+{
+	modulate=COLOR;
+}
 
 void fragment() {
 	vec2 texRes=1.0/TEXTURE_PIXEL_SIZE;
@@ -16,7 +25,7 @@ void fragment() {
 
 	COLOR = texture(TEXTURE, adaptedUV);
 
-	if(UseCorners)
+	if(UseGlobalCorners ? GlobalCorners : UseCorners)
 	{
 		vec2 targetUV = ApplyCornersToFit && Fit ? adaptedUV : UV;
 		vec2 targetSize = ApplyCornersToFit && Fit ? GetFitSize(ControlSize, texRes) : ControlSize;
@@ -27,6 +36,7 @@ void fragment() {
 		COLOR.a*=1.0-ceil(max(adaptedUV.x-1.0,adaptedUV.y-1.0));
 		COLOR.a*=ceil(min(adaptedUV.x,adaptedUV.y));
 	}
+	COLOR*=modulate;
 }
 
 //void light() {

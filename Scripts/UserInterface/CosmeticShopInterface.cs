@@ -77,10 +77,10 @@ public partial class CosmeticShopInterface : Control
         {
             button.Pressed += ApplyFilters;
         }
-        simpleShopMode.ButtonPressed = AppConfig.Get("item_shop", "simple_cosmetics", false);
+        //simpleShopMode.ButtonPressed = AppConfig.Get("item_shop", "simple_cosmetics", false);
         simpleShopMode.Pressed += async () =>
         {
-            AppConfig.Set("item_shop", "simple_cosmetics", simpleShopMode.ButtonPressed);
+           // AppConfig.Set("item_shop", "simple_cosmetics", simpleShopMode.ButtonPressed);
             await LoadShop(true);
         };
         resetTypeFilters.Pressed += () =>
@@ -119,10 +119,10 @@ public partial class CosmeticShopInterface : Control
         if (response is null)
             return;
 
-        LoadingOverlay.Instance.AddLoadingKey("setSAC");
+        LoadingOverlay.AddLoadingKey("setSAC");
         await ProfileRequests.SetSACCode(response);
         sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : (await ProfileRequests.GetSACCode());
-        LoadingOverlay.Instance.RemoveLoadingKey("setSAC");
+        LoadingOverlay.RemoveLoadingKey("setSAC");
     }
 
     private void OnNavCell()
@@ -196,7 +196,13 @@ public partial class CosmeticShopInterface : Control
         if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0) || !await LoginRequests.TryLogin())
             return;
 
-        sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : (await ProfileRequests.GetSACCode());
+        string currentSACCode = await ProfileRequests.GetSACCode(false);
+        if (await ProfileRequests.GetSACTime() > 1 && AppConfig.Get("automation", "creatorcode", false))
+        {
+            //GD.Print(currentSACCode);
+            await ProfileRequests.SetSACCode(currentSACCode);
+        }
+        sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : currentSACCode;
 
         isLoadingShop = true;
         filterBlocker.Visible = true;
@@ -425,19 +431,19 @@ public partial class CosmeticShopInterface : Control
 
     bool IsValidEntry(CosmeticShopOfferEntry entry)
     {
-        if(requireLeavingSoon.ButtonPressed && !entry.isLeavingSoon)
+        if(requireLeavingSoon.ButtonPressed && !entry.metadata.isLeavingSoon)
             return false;
-        if (requireAddedToday.ButtonPressed && !entry.isAddedToday)
+        if (requireAddedToday.ButtonPressed && !entry.metadata.isAddedToday)
             return false;
         if (!includeDiscountBundles.ButtonPressed && entry.isDiscountBundle)
             return false;
 
         if (!(newOrOldFilterValue switch
         {
-            0 => entry.isAddedToday && entry.isRecentlyNew,
-            1 => entry.isRecentlyNew,
-            3=> entry.isOld,
-            4 => entry.isVeryOld,
+            0 => entry.metadata.isAddedToday && entry.metadata.isRecentlyNew,
+            1 => entry.metadata.isRecentlyNew,
+            3=> entry.metadata.isOld,
+            4 => entry.metadata.isVeryOld,
             _ => true
         }))
             return false;

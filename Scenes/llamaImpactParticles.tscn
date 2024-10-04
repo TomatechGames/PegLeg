@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=3 uid="uid://cs7kqufoy7ii3"]
+
+[sub_resource type="Curve" id="Curve_fjmi8"]
+max_value = 100.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_uoomx"]
+min_value = 1.0
+max_value = 2.0
+_data = [Vector2(0.25, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 4.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_vmhvw"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_q3qjt"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(1, 0, 0, 1, 0.9, 1, 0, 1, 0.133333, 1, 0, 1, 0.0352941, 1, 0.960784, 1, 1, 0, 0.783333, 1)
+
+[node name="ImpactParticles" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 20
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.95
+lifetime_randomness = 1.0
+local_coords = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(0, -1)
+spread = 100.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 100.0
+initial_velocity_max = 400.0
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+orbit_velocity_min = -0.2
+orbit_velocity_max = 0.2
+damping_curve = SubResource("Curve_fjmi8")
+scale_amount_min = 6.0
+scale_amount_max = 8.0
+scale_amount_curve = SubResource("Curve_uoomx")
+color_ramp = SubResource("Gradient_vmhvw")
+color_initial_ramp = SubResource("Gradient_q3qjt")

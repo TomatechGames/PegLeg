@@ -1,0 +1,8 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=2 format=3 uid="uid://divk7fb2gdm8x"]
+
+[ext_resource type="AudioStream" uid="uid://pl1k111rrt5h" path="res://Audio/SFX/LlamaSounds/Greet/pinata_appear.wav" id="1_t250m"]
+
+[resource]
+random_pitch = 1.05
+streams_count = 1
+stream_0/stream = ExtResource("1_t250m")

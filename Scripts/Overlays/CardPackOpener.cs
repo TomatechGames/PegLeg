@@ -18,17 +18,16 @@ public partial class CardPackOpener : Control
     [Export]
     bool sortByRarity = false;
     [Export]
-    bool choicePacksFirst = true;
-    [Export]
-    Control clickArea;
-    [Export]
-    ShaderHook backgroundImage;
+    Control displayPanel;
     [Export]
     AudioStreamPlayer music;
     [Export]
     Control pullButton;
     [Export]
     Color defaultBackgroundColor;
+    [Export]
+    Control glowFlare;
+
     [ExportGroup("Supply Crate")]
     [Export]
     AudioStreamPlayer startAudio;
@@ -53,9 +52,56 @@ public partial class CardPackOpener : Control
     [Export]
     Texture2D lidFlippingTexture;
     [Export]
+    Control crateOpenButton;
+
+    [ExportGroup("Llama")]
+    [Export]
+    int minLlamaImpacts = 3;
+    [Export]
+    int impactParticlePool;
+    [ExportSubgroup("Sounds")]
+    [Export]
+    AudioStreamPlayer[] greetingEffects;
+    [Export]
+    AudioStreamPlayer[] greetingVoices;
+    [Export]
+    AudioStreamPlayer hoverEffect;
+    [Export]
+    AudioStreamPlayer impactEffect;
+    [Export]
+    AudioStreamPlayer impactVoice;
+    [Export]
+    AudioStreamPlayer miniImpactVoice;
+    [Export]
+    AudioStreamPlayer burstEffect;
+    [Export]
+    AudioStreamPlayer burstVoice;
+    [Export]
+    AudioStreamPlayer miniBurstVoice;
+    [ExportSubgroup("Nodes")]
+    [Export]
+    PackedScene impactParticlesScene;
+    [Export]
+    Control impactParticleParent;
+    [Export]
+    Control llamaGlow;
+    [Export]
+    Control standardLlamaButton;
+    [Export]
+    Control smallLlamaButton;
+    [Export]
     CpuParticles2D confettiParticles;
     [Export]
-    Control crateOpenButton;
+    LlamaEntry llamaEntry;
+    [Export]
+    Control fullLlama;
+    [Export]
+    Control standardLlamaPartParent;
+    Control[] standardLlamaParts;
+    [Export]
+    Control smallLlamaPartParent;
+    Control[] smallLlamaParts;
+
     [ExportGroup("Cards")]
     [Export]
     GameItemEntry topCard;
@@ -71,6 +117,7 @@ public partial class CardPackOpener : Control
     VBoxContainer smallCardParent;
     [Export]
     GameItemEntry[] smallCards = Array.Empty<GameItemEntry>();
+
     [ExportGroup("Choices")]
     [Export]
     CanvasGroup choiceCanvas;
@@ -85,218 +132,154 @@ public partial class CardPackOpener : Control
     [Export]
     Control skipChoiceButton;
 
-    float smallOffsetAmount;
+    ShaderHook cardChangeEffect;
+    bool isOpen;
+    bool isSmall;
+    bool cardPacksPrepared;
+    bool llamaBurstComplate;
+    int llamaHits;
+    Control fromPanel;
+    JsonObject defaultLlamaItem = BanjoAssets.CreateInstanceOfItem(BanjoAssets.TryGetTemplate("CardPack:cardpack_bronze"));
+    Control[] impactParticleContainers;
+    CpuParticles2D[] impactParticles;
+    int nextPullIndex = 1;
+    bool choicesOnly;
+    bool isPulling;
+    bool isFast;
+
+
+    public List<ProfileItemHandle> queuedChoices = new();
+    public List<ProfileItemHandle> queuedItemHandles = new();
+    public List<JsonObject> queuedItems = new();
+    int TotalQueueLength => queuedChoices.Count + (choicesOnly ? 0 : queuedItems.Count);
+
     public override void _Ready()
     {
         Instance = this;
-        base._Ready();
-        VisibilityChanged += async () =>
-        {
-            if (!Visible || !IsInsideTree())
-                return;
-            await this.WaitForFrame();
-            GD.Print("Test: "+smallCardParent.GetThemeConstant("separation"));
-            smallCardParent.AddThemeConstantOverride("separation", -123);
-            GD.Print("Test2: " + smallCardParent.GetThemeConstant("separation"));
-            //smallOffsetAmount = Mathf.FloorToInt(topCard.Size.Y) + smallCardParent.GetThemeConstant("separation");
-            smallCardParent.AddThemeConstantOverride("separation", gapBetweenCards-Mathf.FloorToInt(topCard.Size.Y));
-            smallOffsetAmount = gapBetweenCards;
-            //GD.Print($"smallOffset: {smallOffsetAmount} ({Mathf.FloorToInt(topCard.Size.Y)}+{smallCardParent.GetThemeConstant("separation")})");
-        };
-        if (Visible)
-        {
-            Visible = false;
-        }
+        standardLlamaParts = standardLlamaPartParent.GetChildren().Select(n => n as Control).ToArray();
+        smallLlamaParts = smallLlamaPartParent.GetChildren().Select(n => n as Control).ToArray();
+        cardChangeEffect = topCard.GetNode<ShaderHook>("%ChangeEffect");
         Visible = true;
-        clickArea.Visible = false;
+        displayPanel.Visible = false;
         choiceResultCard.Visible = false;
         crateOpenButton.Visible = false;
-        backgroundImage.SetShaderFloat(0, "Transparancy");
+        displayPanel.Visible = false;
         choiceCanvas.Scale = Vector2.Zero;
         choiceCanvas.SelfModulate = Colors.Transparent;
         ProcessMode = ProcessModeEnum.Disabled;
-    }
 
-    bool supplyCrateActive = false;
-    void PlaySupplyAnimation()
-    {
-        ProcessMode = ProcessModeEnum.Inherit;
-        MusicController.StopMusic();
-        supplyCrateActive = true;
-
-        startAudio.Play();
-        fallingAudio.VolumeDb = -80;
-        fallingAudio.Play();
-        radioAudio.Stop();
-        music.Stop();
-        music.VolumeDb = 0;
-
-        topCard.Scale = Vector2.Zero;
-
-        landedCrate.Visible = false;
-        landedCrate.GrowVertical = GrowDirection.Both;
-        landedCrate.AnchorTop = 0.5f;
-        landedCrate.AnchorBottom = 0.5f;
-        landedCrate.AnchorLeft = 0.5f;
-        landedCrate.AnchorRight = 0.5f;
-        landedCrate.OffsetTop = 0;
-        landedCrate.OffsetBottom = 0;
-        landedCrate.OffsetLeft = 0;
-        landedCrate.OffsetRight = 0;
-        landedCrate.Scale = fallingCrate.Scale;
-
-        landedCrateLid.SelfModulate = Colors.White;
-        landedCrateLid.Texture = lidBasicTexture;
-        landedCrateLid.OffsetTop = 0;
-        landedCrateLid.OffsetBottom = 0;
-        landedCrateLid.OffsetLeft = 0;
-        landedCrateLid.OffsetRight = 0;
-        landedCrateLid.Visible = false;
-        landedCrateLid.Scale = fallingCrate.Scale;
-
-        landedCrateBG.Visible = true;
-        landedCrateBGCards.Visible = false;
-
-        fallingCrate.Visible = true;
-        fallingCrate.SelfModulate = Colors.Transparent;
-        fallingCrate.OffsetBottom = -10000;
-
-        confettiParticles.Restart();
-        confettiParticles.Emitting = false;
-
-        smallCardParent.Visible=false;
-
-        var fallingTransition = GetTree().CreateTween().SetParallel();
-        fallingTransition.TweenProperty(fallingCrate, "self_modulate", Colors.White, 0.25);
-        fallingTransition.TweenProperty(fallingAudio, "volume_db", 0, 0.75f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Quad);
-        fallingTransition.TweenProperty(fallingCrate, "offset_bottom", 0, 0.75f);
-        //tween crate image down
-        fallingTransition.Finished += () =>
+        impactParticlePool = Mathf.Max(impactParticlePool, 1);
+        impactParticles = new CpuParticles2D[impactParticlePool];
+        impactParticleContainers = new Control[impactParticlePool];
+        for (int i = 0; i < impactParticlePool; i++)
         {
-            smallCardParent.Visible = true;
-            smallCardParent.AddThemeConstantOverride("separation", -Mathf.FloorToInt(topCard.Size.Y));
-            landedCrate.Visible = true;
-            landedCrateLid.Visible = true;
-            fallingCrate.Visible = false;
-            crateOpenButton.Visible = true;
-            fallingAudio.Stop();
-            landAudio.Play();
-            music.Play();
-            radioAudio.Play();
-            var bgFade = GetTree().CreateTween().SetParallel().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Quad);
-            bgFade.TweenMethod(Callable.From<float>(val => backgroundImage.SetShaderFloat(val, "Transparancy")), 0f, 1f, 0.5)
-                .SetEase(Tween.EaseType.Out);
-            backgroundImage.Visible = true;
-        };
-    }
-
-    void PlaySupplyOpenAnimation()
-    {
-        radioAudio.Stop();
-        landedCrateLid.Texture = lidFlippingTexture;
-        crateOpenButton.Visible = false;
-
-        var lidJump = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quad);
-        lidJump.TweenProperty(landedCrateLid, "offset_bottom", -100, 0.25).SetEase(Tween.EaseType.Out);
-        lidJump.TweenProperty(landedCrateLid, "offset_top", -100, 0.25).SetEase(Tween.EaseType.Out);
-        lidJump.Chain().TweenProperty(landedCrateLid, "offset_bottom", 50, 0.24).SetEase(Tween.EaseType.In);
-        lidJump.Parallel().TweenProperty(landedCrateLid, "offset_top", 50, 0.24).SetEase(Tween.EaseType.In);
-
-        var lidSlideAmount = GD.RandRange(100, 150) * (GD.Randf() > 0.5 ? 1 : -1);
-        var lidSlide = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Linear);
-        lidSlide.TweenProperty(landedCrateLid, "offset_left", lidSlideAmount, 0.5);
-        lidSlide.TweenProperty(landedCrateLid, "offset_right", lidSlideAmount, 0.5);
-        lidSlide.TweenProperty(landedCrateLid, "self_modulate", Colors.Transparent, 0.25).SetDelay(0.2f);
-
-        confettiParticles.Restart();
-
-        lidSlide.Finished += () =>
-        {
-            supplyCrateActive = false;
-            GD.Print("inactive");
-        };
-    }
-
-    void PlaySupplyShrinkAnimation()
-    {
-        var prevGlobal = landedCrate.GlobalPosition;
-        confettiParticles.Emitting = false;
-        landedCrate.AnchorTop = 1;
-        landedCrate.AnchorBottom = 1;
-        landedCrate.GlobalPosition = prevGlobal + ((landedCrate.Size / 2) * (landedCrate.Scale - Vector2.One));
-        landedCrate.OffsetBottom -= (landedCrate.Size.Y / 2);
-        landedCrate.OffsetTop += (landedCrate.Size.Y / 2);
-
-        var boxSlide = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quint);
-        boxSlide.TweenProperty(landedCrate, "offset_left", 225, 0.75).SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Quad);
-        boxSlide.TweenProperty(landedCrate, "offset_right", 225, 0.75).SetEase(Tween.EaseType.InOut).SetTrans(Tween.TransitionType.Quad);
-        boxSlide.TweenProperty(landedCrate, "offset_bottom", 0, 0.75).SetEase(Tween.EaseType.In);
-        boxSlide.TweenProperty(landedCrate, "offset_top", 0, 0.75).SetEase(Tween.EaseType.In);
-        boxSlide.TweenProperty(landedCrate, "scale", Vector2.One, 0.75).SetEase(Tween.EaseType.In);
-    }
-
-    async Task WaitForSupplyCrate()
-    {
-        while (supplyCrateActive)
-        {
-            if (!IsInsideTree())
-                return;
-            await this.WaitForFrame();
+            var impactParticleContainer = impactParticlesScene.Instantiate() as Control;
+            impactParticleParent.AddChild(impactParticleContainer);
+            impactParticleContainers[i] = impactParticleContainer;
+            impactParticles[i] = impactParticleContainer.GetChild<CpuParticles2D>(0);
+            int index = i;
+            llamaEntry.GradientChanged += g => impactParticles[index].ColorInitialRamp = g;
         }
     }
 
-    public async Task StartOpeningShopResults(JsonObject[] shopResults) =>
-        await StartOpening(null, shopResults);
-
-    public async Task StartOpening(ProfileItemHandle[] cardPacks, JsonObject[] extraShopResults = null)
+    public async Task StartOpening(ProfileItemHandle[] cardPacks, Control fromPanel, JsonObject llamaItem = null, JsonObject shopPurchaseBody = null, bool skipReveal = false)
     {
-        if (queuedItems.Count > 0 || queuedChoices.Count > 0)
+        if (isOpen)
+        {
+            GD.Print("Still Open");
             return;
-        isClosing = false;
-        //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
-        clickArea.Visible = true;
-        pullButton.Visible = false;
-        backgroundImage.SelfModulate = defaultBackgroundColor;
+        }
+        ProcessMode = ProcessModeEnum.Inherit;
+        isOpen = true;
+        //await this.WaitForFrame();
 
-        //start supply crate animation
-        PlaySupplyAnimation();
-        await this.WaitForTimer(1.25);
+        llamaHits = 0;
+        llamaItem ??= defaultLlamaItem;
+        llamaEntry.SetItemData(llamaItem);
+        GD.Print("Tier: "+llamaEntry.LlamaTier);
+        //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
+        displayPanel.Visible = true;
+        pullButton.Visible = false;
+        cardPacksPrepared = false;
+        llamaBurstComplate = false;
+        this.fromPanel = fromPanel;
+        glowFlare.Scale = Vector2.Zero;
+        fullLlama.Visible = true;
+        fullLlama.Scale = Vector2.One;
+        LlamaScale(false);
+        smallLlamaPartParent.Visible = false;
+        standardLlamaPartParent.Visible = false;
+        smallLlamaButton.Visible = false;
+        standardLlamaButton.Visible = false;
+
+        topCard.Scale = Vector2.Zero;
+        confettiParticles.Restart();
+        confettiParticles.Emitting = false;
+        for (int i = 0; i < impactParticles.Length; i++)
+        {
+            var particles = impactParticles[i];
+            if (particles is null)
+                continue;
+            particles.Restart();
+            particles.Emitting = false;
+        }
+
+        //start llama animation
+        ResizePanelOpen();
+        await this.WaitForTimer(0.31);
 
         cardPacks ??= Array.Empty<ProfileItemHandle>();
-        extraShopResults ??= Array.Empty<JsonObject>();
-        var extraItems = extraShopResults
-                .Where(val => val.AsObject().ContainsKey("itemGuid") && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
-                .Select(val => BanjoAssets.CreateInstanceOfItem(
-                    BanjoAssets.TryGetTemplate(val["itemType"].ToString()),
-                    (int)val["quantity"],
-                    val["attributes"]?.Reserialise().AsObject(),
-                    val["itemProfile"] + ":" + val["itemGuid"]
-                    ))
+
+        JsonObject[] extraItems = null;
+        ProfileItemHandle[] extraItemHandles = null;
+        ProfileItemHandle[] extraCardPacks = null;
+
+        if (shopPurchaseBody is not null)
+        {
+            var shopResult = await ProfileRequests.PerformProfileOperation(FnProfiles.Common, "PurchaseCatalogEntry", shopPurchaseBody.ToString());
+            var shopResultItems = shopResult["notifications"]
+                .AsArray()
+                .First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"]
+                    .AsArray()
+                    .Select(var => var.AsObject()
+                    )
                 .ToArray();
-        var extraCardPacks = extraShopResults
-                .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
+
+            var extraItemData = shopResultItems
+                .Where(val => val?["itemGuid"] is not null && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false));
+
+            extraItems = extraItemData
+                    .Select(val => BanjoAssets.CreateInstanceOfItem(
+                        BanjoAssets.TryGetTemplate(val["itemType"].ToString()),
+                        (int)val["quantity"],
+                        val["attributes"]?.Reserialise().AsObject(),
+                        val["itemProfile"] + ":" + val["itemGuid"]
+                        ))
+                    .ToArray();
+
+            extraItemHandles = extraItemData
+                .Where(val => (int)val["quantity"] == 1)
                 .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
                 .ToArray();
 
-        cardPacks = cardPacks.Union(extraCardPacks).ToArray();
+            extraCardPacks = shopResultItems
+                    .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
+                    .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                    .ToArray();
+        }
+        extraItems ??= Array.Empty<JsonObject>();
+        extraItemHandles ??= Array.Empty<ProfileItemHandle>();
+        extraCardPacks ??= Array.Empty<ProfileItemHandle>();
+        extraCardPacks = extraCardPacks.Union(cardPacks).ToArray();
 
         //step 1: separate the choice cardpacks from the regular ones
         List<ProfileItemHandle> openableCardPacks = new();
-        foreach (var item in cardPacks)
+        foreach (var item in extraCardPacks)
         {
-            if (!(await item.GetItem())["templateId"].ToString().StartsWith("CardPack"))
-                continue; //items should no longer be fed in through cardpacks
-            else if ((await item.GetItem())["attributes"].AsObject().ContainsKey("options"))
-                queuedChoices.Add(item);
-            else
+            if (!(await item.GetItem())["attributes"].AsObject().ContainsKey("options"))
                 openableCardPacks.Add(item);
         }
-
-        await WaitForSupplyCrate();
-
-        if (!IsInsideTree())
-            return;
-
+        extraCardPacks = extraCardPacks.Except(openableCardPacks).ToArray();
 
         //step 2: send request to open all regular ones
         if (openableCardPacks.Count>0)
@@ -312,17 +295,26 @@ public partial class CardPackOpener : Control
             //TODO: handle errors
             //TODO: merge amounts of identical item stacks
             var resultNotification = (await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "OpenCardPackBatch", body.ToString()))["notifications"][0];
-            var resultItems = resultNotification["lootGranted"]["items"].AsArray()
-                .Where(val => val?["itemGuid"] is not null && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
+            
+            var resultItemData = resultNotification["lootGranted"]["items"].AsArray()
+                .Where(val => val?["itemGuid"] is not null && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false));
+
+            var resultItems = resultItemData
                 .Select(val => BanjoAssets.CreateInstanceOfItem(
                     BanjoAssets.TryGetTemplate(val["itemType"].ToString()),
                     (int)val["quantity"],
-                    val["attributes"]?.Reserialise().AsObject() ?? 
+                    val["attributes"]?.Reserialise().AsObject() ??
                         ProfileRequests.GetCachedProfileItemInstance(new(val["itemProfile"].ToString(), val["itemGuid"].ToString()))
                         ["attributes"]?.Reserialise().AsObject(),
                     val["itemProfile"] + ":" + val["itemGuid"]
                     ))
-                .ToList();
+                .ToArray();
+
+            var resultItemHandles = resultItemData
+                .Where(val => (int)val["quantity"]==1)
+                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                .ToArray();
+
             var resultCardPacks = resultNotification["lootGranted"]["items"].AsArray()
                 .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
                 .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
@@ -337,9 +329,22 @@ public partial class CardPackOpener : Control
                 GD.Print("Exception: " + exceptions[0]);
 
             queuedChoices.AddRange(resultCardPacks);
+            queuedItemHandles.AddRange(resultItemHandles);
             queuedItems.AddRange(resultItems);
         }
+
+        queuedChoices.AddRange(extraCardPacks);
+        queuedItemHandles.AddRange(extraItemHandles);
         queuedItems.AddRange(extraItems);
+        cardPacksPrepared = true;
+
+        //step 2.5: wait for user to proceed
+        await WaitForCardPackBurst();
+        GD.Print("wait complete");
+
+        if (!IsInsideTree() || !isOpen)
+            return;
+        GD.Print("phew");
 
 
         //step 3: apply sorting
@@ -353,14 +358,20 @@ public partial class CardPackOpener : Control
         }
 
         //step 4: display results based on user settings
-        PlaySupplyShrinkAnimation();
-        await this.WaitForTimer(0.75);
+
+        choicesOnly = skipReveal;
+        if(skipReveal && queuedChoices.Count == 0)
+        {
+            await ShowRecyclePopup();
+            CloseMenu();
+            return;
+        }
 
         nextPullIndex = 0;
         SetCardItems(-1);
         smallCardParent.Visible = true;
         var cardsUnfold = GetTree().CreateTween().SetParallel().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Quart);
-        cardsUnfold.TweenMethod(Callable.From<int>(val => smallCardParent.AddThemeConstantOverride("separation", val - Mathf.FloorToInt(topCard.Size.Y))), 0, gapBetweenCards, 0.25f);
+        cardsUnfold.TweenProperty(this, "CurrentCardSeparation", gapBetweenCards, 0.25f);
 
         for (int i = 0; i < choiceCards.Length; i++)
         {
@@ -369,17 +380,154 @@ public partial class CardPackOpener : Control
         }
 
         pullButton.Visible = true;
-        landedCrateBG.Visible = false;
-        landedCrateBGCards.Visible = true;
     }
 
-    public List<ProfileItemHandle> queuedChoices = new();
-    public List<JsonObject> queuedItems = new();
-    int TotalQueueLength => queuedChoices.Count + queuedItems.Count;
+    int CurrentCardSeparation
+    {
+        get => smallCardParent.GetThemeConstant("separation") + Mathf.FloorToInt(topCard.Size.Y);
+        set => smallCardParent.AddThemeConstantOverride("separation", value - Mathf.FloorToInt(topCard.Size.Y));
+    }
 
-    int nextPullIndex = 1;
-	bool isPulling;
-    bool isFast;
+    void ResizePanelOpen()
+    {
+        var startingLocation = fromPanel.GetGlobalRect();
+        displayPanel.GlobalPosition = startingLocation.Position;
+        displayPanel.Size = startingLocation.Size;
+        displayPanel.Modulate = Colors.Transparent;
+
+        MusicController.StopMusic();
+        topCard.Scale = Vector2.Zero;
+        music.Play();
+        music.VolumeDb = 0;
+        greetingEffects[llamaEntry.LlamaTier].Play();
+        UISounds.PlaySound("PanelAppear");
+
+        smallCardParent.Visible = false;
+
+        var resizePanelTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quad);
+        resizePanelTween.TweenProperty(displayPanel, "modulate", Colors.White, 0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_top", 3, 0.2).SetDelay(0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_bottom", -3, 0.2).SetDelay(0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_left", 3, 0.2).SetDelay(0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_right", -3, 0.2).SetDelay(0.1);
+
+        resizePanelTween.Finished += () =>
+        {
+            greetingVoices[isSmall ? 3 : llamaEntry.LlamaTier].Play();
+            (isSmall ? smallLlamaButton : standardLlamaButton).Visible = true;
+            smallCardParent.Visible = true;
+            CurrentCardSeparation = 0;
+        };
+    }
+
+    //wibbly wobbly music theory
+    static float[] impactProgression = new float[]
+    {
+        0.00f/8,
+        1.00f/8,
+        2.00f/8,
+        2.66f/8,
+        4.00f/8,
+        5.66f/8,
+        7.00f/8,
+    };
+
+    void PlayImpactSound()
+    {
+        int octave = 1 + (llamaHits / 8);
+        impactEffect.PitchScale = octave + impactProgression[llamaHits % 8];
+        impactEffect.Play();
+    }
+
+    void SetLlamaHover(bool value)
+    {
+        if (cardPacksPrepared && llamaHits > minLlamaImpacts)
+            return;
+        if (value)
+            hoverEffect.Play();
+        LlamaScale(value);
+        GlowScale(value);
+    }
+
+    void GlowScale(bool value)
+    {
+        var glowScaleTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Cubic);
+        glowScaleTween.TweenProperty(glowFlare, "scale", value ? Vector2.One : Vector2.Zero, 0.25f);
+    }
+    void LlamaScale(bool value)
+    {
+        var llamaScaleTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Cubic);
+        llamaScaleTween.TweenProperty(fullLlama, "scale", Vector2.One * (value ? 1 : 0.9f), 0.25f);
+    }
+
+    void HitLlama()
+    {
+        if (!cardPacksPrepared || llamaHits < minLlamaImpacts)
+        {
+            //play impact sound and voiceline
+            if (llamaHits == 0)
+            {
+                greetingVoices[isSmall ? 3 : llamaEntry.LlamaTier].Stop();
+                (isSmall ? miniImpactVoice : impactVoice).Play();
+            }
+            int impactPartcilesIndex = llamaHits % impactParticles.Length;
+
+            impactParticleContainers[impactPartcilesIndex].GlobalPosition = GetGlobalMousePosition();
+            impactParticles[impactPartcilesIndex].Restart();
+
+            PlayImpactSound();
+            llamaHits++;
+            return;
+        }
+        llamaHits++;
+        GlowScale(false);
+
+        smallLlamaButton.Visible = false;
+        standardLlamaButton.Visible = false;
+        PlayImpactSound();
+        burstEffect.Play();
+        (isSmall ? miniImpactVoice : impactVoice).Stop();
+        (isSmall ? miniBurstVoice : burstVoice).Play();
+
+        Control[] llamaParts = isSmall ? smallLlamaParts : standardLlamaParts;
+        //crateOpenButton.Visible = false;
+
+        fullLlama.Visible = false;
+        var llamaPartsParent = isSmall ? smallLlamaPartParent : standardLlamaPartParent;
+        llamaPartsParent.Visible = true;
+
+        var llamaBurstTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Cubic);
+        foreach (var part in llamaParts)
+        {
+            part.OffsetTop = 0;
+            part.OffsetBottom = 0;
+            part.OffsetLeft = 0;
+            part.OffsetRight = 0;
+            part.Rotation = 0;
+            part.Scale = Vector2.One;
+            float hOffset = ((part.PivotOffset.X / part.Size.X) - 0.5f) * 500;
+            llamaBurstTween.TweenProperty(part, "offset_top", 1000, 1.25f).SetEase(Tween.EaseType.In).SetTrans(Tween.TransitionType.Quad);
+            llamaBurstTween.TweenProperty(part, "offset_left",  hOffset, 1.25f).SetTrans(Tween.TransitionType.Linear);
+            llamaBurstTween.TweenProperty(part, "offset_right", hOffset, 1.25f).SetTrans(Tween.TransitionType.Linear);
+            llamaBurstTween.TweenProperty(part, "rotation", Mathf.DegToRad(GD.RandRange(480, 740) * (GD.Randf() > 0.5 ? 1 : -1)), 1.25f).SetEase(Tween.EaseType.Out);
+            llamaBurstTween.TweenProperty(part, "scale", Vector2.Zero, 1.25f).SetEase(Tween.EaseType.In);
+        }
+
+        confettiParticles.Restart();
+
+        llamaBurstTween.Finished += () =>
+        {
+            llamaBurstComplate = true;
+        };
+    }
+
+    async Task WaitForCardPackBurst()
+    {
+        while (IsInsideTree() && isOpen && !llamaBurstComplate)
+        {
+            await this.WaitForFrame();
+        }
+    }
 
     Tween holdTween;
     Tween speedTween;
@@ -395,14 +543,14 @@ public partial class CardPackOpener : Control
 
             //enable fast effects
             if (nextPullIndex < TotalQueueLength)
-                TweenTimeScale(pullFastSpeed, pullFastSpeed * 2, -10);
+                TweenTimeScale(pullFastSpeed, pullFastSpeed * 2);
         };
         if (!isPulling)
             PullCard();
     }
     static readonly Callable setTimeScaleCallable = Callable.From<float>(SetTimeScale);
     static void SetTimeScale(float newVal) => Engine.TimeScale = newVal;
-    void TweenTimeScale(float target, float pitch, float vol, float time = 0.5f)
+    void TweenTimeScale(float target, float pitch, float time = 0.5f)
     {
         speedTween?.Kill();
         speedTween = GetTree().CreateTween().SetParallel();
@@ -420,7 +568,7 @@ public partial class CardPackOpener : Control
         if (isFast)
         {
             isFast = false;
-            TweenTimeScale(1, 1, 0);
+            TweenTimeScale(1, 1);
             //disable fast effects
         }
     }
@@ -466,6 +614,11 @@ public partial class CardPackOpener : Control
 
     void SetSingleCardItem(int index, GameItemEntry card)
     {
+        if (choicesOnly)
+        {
+            card.LinkProfileItem(queuedChoices[index]);
+            return;
+        }
         //GD.Print("INDEX: " + index);
         if (index>=queuedItems.Count)
         {
@@ -484,20 +637,26 @@ public partial class CardPackOpener : Control
 	{
         if (nextPullIndex>0)
         {
-            prevCard.GlobalPosition = topCard.GlobalPosition + (topCard.Size*(topCard.Scale-Vector2.One)*0.5f);
             prevCard.Scale = topCard.Scale;
+            prevCard.GlobalPosition = topCard.GlobalPosition/* + (topCard.Size * (topCard.Scale - Vector2.One) * 0.5f)*/;
             prevCard.Rotation = 0;
+
+            prevCard.FixControlOffsets();
         }
 
         if (nextPullIndex < TotalQueueLength)
         {
-            topCard.GlobalPosition = smallCards[0].GlobalPosition;
             topCard.Scale = smallCards[0].Scale;
+            topCard.GlobalPosition = smallCards[0].GlobalPosition;
+            topCard.Rotation = 0;
 
-            smallCardsOffset.Position += new Vector2(0, smallOffsetAmount);
+            topCard.FixControlOffsets();
+
+            smallCardsOffset.Position += new Vector2(0, gapBetweenCards);
         }
         else
         {
+            GlowScale(false);
             topCard.Scale = Vector2.Zero;
             pullButton.Visible = false;
             EndPullCard();
@@ -523,57 +682,70 @@ public partial class CardPackOpener : Control
 
         if (nextPullIndex <= TotalQueueLength)
         {
-            tweener.TweenProperty(topCard, "offset_top", 0, pullTime).SetEase(Tween.EaseType.Out);
-            tweener.TweenProperty(topCard, "offset_bottom", 0, pullTime).SetEase(Tween.EaseType.Out);
-            tweener.TweenProperty(topCard, "offset_left", 0, pullTime).SetEase(Tween.EaseType.In);
-            tweener.TweenProperty(topCard, "offset_right", 0, pullTime).SetEase(Tween.EaseType.In);
-            tweener.TweenProperty(topCard, "scale", Vector2.One * 1.5f, pullTime).SetEase(Tween.EaseType.In);
+            tweener.TweenProperty(topCard, "offset_top", 0, pullTime)
+                .SetEase(Tween.EaseType.Out);
+            tweener.TweenProperty(topCard, "offset_bottom", 0, pullTime)
+                .SetEase(Tween.EaseType.Out);
+            tweener.TweenProperty(topCard, "offset_left", 0, pullTime)
+                .SetEase(Tween.EaseType.In);
+            tweener.TweenProperty(topCard, "offset_right", 0, pullTime)
+                .SetEase(Tween.EaseType.In);
+
+            tweener.TweenProperty(topCard, "rotation", Mathf.DegToRad(-360), pullTime * 0.5f)
+                .SetEase(Tween.EaseType.Out)
+                .SetTrans(Tween.TransitionType.Quad);
+            tweener.TweenProperty(topCard, "scale", Vector2.One * 1.5f, pullTime)
+                .SetEase(Tween.EaseType.In);
 
             tweener.TweenProperty(smallCardsOffset, "position:y", 0, pullTime);
-            tweener.TweenProperty(backgroundImage, "self_modulate", topCard.LatestRarityColor, pullTime);
+            tweener.TweenProperty(glowFlare, "self_modulate", topCard.LatestRarityColor, pullTime);
             delay = pullTime * 0.75f;
-        }
-        else
-        {
-            tweener.TweenProperty(landedCrate, "offset_bottom", 500, pullTime).SetEase(Tween.EaseType.InOut);
-            tweener.TweenProperty(landedCrate, "offset_top", 500, pullTime).SetEase(Tween.EaseType.InOut);
-            tweener.TweenProperty(backgroundImage, "self_modulate", defaultBackgroundColor, pullTime);
-            landedCrateBG.Visible = true;
-            landedCrateBGCards.Visible = false;
         }
 
 
         if (nextPullIndex > 0)
         {
-            tweener.SetTrans(Tween.TransitionType.Quad);
-            tweener.TweenProperty(prevCard, "offset_right", -450, pullTime * 0.5f).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Quart).SetDelay(delay);
-            tweener.TweenProperty(prevCard, "offset_top", 1000, pullTime*0.5f).SetEase(Tween.EaseType.In).SetDelay(delay);
-            tweener.TweenProperty(prevCard, "scale", Vector2.Zero, pullTime * 0.5f).SetEase(Tween.EaseType.In).SetDelay(delay);
-            tweener.TweenProperty(prevCard, "rotation", Mathf.DegToRad(-45), pullTime * 0.5f).SetEase(Tween.EaseType.In).SetDelay(delay);
+            tweener.TweenProperty(prevCard, "offset_right", -450, pullTime * 0.5f)
+                .SetEase(Tween.EaseType.Out)
+                .SetTrans(Tween.TransitionType.Quart)
+                .SetDelay(delay);
+            tweener.TweenProperty(prevCard, "offset_top", 1000, pullTime * 0.5f)
+                .SetEase(Tween.EaseType.In)
+                .SetTrans(Tween.TransitionType.Quad)
+                .SetDelay(delay);
+
+            tweener.TweenProperty(prevCard, "scale", Vector2.Zero, pullTime * 0.5f)
+                .SetEase(Tween.EaseType.In)
+                .SetTrans(Tween.TransitionType.Quad)
+                .SetDelay(delay);
+            tweener.TweenProperty(prevCard, "rotation", Mathf.DegToRad(-720), pullTime * 0.5f)
+                .SetEase(Tween.EaseType.In)
+                .SetTrans(Tween.TransitionType.Quad)
+                .SetDelay(delay);
         }
 
         tweener.Finished += async () =>
         {
+            if(nextPullIndex > TotalQueueLength)
+            {
+                if (speedTween?.IsValid() ?? false)
+                    await ToSignal(speedTween, "finished");
+                EndPullCard();
+                TweenTimeScale(1, 1, 0.1f);
+                await ToSignal(speedTween, "finished");
+
+                await ShowRecyclePopup();
+                CloseMenu();
+                return;
+            }
+            GlowScale(true);
             if (pauseForChoice)
             {
-                //open choice pane
+                //open choice panel
                 GD.Print("opening choice");
                 isPulling = false;
                 pullButton.Visible = false;
                 OpenChoices();
-                return;
-            }
-            if(nextPullIndex > TotalQueueLength)
-            {
-                //show results grid
-                GD.Print("results");
-                if (speedTween?.IsValid() ?? false)
-                    await ToSignal(speedTween, "finished");
-                EndPullCard();
-                TweenTimeScale(1, 1, 0, 0.1f);
-                await ToSignal(speedTween, "finished");
-
-                await CloseMenu();
                 return;
             }
             if (isFast)
@@ -597,7 +769,13 @@ public partial class CardPackOpener : Control
 
         int nextChoiceIndex = nextPullIndex - queuedItems.Count;
         GD.Print(queuedChoices[nextChoiceIndex - 1].GetItemUnsafe());
-        var currentChoices = queuedChoices[nextChoiceIndex - 1].GetItemUnsafe()["attributes"]["options"].AsArray();
+        var currentChoices = queuedChoices[nextChoiceIndex - 1].GetItemUnsafe()["attributes"]["options"]?.AsArray();
+        if (currentChoices is null)
+        {
+            choiceOpen.Kill();
+            SkipChoice(false);
+            return;
+        }
         for (int i = 0; i < currentChoices.Count; i++)
         {
             var thisChoice = currentChoices[i];
@@ -670,6 +848,7 @@ public partial class CardPackOpener : Control
 
         await this.WaitForTimer(0.4f);
 
+        var resultNotification = (await operationTask)["notifications"][0];
 
         choiceResultCard.Reparent(choiceResultBGParent);
         choiceResultCard.OffsetLeft = 60;
@@ -682,30 +861,41 @@ public partial class CardPackOpener : Control
         cardSlideDown.TweenProperty(choiceResultCard, "offset_top", -115, 0.25);
         cardSlideDown.TweenProperty(choiceResultCard, "offset_bottom", -115, 0.25);
 
-        await this.WaitForTimer(0.25f);
+        await this.WaitForTimer(0.2f);
+        if (cardChangeEffect is not null)
+            cardChangeEffect.Visible = true;
+        CardChangeEffectLevel = 0;
+        var changeEffectTween = GetTree().CreateTween();
+        changeEffectTween.TweenProperty(this, "CardChangeEffectLevel", 1, 1);
+        changeEffectTween.TweenProperty(this, "CardChangeEffectLevel", 2, 0.5);
+
+        await this.WaitForTimer(1f);
+
         choiceResultCard.Visible = false;
 
-        //var itemStack = itemData.CreateInstanceOfItem(resultChoice["quantity"].GetValue<int>(), resultChoice["attributes"].AsObject().Reserialise());
-        //topCard.SetItemData(new(itemStack));
-        //prevCard.SetItemData(new(itemStack));
-
-        //wait for choice request
-
-        //LoadingOverlay.Instance.AddLoadingKey("LlamaOpenBulk");
-
-        var resultNotification = (await operationTask)["notifications"][0];
-        var resultItem = resultNotification["lootGranted"]["items"][0];
+        JsonNode resultItem = resultNotification["lootGranted"]["items"][0];
         await queuedChoices[nextChoiceIndex - 1].ReplaceWith(new(resultItem["itemProfile"].ToString(), resultItem["itemGuid"].ToString()));
         GD.Print(resultNotification);
 
+        await this.WaitForTimer(0.5f);
+        if (cardChangeEffect is not null)
+            cardChangeEffect.Visible = true;
+
         //reopen choices if the result is another cardpack
-        if (resultItem["itemType"].ToString().StartsWith("CardPack"))
+        if (resultItem?["itemType"].ToString().StartsWith("CardPack")??false)
             OpenChoices();
         else
             pullButton.Visible = true;
     }
 
-    public void SkipChoice()
+    float CardChangeEffectLevel
+    {
+        get => cardChangeEffect?.GetShaderFloat("progress") ?? 0;
+        set => cardChangeEffect?.SetShaderFloat(value, "progress");
+    }
+
+    void SkipChoice() => SkipChoice(true);
+    void SkipChoice(bool withContinue)
     {
         if (!isChosing)
             return;
@@ -722,33 +912,63 @@ public partial class CardPackOpener : Control
 
         skipChoiceButton.Visible = false;
         pullButton.Visible = true;
-        PullCard();
+        if (withContinue)
+            PullCard();
     }
 
-    bool isClosing = false;
-    async Task CloseMenu()
+    async Task ShowRecyclePopup()
+    {
+        var resultItems = queuedChoices
+                    .Union(queuedItemHandles)
+                    .Where(handle =>
+                        handle.GetItemUnsafe().GetTemplate() is JsonObject template && template["Type"]?.ToString() is string type &&
+                        (type == "Worker" || type == "Schematic" || type == "Hero" || type == "Defender") &&
+                        !(template["IsPermanent"]?.GetValue<bool>() ?? false));
+
+        if (resultItems.Any())
+        {
+            foreach (var profileItem in resultItems)
+            {
+                profileItem.GetItemUnsafe().GenerateItemSearchTags();
+            }
+            GameItemSelector.Instance.SetRecycleDefaults();
+            GameItemSelector.Instance.allowCancel = false;
+            GameItemSelector.Instance.allowEmptySelection = true;
+            var toRecycle = await GameItemSelector.Instance.OpenSelector(resultItems, null);
+            if (toRecycle.Length > 0)
+            {
+                JsonObject content = new()
+                {
+                    ["targetItemIds"] = new JsonArray(toRecycle.Select(handle => (JsonNode)handle.itemID.uuid).ToArray())
+                };
+                LoadingOverlay.AddLoadingKey("recycling");
+                await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "RecycleItemBatch", content.ToString());
+                LoadingOverlay.RemoveLoadingKey("recycling");
+            }
+        }
+    }
+
+    async void CloseMenu()
     {
         MusicController.ResumeMusic();
-        var exitAnim = GetTree().CreateTween().SetParallel();
+        var startingLocation = fromPanel.GetGlobalRect();
+        var exitAnim = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quad);
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.Transparent, 0.25f);
-        exitAnim.TweenMethod(Callable.From<float>(val => backgroundImage.SetShaderFloat(val, "Transparancy")), 1f, 0f, 0.25)
-            .SetTrans(Tween.TransitionType.Quad)
-            .SetEase(Tween.EaseType.In);
+        exitAnim.TweenProperty(displayPanel, "global_position", startingLocation.Position, 0.2);
+        exitAnim.TweenProperty(displayPanel, "size", startingLocation.Size, 0.2);
+        exitAnim.TweenProperty(displayPanel, "modulate", Colors.Transparent, 0.1).SetDelay(0.2);
         exitAnim.TweenProperty(music, "volume_db", -80, 1)
             .SetTrans(Tween.TransitionType.Expo)
             .SetEase(Tween.EaseType.In);
-        isClosing = true;
-        await this.WaitForTimer(0.25f);
-        if (!isClosing)
-            return;
-        queuedChoices.Clear();
-        queuedItems.Clear();
-        clickArea.Visible = false;
-        isPulling = false;
-        await this.WaitForTimer(1);
 
-        if (!isClosing)
-            return;
+        await this.WaitForTimer(0.31f);
+
+        queuedChoices.Clear();
+        queuedItemHandles.Clear();
+        queuedItems.Clear();
+        displayPanel.Visible = false;
+        isPulling = false;
+        isOpen = false;
         ProcessMode = ProcessModeEnum.Disabled;
     }
 }

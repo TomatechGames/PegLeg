@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 public partial class MissionInterface : Control, IRecyclableElementProvider<MissionData>
@@ -149,7 +150,26 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
                 var allMissionData = await MissionRequests.GetMissions(force);
                 await this.WaitForFrame();
-                allMissions = allMissionData["missions"].AsArray().Select(m=>new MissionData(m.AsObject())).ToList();
+                var allMissionsArray = allMissionData["missions"].AsArray();
+                allMissions ??= new();
+                allMissions.Clear();
+                Thread missionProcessingThread = new(new ThreadStart(() =>
+                {
+                    Parallel.ForEach(allMissionsArray, m =>
+                    {
+                        var newMission = new MissionData(m.AsObject());
+                        lock (allMissions)
+                        {
+                            allMissions.Add(newMission);
+                        }
+                    });
+                }));
+                missionProcessingThread.Start();
+                while (missionProcessingThread.IsAlive)
+                {
+                    await this.WaitForFrame();
+                }
+                //GD.Print("Missions processed");
             }
             finally
             {
@@ -159,6 +179,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
             hasMissions = true;
         }
 
+        await this.WaitForFrame();
         FilterMissionGrid();
         isLoadingMissions = false;
         if(!missionsUpToDate)

@@ -276,4 +276,13 @@ static class Helpers
         }
         return weights.Length - 1;
     }
+
+    //workaround for bug introduced in 4.3
+    public static void FixControlOffsets(this Control control)
+    {
+        control.OffsetTop = control.OffsetTop;
+        control.OffsetBottom = control.OffsetBottom;
+        control.OffsetLeft = control.OffsetLeft;
+        control.OffsetRight = control.OffsetRight;
+    }
 }

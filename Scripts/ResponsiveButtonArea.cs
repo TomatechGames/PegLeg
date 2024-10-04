@@ -67,8 +67,6 @@ public partial class ResponsiveButtonArea : BaseButton
     [Export]
     bool cancelHoldOnMouseExit = true;
     [Export]
-    bool cancelHoverOnHoldPress = true;
-    [Export]
     Color holdActivationColor = Colors.Yellow;
     [Export]
     bool alwaysSendHoldReleasedWhenPressed = false;
@@ -156,7 +154,7 @@ public partial class ResponsiveButtonArea : BaseButton
         EmitSignal(SignalName.HoldReleased);
     }
 
-    public void SetHoverState(bool newHovered)
+    public void SetHoverState(bool newHovered, bool playSounds=true)
     {
         //prevents accidental highlights when using spinbox, in which case hover events wouldnt change anyway
         if (Input.MouseMode == Input.MouseModeEnum.Captured)
@@ -174,7 +172,7 @@ public partial class ResponsiveButtonArea : BaseButton
                 SetHoldTween(false);
                 if (alwaysSendHoldReleasedWhenPressed && holdActive)
                     OnHoldReleased();
-                if (useHoldSound)
+                if (useHoldSound && !holdActive)
                 {
                     UISounds.StopSound("ButtonHold");
                     UISounds.PlaySound("ButtonHoldCancel");
@@ -185,7 +183,7 @@ public partial class ResponsiveButtonArea : BaseButton
         }
 
         hovered = newHovered;
-        if (hovered && useHoverSound)
+        if (hovered && useHoverSound && playSounds)
             UISounds.PlaySound("Hover");
         UpdateOutlineState();
     }

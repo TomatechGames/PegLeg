@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://uucu1fh5briv"
+path="res://.godot/imported/PinataMiniMask.bmp-eab162a045d0a7f6416c463258aaa608.res"
+
+[deps]
+
+source_file="res://Images/Llamas/PinataMiniMask.bmp"
+dest_files=["res://.godot/imported/PinataMiniMask.bmp-eab162a045d0a7f6416c463258aaa608.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

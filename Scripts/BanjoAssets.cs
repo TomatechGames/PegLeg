@@ -132,6 +132,9 @@ public static class BanjoAssets
         if (itemInstance is JsonArray)
             return null;
 
+        if (itemInstance is null)
+            return null;
+
         if (itemInstance["template"] is JsonObject cachedTemplate)
             return cachedTemplate;
 
@@ -148,8 +151,13 @@ public static class BanjoAssets
         }
         return null;
     }
-    public static void GenerateItemSearchTags(this JsonNode itemInstance) =>
-        itemInstance["searchTags"] = GenerateItemTemplateSearchTags(itemInstance.GetTemplate());
+    public static JsonObject GenerateItemSearchTags(this JsonNode itemInstance, bool force = false)
+    {
+        if (force)
+            itemInstance["searchTags"] = null;
+        itemInstance["searchTags"] ??= GenerateItemTemplateSearchTags(itemInstance.GetTemplate());
+        return itemInstance.AsObject();
+    }
     public static JsonArray GenerateItemTemplateSearchTags(string itemID) =>
         GenerateItemTemplateSearchTags(TryGetTemplate(itemID));
     public static JsonArray GenerateItemTemplateSearchTags(JsonNode template)
@@ -163,6 +171,7 @@ public static class BanjoAssets
             template["Category"]?.ToString(),
             template["Personality"]?.ToString()[2..]
         };
+        template["RarityLv"] = template.AsObject().GetItemRarity();
         if (tags.Contains("Worker"))
             tags.Add("Survivor");
         var result = new JsonArray(tags.Select(t => (JsonNode)t).ToArray());
@@ -436,11 +445,8 @@ public static class BanjoAssets
         return loadedTexture;
     }
 
-    public static int GetItemRarity(this JsonObject itemTemplate)
-    {
-        if (itemTemplate is null)
-            return 0;
-        return (itemTemplate["Rarity"]?.ToString() ?? "") switch
+    public static int GetItemRarity(this JsonObject itemTemplate) =>
+        (itemTemplate["Rarity"]?.ToString() ?? "") switch
         {
             "Common" => 1,
             "Rare" => 3,
@@ -449,50 +455,46 @@ public static class BanjoAssets
             "Mythic" => 6,
             _ => 2
         };
-    }
 
     static string[] rarityIds = new string[]
     {
-        "_UC_",
-        "_VR_",
-        "_SR_",
-        "_UR_",
-        "_R_",
-        "_C_",
-
-        "_UC",
-        "_VR",
-        "_SR",
-        "_UR",
-        "_R",
-        "_C",
-
-        "UC_",
-        "VR_",
-        "SR_",
-        "UR_",
-        "R_",
-        "C_",
+        null,
+        "C",
+        "UC",
+        "R",
+        "VR",
+        "SR",
+        "UR"
     };
 
     static string[] tierIds = new string[]
     {
-        "_T01",
-        "_T02",
-        "_T03",
-        "_T04",
-        "_T05",
+        "T00",
+        "T01",
+        "T02",
+        "T03",
+        "T04",
+        "T05",
     };
 
-    static string GetCompactRarityAndTier(this JsonObject template, int givenTier = 0)
+    public static JsonObject TryUpgradeTemplateRarity(this JsonObject itemTemplate)
     {
-        var name = template["Name"].ToString().ToUpper();
-        var rarityId = rarityIds.FirstOrDefault(val => name.Contains(val));
-        if(rarityId.StartsWith("_"))
-            rarityId = rarityId[1..];
-        if (rarityId.EndsWith("_"))
-            rarityId = rarityId[..^1];
-        var tierId = givenTier <= 0 ? tierIds.FirstOrDefault(val => name.Contains(val)) : tierIds[givenTier-1];
+        int rarityIndex = itemTemplate.GetItemRarity();
+        if (rarityIndex >= 6)
+            return null;
+        string fromRarity = $"_{rarityIds[rarityIndex]}_";
+        string toRarity = $"_{rarityIds[rarityIndex+1]}_";
+        string oldName = itemTemplate["Name"].ToString().ToLower();
+        string newName = oldName.Replace(fromRarity.ToLower(), toRarity.ToLower());
+        if (TryGetTemplate($"{itemTemplate["Type"]}:{newName}") is JsonObject newTemplate && newTemplate["Name"].ToString().ToLower() != oldName)
+            return newTemplate;
+        return null;
+    }
+
+    static string GetCompactRarityAndTier(this JsonObject itemTemplate, int givenTier = 0)
+    {
+        var rarityId = rarityIds[itemTemplate.GetItemRarity()];
+        var tierId = givenTier <= 0 ? tierIds[itemTemplate["Tier"]?.GetValue<int>() ?? 0] : tierIds[givenTier];
         return rarityId + tierId;
     }
 
@@ -520,10 +522,9 @@ public static class BanjoAssets
             var ratingKey = template.GetCompactRarityAndTier();
             //GD.Print($"ratingKey: {ratingKey}");
 
-            if (ratingKey.Length < 5)
-                return 0;
-
             var ratingSet = ratings[ratingCategory]["Tiers"][ratingKey];
+            if (ratingSet is null)
+                return 0;
             int subLevel = level - ratingSet["FirstLevel"].GetValue<int>();
             var rating = ratingSet["Ratings"][subLevel].GetValue<float>();
 
@@ -598,7 +599,7 @@ public static class BanjoAssets
         Color.FromString("#ff7b3d", Colors.White),
         Color.FromString("#ffff40", Colors.White),
     };
-    public static Color GetItemRarityColor(this JsonObject itemData) => rarityColours[itemData.GetItemRarity()];
+    public static Color GetItemRarityColor(this JsonObject itemTemplate) => rarityColours[itemTemplate.GetItemRarity()];
     public static Color GetRarityColor(int itemRarity) => rarityColours[itemRarity];
 
     public static JsonObject GetHeroAbilities(this JsonObject itemTemplate)

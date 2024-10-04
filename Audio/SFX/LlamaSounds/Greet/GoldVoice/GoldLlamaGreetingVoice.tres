@@ -1,0 +1,15 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://cim885psnd4a4"]
+
+[ext_resource type="AudioStream" uid="uid://dorbkqkiddepn" path="res://Audio/SFX/LlamaSounds/Greet/GoldVoice/JB_BasicLlama_UpgradeGold_01.wav" id="1_y1wn1"]
+[ext_resource type="AudioStream" uid="uid://vwj0xgc2fee4" path="res://Audio/SFX/LlamaSounds/Greet/GoldVoice/JB_BasicLlama_UpgradeGold_02.wav" id="2_b6fr4"]
+[ext_resource type="AudioStream" uid="uid://jb8222ynmscq" path="res://Audio/SFX/LlamaSounds/Greet/GoldVoice/JB_BasicLlama_UpgradeGold_03.wav" id="3_tb6oq"]
+[ext_resource type="AudioStream" uid="uid://hu687vw641kf" path="res://Audio/SFX/LlamaSounds/Greet/GoldVoice/JB_BasicLlama_UpgradeGold_04.wav" id="4_jujkd"]
+[ext_resource type="AudioStream" uid="uid://0xiikk1852ay" path="res://Audio/SFX/LlamaSounds/Greet/GoldVoice/JB_BasicLlama_UpgradeGold_05.wav" id="5_8uiqh"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_y1wn1")
+stream_1/stream = ExtResource("2_b6fr4")
+stream_2/stream = ExtResource("3_tb6oq")
+stream_3/stream = ExtResource("4_jujkd")
+stream_4/stream = ExtResource("5_8uiqh")

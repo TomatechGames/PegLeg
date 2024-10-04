@@ -19,6 +19,9 @@ public partial class LlamaInterface : Control
     Control loadingIcon;
 
     [Export]
+    Control llamaScrollArea;
+
+    [Export]
     NodePath catalogLlamaParentPath;
     Control catalogLlamaParent;
 
@@ -30,10 +33,10 @@ public partial class LlamaInterface : Control
     NodePath cardpackLlamaParentPath;
     Control cardpackLlamaParent;
 
-    [Export]
-    ButtonGroup groupToReset;
-
     [ExportGroup("Selected")]
+    [Export]
+    Control selectedLlamaPanel;
+
     [Export]
     NodePath selectedLlamaEntryPath;
     LlamaEntry selectedCardPackEntry;
@@ -96,7 +99,6 @@ public partial class LlamaInterface : Control
         this.GetNodeOrNull(cardpackLlamaPanelPath, out cardpackLlamaPanel);
 
         availableCardPacks.Clear();
-        groupToReset?.Unpress();
 
         VisibilityChanged += OnVisibilityChanged;
         OnVisibilityChanged();
@@ -290,6 +292,7 @@ public partial class LlamaInterface : Control
         isLoadingLlamas = true;
 
         loadingIcon.Visible = true;
+        llamaScrollArea.Visible = false;
         activeOffers.Clear();
         if (clearSelection)
             ClearSelection();
@@ -327,6 +330,7 @@ public partial class LlamaInterface : Control
         }
 
         loadingIcon.Visible = false;
+        llamaScrollArea.Visible = true;
         isLoadingLlamas = false;
     }
 
@@ -387,13 +391,13 @@ public partial class LlamaInterface : Control
         selectedPurchaseCountSpinner.Visible = false;
 
         selectedCardPackEntry.ClearItem();
-        groupToReset?.Unpress();
 
         currentPurchaseSelection = "";
         currentCardpackSelection = null;
     }
 
     string currentPurchaseSelection = "";
+    JsonObject currentPurchaseItem;
     public async void SetCatalogLlama(string offerId)
     {
         //TODO: if offerid isnt in active offers, reset purchase section
@@ -409,8 +413,8 @@ public partial class LlamaInterface : Control
         var items = offer["prerollData"]?["attributes"]["items"].AsArray() ?? null;
         SetSelectedLlamaItems(items);
 
-        var cardPackItem = offer["itemGrants"][0].AsObject();
-        selectedCardPackEntry.SetItemData(cardPackItem);
+        currentPurchaseItem = offer["itemGrants"][0].AsObject();
+        selectedCardPackEntry.SetItemData(currentPurchaseItem);
 
         //maybe replace this stuff with a ShopOfferEntry?
         string priceType = offer["prices"][0]["currencySubType"].ToString();
@@ -519,7 +523,7 @@ public partial class LlamaInterface : Control
             return;
         GD.Print("attempting to purchase offer: "+ currentPurchaseSelection);
         var offer = (await CatalogRequests.GetLlamaShop()).FirstOrDefault(var => var["offerId"].ToString() == currentPurchaseSelection);
-        JsonObject body = new()
+        JsonObject shopRequestBody = new()
         {
             ["offerId"] = currentPurchaseSelection,
             ["purchaseQuantity"] = selectedPurchaseCountSpinner.Value,
@@ -528,16 +532,10 @@ public partial class LlamaInterface : Control
             ["expectedTotalPrice"] = offer["prices"][0]["finalPrice"].GetValue<int>() * selectedPurchaseCountSpinner.Value,
             ["gameContext"] = "Pegleg",
         };
-        LoadingOverlay.Instance.AddLoadingKey("LlamaPurchase");
-        var result = (await ProfileRequests.PerformProfileOperation(FnProfiles.Common, "PurchaseCatalogEntry", body.ToString()));
-        GD.Print(result["notifications"]);
-        GD.Print(result["multiUpdate"]);
-        await LoadLlamas(true, false);
+        var itemsKnown = offer["prerollData"]?["attributes"]["items"].AsArray() is not null;
+        await CardPackOpener.Instance.StartOpening(null, selectedLlamaPanel, currentPurchaseItem, shopRequestBody, itemsKnown);
+        await LoadLlamas();
         SetCatalogLlama(currentPurchaseSelection);
-        LoadingOverlay.Instance.RemoveLoadingKey("LlamaPurchase");
-
-        var resultItems = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"].AsArray().Select(var=>var.AsObject()).ToArray();
-        await CardPackOpener.Instance.StartOpeningShopResults(resultItems);
     }
 
     CardPackGroup currentCardpackSelection = null;
@@ -607,7 +605,7 @@ public partial class LlamaInterface : Control
         bool depletesSelected = currentCardpackSelection.linkedHandles.Count <= amount;
 
         //await BulkOpenCardpacks(handles.Select(val=>val.uuid).ToArray());
-        await CardPackOpener.Instance.StartOpening(handles);
+        await CardPackOpener.Instance.StartOpening(handles, selectedLlamaPanel, currentCardpackSelection.GetDisplayCardpack());
 
         if (depletesSelected)
             ClearSelection();
@@ -630,28 +628,9 @@ public partial class LlamaInterface : Control
                 handles.Add(handle);
             }
         }
-        await CardPackOpener.Instance.StartOpening(handles.ToArray());
+        await CardPackOpener.Instance.StartOpening(handles.ToArray(), selectedLlamaPanel);
         //await BulkOpenCardpacks(itemIds.ToArray());
         if (includesSelected)
             ClearSelection();
-    }
-
-    async Task BulkOpenCardpacks(string[] itemIds)
-    {
-        if (itemIds.Length == 0)
-            return;
-        JsonArray cardpacksToOpen = new(default, itemIds.Select(val=>(JsonNode)val).ToArray());
-
-        GD.Print("opening all these cardpacks:\n- " + itemIds.Join("\n- "));
-        JsonObject body = new()
-        {
-            ["cardPackItemIds"] = cardpacksToOpen
-        };
-
-        LoadingOverlay.Instance.AddLoadingKey("LlamaOpenBulk");
-        var result = (await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "OpenCardPackBatch", body.ToString()));
-        GD.Print(result["notifications"]);
-        //GD.Print(result["multiUpdate"]);
-        LoadingOverlay.Instance.RemoveLoadingKey("LlamaOpenBulk");
     }
 }

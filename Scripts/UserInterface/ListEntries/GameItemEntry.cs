@@ -39,6 +39,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public delegate void SurvivorBoostIconChangedEventHandler(Texture2D icon); //squad synergy for leads, set bonus for non-leads
 
     [Signal]
+    public delegate void IsCollectableEventHandler(bool collectable);
+
+    [Signal]
     public delegate void CanBeLeveledChangedEventHandler(bool canBeLeveled);
 
     [Signal]
@@ -110,6 +113,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool autoSelectOnPress = true;
     [Export]
+    public bool unlinkOnInvalidHandle = true;
+    [Export]
     protected CheckButton selectionGraphics;
 
     public override void _Ready()
@@ -137,6 +142,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             profileItem.OnChanged -= UpdateLinkedProfileItem;
             profileItem.OnRemoved -= UpdateLinkedProfileItem;
         }
+
         profileItem = newProfileItem;
 
         if (profileItem is not null)
@@ -150,16 +156,17 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public void RefreshProfileItem() => UpdateLinkedProfileItem(profileItem);
 
-    void UpdateLinkedProfileItem(ProfileItemHandle profileItem)
+    void UpdateLinkedProfileItem(ProfileItemHandle newProfileItem)
     {
-        if(profileItem?.isValid == false)
+        if(newProfileItem?.isValid == false)
         {
-            UnlinkProfileItem();
+            if (unlinkOnInvalidHandle)
+                UnlinkProfileItem();
             return;
         }
-        if (profileItem is not null)
+        if (newProfileItem is not null)
         {
-            currentItemData = profileItem.GetItemUnsafe();
+            currentItemData = newProfileItem.GetItemUnsafe();
             UpdateItemData(currentItemData, selector?.overrideSurvivorSquad);
         }
         else
@@ -276,6 +283,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.RatingChanged, ratingText);
         EmitSignal(SignalName.RatingVisibility, rating != 0);
 
+        //collection book algorithm is unpolished
+        EmitSignal(SignalName.IsCollectable, false);
+        //EmitSignal(SignalName.IsCollectable, !isPermenant && (ProfileRequests.IsItemCollectedUnsafe(itemInstance) == false));
         EmitSignal(SignalName.CanBeLeveledChanged, !isPermenant);
         EmitSignal(SignalName.LevelChanged, level);
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
@@ -438,7 +448,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         selectionGraphics.ButtonPressed = isSelected;
         if (isSelected)
         {
-            bool isCollectable = ProfileRequests.IsItemCollectedUnsafe(profileItem.itemID.Composite) ?? false;
+            //bool isCollectable = ProfileRequests.IsItemCollectedUnsafe(profileItem.GetItemUnsafe()) == false;
+            //collection book algorithm is unpolished
+            bool isCollectable = false;
             EmitSignal(SignalName.SelectionTintChanged, isCollectable ? selector.collectionTintColor : selector.selectedTintColor);
             EmitSignal(SignalName.SelectionMarkerChanged, isCollectable ? selector.collectionMarkerTex : selector.selectedMarkerTex);
         }

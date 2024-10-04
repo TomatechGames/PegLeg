@@ -10,6 +10,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Reflection.Metadata;
+using System.Text.RegularExpressions;
 
 public static class ProfileRequests
 {
@@ -35,12 +36,14 @@ public static class ProfileRequests
             result[item.Key] = JsonNode.Parse(item.Value.ToString());
         return result;
     }
+
     public static async Task<bool> ProfileItemExists(string profileID, ProfileItemPredicate predicate, bool preferCache = false)
     {
         if (!profileCache.ContainsKey(profileID) || !preferCache)
             await GetProfile(profileID);
        return ProfileItemExistsUnsafe(profileID, predicate);
     }
+
     public static bool ProfileItemExistsUnsafe(string profileID, ProfileItemPredicate predicate)
     {
         return profileCache[profileID]
@@ -49,6 +52,7 @@ public static class ProfileRequests
              .Select(kvp => KeyValuePair.Create(kvp.Key, kvp.Value.AsObject()))
              .Any(kvp => predicate(kvp));
     }
+
     public static async Task<JsonObject> GetFirstProfileItem(string profileID, ProfileItemPredicate predicate)
     {
         var matchedItem =
@@ -177,12 +181,15 @@ public static class ProfileRequests
         return attributes["mtx_affiliate"] + (isExpired && addExpiredText ? " (Expired)" : "");
     }
 
-    public static async Task<bool> IsSACExpired()
+    public static async Task<bool> IsSACExpired() => Mathf.FloorToInt(await GetSACTime()) > 13;
+
+    public static async Task<double> GetSACTime()
     {
         var attributes = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
         var lastSetTime = DateTime.Parse(attributes["mtx_affiliate_set_time"].ToString(), null, DateTimeStyles.RoundtripKind);
-        return (DateTime.UtcNow - lastSetTime).Days > 13;
+        return (DateTime.UtcNow - lastSetTime).TotalDays;
     }
+
     public static async Task<bool> SetSACCode(string newName)
     {
         await PerformProfileOperation(FnProfiles.Common, "SetAffiliateName", "{\"affiliateName\":\"" + newName + "\"}");
@@ -390,17 +397,31 @@ public static class ProfileRequests
         return itemData;
     }
 
-    public static bool? IsItemCollectedUnsafe(string itemId)
+
+    public static bool? IsItemCollectedUnsafe(JsonObject itemInstance)
     {
-        GD.PushWarning("TODO: implement collection book check");
-        return null;
+        string itemId = itemInstance["templateId"].ToString();
+        string regexPattern= Regex.Replace(itemId, "_t\\d\\d", "_t\\d\\d");
+        string type = itemId.Split(":")[0];
+
+        if (type != "Schematic" && type != "Hero" && type != "Worker" && type != "Defender")
+            return null;
+
+        if (type == "Worker" && itemInstance["attributes"] is null)
+            return null;
+
+        string profile = type == "Schematic" ? FnProfiles.SchematicCollection : FnProfiles.PeopleCollection;
+        if (!profileCache.ContainsKey(profile))
+            return null;
+
+        return ProfileItemExistsUnsafe(profile, kvp => 
+            Regex.IsMatch(kvp.Value["templateId"].ToString(), regexPattern) &&
+            itemInstance["attributes"]["personality"]?.ToString() == kvp.Value["attributes"]["personality"]?.ToString()
+        );
     }
 
-    public static async Task<JsonObject> GetProfile(string profileId, bool forceRefresh = false)
-    {
-        await PerformProfileOperation(profileId, "QueryProfile");
-        return profileCache[profileId];
-    }
+    public static async Task<JsonObject> GetProfile(string profileId, bool forceRefresh = false) =>
+        await PerformProfileOperation(profileId, "QueryProfile", queryIgnoreCache: forceRefresh);
 
     static DateTime lastPopulatedLlamasOnDate = DateTime.MinValue;
     public static async Task PopulateLlamas(bool force = false)
@@ -632,7 +653,7 @@ public static class ProfileRequests
 
                 if (!profileCache.ContainsKey(profile))
                 {
-                    GD.Print($"uncached item changed {{type:{changeType}, id:{uuid}");
+                    GD.Print($"uncached item changed in {profile} {{type:{changeType}, id:{uuid}");
                     continue;
                 }
                 ProfileItemId profileItem = new(profile, uuid);
@@ -858,6 +879,8 @@ public partial class ProfileItemHandle : RefCounted
         ProfileRequests.OnItemRemoved += ItemRemovalDetector;
     }
 
+    public ProfileItemHandle Clone() => isValid ? new(itemID) { overrideItemSeen = overrideItemSeen } : new();
+
     public async Task ReplaceWith(ProfileItemId profileItem)
     {
         if (itemID == profileItem)
@@ -867,6 +890,10 @@ public partial class ProfileItemHandle : RefCounted
             itemID = profileItem;
             isValid = true;
             OnChanged?.Invoke(this);
+        }
+        else
+        {
+            GD.Print("replaced with invalid");
         }
     }
 

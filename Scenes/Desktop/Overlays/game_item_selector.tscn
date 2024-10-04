@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cvc7hj4ng7c04"]
+[gd_scene load_steps=12 format=3 uid="uid://cvc7hj4ng7c04"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_bjivd"]
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemSelector.cs" id="2_msbn1"]
@@ -6,16 +6,22 @@
 [ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="3_p3a1g"]
 [ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_2yqeq"]
 [ext_resource type="PackedScene" uid="uid://ch7kqyndhfgvs" path="res://Scenes/GameItemEntry/inventory_entry_large.tscn" id="4_7jdcp"]
+[ext_resource type="Texture2D" uid="uid://ddjxkaoe8stlj" path="res://Images/InterfaceIcons/T-Icon-ST-CollectionBook-128.png" id="5_2qrsm"]
 [ext_resource type="Texture2D" uid="uid://dhakmuvj28f2w" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Paintbrush_128.png" id="6_bnyal"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_aw7nf"]
 [ext_resource type="Texture2D" uid="uid://l44adw334xao" path="res://Images/InterfaceIcons/T-SlotIcon-Recycle-128.png" id="7_j13lo"]
+[ext_resource type="Texture2D" uid="uid://do17fpp06a7op" path="res://Images/InterfaceIcons/T_Icon_Sort.png" id="9_yrbk2"]
 
-[node name="GameItemSelector" node_paths=PackedStringArray("autoSelectButton", "container", "multiselectButtons", "windowControl") instance=ExtResource("1_bjivd")]
+[node name="GameItemSelector" node_paths=PackedStringArray("autoSelectButton", "container", "multiselectButtons", "confirmButton", "skipButton", "windowControl") instance=ExtResource("1_bjivd")]
 script = ExtResource("2_msbn1")
 defaultSelectionMarker = ExtResource("3_4tm4g")
+recycleIcon = ExtResource("7_j13lo")
+collectionIcon = ExtResource("5_2qrsm")
 autoSelectButton = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/AutoSelect")
 container = NodePath("Control/MarginContainer/VBoxContainer/Items/ScrollContainer")
 multiselectButtons = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons")
+confirmButton = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons/Confirm")
+skipButton = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip")
 windowControl = NodePath("Control")
 
 [node name="Control" parent="." index="2"]
@@ -151,6 +157,24 @@ offset_bottom = 37.0
 texture = ExtResource("7_j13lo")
 expand_mode = 3
 
+[node name="Sort" type="Button" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="TextureRect" type="TextureRect" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/Sort" index="0"]
+layout_mode = 2
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 37.0
+offset_bottom = 37.0
+texture = ExtResource("9_yrbk2")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer" index="3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+
 [node name="Confirm" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons" index="1"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -175,10 +199,36 @@ text = "Confirm Recycle"
 layout_mode = 2
 useHold = true
 
+[node name="Skip" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons" index="2"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip" index="0"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Continue"
+
+[node name="Responsive Button Area" parent="Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip" index="2" instance=ExtResource("7_aw7nf")]
+layout_mode = 2
+
 [connection signal="AutoselectChanged" from="." to="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/AutoSelect/TextureRect" method="set_texture"]
-[connection signal="ButtonChanged" from="." to="Control/MarginContainer/VBoxContainer/MultiselectButtons/Confirm/MarginContainer/Label" method="set_text"]
+[connection signal="ConfirmButtonChanged" from="." to="Control/MarginContainer/VBoxContainer/MultiselectButtons/Confirm/MarginContainer/Label" method="set_text"]
+[connection signal="SkipButtonChanged" from="." to="Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip/MarginContainer/Label" method="set_text"]
+[connection signal="SortTypeChanged" from="." to="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/Label" method="set_text"]
 [connection signal="TitleChanged" from="." to="Control/MarginContainer/VBoxContainer/Header/MarginContainer/Label" method="set_text"]
-[connection signal="pressed" from="BG" to="." method="CloseWindow"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/ClearSelected" to="." method="ClearSelection"]
-[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/AutoSelect" to="." method="ClearSelection"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/AutoSelect" to="." method="AutoMarkSelection"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/Sort" to="." method="CycleSort"]
 [connection signal="HoldPressed" from="Control/MarginContainer/VBoxContainer/MultiselectButtons/Confirm/Responsive Button Area" to="." method="ConfirmSelection"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip/Responsive Button Area" to="." method="ConfirmSelection"]

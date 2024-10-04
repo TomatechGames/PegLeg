@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://b0uxwtxndd6x3"]
+[gd_scene load_steps=22 format=3 uid="uid://b0uxwtxndd6x3"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_vtoeo"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/ShopOfferEntry.cs" id="2_dhih1"]
@@ -7,13 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://bkqoyh11npn7c" path="res://Images/InterfaceIcons/TriangleScroll.png" id="3_qdto2"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="3_r23ei"]
 [ext_resource type="Texture2D" uid="uid://cfvi28ga3mnna" path="res://Images/Llamas/PinataSilver.png" id="5_hfsg2"]
-[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="5_jux3k"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_u1yf7"]
-[ext_resource type="Shader" uid="uid://cc6eio6gqitel" path="res://Shaders/LlamaIconTransparancy.tres" id="6_5bd7b"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="6_7i7f0"]
 [ext_resource type="Shader" path="res://Shaders/LlamaTriangleEffect.gdshader" id="6_41bjr"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="6_n8hwd"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="8_8g41e"]
+[ext_resource type="Shader" path="res://Shaders/LlamaPinata.gdshader" id="9_squpy"]
+[ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="10_kbdaw"]
 [ext_resource type="ButtonGroup" uid="uid://cm7rmga74vyve" path="res://Scenes/LlamaEntries/LlamaChoices.tres" id="14_l6u0k"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="15_3uj10"]
 
@@ -22,11 +22,10 @@ resource_local_to_scene = true
 shader = ExtResource("6_41bjr")
 shader_parameter/ControlSize = Vector2(350, 120)
 shader_parameter/CornerRadius = 10.0
-shader_parameter/Birthday = false
-shader_parameter/BDColMain = Color(0.5, 1, 1, 1)
-shader_parameter/BDColA = Color(1, 1, 0.25, 1)
-shader_parameter/BDColB = Color(0.25, 1, 0.25, 1)
-shader_parameter/BDColC = Color(1, 0.521569, 1, 1)
+shader_parameter/BGCol = Color(1, 1, 1, 1)
+shader_parameter/TriCol1 = Color(0.5, 0.5, 0.5, 0.5)
+shader_parameter/TriCol2 = Color(0.5, 0.5, 0.5, 0.5)
+shader_parameter/TriCol3 = Color(0.5, 0.5, 0.5, 0.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37kl4"]
 content_margin_left = 2.0
@@ -39,9 +38,21 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 3
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gm4vs"]
-shader = ExtResource("6_5bd7b")
-shader_parameter/IconTint = Color(0.1, 0.1, 0.1, 1)
+[sub_resource type="Gradient" id="Gradient_u81du"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_an7nb"]
+gradient = SubResource("Gradient_u81du")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hkcaq"]
+resource_local_to_scene = true
+shader = ExtResource("9_squpy")
+shader_parameter/useMask = true
+shader_parameter/packIcon = ExtResource("10_kbdaw")
 
 [node name="Catalog Llama Entry" type="MarginContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry", "selectionGraphics")]
 custom_minimum_size = Vector2(350, 0)
@@ -59,7 +70,6 @@ selectionGraphics = NodePath("Control2/CheckButton")
 layout_mode = 2
 
 [node name="Triangles" type="TextureRect" parent="Control"]
-self_modulate = Color(1, 0.501961, 0.501961, 1)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_4vgu5")
 layout_mode = 1
@@ -116,25 +126,24 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Pinata" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+[node name="PinataBG" type="TextureRect" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("5_hfsg2")
+texture = SubResource("GradientTexture2D_an7nb")
 expand_mode = 3
 
-[node name="Icon" type="TextureRect" parent="MarginContainer/HBoxContainer/Pinata"]
-material = SubResource("ShaderMaterial_gm4vs")
+[node name="Pinata" type="TextureRect" parent="MarginContainer/HBoxContainer/PinataBG"]
+material = SubResource("ShaderMaterial_hkcaq")
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.33
-anchor_top = 0.55
-anchor_right = 0.46
-anchor_bottom = 0.68
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_jux3k")
-expand_mode = 1
+texture = ExtResource("5_hfsg2")
+expand_mode = 3
+script = ExtResource("5_u1yf7")
 
-[node name="AmountLabel" type="Label" parent="MarginContainer/HBoxContainer/Pinata"]
+[node name="AmountLabel" type="Label" parent="MarginContainer/HBoxContainer/PinataBG/Pinata"]
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 1
 anchors_preset = 3
@@ -148,8 +157,8 @@ grow_horizontal = 0
 grow_vertical = 0
 size_flags_vertical = 8
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -6
 theme_override_constants/outline_size = 3
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 25
 text = "Out of stock"
 horizontal_alignment = 2
@@ -244,15 +253,17 @@ expand_mode = 1
 layout_mode = 2
 outlinePadding = 20.0
 
-[connection signal="AmountChanged" from="." to="MarginContainer/HBoxContainer/Pinata/AmountLabel" method="set_text"]
-[connection signal="IsBirthdayChanged" from="." to="Control/Triangles" method="SetShaderBool" binds= ["Birthday"]]
+[connection signal="AmountChanged" from="." to="MarginContainer/HBoxContainer/PinataBG/Pinata/AmountLabel" method="set_text"]
 [connection signal="IsFreeChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeObj" method="set_visible"]
 [connection signal="IsLimitedTimeChanged" from="." to="Control/LeavingTimer" method="set_visible"]
 [connection signal="NameChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/NameLabel" method="set_text"]
+[connection signal="Color1Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol1"]]
+[connection signal="Color2Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol2"]]
+[connection signal="Color3Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol3"]]
 [connection signal="DescriptionChanged" from="MarginContainer" to="Responsive Button Area" method="set_tooltip_text"]
-[connection signal="IconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/Pinata" method="set_texture"]
-[connection signal="RarityChanged" from="MarginContainer" to="Control/Triangles" method="set_self_modulate"]
-[connection signal="SubtypeIconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/Pinata/Icon" method="set_texture"]
+[connection signal="IconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/PinataBG/Pinata" method="set_texture"]
+[connection signal="RarityChanged" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["BGCol"]]
+[connection signal="SubtypeIconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/PinataBG/Pinata" method="SetShaderTexture" binds= ["packIcon"]]
 [connection signal="AmountChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceNumberLabel" method="set_text"]
 [connection signal="IconChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/TextureRect" method="set_texture"]
 [connection signal="NameChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" method="set_tooltip_text"]

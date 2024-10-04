@@ -172,15 +172,15 @@ public partial class SurvivorLoadoutInterface : Node
                 flattenedLoadout["slotIndices"].AsArray().Add(i);
             }
         }
-        LoadingOverlay.Instance.AddLoadingKey("applySurvivorLoadout");
+        LoadingOverlay.AddLoadingKey("applySurvivorLoadout");
         JsonObject unslotBody = new()
         {
             ["squadIds"] = new JsonArray(survivorSquads.Select(s => (JsonNode)s).ToArray()),
         }; ;
-        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
-        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "AssignWorkerToSquadBatch", flattenedLoadout.ToString());
+        await PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
+        await PerformProfileOperation(FnProfiles.AccountItems, "AssignWorkerToSquadBatch", flattenedLoadout.ToString());
         await this.WaitForTimer(1);
-        LoadingOverlay.Instance.RemoveLoadingKey("applySurvivorLoadout");
+        LoadingOverlay.RemoveLoadingKey("applySurvivorLoadout");
     }
 
     private async void OnLoadoutRename()
@@ -251,7 +251,7 @@ public partial class SurvivorLoadoutInterface : Node
                 item.Value["attributes"].AsObject().ContainsKey("squad_id")
         );
 
-        LoadingOverlay.Instance.AddLoadingKey("clearSurvivorLoadout");
+        LoadingOverlay.AddLoadingKey("clearSurvivorLoadout");
         /* old way, slow
         foreach (var squad in survivorSquads)
         {
@@ -278,8 +278,8 @@ public partial class SurvivorLoadoutInterface : Node
         {
             ["squadIds"] = new JsonArray(survivorSquads.Select(s=>(JsonNode)s).ToArray()),
         }; ;
-        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
-        LoadingOverlay.Instance.RemoveLoadingKey("clearSurvivorLoadout");
+        await PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
+        LoadingOverlay.RemoveLoadingKey("clearSurvivorLoadout");
     }
 
     void ApplyLoadoutFileChange()
@@ -307,13 +307,20 @@ public partial class SurvivorLoadoutInterface : Node
 
     static readonly ProfileItemPredicate recycleFilter = kvp =>
         kvp.Value?["templateId"]?.ToString() is string templateID && templateID.Split(":")?[0] is string type &&
-        (type == "Worker" || type == "Schematic" || type == "Hero" || type == "Defender") && 
-        !templateID.Contains("_sr") && 
+        (type == "Worker" || type == "Schematic" || type == "Hero" || type == "Defender") &&
+        /*!templateID.Contains("_sr") &&*/ !(kvp.Value.GetTemplate()?["IsPermanent"]?.GetValue<bool>() ?? false) &&
         !templateID.Contains("ammo") && !templateID.Contains("floor_defender")&&
         !templateID.Contains("player_jump_pad") && !templateID.Contains("ingredient");
 
     async void DebugRecycle()
     {
+        LoadingOverlay.AddLoadingKey("gettingCollections");
+        await GetProfile(FnProfiles.SchematicCollection);
+        await GetProfile(FnProfiles.SchematicCollection);
+        LoadingOverlay.RemoveLoadingKey("gettingCollections");
+
+        var instructions = PLSearch.GenerateSearchInstructions("template.RarityLv=..3 | (template.RarityLv=..4 !templateId=\"Worker\"..)", out var _);
+
         GameItemSelector.Instance.titleText = "Recycle";
         GameItemSelector.Instance.confirmButtonText = "Confirm Recycle";
         GameItemSelector.Instance.multiselectMode = true;
@@ -321,7 +328,9 @@ public partial class SurvivorLoadoutInterface : Node
         GameItemSelector.Instance.selectedTintColor = Colors.Red;
         GameItemSelector.Instance.collectionMarkerTex = collectionIcon;
         GameItemSelector.Instance.autoselectButtonTex = recycleIcon;
+        GameItemSelector.Instance.autoselectPredicate = kvp => PLSearch.EvaluateInstructions(instructions, kvp.Value.GenerateItemSearchTags());
         var recycleHandles = await GameItemSelector.Instance.OpenSelector(recycleFilter);
+
         GD.Print("Handles: \n" + recycleHandles.Select(h => h.itemID.uuid).ToArray().Join("\n"));
     }
 }

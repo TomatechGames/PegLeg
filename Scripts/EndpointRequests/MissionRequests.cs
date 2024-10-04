@@ -83,7 +83,21 @@ static class MissionRequests
                 "",
                 LoginRequests.AccountAuthHeader
             );
-        missionsCache = SimplifyMissions(fullMissions);
+        try
+        {
+            missionsCache = SimplifyMissions(fullMissions);
+        }
+        catch (InvalidOperationException invalidEx)
+        {
+            GD.PushWarning(invalidEx.Message);
+            var innerEx = invalidEx.InnerException;
+            GD.PushWarning(invalidEx.StackTrace);
+            while (innerEx is not null)
+            {
+                GD.PushWarning("Caused By: "+ innerEx.Message);
+                innerEx = innerEx.InnerException;
+            }
+        }
         GD.Print(fullMissions.ToString()[..350] + "...");
         GD.Print(missionsCache.ToString()[..350] + "...");
         //save to file

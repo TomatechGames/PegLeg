@@ -53,7 +53,7 @@ public partial class QuestViewer : Control
     {
         if (currentQuest is null || !currentQuest.isUnlocked || currentQuest.isComplete)
             return;
-        LoadingOverlay.Instance.AddLoadingKey("pinnedQuest");
+        LoadingOverlay.AddLoadingKey("pinnedQuest");
 
         if (pinButton.ButtonPressed)
             await ProfileRequests.AddPinnedQuest(currentQuest.questItem.itemID.uuid);
@@ -61,14 +61,14 @@ public partial class QuestViewer : Control
             await ProfileRequests.RemovePinnedQuest(currentQuest.questItem.itemID.uuid);
 
         pinButton.ButtonPressed = currentQuest.isPinned;
-        LoadingOverlay.Instance.RemoveLoadingKey("pinnedQuest");
+        LoadingOverlay.RemoveLoadingKey("pinnedQuest");
     }
 
     async void RerollQuest()
     {
         if (currentQuest is null || !currentQuest.isUnlocked)
             return;
-        LoadingOverlay.Instance.AddLoadingKey("rerollQuest");
+        LoadingOverlay.AddLoadingKey("rerollQuest");
         
         var newQuest = await ProfileRequests.RerollQuest(currentQuest.questItem.itemID.uuid);
         currentQuest.LinkQuestItem(newQuest);
@@ -76,7 +76,7 @@ public partial class QuestViewer : Control
         SetupQuest(currentQuest);
         rerollButton.Visible = ProfileRequests.CanRerollQuestUnsafe();
 
-        LoadingOverlay.Instance.RemoveLoadingKey("rerollQuest");
+        LoadingOverlay.RemoveLoadingKey("rerollQuest");
     }
 
     public void SetupQuest(QuestData quest)

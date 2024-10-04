@@ -1,4 +1,5 @@
 using Godot;
+using System.Linq;
 using System.Text.Json.Nodes;
 
 //TODO: extend gameItemEntry and rename to cardPackEntry
@@ -7,19 +8,29 @@ public partial class LlamaEntry : GameItemEntry
     [Signal]
     public delegate void LlamaPressedEventHandler(string itemId);
 
+    [Signal]
+    public delegate void Color1ChangedEventHandler(Color color);
+    [Signal]
+    public delegate void Color2ChangedEventHandler(Color color);
+    [Signal]
+    public delegate void Color3ChangedEventHandler(Color color);
+    [Signal]
+    public delegate void GradientChangedEventHandler(Gradient gradient);
+
     [Export]
     bool includeNameInDescription = true;
 
     public void SetLinkedItemId(string value) => linkedItemId = value;
     string linkedItemId = "";
 
-    const string defaultPreviewImage = "ExportedImages\\PinataStandardPack.png";
+    const string defaultPreviewImage = "PinataStandardPack";
     public static readonly Texture2D[] llamaTierIcons = new Texture2D[]
     {
         ResourceLoader.Load<Texture2D>("res://Images/Llamas/PinataStandardPack.png", "Texture2D"),
         ResourceLoader.Load<Texture2D>("res://Images/Llamas/PinataSilver.png", "Texture2D"),
         ResourceLoader.Load<Texture2D>("res://Images/Llamas/PinataGold.png", "Texture2D"),
     };
+    static JsonObject llamaColorData;
 
     protected override void UpdateItemData(JsonObject itemInstance, string _ = null)
     {
@@ -33,13 +44,9 @@ public partial class LlamaEntry : GameItemEntry
         SetCardPack(itemInstance);
     }
 
-    public static readonly Color miniLlamaColor = Color.FromString("#ff8080", Colors.White);
-    public static readonly Color[] llamaTierColors = new Color[]
-    {
-        Color.FromString("#0064ff", Colors.White),
-        Color.FromString("#999999", Colors.White),
-        Color.FromString("#bfbf00", Colors.White),
-    };
+    Color[] currentLlamaColors;
+    public Gradient currentLlamaGradient { get; private set; }
+    public int LlamaTier { get; private set; } = -1;
 
     void SetCardPack(JsonObject cardPackInstance)
     {
@@ -70,39 +77,69 @@ public partial class LlamaEntry : GameItemEntry
 
 
         var pinataIcon = llamaTierIcons[0];
-        int llamaTier = Mathf.Max(0, cardPackTemplate.GetItemRarity()-3);
-        if (cardPackTemplate is not null)
+        LlamaTier = Mathf.Max(0, cardPackTemplate.GetItemRarity() - 3);
+        string llamaPinataName = cardPackTemplate["ImagePaths"]?["SmallPreview"]?.ToString().Split("\\")[^1];
+        if (llamaPinataName?.StartsWith(defaultPreviewImage) ?? false)
         {
-            if (cardPackTemplate["ImagePaths"]?["SmallPreview"]?.ToString() == defaultPreviewImage)
-                pinataIcon = llamaTierIcons[llamaTier];
-            else
+            pinataIcon = llamaTierIcons[LlamaTier];
+            llamaPinataName = LlamaTier switch
             {
-                llamaTier = 0;
-                pinataIcon = cardPackTemplate.GetItemTexture();
-            }
+                2 => "Gold",
+                1 => "Silver",
+                _ => "Standard"
+            };
+        }
+        else
+        {
+            LlamaTier = 0;
+            pinataIcon = cardPackTemplate.GetItemTexture();
         }
 
         var packIcon = cardPackTemplate.GetItemTexture(null, BanjoAssets.TextureType.PackImage);
-        bool isMini = name?.StartsWith("Mini") ?? true;
-        if (isMini)
+        if (name is null || name.StartsWith("Mini"))
             packIcon = null;
 
+        Color? rarityColor = null;
         if (cardPackInstance?["attributes"]?.AsObject().ContainsKey("options") ?? false)
         {
             packIcon = pinataIcon;
             pinataIcon = llamaTierIcons[0];
+            rarityColor = cardPackTemplate.GetItemRarityColor();
         }
+
+        llamaColorData ??= OverridableFileLoader.LoadJsonFile("llamaColors.json");
+        JsonArray colorData = llamaColorData?.FirstOrDefault(kvp=> llamaPinataName.StartsWith(kvp.Key)).Value?.AsArray();
+
+        currentLlamaColors = new Color[]
+        {
+            rarityColor ?? Color.FromString(colorData?[0]?.ToString() ?? "", new("#0073ffff")),
+            Color.FromString(colorData?[1]?.ToString() ?? "", new("#e600c3e3")),
+            Color.FromString(colorData?[2]?.ToString() ?? "", new("#aa00ffd4")),
+            Color.FromString(colorData?[3]?.ToString() ?? "", new("#00eaff8f"))
+        };
+
+        currentLlamaGradient ??= new() 
+        { 
+            Offsets = new float[] {0,0.25f,0.5f,0.75f},
+            InterpolationMode = Gradient.InterpolationModeEnum.Constant,
+        };
+        currentLlamaGradient.Colors = currentLlamaColors;
+
+        EmitSignal(SignalName.RarityChanged, currentLlamaColors[0]);
+        EmitSignal(SignalName.Color1Changed, currentLlamaColors[1]);
+        EmitSignal(SignalName.Color2Changed, currentLlamaColors[2]);
+        EmitSignal(SignalName.Color3Changed, currentLlamaColors[3]);
+        EmitSignal(SignalName.GradientChanged, currentLlamaGradient);
 
         EmitSignal(SignalName.IconChanged, pinataIcon);
         EmitSignal(SignalName.SubtypeIconChanged, packIcon);
-        
-        EmitSignal(SignalName.RarityChanged, isMini ? miniLlamaColor : llamaTierColors[llamaTier]);
     }
 
     public override void ClearItem()
     {
         base.ClearItem();
         linkedItemId = "";
+        LlamaTier = -1;
         EmitSignal(SignalName.NameChanged, "Select a Llama");
         EmitSignal(SignalName.IconChanged, llamaTierIcons[0]);
         EmitSignal(SignalName.SubtypeIconChanged, BanjoAssets.defaultIcon);

@@ -16,8 +16,6 @@ public partial class ShopOfferEntry : Control
     [Signal]
     public delegate void IsLimitedTimeChangedEventHandler(bool isLimitedTime);
     [Signal]
-    public delegate void IsBirthdayChangedEventHandler(bool isBirthday);
-    [Signal]
     public delegate void PressedEventHandler(string linkedOfferId);
 
     [Export]
@@ -42,8 +40,6 @@ public partial class ShopOfferEntry : Control
         var grantedItem = shopOffer["itemGrants"][0].AsObject();
         string name = grantedItem.GetTemplate()?["DisplayName"]?.ToString();
         EmitSignal(SignalName.NameChanged, name);
-
-
         EmitSignal(SignalName.AmountNeeded, false);
 
 
@@ -57,24 +53,27 @@ public partial class ShopOfferEntry : Control
             priceEntry.SetItemData(priceTemplate.CreateInstanceOfItem(price));
 
         grantedItem["shopQuantity"] = -1;
-        grantedItemEntry.SetItemData(grantedItem);
 
         if (grantedItem["templateId"].ToString().StartsWith("CardPack"))
         {
             int tier = shopOffer["prerollData"]?["attributes"]?["highest_rarity"]?.GetValue<int>() ?? 0;
-            if (grantedItem.GetTemplate()?["Rarity"]?.ToString() == "Epic")
-                tier = Mathf.Max(1, tier);
-            if (grantedItem.GetTemplate()?["Rarity"]?.ToString() == "Legendary")
-                tier = 2;
-            grantedItem["template"]["Rarity"] = tier switch
+            //if (grantedItem.GetTemplate()?["Rarity"]?.ToString() == "Epic")
+            //    tier = Mathf.Max(1, tier);
+            //if (grantedItem.GetTemplate()?["Rarity"]?.ToString() == "Legendary")
+            //    tier = 2;
+            if ((grantedItem["template"]["Rarity"]?.ToString() ?? "Rare") == "Rare")
             {
-                1 => "Epic",
-                2 => "Legendary",
-                _ => "Rare"
-            };
+                grantedItem["template"]["Rarity"] = tier switch
+                {
+                    1 => "Epic",
+                    2 => "Legendary",
+                    _ => "Rare"
+                };
+            }
+                
         }
 
-        EmitSignal(SignalName.IsBirthdayChanged, name.ToLower().Contains("birthday"));
+        grantedItemEntry.SetItemData(grantedItem);
 
         EmitSignal(SignalName.IsFreeChanged, price == 0);
         EmitSignal(SignalName.IsLimitedTimeChanged, linkedOfferId == "D46EC225FA1149ADB00B4B17B2ABAB70");//offerId of random free llamas which only last 1 hour

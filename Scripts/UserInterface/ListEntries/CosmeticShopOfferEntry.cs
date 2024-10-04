@@ -136,9 +136,9 @@ public partial class CosmeticShopOfferEntry : Control
             return;
         }
 
-        if (resourceUrl == null)
+        if (resourceUrl is null)
         {
-            resourceTarget.SetShaderTexture(fallbackTexture, "Cosmetic");
+            resourceTarget.Texture = fallbackTexture;
             GD.PushWarning("No resource URL");
             loadingCubes.Visible = false;
             return;
@@ -148,10 +148,24 @@ public partial class CosmeticShopOfferEntry : Control
             ApplyResource(tex);
         else
         {
-            resourceTarget.SetShaderTexture(fallbackTexture, "Cosmetic");
+            resourceTarget.Texture = fallbackTexture;
             GD.PushWarning("Image request failed");
             loadingCubes.Visible = false;
             resourceTarget.Visible = true;
+        }
+    }
+
+    public void OpenImageInBrowser()
+    {
+        if (Input.IsKeyPressed(Key.Shift))
+        {
+            if (resourceUrl is not null)
+                OS.ShellOpen(resourceUrl);
+        }
+        else
+        {
+            if (shopUrl is not null)
+                OS.ShellOpen(shopUrl);
         }
     }
 
@@ -229,6 +243,7 @@ public partial class CosmeticShopOfferEntry : Control
         currentOfferData = null;
     }
 
+    string shopUrl = null;
     string resourceUrl = null;
     Vector2 resourceShift = new(0.5f, 0.5f);
     bool resourceFit = false;
@@ -240,6 +255,7 @@ public partial class CosmeticShopOfferEntry : Control
     {
         offerId = entryData["offerId"].ToString();
         cellWidth = (int)cellSize.X;
+        shopUrl = "https://www.fortnite.com" + entryData["webURL"].ToString();
 
         int oldPrice = entryData["regularPrice"].GetValue<int>();
         int newPrice = entryData["finalPrice"].GetValue<int>();
@@ -249,11 +265,25 @@ public partial class CosmeticShopOfferEntry : Control
         else
             discountAmount = 0;
 
-        JsonArray allItems = entryData.MergeCosmeticItems();
+        JsonArray allItems = entryData.MergeCosmeticItems() ?? new JsonArray();
         if (entryData["bundle"] is not null)
             PopulateAsBundle(entryData, allItems);
-        else
+        else if (entryData["isGenerated"] is null)
             PopulateAsItem(entryData, allItems);
+        else
+        {
+            EmitSignal(SignalName.NameChanged, "<Unknown>");
+            EmitSignal(SignalName.TypeChanged, "<Unknown>");
+            EmitSignal(SignalName.TooltipChanged, entryData["devName"].ToString());
+
+            EmitSignal(SignalName.PriceAmount, newPrice.ToString());
+            EmitSignal(SignalName.OldPriceAmount, oldPrice.ToString());
+
+            EmitSignal(SignalName.OwnedVisibility, false);
+            EmitSignal(SignalName.OldPriceVisibility, newPrice < oldPrice);
+            metadata = default;
+            SetMetaVisuals();
+        }
 
         foreach (var item in allItems)
         {
@@ -307,7 +337,7 @@ public partial class CosmeticShopOfferEntry : Control
         {
             resourceUrl =
                 resourceRender["image"]?.ToString();
-            if(resourceRender["productTag"]?.ToString()== "Product.DelMar")
+            if (resourceRender["productTag"]?.ToString() == "Product.DelMar")
             {
                 //TODO: stretch image
                 resourceShift = new Vector2(0.5f, 0.5f);
@@ -325,16 +355,18 @@ public partial class CosmeticShopOfferEntry : Control
                 resourceMat["images"]["Background"]?.ToString() ??
                 resourceMat["images"]["OfferImage"]?.ToString();
         }
-        else
+        else if (allItems.Any())
         {
             resourceUrl =
-                entryData.GetFirstCosmeticItem()["images"]?["featured"]?.ToString() ??
-                entryData.GetFirstCosmeticItem()["images"]?["large"]?.ToString() ??
-                entryData.GetFirstCosmeticItem()["images"]?["small"]?.ToString() ??
-                entryData.GetFirstCosmeticItem()["images"]?["icon"]?.ToString() ??
-                entryData.GetFirstCosmeticItem()["images"]?["smallIcon"]?.ToString();
+                allItems[0]["images"]?["featured"]?.ToString() ??
+                allItems[0]["images"]?["large"]?.ToString() ??
+                allItems[0]["images"]?["small"]?.ToString() ??
+                allItems[0]["images"]?["icon"]?.ToString() ??
+                allItems[0]["images"]?["smallIcon"]?.ToString();
             resourceShift = new Vector2(0.5f, 0.5f);
         }
+        else
+            resourceUrl = null;
 
         var nonLobbyMusicItems = allItems.Where(i => i["type"]?["displayValue"].ToString() != "Lobby Music").ToArray();
         if (nonLobbyMusicItems.Length == 1 && nonLobbyMusicItems[0]["type"]?["displayValue"].ToString() == "Jam Track")
@@ -349,15 +381,58 @@ public partial class CosmeticShopOfferEntry : Control
         else
             resourceTarget.Texture = null;
     }
+    public struct CosmeticMetadata
+    {
+        public int lastSeenDaysAgo { get; private set; }
+        public bool isRecentlyNew { get; private set; }
+        public bool isAddedToday { get; private set; }
+        public bool isLeavingSoon { get; private set; }
+        public bool isOld { get; private set; }
+        public bool isVeryOld { get; private set; }
 
+        public CosmeticMetadata(JsonObject firstItem, JsonObject entryData)
+        {
+            string firstAddedDateText = firstItem["shopHistory"]?[0]?.ToString();
+            DateTime firstAddedDate = firstAddedDateText is not null ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
+            DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
+            DateTime outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
+            DateTime? lastAddedDate = null;
+            var shopHistory = firstItem["shopHistory"]?.AsArray();
+            if (shopHistory is not null)
+            {
+                for (int i = shopHistory.Count - 1; i >= 0; i--)
+                {
+                    DateTime shopDate = DateTime.Parse(shopHistory[i].ToString()).ToUniversalTime();
+                    if (shopDate.CompareTo(inDate) == -1)
+                    {
+                        lastAddedDate = shopDate;
+                        break;
+                    }
+                }
+            }
+
+            lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
+            isAddedToday = inDate == DateTime.UtcNow.Date && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate);
+            isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
+            isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
+            isOld = lastSeenDaysAgo > 500;
+            isVeryOld = lastSeenDaysAgo > 1000;
+        }
+
+        public CosmeticMetadata(CosmeticMetadata[] itemMetadatas)
+        {
+            lastSeenDaysAgo = itemMetadatas.Select(m => m.lastSeenDaysAgo).Max();
+            isRecentlyNew = itemMetadatas.Any(m => m.isRecentlyNew);
+            isAddedToday = itemMetadatas.Any(m => m.isAddedToday);
+            isLeavingSoon = itemMetadatas.Any(m => m.isLeavingSoon);
+            isOld = itemMetadatas.Any(m => m.isOld);
+            isVeryOld = itemMetadatas.Any(m => m.isVeryOld);
+        }
+    }
+
+    public CosmeticMetadata metadata;
     public int discountAmount { get; private set; }
-    public int lastSeenDaysAgo { get; private set; }
-    public bool isRecentlyNew { get; private set; }
-    public bool isAddedToday { get; private set; }
-    public bool isLeavingSoon { get; private set; }
     public bool isDiscountBundle { get; private set; }
-    public bool isOld { get; private set; }
-    public bool isVeryOld { get; private set; }
 
     void PopulateAsItem(JsonObject entryData, JsonArray allItems)
     {
@@ -392,7 +467,7 @@ public partial class CosmeticShopOfferEntry : Control
         EmitSignal(SignalName.OwnedVisibility, false);
         EmitSignal(SignalName.OldPriceVisibility, newPrice < oldPrice);
 
-        SetMetadata(firstItem, entryData);
+        metadata = new(firstItem, entryData);
         SetMetaVisuals();
 
 
@@ -419,11 +494,7 @@ public partial class CosmeticShopOfferEntry : Control
         EmitSignal(SignalName.OwnedVisibility, false);
         EmitSignal(SignalName.OldPriceVisibility, newPrice < oldPrice);
 
-        if (!isDiscountBundle)
-        {
-            JsonObject firstItem = allItems[0].AsObject();
-            SetMetadata(firstItem, entryData);
-        }
+        metadata = new(allItems.Select(item=>new CosmeticMetadata(item.AsObject(), entryData)).ToArray());
         SetMetaVisuals();
 
         string tooltip = mainName + " - Bundle";
@@ -435,68 +506,36 @@ public partial class CosmeticShopOfferEntry : Control
         EmitSignal(SignalName.TooltipChanged, tooltip);
     }
 
-    void SetMetadata(JsonObject firstItem, JsonObject entryData)
-    {
-        string firstAddedDateText = firstItem["shopHistory"]?[0]?.ToString();
-        DateTime firstAddedDate = firstAddedDateText is not null ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
-        DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
-        DateTime outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
-        DateTime? lastAddedDate = null;
-        var shopHistory = firstItem["shopHistory"]?.AsArray();
-        if (shopHistory is not null)
-        {
-            for (int i = shopHistory.Count - 1; i >= 0; i--)
-            {
-                DateTime shopDate = DateTime.Parse(shopHistory[i].ToString()).ToUniversalTime();
-                if (shopDate.CompareTo(inDate) == -1)
-                {
-                    lastAddedDate = shopDate;
-                    break;
-                }
-            }
-        }
-
-        lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
-        isAddedToday = inDate == DateTime.UtcNow.Date && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate);
-        isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
-        isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
-        isOld = lastSeenDaysAgo > 500;
-        isVeryOld = lastSeenDaysAgo > 1000;
-
-
-    }
-
     void SetMetaVisuals()
     {
+        EmitSignal(SignalName.LastSeenVisibility, metadata.lastSeenDaysAgo > 1);
+        EmitSignal(SignalName.LastSeenText, $"{metadata.lastSeenDaysAgo}");
+        EmitSignal(SignalName.LastSeenAlertVisibility, metadata.isOld);
+        EmitSignal(SignalName.AlmostAYearVisibility, metadata.isVeryOld);
+
         if (discountAmount > 0)
         {
             EmitSignal(SignalName.BonusTextChanged, cellWidth > 1 ? $"Save {discountAmount} VBucks!" : $"-{discountAmount}");
             EmitSignal(SignalName.BonusTextVisibility, true);
-            EmitSignal(SignalName.LastSeenVisibility, false);
-            EmitSignal(SignalName.AlmostAYearVisibility, false);
             return;
         }
 
-        if (isRecentlyNew && isAddedToday)
+        if (metadata.isRecentlyNew && metadata.isAddedToday)
         {
             //GD.Print($"New {firstAddedDate}");
             EmitSignal(SignalName.BonusTextChanged, "# NEW");
         }
-        else if (isRecentlyNew)
+        else if (metadata.isRecentlyNew)
         {
             //GD.Print($"Recent {firstAddedDate} ({DateTime.UtcNow.Date - firstAddedDate})");
             EmitSignal(SignalName.BonusTextChanged, "NEW");
         }
-        else if (isAddedToday)
+        else if (metadata.isAddedToday)
         {
             //GD.Print($"Back {lastAddedDate} ({DateTime.UtcNow.Date - firstAddedDate})");
             EmitSignal(SignalName.BonusTextChanged, $" # ");
         }
 
-        EmitSignal(SignalName.BonusTextVisibility, isRecentlyNew || isAddedToday);
-        EmitSignal(SignalName.LastSeenVisibility, lastSeenDaysAgo > 1);
-        EmitSignal(SignalName.LastSeenText, $"{lastSeenDaysAgo}");
-        EmitSignal(SignalName.LastSeenAlertVisibility, isOld);
-        EmitSignal(SignalName.AlmostAYearVisibility, isVeryOld);
+        EmitSignal(SignalName.BonusTextVisibility, metadata.isRecentlyNew || metadata.isAddedToday);
     }
 }

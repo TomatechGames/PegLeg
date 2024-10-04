@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public partial class RecycleListContainer : ScrollContainer
 {
@@ -184,6 +185,7 @@ public partial class RecycleListContainer : ScrollContainer
             float paddingHeight = remainingRows * (elementHeight + elementSpace);
             //GD.Print($"paddingCols: {paddingHeight / (elementHeight+elementSpace)}");
             paddingControl.CustomMinimumSize = new(0, paddingHeight);
+            Visible = true;
         }
         finally
         {

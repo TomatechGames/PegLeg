@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://x2n7sj7hjmla" path="res://Scenes/general_testing.tscn" id="3_m0ad5"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="4_2ks2q"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_egrdm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nn5xj"]
 resource_local_to_scene = true
 shader = ExtResource("4_2ks2q")
 shader_parameter/ControlSize = Vector2(1328, 150)
@@ -77,10 +77,11 @@ grow_vertical = 2
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 24
 text = "View all
-Jam Tracks"
+Jam Tracks "
 
 [node name="LoadingIcon5" parent="MarginContainer" instance=ExtResource("3_m0ad5")]
-material = SubResource("ShaderMaterial_egrdm")
+material = SubResource("ShaderMaterial_nn5xj")
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-size_flags_vertical = 1
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/CenterContainer/Control/Button" to="." method="OpenJamTracks"]

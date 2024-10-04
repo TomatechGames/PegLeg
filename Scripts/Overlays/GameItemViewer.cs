@@ -13,9 +13,13 @@ public partial class GameItemViewer : ModalWindow
     [Export]
     GameItemEntry primaryItemEntry;
     [Export]
-    Tree statsTree;
-    [Export]
     CodeEdit devText;
+
+    [ExportGroup("Stats")]
+    [Export]
+    Control statsTreeContainer;
+    [Export]
+    Tree statsTree;
 
     [ExportGroup("Perk Details")]
     [Export]
@@ -182,7 +186,7 @@ public partial class GameItemViewer : ModalWindow
 
         //TODO: add extra icons for survivors, and fix descriptions
 
-        statsTree.Visible = false;
+        statsTreeContainer.Visible = false;
         perkDetailsPanel.Visible = false;
         heroDetailsPanel.Visible = false;
 
@@ -208,7 +212,7 @@ public partial class GameItemViewer : ModalWindow
 
             RefreshHeroStats();
 
-            statsTree.Visible = true;
+            statsTreeContainer.Visible = true;
             //statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(10, 0);
         }
         else if (template["Type"].ToString() == "Schematic")
@@ -220,7 +224,7 @@ public partial class GameItemViewer : ModalWindow
             else 
                 perkDetailsPanel.SetDisplayItem(itemInstance);
 
-            statsTree.Visible = true;
+            statsTreeContainer.Visible = true;
             statsTree.Clear();
             statsTree.Columns = 2;
             statsTree.SetColumnTitle(0, "Stat");
@@ -390,12 +394,12 @@ public partial class GameItemViewer : ModalWindow
             ["expectedTotalPrice"] = linkedShopOffer["prices"][0]["finalPrice"].GetValue<int>() * purchaseCountSpinner.Value,
             ["gameContext"] = "Pegleg",
         };
-        LoadingOverlay.Instance.AddLoadingKey("ItemPurchase");
+        LoadingOverlay.AddLoadingKey("ItemPurchase");
         var result = (await ProfileRequests.PerformProfileOperation(FnProfiles.Common, "PurchaseCatalogEntry", body.ToString()));
         GD.Print(result["notifications"]);
         GD.Print(result["multiUpdate"]);
         SetWindowOpen(false);
-        LoadingOverlay.Instance.RemoveLoadingKey("ItemPurchase");
+        LoadingOverlay.RemoveLoadingKey("ItemPurchase");
 
         var resultItem = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"][0];
         //await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());

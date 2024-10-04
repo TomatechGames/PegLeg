@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c47svw0ruq2i3"]
+[gd_scene load_steps=22 format=3 uid="uid://c47svw0ruq2i3"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_hrn5h"]
 [ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Hero-Soldier-CARD.png" id="1_w7bnd"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="6_p6e2l"]
 [ext_resource type="Texture2D" uid="uid://csbd78stcd271" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Magnifier_128.png" id="7_af580"]
 [ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="7_dc4uf"]
+[ext_resource type="Shader" path="res://Shaders/ChoiceCardChangeEffect.gdshader" id="11_xnoem"]
+[ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="12_abtl2"]
 
 [sub_resource type="Gradient" id="Gradient_tpqxe"]
 colors = PackedColorArray(0.9, 0.9, 0.9, 1, 0.6, 0.6, 0.6, 1)
@@ -41,6 +43,22 @@ content_margin_right = 2.0
 bg_color = Color(1, 1, 1, 1)
 skew = Vector2(0, -0.05)
 expand_margin_bottom = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kpy8b"]
+resource_local_to_scene = true
+shader = ExtResource("11_xnoem")
+shader_parameter/progress = 0.0
+shader_parameter/scalar = 100.0
+shader_parameter/bgTex = ExtResource("12_abtl2")
+
+[sub_resource type="Gradient" id="Gradient_02qlh"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lib66"]
+gradient = SubResource("Gradient_02qlh")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0, 1)
+metadata/_snap_enabled = true
 
 [node name="RewardEntryCard" type="MarginContainer"]
 custom_minimum_size = Vector2(150, 0)
@@ -257,9 +275,23 @@ text = "Hero
 "
 text_overrun_behavior = 3
 
-[node name="Rating" type="Control" parent="ContentParent/Content"]
+[node name="ChangeEffect" type="TextureRect" parent="ContentParent"]
+unique_name_in_owner = true
+self_modulate = Color(0.901961, 0.509804, 0, 1)
+material = SubResource("ShaderMaterial_kpy8b")
 layout_mode = 1
-anchors_preset = 0
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -236.5
+offset_top = -192.5
+offset_right = 163.5
+offset_bottom = 207.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_lib66")
+script = ExtResource("4_w04mt")
 
 [node name="CardOverlay" type="TextureRect" parent="."]
 layout_mode = 2
@@ -277,6 +309,7 @@ expand_mode = 5
 [connection signal="PersonalityIconChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer/SecondaryIocn" method="set_texture"]
 [connection signal="RarityChanged" from="." to="ContentParent/Content/RarityGradient" method="set_self_modulate"]
 [connection signal="RarityChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox" method="set_self_modulate"]
+[connection signal="RarityChanged" from="." to="ContentParent/ChangeEffect" method="set_self_modulate"]
 [connection signal="RarityChanged" from="." to="ContentParent/Content/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
 [connection signal="SubtypeIconChanged" from="." to="ContentParent/Content/DetailsArea/TypeBox/HBoxContainer/MarginContainer/SubtypeIcon" method="set_texture"]
 [connection signal="SurvivorBoostIconChanged" from="." to="ContentParent/Content/DetailsArea/NameBox/MarginContainer/HBoxContainer/TersiatyIcon" method="set_texture"]

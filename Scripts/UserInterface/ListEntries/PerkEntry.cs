@@ -34,7 +34,7 @@ public partial class PerkEntry : Control
 
     string linkedAlteration;
     int linkedIndex;
-    bool replaceable;
+    bool isLocked;
 
     public void SetPerkAlteration(string alterationId, bool hasRarity = false, bool isSixth = false, int index = 0)
     {
@@ -78,10 +78,10 @@ public partial class PerkEntry : Control
         EmitSignal(SignalName.InteractableChanged, newValue);
     }
 
-    public void SetReplaceable(bool newValue)
+    public void SetLocked(bool newValue)
     {
-        replaceable = newValue;
-        EmitSignal(SignalName.LockVisibilityChanged, !newValue);
+        isLocked = newValue;
+        EmitSignal(SignalName.LockVisibilityChanged, newValue);
     }
 
     public void SetLockText(string text)
@@ -91,6 +91,6 @@ public partial class PerkEntry : Control
 
     public void Press()
     {
-        EmitSignal(SignalName.Pressed, linkedIndex, linkedAlteration, replaceable);
+        EmitSignal(SignalName.Pressed, linkedIndex, linkedAlteration, isLocked);
     }
 }

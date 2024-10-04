@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://x2n7sj7hjmla" path="res://Scenes/general_testing.tscn" id="3_4athu"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="3_bpa6m"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_egrdm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u6mt4"]
 resource_local_to_scene = true
 shader = ExtResource("3_bpa6m")
 shader_parameter/ControlSize = Vector2(1260, 313)
@@ -54,7 +54,6 @@ theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
-visible = false
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 
@@ -81,7 +80,6 @@ Jam Tracks
 (WIP)"
 
 [node name="LoadingIcon5" parent="MarginContainer" instance=ExtResource("3_4athu")]
-material = SubResource("ShaderMaterial_egrdm")
+material = SubResource("ShaderMaterial_u6mt4")
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-size_flags_vertical = 1

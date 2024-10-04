@@ -79,7 +79,7 @@ border_width_bottom = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yfccu"]
 shader = ExtResource("10_acofu")
-shader_parameter/time = 3411.12
+shader_parameter/time = 56552.6
 
 [sub_resource type="Gradient" id="Gradient_ir67n"]
 offsets = PackedFloat32Array(0, 0.992042)
@@ -216,6 +216,37 @@ theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 text = "130"
 horizontal_alignment = 1
+
+[node name="Collectable" type="MarginContainer" parent="ItemContent/GameItem/Space"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 2.0
+offset_right = -2.0
+grow_horizontal = 0
+
+[node name="TextureRect" type="TextureRect" parent="ItemContent/GameItem/Space/Collectable"]
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("11_seqqo")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="ItemContent/GameItem/Space/Collectable/TextureRect"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_seqqo")
+expand_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="ItemContent/GameItem"]
 layout_mode = 2
@@ -373,10 +404,12 @@ outlinePadding = 0.0
 [connection signal="CanBeLeveledChanged" from="." to="ItemContent/GameItem/TierAndXp" method="set_visible"]
 [connection signal="IconChanged" from="." to="ItemContent/ItemIcon" method="set_texture"]
 [connection signal="InteractableChanged" from="." to="Responsive Button Area" method="set_visible"]
+[connection signal="IsCollectable" from="." to="ItemContent/GameItem/Space/Collectable" method="set_visible"]
 [connection signal="ItemDoesExist" from="." to="ItemContent" method="set_visible"]
 [connection signal="ItemDoesNotExist" from="." to="Empty" method="set_visible"]
 [connection signal="LevelProgressChanged" from="." to="ItemContent/GameItem/TierAndXp/MarginContainer/VBoxContainer/ProgressBar" method="set_value"]
 [connection signal="MaxTierChanged" from="." to="ItemContent/GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController" method="SetMaxTier"]
+[connection signal="NameChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="PersonalityIconChanged" from="." to="ItemContent/GameItem/MarginContainer/MarginContainer/HBoxContainer/Subtype" method="set_texture"]
 [connection signal="RarityChanged" from="." to="ItemContent/RarityGradient" method="set_self_modulate"]
 [connection signal="RarityChanged" from="." to="ItemContent/GameItem/TierAndXp/TextureRect" method="set_self_modulate"]

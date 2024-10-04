@@ -9,8 +9,6 @@ public partial class ModalWindow : Control
     public delegate void WindowClosedEventHandler();
 
     [Export]
-    Control mouseBlockPanel;
-    [Export]
     Control backgroundPanel;
     [Export]
     CanvasGroup windowCanvas;
@@ -29,7 +27,7 @@ public partial class ModalWindow : Control
     public override void _Ready()
     {
         backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
-        mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
+        MouseFilter = MouseFilterEnum.Ignore;
         backgroundPanel.SelfModulate = Colors.Transparent;
 
         if (windowCanvas is not null)
@@ -68,7 +66,7 @@ public partial class ModalWindow : Control
         {
             openedThisFrame = false;
             backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
-            mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
+            MouseFilter = MouseFilterEnum.Ignore;
             Visible = false;
             UISounds.StopSound("PanelAppear");
             ProcessMode = ProcessModeEnum.Disabled;
@@ -85,7 +83,7 @@ public partial class ModalWindow : Control
             if (useSounds)
                 UISounds.PlaySound("PanelAppear");
             backgroundPanel.MouseFilter = MouseFilterEnum.Stop;
-            mouseBlockPanel.MouseFilter = MouseFilterEnum.Stop;
+            MouseFilter = MouseFilterEnum.Stop;
             Visible = true;
             ProcessMode = ProcessModeEnum.Inherit;
             if (windowControl is not null)
@@ -120,7 +118,7 @@ public partial class ModalWindow : Control
             if (!openState && IsInstanceValid(this))
             {
                 backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
-                mouseBlockPanel.MouseFilter = MouseFilterEnum.Ignore;
+                MouseFilter = MouseFilterEnum.Ignore;
                 Visible = false;
                 ProcessMode = ProcessModeEnum.Disabled;
             }

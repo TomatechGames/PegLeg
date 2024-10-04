@@ -33,9 +33,6 @@ public partial class ThemeController : Node
     const string builtInThemePath = "res://External/Themes/BuiltIn";
     const string customThemePath = "res://External/Themes/Custom";
 
-    [Export]
-    AudioStreamPlayer samplePlayer;
-
     public override void _Ready()
 	{
         seasonTheme = GetSeasonTheme();

@@ -12,16 +12,18 @@ public partial class LoadingOverlay : ModalWindow
         Instance = this;
     }
 
-    List<string> loadingKeys = new();
-    public void AddLoadingKey(string key)
+    static List<string> loadingKeys = new();
+    //the "loading key" system was originally intended for if multiple systems needed
+    //to show a loading screen simultaniously, but that use case never arose
+    public static void AddLoadingKey(string key)
     {
         loadingKeys.Add(key);
-        SetWindowOpen(loadingKeys.Count > 0);
+        Instance.SetWindowOpen(loadingKeys.Count > 0);
     }
 
-    public void RemoveLoadingKey(string key)
+    public static void RemoveLoadingKey(string key)
     {
         loadingKeys.Remove(key);
-        SetWindowOpen(loadingKeys.Count > 0);
+        Instance.SetWindowOpen(loadingKeys.Count > 0);
     }
 }

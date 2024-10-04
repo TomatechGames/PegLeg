@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://duy6d6ydo0b63"
+path="res://.godot/imported/PinataStandardMask.bmp-e02eff256e3d16d178bd8a02458b1b6e.res"
+
+[deps]
+
+source_file="res://Images/Llamas/PinataStandardMask.bmp"
+dest_files=["res://.godot/imported/PinataStandardMask.bmp-e02eff256e3d16d178bd8a02458b1b6e.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dpd06j33s360w"]
+[gd_scene load_steps=16 format=3 uid="uid://dpd06j33s360w"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_f51aj"]
 [ext_resource type="Script" path="res://Scripts/Overlays/ShopPurchaseAnimation.cs" id="2_jxg4g"]
@@ -6,20 +6,26 @@
 [ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/Desktop/Overlays/shop_purchase_item_element.tscn" id="3_h11w1"]
 [ext_resource type="Texture2D" uid="uid://dgyw7mbhfodhy" path="res://Images/InterfaceIcons/PegLegShoppingCart.png" id="4_0gyrh"]
 [ext_resource type="AudioStream" uid="uid://bu3vc152hx7ks" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.wav" id="4_5c6ij"]
+[ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="5_8k3hh"]
+[ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="6_1aa5w"]
 [ext_resource type="Shader" path="res://Shaders/AdvancedLabel.gdshader" id="6_abafb"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="6_g43va"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_gi68h"]
 [ext_resource type="Shader" path="res://Shaders/AdaptiveShadow.gdshader" id="7_qlxkn"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v25rf"]
+shader = ExtResource("5_8k3hh")
+shader_parameter/rotationSpeed = 0.5
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8on64"]
 shader = ExtResource("7_qlxkn")
-shader_parameter/ControlSize = Vector2(388, 184)
+shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/ControlSizeScale = Vector2(0.66, 1)
 shader_parameter/CornerRadius = 100.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u3030"]
 shader = ExtResource("6_abafb")
-shader_parameter/ControlSize = Vector2(444, 100)
+shader_parameter/ControlSize = Vector2(388, 100)
 shader_parameter/PixelsPerLine = 200.0
 shader_parameter/debug = false
 shader_parameter/fillColor = Color(1, 1, 1, 1)
@@ -32,8 +38,8 @@ shader_parameter/gradientHorizontal = null
 
 [node name="ShopPurchaseAnimation" instance=ExtResource("1_f51aj")]
 
-[node name="BG" parent="." index="1"]
-disabled = true
+[node name="CloseBtn" parent="." index="1"]
+visible = false
 
 [node name="PurchaseSound" type="AudioStreamPlayer" parent="Control/WindowContents" index="0"]
 stream = ExtResource("4_5c6ij")
@@ -64,7 +70,28 @@ finalText = NodePath("Control/PurchaseText")
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 
-[node name="Scale" type="Control" parent="Control/WindowContents/CenterContainer/Control" index="0"]
+[node name="Glow" type="TextureRect" parent="Control/WindowContents/CenterContainer/Control" index="0"]
+self_modulate = Color(1, 0.7, 0, 1)
+material = SubResource("ShaderMaterial_v25rf")
+custom_minimum_size = Vector2(512, 512)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(384, 384)
+mouse_filter = 2
+texture = ExtResource("6_1aa5w")
+expand_mode = 1
+
+[node name="Scale" type="Control" parent="Control/WindowContents/CenterContainer/Control" index="1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -155,7 +182,7 @@ grow_vertical = 2
 texture = ExtResource("4_0gyrh")
 expand_mode = 1
 
-[node name="PurchaseText" type="CenterContainer" parent="Control/WindowContents/CenterContainer/Control" index="1"]
+[node name="PurchaseText" type="CenterContainer" parent="Control/WindowContents/CenterContainer/Control" index="2"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -184,6 +211,7 @@ texture = ExtResource("6_g43va")
 layout_mode = 2
 
 [node name="TextureRect" type="ColorRect" parent="Control/WindowContents/CenterContainer/Control/PurchaseText/MarginContainer" index="0"]
+visible = false
 material = SubResource("ShaderMaterial_8on64")
 layout_mode = 2
 color = Color(1, 1, 0.686275, 1)
@@ -200,10 +228,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 1, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 1, 1)
+theme_override_constants/line_spacing = 12
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 10
-theme_override_constants/line_spacing = 12
 theme_override_font_sizes/font_size = 96
 text = "Purchase"
 horizontal_alignment = 1
@@ -215,10 +243,10 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 1, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 1, 1)
+theme_override_constants/line_spacing = 12
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 10
-theme_override_constants/line_spacing = 12
 theme_override_font_sizes/font_size = 96
 text = "Complete"
 horizontal_alignment = 1

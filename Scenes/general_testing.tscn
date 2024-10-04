@@ -1,36 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://x2n7sj7hjmla"]
+[gd_scene format=3 uid="uid://x2n7sj7hjmla"]
 
-[ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="1_osw80"]
-[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="2_vu7i5"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="3_najp6"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_talfe"]
-resource_local_to_scene = true
-shader = ExtResource("1_osw80")
-shader_parameter/ControlSize = Vector2(1328, 396)
-shader_parameter/SliceAmount = Vector2(8, 8)
-shader_parameter/FPS = 30.0
-shader_parameter/CellCount = -4
-shader_parameter/Fit = null
-shader_parameter/Repeat = true
-shader_parameter/HorizontalMask = null
-shader_parameter/VerticalMask = null
-
-[node name="LoadingIcon5" type="TextureRect"]
-material = SubResource("ShaderMaterial_talfe")
-custom_minimum_size = Vector2(0, 256)
+[node name="Control" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 34.0
-offset_top = 13.0
-offset_right = 82.0
-offset_bottom = -266.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_vertical = 4
 mouse_filter = 2
-texture = ExtResource("2_vu7i5")
-expand_mode = 1
-script = ExtResource("3_najp6")
-syncControlSize = true

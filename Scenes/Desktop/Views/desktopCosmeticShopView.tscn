@@ -29,10 +29,10 @@
 [sub_resource type="ButtonGroup" id="ButtonGroup_0v5s8"]
 resource_name = "CosmeticTimeFilter"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7c6ar"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_don00"]
 resource_local_to_scene = true
 shader = ExtResource("25_e8r7k")
-shader_parameter/ControlSize = Vector2(696, 66)
+shader_parameter/ControlSize = Vector2(703, 66)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
@@ -313,10 +313,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Outfits and Back Blings"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Outfit"]
@@ -341,10 +337,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "pickaxes"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Pickaxe"]
@@ -369,10 +361,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Gliders and Contrails"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Glider"]
 layout_mode = 1
@@ -398,10 +386,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Emotes"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Emote"]
@@ -426,10 +410,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Wraps"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 button_pressed = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Wrap"]
@@ -454,10 +434,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Music Packs and Jam Tracks"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Music"]
 layout_mode = 1
@@ -481,10 +457,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Instruments"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Instrument"]
 layout_mode = 1
@@ -508,10 +480,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Car Parts"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Car"]
 layout_mode = 1
@@ -535,10 +503,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Miscellaneous"
 theme_type_variation = &"EmptyCheckButton"
-theme_override_styles/hover_pressed = ExtResource("11_se178")
-theme_override_styles/hover = ExtResource("10_lwt61")
-theme_override_styles/pressed = ExtResource("9_jmcpo")
-theme_override_styles/normal = ExtResource("8_l3vt8")
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Misc"]
 layout_mode = 1
@@ -585,16 +549,15 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="FilterBlocker" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer"]
+visible = false
 layout_mode = 2
 mouse_filter = 0
 theme_override_constants/margin_top = -20
 theme_override_constants/margin_bottom = -20
 
 [node name="LoadingIcon5" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBlocker" instance=ExtResource("24_si1ri")]
-material = SubResource("ShaderMaterial_7c6ar")
-custom_minimum_size = Vector2(0, 0)
+material = SubResource("ShaderMaterial_don00")
 layout_mode = 2
-size_flags_vertical = 1
 
 [node name="BigScrollContainer" type="ScrollContainer" parent="HSplitContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 0)
@@ -627,16 +590,11 @@ mouse_filter = 2
 alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="HSplitContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Encrypted Cosmetics may not be listed. You can view and purchase all item shop elements at"
-
-[node name="LinkButton" type="LinkButton" parent="HSplitContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "fortnite.com/shop"
-uri = "https://www.fortnite.com/shop"
+text = "Some cosmetics may not display correctly. Click on an item to view it on the official website"

@@ -1,0 +1,15 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://dgqxarrgjrwxd"]
+
+[ext_resource type="AudioStream" uid="uid://dcetb6kpi68mp" path="res://Audio/SFX/LlamaSounds/Open/MiniOpenVoice/MiniLlama_f_01_Break_030.wav" id="1_eg281"]
+[ext_resource type="AudioStream" uid="uid://dh8rlwtwuurys" path="res://Audio/SFX/LlamaSounds/Open/MiniOpenVoice/MiniLlama_f_01_Break_060.wav" id="2_4m7qw"]
+[ext_resource type="AudioStream" uid="uid://hukwd180283u" path="res://Audio/SFX/LlamaSounds/Open/MiniOpenVoice/MiniLlama_f_01_Break_070.wav" id="3_ypmbc"]
+[ext_resource type="AudioStream" uid="uid://syxmosdwl316" path="res://Audio/SFX/LlamaSounds/Open/MiniOpenVoice/MiniLlama_f_01_Break_100.wav" id="4_sc62p"]
+[ext_resource type="AudioStream" uid="uid://cfbywkfi6slhq" path="res://Audio/SFX/LlamaSounds/Open/MiniOpenVoice/MiniLlama_f_01_Break_110.wav" id="5_l6joj"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_eg281")
+stream_1/stream = ExtResource("2_4m7qw")
+stream_2/stream = ExtResource("3_ypmbc")
+stream_3/stream = ExtResource("4_sc62p")
+stream_4/stream = ExtResource("5_l6joj")

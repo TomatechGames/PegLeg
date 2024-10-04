@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=42 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TitleBarDragger.cs" id="2_3ot56"]
@@ -6,11 +6,10 @@
 [ext_resource type="Script" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
 [ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
 [ext_resource type="Texture2D" uid="uid://ybhd24tgs2aq" path="res://Images/InterfaceIcons/minimise.png" id="4_v4447"]
+[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="4_xvc4b"]
 [ext_resource type="Texture2D" uid="uid://dffqg6jtdu38u" path="res://Images/InterfaceIcons/Icon_Seach_Close.png" id="5_f3eja"]
 [ext_resource type="Texture2D" uid="uid://bq8vrrjy47iav" path="res://Images/InterfaceIcons/maximise.png" id="7_we7j1"]
 [ext_resource type="Script" path="res://Scripts/CurrencyHighlight.cs" id="9_23he5"]
-[ext_resource type="ButtonGroup" uid="uid://cm7rmga74vyve" path="res://Scenes/LlamaEntries/LlamaChoices.tres" id="10_p0wrm"]
-[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="12_rlxg4"]
 [ext_resource type="Texture2D" uid="uid://div6ssxx4btc8" path="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png" id="12_tuvkq"]
 [ext_resource type="Texture2D" uid="uid://b1p0g5okeg641" path="res://Images/InterfaceIcons/T-Icon-Manage-Upgrade-32.png" id="14_07m3a"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
@@ -34,18 +33,21 @@
 [ext_resource type="PackedScene" uid="uid://outqvmv6p0pm" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_line_edit_window.tscn" id="45_vujc8"]
 [ext_resource type="PackedScene" uid="uid://2okdom0nii2b" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_confirmation_window.tscn" id="46_fbpme"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="47_6bd6x"]
-[ext_resource type="Script" path="res://Scripts/Audio/VolumeHook.cs" id="58_7yvd6"]
+[ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="58_7yvd6"]
 [ext_resource type="PackedScene" uid="uid://dpd06j33s360w" path="res://Scenes/Desktop/Overlays/shop_purchase_animation.tscn" id="96_2bhmt"]
-[ext_resource type="PackedScene" uid="uid://dd6fc218gb2da" path="res://Scenes/Desktop/Overlays/settings_window.tscn" id="99_hfy7e"]
+[ext_resource type="PackedScene" uid="uid://dt403r6613tos" path="res://Scenes/Desktop/Overlays/settings_window.tscn" id="99_hfy7e"]
 [ext_resource type="Texture2D" uid="uid://boywmwfvrbmwp" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Cogs_128.png" id="103_l32pl"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wyb1b"]
-shader = ExtResource("12_rlxg4")
+shader = ExtResource("4_xvc4b")
 shader_parameter/ControlSize = Vector2(1280, 675)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = null
-shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
+shader_parameter/UseGlobalCorners = true
+shader_parameter/ApplyCornersToFit = null
 shader_parameter/CornerRadius = 10.0
+shader_parameter/ClipOOB = null
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tgevh"]
 
@@ -101,6 +103,7 @@ mouse_filter = 2
 texture = ExtResource("12_tuvkq")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
+syncControlSize = true
 
 [node name="BGFade" type="TextureRect" parent="BGController"]
 modulate = Color(1, 1, 1, 0)
@@ -117,8 +120,9 @@ mouse_filter = 2
 texture = ExtResource("16_rir5i")
 expand_mode = 1
 script = ExtResource("18_jt4k8")
+syncControlSize = true
 
-[node name="MainApp" type="MarginContainer" parent="."]
+[node name="MainApp" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(700, 300)
 layout_mode = 1
 anchors_preset = 15
@@ -126,11 +130,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_top = 30
+theme_override_constants/separation = 0
+
+[node name="ExtraSpace" type="Control" parent="MainApp"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="TitleSpace" type="Control" parent="MainApp"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
 
 [node name="TabContainer" type="TabContainer" parent="MainApp"]
 custom_minimum_size = Vector2(1280, 0)
 layout_mode = 2
+size_flags_vertical = 3
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
 current_tab = 0
@@ -138,7 +151,6 @@ script = ExtResource("16_hsemp")
 
 [node name="Llamas" parent="MainApp/TabContainer" instance=ExtResource("23_b4gaj")]
 layout_mode = 2
-groupToReset = ExtResource("10_p0wrm")
 metadata/_tab_index = 0
 
 [node name="Missions" parent="MainApp/TabContainer" instance=ExtResource("22_qlkcq")]
@@ -237,40 +249,40 @@ visible = false
 layout_mode = 1
 startOpen = false
 
-[node name="StatusBar" type="MarginContainer" parent="." node_paths=PackedStringArray("background", "settingsWindow", "sizeDraggers")]
+[node name="StatusBar" type="MarginContainer" parent="."]
 z_index = 5
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 26.0
 grow_horizontal = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 6
+mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
-script = ExtResource("2_3ot56")
-background = NodePath("../BGController")
-settingsWindow = NodePath("../OverlayWindows/SettingsWindow")
-sizeDraggers = [NodePath("../ResizeGrabber/BottomGrabber"), NodePath("../ResizeGrabber/TopGrabber"), NodePath("../ResizeGrabber/LeftGrabber"), NodePath("../ResizeGrabber/RightGrabber")]
 
-[node name="Left" type="HBoxContainer" parent="StatusBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StatusBar"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Left" type="HBoxContainer" parent="StatusBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 0
 
-[node name="PowerLevel" type="HBoxContainer" parent="StatusBar/Left" node_paths=PackedStringArray("homebaseNumberLabel", "homebaseNumberProgressBar")]
+[node name="PowerLevel" type="HBoxContainer" parent="StatusBar/HBoxContainer/Left" node_paths=PackedStringArray("homebaseNumberLabel", "homebaseNumberProgressBar")]
 layout_mode = 2
 script = ExtResource("44_3p6h5")
 homebaseNumberLabel = NodePath("PowerLevelNumber")
 homebaseNumberProgressBar = NodePath("PowerLevelProgressBar")
 
-[node name="PowerLevelIocn" type="TextureRect" parent="StatusBar/Left/PowerLevel"]
+[node name="PowerLevelIocn" type="TextureRect" parent="StatusBar/HBoxContainer/Left/PowerLevel"]
 layout_mode = 2
 texture = ExtResource("3_wfagk")
 expand_mode = 3
 
-[node name="PowerLevelNumber" type="Label" parent="StatusBar/Left/PowerLevel"]
+[node name="PowerLevelNumber" type="Label" parent="StatusBar/HBoxContainer/Left/PowerLevel"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
@@ -279,7 +291,7 @@ text = "???"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PowerLevelProgressBar" type="ProgressBar" parent="StatusBar/Left/PowerLevel"]
+[node name="PowerLevelProgressBar" type="ProgressBar" parent="StatusBar/HBoxContainer/Left/PowerLevel"]
 custom_minimum_size = Vector2(80, 15)
 layout_mode = 2
 size_flags_vertical = 4
@@ -289,49 +301,58 @@ theme_override_styles/background = SubResource("StyleBoxFlat_lyvnw")
 theme_override_styles/fill = SubResource("StyleBoxFlat_65fgs")
 max_value = 1.0
 
-[node name="VSeparator" type="VSeparator" parent="StatusBar/Left"]
+[node name="VSeparator" type="VSeparator" parent="StatusBar/HBoxContainer/Left"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ActiveCurrency" type="HBoxContainer" parent="StatusBar/Left"]
+[node name="ActiveCurrency" type="HBoxContainer" parent="StatusBar/HBoxContainer/Left"]
 layout_mode = 2
 alignment = 1
 script = ExtResource("9_23he5")
 showSingleItemAmount = true
 
-[node name="Icon" type="TextureRect" parent="StatusBar/Left/ActiveCurrency"]
+[node name="Icon" type="TextureRect" parent="StatusBar/HBoxContainer/Left/ActiveCurrency"]
 layout_mode = 2
 expand_mode = 3
 
-[node name="AmountText" type="Label" parent="StatusBar/Left/ActiveCurrency"]
+[node name="AmountText" type="Label" parent="StatusBar/HBoxContainer/Left/ActiveCurrency"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "???"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="StatusBar"]
+[node name="TitleContainer" type="MarginContainer" parent="StatusBar/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_stretch_ratio = 0.0
-text = "PegLeg"
-horizontal_alignment = 1
+size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="Right" type="HBoxContainer" parent="StatusBar"]
+[node name="TitleDragger" type="Control" parent="StatusBar/HBoxContainer/TitleContainer" node_paths=PackedStringArray("spacer", "title", "windowButtons", "settingsWindow", "sizeDraggers")]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 6
+script = ExtResource("2_3ot56")
+spacer = NodePath("../../../../MainApp/TitleSpace")
+title = NodePath("../../../TitleLabel")
+windowButtons = NodePath("../../Right/WindowButtons")
+settingsWindow = NodePath("../../../../OverlayWindows/SettingsWindow")
+sizeDraggers = [NodePath("../../../../ResizeGrabber/BottomGrabber"), NodePath("../../../../ResizeGrabber/TopGrabber"), NodePath("../../../../ResizeGrabber/LeftGrabber"), NodePath("../../../../ResizeGrabber/RightGrabber")]
+
+[node name="Right" type="HBoxContainer" parent="StatusBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 0
 theme_override_constants/separation = 2
 alignment = 2
 
-[node name="SettingsButton" type="Button" parent="StatusBar/Right"]
+[node name="SettingsButton" type="Button" parent="StatusBar/HBoxContainer/Right"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Settings"
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/SettingsButton"]
+[node name="TextureRect" type="TextureRect" parent="StatusBar/HBoxContainer/Right/SettingsButton"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -346,7 +367,7 @@ texture = ExtResource("103_l32pl")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MuteBtn" type="Button" parent="StatusBar/Right"]
+[node name="MuteBtn" type="Button" parent="StatusBar/HBoxContainer/Right"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
@@ -355,7 +376,7 @@ theme_type_variation = &"TinyButton"
 script = ExtResource("58_7yvd6")
 targetBusName = "Master"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MuteBtn"]
+[node name="TextureRect" type="TextureRect" parent="StatusBar/HBoxContainer/Right/MuteBtn"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -370,14 +391,14 @@ texture = ExtResource("47_6bd6x")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="RefreshBtn" type="Button" parent="StatusBar/Right"]
+[node name="RefreshBtn" type="Button" parent="StatusBar/HBoxContainer/Right"]
 visible = false
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/RefreshBtn"]
+[node name="TextureRect" type="TextureRect" parent="StatusBar/HBoxContainer/Right/RefreshBtn"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -392,13 +413,17 @@ texture = ExtResource("14_07m3a")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MinimiseBtn" type="Button" parent="StatusBar/Right"]
+[node name="WindowButtons" type="HBoxContainer" parent="StatusBar/HBoxContainer/Right"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="MinimiseBtn" type="Button" parent="StatusBar/HBoxContainer/Right/WindowButtons"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MinimiseBtn"]
+[node name="TextureRect" type="TextureRect" parent="StatusBar/HBoxContainer/Right/WindowButtons/MinimiseBtn"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -409,13 +434,13 @@ texture = ExtResource("4_v4447")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MaximiseBtn" type="Button" parent="StatusBar/Right"]
+[node name="MaximiseBtn" type="Button" parent="StatusBar/HBoxContainer/Right/WindowButtons"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MaximiseBtn"]
+[node name="TextureRect" type="TextureRect" parent="StatusBar/HBoxContainer/Right/WindowButtons/MaximiseBtn"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -426,13 +451,13 @@ texture = ExtResource("7_we7j1")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CloseBtn" type="Button" parent="StatusBar/Right"]
+[node name="CloseBtn" type="Button" parent="StatusBar/HBoxContainer/Right/WindowButtons"]
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_vertical = 4
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/CloseBtn"]
+[node name="TextureRect" type="TextureRect" parent="StatusBar/HBoxContainer/Right/WindowButtons/CloseBtn"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -442,6 +467,35 @@ grow_vertical = 2
 texture = ExtResource("5_f3eja")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="TitleLabel" type="Label" parent="StatusBar"]
+layout_mode = 2
+text = "PegLeg"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_constants/separation = 0
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0, 1, 1, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0, 1, 0, 1)
 
 [node name="ResizeGrabber" type="Control" parent="."]
 layout_mode = 1
@@ -522,15 +576,13 @@ item_4/text = "bruh/test"
 item_4/checkable = 1
 item_4/id = 4
 
-[connection signal="AmountChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/AmountText" method="set_text"]
-[connection signal="IconChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency/Icon" method="set_texture"]
-[connection signal="NameChanged" from="StatusBar/Left/ActiveCurrency" to="StatusBar/Left/ActiveCurrency" method="set_tooltip_text"]
-[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="StatusBar" method="OpenSettings"]
-[connection signal="UpdateMuteIcon" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn/TextureRect" method="set_texture"]
-[connection signal="pressed" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn" method="ToggleMute"]
-[connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="StatusBar" method="Refresh"]
-[connection signal="pressed" from="StatusBar/Right/MinimiseBtn" to="StatusBar" method="MinimiseApp"]
-[connection signal="pressed" from="StatusBar/Right/MaximiseBtn" to="StatusBar" method="MaximiseApp"]
-[connection signal="pressed" from="StatusBar/Right/CloseBtn" to="StatusBar" method="CloseApp"]
+[connection signal="AmountChanged" from="StatusBar/HBoxContainer/Left/ActiveCurrency" to="StatusBar/HBoxContainer/Left/ActiveCurrency/AmountText" method="set_text"]
+[connection signal="IconChanged" from="StatusBar/HBoxContainer/Left/ActiveCurrency" to="StatusBar/HBoxContainer/Left/ActiveCurrency/Icon" method="set_texture"]
+[connection signal="pressed" from="StatusBar/HBoxContainer/Right/SettingsButton" to="StatusBar/HBoxContainer/TitleContainer/TitleDragger" method="OpenSettings"]
+[connection signal="pressed" from="StatusBar/HBoxContainer/Right/MuteBtn" to="StatusBar/HBoxContainer/Right/MuteBtn" method="ToggleMute"]
+[connection signal="pressed" from="StatusBar/HBoxContainer/Right/RefreshBtn" to="StatusBar" method="Refresh"]
+[connection signal="pressed" from="StatusBar/HBoxContainer/Right/WindowButtons/MinimiseBtn" to="StatusBar/HBoxContainer/TitleContainer/TitleDragger" method="MinimiseApp"]
+[connection signal="pressed" from="StatusBar/HBoxContainer/Right/WindowButtons/MaximiseBtn" to="StatusBar/HBoxContainer/TitleContainer/TitleDragger" method="MaximiseApp"]
+[connection signal="pressed" from="StatusBar/HBoxContainer/Right/WindowButtons/CloseBtn" to="StatusBar/HBoxContainer/TitleContainer/TitleDragger" method="CloseApp"]
 
 [editable path="MainApp/TabContainer/Item Shop/TabContainer/Event Shop"]

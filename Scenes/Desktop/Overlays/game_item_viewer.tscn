@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://buf6p8qyydofm"]
+[gd_scene load_steps=23 format=3 uid="uid://buf6p8qyydofm"]
 
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer.cs" id="1_5fxot"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_croo3"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://be5lic7x1too2" path="res://Scenes/PerkAndAbilityEntries/weapon_perk_selector_entry.tscn" id="2_t0h0p"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="3_f2ac1"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_fwu0d"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/RarityGameItemEntry.cs" id="5_1irhc"]
 [ext_resource type="Script" path="res://Scripts/PerkViewer.cs" id="7_14t7q"]
 [ext_resource type="StyleBox" uid="uid://c2skfgtbdx32l" path="res://GodotThemes/Styleboxes/Light/LightBox.tres" id="8_70ac8"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="10_c8yg2"]
@@ -39,12 +38,13 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="GameItemViewer" node_paths=PackedStringArray("primaryItemEntry", "statsTree", "devText", "perkDetailsPanel", "heroDetailsPanel", "heroAbilityEntries", "heroPerkEntry", "heroCommanderPerkEntry", "teamPerkEntry", "tierSlider", "levelSlider", "itemChoiceParent", "itemChoiceEntries", "itemChoiceLayoutSections", "purchasePanel", "outOfStockPanel", "cantAffordPanel", "purchaseCountSpinner", "priceIcon", "priceLabel") instance=ExtResource("1_iqrw2")]
+[node name="GameItemViewer" node_paths=PackedStringArray("primaryItemEntry", "devText", "statsTreeContainer", "statsTree", "perkDetailsPanel", "heroDetailsPanel", "heroAbilityEntries", "heroPerkEntry", "heroCommanderPerkEntry", "teamPerkEntry", "tierSlider", "levelSlider", "itemChoiceParent", "itemChoiceEntries", "itemChoiceLayoutSections", "purchasePanel", "outOfStockPanel", "cantAffordPanel", "purchaseCountSpinner", "priceIcon", "priceLabel") instance=ExtResource("1_iqrw2")]
 theme = ExtResource("1_croo3")
 script = ExtResource("1_5fxot")
 primaryItemEntry = NodePath("Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical")
-statsTree = NodePath("Control/WindowContents/CenterContainer/window/MainContent/ItemStats")
 devText = NodePath("Control/WindowContents/CenterContainer/window/MainContent/DevDetails/CodeEdit")
+statsTreeContainer = NodePath("Control/WindowContents/CenterContainer/window/MainContent/Stats")
+statsTree = NodePath("Control/WindowContents/CenterContainer/window/MainContent/Stats/ItemStats")
 perkDetailsPanel = NodePath("Control/WindowContents/CenterContainer/window/MainContent/ItemPerks")
 heroDetailsPanel = NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails")
 heroAbilityEntries = [NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry2"), NodePath("Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/HBoxContainer/AbilityEntry3")]
@@ -86,7 +86,36 @@ theme = ExtResource("1_croo3")
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="CommonItemDetails" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent" index="0"]
+[node name="DevDetails" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent" index="0"]
+visible = false
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CodeEdit" type="CodeEdit" parent="Control/WindowContents/CenterContainer/window/MainContent/DevDetails" index="0"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "{
+	\"Here\": [
+		\"Be\",
+		3,
+		\"Dragons\"
+	]
+}"
+editable = false
+drag_and_drop_selection_enabled = false
+middle_mouse_paste_enabled = false
+minimap_draw = true
+minimap_width = 50
+highlight_all_occurrences = true
+draw_tabs = true
+line_folding = true
+gutters_draw_fold_gutter = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="CommonItemDetails" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent" index="1"]
 layout_mode = 2
 size_flags_vertical = 3
 
@@ -108,8 +137,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 4
-script = ExtResource("5_1irhc")
-preventInteractability = true
 
 [node name="Control" type="Control" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
@@ -196,16 +223,6 @@ text = "This item has a placeholder description"
 context_menu_enabled = true
 threaded = true
 progress_bar_delay = 100
-
-[node name="ItemStats" type="Tree" parent="Control/WindowContents/CenterContainer/window/MainContent" index="1"]
-custom_minimum_size = Vector2(300, 300)
-layout_mode = 2
-size_flags_horizontal = 3
-columns = 3
-hide_folding = true
-hide_root = true
-select_mode = 1
-scroll_horizontal_enabled = false
 
 [node name="ItemPerks" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent" index="2"]
 layout_mode = 2
@@ -495,34 +512,49 @@ rounded = true
 tick_count = 7
 ticks_on_borders = true
 
-[node name="DevDetails" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent" index="4"]
-visible = false
-custom_minimum_size = Vector2(400, 400)
+[node name="Stats" type="CheckButton" parent="Control/WindowContents/CenterContainer/window/MainContent" index="4"]
+custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
-size_flags_vertical = 3
+theme_type_variation = &"EmptySquareCheckButton"
 
-[node name="CodeEdit" type="CodeEdit" parent="Control/WindowContents/CenterContainer/window/MainContent/DevDetails" index="0"]
-layout_mode = 2
-size_flags_vertical = 3
-placeholder_text = "{
-	\"Here\": [
-		\"Be\",
-		3,
-		\"Dragons\"
-	]
-}"
-editable = false
-drag_and_drop_selection_enabled = false
-middle_mouse_paste_enabled = false
-minimap_draw = true
-minimap_width = 50
-highlight_all_occurrences = true
-draw_tabs = true
-line_folding = true
-gutters_draw_fold_gutter = true
-indent_automatic = true
-auto_brace_completion_enabled = true
-auto_brace_completion_highlight_matching = true
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/window/MainContent/Stats" index="0"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/line_spacing = -4
+text = ">
+
+s
+t
+a
+t
+s
+
+>"
+horizontal_alignment = 1
+
+[node name="ItemStats" type="Tree" parent="Control/WindowContents/CenterContainer/window/MainContent/Stats" index="1"]
+visible = false
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+grow_vertical = 2
+size_flags_horizontal = 3
+columns = 3
+hide_folding = true
+hide_root = true
+select_mode = 1
+scroll_horizontal_enabled = false
 
 [node name="ItemChoiceSelector" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="1"]
 layout_mode = 2
@@ -1023,7 +1055,6 @@ custom_minimum_size = Vector2(512, 64)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[connection signal="pressed" from="BG" to="." method="SetWindowOpen" binds= [false]]
 [connection signal="AmmoIconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/ExtraIcons/Tersiary" method="set_texture"]
 [connection signal="DescriptionChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/Item Description" method="set_text"]
 [connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/Item Name" method="set_text"]
@@ -1032,19 +1063,9 @@ size_flags_horizontal = 4
 [connection signal="RatingVisibility" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/PowerLevel" method="set_visible"]
 [connection signal="SubtypeIconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/ExtraIcons/Subtype" method="set_texture"]
 [connection signal="SurvivorBoostIconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/ExtraIcons/Tersiary" method="set_texture"]
-[connection signal="AmountChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem/HBoxContainer/Label" method="set_text"]
-[connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem/HBoxContainer/TextureRect" method="set_texture"]
-[connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem" method="set_tooltip_text"]
-[connection signal="AmountChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem2" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem2/HBoxContainer/Label" method="set_text"]
-[connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem2" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem2/HBoxContainer/TextureRect" method="set_texture"]
-[connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem2" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem2" method="set_tooltip_text"]
-[connection signal="AmountChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3/HBoxContainer/Label" method="set_text"]
-[connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3/HBoxContainer/TextureRect" method="set_texture"]
-[connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" method="set_tooltip_text"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/BackButton" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks" method="ClosePerkChanger"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/ApplyButton" to="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks" method="ApplyReplacementPerk"]
-[connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk" to="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk/HBoxContainer/TextureRect" method="set_texture"]
-[connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk" to="Control/WindowContents/CenterContainer/window/MainContent/HeroDetails/MarginContainer/VBoxContainer/TeamPerk/HBoxContainer/Label2" method="set_text"]
+[connection signal="toggled" from="Control/WindowContents/CenterContainer/window/MainContent/Stats" to="Control/WindowContents/CenterContainer/window/MainContent/Stats/ItemStats" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton/TextureRect" method="set_visible"]

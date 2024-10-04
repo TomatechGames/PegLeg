@@ -139,12 +139,14 @@ public partial class SurvivorSquadEntry : Control
         var squadID = BanjoAssets.supplimentaryData.SynergyToSquadId[synergy];
         GameItemSelector.Instance.titleText = "Select a Survivor";
         GameItemSelector.Instance.overrideSurvivorSquad = squadID;
-        GameItemSelector.Instance.allowDeselect = true;
-        var toHandle = (await GameItemSelector.Instance.OpenSelector(filter)).FirstOrDefault();
+        GameItemSelector.Instance.allowEmptySelection = true;
+        var selectedHandles = await GameItemSelector.Instance.OpenSelector(filter);
 
-        if (toHandle is null)
+        //occurs when cancelled
+        if (selectedHandles is null)
             return;
 
+        var toHandle = selectedHandles.FirstOrDefault();
         JsonObject body = null;
         if (toHandle?.isValid ?? false)
         {
@@ -169,9 +171,9 @@ public partial class SurvivorSquadEntry : Control
 
         if (body is not null && await LoginRequests.TryLogin())
         {
-            LoadingOverlay.Instance.AddLoadingKey("changingSurvivor");
+            LoadingOverlay.AddLoadingKey("changingSurvivor");
             await ProfileRequests.PerformProfileOperationUnsafe(FnProfiles.AccountItems, "AssignWorkerToSquad", body.ToString());
-            LoadingOverlay.Instance.RemoveLoadingKey("changingSurvivor");
+            LoadingOverlay.RemoveLoadingKey("changingSurvivor");
         }
     }
 }
