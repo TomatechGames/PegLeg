@@ -169,6 +169,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
                 {
                     await this.WaitForFrame();
                 }
+                allMissions = allMissions.OrderBy(m => m.powerLevel).ToList();
                 //GD.Print("Missions processed");
             }
             finally

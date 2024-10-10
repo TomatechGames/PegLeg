@@ -255,7 +255,8 @@ public partial class CosmeticShopOfferEntry : Control
     {
         offerId = entryData["offerId"].ToString();
         cellWidth = (int)cellSize.X;
-        shopUrl = "https://www.fortnite.com" + entryData["webURL"].ToString();
+        if (entryData["webURL"]?.ToString() is string extraWebURL)
+            shopUrl = "https://www.fortnite.com" + extraWebURL;
 
         int oldPrice = entryData["regularPrice"].GetValue<int>();
         int newPrice = entryData["finalPrice"].GetValue<int>();
@@ -287,7 +288,7 @@ public partial class CosmeticShopOfferEntry : Control
 
         foreach (var item in allItems)
         {
-            string type = item["type"]["displayValue"].ToString();
+            string type = item["type"]?["displayValue"].ToString();
             if (!itemTypes.Contains(type))
                 itemTypes.Add(type);
         }
@@ -451,11 +452,11 @@ public partial class CosmeticShopOfferEntry : Control
                 .Join(", ");
         }
 
-        string mainName = firstItem["name"]?.ToString();
-        string mainType = firstItem["type"]?["displayValue"].ToString();
+        string mainName = firstItem["name"]?.ToString() ?? "???";
+        string mainType = firstItem["type"]?["displayValue"].ToString() ?? "???";
         Name = mainName;
 
-        EmitSignal(SignalName.NameChanged, firstItem["name"].ToString());
+        EmitSignal(SignalName.NameChanged, mainName);
         EmitSignal(SignalName.TypeChanged, mainType + (extraItemsText ?? ""));
 
         int oldPrice = entryData["regularPrice"].GetValue<int>();

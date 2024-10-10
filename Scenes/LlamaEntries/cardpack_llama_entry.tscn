@@ -29,6 +29,8 @@ shader_parameter/packIcon = ExtResource("3_wu843")
 
 [node name="Cardpack Llama Entry" type="MarginContainer" node_paths=PackedStringArray("selectionGraphics")]
 script = ExtResource("1_5w7bn")
+includeAmountInName = true
+includeDescriptionInTooltip = true
 selectionGraphics = NodePath("Control/CheckButton")
 
 [node name="PanelContainer" type="MarginContainer" parent="."]
@@ -129,9 +131,9 @@ expand_mode = 1
 layout_mode = 2
 
 [connection signal="AmountChanged" from="." to="PanelContainer/IconContainer/Pinata/AmountLabel" method="set_text"]
-[connection signal="DescriptionChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="IconChanged" from="." to="PanelContainer/IconContainer/Pinata" method="set_texture"]
 [connection signal="RarityChanged" from="." to="PanelContainer/GradientContainer/Gradient" method="set_self_modulate"]
 [connection signal="SubtypeIconChanged" from="." to="PanelContainer/IconContainer/Pinata" method="SetShaderTexture" binds= ["packIcon"]]
+[connection signal="TooltipChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="toggled" from="Control/CheckButton" to="Control/CheckButton/TextureRect" method="set_visible"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

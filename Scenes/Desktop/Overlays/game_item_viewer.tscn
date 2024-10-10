@@ -140,7 +140,6 @@ size_flags_vertical = 4
 
 [node name="Control" type="Control" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
-mouse_filter = 2
 
 [node name="ExtraIcons" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control" index="0"]
 layout_mode = 1
@@ -363,7 +362,6 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 2
 script = ExtResource("10_c8yg2")
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem" index="0"]
 layout_mode = 2
@@ -382,7 +380,6 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 2
 script = ExtResource("10_c8yg2")
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem2" index="0"]
 layout_mode = 2
@@ -401,7 +398,6 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 2
 script = ExtResource("10_c8yg2")
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/ItemPerks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CostItem3" index="0"]
 layout_mode = 2

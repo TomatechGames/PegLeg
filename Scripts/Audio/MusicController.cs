@@ -56,7 +56,7 @@ public partial class MusicController : Node
         int playlistIndex = ThemeController.activeTheme?.PickPlaylist() ?? -1;
         if (playlistIndex != -1)
         {
-            GD.Print($"playlist {playlistIndex + 1} out of {ThemeController.activeTheme.music.Length}");
+            //GD.Print($"playlist {playlistIndex + 1} out of {ThemeController.activeTheme.music.Length}");
             currentPlaylist = ThemeController.activeTheme.music[playlistIndex];
         }
     }
@@ -90,8 +90,8 @@ public partial class MusicController : Node
         var track = currentPlaylist.tracks[currentTrack];
         if (switchLayers && resumeTime == 0 && prevLayer != -1)
         {
-            GD.Print($"track {currentTrack + 1} out of {currentPlaylist.tracks.Length}");
-            GD.Print($"layer {currentLayer + 1} out of {currentPlaylist.layerCount} (from {prevLayer + 1})");
+            //GD.Print($"track {currentTrack + 1} out of {currentPlaylist.tracks.Length}");
+            //GD.Print($"layer {currentLayer + 1} out of {currentPlaylist.layerCount} (from {prevLayer + 1})");
             var fromStream = track.layers[prevLayer].fileData;
             var toStream = track.layers[currentLayer].fileData;
 
@@ -118,14 +118,14 @@ public partial class MusicController : Node
         }
         else
         {
-            GD.Print($"track {currentTrack+1} out of {currentPlaylist.tracks.Length}");
+            //GD.Print($"track {currentTrack+1} out of {currentPlaylist.tracks.Length}");
             if(prevLayer==-1)
                 GD.Print($"layer {currentLayer + 1} out of {currentPlaylist.layerCount}");
             var toStream = track.layers[currentLayer].fileData;
 
             if (!hasPlayedIntro && currentPlaylist.GetIntro() is AudioStreamWav introStream)
             {
-                GD.Print($"using intro");
+                //GD.Print($"using intro");
                 toStream = introStream;
                 currentTrack = -1;
             }

@@ -1,0 +1,204 @@
+[gd_scene load_steps=14 format=3 uid="uid://bsbgxpgoycn6r"]
+
+[ext_resource type="Script" path="res://Scripts/UIElements/CustomTooltip.cs" id="1_a0dpu"]
+[ext_resource type="Texture2D" uid="uid://bg8tqds2ynv72" path="res://Images/TextureResources/GradientShadow.tres" id="1_n7kv3"]
+[ext_resource type="Shader" path="res://Shaders/TooltipBanner.gdshader" id="3_5ou8i"]
+[ext_resource type="Texture2D" uid="uid://div6ssxx4btc8" path="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png" id="3_f18kr"]
+[ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="4_68qyt"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_cw7hj"]
+[ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="5_cnlgh"]
+[ext_resource type="Texture2D" uid="uid://jipvjhedh7jy" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Epic-L.png" id="6_w7lr4"]
+[ext_resource type="Texture2D" uid="uid://de4vkpc5d58on" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Legendary-L.png" id="7_8e7xb"]
+[ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="8_u7fy7"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="9_i36ub"]
+[ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="10_ylmo2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_642tc"]
+shader = ExtResource("3_5ou8i")
+shader_parameter/ControlSize = Vector2(0, 32)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.6)
+shader_parameter/CornerRadius = 4.0
+shader_parameter/ColorMode = true
+shader_parameter/Color = Color(0, 1, 1, 1)
+shader_parameter/time = 10309.0
+shader_parameter/TrianglePattern = ExtResource("4_68qyt")
+
+[node name="Tooltip" type="MarginContainer" node_paths=PackedStringArray("titleContent", "titleBanner", "titleTextLabel", "titleQuantityLayout", "titleQuantityLabel", "descriptionContent", "descriptionLayers", "imageContent")]
+offset_top = 1.0
+offset_right = 246.0
+offset_bottom = 80.0
+script = ExtResource("1_a0dpu")
+titleContent = NodePath("Content/MarginContainer/VBoxContainer/TitleContent")
+titleBanner = NodePath("Content/MarginContainer/VBoxContainer/TitleContent/MarginContainer/TitleBanner")
+titleTextLabel = NodePath("Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/Title/TitleLabel")
+titleQuantityLayout = NodePath("Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/QuantityLayout")
+titleQuantityLabel = NodePath("Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/QuantityLayout/MarginContainer/QuantityLabel")
+descriptionContent = NodePath("Content/MarginContainer/VBoxContainer/DescriptionContent")
+descriptionMaxWidth = 300.0
+descriptionLayers = [NodePath("Content/MarginContainer/VBoxContainer/DescriptionContent/Body Text"), NodePath("Content/MarginContainer/VBoxContainer/DescriptionContent/Body Text2")]
+imageContent = NodePath("Content/MarginContainer/VBoxContainer/ImageContent")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_n7kv3")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+
+[node name="Content" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 7
+
+[node name="Panel" type="Panel" parent="Content"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Content"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TitleContent" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/TitleContent"]
+layout_mode = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -2
+theme_override_constants/margin_bottom = -2
+
+[node name="TitleBanner" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/TitleContent/MarginContainer"]
+material = SubResource("ShaderMaterial_642tc")
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+texture = ExtResource("3_f18kr")
+expand_mode = 1
+script = ExtResource("4_cw7hj")
+syncTimeProperty = true
+syncControlSize = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer/TitleContent"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Title" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="TextureRect" type="NinePatchRect" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/Title"]
+self_modulate = Color(1, 1, 1, 0.690196)
+layout_mode = 2
+texture = ExtResource("1_n7kv3")
+region_rect = Rect2(0, 0, 24, 24)
+patch_margin_left = 12
+patch_margin_right = 12
+
+[node name="TitleLabel" type="Label" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/Title"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "Tooltip"
+
+[node name="QuantityLayout" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="Control" type="Control" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/QuantityLayout"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/QuantityLayout"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/margin_right = 2
+
+[node name="TextureRect" type="NinePatchRect" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/QuantityLayout/MarginContainer"]
+self_modulate = Color(1, 1, 1, 0.690196)
+layout_mode = 2
+texture = ExtResource("1_n7kv3")
+region_rect = Rect2(0, 0, 24, 24)
+patch_margin_left = 12
+patch_margin_right = 12
+
+[node name="QuantityLabel" type="Label" parent="Content/MarginContainer/VBoxContainer/TitleContent/HBoxContainer/QuantityLayout/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 24
+text = "x256"
+
+[node name="DescriptionContent" type="VBoxContainer" parent="Content/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Body Text" type="Label" parent="Content/MarginContainer/VBoxContainer/DescriptionContent"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = -1
+text = "Description label which can be incredibly verbose"
+autowrap_mode = 3
+
+[node name="Body Text2" type="Label" parent="Content/MarginContainer/VBoxContainer/DescriptionContent"]
+self_modulate = Color(0.6, 0.6, 0.6, 1)
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = -1
+text = "Search Tags: First, Second, Third, Fourth"
+autowrap_mode = 3
+
+[node name="ImageContent" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+texture = ExtResource("5_cnlgh")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+texture = ExtResource("6_w7lr4")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+texture = ExtResource("7_8e7xb")
+expand_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+texture = ExtResource("8_u7fy7")
+expand_mode = 3
+
+[node name="TextureRect5" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+texture = ExtResource("9_i36ub")
+expand_mode = 3
+
+[node name="TextureRect6" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+texture = ExtResource("10_ylmo2")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "+2"

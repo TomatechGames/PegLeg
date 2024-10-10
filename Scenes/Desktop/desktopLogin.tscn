@@ -39,7 +39,7 @@ generateCodeButton = NodePath("CenterContainer/Viewport/Control/Content/VBoxCont
 pasteButton = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/LoginCodeSection/HBoxContainer/PasteCode")
 oneTimeCodeLine = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/LoginCodeSection/HBoxContainer/LineEdit")
 loginButton = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/Button2")
-usePersistantLogin = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer/CheckButton")
+usePersistantLogin = NodePath("CenterContainer/Viewport/Control/Content/VBoxContainer/CheckBox")
 
 [node name="AutoButtonSounds" type="Node" parent="."]
 script = ExtResource("2_0vif4")
@@ -57,7 +57,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Viewport" type="Control" parent="CenterContainer"]
-custom_minimum_size = Vector2(300, 330)
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 2
 
 [node name="Control" type="Control" parent="CenterContainer/Viewport"]
@@ -79,7 +79,7 @@ grow_vertical = 2
 theme_override_styles/panel = ExtResource("2_c5h7f")
 
 [node name="Content" type="MarginContainer" parent="CenterContainer/Viewport/Control"]
-custom_minimum_size = Vector2(300, 330)
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -163,6 +163,7 @@ size_flags_stretch_ratio = 0.01
 layout_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="CenterContainer/Viewport/Control/Content/VBoxContainer"]
+visible = false
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_d8lrk")
 
@@ -197,6 +198,13 @@ theme_type_variation = &"RightCheckButton"
 button_pressed = true
 button_group = SubResource("ButtonGroup_rx0xh")
 text = " No"
+
+[node name="CheckBox" type="CheckBox" parent="CenterContainer/Viewport/Control/Content/VBoxContainer"]
+layout_direction = 3
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Stay logged in"
+alignment = 2
 
 [node name="Button2" type="Button" parent="CenterContainer/Viewport/Control/Content/VBoxContainer"]
 layout_mode = 2

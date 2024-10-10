@@ -29,7 +29,7 @@
 [sub_resource type="ButtonGroup" id="ButtonGroup_0v5s8"]
 resource_name = "CosmeticTimeFilter"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_don00"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sotrq"]
 resource_local_to_scene = true
 shader = ExtResource("25_e8r7k")
 shader_parameter/ControlSize = Vector2(703, 66)
@@ -556,7 +556,7 @@ theme_override_constants/margin_top = -20
 theme_override_constants/margin_bottom = -20
 
 [node name="LoadingIcon5" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBlocker" instance=ExtResource("24_si1ri")]
-material = SubResource("ShaderMaterial_don00")
+material = SubResource("ShaderMaterial_sotrq")
 layout_mode = 2
 
 [node name="BigScrollContainer" type="ScrollContainer" parent="HSplitContainer/VBoxContainer"]

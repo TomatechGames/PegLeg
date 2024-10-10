@@ -18,7 +18,7 @@ public partial class LlamaEntry : GameItemEntry
     public delegate void GradientChangedEventHandler(Gradient gradient);
 
     [Export]
-    bool includeNameInDescription = true;
+    bool includeAmountInName;
 
     public void SetLinkedItemId(string value) => linkedItemId = value;
     string linkedItemId = "";
@@ -55,25 +55,19 @@ public partial class LlamaEntry : GameItemEntry
 
         string name = cardPackTemplate["DisplayName"].ToString();
         int amount = cardPackInstance["quantity"].GetValue<int>();
-        if (includeAmountInName)
-        {
-            int shopAmount = cardPackInstance["shopQuantity"]?.GetValue<int>() ?? amount;
-            if (shopAmount > 0)
-                name += " (" + shopAmount + " left)";
-        }
-        EmitSignal(SignalName.NameChanged, name);
-
+        int shopAmount = cardPackInstance["shopQuantity"]?.GetValue<int>() ?? amount;
+        string nameWithAmount = amount >= 0 ? $"{name} ({shopAmount} left)" : name;
         string description = cardPackTemplate["Description"]?.ToString();
-        //description = description?.Replace(". ", ".\n");
-        //description = description?.Replace("! ", "!\n");
-        if (includeNameInDescription)
-            description = name + "\n" + description;
+
+        EmitSignal(SignalName.NameChanged, includeAmountInName ? nameWithAmount : name);
         EmitSignal(SignalName.DescriptionChanged, description);
 
-        string amountText = "x"+amount;
-        if (amount < 0)
-            amountText = "";
-        EmitSignal(SignalName.AmountChanged, amountText);
+        string amountText = amount.ToString();
+        if (addXToAmount)
+            amountText = "x" + amountText;
+        if (amount <= (showSingleItemAmount ? 0 : 1))
+            amountText = null;
+        EmitSignal(SignalName.AmountChanged, amountText ?? null);
 
 
         var pinataIcon = llamaTierIcons[0];
@@ -117,6 +111,17 @@ public partial class LlamaEntry : GameItemEntry
             Color.FromString(colorData?[2]?.ToString() ?? "", new("#aa00ffd4")),
             Color.FromString(colorData?[3]?.ToString() ?? "", new("#00eaff8f"))
         };
+
+
+        EmitSignal(
+            SignalName.TooltipChanged,
+            CustomTooltip.GenerateSimpleTooltip(
+                name,
+                amountText,
+                new string[] { description },
+                currentLlamaColors[0].ToHtml()
+                )
+            );
 
         currentLlamaGradient ??= new() 
         { 

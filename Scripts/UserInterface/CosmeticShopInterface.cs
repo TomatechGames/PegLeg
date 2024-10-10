@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +44,9 @@ public partial class CosmeticShopInterface : Control
     [Export]
     CheckButton includeDiscountBundles;
     [Export(PropertyHint.ArrayType)]
-    CheckButton[] newOrOldFilters = Array.Empty<CheckButton>();
+    CheckButton[] newOrOldFilters = System.Array.Empty<CheckButton>();
     [Export(PropertyHint.ArrayType)]
-    CheckButton[] typeFilters = Array.Empty<CheckButton>();
+    CheckButton[] typeFilters = System.Array.Empty<CheckButton>();
     [Export]
     Button resetTypeFilters;
 

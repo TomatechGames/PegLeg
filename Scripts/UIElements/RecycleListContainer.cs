@@ -211,6 +211,7 @@ public partial class RecycleListContainer : ScrollContainer
         if (lastScroll != ScrollVertical)
             UpdateList();
         lastScroll = ScrollVertical;
+        //todo: if pooled entries is more than the length of active entries, remove 1 pooled entry per frame
     }
 }
 

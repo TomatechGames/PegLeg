@@ -30,7 +30,7 @@ public partial class LoginInterface : Control
     [Export]
     protected Button loginButton;
     [Export]
-    protected CheckButton usePersistantLogin;
+    protected Button usePersistantLogin;
 
     protected static bool hasAutoLoggedIn = false;
 

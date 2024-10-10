@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
 
@@ -19,6 +20,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     [Signal]
     public delegate void DescriptionChangedEventHandler(string description);
+
+    [Signal]
+    public delegate void TooltipChangedEventHandler(string tooltip);
 
     [Signal]
     public delegate void IconChangedEventHandler(Texture2D icon);
@@ -97,7 +101,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool compactifyAmount;
     [Export]
-    public bool includeAmountInName;
+    public bool includeDescriptionInTooltip = false;
     [Export]
     public bool preventInteractability;
     [Export]
@@ -266,12 +270,30 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.ItemDoesExist, true);
         EmitSignal(SignalName.ItemDoesNotExist, false);
 
-        EmitSignal(SignalName.NameChanged, name + (includeAmountInName && amountNeeded ? $" ({(addXToAmount ? "x" : "") + amount})" : ""));
-        //if (itemInstance["searchTags"] is JsonArray tagArray)
-        //    EmitSignal(SignalName.NameChanged, tagArray.Select(t=>t?.ToString()).ToArray().Join("\n"));
-
+        EmitSignal(SignalName.NameChanged, name);
         EmitSignal(SignalName.DescriptionChanged, description);
         EmitSignal(SignalName.TypeChanged, type);
+
+        LatestRarityColor = template.GetItemRarityColor();
+        if (itemInstance["templateId"].ToString().StartsWith("CardPack:zcp"))
+            LatestRarityColor = Colors.Transparent;
+        EmitSignal(SignalName.RarityChanged, LatestRarityColor);
+
+        string tooltip = name + (amountNeeded ? $" ({(addXToAmount ? "x" : "") + amount})" : "");
+        List<string> tooltipDescriptions = new();
+        if (!string.IsNullOrWhiteSpace(description))
+            tooltipDescriptions.Add(description);
+        if (itemInstance["searchTags"] is JsonArray tagArray && tagArray.Count>0)
+            tooltipDescriptions.Add("Search Tags: "+tagArray.Select(t => t?.ToString()).Except(new string[] { name }).ToArray().Join(", "));
+        EmitSignal(
+            SignalName.TooltipChanged,
+            CustomTooltip.GenerateSimpleTooltip(
+                name,
+                amountNeeded ? ((addXToAmount ? "x" : "") + amount) : null,
+                tooltipDescriptions.Count > 0 ? tooltipDescriptions.ToArray() : null,
+                LatestRarityColor.ToHtml()
+                )
+            );
 
         EmitSignal(SignalName.IconChanged, mainIcon);
         EmitSignal(SignalName.SubtypeIconChanged, template.GetItemSubtypeTexture());
@@ -286,7 +308,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         //collection book algorithm is unpolished
         EmitSignal(SignalName.IsCollectable, false);
         //EmitSignal(SignalName.IsCollectable, !isPermenant && (ProfileRequests.IsItemCollectedUnsafe(itemInstance) == false));
-        EmitSignal(SignalName.CanBeLeveledChanged, !isPermenant);
+        EmitSignal(SignalName.CanBeLeveledChanged, !isPermenant || type != "Schematic");
         EmitSignal(SignalName.LevelChanged, level);
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
         EmitSignal(SignalName.LevelProgressChanged, levelProgress);
@@ -305,12 +327,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         //if (!(data.rarity < 7 && data.rarity >= 0))
         //    rarity = 0;
 
-        LatestRarityColor = template.GetItemRarityColor();
-        if (itemInstance["templateId"].ToString().StartsWith("CardPack:zcp"))
-            LatestRarityColor = Colors.Transparent;
-        EmitSignal(SignalName.RarityChanged, LatestRarityColor);
         EmitSignal(SignalName.NotificationChanged, !(itemInstance?["attributes"]?["item_seen"]?.GetValue<bool>() ?? false));
-
         EmitSignal(SignalName.MaxTierChanged, Mathf.Min(template.GetItemRarity() + 1, 5));
         EmitSignal(SignalName.TierChanged, tier);
         EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel/2);

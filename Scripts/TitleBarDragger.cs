@@ -34,6 +34,7 @@ public partial class TitleBarDragger : Control
         if (isMainWindow)
         {
             var window = GetWindow();
+            window.MinSize = WindowSizeDragger.limitSize;
             var px = AppConfig.Get("window", "pos_x", window.Position.X);
             var py = AppConfig.Get("window", "pos_y", window.Position.Y);
             var sx = AppConfig.Get("window", "size_x", window.Size.X);

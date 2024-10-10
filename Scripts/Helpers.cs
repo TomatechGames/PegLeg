@@ -285,4 +285,11 @@ static class Helpers
         control.OffsetLeft = control.OffsetLeft;
         control.OffsetRight = control.OffsetRight;
     }
+    public static void ResetControlOffsets(this Control control)
+    {
+        control.OffsetTop = 0;
+        control.OffsetBottom = 0;
+        control.OffsetLeft = 0;
+        control.OffsetRight = 0;
+    }
 }

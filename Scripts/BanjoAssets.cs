@@ -158,14 +158,14 @@ public static class BanjoAssets
         itemInstance["searchTags"] ??= GenerateItemTemplateSearchTags(itemInstance.GetTemplate());
         return itemInstance.AsObject();
     }
-    public static JsonArray GenerateItemTemplateSearchTags(string itemID) =>
-        GenerateItemTemplateSearchTags(TryGetTemplate(itemID));
-    public static JsonArray GenerateItemTemplateSearchTags(JsonNode template)
+    public static JsonArray GenerateItemTemplateSearchTags(string itemID, bool assumeUncommon = true) =>
+        GenerateItemTemplateSearchTags(TryGetTemplate(itemID), assumeUncommon);
+    public static JsonArray GenerateItemTemplateSearchTags(JsonNode template, bool assumeUncommon = true)
     {
         List<string> tags = new()
         {
             template["DisplayName"]?.ToString(),
-            template["Rarity"]?.ToString(),
+            template["Rarity"]?.ToString() ?? (assumeUncommon ? "Uncommon" : null),
             template["Type"]?.ToString(),
             template["SubType"]?.ToString(),
             template["Category"]?.ToString(),
@@ -174,7 +174,7 @@ public static class BanjoAssets
         template["RarityLv"] = template.AsObject().GetItemRarity();
         if (tags.Contains("Worker"))
             tags.Add("Survivor");
-        var result = new JsonArray(tags.Select(t => (JsonNode)t).ToArray());
+        var result = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
         return result;
     }
 
@@ -495,7 +495,7 @@ public static class BanjoAssets
     {
         var rarityId = rarityIds[itemTemplate.GetItemRarity()];
         var tierId = givenTier <= 0 ? tierIds[itemTemplate["Tier"]?.GetValue<int>() ?? 0] : tierIds[givenTier];
-        return rarityId + tierId;
+        return rarityId + "_" + tierId;
     }
 
     public static float GetItemRating(this JsonObject itemInstance, string overrideSurviverSquad = null)
@@ -521,10 +521,15 @@ public static class BanjoAssets
             //GD.Print("ratingCat: " + ratingCategory);
             var ratingKey = template.GetCompactRarityAndTier();
             //GD.Print($"ratingKey: {ratingKey}");
+            if (ratingCategory == "LeadSurvivor")
+                ratingKey = ratingKey.Replace("UR_", "SR_");
 
             var ratingSet = ratings[ratingCategory]["Tiers"][ratingKey];
             if (ratingSet is null)
+            {
+                GD.Print($"no rating set {ratingCategory}:{ratingKey}");
                 return 0;
+            }
             int subLevel = level - ratingSet["FirstLevel"].GetValue<int>();
             var rating = ratingSet["Ratings"][subLevel].GetValue<float>();
 

@@ -109,30 +109,33 @@ static class MissionRequests
 
     static Dictionary<string, string> rewardPackAssociations = new()
     {
-        ["CardPack:zcp_reagent_c_t04_\\w*"] = "AccountResource:reagent_c_t04",
-        ["CardPack:zcp_reagent_c_t03_\\w*"] = "AccountResource:reagent_c_t03",
-        ["CardPack:zcp_reagent_c_t02_\\w*"] = "AccountResource:reagent_c_t02",
-        ["CardPack:zcp_reagent_c_t01_\\w*"] = "AccountResource:reagent_c_t01",
+        ["CardPack:zcp_reagent_c_t04\\w*"] = "AccountResource:reagent_c_t04",
+        ["CardPack:zcp_reagent_c_t03\\w*"] = "AccountResource:reagent_c_t03",
+        ["CardPack:zcp_reagent_c_t02\\w*"] = "AccountResource:reagent_c_t02",
+        ["CardPack:zcp_reagent_c_t01\\w*"] = "AccountResource:reagent_c_t01",
 
-        ["CardPack:zcp_reagent_alteration_upgrade_sr_\\w*"] = "AccountResource:reagent_alteration_upgrade_sr",
-        ["CardPack:zcp_reagent_alteration_upgrade_vr_\\w*"] = "AccountResource:reagent_alteration_upgrade_vr",
-        ["CardPack:zcp_reagent_alteration_upgrade_r_\\w*"] = "AccountResource:reagent_alteration_upgrade_r",
-        ["CardPack:zcp_reagent_alteration_upgrade_uc_\\w*"] = "AccountResource:reagent_alteration_upgrade_uc",
-        ["CardPack:zcp_reagent_alteration_generic_\\w*"] = "AccountResource:reagent_alteration_generic",
+        ["CardPack:zcp_reagent_alteration_upgrade_sr\\w*"] = "AccountResource:reagent_alteration_upgrade_sr",
+        ["CardPack:zcp_reagent_alteration_upgrade_vr\\w*"] = "AccountResource:reagent_alteration_upgrade_vr",
+        ["CardPack:zcp_reagent_alteration_upgrade_r\\w*"] = "AccountResource:reagent_alteration_upgrade_r",
+        ["CardPack:zcp_reagent_alteration_upgrade_uc\\w*"] = "AccountResource:reagent_alteration_upgrade_uc",
+        ["CardPack:zcp_reagent_alteration_generic\\w*"] = "AccountResource:reagent_alteration_generic",
 
-        ["CardPack:zcp_phoenixxp_t\\d\\d"] = "AccountResource:phoenixxp",
-        ["CardPack:zcp_personnelxp_t\\d\\d"] = "AccountResource:personnelxp",
-        ["CardPack:zcp_heroxp_t\\d\\d"] = "AccountResource:heroxp",
+        ["CardPack:zcp_phoenixxp\\w*"] = "AccountResource:phoenixxp",
+        ["CardPack:zcp_personnelxp\\w*"] = "AccountResource:personnelxp",
+        ["CardPack:zcp_heroxp\\w*"] = "AccountResource:heroxp",
+        ["CardPack:zcp_schematicxp\\w*"] = "AccountResource:schematicxp",
 
-        ["CardPack:zcp_ore_copper_\\w*"] = "Ingredient:ingredient_ore_copper",
-        ["CardPack:zcp_ore_silver_\\w*"] = "Ingredient:ingredient_ore_silver",
-        ["CardPack:zcp_ore_malachite_\\w*"] = "Ingredient:ingredient_ore_malachite",
-        ["CardPack:zcp_ore_obsidian_\\w*"] = "Ingredient:ingredient_ore_obsidian",
-        ["CardPack:zcp_ore_brightcore_\\w*"] = "Ingredient:ingredient_ore_brightcore",
+        ["CardPack:zcp_ore_copper\\w*"] = "Ingredient:ingredient_ore_copper",
+        ["CardPack:zcp_ore_silver\\w*"] = "Ingredient:ingredient_ore_silver",
+        ["CardPack:zcp_ore_malachite\\w*"] = "Ingredient:ingredient_ore_malachite",
+        ["CardPack:zcp_ore_obsidian\\w*"] = "Ingredient:ingredient_ore_obsidian",
+        ["CardPack:zcp_ore_brightcore\\w*"] = "Ingredient:ingredient_ore_brightcore",
 
-        ["CardPack:zcp_crystal_quartz_\\w*"] = "Ingredient:ingredient_crystal_quartz",
-        ["CardPack:zcp_crystal_shadowshard_\\w*"] = "Ingredient:ingredient_crystal_shadowshard",
-        ["CardPack:zcp_crystal_sunbeam_\\w*"] = "Ingredient:ingredient_crystal_sunbeam",
+        ["CardPack:zcp_crystal_quartz\\w*"] = "Ingredient:ingredient_crystal_quartz",
+        ["CardPack:zcp_crystal_shadowshard\\w*"] = "Ingredient:ingredient_crystal_shadowshard",
+        ["CardPack:zcp_crystal_sunbeam\\w*"] = "Ingredient:ingredient_crystal_sunbeam",
+
+        ["CardPack:zcp_eventscaling\\w*"] = "AccountResource:eventcurrency_scaling",
     };
 
     static JsonObject SimplifyMissions(JsonNode rootNode)
@@ -207,7 +210,7 @@ static class MissionRequests
 
                 missionObj["theaterCat"] = theaterCat;
 
-                missionObj["missionRewards"] = new JsonArray(
+                var missionRewards = new JsonArray(
                         missionObj["missionRewards"]["items"].AsArray()
                         .GroupBy(r => r["itemType"].ToString())
                         .Select(g =>new JsonObject()
@@ -217,7 +220,7 @@ static class MissionRequests
                         })
                         .ToArray()
                     );
-                foreach (var rewardNode in missionObj["missionRewards"].AsArray())
+                foreach (var rewardNode in missionRewards)
                 {
                     bool hasEquiv = false;
                     foreach (var equivelent in rewardPackAssociations)
@@ -237,6 +240,7 @@ static class MissionRequests
                         rewardNode.GenerateItemSearchTags();
                     }
                 }
+                missionObj["missionRewards"] = missionRewards;
 
                 int tileIndex = missionObj["tileIndex"].GetValue<int>();
                 missionObj["tile"] = missionTiles[tileIndex].AsObject().Reserialise();
@@ -292,7 +296,7 @@ static class MissionRequests
             ["expiryDate"] = missionList[0]["availableUntil"].ToString()[..^1], //the Z messes with daylight savings time
             ["missions"] = new JsonArray(
                     missionList
-                    .OrderBy(n => n["powerLevel"].GetValue<int>())
+                    //.OrderBy(n => n["powerLevel"].GetValue<int>())
                     .ToArray()
                 )
         };

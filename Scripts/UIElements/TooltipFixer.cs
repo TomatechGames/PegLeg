@@ -1,0 +1,50 @@
+using Godot;
+using System;
+
+public partial class TooltipFixer : Node
+{
+    [Export]
+    CustomTooltip tooltipControl;
+
+    public override async void _Ready()
+    {
+        tooltipControl.Scale = Vector2.Zero;
+        await this.WaitForFrame();
+        if (tooltipControl?.GetParent() is Node parent)
+            parent.RemoveChild(tooltipControl);
+        tooltipControl.Scale = Vector2.One;
+        tooltipControl.Visible = true;
+        GetTree().NodeAdded += OnNodeAdded;
+    }
+
+    private void OnNodeAdded(Node node)
+    {
+        if (node is not PopupPanel pp)
+            return;
+        pp.TransparentBg = true;
+        pp.Transparent = true;
+        pp.PopupWindow = false;
+
+        if (pp.ThemeTypeVariation != "TooltipPanel")
+            return;
+
+        //GD.Print("hello tooltip");
+
+        var label = pp.GetChild<Label>(0);
+        pp.RemoveChild(label);
+        label.QueueFree();
+
+        var panel = pp.GetChild<Panel>(0, true);
+        panel.Visible = false;
+
+        pp.AddChild(tooltipControl);
+        tooltipControl.SetTooltip(label.Text);
+        pp.TreeExiting += () => OnTooltipRemoving(pp);
+    }
+
+    private void OnTooltipRemoving(PopupPanel pp)
+    {
+        //GD.Print("goodbye tooltip");
+        pp.RemoveChild(tooltipControl);
+    }
+}

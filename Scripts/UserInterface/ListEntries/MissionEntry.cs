@@ -141,7 +141,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
             bool isRewardBundle = itemArray[i].GetTemplate()["Name"].ToString().ToLower().StartsWith("zcp_");
             controlChild.addXToAmount = isRewardBundle;
             controlChild.compactifyAmount = !isRewardBundle;
-            controlChild.includeAmountInName = !isRewardBundle;
+            //controlChild.includeAmountInName = !isRewardBundle;
 
             controlChild.SetItemData(itemArray[i].AsObject());
             controlChild.SetRewardNotification();

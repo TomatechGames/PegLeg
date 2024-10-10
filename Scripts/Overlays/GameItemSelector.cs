@@ -122,12 +122,10 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     {
         EmitSignal(SignalName.TitleChanged, titleText);
         EmitSignal(SignalName.ConfirmButtonChanged, confirmButtonText);
-        EmitSignal(SignalName.SkipButtonChanged, confirmButtonText);
+        EmitSignal(SignalName.SkipButtonChanged, skipButtonText);
         EmitSignal(SignalName.AutoselectChanged, autoselectButtonTex);
 
         multiselectButtons.Visible = multiselectMode;
-        confirmButton.Visible = selectedItems?.Any() ?? false;
-        skipButton.Visible = !confirmButton.Visible && allowEmptySelection;
         autoSelectButton.Visible = autoselectPredicate is not null;
 
         itemHandles = profileItems.ToList();
@@ -145,6 +143,9 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         }
         else
             selectedHandles = new();
+
+        confirmButton.Visible = selectedHandles?.Any() ?? false;
+        skipButton.Visible = !confirmButton.Visible && allowEmptySelection;
 
         SetSort(0);
         SortItems();

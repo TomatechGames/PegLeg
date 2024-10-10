@@ -1,0 +1,14 @@
+[gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://bg8tqds2ynv72"]
+
+[sub_resource type="Gradient" id="Gradient_3felp"]
+offsets = PackedFloat32Array(0.251337, 1)
+colors = PackedColorArray(0, 0, 0, 0.752941, 0, 0, 0, 0)
+
+[resource]
+gradient = SubResource("Gradient_3felp")
+width = 24
+height = 24
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+metadata/_snap_enabled = true

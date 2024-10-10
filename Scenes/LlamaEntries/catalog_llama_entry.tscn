@@ -120,6 +120,7 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 script = ExtResource("2_e282y")
+includeDescriptionInTooltip = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 custom_minimum_size = Vector2(0, 100)
@@ -260,10 +261,10 @@ outlinePadding = 20.0
 [connection signal="Color1Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol1"]]
 [connection signal="Color2Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol2"]]
 [connection signal="Color3Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol3"]]
-[connection signal="DescriptionChanged" from="MarginContainer" to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="IconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/PinataBG/Pinata" method="set_texture"]
 [connection signal="RarityChanged" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["BGCol"]]
 [connection signal="SubtypeIconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/PinataBG/Pinata" method="SetShaderTexture" binds= ["packIcon"]]
+[connection signal="TooltipChanged" from="MarginContainer" to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="AmountChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceNumberLabel" method="set_text"]
 [connection signal="IconChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/TextureRect" method="set_texture"]
 [connection signal="NameChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" method="set_tooltip_text"]

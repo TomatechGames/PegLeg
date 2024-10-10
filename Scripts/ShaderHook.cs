@@ -4,7 +4,6 @@ using System;
 [Tool]
 public partial class ShaderHook : Control
 {
-    protected ShaderMaterial shaderMat;
     [Export]
     bool syncTimeProperty = false;
     [Export]
@@ -31,59 +30,56 @@ public partial class ShaderHook : Control
 
     private void OnRectUpdated()
     {
+        if (Material is null)
+            return;
         if (syncControlSize)
             SetShaderVector(Size, "ControlSize");
     }
 
-    float syncTimeUntil = -1;
+    ulong syncTimeUntil = 0;
     public void StartSyncingTimeFor(float duration)
     {
-        float currentTime = Time.GetTicksMsec() * 0.001f;
-        syncTimeUntil = currentTime + duration;
+        ulong durationMsec = (ulong)(Mathf.Max(duration, 0) * 1000);
+        syncTimeUntil = Time.GetTicksMsec() + durationMsec;
     }
 
+    ulong timeOffset;
     public override void _Process(double delta)
     {
-        float currentTime = Time.GetTicksMsec() * 0.001f;
-        if (syncTimeProperty || syncTimeUntil > currentTime)
-            SetShaderFloat(currentTime, "time");
+        if (Material is null)
+            return;
+        ulong currentTimeMsec = Time.GetTicksMsec();
+        if (syncTimeProperty || syncTimeUntil > currentTimeMsec)
+            SetShaderFloat((currentTimeMsec - timeOffset) * 0.001f, "time");
         if(Engine.IsEditorHint())
             SetShaderVector(Size, "ControlSize");
     }
 
-    public void SetShaderBool(bool val, string property)
+    public void SetTimeOffset(ulong offset)
     {
-        shaderMat ??= Material as ShaderMaterial;
-        shaderMat.SetShaderParameter(property, val);
+        ulong currentTimeMsec = Time.GetTicksMsec();
+        timeOffset = offset > currentTimeMsec ? currentTimeMsec : offset;
+        if (syncTimeProperty || syncTimeUntil > currentTimeMsec)
+            SetShaderFloat((currentTimeMsec - timeOffset) * 0.001f, "time");
     }
 
-    public void SetShaderFloat(float val, string property)
-    {
-        shaderMat ??= Material as ShaderMaterial;
-        shaderMat.SetShaderParameter(property, val);
-    }
+    ShaderMaterial ShaderMat => Material as ShaderMaterial;
 
-    public float GetShaderFloat(string property)
-    {
-        shaderMat ??= Material as ShaderMaterial;
-        return (float)shaderMat.GetShaderParameter(property);
-    }
+    public void SetShaderBool(bool val, string property)=>
+        ShaderMat.SetShaderParameter(property, val);
 
-    public void SetShaderColor(Color val, string property)
-    {
-        shaderMat ??= Material as ShaderMaterial;
-        shaderMat.SetShaderParameter(property, val);
-    }
+    public void SetShaderFloat(float val, string property)=>
+        ShaderMat.SetShaderParameter(property, val);
 
-    public void SetShaderVector(Vector2 val, string property)
-    {
-        shaderMat ??= Material as ShaderMaterial;
-        shaderMat.SetShaderParameter(property, val);
-    }
+    public float GetShaderFloat(string property) =>
+        (float)ShaderMat.GetShaderParameter(property);
 
-    public void SetShaderTexture(Texture val, string property)
-    {
-        shaderMat ??= Material as ShaderMaterial;
-        shaderMat.SetShaderParameter(property, val);
-    }
+    public void SetShaderColor(Color val, string property)=>
+        ShaderMat.SetShaderParameter(property, val);
+
+    public void SetShaderVector(Vector2 val, string property)=>
+        ShaderMat.SetShaderParameter(property, val);
+
+    public void SetShaderTexture(Texture val, string property)=>
+        ShaderMat.SetShaderParameter(property, val);
 }

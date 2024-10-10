@@ -29,10 +29,12 @@ public partial class TempCompendiumInterface : Control
 	struct CompendiumEntry
 	{
         public string displayName;
-		public Texture2D texture;
+        public string description;
+        public Texture2D texture;
 		public string templateId;
 		public int rarity;
-		public bool isHero;
+        public string rarityCol;
+        public bool isHero;
         public string category;
         public string subtype;
         public string extraSearchTerm;
@@ -54,19 +56,21 @@ public partial class TempCompendiumInterface : Control
 						return;
 					else
 					{
-						string entryName = $"{item.Value["DisplayName"]}";
+						string entryName = item.Value["DisplayName"].ToString();
 						string extraSearchTerm = $"[{item.Value["Rarity"]}]";
 						if (source == "Hero" && BanjoAssets.TryGetTemplate("Ability:"+item.Value["HeroPerkName"], out var ability))
 						{
-							extraSearchTerm += ability["DisplayName"].ToString();
+							extraSearchTerm += " "+ability["DisplayName"].ToString();
 						}
 						CompendiumEntry result = new()
 						{
 							displayName = entryName,
-							isHero = source == "Hero",
+							description = item.Value["Description"]?.ToString(),
+                            isHero = source == "Hero",
 							texture = item.Value.AsObject().GetItemTexture(),
 							templateId = item.Key,
 							rarity = item.Value.AsObject().GetItemRarity(),
+                            rarityCol = item.Value.AsObject().GetItemRarityColor().ToHtml(),
                             category = item.Value.AsObject()["Category"]?.ToString() ?? "Hero",
                             subtype = item.Value.AsObject()["SubType"].ToString(),
                             extraSearchTerm = extraSearchTerm
@@ -104,7 +108,17 @@ public partial class TempCompendiumInterface : Control
 				continue;
             var index = itemList.AddItem("", item.texture);
             itemList.SetItemMetadata(index, item.templateId);
-			itemList.SetItemTooltip(index, item.displayName);
+			itemList.SetItemTooltip(index, 
+				CustomTooltip.GenerateSimpleTooltip(
+					item.displayName, 
+					null, 
+					new string[] {
+						item.description,
+						item.extraSearchTerm
+					}, 
+					item.rarityCol
+					)
+				);
 			itemList.SetItemCustomFgColor(index, Colors.Black);
 			var color = BanjoAssets.GetRarityColor(item.rarity);
 			color.A *= 0.5f;

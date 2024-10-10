@@ -10,7 +10,7 @@ public partial class WindowSizeDragger : Control
     [Export]
     GrabberType grabberType;
 
-    static readonly Vector2I limitSize = new(1000, 500);
+    public static readonly Vector2I limitSize = new(1000, 500);
     const double minAspectRatio = 4.0/3;
     const double maxAspectRatio = 2;
 

@@ -82,8 +82,7 @@ script = ExtResource("3_ruu74")
 basisResolution = Vector2(64, 64)
 
 [node name="CPUParticles2D" type="CPUParticles2D" parent="IconContainer/RarityIcon/ParticlePosition"]
-position = Vector2(32, 30)
-scale = Vector2(1, 0.9375)
+scale = Vector2(1e-05, 1e-05)
 amount = 15
 lifetime = 2.0
 preprocess = 2.0
@@ -131,8 +130,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_b450g")
 layout_mode = 2
 size_flags_vertical = 8
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
 theme_override_constants/line_spacing = -1
+theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 20
 text = "2.56K"
 horizontal_alignment = 2
@@ -185,9 +184,9 @@ vertical_alignment = 1
 [connection signal="IconChanged" from="." to="IconContainer/RarityIcon/TextureRect" method="set_texture"]
 [connection signal="InteractableChanged" from="." to="InteractableIconContainer/AspectRatioContainer/TextureRect" method="set_visible"]
 [connection signal="InteractableChanged" from="." to="Responsive Button Area" method="set_visible"]
-[connection signal="NameChanged" from="." to="Tooltip" method="set_tooltip_text"]
-[connection signal="NameChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="NotificationChanged" from="." to="NotificationOverlay/NotificationLabel" method="set_visible"]
 [connection signal="RarityChanged" from="." to="IconContainer/RarityIcon/MarginContainer/AspectRatioContainer/Gradient" method="set_self_modulate"]
 [connection signal="RarityChanged" from="." to="AmountContainer/Control/Panel" method="set_self_modulate"]
+[connection signal="TooltipChanged" from="." to="Tooltip" method="set_tooltip_text"]
+[connection signal="TooltipChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]
