@@ -8,6 +8,8 @@ public partial class ShaderHook : Control
     bool syncTimeProperty = false;
     [Export]
     bool syncControlSize = false;
+    [Export]
+    double modTime = 0;
 
     //for Labels
     public string Text
@@ -48,10 +50,8 @@ public partial class ShaderHook : Control
     {
         if (Material is null)
             return;
-        ulong currentTimeMsec = Time.GetTicksMsec();
-        if (syncTimeProperty || syncTimeUntil > currentTimeMsec)
-            SetShaderFloat((currentTimeMsec - timeOffset) * 0.001f, "time");
-        if(Engine.IsEditorHint())
+        UpdateTime(Time.GetTicksMsec());
+        if (Engine.IsEditorHint())
             SetShaderVector(Size, "ControlSize");
     }
 
@@ -59,8 +59,18 @@ public partial class ShaderHook : Control
     {
         ulong currentTimeMsec = Time.GetTicksMsec();
         timeOffset = offset > currentTimeMsec ? currentTimeMsec : offset;
-        if (syncTimeProperty || syncTimeUntil > currentTimeMsec)
-            SetShaderFloat((currentTimeMsec - timeOffset) * 0.001f, "time");
+        UpdateTime(currentTimeMsec);
+    }
+
+    void UpdateTime(ulong currentTimeMsec)
+    {
+        if (!syncTimeProperty && syncTimeUntil <= currentTimeMsec)
+            return;
+
+        double currentTimeSec = (currentTimeMsec - timeOffset) * 0.001;
+        if (modTime > 0)
+            currentTimeSec %= modTime;
+        SetShaderFloat((float)currentTimeSec, "time");
     }
 
     ShaderMaterial ShaderMat => Material as ShaderMaterial;

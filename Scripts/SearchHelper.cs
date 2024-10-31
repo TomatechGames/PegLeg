@@ -309,9 +309,15 @@ public static class PLSearch
                                     break;
                             }
                         }
-                        else if (sourceNode is JsonValue sourceStringVal && (string)sourceStringVal is string sourceString)
+                        else if (sourceNode is JsonValue sourceVal)
                         {
-                            comparisonTrue = CheckStrings(sourceString, checks);
+                            //GD.Print(sourceVal.ToString());
+                            if (sourceVal.TryGetValue(out bool sourceBool)) //todo: add proper bool check
+                            {
+                                comparisonTrue = sourceBool;
+                            }
+                            else if(sourceVal.TryGetValue(out string sourceString))
+                                comparisonTrue = CheckStrings(sourceString, checks);
                         }
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;

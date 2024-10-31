@@ -227,7 +227,7 @@ void fragment() {
 // MultiplyAdd:50
 	float n_in50p1 = -1.00000;
 	float n_in50p2 = 1.25000;
-	float n_out50p0 = fma(n_out49p1, n_in50p1, n_in50p2);
+	float n_out50p0 = (n_out49p1 * n_in50p1) + n_in50p2;
 
 
 // Compare:52

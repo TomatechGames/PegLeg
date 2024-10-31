@@ -40,7 +40,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wyb1b"]
 shader = ExtResource("4_xvc4b")
-shader_parameter/ControlSize = Vector2(1280, 675)
+shader_parameter/ControlSize = Vector2(1280, 720)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = null
 shader_parameter/UseCorners = true
@@ -195,6 +195,9 @@ metadata/_tab_index = 1
 [node name="Label" parent="MainApp/TabContainer/Item Shop/TabContainer/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
 text = "Event Shop Resets: "
 
+[node name="Label2" parent="MainApp/TabContainer/Item Shop/TabContainer/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+timerType = 3
+
 [node name="Cosmetic Shop" parent="MainApp/TabContainer/Item Shop/TabContainer" instance=ExtResource("27_5ey2a")]
 visible = false
 layout_mode = 2
@@ -292,7 +295,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PowerLevelProgressBar" type="ProgressBar" parent="StatusBar/HBoxContainer/Left/PowerLevel"]
-custom_minimum_size = Vector2(80, 15)
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2

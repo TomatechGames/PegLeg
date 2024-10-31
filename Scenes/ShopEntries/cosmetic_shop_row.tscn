@@ -1,11 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxtg4b3d8bebd"]
+[gd_scene load_steps=7 format=3 uid="uid://bxtg4b3d8bebd"]
 
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="1_6qpo0"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopRow.cs" id="1_teyg3"]
-[ext_resource type="PackedScene" uid="uid://x2n7sj7hjmla" path="res://Scenes/general_testing.tscn" id="3_4athu"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="3_bpa6m"]
+[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="4_xa607"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_u2sel"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_u6mt4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oe7ey"]
 resource_local_to_scene = true
 shader = ExtResource("3_bpa6m")
 shader_parameter/ControlSize = Vector2(1260, 313)
@@ -79,7 +80,13 @@ text = "View all
 Jam Tracks
 (WIP)"
 
-[node name="LoadingIcon5" parent="MarginContainer" instance=ExtResource("3_4athu")]
-material = SubResource("ShaderMaterial_u6mt4")
+[node name="LoadingIcon5" type="TextureRect" parent="MarginContainer"]
+material = SubResource("ShaderMaterial_oe7ey")
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("4_xa607")
+expand_mode = 1
+script = ExtResource("5_u2sel")
+syncControlSize = true

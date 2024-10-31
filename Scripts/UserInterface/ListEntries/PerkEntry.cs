@@ -24,12 +24,12 @@ public partial class PerkEntry : Control
 
     static readonly string[] rarityToImage = new string[]
     {
-        "ExportedImages/T-Items-WeaponPerkUp-Generic.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Uncommon.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Rare.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Epic.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Legendary.png",
-        "ExportedImages/T-Items-WeaponRePerk-Resource.png"
+        "ExportedImages/T-Items-WeaponPerkUp-Generic-L.png",
+        "ExportedImages/T-Items-WeaponPerkUp-Uncommon-L.png",
+        "ExportedImages/T-Items-WeaponPerkUp-Rare-L.png",
+        "ExportedImages/T-Items-WeaponPerkUp-Epic-L.png",
+        "ExportedImages/T-Items-WeaponPerkUp-Legendary-L.png",
+        "ExportedImages/T-Items-WeaponRePerk-Resource-L.png"
     };
 
     string linkedAlteration;

@@ -42,6 +42,14 @@ public partial class DesktopLoginInterface : LoginInterface
         var window = GetWindow();
         window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
         window.ContentScaleFactor = 1;
+
+        smallSize = ((Vector2I)sizeSource.Size) + (Vector2I.Down * 128);
+        existingSize = window.Size;
+        var sizeDiff = existingSize - smallSize;
+        window.Size = smallSize;
+        window.Position += sizeDiff / 2;
+        hasShrunk = true;
+
         sizeTarget.CustomMinimumSize = Vector2.Zero;
         logo.Scale = Vector2.One;
 
@@ -57,14 +65,6 @@ public partial class DesktopLoginInterface : LoginInterface
         else
         {
             MusicController.StopMusic();
-
-
-            smallSize = ((Vector2I)sizeSource.Size) + (Vector2I.Down * 128);
-            existingSize = GetWindow().Size;
-            var sizeDiff = existingSize - smallSize;
-            GetWindow().Size = smallSize;
-            GetWindow().Position += sizeDiff / 2;
-            hasShrunk = true;
 
             music.VolumeDb = -80;
             var musicFadeout = GetTree().CreateTween().SetParallel();

@@ -195,7 +195,7 @@ public static class BanjoAssets
         string path = Helpers.ProperlyGlobalisePath(banjoFolderPath);
         if (!DirAccess.DirExistsAbsolute(path))
             return false;
-        //GD.Print(path);
+        GD.Print(path);
         //return TryLoadJsonFile(path+"/assets.json", out banjoFile);
         DirAccess banjoDir = DirAccess.Open(path);
         var allFiles = banjoDir.GetFiles();
@@ -277,8 +277,16 @@ public static class BanjoAssets
                 return GetSubtypeTexture("Survivor", fallbackIcon);
         }
 
-        if (TryGetTexturePathFromItem(itemTemplate, textureType, out var texturePath))
-            return GetReservedTexture(texturePath);
+        if (itemTemplate.TryGetTexturePathFromTemplate(textureType, out var texturePath))
+        {
+            var tex = GetReservedTexture(texturePath);
+            if(tex is null)
+            {
+                GD.PushWarning($"Null texture in: {itemTemplate["Type"]}:{itemTemplate["Name"].ToString().ToLower()}");
+                return fallbackIcon;
+            }
+            return tex;
+        }
         else
             return fallbackIcon;
     }
@@ -286,58 +294,54 @@ public static class BanjoAssets
     static readonly Dictionary<string, string> itemTypeTextureMap = new()
     {
         //main types
-        ["Weapon"] = "T-Icon-Weapon-Skill-128",
-        ["Hero"] = "T-Icon-Hero-128",
-        ["Ranged"] = "T-Icon-Ranged-128",
-        ["Melee"] = "T-Icon-Melee-128",
-        ["Survivor"] = "T-Icon-Survivor-128",
-        ["Lead Survivor"] = "T-Icon-Survivor-Leader-128",
-        ["Trap"] = "T-Icon-Traps-128",
-        ["Defender"] = "T-Icon-Defenders-128",
+        ["Survivor"] = "Icon-Worker-L",
+        ["Lead Survivor"] = "T-Icon-Survivor-Leader-CARD",
+        ["Trap"] = "T-Icon-Traps-CARD",
+        ["Defender"] = "T-Icon-Defenders-CARD",
 
         //hero sybtypes
-        ["Soldier"] = "T-Icon-Hero-Soldier-128",
-        ["Constructor"] = "T-Icon-Hero-Constructor-128",
-        ["Ninja"] = "T-Icon-Hero-Ninja-128",
-        ["Outlander"] = "T-Icon-Hero-Outlander-128",
+        ["Soldier"] = "T-Icon-Hero-Soldier-CARD",
+        ["Constructor"] = "T-Icon-Hero-Constructor-CARD",
+        ["Ninja"] = "T-Icon-Hero-Ninja-CARD",
+        ["Outlander"] = "T-Icon-Hero-Outlander-CARD",
 
         //ranged subtypes
-        ["Assault"] = "T-Icon-Assault-128",
-        ["SMG"] = "T-Icon-SMG-128",
-        ["Pistol"] = "T-Icon-Pistol-128",
-        ["Shotgun"] = "T-Icon-Shotgun-128",
-        ["Explosive"] = "T-Icon-Explosive-128",
-        ["Sniper"] = "T-Icon-Sniper-128",
+        ["Assault"] = "T-Icon-Assault-CARD",
+        ["SMG"] = "T-Icon-SMG-CARD",
+        ["Pistol"] = "T-Icon-Pistol-CARD",
+        ["Shotgun"] = "T-Shotgun-TITLE",
+        ["Explosive"] = "T-Icon-Explosive-CARD",
+        ["Sniper"] = "T-Icon-Sniper-CARD",
 
         //melee subtypes
-        ["Axe"] = "T-Icon-Axe-128",
-        ["Hardware"] = "T-Icon-Tool-128",
-        ["Scythe"] = "T-Icon-Scythe-128",
-        ["Spear"] = "T-Icon-Spear-128",
-        ["Sword"] = "T-Icon-Sword-128",
-        ["Club"] = "T-Icon-Blunt-128", //is this the right icon??
+        ["Axe"] = "T-Icon-Axe-CARD",
+        ["Hardware"] = "T-Icon-Tool-CARD",
+        ["Scythe"] = "T-Icon-Scythe-CARD",
+        ["Spear"] = "T-Icon-Spear-CARD",
+        ["Sword"] = "T-Icon-Sword-CARD",
+        ["Club"] = "T-Icon-Blunt-CARD", //is this the right icon??
 
         //lead survivor subtypes
-        ["Doctor"] = "T-Icon-Leader-Doctor-128",
-        ["Engineer"] = "T-Icon-Leader-Engineer-128",
-        ["Explorer"] = "T-Icon-Leader-Explorer-128",
-        ["Gadgeteer"] = "T-Icon-Leader-Gadgeteer-128",
-        ["Inventor"] = "T-Icon-Leader-Inventor-128",
-        ["Martial Artist"] = "T-Icon-Leader-MartialArtist-128",
-        ["Marksman"] = "T-Icon-Leader-Soldier-128",
-        ["Trainer"] = "T-Icon-Leader-Trainer-128",
+        ["Doctor"] = "T-Icon-Leader-Doctor-CARD",
+        ["Engineer"] = "T-Icon-Leader-Engineer-CARD",
+        ["Explorer"] = "T-Icon-Leader-Explorer-CARD",
+        ["Gadgeteer"] = "T-Icon-Leader-Gadgeteer-CARD",
+        ["Inventor"] = "T-Icon-Leader-Inventor-CARD",
+        ["Martial Artist"] = "T-Icon-Leader-MartialArtist-CARD",
+        ["Marksman"] = "T-Icon-Leader-Soldier-CARD",
+        ["Trainer"] = "T-Icon-Leader-Trainer-CARD",
 
         //trap subtypes
-        ["Wall"] = "T-Icon-Trap-Wall-128",
-        ["Ceiling"] = "T-Icon-Trap-Ceiling-128",
-        ["Floor"] = "T-Icon-Trap-Floor-128",
+        ["Wall"] = "T-Trap-Wall-TITLE",
+        ["Ceiling"] = "T-Trap-Ceiling-TITLE",
+        ["Floor"] = "T-Trap-Floor-TITLE",
 
         //defender subtypes
-        ["Assault Defender"] = "T-Icon-Survivor-Assault-128",
-        ["Shotgun Defender"] = "T-Icon-Survivor-Assault-128",
-        ["Melee Defender"] = "T-Icon-Survivor-Assault-128",
-        ["Pistol Defender"] = "T-Icon-Survivor-Assault-128",
-        ["Sniper Defender"] = "T-Icon-Survivor-Assault-128",
+        ["Assault Defender"] = "T-Icon-Survivor-Assault-CARD",
+        ["Shotgun Defender"] = "T-Icon-Survivor-Shotgun-CARD",
+        ["Melee Defender"] = "T-Icon-Survivor-Melee-CARD",
+        ["Pistol Defender"] = "T-Icon-Survivor-Pistol-CARD",
+        ["Sniper Defender"] = "T-Icon-Survivor-Sniper-CARD",
     };
 
     public static Texture2D GetSubtypeTexture(string key, Texture2D fallbackIcon = null)
@@ -434,10 +438,17 @@ public static class BanjoAssets
 
     public static Texture2D GetReservedTexture(string texturePath)
     {
+        if (texturePath is null)
+            return null;
         if (iconCache.ContainsKey(texturePath) && iconCache[texturePath].GetRef().Obj is Texture2D cachedTexture)
             return cachedTexture;
 
         string fullPath = banjoFolderPath + "/" + texturePath;
+        if(!FileAccess.FileExists(fullPath))
+        {
+            GD.PushWarning($"Missing Image file: {Helpers.ProperlyGlobalisePath(fullPath)}");
+            return null;
+        }
         Texture2D loadedTexture = ImageTexture.CreateFromImage(Image.LoadFromFile(fullPath));
         //Texture2D loadedTexture = ResourceLoader.Load<Texture2D>(fullPath);
         iconCache[texturePath] = GodotObject.WeakRef(loadedTexture);
@@ -671,7 +682,7 @@ public static class BanjoAssets
         return toReturn;
     }
 
-    static bool TryGetTexturePathFromItem(JsonObject itemTemplate, TextureType textureType, out string foundPath)
+    public static bool TryGetTexturePathFromTemplate(this JsonObject itemTemplate, TextureType textureType, out string foundPath)
     {
         foundPath = null;
         JsonObject imagePaths = itemTemplate["ImagePaths"]?.AsObject();
@@ -682,7 +693,10 @@ public static class BanjoAssets
         {
             foundPath = (imagePaths["LargePreview"] ?? imagePaths["SmallPreview"])?.ToString();
             if (!FileAccess.FileExists(banjoFolderPath + "/" + foundPath))
+            {
+                GD.Print($"Large Image not found: {banjoFolderPath + "/" + foundPath} ({itemTemplate["Name"]})");
                 foundPath = imagePaths["SmallPreview"]?.ToString();
+            }
         }
         else
             foundPath = imagePaths[textureType.ToString()]?.ToString();

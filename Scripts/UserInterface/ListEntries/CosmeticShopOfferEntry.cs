@@ -269,7 +269,7 @@ public partial class CosmeticShopOfferEntry : Control
         JsonArray allItems = entryData.MergeCosmeticItems() ?? new JsonArray();
         if (entryData["bundle"] is not null)
             PopulateAsBundle(entryData, allItems);
-        else if (entryData["isGenerated"] is null)
+        else if (entryData["isFallback"] is null)
             PopulateAsItem(entryData, allItems);
         else
         {
@@ -390,15 +390,18 @@ public partial class CosmeticShopOfferEntry : Control
         public bool isLeavingSoon { get; private set; }
         public bool isOld { get; private set; }
         public bool isVeryOld { get; private set; }
+        public DateTime? firstAddedDate { get; private set; }
+        public DateTime? lastAddedDate { get; private set; }
+        //public DateTime isVeryOld { get; private set; }
 
         public CosmeticMetadata(JsonObject firstItem, JsonObject entryData)
         {
-            string firstAddedDateText = firstItem["shopHistory"]?[0]?.ToString();
-            DateTime firstAddedDate = firstAddedDateText is not null ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
             DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
             DateTime outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
-            DateTime? lastAddedDate = null;
+
             var shopHistory = firstItem["shopHistory"]?.AsArray();
+            firstAddedDate = shopHistory[0]?.ToString() is string firstAddedDateText ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
+            lastAddedDate = null;
             if (shopHistory is not null)
             {
                 for (int i = shopHistory.Count - 1; i >= 0; i--)
@@ -413,11 +416,13 @@ public partial class CosmeticShopOfferEntry : Control
             }
 
             lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
-            isAddedToday = inDate == DateTime.UtcNow.Date && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate);
-            isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7;
+            isAddedToday = inDate == DateTime.UtcNow.Date/* && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate)*/;
+            isRecentlyNew = ((DateTime.UtcNow.Date - firstAddedDate)?.TotalDays ?? 0) < 7;
             isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
-            isOld = lastSeenDaysAgo > 500;
-            isVeryOld = lastSeenDaysAgo > 1000;
+
+            int oldThreshold = AppConfig.Get("item_shop", "oldThreshold", 500);
+            isOld = lastSeenDaysAgo > oldThreshold;
+            isVeryOld = lastSeenDaysAgo > Mathf.Max(oldThreshold, AppConfig.Get("item_shop", "veryOldThreshold", 500));
         }
 
         public CosmeticMetadata(CosmeticMetadata[] itemMetadatas)
@@ -428,6 +433,9 @@ public partial class CosmeticShopOfferEntry : Control
             isLeavingSoon = itemMetadatas.Any(m => m.isLeavingSoon);
             isOld = itemMetadatas.Any(m => m.isOld);
             isVeryOld = itemMetadatas.Any(m => m.isVeryOld);
+
+            firstAddedDate = itemMetadatas.Select(m => m.firstAddedDate).OrderBy(d => d).FirstOrDefault();
+            lastAddedDate = itemMetadatas.Select(m => m.lastAddedDate).OrderBy(d => d).FirstOrDefault();
         }
     }
 
@@ -516,7 +524,7 @@ public partial class CosmeticShopOfferEntry : Control
 
         if (discountAmount > 0)
         {
-            EmitSignal(SignalName.BonusTextChanged, cellWidth > 1 ? $"Save {discountAmount} VBucks!" : $"-{discountAmount}");
+            EmitSignal(SignalName.BonusTextChanged, cellWidth > 1 ? $"{discountAmount} V-Bucks Off!" : $"-{discountAmount}");
             EmitSignal(SignalName.BonusTextVisibility, true);
             return;
         }

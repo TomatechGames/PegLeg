@@ -79,6 +79,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
         {
 			if (IsVisibleInTree())
 				LoadMissions();
+            StartUpdateCheckTimer();
         };
 
         zoneFilterTabBar.TabChanged += e => FilterMissionGrid();
@@ -105,6 +106,36 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
         RefreshTimerController.OnDayChanged += OnDayChanged;
         if (IsVisibleInTree())
             LoadMissions();
+        StartUpdateCheckTimer();
+    }
+
+    SceneTreeTimer refreshCooldown;
+    void StartUpdateCheckTimer(bool force = false)
+    {
+        //GD.Print($"HOUR IS {DateTime.UtcNow.Hour}");
+        if (force)
+        {
+            if (refreshCooldown is not null)
+                refreshCooldown.Timeout -= CheckForUpdate;
+            refreshCooldown = null;
+        }
+        var now = DateTime.UtcNow;
+        if (now.Hour < 1 && (refreshCooldown?.TimeLeft ?? 0) <= 0)
+        {
+            refreshCooldown = GetTree().CreateTimer(now.Minute < 10 ? 15 : 90);
+            refreshCooldown.Timeout += CheckForUpdate;
+        }
+    }
+
+    public async void CheckForUpdate()
+    {
+        StartUpdateCheckTimer();
+        if (!await MissionRequests.CheckForMissionChanges())
+            return;
+        GD.Print("DOUBLE RESET");
+        missionsUpToDate = false;
+        if (IsVisibleInTree())
+            LoadMissions(true);
     }
 
     public override void _ExitTree()
@@ -117,6 +148,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
         missionsUpToDate = false;
         if (IsVisibleInTree())
             LoadMissions();
+        StartUpdateCheckTimer();
     }
 
     PLSearch.Instruction[] currentMissionSearchInstructions;
@@ -128,7 +160,11 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
     public MissionData GetRecycleElement(int index) => index >= 0 && index < activeMissions.Count ? activeMissions[index] : null;
     public int GetRecycleElementCount() => activeMissions.Count;
 
-    public void ForceReloadMissions() => LoadMissions(true);
+    public void ForceReloadMissions()
+    {
+        LoadMissions(true);
+        StartUpdateCheckTimer(true);
+    }
 
     bool missionsUpToDate = false;
     bool isLoadingMissions = false;
@@ -139,7 +175,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
             return;
         missionsUpToDate = true;
         isLoadingMissions = true;
-        if (MissionRequests.MissionsRequireUpdate() || force || !hasMissions)
+        if (MissionRequests.MissionsEmptyOrOutdated() || force || !hasMissions)
         {
             try
             {
@@ -169,7 +205,11 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
                 {
                     await this.WaitForFrame();
                 }
-                allMissions = allMissions.OrderBy(m => m.powerLevel).ToList();
+                allMissions = allMissions
+                    .OrderBy(m => m.powerLevel)
+                    .ThenBy(m => m.theaterIdx)
+                    .ThenBy(m => m.missionName)
+                    .ToList();
                 //GD.Print("Missions processed");
             }
             finally
@@ -232,7 +272,9 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
 
 public class MissionData
 {
+    public string missionName { get; private set; }
     public int powerLevel { get; private set; }
+    public int theaterIdx { get; private set; }
     public string theaterCat { get; private set; }
 
     public JsonObject missionJson { get; private set; }
@@ -244,8 +286,18 @@ public class MissionData
     {
         this.missionJson = missionJson;
 
-        powerLevel = missionJson["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>();
+        missionName = missionJson["missionGenerator"]["DisplayName"].ToString();
+        powerLevel = missionJson["powerLevel"].GetValue<int>();
         theaterCat = missionJson["theaterCat"].ToString();
+        theaterIdx = theaterCat switch
+        {
+            "s" => 0,
+            "p" => 1,
+            "c" => 2,
+            "t" => 3,
+            "v" => 4,
+            _ => 0
+        };
 
         textureDependancies.Add(missionJson["missionGenerator"].AsObject().GetItemTexture(BanjoAssets.TextureType.Icon));
 

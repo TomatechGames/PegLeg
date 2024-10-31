@@ -12,16 +12,44 @@ using Godot;
 static class MissionRequests
 {
     const string missionCacheSavePath = "user://missions.json";
+    static uint missionSample;
     static JsonObject missionsCache;
     const int MissionVersion = 3;
 
-    public static bool MissionsRequireUpdate()
+    public static async Task<bool> CheckForMissionChanges()
+    {
+        if (!await LoginRequests.TryLogin())
+            return false;
+        JsonNode fullMissions = await Helpers.MakeRequest(
+                HttpMethod.Get,
+                FNEndpoints.gameEndpoint,
+                "fortnite/api/game/v2/world/info",
+                "",
+                LoginRequests.AccountAuthHeader
+            );
+        var missionHash = fullMissions["missionAlerts"].ToString().Hash();
+        if (missionSample == 0)
+        {
+            missionSample = missionHash;
+            return false;
+        }
+        if (missionSample != missionHash)
+        {
+            GD.Print(missionSample + " >> " + missionHash);
+            missionSample = missionHash;
+            missionsCache = null;
+            return true;
+        }
+        return false;
+    }
+
+    public static bool MissionsEmptyOrOutdated()
     {
         if (missionsCache is null)
             return true;
         if ((missionsCache["version"]?.GetValue<int>() ?? 0) < MissionVersion)
             return true;
-        var refreshTime = DateTime.Parse(missionsCache["expiryDate"]?.ToString() ?? "1987-07-22T06:00:00.000Z", CultureInfo.InvariantCulture);
+        var refreshTime = DateTime.Parse(missionsCache["expiryDate"]?.ToString() ?? "1987-07-22T00:00:00.000Z", CultureInfo.InvariantCulture);
         GD.Print($"MissionRefresh = {refreshTime} ({DateTime.UtcNow})");
         return DateTime.UtcNow.CompareTo(refreshTime) >= 0;
     }
@@ -42,10 +70,11 @@ static class MissionRequests
             //load from file
             using FileAccess missionFile = FileAccess.Open(missionCacheSavePath, FileAccess.ModeFlags.Read);
             missionsCache = JsonNode.Parse(missionFile.GetAsText()).AsObject();
+            missionSample = missionsCache["sample"].AsValue().TryGetValue(out uint sampleVal) ? sampleVal : 0;
             Debug.WriteLine("mission file loaded");
         }
 
-        if (MissionsRequireUpdate())
+        if (!forceRefresh && MissionsEmptyOrOutdated())
         {
             GD.Print("missions out of date or bad version");
             missionsCache = null;
@@ -83,6 +112,7 @@ static class MissionRequests
                 "",
                 LoginRequests.AccountAuthHeader
             );
+        missionSample = fullMissions["missionAlerts"].ToString().Hash();
         try
         {
             missionsCache = SimplifyMissions(fullMissions);
@@ -98,8 +128,9 @@ static class MissionRequests
                 innerEx = innerEx.InnerException;
             }
         }
-        GD.Print(fullMissions.ToString()[..350] + "...");
-        GD.Print(missionsCache.ToString()[..350] + "...");
+        missionsCache["sample"] = missionSample;
+        //GD.Print(fullMissions.ToString()[..350] + "...");
+        //GD.Print(missionsCache.ToString()[..350] + "...");
         //save to file
         using FileAccess missionFile = FileAccess.Open(missionCacheSavePath, FileAccess.ModeFlags.Write);
         missionFile.StoreString(missionsCache.ToString());
@@ -202,7 +233,10 @@ static class MissionRequests
 
                 //skip Homebase and Story missions
                 string iconPath = missionObj["missionGenerator"]["ImagePaths"]["Icon"].ToString();
-                if (iconPath.EndsWith("T-Icon-Story-128.png") || iconPath.EndsWith("T-Icon-Outpost-128.png"))
+                int tileIndex = missionObj["tileIndex"].GetValue<int>();
+                if (iconPath.EndsWith("T-Icon-Story-128.png") || 
+                    iconPath.EndsWith("T-Icon-Outpost-128.png") ||
+                    missionTiles[tileIndex]["requirements"]["eventFlag"].ToString()!="")
                     continue;
 
                 string dificultyRow = missionObj["missionDifficultyInfo"]["rowName"].ToString();
@@ -242,7 +276,6 @@ static class MissionRequests
                 }
                 missionObj["missionRewards"] = missionRewards;
 
-                int tileIndex = missionObj["tileIndex"].GetValue<int>();
                 missionObj["tile"] = missionTiles[tileIndex].AsObject().Reserialise();
                 string zoneTheme = missionObj["tile"]["zoneTheme"].ToString();
                 missionObj["tile"]["zoneTheme"] = zoneThemeLookup[zoneTheme].Reserialise();

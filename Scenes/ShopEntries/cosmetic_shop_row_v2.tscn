@@ -1,14 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://ce4nh58o1rsd6"]
+[gd_scene load_steps=7 format=3 uid="uid://ce4nh58o1rsd6"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopRow.cs" id="1_dvx4w"]
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="2_t6xhm"]
-[ext_resource type="PackedScene" uid="uid://x2n7sj7hjmla" path="res://Scenes/general_testing.tscn" id="3_m0ad5"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="4_2ks2q"]
+[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="4_iintn"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_e0edl"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nn5xj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ojdw"]
 resource_local_to_scene = true
 shader = ExtResource("4_2ks2q")
-shader_parameter/ControlSize = Vector2(1328, 150)
+shader_parameter/ControlSize = Vector2(1260, 313)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
@@ -79,9 +80,15 @@ theme_override_font_sizes/font_size = 24
 text = "View all
 Jam Tracks "
 
-[node name="LoadingIcon5" parent="MarginContainer" instance=ExtResource("3_m0ad5")]
-material = SubResource("ShaderMaterial_nn5xj")
+[node name="LoadingIcon5" type="TextureRect" parent="MarginContainer"]
+material = SubResource("ShaderMaterial_7ojdw")
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("4_iintn")
+expand_mode = 1
+script = ExtResource("5_e0edl")
+syncControlSize = true
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/CenterContainer/Control/Button" to="." method="OpenJamTracks"]

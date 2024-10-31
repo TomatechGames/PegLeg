@@ -59,7 +59,7 @@ public partial class LlamaEntry : GameItemEntry
         string nameWithAmount = amount >= 0 ? $"{name} ({shopAmount} left)" : name;
         string description = cardPackTemplate["Description"]?.ToString();
 
-        EmitSignal(SignalName.NameChanged, includeAmountInName ? nameWithAmount : name);
+        EmitSignal(SignalName.NameChanged, (includeAmountInName && shopAmount >= 0) ? nameWithAmount : name);
         EmitSignal(SignalName.DescriptionChanged, description);
 
         string amountText = amount.ToString();
@@ -72,7 +72,10 @@ public partial class LlamaEntry : GameItemEntry
 
         var pinataIcon = llamaTierIcons[0];
         LlamaTier = Mathf.Max(0, cardPackTemplate.GetItemRarity() - 3);
-        string llamaPinataName = cardPackTemplate["ImagePaths"]?["SmallPreview"]?.ToString().Split("\\")[^1];
+        //cardPackTemplate.GetItemTexture(pinataIcon);
+        string llamaPinataName =
+            (cardPackTemplate.TryGetTexturePathFromTemplate(BanjoAssets.TextureType.Preview, out var imagePath) ? imagePath : null)
+            ?.ToString().Split("\\")[^1];
         if (llamaPinataName?.StartsWith(defaultPreviewImage) ?? false)
         {
             pinataIcon = llamaTierIcons[LlamaTier];

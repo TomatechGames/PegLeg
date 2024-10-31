@@ -90,12 +90,13 @@ public partial class CustomTooltip : Control
                 //set banner appearance
                 if (bannerData["color"]?.ToString() is string bannerColor)
                 {
+                    //GD.Print(bannerColor);
                     titleBanner.SetShaderColor(new Color(bannerColor), "Color");
                     //titleBanner.SetShaderBool(true, "ColorMode");
                 }
             }
             else
-                titleBanner.Visible = true;
+                titleBanner.Visible = false;
         }
         else
             titleContent.Visible = false;

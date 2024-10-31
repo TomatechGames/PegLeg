@@ -158,6 +158,7 @@ expand_mode = 1
 [node name="SearchBox" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "///(v-buck | worker | hero) (v-buck | leg | mythic)"
 placeholder_text = "Search in missions"
 clear_button_enabled = true
 

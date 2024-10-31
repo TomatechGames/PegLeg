@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+//using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
@@ -105,16 +106,7 @@ static class CatalogRequests
         var cosmeticDisplayData = await RequestCosmeticDisplayData();
         await storefrontTask;
 
-        if (Input.IsKeyPressed(Key.F1))
-        {
-            var combinedShop = storefrontCache[WeeklyCosmeticShopCatalog].AsArray().Union(storefrontCache[DailyCosmeticShopCatalog].AsArray());
-            var combinedShopArray = new JsonArray(combinedShop.Select(n=>n.Reserialise()).ToArray());
-
-            using var shopFile = FileAccess.Open("user://shopDebug.json", FileAccess.ModeFlags.Write);
-            shopFile.StoreString(combinedShopArray.ToString());
-        }
-
-        return cosmeticCache = ProcessCosmetics(cosmeticDisplayData);
+        return cosmeticCache = await ProcessCosmetics(cosmeticDisplayData);
     }
 
     static JsonObject weeklyCache;
@@ -188,7 +180,7 @@ static class CatalogRequests
     static string ParseLayoutName(string basis) =>
         Regex.Replace(basis, "([a-z0-9])([A-Z])", "$1 $2");
 
-    static JsonObject ProcessCosmetics(JsonObject cosmeticDisplayData)
+    static async Task<JsonObject> ProcessCosmetics(JsonObject cosmeticDisplayData)
     {
         var shopOfferList = storefrontCache[WeeklyCosmeticShopCatalog]?.AsArray().ToList();
         if(shopOfferList is null)
@@ -196,14 +188,15 @@ static class CatalogRequests
         shopOfferList.AddRange(storefrontCache[DailyCosmeticShopCatalog].AsArray());
         var shopOfferDict = shopOfferList.ToDictionary(n => n["offerId"].ToString());
 
-        foreach (var offer in shopOfferDict)
+        await Parallel.ForEachAsync(shopOfferDict, async (offer, _) =>
         {
             if (!cosmeticDisplayData.ContainsKey(offer.Key))
             {
-                var generatedDisplayData = new JsonObject()
+                var fallbackDisplayData = new JsonObject()
                 {
-                    ["isGenerated"] = true,
+                    ["isFallback"] = true,
                     ["devName"] = offer.Value["devName"]?.ToString() ?? null,
+                    ["fallbackType"] = offer.Value["meta"]?["templateId"]?.ToString().Split(":")[0] ?? null,
                     ["offerId"] = offer.Value["offerId"]?.ToString() ?? null,
                     ["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null,
                     ["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null,
@@ -222,39 +215,68 @@ static class CatalogRequests
                 if (offer.Value["dynamicBundleInfo"] is JsonObject bundleInfo)
                 {
                     int totalPrice = bundleInfo["bundleItems"].AsArray().Select(n => n["regularPrice"].GetValue<int>()).Sum();
-                    generatedDisplayData["regularPrice"] = totalPrice;
-                    generatedDisplayData["finalPrice"] = totalPrice + bundleInfo["discountedBasePrice"].GetValue<int>();
+                    fallbackDisplayData["regularPrice"] = totalPrice;
+                    fallbackDisplayData["finalPrice"] = totalPrice + bundleInfo["discountedBasePrice"].GetValue<int>();
                 }
-                cosmeticDisplayData.Add(offer.Key, generatedDisplayData);
-                continue;
+                if (false && offer.Value["meta"]?["NewDisplayAssetPath"]?.ToString() is string imgDaPath && imgDaPath.Contains("/NewDisplayAssetPath/"))
+                {
+                    imgDaPath = imgDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
+                    bool isBundle = offer.Value["dynamicBundleInfo"] is not null;
+                    string nameDaPath = isBundle ?
+                        offer.Value["meta"]?["displayAssetPath"]?.ToString().Replace("/Game/Catalog/", "/OfferCatalog/"):"";
+
+                    var nameDisplayAssetTask = Helpers.MakeRequest(
+                        HttpMethod.Get,
+                        ExternalEndpoints.fnCentralEndpoint,
+                        $"api/v1/export?path={nameDaPath}",
+                        "",
+                        null
+                    );
+                    var imageDisplayAssetTask = Helpers.MakeRequest(
+                        HttpMethod.Get,
+                        ExternalEndpoints.fnCentralEndpoint,
+                        $"api/v1/export?path={imgDaPath}",
+                        "",
+                        null
+                    );
+
+                    await imageDisplayAssetTask;
+                    await imageDisplayAssetTask;
+
+                    fallbackDisplayData["fallbackImage"] = imageDisplayAssetTask.Result?["jsonOutput"]?[0]["Properties"][0];
+                }
+                cosmeticDisplayData.Add(offer.Key, fallbackDisplayData);
+                return;
             }
 
+            var displayData = cosmeticDisplayData[offer.Key];
+
             //additions
-            cosmeticDisplayData[offer.Key]["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null;
-            cosmeticDisplayData[offer.Key]["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null;
-            cosmeticDisplayData[offer.Key]["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null;
+            displayData["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null;
+            displayData["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null;
+            displayData["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null;
 
             if (offer.Value["dynamicBundleInfo"] is JsonObject dynBundleInfo)
-                cosmeticDisplayData[offer.Key]["dynamicBundleInfo"] = dynBundleInfo.Reserialise();
+                displayData["dynamicBundleInfo"] = dynBundleInfo.Reserialise();
 
             //sometimes these are just missing
-            cosmeticDisplayData[offer.Key]["layoutId"] ??= offer.Value["meta"]?["LayoutId"].ToString() ?? "?";
-            cosmeticDisplayData[offer.Key]["layout"] ??= new JsonObject();
-            cosmeticDisplayData[offer.Key]["layout"]["name"] ??= ParseLayoutName(offer.Value["meta"]?["AnalyticOfferGroupId"].ToString() ?? "?");
-            cosmeticDisplayData[offer.Key]["layout"]["index"] = int.TryParse(cosmeticDisplayData[offer.Key]["layoutId"].ToString().Split(".")[^1], out int result) ? result : 0;
-            
+            displayData["layoutId"] ??= offer.Value["meta"]?["LayoutId"].ToString() ?? "?";
+            displayData["layout"] ??= new JsonObject();
+            displayData["layout"]["name"] ??= ParseLayoutName(offer.Value["meta"]?["AnalyticOfferGroupId"].ToString() ?? "?");
+            displayData["layout"]["index"] = int.TryParse(displayData["layoutId"].ToString().Split(".")[^1], out int result) ? result : 0;
+
 
             if (offer.Value.AsObject().ContainsKey("dynamicBundleInfo"))
-                cosmeticDisplayData[offer.Key]["dynamicBundleInfo"] = offer.Value["dynamicBundleInfo"].Reserialise();
+                displayData["dynamicBundleInfo"] = offer.Value["dynamicBundleInfo"].Reserialise();
 
             if ((offer.Value["prices"]?.AsArray().Count ?? 0) > 0)
-                cosmeticDisplayData[offer.Key]["prices"] = offer.Value["prices"].Reserialise();
+                displayData["prices"] = offer.Value["prices"].Reserialise();
 
-            if(!(cosmeticDisplayData[offer.Key]["layout"]["category"]?.ToString() is string cat && !string.IsNullOrWhiteSpace(cat)))
-                cosmeticDisplayData[offer.Key]["layout"]["category"] = "Uncategorised";
+            if (!(displayData["layout"]["category"]?.ToString() is string cat && !string.IsNullOrWhiteSpace(cat)))
+                displayData["layout"]["category"] = "Uncategorised";
 
             //jam tracks are funky, gotta reformat them
-            if (cosmeticDisplayData[offer.Key]["tracks"] is JsonArray trackList)
+            if (displayData["tracks"] is JsonArray trackList)
             {
                 foreach (var item in trackList)
                 {
@@ -282,7 +304,9 @@ static class CatalogRequests
                         (trackObj["duration"] is JsonValue duration ? $"Duration: {duration.GetValue<int>().FormatTimeSeconds()}\n" : "");
                 }
             }
-        }
+
+            cosmeticDisplayData[offer.Key] = displayData;
+        });
 
         var partiallyOrganisedCosmetics = cosmeticDisplayData
             .Select(n => KeyValuePair.Create(n.Key, n.Value.Reserialise()))
@@ -398,7 +422,7 @@ static class CatalogRequests
         GD.Print("retrieving cosmetic visuals from fortnite-api...");
         JsonNode cosmeticDisplayData = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                ExternalEndpoints.cosmeticsEndpoint,
+                ExternalEndpoints.cosmeticShopEndpoint,
                 "v2/shop?responseFlags=4", // 1 = paths, 2 = gameplayTags, 4 = shop history
                 "",
                 null,
@@ -517,7 +541,7 @@ static class CatalogRequests
         );
 
         GD.Print($"Requesting cosmetic \"{serverPath}\"");
-        using var result = await Helpers.MakeRequestRaw(isJamTrack ? ExternalEndpoints.jamTracksEndpoint : ExternalEndpoints.cosmeticsEndpoint, request);
+        using var result = await Helpers.MakeRequestRaw(isJamTrack ? ExternalEndpoints.jamTracksEndpoint : ExternalEndpoints.cosmeticShopEndpoint, request);
         if (!result.IsSuccessStatusCode)
         {
             GD.Print(result);

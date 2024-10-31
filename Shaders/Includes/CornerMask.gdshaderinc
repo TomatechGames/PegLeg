@@ -1,5 +1,6 @@
 float cornerMask(vec2 uv, float cornerRadius, vec2 controlSize)
 {
+	cornerRadius = min(cornerRadius, min(controlSize.x*0.5, controlSize.y*0.5));
 	vec2 controlPos = uv*controlSize;
 	vec2 shrunkSize = controlSize-vec2(cornerRadius,cornerRadius);
 

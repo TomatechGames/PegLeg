@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cd46kdw5i45cu"]
+[gd_scene load_steps=16 format=3 uid="uid://ysh5ajklts1q"]
 
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="1_7xbjg"]
 [ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="1_s3ots"]

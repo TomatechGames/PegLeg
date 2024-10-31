@@ -25,12 +25,20 @@ static class FNEndpoints
 
 static class ExternalEndpoints
 {
-    public static readonly HttpClient cosmeticsEndpoint = new()
+    public static readonly HttpClient cosmeticShopEndpoint = new()
     {
         BaseAddress = new Uri("https://fortnite-api.com")
     };
     public static readonly HttpClient jamTracksEndpoint = new()
     {
         BaseAddress = new Uri("https://cdn.fortnite-api.com")
+    };
+    public static readonly HttpClient fnCentralEndpoint = new()
+    {
+        BaseAddress = new Uri("https://fortnitecentral.genxgames.gg")
+    };
+    public static readonly HttpClient cosmeticLookupEndpoint = new()
+    {
+        BaseAddress = new Uri("https://fortniteapi.io")
     };
 }

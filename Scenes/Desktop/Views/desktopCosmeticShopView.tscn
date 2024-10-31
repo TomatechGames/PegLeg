@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://d6pm7vs0s7ta"]
+[gd_scene load_steps=29 format=3 uid="uid://d6pm7vs0s7ta"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/CosmeticShopInterface.cs" id="1_cncuj"]
 [ext_resource type="PackedScene" uid="uid://3euwgkmgdey0" path="res://Scenes/ShopEntries/cosmetic_shop_header.tscn" id="2_vc6jo"]
@@ -23,13 +23,14 @@
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="21_ly4on"]
 [ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://GodotThemes/Styleboxes/CheckButton/CheckSeparator.tres" id="22_4y772"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="23_icgpb"]
-[ext_resource type="PackedScene" uid="uid://x2n7sj7hjmla" path="res://Scenes/general_testing.tscn" id="24_si1ri"]
+[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="25_7g2j3"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="25_e8r7k"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="26_0o8hv"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_0v5s8"]
 resource_name = "CosmeticTimeFilter"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_sotrq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v73v7"]
 resource_local_to_scene = true
 shader = ExtResource("25_e8r7k")
 shader_parameter/ControlSize = Vector2(703, 66)
@@ -549,15 +550,20 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="FilterBlocker" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer"]
-visible = false
 layout_mode = 2
 mouse_filter = 0
 theme_override_constants/margin_top = -20
 theme_override_constants/margin_bottom = -20
 
-[node name="LoadingIcon5" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBlocker" instance=ExtResource("24_si1ri")]
-material = SubResource("ShaderMaterial_sotrq")
+[node name="LoadingIcon5" type="TextureRect" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBlocker"]
+material = SubResource("ShaderMaterial_v73v7")
 layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+texture = ExtResource("25_7g2j3")
+expand_mode = 1
+script = ExtResource("26_0o8hv")
+syncControlSize = true
 
 [node name="BigScrollContainer" type="ScrollContainer" parent="HSplitContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 0)

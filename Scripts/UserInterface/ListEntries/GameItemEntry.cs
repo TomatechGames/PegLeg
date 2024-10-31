@@ -224,9 +224,11 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         string name = template["DisplayName"].ToString();
         string description = template["Description"]?.ToString();
         string type = template["Type"].ToString();
-        var mainIcon = itemInstance.GetItemTexture() ?? BanjoAssets.defaultIcon;
+        Texture2D mainIcon;
         if (type == "TeamPerk")
             mainIcon = itemInstance.GetItemTexture(BanjoAssets.TextureType.Icon);
+        else
+            mainIcon = itemInstance.GetItemTexture();
 
         description ??= "";
         description = description.Replace("{Gender}|gender(him, her)", "them");

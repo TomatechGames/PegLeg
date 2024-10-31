@@ -30,10 +30,12 @@ GlobalScene="*res://Scenes/globalScene.tscn"
 [display]
 
 window/size/viewport_width=1280
-window/size/viewport_height=675
+window/size/viewport_height=720
 window/size/initial_position_type=3
 window/size/borderless=true
 window/size/transparent=true
+window/size/window_width_override=1
+window/size/window_height_override=1
 window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
@@ -109,7 +111,8 @@ pointing/android/enable_pan_and_scale_gestures=true
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
 textures/lossless_compression/force_png=true
 textures/webp_compression/compression_method=0

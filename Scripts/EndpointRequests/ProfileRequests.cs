@@ -37,9 +37,9 @@ public static class ProfileRequests
         return result;
     }
 
-    public static async Task<bool> ProfileItemExists(string profileID, ProfileItemPredicate predicate, bool preferCache = false)
+    public static async Task<bool> ProfileItemExists(string profileID, ProfileItemPredicate predicate)
     {
-        if (!profileCache.ContainsKey(profileID) || !preferCache)
+        if (!profileCache.ContainsKey(profileID))
             await GetProfile(profileID);
        return ProfileItemExistsUnsafe(profileID, predicate);
     }
@@ -55,8 +55,14 @@ public static class ProfileRequests
 
     public static async Task<JsonObject> GetFirstProfileItem(string profileID, ProfileItemPredicate predicate)
     {
+        if (!profileCache.ContainsKey(profileID))
+            await GetProfile(profileID);
+        return GetFirstProfileItemUnsafe(profileID, predicate);
+    }
+    public static JsonObject GetFirstProfileItemUnsafe(string profileID, ProfileItemPredicate predicate)
+    {
         var matchedItem =
-            (await GetProfile(profileID))
+            profileCache[profileID]
             ["profileChanges"][0]["profile"]["items"]
             .AsObject()
             .Select(kvp => KeyValuePair.Create(kvp.Key, kvp.Value.AsObject()))
@@ -285,8 +291,15 @@ public static class ProfileRequests
         {
             ["questId"] = uuid
         };
-        await PerformProfileOperation(FnProfiles.AccountItems, "FortRerollDailyQuest", content.ToString());
-        return null; //TODO: return handle of new profile item
+        var notif = 
+            (await PerformProfileOperation(FnProfiles.AccountItems, "FortRerollDailyQuest", content.ToString()))
+            ["notifications"]?
+            .AsArray()
+            .FirstOrDefault(n => n["type"].ToString()== "dailyQuestReroll");
+        if (notif is null)
+            return null;
+        var newUUID = GetFirstProfileItemUnsafe(FnProfiles.AccountItems, (kvp) => kvp.Value["templateId"].ToString() == notif["newQuestId"].ToString())["uuid"].ToString();
+        return ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, newUUID));
     }
 
     public static bool CanRerollQuestUnsafe()
@@ -479,6 +492,8 @@ public static class ProfileRequests
         if (!await LoginRequests.TryLogin())
         {
             GD.Print("profile request failed: not logged in");
+            if (profileCache.ContainsKey(profileId))
+                return profileCache[profileId];
             return null;
         }
 
@@ -501,7 +516,9 @@ public static class ProfileRequests
         if (result.ContainsKey("errorCode"))
         {
             var _ = GenericConfirmationWindow.ShowErrorForWebResult(result);
-            return profileCache[profileId];
+            if (profileCache.ContainsKey(profileId))
+                return profileCache[profileId];
+            return null;
         }
 
         JsonObject changelog = null;
@@ -657,34 +674,48 @@ public static class ProfileRequests
                     continue;
                 }
                 ProfileItemId profileItem = new(profile, uuid);
+                var items = profileCache[profile]["profileChanges"][0]["profile"]["items"].AsObject();
+                JsonNode tempClone = null;
                 switch (changeType)
                 {
                     case "itemAdded":
-                        GD.Print("ADDED: " + uuid);
-                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid] = change["item"].Reserialise();
+                        items[uuid] = change["item"].Reserialise();
+                        GD.Print($"ADDED: {uuid} ({items[uuid]})");
                         OnItemAdded?.Invoke(profileItem);
                         break;
                     case "itemRemoved":
-                        GD.Print("REMOVED: " + uuid);
-                        profileCache[profile]["profileChanges"][0]["profile"]["items"].AsObject().Remove(uuid);
+                        tempClone = items[uuid]?.Reserialise();
+                        if (tempClone?["template"] is not null)
+                            tempClone["template"] = null;
+                        GD.Print($"REMOVED: {uuid} ({tempClone})");
+                        items.Remove(uuid);
                         OnItemRemoved?.Invoke(profileItem);
                         break;
                     case "statChanged":
                         break;
                     case "itemQuantityChanged":
-                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid]["quantity"] = change["quantity"].Reserialise();
-                        GD.Print("CHANGED (quantity): " + uuid);
+                        items[uuid]["quantity"] = change["quantity"].Reserialise();
+                        tempClone = items[uuid]?.Reserialise();
+                        if (tempClone?["template"] is not null)
+                            tempClone["template"] = null;
+                        GD.Print($"CHANGED (quantity): {uuid} ({tempClone})");
                         OnItemUpdated?.Invoke(profileItem);
                         break;
                     case "itemAttrChanged":
-                        //TODO: apply change to profile
-                        GD.Print("CHANGED (attribute): " + uuid + "[" + change["attributeName"] +"]");
-                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid][change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
+                        tempClone = items[uuid]?.Reserialise();
+                        if (tempClone?["template"] is not null)
+                            tempClone["template"] = null;
+                        GD.Print($"CHANGED (attribute): {uuid}[{change["attributeName"]}] ({tempClone})");
+                        items[uuid][change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
                         OnItemUpdated?.Invoke(profileItem);
                         break;
-                    case "itemFullyChanged"://custom one for handling generated changelogs
-                        profileCache[profile]["profileChanges"][0]["profile"]["items"][uuid] = change["item"].Reserialise();
-                        GD.Print("CHANGED (full): " + uuid);
+                    case "itemFullyChanged":
+                        //custom one for handling generated changelogs
+                        items[uuid] = change["item"].Reserialise();
+                        tempClone = items[uuid].Reserialise();
+                        if (tempClone?["template"] is not null)
+                            tempClone["template"] = null;
+                        GD.Print($"CHANGED (full): {uuid} ({tempClone})");
                         OnItemUpdated?.Invoke(profileItem);
                         break;
                 }

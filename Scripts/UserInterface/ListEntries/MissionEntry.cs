@@ -77,7 +77,17 @@ public partial class MissionEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.DescriptionChanged, generator["Description"].ToString());
         EmitSignal(SignalName.LocationChanged, tile["zoneTheme"]["DisplayName"].ToString());
 
-        EmitSignal(SignalName.TooltipChanged, $"{generator["DisplayName"]}\n{generator["Description"]}\nLocated in: {tile["zoneTheme"]["DisplayName"]}");
+        //$"{generator["DisplayName"]}\n{generator["Description"]}\nLocated in: {tile["zoneTheme"]["DisplayName"]}"
+        EmitSignal(SignalName.TooltipChanged, CustomTooltip.GenerateSimpleTooltip(
+            generator["DisplayName"].ToString(),
+            null,
+            new string[]
+            {
+                generator["Description"].ToString(),
+                $"Located in: {tile["zoneTheme"]["DisplayName"]}\n" +
+                $"Test: {tile["requirements"]["eventFlag"]}"
+            }
+            ));
 
         if (currentMissionData.missionJson["missionAlert"] is JsonObject missionAlert)
         {
