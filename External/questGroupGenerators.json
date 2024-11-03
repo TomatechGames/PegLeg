@@ -5,7 +5,7 @@
             "autoPopulateQuestlines":true
         },
         {
-            "name": "Scheduled Challenges",
+            "name": "Scheduled Quests",
             "groupGens":
             {
                 "Birthday Llamas":{
@@ -143,6 +143,43 @@
                         "Quest:phoenix_seasonal_locating_01",
                         "Quest:fall_seasonal_locating_01",
                         "Quest:winter_seasonal_locating_01"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Cram Session",
+            "groupGens":
+            {
+                "Let\u0027s Explore":
+                {
+                    "chain":true,
+                    "union": [
+                        "Quest:autumnquest_explorezones_1"
+                    ]
+                },
+                
+                "Treasure Hunt":
+                {
+                    "chain":true,
+                    "union": [
+                        "Quest:autumnquest_treasurechests_1"
+                    ]
+                },
+                
+                "Safecracking":
+                {
+                    "chain":true,
+                    "union": [
+                        "Quest:autumnquest_safes_1"
+                    ]
+                },
+                
+                "The Air Itself is Filled with Husks":
+                {
+                    "chain":true,
+                    "union": [
+                        "Quest:autumnquest_killhusks_1"
                     ]
                 }
             }
