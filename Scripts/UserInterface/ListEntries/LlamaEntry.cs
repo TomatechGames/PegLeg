@@ -74,7 +74,7 @@ public partial class LlamaEntry : GameItemEntry
         LlamaTier = Mathf.Max(0, cardPackTemplate.GetItemRarity() - 3);
         //cardPackTemplate.GetItemTexture(pinataIcon);
         string llamaPinataName =
-            (cardPackTemplate.TryGetTexturePathFromTemplate(BanjoAssets.TextureType.Preview, out var imagePath) ? imagePath : null)
+            (cardPackTemplate.TryGetTexturePathFromTemplate(ItemTextureType.Preview, out var imagePath) ? imagePath : null)
             ?.ToString().Split("\\")[^1];
         if (llamaPinataName?.StartsWith(defaultPreviewImage) ?? false)
         {
@@ -92,7 +92,7 @@ public partial class LlamaEntry : GameItemEntry
             pinataIcon = cardPackTemplate.GetItemTexture();
         }
 
-        var packIcon = cardPackTemplate.GetItemTexture(null, BanjoAssets.TextureType.PackImage);
+        var packIcon = cardPackTemplate.GetItemTexture(null, ItemTextureType.PackImage);
         if (name is null || name.StartsWith("Mini"))
             packIcon = null;
 

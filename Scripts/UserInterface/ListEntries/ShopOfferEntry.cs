@@ -82,7 +82,7 @@ public partial class ShopOfferEntry : Control
 
         if (price > 0)
         {
-            int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
+            int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfileTypes.AccountItems, priceType);
             priceTemplate["Description"] = inInventory + "/" + price;
             priceEntry.SetItemData(priceTemplate.CreateInstanceOfItem(price));
         }

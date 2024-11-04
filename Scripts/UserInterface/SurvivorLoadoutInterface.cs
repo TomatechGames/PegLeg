@@ -95,7 +95,7 @@ public partial class SurvivorLoadoutInterface : Node
         if (loadoutName is null)
             return;
 
-        var workers = await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, item =>
+        var workers = await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, item =>
                 item.Value["templateId"].ToString().StartsWith("Worker") &&
                 item.Value["attributes"].AsObject().ContainsKey("squad_id")
         );
@@ -136,7 +136,7 @@ public partial class SurvivorLoadoutInterface : Node
             ) ?? false))
             return;
         eggTimer = 3;
-        var existingWorkers = await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, item =>
+        var existingWorkers = await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, item =>
                 item.Value["templateId"].ToString().StartsWith("Worker") &&
                 item.Value["attributes"].AsObject().ContainsKey("squad_id")
         );
@@ -177,8 +177,8 @@ public partial class SurvivorLoadoutInterface : Node
         {
             ["squadIds"] = new JsonArray(survivorSquads.Select(s => (JsonNode)s).ToArray()),
         }; ;
-        await PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
-        await PerformProfileOperation(FnProfiles.AccountItems, "AssignWorkerToSquadBatch", flattenedLoadout.ToString());
+        await PerformProfileOperation(FnProfileTypes.AccountItems, "UnassignAllSquads", unslotBody.ToString());
+        await PerformProfileOperation(FnProfileTypes.AccountItems, "AssignWorkerToSquadBatch", flattenedLoadout.ToString());
         await this.WaitForTimer(1);
         LoadingOverlay.RemoveLoadingKey("applySurvivorLoadout");
     }
@@ -246,7 +246,7 @@ public partial class SurvivorLoadoutInterface : Node
             ) ?? false))
             return;
 
-        var existingWorkers = await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, item =>
+        var existingWorkers = await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, item =>
                 item.Value["templateId"].ToString().StartsWith("Worker") &&
                 item.Value["attributes"].AsObject().ContainsKey("squad_id")
         );
@@ -278,7 +278,7 @@ public partial class SurvivorLoadoutInterface : Node
         {
             ["squadIds"] = new JsonArray(survivorSquads.Select(s=>(JsonNode)s).ToArray()),
         }; ;
-        await PerformProfileOperation(FnProfiles.AccountItems, "UnassignAllSquads", unslotBody.ToString());
+        await PerformProfileOperation(FnProfileTypes.AccountItems, "UnassignAllSquads", unslotBody.ToString());
         LoadingOverlay.RemoveLoadingKey("clearSurvivorLoadout");
     }
 
@@ -315,8 +315,8 @@ public partial class SurvivorLoadoutInterface : Node
     async void DebugRecycle()
     {
         LoadingOverlay.AddLoadingKey("gettingCollections");
-        await GetProfile(FnProfiles.SchematicCollection);
-        await GetProfile(FnProfiles.SchematicCollection);
+        await GetProfile(FnProfileTypes.SchematicCollection);
+        await GetProfile(FnProfileTypes.SchematicCollection);
         LoadingOverlay.RemoveLoadingKey("gettingCollections");
 
         var instructions = PLSearch.GenerateSearchInstructions("template.RarityLv=..3 | (template.RarityLv=..4 !templateId=\"Worker\"..)", out var _);

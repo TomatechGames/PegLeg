@@ -1,0 +1,177 @@
+[gd_scene load_steps=11 format=3 uid="uid://3ic5fe2i0n0w"]
+
+[ext_resource type="Script" path="res://Scripts/ItemTierController.cs" id="1_2i6xj"]
+[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="1_i8r4h"]
+[ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="1_vxoke"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="2_jv7tl"]
+[ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="2_upnrw"]
+[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_myod1"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="4_fjwg7"]
+[ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="5_x85jh"]
+[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Hero-Soldier-CARD.png" id="6_2xts0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pft80"]
+shader = ExtResource("1_i8r4h")
+shader_parameter/ControlSize = Vector2(410, 56)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/Fit = true
+shader_parameter/UseCorners = true
+shader_parameter/UseGlobalCorners = null
+shader_parameter/ApplyCornersToFit = null
+shader_parameter/CornerRadius = 10.0
+shader_parameter/ClipOOB = null
+
+[node name="Commander" type="MarginContainer"]
+
+[node name="ColorRect" type="TextureRect" parent="."]
+modulate = Color(0.9, 0.615, 0, 1)
+texture_repeat = 2
+material = SubResource("ShaderMaterial_pft80")
+layout_mode = 2
+texture = ExtResource("1_vxoke")
+expand_mode = 1
+script = ExtResource("2_jv7tl")
+syncControlSize = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Deadly Blade Crash"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TierController" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/MarginContainer" node_paths=PackedStringArray("tierImages")]
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+script = ExtResource("1_2i6xj")
+tierImages = [null, null, null, null, null]
+superchargeColor = Color(0, 0.708333, 0.85, 1)
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/MarginContainer/TierController"]
+self_modulate = Color(0, 0.708333, 0.85, 1)
+layout_mode = 2
+texture = ExtResource("2_upnrw")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/MarginContainer/TierController"]
+layout_mode = 2
+texture = ExtResource("2_upnrw")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/MarginContainer/TierController"]
+layout_mode = 2
+texture = ExtResource("2_upnrw")
+expand_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/MarginContainer/TierController"]
+layout_mode = 2
+texture = ExtResource("2_upnrw")
+expand_mode = 3
+
+[node name="TextureRect5" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer/MarginContainer/TierController"]
+layout_mode = 2
+texture = ExtResource("2_upnrw")
+expand_mode = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+texture = ExtResource("3_myod1")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Corrosive Strikes +"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+visible = false
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+texture = ExtResource("3_myod1")
+expand_mode = 3
+
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+texture = ExtResource("3_myod1")
+expand_mode = 3
+
+[node name="TextureRect4" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+texture = ExtResource("3_myod1")
+expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("4_fjwg7")
+expand_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer/TextureRect"]
+self_modulate = Color(0, 0.6, 1, 1)
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_x85jh")
+expand_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer/TextureRect/TextureRect"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_2xts0")
+expand_mode = 3

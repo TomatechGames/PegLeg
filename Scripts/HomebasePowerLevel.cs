@@ -36,7 +36,7 @@ public partial class HomebasePowerLevel : Control
     public override async void _Ready()
     {
         instance = this;
-        equippedWorkerListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, EquippedWorkerPredicate);
+        equippedWorkerListener = await ProfileListener.CreateListener(FnProfileTypes.AccountItems, EquippedWorkerPredicate);
         equippedWorkerListener.OnAdded += handle => fortStatsAreDirty = true;
         equippedWorkerListener.OnUpdated += handle => fortStatsAreDirty = true;
         equippedWorkerListener.OnRemoved += handle => fortStatsAreDirty = true;
@@ -118,8 +118,8 @@ public partial class HomebasePowerLevel : Control
         }
 
         isRecalculating = true;
-        var profileStats = (await ProfileRequests.GetProfile(FnProfiles.AccountItems))["profileChanges"][0]["profile"]["stats"]["attributes"]["research_levels"];
-        var profileStatAndWorkerItems = await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, item =>
+        var profileStats = (await ProfileRequests.GetProfile(FnProfileTypes.AccountItems))["profileChanges"][0]["profile"]["stats"]["attributes"]["research_levels"];
+        var profileStatAndWorkerItems = await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, item =>
             item.Value["templateId"].ToString().StartsWith("Stat") || EquippedWorkerPredicate(item)
         );
         int LookupStatItem(string statId) =>

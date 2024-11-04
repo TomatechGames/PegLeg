@@ -115,9 +115,9 @@ public partial class LoginInterface : Control
 
     protected async Task OnLoginSucceeded()
     {
-        await ProfileRequests.GetProfile(FnProfiles.AccountItems);
-        await ProfileRequests.GetProfile(FnProfiles.SchematicCollection);
-        await ProfileRequests.GetProfile(FnProfiles.PeopleCollection);
+        await ProfileRequests.GetProfile(FnProfileTypes.AccountItems);
+        await ProfileRequests.GetProfile(FnProfileTypes.SchematicCollection);
+        await ProfileRequests.GetProfile(FnProfileTypes.PeopleCollection);
     }
 
     public virtual async Task Login()

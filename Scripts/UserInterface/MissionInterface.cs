@@ -179,7 +179,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
         {
             try
             {
-                await ProfileRequests.GetProfile(FnProfiles.AccountItems);
+                await ProfileRequests.GetProfile(FnProfileTypes.AccountItems);
                 missionList.Visible = false;
                 loadingIcon.Visible = true;
                 await this.WaitForFrame();
@@ -299,11 +299,11 @@ public class MissionData
             _ => 0
         };
 
-        textureDependancies.Add(missionJson["missionGenerator"].AsObject().GetItemTexture(BanjoAssets.TextureType.Icon));
+        textureDependancies.Add(missionJson["missionGenerator"].AsObject().GetItemTexture(ItemTextureType.Icon));
 
-        if (missionJson["missionGenerator"].AsObject().GetItemTexture(BanjoAssets.TextureType.LoadingScreen) is Texture2D missionLoadingScreen)
+        if (missionJson["missionGenerator"].AsObject().GetItemTexture(ItemTextureType.LoadingScreen) is Texture2D missionLoadingScreen)
             textureDependancies.Add(missionLoadingScreen);
-        else if (missionJson["tile"]["zoneTheme"].AsObject().GetItemTexture(BanjoAssets.TextureType.LoadingScreen) is Texture2D zoneLoadingScreen)
+        else if (missionJson["tile"]["zoneTheme"].AsObject().GetItemTexture(ItemTextureType.LoadingScreen) is Texture2D zoneLoadingScreen)
             textureDependancies.Add(zoneLoadingScreen);
 
         foreach (var item in missionJson["missionRewards"].AsArray())

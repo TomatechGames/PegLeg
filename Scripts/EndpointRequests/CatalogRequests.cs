@@ -83,7 +83,7 @@ static class CatalogRequests
         {
             string eventId = offer["metaInfo"].AsArray().First(val => val["key"].ToString() == "PurchaseLimitingEventId")["value"].ToString();
 
-            JsonObject eventTracker = (await ProfileRequests.GetProfileItems(FnProfiles.Common, kvp =>
+            JsonObject eventTracker = (await ProfileRequests.GetProfileItems(FnProfileTypes.Common, kvp =>
                     kvp.Value["templateId"].ToString().StartsWith("EventPurchaseTracker") &&
                     kvp.Value["attributes"]["event_instance_id"].ToString() == eventId
                 )).FirstOrDefault().Value?.AsObject();

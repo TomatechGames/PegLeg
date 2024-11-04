@@ -62,13 +62,13 @@ public partial class MissionEntry : Control, IRecyclableEntry
         var tile = currentMissionData.missionJson["tile"].AsObject();
         var zoneTheme = tile["zoneTheme"].AsObject();
 
-        EmitSignal(SignalName.IconChanged, generator.GetItemTexture(BanjoAssets.TextureType.Icon));
+        EmitSignal(SignalName.IconChanged, generator.GetItemTexture(ItemTextureType.Icon));
         EmitSignal(SignalName.VenturesIndicatorVisible, currentMissionData.theaterCat == "v");
         EmitSignal(SignalName.PowerLevelChanged, currentMissionData.powerLevel.ToString());
 
-        if (generator.GetItemTexture(null, BanjoAssets.TextureType.LoadingScreen) is Texture2D missionLoadingScreen)
+        if (generator.GetItemTexture(null, ItemTextureType.LoadingScreen) is Texture2D missionLoadingScreen)
             EmitSignal(SignalName.BackgroundChanged, missionLoadingScreen);
-        else if(zoneTheme.GetItemTexture(null, BanjoAssets.TextureType.LoadingScreen) is Texture2D zoneLoadingScreen)
+        else if(zoneTheme.GetItemTexture(null, ItemTextureType.LoadingScreen) is Texture2D zoneLoadingScreen)
             EmitSignal(SignalName.BackgroundChanged, zoneLoadingScreen);
         else
             EmitSignal(SignalName.BackgroundChanged, defaultBackground);

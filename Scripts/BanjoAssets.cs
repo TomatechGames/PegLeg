@@ -7,21 +7,15 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static Godot.RenderingDevice;
 
 public static class BanjoAssets
 {
-    const string banjoFolderPath = "res://External/Banjo";
+    public const string banjoFolderPath = "res://External/Banjo";
 
     public static readonly Texture2D defaultIcon = ResourceLoader.Load<Texture2D>("res://Images/InterfaceIcons/T-Icon-Unknown-128.png");
     public static readonly BanjoSuppliments supplimentaryData = ResourceLoader.Load<BanjoSuppliments>("res://banjo_suppliments.tres");
     static readonly Dictionary<string, WeakRef> iconCache = new();
-    public enum TextureType
-    {
-        Preview,
-        Icon,
-        LoadingScreen,
-        PackImage
-    }
 
     public static T Reserialise<T>(this T toReserialise) where T : JsonNode =>
         toReserialise is not null ? (T)JsonNode.Parse(toReserialise.ToJsonString()) : null;
@@ -86,7 +80,7 @@ public static class BanjoAssets
         if (description is not null)
             toReturn["Description"] = description;
         if (iconPath is not null)
-            toReturn["ImagePaths"] = new JsonObject() { ["SmallPreview"] = iconPath };
+            toReturn["ImagePaths"] = new JsonObject() { ["LargePreview"] = iconPath };
         return toReturn;
     }
 
@@ -249,14 +243,14 @@ public static class BanjoAssets
 
     public static string GetIDFromTemplate(this JsonObject template) => template["Type"].ToString() + ":" + template["Name"].ToString().ToLower();
 
-    public static Texture2D GetItemTexture(this JsonObject itemTemplate, TextureType textureType = TextureType.Preview) =>
+    public static Texture2D GetItemTexture(this JsonObject itemTemplate, ItemTextureType textureType = ItemTextureType.Preview) =>
         itemTemplate.GetItemTexture(defaultIcon, textureType);
-    public static Texture2D GetItemTexture(this JsonObject itemTemplate, Texture2D fallbackIcon, TextureType textureType = TextureType.Preview)
+    public static Texture2D GetItemTexture(this JsonObject itemTemplate, Texture2D fallbackIcon, ItemTextureType textureType = ItemTextureType.Preview)
     {
         if (itemTemplate is null)
             return fallbackIcon;
 
-        if (textureType == TextureType.Preview && (itemTemplate["attributes"]?["portrait"]?.TryGetTemplate(out var portraitTemplate) ?? false))
+        if (textureType == ItemTextureType.Preview && (itemTemplate["attributes"]?["portrait"]?.TryGetTemplate(out var portraitTemplate) ?? false))
         {
             var portraitTexture = portraitTemplate.GetItemTexture(fallbackIcon);
             if (portraitTexture is not null)
@@ -346,6 +340,7 @@ public static class BanjoAssets
 
     public static Texture2D GetSubtypeTexture(string key, Texture2D fallbackIcon = null)
     {
+        key ??= "";
         if (itemTypeTextureMap.ContainsKey(key))
         {
             return GetReservedTexture($"ExportedImages/{itemTypeTextureMap[key]}.png");
@@ -460,6 +455,7 @@ public static class BanjoAssets
         (itemTemplate["Rarity"]?.ToString() ?? "") switch
         {
             "Common" => 1,
+            "Uncommon" => 2,
             "Rare" => 3,
             "Epic" => 4,
             "Legendary" => 5,
@@ -562,7 +558,7 @@ public static class BanjoAssets
                 }
                 else
                 {
-                    var leadSurvivor = ProfileRequests.GetCachedProfileItems(FnProfiles.AccountItems, kvp =>
+                    var leadSurvivor = ProfileRequests.GetCachedProfileItems(FnProfileTypes.AccountItems, kvp =>
                         kvp.Value?["attributes"]?["squad_id"]?.ToString() == survivorSquad &&
                         kvp.Value["attributes"]["squad_slot_idx"].GetValue<int>() == 0
                     ).FirstOrDefault().Value?.AsObject();
@@ -641,8 +637,6 @@ public static class BanjoAssets
         return null;
     }
 
-
-    static readonly DataTable heroStatsDataTable = new("res://External/DataTables/AttributesHeroScaling.json");
     public static float GetHeroStat(this JsonObject heroInstance, string stat, int givenLevel = 0, int givenTier = 0)
     {
         if (TryGetSource("HeroStats", out var stats))
@@ -682,14 +676,14 @@ public static class BanjoAssets
         return toReturn;
     }
 
-    public static bool TryGetTexturePathFromTemplate(this JsonObject itemTemplate, TextureType textureType, out string foundPath)
+    public static bool TryGetTexturePathFromTemplate(this JsonObject itemTemplate, ItemTextureType textureType, out string foundPath)
     {
         foundPath = null;
         JsonObject imagePaths = itemTemplate["ImagePaths"]?.AsObject();
         if (imagePaths is null)
             return false;
 
-        if (textureType == TextureType.Preview)
+        if (textureType == ItemTextureType.Preview)
         {
             foundPath = (imagePaths["LargePreview"] ?? imagePaths["SmallPreview"])?.ToString();
             if (!FileAccess.FileExists(banjoFolderPath + "/" + foundPath))
@@ -728,6 +722,7 @@ public static class HeroStats
     public const string AbilityDamage = "FortDamageSet.OutgoingBaseAbilityDamageMultiplier";
     public const string HealingModifier = "FortHealthSet.HealingSourceBaseMultiplier";
 }
+
 public static class SurvivorBonus
 {
     public const string MaxHealth = "IsFortitudeLow";
@@ -740,6 +735,173 @@ public static class SurvivorBonus
     public const string TrapDamage = "IsTrapDamageLow";
 
     public const string TrapDurability = "IsTrapDurabilityHigh";
+}
+
+public class GameItemTemplate
+{
+    public GameItemTemplate(JsonObject rawData)
+    {
+        isReal = true;
+        this.rawData = rawData;
+    }
+
+    public GameItemTemplate(string name, string displayName, string type = "Custom", string description = null, string iconPath = null, JsonObject extraData = null)
+    {
+        extraData ??= new();
+        extraData["Type"] = type;
+        extraData["Name"] = name;
+        extraData["DisplayName"] = displayName;
+        extraData["Description"] = description;
+        if (iconPath is not null)
+            extraData["ImagePaths"] = new JsonObject() { ["LargePreview"] = iconPath };
+        rawData = extraData;
+    }
+
+    public bool isReal { get; private set; }
+    public JsonObject rawData { get; private set; }
+    public JsonNode this[string propertyName] => rawData[propertyName];
+    public bool ContainsKey(string propertyName) => rawData.ContainsKey(propertyName);
+    public string TemplateId => $"{Type}:{Name.ToLower()}";
+
+    public string Type => rawData["Type"].ToString();
+    public string Name => rawData["Name"].ToString();
+    public string DisplayName => rawData["DisplayName"]?.ToString();
+    public string Description => rawData["Description"]?.ToString();
+    public string Category => rawData["Category"]?.ToString();
+    public string SubType => rawData["SubType"]?.ToString();
+    public string Rarity => rawData["Rarity"]?.ToString();
+    public int RarityLevel => (Rarity ?? "") switch
+        {
+            "Common" => 1,
+            "Uncommon" => 2,
+            "Rare" => 3,
+            "Epic" => 4,
+            "Legendary" => 5,
+            "Mythic" => 6,
+            _ => 2 //todo: rarity items with unspecified rarity should be exported as "Uncommon", then this can be 0
+        };
+    public int Tier => rawData["Tier"] is JsonValue tierVal ? (tierVal.TryGetValue<int>(out var tier) ? tier : 0) : 0;
+    public string Personality => rawData["Personality"]?.ToString();
+
+    public Texture2D GetTexture(ItemTextureType textureType = ItemTextureType.Preview, Texture2D fallbackIcon = null)
+    {
+        if (Type == "Worker" && (rawData["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false))
+            return BanjoAssets.GetSubtypeTexture(SubType ?? "Survivor", fallbackIcon);
+
+        if (TryGetTexturePath(textureType, out var texturePath))
+        {
+            var tex = BanjoAssets.GetReservedTexture(texturePath);
+            if (tex is null)
+            {
+                GD.PushWarning($"Null texture in: {TemplateId}");
+                return fallbackIcon;
+            }
+            return tex;
+        }
+        else
+            return fallbackIcon;
+
+    }
+
+    public bool TryGetTexturePath(out string foundPath)
+    {
+        bool result = TryGetTexturePath(ItemTextureType.Preview, out var previewPath);
+        foundPath = previewPath;
+        return result;
+    }
+
+    public bool TryGetTexturePath(ItemTextureType textureType, out string foundPath)
+    {
+        foundPath = null;
+        JsonObject imagePaths = rawData["ImagePaths"]?.AsObject();
+        if (imagePaths is null)
+            return false;
+
+        if (textureType == ItemTextureType.Preview)
+        {
+            foundPath = (imagePaths["LargePreview"] ?? imagePaths["SmallPreview"])?.ToString();
+            if (!FileAccess.FileExists(BanjoAssets.banjoFolderPath + "/" + foundPath))
+            {
+                GD.Print($"Large Image not found: {BanjoAssets.banjoFolderPath + "/" + foundPath} ({rawData["Name"]})");
+                foundPath = imagePaths["SmallPreview"]?.ToString();
+            }
+        }
+        else
+            foundPath = imagePaths[textureType.ToString()]?.ToString();
+
+        if (string.IsNullOrWhiteSpace(foundPath) || !foundPath.StartsWith("ExportedImages"))
+            return false;
+        return true;
+    }
+
+    public Texture2D GetSubtypeTexture(Texture2D fallbackIcon = null)
+    {
+
+        switch (Type)
+        {
+            case "Schematic":
+                if (Category == "Trap")
+                    return BanjoAssets.GetSubtypeTexture("Trap", fallbackIcon);
+                else
+                    return BanjoAssets.GetSubtypeTexture(SubType, fallbackIcon);
+            case "Worker":
+                if (rawData["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false)
+                    return null;
+                else
+                    return BanjoAssets.GetSubtypeTexture(SubType ?? "Survivor", fallbackIcon);
+            default:
+                return BanjoAssets.GetSubtypeTexture(SubType, fallbackIcon);
+        }
+    }
+
+    public Texture2D GetAmmoTexture(Texture2D fallbackIcon = null)
+    {
+        if (Type != "Schematic")
+            return fallbackIcon;
+
+        if (Category == "Trap")
+            return BanjoAssets.GetSubtypeTexture(SubType, fallbackIcon);
+
+        if (rawData["RangedWeaponStats"]?["AmmoType"]?.ToString() is string ammoType && BanjoAssets.supplimentaryData.AmmoIcons.ContainsKey(ammoType))
+            return BanjoAssets.supplimentaryData.AmmoIcons[ammoType];
+
+        return fallbackIcon;
+    }
+
+    public void GenerateSearchTags(bool assumeUncommon = true)
+    {
+        List<string> tags = new()
+        {
+            DisplayName,
+            Rarity ?? (assumeUncommon ? "Uncommon" : null),
+            Type,
+            SubType,
+            Rarity,
+            Personality?[2..]
+        };
+        rawData["RarityLv"] = rawData.AsObject().GetItemRarity();
+        if (tags.Contains("Worker"))
+            tags.Add("Survivor");
+        rawData["searchTags"] = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
+    }
+
+    public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, ProfileItemId? profileItemPointer=null)
+    {
+        attributes ??= new JsonObject();
+        attributes["generated_by_pegleg"] = true;
+        return new(this, quantity, attributes, profileItemPointer);
+    }
+}
+
+public enum ItemTextureType
+{
+    Preview,
+    Icon,
+    LoadingScreen,
+    PackImage,
+
+    Personality,
+    SetBonus
 }
 
 class DataTable

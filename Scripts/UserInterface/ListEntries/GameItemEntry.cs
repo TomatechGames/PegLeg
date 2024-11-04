@@ -226,7 +226,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         string type = template["Type"].ToString();
         Texture2D mainIcon;
         if (type == "TeamPerk")
-            mainIcon = itemInstance.GetItemTexture(BanjoAssets.TextureType.Icon);
+            mainIcon = itemInstance.GetItemTexture(ItemTextureType.Icon);
         else
             mainIcon = itemInstance.GetItemTexture();
 

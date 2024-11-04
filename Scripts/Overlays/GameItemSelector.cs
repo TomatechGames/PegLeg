@@ -112,8 +112,8 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
     public async Task<ProfileItemHandle[]> OpenSelector(ProfileItemPredicate filter)
     {
-        var filteredHandles = (await GetProfileItems(FnProfiles.AccountItems, filter))
-            .Select(kvp => ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, kvp.Key)));
+        var filteredHandles = (await GetProfileItems(FnProfileTypes.AccountItems, filter))
+            .Select(kvp => ProfileItemHandle.CreateHandleUnsafe(new(FnProfileTypes.AccountItems, kvp.Key)));
         return await OpenSelector(filteredHandles, null);
     }
 

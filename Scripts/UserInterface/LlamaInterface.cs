@@ -119,7 +119,7 @@ public partial class LlamaInterface : Control
         }
         if (cardPackListener is null)
         {
-            cardPackListener = await ProfileListener.CreateListener(FnProfiles.AccountItems, "CardPack");
+            cardPackListener = await ProfileListener.CreateListener(FnProfileTypes.AccountItems, "CardPack");
             cardPackListener.OnAdded += AddCardPackEntry;
             cardPackListener.OnRemoved += RemoveCardPackEntry;
             foreach (var item in cardPackListener.Items)
@@ -345,7 +345,7 @@ public partial class LlamaInterface : Control
         
         string priceType = offer["prices"][0]["currencySubType"].ToString();
         int price = offer["prices"][0]["finalPrice"].GetValue<int>();
-        int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
+        int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfileTypes.AccountItems, priceType);
 
         return price != 1 || inInventory >= 1;
     }
@@ -419,7 +419,7 @@ public partial class LlamaInterface : Control
         //maybe replace this stuff with a ShopOfferEntry?
         string priceType = offer["prices"][0]["currencySubType"].ToString();
         int price = offer["prices"][0]["finalPrice"].GetValue<int>();
-        var inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
+        var inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfileTypes.AccountItems, priceType);
 
         int maxAffordable = price == 0 ? 999 : Mathf.FloorToInt(inInventory / price);
         int maxInStock = await offer.GetPurchaseLimitFromOffer();

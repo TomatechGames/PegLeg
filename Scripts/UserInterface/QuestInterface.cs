@@ -31,13 +31,13 @@ public partial class QuestInterface : Control
         };
         RefreshTimerController.OnDayChanged += OnDayChanged;
         if (await LoginRequests.TryLogin())
-            await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
+            await ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
     }
 
     private async void OnDayChanged()
     {
         questsNeedUpdate = true;
-        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
+        await ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
         if (IsVisibleInTree())
             LoadQuests();
     }

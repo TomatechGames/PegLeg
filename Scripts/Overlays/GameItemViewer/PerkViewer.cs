@@ -319,7 +319,7 @@ public partial class PerkViewer : Control
             var costItemEntry = costs.ElementAt(i);
             BanjoAssets.TryGetTemplate(costItemEntry.Key, out var costItem);
             int requiredAmount = costItemEntry.Value.GetValue<int>();
-            var existingItem = (await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, costItemEntry.Key)).FirstOrDefault();
+            var existingItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, costItemEntry.Key)).FirstOrDefault();
             int existingAmount = existingItem.Value?["quantity"].GetValue<int>() ?? 0;
             if (existingAmount < requiredAmount)
                 allCostsMet = false;

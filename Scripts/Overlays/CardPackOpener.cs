@@ -236,7 +236,7 @@ public partial class CardPackOpener : Control
 
         if (shopPurchaseBody is not null)
         {
-            var shopResult = await ProfileRequests.PerformProfileOperation(FnProfiles.Common, "PurchaseCatalogEntry", shopPurchaseBody.ToString());
+            var shopResult = await ProfileRequests.PerformProfileOperation(FnProfileTypes.Common, "PurchaseCatalogEntry", shopPurchaseBody.ToString());
             var shopResultItems = shopResult["notifications"]
                 .AsArray()
                 .First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"]
@@ -294,7 +294,7 @@ public partial class CardPackOpener : Control
 
             //TODO: handle errors
             //TODO: merge amounts of identical item stacks
-            var resultNotification = (await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "OpenCardPackBatch", body.ToString()))["notifications"][0];
+            var resultNotification = (await ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "OpenCardPackBatch", body.ToString()))["notifications"][0];
             
             var resultItemData = resultNotification["lootGranted"]["items"].AsArray()
                 .Where(val => val?["itemGuid"] is not null && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false));
@@ -801,7 +801,7 @@ public partial class CardPackOpener : Control
             ["cardPackItemId"] = queuedChoices[nextChoiceIndex - 1].itemID.uuid,
             ["selectionIdx"] = index
         };
-        var operationTask = ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "OpenCardPack", body.ToString());
+        var operationTask = ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "OpenCardPack", body.ToString());
 
         for (int i = 0; i < choiceCards.Length; i++)
         {
@@ -942,7 +942,7 @@ public partial class CardPackOpener : Control
                     ["targetItemIds"] = new JsonArray(toRecycle.Select(handle => (JsonNode)handle.itemID.uuid).ToArray())
                 };
                 LoadingOverlay.AddLoadingKey("recycling");
-                await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "RecycleItemBatch", content.ToString());
+                await ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "RecycleItemBatch", content.ToString());
                 LoadingOverlay.RemoveLoadingKey("recycling");
             }
         }

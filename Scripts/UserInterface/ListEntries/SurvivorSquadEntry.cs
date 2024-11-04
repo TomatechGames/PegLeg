@@ -46,7 +46,7 @@ public partial class SurvivorSquadEntry : Control
 
         if (!await LoginRequests.TryLogin())
             return;
-        await ProfileRequests.GetProfile(FnProfiles.AccountItems);
+        await ProfileRequests.GetProfile(FnProfileTypes.AccountItems);
         List<Task> tasks = new();
 
         leadSurvivorSlot.OnItemChangeRequested += slot => HandleChangeRequest(slot, 0);
@@ -57,7 +57,7 @@ public partial class SurvivorSquadEntry : Control
             statUpdateQueued = true;
         };
 
-        bool leaderSlotUnlocked = ProfileRequests.ProfileItemExistsUnsafe(FnProfiles.AccountItems, kvp => SlotNodeMatch(kvp, 0));
+        bool leaderSlotUnlocked = ProfileRequests.ProfileItemExistsUnsafe(FnProfileTypes.AccountItems, kvp => SlotNodeMatch(kvp, 0));
         if(leaderSlotUnlocked)
             tasks.Add(leadSurvivorSlot.SetPredicate(kvp => SurvivorMatch(kvp, 0)));
         bool hasAnySlot = leaderSlotUnlocked;
@@ -69,7 +69,7 @@ public partial class SurvivorSquadEntry : Control
             survivorSlots[i].OnItemChangeRequested += slot => HandleChangeRequest(slot, slotIndex);
             survivorSlots[i].OnItemChanged += handle => statUpdateQueued = true;
 
-            bool slotUnlocked = ProfileRequests.ProfileItemExistsUnsafe(FnProfiles.AccountItems, kvp => SlotNodeMatch(kvp, slotIndex));
+            bool slotUnlocked = ProfileRequests.ProfileItemExistsUnsafe(FnProfileTypes.AccountItems, kvp => SlotNodeMatch(kvp, slotIndex));
             if (slotUnlocked)
                 tasks.Add(survivorSlots[i].SetPredicate(kvp => SurvivorMatch(kvp, slotIndex)));
             hasAnySlot |= slotUnlocked;
@@ -172,7 +172,7 @@ public partial class SurvivorSquadEntry : Control
         if (body is not null && await LoginRequests.TryLogin())
         {
             LoadingOverlay.AddLoadingKey("changingSurvivor");
-            await ProfileRequests.PerformProfileOperationUnsafe(FnProfiles.AccountItems, "AssignWorkerToSquad", body.ToString());
+            await ProfileRequests.PerformProfileOperationUnsafe(FnProfileTypes.AccountItems, "AssignWorkerToSquad", body.ToString());
             LoadingOverlay.RemoveLoadingKey("changingSurvivor");
         }
     }

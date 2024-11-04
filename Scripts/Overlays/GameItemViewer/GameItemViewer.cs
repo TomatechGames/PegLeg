@@ -359,7 +359,7 @@ public partial class GameItemViewer : ModalWindow
 
         string priceType = offer["prices"][0]["currencySubType"].ToString();
         int price = offer["prices"][0]["finalPrice"].GetValue<int>();
-        var inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, priceType);
+        var inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfileTypes.AccountItems, priceType);
 
         int maxAffordable = price == 0 ? 999 : Mathf.FloorToInt(inInventory / price);
         int maxInStock = await offer.GetPurchaseLimitFromOffer();
@@ -426,7 +426,7 @@ public partial class GameItemViewer : ModalWindow
             ["gameContext"] = "Pegleg",
         };
         LoadingOverlay.AddLoadingKey("ItemPurchase");
-        var result = (await ProfileRequests.PerformProfileOperation(FnProfiles.Common, "PurchaseCatalogEntry", body.ToString()));
+        var result = (await ProfileRequests.PerformProfileOperation(FnProfileTypes.Common, "PurchaseCatalogEntry", body.ToString()));
         GD.Print(result["notifications"]);
         GD.Print(result["multiUpdate"]);
         SetWindowOpen(false);

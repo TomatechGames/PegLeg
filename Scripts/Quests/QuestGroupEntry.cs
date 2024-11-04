@@ -86,8 +86,8 @@ public partial class QuestGroupEntry : Control
                     string currentQuestId = qline[i].ToString();
 
                     ProfileItemHandle questHandle = null;
-                    if (await ProfileRequests.GetFirstProfileItem(FnProfiles.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
-                        questHandle = ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, currentQuest["uuid"].ToString()));
+                    if (await ProfileRequests.GetFirstProfileItem(FnProfileTypes.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
+                        questHandle = ProfileItemHandle.CreateHandleUnsafe(new(FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
 
                     if (i == 0 && questHandle is null)
                         break;
@@ -121,8 +121,8 @@ public partial class QuestGroupEntry : Control
                 JsonObject questTemplate = BanjoAssets.TryGetTemplate(currentQuestId);
 
                 ProfileItemHandle questHandle = null;
-                if (await ProfileRequests.GetFirstProfileItem(FnProfiles.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
-                    questHandle = ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, currentQuest["uuid"].ToString()));
+                if (await ProfileRequests.GetFirstProfileItem(FnProfileTypes.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
+                    questHandle = ProfileItemHandle.CreateHandleUnsafe(new(FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
 
                 QuestData newData = new(currentQuestId, questTemplate);
                 newData.LinkQuestItem(questHandle);

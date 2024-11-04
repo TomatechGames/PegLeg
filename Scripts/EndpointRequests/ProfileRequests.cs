@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
+using static Godot.RenderingDevice;
 
 public static class ProfileRequests
 {
@@ -101,7 +102,7 @@ public static class ProfileRequests
 
     public static async Task<JsonObject[]> GetAllPrerollDatas()
     {
-        var items = (await GetProfile(FnProfiles.AccountItems))["profileChanges"][0]["profile"]["items"].AsObject();
+        var items = (await GetProfile(FnProfileTypes.AccountItems))["profileChanges"][0]["profile"]["items"].AsObject();
         var preroll = items.FirstOrDefault(kvp => kvp.Value["templateId"].ToString().StartsWith("PrerollData")).Value;
         if(preroll is null)
         {
@@ -109,14 +110,14 @@ public static class ProfileRequests
             //check if prerolls arent outdated yet
             if (DateTime.UtcNow.CompareTo(expireTime) >= 0)
             {
-                await PerformProfileOperation(FnProfiles.AccountItems, "PopulatePrerolledOffers");
-                items = (await GetProfile(FnProfiles.AccountItems))["profileChanges"][0]["profile"]["items"].AsObject();
+                await PerformProfileOperation(FnProfileTypes.AccountItems, "PopulatePrerolledOffers");
+                items = (await GetProfile(FnProfileTypes.AccountItems))["profileChanges"][0]["profile"]["items"].AsObject();
             }
         }
         else
         {
-            await PerformProfileOperation(FnProfiles.AccountItems, "PopulatePrerolledOffers");
-            items = (await GetProfile(FnProfiles.AccountItems))["profileChanges"][0]["profile"]["items"].AsObject();
+            await PerformProfileOperation(FnProfileTypes.AccountItems, "PopulatePrerolledOffers");
+            items = (await GetProfile(FnProfileTypes.AccountItems))["profileChanges"][0]["profile"]["items"].AsObject();
         }
 
         return items
@@ -127,7 +128,7 @@ public static class ProfileRequests
 
     public static float GetSurvivorBonusUnsafe(string bonusID, int perSquadRequirement = 2, float boostBase = 5)
     {
-        var matchingSurvivors = GetCachedProfileItems(FnProfiles.AccountItems, kvp =>
+        var matchingSurvivors = GetCachedProfileItems(FnProfileTypes.AccountItems, kvp =>
         {
             if (!kvp.Value["templateId"].ToString().StartsWith("Worker"))
                 return false;
@@ -167,7 +168,7 @@ public static class ProfileRequests
 
     public static async Task<JsonObject> GetOrderCounts(OrderRange range)
     {
-        var orderRange = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"][OrderRangeToAttribute(range)];
+        var orderRange = (await GetProfile(FnProfileTypes.Common))["profileChanges"][0]["profile"]["stats"]["attributes"][OrderRangeToAttribute(range)];
         var lastIntervalTime = DateTime.Parse(orderRange["lastInterval"].ToString(), null, DateTimeStyles.RoundtripKind);
         if (lastIntervalTime != OrderRangeToInterval(range))
             return null;
@@ -175,13 +176,13 @@ public static class ProfileRequests
     }
     public static async Task<JsonObject> GetFufillmentCounts()
     {
-        var attributes = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
+        var attributes = (await GetProfile(FnProfileTypes.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
         return attributes["in_app_purchases"]["fufillmentCounts"].AsObject();
     }
 
     public static async Task<string> GetSACCode(bool addExpiredText = true)
     {
-        var attributes = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
+        var attributes = (await GetProfile(FnProfileTypes.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
         var lastSetTime = DateTime.Parse(attributes["mtx_affiliate_set_time"].ToString(), null, DateTimeStyles.RoundtripKind);
         bool isExpired = (DateTime.UtcNow - lastSetTime).Days > 13;
         return attributes["mtx_affiliate"] + (isExpired && addExpiredText ? " (Expired)" : "");
@@ -191,14 +192,14 @@ public static class ProfileRequests
 
     public static async Task<double> GetSACTime()
     {
-        var attributes = (await GetProfile(FnProfiles.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
+        var attributes = (await GetProfile(FnProfileTypes.Common))["profileChanges"][0]["profile"]["stats"]["attributes"];
         var lastSetTime = DateTime.Parse(attributes["mtx_affiliate_set_time"].ToString(), null, DateTimeStyles.RoundtripKind);
         return (DateTime.UtcNow - lastSetTime).TotalDays;
     }
 
     public static async Task<bool> SetSACCode(string newName)
     {
-        await PerformProfileOperation(FnProfiles.Common, "SetAffiliateName", "{\"affiliateName\":\"" + newName + "\"}");
+        await PerformProfileOperation(FnProfileTypes.Common, "SetAffiliateName", "{\"affiliateName\":\"" + newName + "\"}");
         //TODO: return false if creator code not found
         return true;
     }
@@ -227,7 +228,7 @@ public static class ProfileRequests
         if (localPinnedQuests != null && !outOfDate)
             return;
         
-        localPinnedQuests = (await GetProfile(FnProfiles.AccountItems, true))
+        localPinnedQuests = (await GetProfile(FnProfileTypes.AccountItems, true))
             ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
             .AsArray()
             .Select(q => q.ToString())
@@ -240,7 +241,7 @@ public static class ProfileRequests
         if (!localPinnedQuests.Contains(uuid))
         {
             localPinnedQuests.Add(uuid);
-            OnItemUpdated?.Invoke(new(FnProfiles.AccountItems, uuid));
+            OnItemUpdated?.Invoke(new(FnProfileTypes.AccountItems, uuid));
             SendLocalPinnedQuests();
         }
     }
@@ -251,7 +252,7 @@ public static class ProfileRequests
         if (localPinnedQuests.Contains(uuid))
         {
             localPinnedQuests.Remove(uuid);
-            OnItemUpdated?.Invoke(new(FnProfiles.AccountItems, uuid));
+            OnItemUpdated?.Invoke(new(FnProfileTypes.AccountItems, uuid));
             SendLocalPinnedQuests();
         }
     }
@@ -263,7 +264,7 @@ public static class ProfileRequests
         localPinnedQuests?.Clear();
         foreach (var uuid in unpinnedQuests)
         {
-            OnItemUpdated?.Invoke(new(FnProfiles.AccountItems, uuid));
+            OnItemUpdated?.Invoke(new(FnProfileTypes.AccountItems, uuid));
         }
         SendLocalPinnedQuests();
     }
@@ -275,7 +276,7 @@ public static class ProfileRequests
         {
             ["pinnedQuestIds"] = new JsonArray(localPinnedQuests.Select(q => (JsonValue)q).ToArray())
         };
-        await PerformProfileOperation(FnProfiles.AccountItems, "SetPinnedQuests", content.ToString());
+        await PerformProfileOperation(FnProfileTypes.AccountItems, "SetPinnedQuests", content.ToString());
     }
 
     public static bool HasPinnedQuest(string uuid)
@@ -292,19 +293,19 @@ public static class ProfileRequests
             ["questId"] = uuid
         };
         var notif = 
-            (await PerformProfileOperation(FnProfiles.AccountItems, "FortRerollDailyQuest", content.ToString()))
+            (await PerformProfileOperation(FnProfileTypes.AccountItems, "FortRerollDailyQuest", content.ToString()))
             ["notifications"]?
             .AsArray()
             .FirstOrDefault(n => n["type"].ToString()== "dailyQuestReroll");
         if (notif is null)
             return null;
-        var newUUID = GetFirstProfileItemUnsafe(FnProfiles.AccountItems, (kvp) => kvp.Value["templateId"].ToString() == notif["newQuestId"].ToString())["uuid"].ToString();
-        return ProfileItemHandle.CreateHandleUnsafe(new(FnProfiles.AccountItems, newUUID));
+        var newUUID = GetFirstProfileItemUnsafe(FnProfileTypes.AccountItems, (kvp) => kvp.Value["templateId"].ToString() == notif["newQuestId"].ToString())["uuid"].ToString();
+        return ProfileItemHandle.CreateHandleUnsafe(new(FnProfileTypes.AccountItems, newUUID));
     }
 
     public static bool CanRerollQuestUnsafe()
     {
-        return profileCache[FnProfiles.AccountItems]
+        return profileCache[FnProfileTypes.AccountItems]
             ["profileChanges"][0]["profile"]["stats"]["attributes"]["quest_manager"]["dailyQuestRerolls"].GetValue<int>() > 0;
     }
 
@@ -377,25 +378,25 @@ public static class ProfileRequests
         var notificationKey = GenerateRewardNotificationKey(itemTemplate);
         if (itemTemplate["Type"].ToString() == "Weapon")
         {
-            if (!rewardNotificationChecks.ContainsKey(FnProfiles.Backpack))
-                await GetProfile(FnProfiles.Backpack);
+            if (!rewardNotificationChecks.ContainsKey(FnProfileTypes.Backpack))
+                await GetProfile(FnProfileTypes.Backpack);
 
             lock (rewardNotificationChecks)
             {
-                exists = rewardNotificationChecks[FnProfiles.Backpack]?.Any(c => c.IsMatch(notificationKey)) ?? false;
+                exists = rewardNotificationChecks[FnProfileTypes.Backpack]?.Any(c => c.IsMatch(notificationKey)) ?? false;
             }
         }
         else
         {
-            if (!rewardNotificationChecks.ContainsKey(FnProfiles.AccountItems))
-                await GetProfile(FnProfiles.AccountItems);
+            if (!rewardNotificationChecks.ContainsKey(FnProfileTypes.AccountItems))
+                await GetProfile(FnProfileTypes.AccountItems);
             lock (rewardNotificationChecks)
             {
-                exists = rewardNotificationChecks[FnProfiles.AccountItems]?.Any(c => c.IsMatch(notificationKey)) ?? false;
+                exists = rewardNotificationChecks[FnProfileTypes.AccountItems]?.Any(c => c.IsMatch(notificationKey)) ?? false;
             }
             if (!exists && collectableTypess.Contains(itemTemplate["Type"].ToString()))
             {
-                var collectionProfile = itemTemplate["Type"].ToString() == "Schematic" ? FnProfiles.SchematicCollection : FnProfiles.PeopleCollection;
+                var collectionProfile = itemTemplate["Type"].ToString() == "Schematic" ? FnProfileTypes.SchematicCollection : FnProfileTypes.PeopleCollection;
 
                 if (!rewardNotificationChecks.ContainsKey(collectionProfile))
                     await GetProfile(collectionProfile);
@@ -423,7 +424,7 @@ public static class ProfileRequests
         if (type == "Worker" && itemInstance["attributes"] is null)
             return null;
 
-        string profile = type == "Schematic" ? FnProfiles.SchematicCollection : FnProfiles.PeopleCollection;
+        string profile = type == "Schematic" ? FnProfileTypes.SchematicCollection : FnProfileTypes.PeopleCollection;
         if (!profileCache.ContainsKey(profile))
             return null;
 
@@ -529,7 +530,7 @@ public static class ProfileRequests
 
         profileCache[profileId] = result;
 
-        if (profileId == FnProfiles.AccountItems)
+        if (profileId == FnProfileTypes.AccountItems)
         {
             localPinnedQuests ??= result["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
                 .AsArray()
@@ -885,7 +886,7 @@ public partial class ProfileItemHandle : RefCounted
         overrideItemSeen = true;
         OnChanged?.Invoke(this);
         string content = @$"{{""itemIds"": [""{itemID.uuid}""]}}";
-        await ProfileRequests.PerformProfileOperation(FnProfiles.AccountItems, "MarkItemSeen", content);
+        await ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "MarkItemSeen", content);
     }
 
     public static async Task<ProfileItemHandle> CreateHandle(ProfileItemId itemID)
@@ -965,7 +966,111 @@ public partial class ProfileItemHandle : RefCounted
     public JsonObject GetItemUnsafe() => isValid ? ProfileRequests.GetCachedProfileItemInstance(itemID) : null;
 }
 
-static class FnProfiles
+public class GameProfile
+{
+    public bool isOwned { get; private set; }
+    public JsonObject statAttributes { get; private set; }
+
+    public readonly List<GameItem> items = new();
+}
+
+public class GameItem
+{
+    public GameItem(ProfileItemId itemID, JsonObject rawData)
+    {
+        isReal = true;
+        this.itemID = itemID;
+        templateId = rawData["templateId"].ToString();
+        quantity = rawData["quantity"].GetValue<int>();
+        attributes = rawData["attributes"]?.AsObject();
+    }
+
+    public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, ProfileItemId? profileItemPointer = null)
+    {
+        _template = template;
+        templateId = template.TemplateId;
+        this.quantity = quantity;
+        this.attributes = attributes;
+        this.itemID = profileItemPointer;
+    }
+
+    public bool isReal { get; private set; }
+
+    public ProfileItemId? itemID { get; private set; }
+
+    public string templateId { get; private set; }
+    public GameItemTemplate template => _template ??= null;
+    GameItemTemplate _template;
+
+    public JsonObject attributes { get; private set; }
+
+    public int quantity { get; private set; }
+
+
+    Dictionary<ItemTextureType, Texture2D> textures = new();
+    public Texture2D GetTexture(ItemTextureType textureType = ItemTextureType.Preview, Texture2D fallbackIcon = null)
+    {
+        if (textures.ContainsKey(textureType))
+            return textures[textureType];
+
+        if (textureType == ItemTextureType.Personality)
+            return GetPersonalityTexture(fallbackIcon);
+
+        if (textureType == ItemTextureType.SetBonus)
+            return GetSetBonusTexture(fallbackIcon);
+
+        if (textureType == ItemTextureType.Preview && (attributes?["portrait"]?.TryGetTemplate(out var portraitTemplate) ?? false))
+        {
+            var portraitTexture = portraitTemplate.GetItemTexture(fallbackIcon);
+            if (portraitTexture is not null)
+                return textures[textureType] = portraitTexture;
+        }
+
+        return template?.GetTexture(textureType);
+    }
+    
+    Texture2D GetPersonalityTexture(Texture2D fallbackIcon = null)
+    {
+        if (template?["Type"].ToString() != "Worker")
+            return fallbackIcon;
+
+        var personalityId = template.ContainsKey("Personality") ?
+            template["Personality"]?.ToString() :
+            attributes?["personality"]?.ToString()?.Split(".")?[^1];
+
+        //GD.Print("personality: " + personalityId);
+
+        if (personalityId is not null && BanjoAssets.supplimentaryData.PersonalityIcons.ContainsKey(personalityId))
+            return textures[ItemTextureType.Personality] = BanjoAssets.supplimentaryData.PersonalityIcons[personalityId];
+
+        return fallbackIcon;
+    }
+
+    Texture2D GetSetBonusTexture(Texture2D fallbackIcon = null)
+    {
+        if (template?["Type"].ToString() != "Worker")
+            return fallbackIcon;
+
+        if (template.ContainsKey("SubType"))
+        {
+            if (template["SubType"]?.ToString()?.Replace("Martial Artist", "MartialArtist") is string subType && BanjoAssets.supplimentaryData.SquadIcons.ContainsKey(subType))
+                return textures[ItemTextureType.SetBonus] = BanjoAssets.supplimentaryData.SquadIcons[subType];
+        }
+        else
+        {
+            string setBonus = attributes?["set_bonus"]?.ToString()?.Split(".")?[^1];
+            if (setBonus is not null && BanjoAssets.supplimentaryData.SetBonusIcons.ContainsKey(setBonus))
+                return textures[ItemTextureType.SetBonus] = BanjoAssets.supplimentaryData.SetBonusIcons[setBonus];
+        }
+
+        return fallbackIcon;
+    }
+
+    public void GenerateSearchTags(bool assumeUncommon = true) =>
+        template.GenerateSearchTags(assumeUncommon);
+}
+
+static class FnProfileTypes
 {
     public const string AccountItems = "campaign";
     public const string Backpack = "theater0";

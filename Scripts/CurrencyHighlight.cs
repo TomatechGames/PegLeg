@@ -16,10 +16,10 @@ public partial class CurrencyHighlight : GameItemEntry
 
     public async void SetCurrencyType(string type)
     {
-        var profileItem = (await ProfileRequests.GetProfileItems(FnProfiles.AccountItems, type)).FirstOrDefault();
+        var profileItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, type)).FirstOrDefault();
         if (profileItem.Value is not null)
         {
-            LinkProfileItem(await ProfileItemHandle.CreateHandle(new(FnProfiles.AccountItems, profileItem.Key)));
+            LinkProfileItem(await ProfileItemHandle.CreateHandle(new(FnProfileTypes.AccountItems, profileItem.Key)));
         }
     }
 }

@@ -62,7 +62,7 @@ public partial class HeroAbilityEntry : Node
         EmitSignal(SignalName.DescriptionChanged, description);
         EmitSignal(SignalName.NameAndDescriptionChanged, name+"\n"+description);
 
-        EmitSignal(SignalName.IconChanged, heroAbility.GetItemTexture(BanjoAssets.TextureType.Icon));
+        EmitSignal(SignalName.IconChanged, heroAbility.GetItemTexture(ItemTextureType.Icon));
 
         EmitSignal(SignalName.WarningVisible, warning is not null);
         EmitSignal(SignalName.WarningChanged, warning ?? "");

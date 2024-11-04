@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://cbwhly7mce0o5"]
+
+[ext_resource type="PackedScene" uid="uid://3ic5fe2i0n0w" path="res://Scenes/LoadoutEntries/commander.tscn" id="1_tbi66"]
+[ext_resource type="PackedScene" uid="uid://ewoytphqxrj1" path="res://Scenes/LoadoutEntries/team_perk.tscn" id="2_msaml"]
+[ext_resource type="PackedScene" uid="uid://cnerbcrevhc7w" path="res://Scenes/LoadoutEntries/support_hero.tscn" id="3_ia3fa"]
+[ext_resource type="PackedScene" uid="uid://dkjv8n3gxf51c" path="res://Scenes/LoadoutEntries/gadget.tscn" id="4_yjhs0"]
+
+[node name="HeroLoadoutView" type="MarginContainer"]
+offset_right = 544.0
+offset_bottom = 301.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="CommanderHeader" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Commander"
+
+[node name="Commander" parent="VBoxContainer" instance=ExtResource("1_tbi66")]
+layout_mode = 2
+
+[node name="TeamPerkHeader" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Team Perk"
+
+[node name="TeamPerk" parent="VBoxContainer" instance=ExtResource("2_msaml")]
+layout_mode = 2
+
+[node name="SupportHeader" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Support"
+
+[node name="SupportHero" parent="VBoxContainer" instance=ExtResource("3_ia3fa")]
+layout_mode = 2
+
+[node name="SupportHero2" parent="VBoxContainer" instance=ExtResource("3_ia3fa")]
+layout_mode = 2
+
+[node name="SupportHero3" parent="VBoxContainer" instance=ExtResource("3_ia3fa")]
+layout_mode = 2
+
+[node name="SupportHero4" parent="VBoxContainer" instance=ExtResource("3_ia3fa")]
+layout_mode = 2
+
+[node name="SupportHero5" parent="VBoxContainer" instance=ExtResource("3_ia3fa")]
+layout_mode = 2
+
+[node name="GadgetsHeader" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Gadgets"
+
+[node name="Gadget" parent="VBoxContainer" instance=ExtResource("4_yjhs0")]
+layout_mode = 2
+
+[node name="Gadget2" parent="VBoxContainer" instance=ExtResource("4_yjhs0")]
+layout_mode = 2
