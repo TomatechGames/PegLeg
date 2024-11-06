@@ -292,10 +292,10 @@ static class Helpers
         control.OffsetRight = 0;
     }
 
-    public static async Task<GameAccount> EnsureProfile(this Task<GameAccount> accountTask, string profileId)
+    public static async Task<GameAccount> EnsureProfile(this Task<GameAccount> accountTask, string profileId, bool force = false)
     {
         var account = await accountTask;
-        return await account.EnsureProfile(profileId);
+        return await account.EnsureProfile(profileId, force);
     }
 
     public static string ToAttribute(this OrderRange range) => range switch

@@ -387,7 +387,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.TypeChanged, "");
         EmitSignal(SignalName.AmountVisibility, false);
         EmitSignal(SignalName.AmountChanged, "");
-        LatestRarityColor = BanjoAssets.GetRarityColor(0);
+        LatestRarityColor = Colors.Transparent;
         EmitSignal(SignalName.RarityChanged, LatestRarityColor);
         EmitSignal(SignalName.InteractableChanged, allowInteractableWhenEmpty && interactableByDefault && !preventInteractability);
         EmitSignal(SignalName.NotificationChanged, false);

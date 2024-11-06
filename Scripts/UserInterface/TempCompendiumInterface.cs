@@ -120,7 +120,7 @@ public partial class TempCompendiumInterface : Control
 					)
 				);
 			itemList.SetItemCustomFgColor(index, Colors.Black);
-			var color = BanjoAssets.GetRarityColor(item.rarity);
+			var color = BanjoAssets.rarityColours[item.rarity];
 			color.A *= 0.5f;
             itemList.SetItemCustomBgColor(index, color);
         }

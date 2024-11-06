@@ -76,8 +76,7 @@ public partial class GameItemUpgrader : Control
         sliderBG.SetShaderFloat((float)value, "currentVal");
 
         //refresh item costs
-        costItemLayout.Visible = false;
+        if (costItemLayout is not null)
+            costItemLayout.Visible = false;
     }
-
-
 }

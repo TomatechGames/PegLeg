@@ -77,20 +77,20 @@ public partial class HomebasePowerLevel : Control
             await RecalculateFORTStats();
     }
 
-    public struct FORTStats
-    {
-        public float fortitude;
-        public float offense;
-        public float resistance;
-        public float technology;
-        public FORTStats(float fortitude, float offense, float resistance, float technology)
-        {
-            this.fortitude = fortitude;
-            this.offense = offense;
-            this.resistance = resistance;
-            this.technology = technology;
-        }
-    }
+    //public struct FORTStats
+    //{
+    //    public float fortitude;
+    //    public float offense;
+    //    public float resistance;
+    //    public float technology;
+    //    public FORTStats(float fortitude, float offense, float resistance, float technology)
+    //    {
+    //        this.fortitude = fortitude;
+    //        this.offense = offense;
+    //        this.resistance = resistance;
+    //        this.technology = technology;
+    //    }
+    //}
 
     static FORTStats? currentFortStats = null;
     public static async Task<FORTStats> GetFORTStats()

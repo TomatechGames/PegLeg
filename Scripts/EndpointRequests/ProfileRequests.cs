@@ -10,6 +10,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Net.Http.Headers;
 
 public static class ProfileRequests
 {
@@ -776,24 +777,23 @@ public readonly struct ProfileItemId
     public readonly string account = null;
     public readonly string profile = null;
     public readonly string uuid = null;
+
     public ProfileItemId(JsonObject compositeProfileItemId)
     {
-        account = compositeProfileItemId["account"]?.ToString();
-        profile = compositeProfileItemId["profile"]?.ToString();
-        uuid = compositeProfileItemId["uuid"]?.ToString();
+        account = compositeProfileItemId?["account"]?.ToString();
+        profile = compositeProfileItemId?["profile"]?.ToString();
+        uuid = compositeProfileItemId?["uuid"]?.ToString();
     }
+
     public ProfileItemId(string account, string profile, string uuid)
     {
         this.account = account;
         this.profile = profile;
         this.uuid = uuid;
     }
-    public ProfileItemId()
-    {
-        account = null;
-        profile = null;
-        uuid = null;
-    }
+
+    public ProfileItemId() { }
+
     public readonly JsonObject Composite => new()
     {
         ["account"] = account,
@@ -829,6 +829,21 @@ public enum OrderRange
     Daily,
     Weekly,
     Monthly
+}
+
+public readonly struct FORTStats
+{
+    public readonly float fortitude;
+    public readonly float offense;
+    public readonly float resistance;
+    public readonly float technology;
+    public FORTStats(float fortitude, float offense, float resistance, float technology)
+    {
+        this.fortitude = fortitude;
+        this.offense = offense;
+        this.resistance = resistance;
+        this.technology = technology;
+    }
 }
 
 public partial class ProfileItemHandle : RefCounted
@@ -942,9 +957,9 @@ public class GameAccount
     public GameProfile GetProfile(string profileId) => profiles[profileId] ??= new(this, profileId);
     public bool HasProfile(string profileId) => profiles.ContainsKey(profileId);
 
-    public async Task<GameAccount> EnsureProfile(string profileId)
+    public async Task<GameAccount> EnsureProfile(string profileId, bool force = false)
     {
-        await GetProfile(profileId).Query();
+        await GetProfile(profileId).Query(force);
         return this;
     }
 
@@ -956,6 +971,60 @@ public class GameAccount
             if (profiles.ContainsKey(profileId))
                 profiles[profileId].ApplyProfileChanges(profileUpdate["profileChanges"].AsArray());
         }
+    }
+
+
+    int authExpiresAt = -999999;
+    int refreshExpiresAt = -999999;
+    AuthenticationHeaderValue accountAuthHeader;
+    public bool AuthTokenValid => authExpiresAt > Time.GetTicksMsec() * 0.001;
+    bool RefreshTokenValid => refreshExpiresAt > Time.GetTicksMsec() * 0.001;
+    public AuthenticationHeaderValue AuthHeader => accountAuthHeader;
+    public async Task<bool> Authenticate()
+    {
+        //LoginRequests.AccountAuthHeader;
+        return false;
+    }
+
+
+    public event Action<GameAccount> OnFortStatsChanged;
+    FORTStats? fortStats;
+    bool fortStatsDirty = true;
+    FORTStats FortStats => GetFORTStats();
+    public FORTStats GetFORTStats(bool force = false) => (force || fortStatsDirty) ? CalculateFORTStats() : fortStats ?? CalculateFORTStats();
+
+    FORTStats CalculateFORTStats()
+    {
+        var accountItems = GetProfile(FnProfileTypes.AccountItems);
+        var researchStats = accountItems.statAttributes["research_levels"];
+        var statItems = accountItems.GetItems("Stat");
+        var equippedWorkerItems = accountItems.GetItems("Worker", item => item.attributes.ContainsKey("squad_id"));
+
+        int LookupStatItem(string statId) => statItems.First(item => item.templateId == statId).quantity;
+
+        float LookupWorkers(string squadId)
+        {
+            var matchingWorkers = equippedWorkerItems
+                .Where(item => item.attributes["squad_id"].ToString() == squadId);
+            return matchingWorkers.Select(item => item.Rating).Sum();
+        }
+
+        //+ profileStats["fortitude"].GetValue<int>()
+        float fortitude = LookupStatItem("Stat:fortitude") + LookupStatItem("Stat:fortitude_team") + LookupWorkers("squad_attribute_medicine_trainingteam") + LookupWorkers("squad_attribute_medicine_emtsquad");
+        float offense = LookupStatItem("Stat:offense") + LookupStatItem("Stat:offense_team") + LookupWorkers("squad_attribute_arms_fireteamalpha") + LookupWorkers("squad_attribute_arms_closeassaultsquad");
+        float resistance = LookupStatItem("Stat:resistance") + LookupStatItem("Stat:resistance_team") + LookupWorkers("squad_attribute_scavenging_scoutingparty") + LookupWorkers("squad_attribute_scavenging_gadgeteers");
+        float technology = LookupStatItem("Stat:technology") + LookupStatItem("Stat:technology_team") + LookupWorkers("squad_attribute_synthesis_corpsofengineering") + LookupWorkers("squad_attribute_synthesis_thethinktank");
+
+
+        GD.Print($"FORTITUDE: {fortitude}");
+        GD.Print($"OFFENCE: {offense}");
+        GD.Print($"RESISTANCE: {resistance}");
+        GD.Print($"TECH: {technology}");
+
+        fortStats = new(fortitude, offense, resistance, technology);
+        fortStatsDirty = false;
+        OnFortStatsChanged?.Invoke(this);
+        return fortStats.Value;
     }
 
     public async Task<GameItem[]> GetAllPrerollData()
@@ -1100,6 +1169,12 @@ public class GameAccount
         return localPinnedQuests.Exists(q=>q.uuid==uuid);
     }
 
+    public bool HasPinnedQuest(GameItem item)
+    {
+        localPinnedQuests ??= new();
+        return localPinnedQuests.Contains(item);
+    }
+
     public async Task<GameItem> RerollQuest(GameItem item)
     {
         var accountItems = GetProfile(FnProfileTypes.AccountItems);
@@ -1139,7 +1214,7 @@ public class GameProfile
     public static event Action<GameProfile> OnStatChanged;
     public static event Action<GameItem> OnItemAdded;
     public static event Action<GameItem> OnItemUpdated;
-    public static event Action<string> OnItemRemoved;
+    public static event Action<GameItem> OnItemRemoved;
 
     public GameItem GetItem(string uuid) => items.ContainsKey(uuid) ? items[uuid] : null;
     public GameItem[] GetItems(GameItemPredicate predicate) => GetItems(null, predicate);
@@ -1163,8 +1238,6 @@ public class GameProfile
             OnItemUpdated?.Invoke(item);
     }
 
-    static SemaphoreSlim profileOperationSephamore = new(1);
-
     public async Task<GameProfile> Query(bool force=false)
     {
         if (!hasProfile || force)
@@ -1172,6 +1245,7 @@ public class GameProfile
         return this;
     }
 
+    static SemaphoreSlim profileOperationSephamore = new(1);
     public async Task<JsonArray> PerformOperation(string operation, string content = "{}")
     {
         await profileOperationSephamore.WaitAsync();
@@ -1209,6 +1283,16 @@ public class GameProfile
         {
             GD.Print($"cannot access unowned profile of type {profileId}");
             return null;
+        }
+
+        if (operation == "MarkItemSeen")
+        {
+            var targetItemIDs = JsonNode.Parse(content)["itemIds"].AsArray().Select(n => n.ToString());
+            foreach (var itemId in targetItemIDs)
+            {
+                if (items.ContainsKey(itemId))
+                    OnItemUpdated?.Invoke(items[itemId].SetSeenLocal());
+            }
         }
 
         StringContent jsonContent = new(content, Encoding.UTF8, "application/json");
@@ -1328,33 +1412,38 @@ public class GameProfile
                     OnItemAdded?.Invoke(targetItem);
                     break;
                 case "itemRemoved":
-                    GD.Print($"REMOVING: {uuid} ({items[uuid]})");
-                    items[uuid].SendRemovingEvent();
+                    targetItem = items[uuid];
+                    GD.Print($"REMOVING: {uuid} ({targetItem})");
+                    targetItem.SendRemovingEvent();
                     items.Remove(uuid);
-                    OnItemRemoved?.Invoke(uuid);
+                    OnItemRemoved?.Invoke(targetItem);
+                    targetItem.DisconnectFromProfile();
                     break;
                 case "statChanged":
                     GD.Print($"STAT CHANGED: ? ({change})");
                     OnStatChanged?.Invoke(this);
                     break;
                 case "itemQuantityChanged":
-                    items[uuid].SetQuantity(change["quantity"].GetValue<int>());
-                    GD.Print($"CHANGED (quantity): {uuid} ({items[uuid]})");
-                    items[uuid].SendChangedEvent();
-                    OnItemUpdated?.Invoke(items[uuid]);
+                    targetItem = items[uuid];
+                    targetItem.SetQuantity(change["quantity"].GetValue<int>());
+                    GD.Print($"CHANGED (quantity): {uuid} ({targetItem})");
+                    targetItem.SendChangedEvent();
+                    OnItemUpdated?.Invoke(targetItem);
                     break;
                 case "itemAttrChanged":
-                    items[uuid].attributes[change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
-                    GD.Print($"CHANGED (attribute): {uuid}[{change["attributeName"]}] ({items[uuid]})");
-                    items[uuid].SendChangedEvent();
-                    OnItemUpdated?.Invoke(items[uuid]);
+                    targetItem = items[uuid];
+                    targetItem.attributes[change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
+                    GD.Print($"CHANGED (attribute): {uuid}[{change["attributeName"]}] ({targetItem})");
+                    targetItem.SendChangedEvent();
+                    OnItemUpdated?.Invoke(targetItem);
                     break;
                 case "itemFullyChanged":
                     //custom one for handling generated changelogs
-                    items[uuid].SetRawData(change["item"].AsObject());
-                    GD.Print($"CHANGED (full): {uuid} ({items[uuid]})");
-                    items[uuid].SendChangedEvent();
-                    OnItemUpdated?.Invoke(items[uuid]);
+                    targetItem = items[uuid];
+                    targetItem.SetRawData(change["item"].AsObject());
+                    GD.Print($"CHANGED (full): {uuid} ({targetItem})");
+                    targetItem.SendChangedEvent();
+                    OnItemUpdated?.Invoke(targetItem);
                     break;
             }
         }
@@ -1376,21 +1465,20 @@ public class GameItem
         SetRawData(rawData);
     }
 
-    public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, ProfileItemId? profileItemPointer = null)
+    public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, GameItem inspectorOverride = null)
     {
         attemptedTemplateSearch = true;
         _template = template;
         templateId = template.TemplateId;
         this.quantity = quantity;
         this.attributes = attributes;
-        this.profileItemPointer = profileItemPointer;
+        this.inspectorOverride = inspectorOverride;
     }
 
     public GameProfile profile { get; private set; }
     public string uuid { get; private set; }
 
-    //replace with handle in future?
-    public ProfileItemId? profileItemPointer { get; private set; }
+    public GameItem inspectorOverride { get; private set; }
 
     bool attemptedTemplateSearch;
     public string templateId { get; private set; }
@@ -1416,8 +1504,10 @@ public class GameItem
     {
         ["templateId"] = templateId,
         ["quantity"] = quantity,
-        ["attributes"] = attributes.Reserialise()
+        ["attributes"] = attributes.Reserialise(),
+        ["searchTags"] = template?["searchTags"]
     };
+
     public void SetRawData(JsonObject rawData)
     {
         if (templateId != rawData["templateId"].ToString())
@@ -1428,6 +1518,90 @@ public class GameItem
         }
         quantity = rawData["quantity"].GetValue<int>();
         attributes = rawData["attributes"]?.AsObject();
+        _rating = null;
+    }
+
+    bool isSeenLocal = false;
+    public bool IsSeen => isSeenLocal || (attributes?["item_seen"]?.GetValue<bool>() ?? false);
+    public GameItem SetSeenLocal()
+    {
+        isSeenLocal = true;
+        SendChangedEvent();
+        return this;
+    }
+
+    public bool IsPinnedQuest => profile?.account.HasPinnedQuest(this) ?? false;
+
+    public void ClearRating() => _rating = null;
+    int? _rating;
+    public int Rating => _rating ??= CalculateRating();
+    public int UpdateRating() => (_rating = CalculateRating()) ?? 0;
+
+    public int CalculateRating(string survivorSquad = null)
+    {
+        if (!BanjoAssets.TryGetSource("ItemRatings", out var ratings))
+            return 0;
+        var tier = template.Tier;
+        if (tier == 0)
+            return 0;
+
+        var level = attributes?["level"]?.GetValue<int>() ?? 0;
+        level = Mathf.Clamp(level, Mathf.Min(1, (tier * 10) - 10), tier * 10);
+        string ratingCategory = template.Type == "Worker" ? (template.SubType is null ? "Survivor" : "LeadSurvivor") :"Default";
+
+        string ratingKey = template.GetCompactRarityAndTier();
+        if (ratingCategory == "LeadSurvivor")
+            ratingKey = ratingKey.Replace("UR_", "SR_");
+
+        var ratingSet = ratings[ratingCategory]["Tiers"][ratingKey];
+        if (ratingSet is null)
+        {
+            GD.Print($"no rating set {ratingCategory}:{ratingKey}");
+            return 0;
+        }
+        int subLevel = level - ratingSet["FirstLevel"].GetValue<int>();
+        int rating = (int)ratingSet["Ratings"][subLevel].GetValue<float>();
+
+        survivorSquad ??= attributes?["squad_id"]?.ToString();
+        if (template.Type != "Worker" && survivorSquad is null)
+            return rating;
+
+        if (template.SubType is string leadType)
+        {
+            //check for lead synergy match
+            var matchedSquadID = BanjoAssets.supplimentaryData.SynergyToSquadId[leadType.Replace(" ", "")];
+            if (matchedSquadID == survivorSquad)
+                rating *= 2;
+        }
+        else if (profile.profileId == FnProfileTypes.AccountItems)
+        {
+            var leadSurvivor = profile.GetItems("Worker", item =>
+                item.attributes?["squad_id"]?.ToString() == survivorSquad &&
+                item.attributes["squad_slot_idx"].GetValue<int>() == 0
+            ).FirstOrDefault();
+
+            string leaderRarity = leadSurvivor?.template.Rarity ?? "";
+            int rarityBoost = leaderRarity switch
+            {
+                "Mythic" => 8,
+                "Legendary" => 8,
+                "Epic" => 5,
+                "Rare" => 4,
+                "Uncommon" => 3,
+                "Common" => 2,
+                _ => 3
+            };
+
+            int rarityPenalty = (leaderRarity == "Mythic") ? 2 : 0;
+
+            string targetPersonality = leadSurvivor?.attributes["personality"].ToString().Split(".")[^1] ?? "";
+            string currentPersonality = attributes["personality"].ToString().Split(".")[^1];
+
+            rating += currentPersonality == targetPersonality ? rarityBoost : -rarityPenalty;
+            rating = Mathf.Max(rating, 1);
+        }
+
+        return rating;
     }
 
     Dictionary<ItemTextureType, Texture2D> textures = new();
@@ -1492,6 +1666,11 @@ public class GameItem
 
     public void SendChangedEvent() => OnChanged?.Invoke(this);
     public void SendRemovingEvent() => OnRemoving?.Invoke(this);
+    public void DisconnectFromProfile()
+    {
+        profile = null;
+        uuid = null;
+    }
 }
 
 

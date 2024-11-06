@@ -1,12 +1,8 @@
 ﻿using Godot;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading;
@@ -28,10 +24,8 @@ static class LoginRequests
     static readonly string fortPCAuthString = ClientAuthHeaderFromKeys(fortPCClientId, fortPCSecret);
     static readonly string fortIOSAuthString = ClientAuthHeaderFromKeys(fortIOSClientId, fortIOSSecret);
     static readonly string fortAndroidAuthString = ClientAuthHeaderFromKeys(fortAndroidClientId, fortAndroidSecret);
-
     public static string ClientID => fortAndroidClientId;
     public static string B64AuthString => fortAndroidAuthString;
-
     static readonly AuthenticationHeaderValue clientHeader = new("Basic", B64AuthString);
 
     static AuthenticationHeaderValue accountAuthHeader;

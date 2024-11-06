@@ -513,7 +513,7 @@ public static class BanjoAssets
             _ => 2
         };
 
-    static string[] rarityIds = new string[]
+    public static string[] rarityIds = new string[]
     {
         null,
         "C",
@@ -524,7 +524,7 @@ public static class BanjoAssets
         "UR"
     };
 
-    static string[] tierIds = new string[]
+    public static string[] tierIds = new string[]
     {
         "T00",
         "T01",
@@ -651,7 +651,7 @@ public static class BanjoAssets
         return 0;
     }
 
-    static readonly Color[] rarityColours = new Color[]
+    public static readonly Color[] rarityColours = new Color[]
     {
         Colors.Transparent,
         Color.FromString("#bfbfbf", Colors.White),
@@ -662,7 +662,6 @@ public static class BanjoAssets
         Color.FromString("#ffff40", Colors.White),
     };
     public static Color GetItemRarityColor(this JsonObject itemTemplate) => rarityColours[itemTemplate.GetItemRarity()];
-    public static Color GetRarityColor(int itemRarity) => rarityColours[itemRarity];
 
     public static JsonObject GetHeroAbilities(this JsonObject itemTemplate)
     {
@@ -831,6 +830,7 @@ public class GameItemTemplate
             "Mythic" => 6,
             _ => 2 //todo: rarity items with unspecified rarity should be exported as "Uncommon", then this can be 0
         };
+    public Color RarityColor => BanjoAssets.rarityColours[RarityLevel];
 
     public int Tier => rawData["Tier"] is JsonValue tierVal ? (tierVal.TryGetValue<int>(out var tier) ? tier : 0) : 0;
     public string Personality => rawData["Personality"]?.ToString();
@@ -920,6 +920,13 @@ public class GameItemTemplate
         return fallbackIcon;
     }
 
+    public string GetCompactRarityAndTier(int givenTier = 0)
+    {
+        var rarityId = BanjoAssets.rarityIds[RarityLevel];
+        var tierId = givenTier <= 0 ? BanjoAssets.tierIds[Tier] : BanjoAssets.tierIds[givenTier];
+        return rarityId + "_" + tierId;
+    }
+
     public void GenerateSearchTags(bool assumeUncommon = true)
     {
         List<string> tags = new()
@@ -937,11 +944,11 @@ public class GameItemTemplate
         rawData["searchTags"] = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
     }
 
-    public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, ProfileItemId? profileItemPointer=null)
+    public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, GameItem inspectorOverride=null)
     {
         attributes ??= new JsonObject();
         attributes["generated_by_pegleg"] = true;
-        return new(this, quantity, attributes, profileItemPointer);
+        return new(this, quantity, attributes, inspectorOverride);
     }
 }
 
