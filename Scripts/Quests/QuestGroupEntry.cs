@@ -87,7 +87,7 @@ public partial class QuestGroupEntry : Control
 
                     ProfileItemHandle questHandle = null;
                     if (await ProfileRequests.GetFirstProfileItem(FnProfileTypes.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
-                        questHandle = ProfileItemHandle.CreateHandleUnsafe(new(FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
+                        questHandle = ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
 
                     if (i == 0 && questHandle is null)
                         break;
@@ -122,7 +122,7 @@ public partial class QuestGroupEntry : Control
 
                 ProfileItemHandle questHandle = null;
                 if (await ProfileRequests.GetFirstProfileItem(FnProfileTypes.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
-                    questHandle = ProfileItemHandle.CreateHandleUnsafe(new(FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
+                    questHandle = ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
 
                 QuestData newData = new(currentQuestId, questTemplate);
                 newData.LinkQuestItem(questHandle);

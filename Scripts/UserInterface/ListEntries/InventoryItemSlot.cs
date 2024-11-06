@@ -59,7 +59,7 @@ public partial class InventoryItemSlot : Node
         buttonControl.Visible = true;
 
         var foundItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, predicate)).FirstOrDefault();
-        ValidateItem(new(FnProfileTypes.AccountItems, foundItem.Key), foundItem.Value?.AsObject());
+        ValidateItem(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, foundItem.Key), foundItem.Value?.AsObject());
     }
 
     public async void UpdateSlot(ProfileItemId profileItem)

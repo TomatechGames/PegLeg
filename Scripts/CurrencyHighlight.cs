@@ -19,7 +19,7 @@ public partial class CurrencyHighlight : GameItemEntry
         var profileItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, type)).FirstOrDefault();
         if (profileItem.Value is not null)
         {
-            LinkProfileItem(await ProfileItemHandle.CreateHandle(new(FnProfileTypes.AccountItems, profileItem.Key)));
+            LinkProfileItem(await ProfileItemHandle.CreateHandle(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, profileItem.Key)));
         }
     }
 }

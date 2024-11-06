@@ -259,12 +259,12 @@ public partial class CardPackOpener : Control
 
             extraItemHandles = extraItemData
                 .Where(val => (int)val["quantity"] == 1)
-                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, val["itemProfile"].ToString(), val["itemGuid"].ToString())))
                 .ToArray();
 
             extraCardPacks = shopResultItems
                     .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
-                    .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                    .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, val["itemProfile"].ToString(), val["itemGuid"].ToString())))
                     .ToArray();
         }
         extraItems ??= Array.Empty<JsonObject>();
@@ -304,7 +304,7 @@ public partial class CardPackOpener : Control
                     BanjoAssets.TryGetTemplate(val["itemType"].ToString()),
                     (int)val["quantity"],
                     val["attributes"]?.Reserialise().AsObject() ??
-                        ProfileRequests.GetCachedProfileItemInstance(new(val["itemProfile"].ToString(), val["itemGuid"].ToString()))
+                        ProfileRequests.GetCachedProfileItemInstance(new(LoginRequests.AccountID, val["itemProfile"].ToString(), val["itemGuid"].ToString()))
                         ["attributes"]?.Reserialise().AsObject(),
                     val["itemProfile"] + ":" + val["itemGuid"]
                     ))
@@ -312,12 +312,12 @@ public partial class CardPackOpener : Control
 
             var resultItemHandles = resultItemData
                 .Where(val => (int)val["quantity"]==1)
-                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, val["itemProfile"].ToString(), val["itemGuid"].ToString())))
                 .ToArray();
 
             var resultCardPacks = resultNotification["lootGranted"]["items"].AsArray()
                 .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
-                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(val["itemProfile"].ToString(), val["itemGuid"].ToString())))
+                .Select(val => ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, val["itemProfile"].ToString(), val["itemGuid"].ToString())))
                 .ToArray();
             GD.Print("LlamaResult: "+ resultNotification["lootGranted"]["items"].ToString());
 
@@ -874,7 +874,7 @@ public partial class CardPackOpener : Control
         choiceResultCard.Visible = false;
 
         JsonNode resultItem = resultNotification["lootGranted"]["items"][0];
-        await queuedChoices[nextChoiceIndex - 1].ReplaceWith(new(resultItem["itemProfile"].ToString(), resultItem["itemGuid"].ToString()));
+        await queuedChoices[nextChoiceIndex - 1].ReplaceWith(new(LoginRequests.AccountID, resultItem["itemProfile"].ToString(), resultItem["itemGuid"].ToString()));
         GD.Print(resultNotification);
 
         await this.WaitForTimer(0.5f);

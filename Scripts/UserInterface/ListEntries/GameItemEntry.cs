@@ -189,7 +189,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     protected JsonObject currentItemData;
     protected RewardNotifications.Request rewardNotificationRequest;
-    protected string inspectorOverride;
+    protected ProfileItemId inspectorOverride;
     protected virtual void UpdateItemData(JsonObject itemInstance, string overrideSurvivorSquad = null)
     {
         if (!IsInstanceValid(this) || !IsInsideTree())
@@ -208,7 +208,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             amount = template["AccoladeXP"]?.GetValue<int>() ?? template["Tier"]?.GetValue<int>() ?? 1;
         string amountText = compactifyAmount ? amount.Compactify() : amount.ToString();
 
-        inspectorOverride = itemInstance["attributes"]?["overrideItem"]?.ToString();
+        inspectorOverride = new(itemInstance["attributes"]?["overrideItem"]?.AsObject());
 
         if (addXToAmount)
             amountText = "x" + amountText;
@@ -377,7 +377,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public virtual void ClearItem(Texture2D clearIcon)
     {
         currentItemData = null;
-        inspectorOverride = null;
+        inspectorOverride = default;
         EmitSignal(SignalName.ItemDoesExist, false);
         EmitSignal(SignalName.ItemDoesNotExist, true);
         EmitSignal(SignalName.NameChanged, "");
@@ -395,9 +395,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public async void Inspect()
     {
-        if(inspectorOverride is not null)
+        if(inspectorOverride.account is not null)
         {
-            await GameItemViewer.Instance.ShowItemHandle(ProfileItemHandle.CreateHandleUnsafe(new(inspectorOverride)));
+            await GameItemViewer.Instance.ShowItemHandle(ProfileItemHandle.CreateHandleUnsafe(inspectorOverride));
             return;
         }
         if(profileItem is not null)

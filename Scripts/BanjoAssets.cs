@@ -100,19 +100,69 @@ public static class BanjoAssets
     }
 
     public static JsonObject TryGetTemplate(string itemID) => TryGetTemplate(itemID, out var result) ? result : null;
-    public static bool TryGetTemplate(string itemID, out JsonObject itemTemplate)
+    public static bool TryGetTemplate(string templateId, out JsonObject itemTemplate)
     {
-        if (itemID.StartsWith("STWAccoladeReward"))
-            itemID = itemID.Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
-        var splitItemId = itemID.Split(':');
-        if (itemID.Contains(':') && TryGetSource(splitItemId[0], out var source))
+        if (templateId.StartsWith("STWAccoladeReward"))
+            templateId = templateId.Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
+        var splitItemId = templateId.Split(':');
+        if (templateId.Contains(':') && TryGetSource(splitItemId[0], out var source))
         {
-            itemID = splitItemId[0] + ":" + splitItemId[1].ToLower();
-            itemTemplate = source[itemID]?.AsObject();
+            templateId = splitItemId[0] + ":" + splitItemId[1].ToLower();
+            itemTemplate = source[templateId]?.AsObject();
             return itemTemplate is not null;
         }
         itemTemplate = null;
         return false;
+    }
+
+    static Dictionary<string, Dictionary<string, GameItemTemplate>> newTemplateDict = new();
+    public static GameItemTemplate TryGetNewTemplate(string templateId)
+    {
+        if (templateId.StartsWith("STWAccoladeReward"))
+            templateId = templateId.Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
+
+        var splitItemId = templateId.Split(':');
+
+        if (!templateId.Contains(':'))
+            return null;
+
+        if (newTemplateDict.ContainsKey(splitItemId[0]) && newTemplateDict[splitItemId[0]].ContainsKey(splitItemId[1]))
+            return newTemplateDict[splitItemId[0]][splitItemId[1]];
+
+        templateId = splitItemId[0] + ":" + splitItemId[1].ToLower();
+        if (!TryGetSource(splitItemId[0], out var source))
+            return null;
+
+        GameItemTemplate newTemplate = source[templateId] is JsonObject templateObj ? new(templateObj) : null;
+
+        if (newTemplate is not null)
+        {
+            newTemplateDict[splitItemId[0]] ??= new();
+            newTemplateDict[splitItemId[0]].Add(splitItemId[1], newTemplate);
+        }
+
+        return newTemplate;
+    }
+
+    public static GameItemTemplate GetOrCreateNewTemplate(string templateId, Func<GameItemTemplate> constructor)
+    {
+        if(TryGetNewTemplate(templateId) is GameItemTemplate foundTemplate)
+            return foundTemplate;
+
+        var splitItemId = templateId.Split(':');
+
+        if (!templateId.Contains(':'))
+            return null;
+
+        GameItemTemplate newTemplate = constructor();
+
+        if (newTemplate is not null)
+        {
+            newTemplateDict[splitItemId[0]] ??= new();
+            newTemplateDict[splitItemId[0]].Add(splitItemId[1], newTemplate);
+        }
+
+        return newTemplate;
     }
 
     public static JsonObject GetTemplate(this JsonNode itemInstance, out JsonObject template) => template = itemInstance.GetTemplate();
@@ -745,11 +795,12 @@ public class GameItemTemplate
         this.rawData = rawData;
     }
 
-    public GameItemTemplate(string name, string displayName, string type = "Custom", string description = null, string iconPath = null, JsonObject extraData = null)
+    public GameItemTemplate(string templateId = "Custom:item", string displayName = "Custom Item", string description = null, string iconPath = null, JsonObject extraData = null)
     {
         extraData ??= new();
-        extraData["Type"] = type;
-        extraData["Name"] = name;
+        var splitTemplateId = templateId.Split(":");
+        extraData["Type"] = splitTemplateId[0];
+        extraData["Name"] = splitTemplateId[1];
         extraData["DisplayName"] = displayName;
         extraData["Description"] = description;
         if (iconPath is not null)
@@ -780,6 +831,7 @@ public class GameItemTemplate
             "Mythic" => 6,
             _ => 2 //todo: rarity items with unspecified rarity should be exported as "Uncommon", then this can be 0
         };
+
     public int Tier => rawData["Tier"] is JsonValue tierVal ? (tierVal.TryGetValue<int>(out var tier) ? tier : 0) : 0;
     public string Personality => rawData["Personality"]?.ToString();
 

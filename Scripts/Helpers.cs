@@ -8,7 +8,6 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Godot;
-using System.Collections;
 
 class MissingTreeException : Exception
 {
@@ -292,4 +291,25 @@ static class Helpers
         control.OffsetLeft = 0;
         control.OffsetRight = 0;
     }
+
+    public static async Task<GameAccount> EnsureProfile(this Task<GameAccount> accountTask, string profileId)
+    {
+        var account = await accountTask;
+        return await account.EnsureProfile(profileId);
+    }
+
+    public static string ToAttribute(this OrderRange range) => range switch
+    {
+        OrderRange.Daily => "daily_purchases",
+        OrderRange.Weekly => "weekly_purchases",
+        OrderRange.Monthly => "monthly_purchases",
+        _ => throw new NotImplementedException(),
+    };
+
+    public static DateTime ToInterval(this OrderRange range) => range switch
+    {
+        OrderRange.Daily => RefreshTimerController.GetRefreshTime(RefreshTimeType.Daily).AddDays(-1),
+        OrderRange.Weekly => RefreshTimerController.GetRefreshTime(RefreshTimeType.Weekly).AddDays(-7),
+        _ => throw new NotImplementedException(),
+    };
 }

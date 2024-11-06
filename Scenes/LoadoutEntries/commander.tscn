@@ -12,7 +12,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pft80"]
 shader = ExtResource("1_i8r4h")
-shader_parameter/ControlSize = Vector2(410, 56)
+shader_parameter/ControlSize = Vector2(544, 56)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = true
 shader_parameter/UseCorners = true

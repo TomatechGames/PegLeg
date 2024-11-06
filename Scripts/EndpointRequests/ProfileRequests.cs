@@ -9,13 +9,14 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
-using static Godot.RenderingDevice;
 
 public static class ProfileRequests
 {
     static readonly Dictionary<string, JsonObject> profileCache = new();
+    static readonly Dictionary<string, GameAccount> gameAccountCache = new();
+
+    public static GameAccount GetAccount(string accountId) => gameAccountCache[accountId] ??= new(accountId);
 
     public static async Task<int> GetSumOfProfileItems(string profileID, string type) =>
         (await GetProfileItems(profileID, item => item.Value["templateId"].ToString().StartsWith(type))).Select(kvp => kvp.Value["quantity"].GetValue<int>()).Sum();
@@ -144,33 +145,11 @@ public static class ProfileRequests
         return boostBase * boostMatchCount;
     }
 
-    public enum OrderRange
-    {
-        Daily,
-        Weekly,
-        Monthly
-    }
-
-    static string OrderRangeToAttribute(OrderRange range) => range switch
-    {
-        OrderRange.Daily => "daily_purchases",
-        OrderRange.Weekly => "weekly_purchases",
-        OrderRange.Monthly => "monthly_purchases",
-        _ => throw new NotImplementedException(),
-    };
-
-    static DateTime OrderRangeToInterval(OrderRange range) => range switch
-    {
-        OrderRange.Daily => RefreshTimerController.GetRefreshTime(RefreshTimeType.Daily).AddDays(-1),
-        OrderRange.Weekly => RefreshTimerController.GetRefreshTime(RefreshTimeType.Weekly).AddDays(-7),
-        _ => throw new NotImplementedException(),
-    };
-
     public static async Task<JsonObject> GetOrderCounts(OrderRange range)
     {
-        var orderRange = (await GetProfile(FnProfileTypes.Common))["profileChanges"][0]["profile"]["stats"]["attributes"][OrderRangeToAttribute(range)];
+        var orderRange = (await GetProfile(FnProfileTypes.Common))["profileChanges"][0]["profile"]["stats"]["attributes"][range.ToAttribute()];
         var lastIntervalTime = DateTime.Parse(orderRange["lastInterval"].ToString(), null, DateTimeStyles.RoundtripKind);
-        if (lastIntervalTime != OrderRangeToInterval(range))
+        if (lastIntervalTime != range.ToInterval())
             return null;
         return orderRange["purchaseList"].AsObject();
     }
@@ -203,22 +182,6 @@ public static class ProfileRequests
         //TODO: return false if creator code not found
         return true;
     }
-    //public static async Task<List<string>> GetPinnedQuests()
-    //{
-    //    return (await GetProfile(FnProfiles.AccountItems))
-    //        ["profileChanges"]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
-    //        .AsArray()
-    //        .Select(q=>q.ToString())
-    //        .ToList();
-    //}
-    //public static List<string> GetPinnedQuestsUnsafe()
-    //{
-    //    return profileCache[FnProfiles.AccountItems]
-    //        ["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
-    //        .AsArray()
-    //        .Select(q => q.ToString())
-    //        .ToList();
-    //}
 
     static List<string> localPinnedQuests;
     static DateTime questsLastRefreshedAt = DateTime.MinValue;
@@ -241,7 +204,7 @@ public static class ProfileRequests
         if (!localPinnedQuests.Contains(uuid))
         {
             localPinnedQuests.Add(uuid);
-            OnItemUpdated?.Invoke(new(FnProfileTypes.AccountItems, uuid));
+            OnItemUpdated?.Invoke(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, uuid));
             SendLocalPinnedQuests();
         }
     }
@@ -252,7 +215,7 @@ public static class ProfileRequests
         if (localPinnedQuests.Contains(uuid))
         {
             localPinnedQuests.Remove(uuid);
-            OnItemUpdated?.Invoke(new(FnProfileTypes.AccountItems, uuid));
+            OnItemUpdated?.Invoke(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, uuid));
             SendLocalPinnedQuests();
         }
     }
@@ -264,7 +227,7 @@ public static class ProfileRequests
         localPinnedQuests?.Clear();
         foreach (var uuid in unpinnedQuests)
         {
-            OnItemUpdated?.Invoke(new(FnProfileTypes.AccountItems, uuid));
+            OnItemUpdated?.Invoke(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, uuid));
         }
         SendLocalPinnedQuests();
     }
@@ -300,7 +263,7 @@ public static class ProfileRequests
         if (notif is null)
             return null;
         var newUUID = GetFirstProfileItemUnsafe(FnProfileTypes.AccountItems, (kvp) => kvp.Value["templateId"].ToString() == notif["newQuestId"].ToString())["uuid"].ToString();
-        return ProfileItemHandle.CreateHandleUnsafe(new(FnProfileTypes.AccountItems, newUUID));
+        return ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, newUUID));
     }
 
     public static bool CanRerollQuestUnsafe()
@@ -411,7 +374,6 @@ public static class ProfileRequests
         return itemData;
     }
 
-
     public static bool? IsItemCollectedUnsafe(JsonObject itemInstance)
     {
         string itemId = itemInstance["templateId"].ToString();
@@ -436,16 +398,6 @@ public static class ProfileRequests
 
     public static async Task<JsonObject> GetProfile(string profileId, bool forceRefresh = false) =>
         await PerformProfileOperation(profileId, "QueryProfile", queryIgnoreCache: forceRefresh);
-
-    static DateTime lastPopulatedLlamasOnDate = DateTime.MinValue;
-    public static async Task PopulateLlamas(bool force = false)
-    {
-        //check if already populated today
-        if (!force && DateTime.UtcNow.Date.CompareTo(lastPopulatedLlamasOnDate)>=0)
-            return;
-        lastPopulatedLlamasOnDate = DateTime.UtcNow.Date;
-        await PerformProfileOperation("campaign", "QueryProfile");
-    }
 
     static SemaphoreSlim profileOperationSephamore = new(1);
     public static event Action<string, JsonObject> OnNotification;
@@ -674,7 +626,7 @@ public static class ProfileRequests
                     GD.Print($"uncached item changed in {profile} {{type:{changeType}, id:{uuid}");
                     continue;
                 }
-                ProfileItemId profileItem = new(profile, uuid);
+                ProfileItemId profileItem = new(LoginRequests.AccountID, profile, uuid);
                 var items = profileCache[profile]["profileChanges"][0]["profile"]["items"].AsObject();
                 JsonNode tempClone = null;
                 switch (changeType)
@@ -752,7 +704,7 @@ public partial class ProfileListener : RefCounted
 
         foreach (var existingItem in existingItems)
         {
-            items.Add(ProfileItemHandle.CreateHandleUnsafe(new(profile, existingItem.Key)));
+            items.Add(ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, profile, existingItem.Key)));
         }
     }
 
@@ -821,53 +773,62 @@ public partial class ProfileListener : RefCounted
 
 public readonly struct ProfileItemId
 {
+    public readonly string account = null;
     public readonly string profile = null;
     public readonly string uuid = null;
-    public ProfileItemId(string compositeProfileItemId)
+    public ProfileItemId(JsonObject compositeProfileItemId)
     {
-        var splitItem = compositeProfileItemId.Split(':');
-        if (splitItem.Length != 2)
-        {
-            profile = null;
-            uuid = null;
-            return;
-        }
-        profile = splitItem[0];
-        uuid = splitItem[1];
+        account = compositeProfileItemId["account"]?.ToString();
+        profile = compositeProfileItemId["profile"]?.ToString();
+        uuid = compositeProfileItemId["uuid"]?.ToString();
     }
-    public ProfileItemId(string profile, string uuid)
+    public ProfileItemId(string account, string profile, string uuid)
     {
+        this.account = account;
         this.profile = profile;
         this.uuid = uuid;
     }
     public ProfileItemId()
     {
+        account = null;
         profile = null;
         uuid = null;
     }
-    public readonly string Composite => profile + ":" + uuid;
+    public readonly JsonObject Composite => new()
+    {
+        ["account"] = account,
+        ["profile"] = profile,
+        ["uuid"] = uuid,
+    };
 
 
-    public static bool operator ==(ProfileItemId left, ProfileItemId right)=>
-        left.uuid==right.uuid && left.profile==right.profile;
+    public static bool operator ==(ProfileItemId left, ProfileItemId right) =>
+        left.uuid == right.uuid && left.profile == right.profile && left.account == right.account;
     public static bool operator !=(ProfileItemId left, ProfileItemId right) =>
-        left.uuid != right.uuid || left.profile != right.profile;
+        left.uuid != right.uuid || left.profile != right.profile || left.account != right.account;
 
-    public static bool operator ==(string left, ProfileItemId right) =>
-        new ProfileItemId(left) == right;
-    public static bool operator !=(string left, ProfileItemId right) =>
-        new ProfileItemId(left) != right;
+    //public static bool operator ==(JsonObject left, ProfileItemId right) =>
+    //    new ProfileItemId(left) == right;
+    //public static bool operator !=(JsonObject left, ProfileItemId right) =>
+    //    new ProfileItemId(left) != right;
 
-    public static bool operator ==(ProfileItemId left, string right) =>
-        left == new ProfileItemId(right);
-    public static bool operator !=(ProfileItemId left, string right) =>
-        left != new ProfileItemId(right);
+    //public static bool operator ==(ProfileItemId left, JsonObject right) =>
+    //    left == new ProfileItemId(right);
+    //public static bool operator !=(ProfileItemId left, JsonObject right) =>
+    //    left != new ProfileItemId(right);
 
     public override readonly bool Equals(object obj) =>
-        (obj is ProfileItemId profileIDObj && profileIDObj == this) ||
-        (obj is string stringObj && stringObj == this);
+        (obj is ProfileItemId profileIDObj && profileIDObj == this);
+    //    || (obj is JsonObject compObj && compObj == this);
 
-    public override readonly int GetHashCode() => HashCode.Combine(uuid, profile);
+    public override readonly int GetHashCode() => HashCode.Combine(uuid, profile, account);
+}
+
+public enum OrderRange
+{
+    Daily,
+    Weekly,
+    Monthly
 }
 
 public partial class ProfileItemHandle : RefCounted
@@ -966,46 +927,508 @@ public partial class ProfileItemHandle : RefCounted
     public JsonObject GetItemUnsafe() => isValid ? ProfileRequests.GetCachedProfileItemInstance(itemID) : null;
 }
 
+public class GameAccount
+{
+    public GameAccount(string accountId)
+    {
+        this.accountId = accountId;
+    }
+    public bool isOwned { get; set; }
+    public string accountId { get; private set; }
+
+    Dictionary<string, GameProfile> profiles = new();
+
+    public GameProfile this[string profileId] => GetProfile(profileId);
+    public GameProfile GetProfile(string profileId) => profiles[profileId] ??= new(this, profileId);
+    public bool HasProfile(string profileId) => profiles.ContainsKey(profileId);
+
+    public async Task<GameAccount> EnsureProfile(string profileId)
+    {
+        await GetProfile(profileId).Query();
+        return this;
+    }
+
+    public void HandleProfileChanges(JsonArray multiUpdate)
+    {
+        foreach (var profileUpdate in multiUpdate)
+        {
+            string profileId = profileUpdate["profileId"].ToString();
+            if (profiles.ContainsKey(profileId))
+                profiles[profileId].ApplyProfileChanges(profileUpdate["profileChanges"].AsArray());
+        }
+    }
+
+    public async Task<GameItem[]> GetAllPrerollData()
+    {
+        var accountItems = GetProfile(FnProfileTypes.AccountItems);
+        var allPrerolls = accountItems.GetItems("PrerollData");
+
+        if 
+        (
+            !accountItems.hasProfile || 
+            allPrerolls.FirstOrDefault() is not GameItem firstPreroll ||
+            DateTime.UtcNow.CompareTo(DateTime.Parse(firstPreroll.attributes["expiration"].ToString(), null, DateTimeStyles.RoundtripKind)) >= 0
+        )
+        {
+            await accountItems.PerformOperation("PopulatePrerolledOffers");
+            allPrerolls = accountItems.GetItems("PrerollData");
+        }
+
+        if (!accountItems.hasProfile)
+        {
+            await accountItems.Query();
+            allPrerolls = accountItems.GetItems("PrerollData");
+        }
+
+        return allPrerolls;
+    }
+
+    public float GetSurvivorBonusUnsafe(string bonusID, int perSquadRequirement = 2, float boostBase = 5)
+    {
+        var matchingSurvivors = GetProfile(FnProfileTypes.AccountItems).GetItems("Worker", gameItem =>
+        {
+            if (gameItem.attributes["squad_id"] is null || gameItem.attributes["set_bonus"] is null)
+                return false;
+            var thisBonus = gameItem.attributes["set_bonus"].ToString().Split(".")[^1];
+            return thisBonus == bonusID;
+        })
+        .GroupBy(gameItem => gameItem.attributes["squad_id"].ToString());
+
+        int boostMatchCount = matchingSurvivors.Select(g => g.Count() / perSquadRequirement).Sum();
+
+        return boostBase * boostMatchCount;
+    }
+
+    public JsonObject GetOrderCounts(OrderRange range)
+    {
+        var commonData = GetProfile(FnProfileTypes.Common);
+        var orderRange = commonData.statAttributes[range.ToAttribute()];
+        var lastIntervalTime = DateTime.Parse(orderRange["lastInterval"].ToString(), null, DateTimeStyles.RoundtripKind);
+        if (lastIntervalTime != range.ToInterval())
+            return null;
+        return orderRange["purchaseList"].AsObject();
+    }
+    public string GetSACCode(bool addExpiredText = true)
+    {
+        var commonData = GetProfile(FnProfileTypes.Common);
+        var lastSetTime = DateTime.Parse(commonData.statAttributes["mtx_affiliate_set_time"].ToString(), null, DateTimeStyles.RoundtripKind);
+        bool isExpired = (DateTime.UtcNow - lastSetTime).Days > 13;
+        return commonData.statAttributes["mtx_affiliate"] + (isExpired && addExpiredText ? " (Expired)" : "");
+    }
+
+    public bool IsSACExpired() => Mathf.FloorToInt(GetSACTime()) > 13;
+
+    public double GetSACTime()
+    {
+        var commonData = GetProfile(FnProfileTypes.Common);
+        var lastSetTime = DateTime.Parse(commonData.statAttributes["mtx_affiliate_set_time"].ToString(), null, DateTimeStyles.RoundtripKind);
+        return (DateTime.UtcNow - lastSetTime).TotalDays;
+    }
+
+    public async Task<bool> SetSACCode(string newName)
+    {
+        await GetProfile(FnProfileTypes.Common).PerformOperation("SetAffiliateName", "{\"affiliateName\":\"" + newName + "\"}");
+        //TODO: return false if creator code not found
+        return true;
+    }
+
+    List<GameItem> localPinnedQuests;
+    DateTime questsLastRefreshedAt = DateTime.MinValue;
+    async Task<GameProfile> CheckLocalPinnedQuests()
+    {
+        var accountItems = GetProfile(FnProfileTypes.AccountItems);
+        bool outOfDate = (questsLastRefreshedAt - DateTime.UtcNow).TotalMinutes > 5;
+        if (localPinnedQuests != null && !outOfDate)
+            return accountItems;
+
+        await accountItems.Query();
+        localPinnedQuests = accountItems.statAttributes["client_settings"]["pinnedQuestInstances"]
+            .AsArray()
+            .Select(q => accountItems.GetItem(q.ToString()))
+            .ToList();
+        return accountItems;
+    }
+
+    public async Task AddPinnedQuest(GameItem item)
+    {
+        var accountItems = await CheckLocalPinnedQuests();
+        if (item.profile == accountItems && !localPinnedQuests.Contains(item))
+        {
+            localPinnedQuests.Add(item);
+            accountItems.SendItemUpdate(item);
+            SendLocalPinnedQuests(accountItems);
+        }
+    }
+
+    public async Task RemovePinnedQuest(GameItem item)
+    {
+        var accountItems = await CheckLocalPinnedQuests();
+        if (localPinnedQuests.Contains(item))
+        {
+            localPinnedQuests.Remove(item);
+            accountItems.SendItemUpdate(item);
+            SendLocalPinnedQuests(accountItems);
+        }
+    }
+
+    public void ClearPinnedQuests()
+    {
+        GD.Print("clearing all pinned");
+        var unpinnedQuests = localPinnedQuests?.ToArray() ?? Array.Empty<GameItem>();
+        localPinnedQuests?.Clear();
+        var accountItems = GetProfile(FnProfileTypes.AccountItems);
+        foreach (var item in unpinnedQuests)
+        {
+            accountItems.SendItemUpdate(item);
+        }
+        SendLocalPinnedQuests(accountItems);
+    }
+
+    async void SendLocalPinnedQuests(GameProfile accountItems)
+    {
+        localPinnedQuests ??= new();
+        JsonObject content = new()
+        {
+            ["pinnedQuestIds"] = new JsonArray(localPinnedQuests.Select(q => (JsonValue)q.uuid).ToArray())
+        };
+        await accountItems.PerformOperation("SetPinnedQuests", content.ToString());
+    }
+
+    public bool HasPinnedQuest(string uuid)
+    {
+        localPinnedQuests ??= new();
+        return localPinnedQuests.Exists(q=>q.uuid==uuid);
+    }
+
+    public async Task<GameItem> RerollQuest(GameItem item)
+    {
+        var accountItems = GetProfile(FnProfileTypes.AccountItems);
+        if (item.profile != accountItems)
+            return null;
+        GD.Print("rerolling quest " + item.uuid);
+        JsonObject content = new()
+        {
+            ["questId"] = item.uuid
+        };
+        var notif = (await accountItems.PerformOperation("FortRerollDailyQuest", content.ToString()))
+            .FirstOrDefault(n => n["type"].ToString() == "dailyQuestReroll");
+        if (notif is null)
+            return null;
+        return accountItems.GetItems("Quest", item => item.templateId==notif["newQuestId"].ToString()).FirstOrDefault();
+    }
+
+    public bool CanRerollQuest() => (GetProfile(FnProfileTypes.AccountItems).statAttributes?["quest_manager"]?["dailyQuestRerolls"]?.GetValue<int>() ?? 0) > 0;
+}
+
 public class GameProfile
 {
-    public bool isOwned { get; private set; }
+    public GameProfile(GameAccount account, string profileId)
+    {
+        this.account = account;
+        this.profileId = profileId;
+    }
+
+    public bool hasProfile { get; private set; }
+    public GameAccount account { get; private set; }
+    public string profileId { get; private set; }
     public JsonObject statAttributes { get; private set; }
 
-    public readonly List<GameItem> items = new();
+    Dictionary<string, GameItem> items = new();
+    Dictionary<string, List<GameItem>> groupedItems;
+
+    public static event Action<GameProfile> OnStatChanged;
+    public static event Action<GameItem> OnItemAdded;
+    public static event Action<GameItem> OnItemUpdated;
+    public static event Action<string> OnItemRemoved;
+
+    public GameItem GetItem(string uuid) => items.ContainsKey(uuid) ? items[uuid] : null;
+    public GameItem[] GetItems(GameItemPredicate predicate) => GetItems(null, predicate);
+    public GameItem[] GetItems(string type = null, GameItemPredicate predicate = null)
+    {
+        var typedItems = items.Values.AsEnumerable();
+        if(type is not null)
+        {
+            if(!groupedItems.ContainsKey(type))
+                return Array.Empty<GameItem>();
+            typedItems = groupedItems[type].AsEnumerable();
+        }
+        if (predicate is null)
+            return typedItems.ToArray();
+        return typedItems.Where(gameItem => predicate(gameItem)).ToArray();
+    }
+
+    public void SendItemUpdate(GameItem item)
+    {
+        if (item.profile == this)
+            OnItemUpdated?.Invoke(item);
+    }
+
+    static SemaphoreSlim profileOperationSephamore = new(1);
+
+    public async Task<GameProfile> Query(bool force=false)
+    {
+        if (!hasProfile || force)
+            await PerformOperation("QueryProfile");
+        return this;
+    }
+
+    public async Task<JsonArray> PerformOperation(string operation, string content = "{}")
+    {
+        await profileOperationSephamore.WaitAsync();
+        try
+        {
+            return await PerformOperationUnsafe(operation, content);
+        }
+        finally
+        {
+            profileOperationSephamore.Release();
+        }
+    }
+
+    public async Task<JsonArray> PerformOperationUnsafe(string operation, string content = "{}")
+    {
+        if (!await LoginRequests.TryLogin())
+        {
+            GD.Print("profile request failed: not logged in");
+            return null;
+        }
+
+        //Todo: move to Account
+        account.isOwned = LoginRequests.AccountID == account.accountId;
+
+        if (account.isOwned && operation == "QueryProfile")
+            operation = "QueryPublicProfile";
+
+        if (!account.isOwned && operation != "QueryPublicProfile")
+        {
+            GD.Print($"cannot perform {operation} on unowned profile");
+            return null;
+        }
+
+        if (!account.isOwned && profileId != FnProfileTypes.AccountItems && profileId != FnProfileTypes.Common)
+        {
+            GD.Print($"cannot access unowned profile of type {profileId}");
+            return null;
+        }
+
+        StringContent jsonContent = new(content, Encoding.UTF8, "application/json");
+        using var request =
+            new HttpRequestMessage(
+                HttpMethod.Post,
+                $"fortnite/api/game/v2/profile/{LoginRequests.AccountID}/{(account.isOwned ? "public" : "client")}/{operation}?profileId={profileId}&rvn=-1"
+            )
+            {
+                Content = jsonContent
+            };
+
+        request.Headers.Authorization = LoginRequests.AccountAuthHeader;
+
+        var result = (await Helpers.MakeRequest(FNEndpoints.gameEndpoint, request)).AsObject();
+        if (result.ContainsKey("errorCode"))
+        {
+            var _ = GenericConfirmationWindow.ShowErrorForWebResult(result);
+            return null;
+        }
+
+        var resultStats = result["profileChanges"][0]["profile"]["stats"]["attributes"].AsObject();
+        var resultItems = result["profileChanges"][0]["profile"]["items"].AsObject();
+
+        if (hasProfile)
+            ApplyProfileChanges(GenerateChanges(resultItems, resultStats));
+        else
+        {
+            items = resultItems.Select(kvp => new GameItem(this, kvp.Key, kvp.Value.AsObject())).ToDictionary(item => item.uuid);
+            groupedItems = new(
+                    items.GroupBy(kvp => kvp.Value.templateId.Split(":")[0])
+                    .Select(grouping => KeyValuePair.Create(grouping.Key, grouping.Select(kvp=>kvp.Value).ToList()))
+                );
+            hasProfile = true;
+        }
+        statAttributes = resultStats;
+
+        if (result.ContainsKey("multiUpdate"))
+            account.HandleProfileChanges(result["multiUpdate"].AsArray());
+
+        GD.Print("operation complete");
+
+        if (result.ContainsKey("notifications"))
+            return result["notifications"].AsArray();
+        return new();
+    }
+
+    JsonArray GenerateChanges(JsonObject newItems, JsonObject newStats = null)
+    {
+        var oldKeys = items.Keys.ToArray();
+        var newKeys = newItems.Select(x => x.Key).ToArray();
+
+        var addedKeys = newKeys.Except(oldKeys);
+        var removedKeys = oldKeys.Except(newKeys);
+        var possiblyChangedKeys = oldKeys.Intersect(newKeys);
+
+        JsonArray profileChanges = new();
+
+        foreach (var itemKey in removedKeys)
+        {
+            profileChanges.Add(new JsonObject()
+            {
+                ["changeType"] = "itemRemoved",
+                ["itemId"] = itemKey
+            });
+        }
+        foreach (var itemKey in possiblyChangedKeys)
+        {
+            var from = items[itemKey].RawData.ToString();
+            var to = newItems[itemKey].ToString();
+            if (from != to)
+            {
+                GD.Print($"FROM ({from}) >>> ({to})");
+                profileChanges.Add(new JsonObject()
+                {
+                    ["changeType"] = "itemFullyChanged",
+                    ["itemId"] = itemKey,
+                    ["item"] = newItems[itemKey].Reserialise()
+                });
+            }
+        }
+        foreach (var itemKey in addedKeys)
+        {
+            profileChanges.Add(new JsonObject()
+            {
+                ["changeType"] = "itemAdded",
+                ["itemId"] = itemKey,
+                ["item"] = newItems[itemKey].Reserialise()
+            });
+        }
+        if (newStats.ToString() != statAttributes.ToString())
+        {
+            profileChanges.Add(new JsonObject()
+            {
+                ["changeType"] = "statChanged"
+            });
+        }
+
+        return profileChanges;
+    }
+
+    public void ApplyProfileChanges(JsonArray profileChanges)
+    {
+        foreach (var change in profileChanges)
+        {
+            string changeType = change["changeType"].ToString();
+            string uuid = change["itemId"]?.ToString();
+
+            //ProfileItemId profileItemId = new(profileId, uuid);
+            GameItem targetItem;
+            switch (changeType)
+            {
+                case "itemAdded":
+                    targetItem = new(this, uuid, change["item"].AsObject());
+                    items[uuid] = targetItem;
+                    GD.Print($"ADDED: {uuid} ({items[uuid]})");
+                    OnItemAdded?.Invoke(targetItem);
+                    break;
+                case "itemRemoved":
+                    GD.Print($"REMOVING: {uuid} ({items[uuid]})");
+                    items[uuid].SendRemovingEvent();
+                    items.Remove(uuid);
+                    OnItemRemoved?.Invoke(uuid);
+                    break;
+                case "statChanged":
+                    GD.Print($"STAT CHANGED: ? ({change})");
+                    OnStatChanged?.Invoke(this);
+                    break;
+                case "itemQuantityChanged":
+                    items[uuid].SetQuantity(change["quantity"].GetValue<int>());
+                    GD.Print($"CHANGED (quantity): {uuid} ({items[uuid]})");
+                    items[uuid].SendChangedEvent();
+                    OnItemUpdated?.Invoke(items[uuid]);
+                    break;
+                case "itemAttrChanged":
+                    items[uuid].attributes[change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
+                    GD.Print($"CHANGED (attribute): {uuid}[{change["attributeName"]}] ({items[uuid]})");
+                    items[uuid].SendChangedEvent();
+                    OnItemUpdated?.Invoke(items[uuid]);
+                    break;
+                case "itemFullyChanged":
+                    //custom one for handling generated changelogs
+                    items[uuid].SetRawData(change["item"].AsObject());
+                    GD.Print($"CHANGED (full): {uuid} ({items[uuid]})");
+                    items[uuid].SendChangedEvent();
+                    OnItemUpdated?.Invoke(items[uuid]);
+                    break;
+            }
+        }
+    }
 }
+
+public delegate bool GameItemPredicate(GameItem gameItem);
 
 public class GameItem
 {
-    public GameItem(ProfileItemId itemID, JsonObject rawData)
+    public event Action<GameItem> OnChanged;
+    public event Action<GameItem> OnRemoving;
+
+
+    public GameItem(GameProfile profile, string uuid, JsonObject rawData)
     {
-        isReal = true;
-        this.itemID = itemID;
-        templateId = rawData["templateId"].ToString();
-        quantity = rawData["quantity"].GetValue<int>();
-        attributes = rawData["attributes"]?.AsObject();
+        this.uuid = uuid;
+        this.profile = profile;
+        SetRawData(rawData);
     }
 
     public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, ProfileItemId? profileItemPointer = null)
     {
+        attemptedTemplateSearch = true;
         _template = template;
         templateId = template.TemplateId;
         this.quantity = quantity;
         this.attributes = attributes;
-        this.itemID = profileItemPointer;
+        this.profileItemPointer = profileItemPointer;
     }
 
-    public bool isReal { get; private set; }
+    public GameProfile profile { get; private set; }
+    public string uuid { get; private set; }
 
-    public ProfileItemId? itemID { get; private set; }
+    //replace with handle in future?
+    public ProfileItemId? profileItemPointer { get; private set; }
 
+    bool attemptedTemplateSearch;
     public string templateId { get; private set; }
-    public GameItemTemplate template => _template ??= null;
+    public GameItemTemplate template
+    {
+        get
+        {
+            if (attemptedTemplateSearch)
+                return _template;
+            _template ??= BanjoAssets.TryGetNewTemplate(templateId);
+            attemptedTemplateSearch = true;
+            return _template;
+        }
+    }
     GameItemTemplate _template;
 
     public JsonObject attributes { get; private set; }
 
     public int quantity { get; private set; }
+    public void SetQuantity(int newQuant) => quantity = newQuant;
 
+    public JsonObject RawData => new()
+    {
+        ["templateId"] = templateId,
+        ["quantity"] = quantity,
+        ["attributes"] = attributes.Reserialise()
+    };
+    public void SetRawData(JsonObject rawData)
+    {
+        if (templateId != rawData["templateId"].ToString())
+        {
+            attemptedTemplateSearch = false;
+            _template = null;
+            templateId = rawData["templateId"].ToString();
+        }
+        quantity = rawData["quantity"].GetValue<int>();
+        attributes = rawData["attributes"]?.AsObject();
+    }
 
     Dictionary<ItemTextureType, Texture2D> textures = new();
     public Texture2D GetTexture(ItemTextureType textureType = ItemTextureType.Preview, Texture2D fallbackIcon = null)
@@ -1031,14 +1454,10 @@ public class GameItem
     
     Texture2D GetPersonalityTexture(Texture2D fallbackIcon = null)
     {
-        if (template?["Type"].ToString() != "Worker")
+        if (template.Type != "Worker")
             return fallbackIcon;
 
-        var personalityId = template.ContainsKey("Personality") ?
-            template["Personality"]?.ToString() :
-            attributes?["personality"]?.ToString()?.Split(".")?[^1];
-
-        //GD.Print("personality: " + personalityId);
+        var personalityId = template.Personality ?? attributes?["personality"]?.ToString()?.Split(".")?[^1];
 
         if (personalityId is not null && BanjoAssets.supplimentaryData.PersonalityIcons.ContainsKey(personalityId))
             return textures[ItemTextureType.Personality] = BanjoAssets.supplimentaryData.PersonalityIcons[personalityId];
@@ -1048,18 +1467,18 @@ public class GameItem
 
     Texture2D GetSetBonusTexture(Texture2D fallbackIcon = null)
     {
-        if (template?["Type"].ToString() != "Worker")
+        if (template.Type != "Worker")
             return fallbackIcon;
 
-        if (template.ContainsKey("SubType"))
+        if (template.SubType is string subType)
         {
-            if (template["SubType"]?.ToString()?.Replace("Martial Artist", "MartialArtist") is string subType && BanjoAssets.supplimentaryData.SquadIcons.ContainsKey(subType))
+            subType = subType.Replace("Martial Artist", "MartialArtist");
+            if (BanjoAssets.supplimentaryData.SquadIcons.ContainsKey(subType))
                 return textures[ItemTextureType.SetBonus] = BanjoAssets.supplimentaryData.SquadIcons[subType];
         }
-        else
+        else if(attributes?["set_bonus"]?.ToString()?.Split(".")?[^1] is string setBonus)
         {
-            string setBonus = attributes?["set_bonus"]?.ToString()?.Split(".")?[^1];
-            if (setBonus is not null && BanjoAssets.supplimentaryData.SetBonusIcons.ContainsKey(setBonus))
+            if (BanjoAssets.supplimentaryData.SetBonusIcons.ContainsKey(setBonus))
                 return textures[ItemTextureType.SetBonus] = BanjoAssets.supplimentaryData.SetBonusIcons[setBonus];
         }
 
@@ -1068,7 +1487,13 @@ public class GameItem
 
     public void GenerateSearchTags(bool assumeUncommon = true) =>
         template.GenerateSearchTags(assumeUncommon);
+
+    public override string ToString() => $"{{\n  id:{uuid}\n  template:{templateId}\n  quantity:{quantity}\n  attributes:{attributes}}}";
+
+    public void SendChangedEvent() => OnChanged?.Invoke(this);
+    public void SendRemovingEvent() => OnRemoving?.Invoke(this);
 }
+
 
 static class FnProfileTypes
 {

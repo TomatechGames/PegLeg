@@ -57,7 +57,7 @@ static class CatalogRequests
         int dailyLimit = offer["dailyLimit"].GetValue<int>();
         if (dailyLimit != -1)
         {
-            int purchaseAmount = (await ProfileRequests.GetOrderCounts(ProfileRequests.OrderRange.Daily))?[offerId]?.GetValue<int>() ?? 0;
+            int purchaseAmount = (await ProfileRequests.GetOrderCounts(OrderRange.Daily))?[offerId]?.GetValue<int>() ?? 0;
             //GD.Print($"Daily Limit: {purchaseAmount}/{dailyLimit}");
             totalLimit = Mathf.Min(totalLimit, dailyLimit-purchaseAmount);
         }
@@ -65,7 +65,7 @@ static class CatalogRequests
         int weeklyLimit = offer["weeklyLimit"].GetValue<int>();
         if (weeklyLimit != -1)
         {
-            int purchaseAmount = (await ProfileRequests.GetOrderCounts(ProfileRequests.OrderRange.Weekly))?[offerId]?.GetValue<int>() ?? 0;
+            int purchaseAmount = (await ProfileRequests.GetOrderCounts(OrderRange.Weekly))?[offerId]?.GetValue<int>() ?? 0;
             //GD.Print($"Weekly Limit: {purchaseAmount}/{weeklyLimit}");
             totalLimit = Mathf.Min(totalLimit, weeklyLimit - purchaseAmount);
         }
@@ -73,7 +73,7 @@ static class CatalogRequests
         int monthlyLimit = offer["monthlyLimit"].GetValue<int>();
         if (monthlyLimit != -1)
         {
-            int purchaseAmount = (await ProfileRequests.GetOrderCounts(ProfileRequests.OrderRange.Monthly))?[offerId]?.GetValue<int>() ?? 0;
+            int purchaseAmount = (await ProfileRequests.GetOrderCounts(OrderRange.Monthly))?[offerId]?.GetValue<int>() ?? 0;
             //GD.Print($"Monthly Limit: {purchaseAmount}/{monthlyLimit}");
             totalLimit = Mathf.Min(totalLimit, monthlyLimit - purchaseAmount);
         }

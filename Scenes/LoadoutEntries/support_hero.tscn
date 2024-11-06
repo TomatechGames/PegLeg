@@ -13,7 +13,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jm7ic"]
 shader = ExtResource("1_23qqt")
-shader_parameter/ControlSize = Vector2(365, 32)
+shader_parameter/ControlSize = Vector2(544, 32)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = true
 shader_parameter/UseCorners = true
