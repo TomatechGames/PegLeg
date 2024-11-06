@@ -70,7 +70,7 @@ static class MissionRequests
             //load from file
             using FileAccess missionFile = FileAccess.Open(missionCacheSavePath, FileAccess.ModeFlags.Read);
             missionsCache = JsonNode.Parse(missionFile.GetAsText()).AsObject();
-            missionSample = missionsCache["sample"].AsValue().TryGetValue(out uint sampleVal) ? sampleVal : 0;
+            missionSample = missionsCache["sample"]?.AsValue().TryGetValue(out uint sampleVal) ?? false ? sampleVal : 0;
             Debug.WriteLine("mission file loaded");
         }
 
