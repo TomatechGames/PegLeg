@@ -22,7 +22,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osi5s"]
 shader = ExtResource("8_ffqoy")
-shader_parameter/ControlSize = Vector2(718, 609)
+shader_parameter/ControlSize = Vector2(728, 720)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = null
 shader_parameter/UseCorners = true

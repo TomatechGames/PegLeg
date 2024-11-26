@@ -230,14 +230,24 @@ static class MissionRequests
                 //establish mission details
                 string missionGen = missionObj["missionGenerator"].ToString();
                 missionObj["missionGenerator"] = missionGenLookup[missionGen].Reserialise();
+                if (missionObj["missionGenerator"] is null)
+                {
+                    GD.Print($"Failed to find \"{missionGen}\"");
+                    continue;
+                }
 
                 //skip Homebase and Story missions
                 string iconPath = missionObj["missionGenerator"]["ImagePaths"]["Icon"].ToString();
                 int tileIndex = missionObj["tileIndex"].GetValue<int>();
                 if (iconPath.EndsWith("T-Icon-Story-128.png") || 
-                    iconPath.EndsWith("T-Icon-Outpost-128.png") ||
-                    missionTiles[tileIndex]["requirements"]["eventFlag"].ToString()!="")
+                    iconPath.EndsWith("T-Icon-Outpost-128.png"))
                     continue;
+
+                string eventFlag = missionTiles[tileIndex]["requirements"]["eventFlag"].ToString();
+                if (eventFlag != "")
+                {
+                    GD.Print($"Found \"{missionGen}\" with flag \"{eventFlag}\"");
+                }
 
                 string dificultyRow = missionObj["missionDifficultyInfo"]["rowName"].ToString();
                 missionObj["missionDifficultyInfo"] = difficultyInfoLookup[dificultyRow].Reserialise();
