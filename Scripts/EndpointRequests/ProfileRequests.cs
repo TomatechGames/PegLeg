@@ -149,6 +149,8 @@ public static class ProfileRequests
     public static async Task<JsonObject> GetOrderCounts(OrderRange range)
     {
         var orderRange = (await GetProfile(FnProfileTypes.Common))["profileChanges"][0]["profile"]["stats"]["attributes"][range.ToAttribute()];
+        if (orderRange is null)
+            return null;
         var lastIntervalTime = DateTime.Parse(orderRange["lastInterval"].ToString(), null, DateTimeStyles.RoundtripKind);
         if (lastIntervalTime != range.ToInterval())
             return null;
@@ -485,10 +487,11 @@ public static class ProfileRequests
 
         if (profileId == FnProfileTypes.AccountItems)
         {
-            localPinnedQuests ??= result["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]["pinnedQuestInstances"]
+            localPinnedQuests ??= result["profileChanges"][0]["profile"]["stats"]["attributes"]["client_settings"]?["pinnedQuestInstances"]?
                 .AsArray()
                 .Select(q => q.ToString())
                 .ToList();
+            localPinnedQuests ??= new();
         }
         lock (rewardNotificationChecks)
         {
