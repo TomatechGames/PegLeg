@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://Scripts/UIElements/CustomTooltip.cs" id="1_a0dpu"]
 [ext_resource type="Texture2D" uid="uid://bg8tqds2ynv72" path="res://Images/TextureResources/GradientShadow.tres" id="1_n7kv3"]
 [ext_resource type="Shader" path="res://Shaders/TooltipBanner.gdshader" id="3_5ou8i"]
-[ext_resource type="Texture2D" uid="uid://div6ssxx4btc8" path="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png" id="3_f18kr"]
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="4_68qyt"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_cw7hj"]
 [ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="5_cnlgh"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="5_hwtg6"]
 [ext_resource type="Texture2D" uid="uid://jipvjhedh7jy" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Epic-L.png" id="6_w7lr4"]
 [ext_resource type="Texture2D" uid="uid://de4vkpc5d58on" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Legendary-L.png" id="7_8e7xb"]
 [ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="8_u7fy7"]
@@ -16,11 +16,11 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_642tc"]
 shader = ExtResource("3_5ou8i")
 shader_parameter/ControlSize = Vector2(235, 32)
-shader_parameter/ShiftDirection = Vector2(0.5, 0.6)
+shader_parameter/ShiftDirection = Vector2(0, 0.5)
 shader_parameter/CornerRadius = 4.0
 shader_parameter/ColorMode = true
 shader_parameter/Color = Color(0, 1, 1, 1)
-shader_parameter/time = 1.843
+shader_parameter/time = 42.741
 shader_parameter/TrianglePattern = ExtResource("4_68qyt")
 
 [node name="Tooltip" type="MarginContainer" node_paths=PackedStringArray("titleContent", "titleBanner", "titleTextLabel", "titleQuantityLayout", "titleQuantityLabel", "descriptionContent", "descriptionLayers", "imageContent")]
@@ -81,7 +81,7 @@ theme_override_constants/margin_bottom = -2
 material = SubResource("ShaderMaterial_642tc")
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-texture = ExtResource("3_f18kr")
+texture = ExtResource("5_hwtg6")
 expand_mode = 1
 script = ExtResource("4_cw7hj")
 syncTimeProperty = true

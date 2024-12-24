@@ -2,9 +2,11 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Security.Principal;
 using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
-using ProfileItemPredicate = ProfileRequests.ProfileItemPredicate;
 
 public partial class InventoryItemSlot : Node
 {
@@ -26,21 +28,138 @@ public partial class InventoryItemSlot : Node
     [Export]
     bool showInspector = false;
 
-    public event Action<InventoryItemSlot> OnItemChangeRequested;
-    public event Action<InventoryItemSlot> OnItemChanged;
+    [Export]
+    bool useActiveAccount;
 
-    public ProfileItemHandle slottedItem { get; private set; }
-    ProfileItemPredicate predicate;
+
+    public event Action<InventoryItemSlot> OnItemChangeRequested;
+    public event Action<InventoryItemSlot> OnSlotItemChanged;
+
+    GameAccount currentAcount;
+    public GameProfile currentProfile { get; private set; }
+    public GameItem slottedItem { get; private set; }
+    string profileType;
+    string itemTypeFilter;
+    GameItemPredicate predicateFilter = FallbackPredicate;
     bool isEmpty = true;
 
     public override void _Ready()
     {
-        locked.Visible = true;
-        entry.Visible = false;
-        inspectArea.Visible = false;
-        open.Visible = false;
-        buttonControl.Visible = false;
-        ProfileRequests.OnItemUpdated += UpdateSlot;
+        SetLocked(true);
+        GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
+    }
+
+    void OnActiveAccountChanged(GameAccount account)
+    {
+        if (useActiveAccount)
+            SetAccountInternal(account);
+    }
+
+    public void UseActiveAccount()
+    {
+        useActiveAccount = false;
+        SetAccountInternal(GameAccount.activeAccount);
+    }
+    
+    public void SetAccount(GameAccount account)
+    {
+        useActiveAccount = false;
+        SetAccountInternal(account);
+    }
+
+    CancellationTokenSource setAccountCts;
+    async void SetAccountInternal(GameAccount account)
+    {
+        profileUpdateCts?.Cancel();
+        setAccountCts?.Cancel();
+
+        setAccountCts = new();
+        var ct = setAccountCts.Token;
+
+        bool isAuthed = await account.Authenticate();
+        if (ct.IsCancellationRequested)
+            return;
+
+        if (!isAuthed)
+        {
+            currentAcount = null;
+            SetProfile(null);
+            return;
+        }
+        currentAcount = account;
+        SetProfile(profileType is not null ? currentAcount?.GetProfile(profileType) : null);
+
+    }
+
+    void SetProfile(GameProfile newProfile)
+    {
+        bool hadProfile = profileType is not null;
+        if (hadProfile)
+        {
+            currentProfile.OnItemUpdated -= UpdateSlot;
+            currentProfile.OnItemRemoved -= UpdateSlot;
+        }
+
+        currentProfile = newProfile;
+
+        if (currentProfile is null)
+        {
+            if (slottedItem is not null)
+            {
+                entry.ClearItem();
+                slottedItem = null;
+                isEmpty = true;
+                OnSlotItemChanged?.Invoke(this);
+            }
+            SetLocked(true);
+            return;
+        }
+
+        currentProfile.OnItemUpdated += UpdateSlot;
+        currentProfile.OnItemRemoved += UpdateSlot;
+
+        if (!hadProfile)
+            SetLocked(false);
+
+        UpdateProfile();
+    }
+
+
+    CancellationTokenSource profileUpdateCts;
+    public async void UpdateProfile()
+    {
+        profileUpdateCts?.Cancel();
+
+        if (currentProfile is null)
+            return;
+
+        profileUpdateCts = new();
+        var ct = profileUpdateCts.Token;
+
+        if (await currentAcount.Authenticate() || ct.IsCancellationRequested)
+            return;
+
+        await currentProfile.Query();
+        if (ct.IsCancellationRequested)
+            return;
+
+        var foundItem = currentProfile.GetItems(itemTypeFilter, predicateFilter).FirstOrDefault();
+        ValidateItem(foundItem, true);
+    }
+
+    void SetLocked(bool value)
+    {
+        locked.Visible = value;
+        buttonControl.Visible = !value;
+        if (value)
+        {
+            entry.Visible = false;
+            inspectArea.Visible = false;
+            open.Visible = false;
+            isEmpty = true;
+        }
+        else
+            SetEmpty(isEmpty);
     }
 
     void SetEmpty(bool value)
@@ -51,84 +170,62 @@ public partial class InventoryItemSlot : Node
         open.Visible = isEmpty;
     }
 
-    public async Task SetPredicate(ProfileItemPredicate newPredicate)
+    static bool FallbackPredicate(GameItem _) => true;
+    public async Task SetSlotData(string profileId, string itemType, GameItemPredicate predicate)
     {
-        predicate = newPredicate;
-        locked.Visible = false;
-        open.Visible = isEmpty;
-        buttonControl.Visible = true;
+        profileType = profileId;
+        itemTypeFilter = itemType;
+        predicateFilter = predicate ?? FallbackPredicate;
 
-        var foundItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, predicate)).FirstOrDefault();
-        ValidateItem(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, foundItem.Key), foundItem.Value?.AsObject());
-    }
-
-    public async void UpdateSlot(ProfileItemId profileItem)
-    {
-        if(predicate is null)
+        if (currentAcount is null || !await currentAcount.Authenticate())
             return;
-        ValidateItem(profileItem, await ProfileRequests.GetProfileItemInstance(profileItem));
+
+        SetProfile(profileType is not null ? currentAcount?.GetProfile(profileType) : null);
     }
 
-    public async void Inspect()
+    void UpdateSlot(GameItem newItem)
     {
-        if(slottedItem?.isValid ?? false)
-        {
-            await GameItemViewer.Instance.ShowItemHandle(slottedItem);
-        }
-    }
-
-    public void Refresh()
-    {
-        entry.RefreshProfileItem();
-    }
-
-    public void RequestChange()
-    {
-        OnItemChangeRequested?.Invoke(this);
-        /*
-        if (filter == null)
+        if(predicateFilter is null)
             return;
-        var result = await GameItemSelector.Instance.OpenSelector(filter);
-        var resultItem = result.FirstOrDefault();
-        if (resultItem is null)
-            return;
-        GD.Print("changing slotted item to "+ resultItem.itemID.uuid);
-        onChangeRequested?.Invoke(slottedItem, resultItem);
-        */
+        ValidateItem(newItem);
     }
 
-    void ValidateItem(ProfileItemId profileItem, JsonObject item)
-    {
-        bool isMatch = item is not null && predicate(new(profileItem.uuid, item));
-        bool wasSlotted = slottedItem?.itemID == profileItem;
+    public void Inspect() => GameItemViewer.Instance.ShowItem(slottedItem);
 
-        bool changed = false;
+    public void UpdateItem() => entry.UpdateItem();
+
+    public void RequestChange() => OnItemChangeRequested?.Invoke(this);
+
+    void ValidateItem(GameItem newItem, bool knownMatch = false)
+    {
+        bool isMatch = newItem is not null && newItem.profile is not null && (knownMatch || ((itemTypeFilter is null || newItem.template.Type == itemTypeFilter) && predicateFilter(newItem)));
+        bool wasSlotted = newItem == slottedItem;
+
         if (isMatch)
         {
-            if (wasSlotted)
+            if (newItem == slottedItem)
                 return;
-            //slottedItem?.Free();
-            slottedItem = ProfileItemHandle.CreateHandleUnsafe(profileItem);
-            entry.LinkProfileItem(slottedItem);
+            slottedItem = newItem;
+            entry.SetItem(slottedItem);
             SetEmpty(false);
-            changed = true;
+            OnSlotItemChanged?.Invoke(this);
         }
-        else if (wasSlotted)
+        else if (wasSlotted) // item was slotted, but no longer matches
         {
-            entry.UnlinkProfileItem();
-            //slottedItem.Free();
+            entry.ClearItem();
             slottedItem = null;
             SetEmpty(true);
-            changed = true;
+            OnSlotItemChanged?.Invoke(this);
         }
-        if (changed)
-            OnItemChanged?.Invoke(this);
     }
 
     public override void _ExitTree()
     {
-        //slottedItem?.Free();
-        ProfileRequests.OnItemUpdated -= UpdateSlot;
+        if (currentProfile is not null)
+        {
+            currentProfile.OnItemUpdated -= UpdateSlot;
+            currentProfile.OnItemRemoved -= UpdateSlot;
+        }
         base._ExitTree();
     }
 

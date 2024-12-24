@@ -6,13 +6,20 @@ using System.Linq;
 public partial class ColumnStackContainer : Container
 {
     [Export]
-    int columns = 3;
+    bool limitFittedColumnsToChildCount = true;
     [Export]
-    Vector2 spacing = new(5, 5);
+    int columnMinWidth = 0;
+    [Export(PropertyHint.Range, "1, 3, 1, or_greater")]
+    int minColumns = 3;
+    [Export(PropertyHint.Range, "0, 3, 1, or_greater")]
+    int maxColumns = 0;
+    [Export]
+    Vector2I spacing = new(5, 5);
 
     public override Vector2 _GetMinimumSize()
     {
-        float[] heights = new float[columns];
+        int actualColumns = Mathf.Max(minColumns, GetFittingColumns());
+        float[] heights = new float[actualColumns];
         var children = GetChildren().Cast<Control>();
         foreach (var item in children)
         {
@@ -22,7 +29,19 @@ public partial class ColumnStackContainer : Container
             bool isFirst = heights[thisIndex] == 0;
             heights[thisIndex] += item.GetCombinedMinimumSize().Y + (isFirst ? 0 : spacing.Y);
         }
-        return new(0, heights.Max());
+        return new(Mathf.Max(0, columnMinWidth), heights.Max());
+    }
+
+    int GetFittingColumns()
+    {
+        if (columnMinWidth <= 0)
+            return 1;
+        var fitColumns = Mathf.FloorToInt(Size.X / columnMinWidth);
+        if (limitFittedColumnsToChildCount)
+            fitColumns = Mathf.Min(fitColumns, GetChildren().Cast<Control>().Where(c => c.Visible).Count());
+        if (maxColumns > 0)
+            fitColumns = Mathf.Min(fitColumns, Mathf.Max(minColumns, maxColumns));
+        return fitColumns;
     }
 
     static int GetSmallestIndex<T>(T[] heightArray) where T : IComparable<T>
@@ -42,10 +61,12 @@ public partial class ColumnStackContainer : Container
     {
         if (what == NotificationSortChildren)
         {
-            float cellWidth = (Size.X - (spacing.X * (columns - 1))) / columns;
-            float[] heights = new float[columns];
-            int[] childCounts = new int[columns];
+            int actualColumns = Mathf.Max(minColumns, GetFittingColumns());
+            float cellWidth = (Size.X - (spacing.X * (actualColumns - 1))) / actualColumns;
+            float[] heights = new float[actualColumns];
+            int[] childCounts = new int[actualColumns];
             var children = GetChildren().Cast<Control>();
+            Control[] lastChildren = new Control[actualColumns];
             foreach (var item in children)
             {
                 if (!item.Visible)
@@ -66,6 +87,19 @@ public partial class ColumnStackContainer : Container
                 item.Size = item.GetCombinedMinimumSize();
 
                 heights[thisIndex] += item.Size.Y + (isFirst ? 0 : spacing.Y);
+                lastChildren[thisIndex] = item;
+            }
+            float maxHeight = heights.Max();
+            for (int i = 0; i < actualColumns; i++)
+            {
+                if (lastChildren[i] is null)
+                    break;
+                if ((lastChildren[i].SizeFlagsVertical & SizeFlags.Expand) <= 0)
+                    continue;
+                var diff = maxHeight-heights[i];
+                var newSize = lastChildren[i].Size;
+                newSize.Y += diff;
+                lastChildren[i].Size = newSize;
             }
         }
     }

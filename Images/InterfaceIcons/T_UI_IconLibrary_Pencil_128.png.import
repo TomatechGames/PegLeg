@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://div6ssxx4btc8"
-path="res://.godot/imported/FORT_Load_WildWest.png-993c95effa1e77eea2597b308d44ea77.ctex"
+uid="uid://dj7i2q6htu5st"
+path="res://.godot/imported/T_UI_IconLibrary_Pencil_128.png-73a807adf693c02064ba8d8025181d07.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Images/MissionZoneBackgrounds/FORT_Load_WildWest.png"
-dest_files=["res://.godot/imported/FORT_Load_WildWest.png-993c95effa1e77eea2597b308d44ea77.ctex"]
+source_file="res://Images/InterfaceIcons/T_UI_IconLibrary_Pencil_128.png"
+dest_files=["res://.godot/imported/T_UI_IconLibrary_Pencil_128.png-73a807adf693c02064ba8d8025181d07.ctex"]
 
 [params]
 

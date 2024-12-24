@@ -2,7 +2,6 @@ using Godot;
 using System;
 using System.Linq;
 using System.Text.Json.Nodes;
-using static ProfileRequests;
 
 public partial class SurvivorLoadoutInterface : Node
 {
@@ -95,34 +94,38 @@ public partial class SurvivorLoadoutInterface : Node
         if (loadoutName is null)
             return;
 
-        var workers = await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, item =>
-                item.Value["templateId"].ToString().StartsWith("Worker") &&
-                item.Value["attributes"].AsObject().ContainsKey("squad_id")
-        );
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
 
-        var groupedWorkers = workers.GroupBy(x => x.Value["attributes"]["squad_id"].ToString());
+        var allWorkers = (await account.GetProfile(FnProfileTypes.AccountItems).Query())
+            .GetItems("Worker", item => item.attributes.ContainsKey("squad_id"));
+
+        var groupedWorkers = allWorkers.GroupBy(item => item.attributes["squad_id"].ToString());
 
         JsonObject squadsMappings = new();
-        foreach (var kvp in groupedWorkers)
+        foreach (var workers in groupedWorkers)
         {
             var squadArray = new JsonArray();
             for (int i = 0; i < 8; i++)
             {
                 squadArray.Add("");
             }
-            foreach (var item in kvp)
+            foreach (var item in workers)
             {
-                squadArray[item.Value["attributes"]["squad_slot_idx"].GetValue<int>()] = item.Key;
+                squadArray[item.attributes["squad_slot_idx"].GetValue<int>()] = item.uuid;
             }
-            squadsMappings[kvp.Key] = squadArray;
+            squadsMappings[workers.Key] = squadArray;
         }
 
-        loadouts[loadoutName] = squadsMappings;
+        loadouts[account.accountId] ??= new JsonObject();
+        loadouts[account.accountId][loadoutName] = squadsMappings;
 
         ApplyLoadoutFileChange();
         loadoutSelector.Selected = loadouts.Select(kvp => kvp.Key).ToList().IndexOf(loadoutName) + 2;
         OnLoadoutChanged(loadoutSelector.Selected);
     }
+
     float eggTimer = 0;
     private async void OnLoadoutLoad()
     {
@@ -136,51 +139,61 @@ public partial class SurvivorLoadoutInterface : Node
             ) ?? false))
             return;
         eggTimer = 3;
-        var existingWorkers = await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, item =>
-                item.Value["templateId"].ToString().StartsWith("Worker") &&
-                item.Value["attributes"].AsObject().ContainsKey("squad_id")
-        );
 
-        JsonObject fullLoadout = loadouts[loadoutName].AsObject();
-        JsonObject flattenedLoadout = new()
+        try
         {
-            ["characterIds"] = new JsonArray(),
-            ["squadIds"] = new JsonArray(),
-            ["slotIndices"] = new JsonArray(),
-        };
-        foreach (var squad in fullLoadout)
-        {
-            var squadArray = squad.Value.AsArray();
-            for (int i = 0; i < squadArray.Count; i++)
+            LoadingOverlay.AddLoadingKey("applySurvivorLoadout");
+            var account = GameAccount.activeAccount;
+            if (!await account.Authenticate())
+                return;
+
+            var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+
+            var existingWorkers = accountItems.GetItems("Worker", item => item.attributes.ContainsKey("squad_id"));
+
+            JsonObject fullLoadout = loadouts[loadoutName].AsObject();
+            JsonObject flattenedLoadout = new()
             {
-                string workerKey = squadArray[i].ToString();
-
-                if (workerKey == "")
+                ["characterIds"] = new JsonArray(),
+                ["squadIds"] = new JsonArray(),
+                ["slotIndices"] = new JsonArray(),
+            };
+            foreach (var squad in fullLoadout)
+            {
+                var squadArray = squad.Value.AsArray();
+                for (int i = 0; i < squadArray.Count; i++)
                 {
-                    continue;
+                    string workerKey = squadArray[i].ToString();
+
+                    if (workerKey == "")
+                    {
+                        continue;
+                    }
+
+                    //if (
+                    //    existingWorkers.ContainsKey(workerKey) &&
+                    //    existingWorkers[workerKey]["attributes"]["squad_id"].ToString() == squad.Key &&
+                    //    existingWorkers[workerKey]["attributes"]["squad_slot_idx"].GetValue<int>() == i
+                    //    )
+                    //    continue;
+
+                    flattenedLoadout["characterIds"].AsArray().Add(workerKey);
+                    flattenedLoadout["squadIds"].AsArray().Add(squad.Key);
+                    flattenedLoadout["slotIndices"].AsArray().Add(i);
                 }
-
-                //if (
-                //    existingWorkers.ContainsKey(workerKey) &&
-                //    existingWorkers[workerKey]["attributes"]["squad_id"].ToString() == squad.Key &&
-                //    existingWorkers[workerKey]["attributes"]["squad_slot_idx"].GetValue<int>() == i
-                //    )
-                //    continue;
-
-                flattenedLoadout["characterIds"].AsArray().Add(workerKey);
-                flattenedLoadout["squadIds"].AsArray().Add(squad.Key);
-                flattenedLoadout["slotIndices"].AsArray().Add(i);
             }
+            JsonObject unslotBody = new()
+            {
+                ["squadIds"] = new JsonArray(survivorSquads.Select(s => (JsonNode)s).ToArray()),
+            }; ;
+            await accountItems.PerformOperation("UnassignAllSquads", unslotBody.ToString());
+            await accountItems.PerformOperation("AssignWorkerToSquadBatch", flattenedLoadout.ToString());
+            await Helpers.WaitForTimer(0.1);
         }
-        LoadingOverlay.AddLoadingKey("applySurvivorLoadout");
-        JsonObject unslotBody = new()
+        finally
         {
-            ["squadIds"] = new JsonArray(survivorSquads.Select(s => (JsonNode)s).ToArray()),
-        }; ;
-        await PerformProfileOperation(FnProfileTypes.AccountItems, "UnassignAllSquads", unslotBody.ToString());
-        await PerformProfileOperation(FnProfileTypes.AccountItems, "AssignWorkerToSquadBatch", flattenedLoadout.ToString());
-        await this.WaitForTimer(1);
-        LoadingOverlay.RemoveLoadingKey("applySurvivorLoadout");
+            LoadingOverlay.RemoveLoadingKey("applySurvivorLoadout");
+        }
     }
 
     private async void OnLoadoutRename()
@@ -246,40 +259,26 @@ public partial class SurvivorLoadoutInterface : Node
             ) ?? false))
             return;
 
-        var existingWorkers = await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, item =>
-                item.Value["templateId"].ToString().StartsWith("Worker") &&
-                item.Value["attributes"].AsObject().ContainsKey("squad_id")
-        );
+        try
+        {
+            LoadingOverlay.AddLoadingKey("clearSurvivorLoadout");
+            var account = GameAccount.activeAccount;
+            if (!await account.Authenticate())
+                return;
 
-        LoadingOverlay.AddLoadingKey("clearSurvivorLoadout");
-        /* old way, slow
-        foreach (var squad in survivorSquads)
-        {
-            for (int i = 0; i < 8; i++)
+            var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+            var existingWorkers = accountItems.GetItems("Worker", item => item.attributes.ContainsKey("squad_id"));
+
+            JsonObject unslotBody = new()
             {
-                var existingWorker = existingWorkers.FirstOrDefault(kvp =>
-                    kvp.Value["attributes"]["squad_id"].ToString() == squad &&
-                    kvp.Value["attributes"]["squad_slot_idx"].GetValue<int>() == i
-                );
-                if (existingWorker.Value is not null)
-                {
-                    JsonObject body = new()
-                    {
-                        ["characterId"] = existingWorker.Key,
-                        ["squadId"] = "",
-                        ["slotIndex"] = 0,
-                    }; ;
-                    await ProfileRequests.PerformProfileOperationUnsafe(FnProfiles.AccountItems, "AssignWorkerToSquad", body.ToString());
-                }
-            }
+                ["squadIds"] = new JsonArray(survivorSquads.Select(s => (JsonNode)s).ToArray()),
+            }; ;
+            await accountItems.PerformOperation("UnassignAllSquads", unslotBody.ToString());
         }
-        */
-        JsonObject unslotBody = new()
+        finally
         {
-            ["squadIds"] = new JsonArray(survivorSquads.Select(s=>(JsonNode)s).ToArray()),
-        }; ;
-        await PerformProfileOperation(FnProfileTypes.AccountItems, "UnassignAllSquads", unslotBody.ToString());
-        LoadingOverlay.RemoveLoadingKey("clearSurvivorLoadout");
+            LoadingOverlay.RemoveLoadingKey("clearSurvivorLoadout");
+        }
     }
 
     void ApplyLoadoutFileChange()
@@ -305,32 +304,39 @@ public partial class SurvivorLoadoutInterface : Node
     [Export]
     Texture2D collectionIcon;
 
-    static readonly ProfileItemPredicate recycleFilter = kvp =>
-        kvp.Value?["templateId"]?.ToString() is string templateID && templateID.Split(":")?[0] is string type &&
-        (type == "Worker" || type == "Schematic" || type == "Hero" || type == "Defender") &&
-        /*!templateID.Contains("_sr") &&*/ !(kvp.Value.GetTemplate()?["IsPermanent"]?.GetValue<bool>() ?? false) &&
-        !templateID.Contains("ammo") && !templateID.Contains("floor_defender")&&
-        !templateID.Contains("player_jump_pad") && !templateID.Contains("ingredient");
+    static readonly GameItemPredicate recycleFilter = item =>
+        item.template.Type is string type && (type == "Worker" || type == "Schematic" || type == "Hero" || type == "Defender") &&
+        !(item.template["IsPermanent"]?.GetValue<bool>() ?? false) &&
+        !item.templateId.Contains("ammo") && !item.templateId.Contains("floor_defender")&&
+        !item.templateId.Contains("player_jump_pad") && !item.templateId.Contains("ingredient");
 
     async void DebugRecycle()
     {
-        LoadingOverlay.AddLoadingKey("gettingCollections");
-        await GetProfile(FnProfileTypes.SchematicCollection);
-        await GetProfile(FnProfileTypes.SchematicCollection);
-        LoadingOverlay.RemoveLoadingKey("gettingCollections");
+        GameItem[] filteredItems = null;
+        try
+        {
+            LoadingOverlay.AddLoadingKey("gettingItems");
+            var account = GameAccount.activeAccount;
+            if (!await account.Authenticate())
+                return;
 
-        var instructions = PLSearch.GenerateSearchInstructions("template.RarityLv=..3 | (template.RarityLv=..4 !templateId=\"Worker\"..)", out var _);
+            var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
 
-        GameItemSelector.Instance.titleText = "Recycle";
-        GameItemSelector.Instance.confirmButtonText = "Confirm Recycle";
-        GameItemSelector.Instance.multiselectMode = true;
-        GameItemSelector.Instance.selectedMarkerTex = recycleIcon;
-        GameItemSelector.Instance.selectedTintColor = Colors.Red;
-        GameItemSelector.Instance.collectionMarkerTex = collectionIcon;
-        GameItemSelector.Instance.autoselectButtonTex = recycleIcon;
-        GameItemSelector.Instance.autoselectPredicate = kvp => PLSearch.EvaluateInstructions(instructions, kvp.Value.GenerateItemSearchTags());
-        var recycleHandles = await GameItemSelector.Instance.OpenSelector(recycleFilter);
+            filteredItems = accountItems.GetItems(recycleFilter);
 
-        GD.Print("Handles: \n" + recycleHandles.Select(h => h.itemID.uuid).ToArray().Join("\n"));
+            foreach (var item in filteredItems)
+            {
+                await item.IsCollected();
+            }
+        }
+        finally
+        {
+            LoadingOverlay.RemoveLoadingKey("gettingItems");
+        }
+
+        GameItemSelector.Instance.SetRecycleDefaults();
+        var recycleItems = await GameItemSelector.Instance.OpenSelector(filteredItems);
+
+        GD.Print("Items: \n" + recycleItems.Select(item => item.uuid).ToArray().Join("\n"));
     }
 }

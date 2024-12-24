@@ -45,7 +45,7 @@ public partial class MusicController : Node
         if (!isStopping)
         {
             StopMusic();
-            await this.WaitForTimer(muteTime);
+            await Helpers.WaitForTimer(muteTime);
             ChangePlaylist();
             ResumeMusic(true);
         }

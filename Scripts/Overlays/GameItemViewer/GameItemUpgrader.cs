@@ -24,7 +24,7 @@ public partial class GameItemUpgrader : Control
     [Export]
     GameItemEntry[] costItems;
 
-    ProfileItemHandle linkedItem;
+    GameItem currentItem;
     int minLevel = 1;
     int maxLevel = 50;
     bool isShardable = false;
@@ -34,29 +34,28 @@ public partial class GameItemUpgrader : Control
         levelSlider.ValueChanged += LevelSliderChanged;
     }
 
-    public void LinkItem(ProfileItemHandle profileItem)
+    public void SetItem(GameItem item)
     {
-        if (linkedItem is not null)
-            linkedItem.OnChanged -= UpdateProfileItem;
+        if (currentItem is not null)
+            currentItem.OnChanged -= UpdateItem;
 
-        linkedItem = profileItem;
+        currentItem = item;
 
-        if (linkedItem is not null)
+        if (currentItem is not null)
         {
-            linkedItem.OnChanged += UpdateProfileItem;
-            UpdateProfileItem(profileItem);
+            currentItem.OnChanged += UpdateItem;
+            UpdateItem(item);
         }
     }
 
-    void UpdateProfileItem(ProfileItemHandle profileItem)
+    void UpdateItem(GameItem item)
     {
-        var template = profileItem.GetItemUnsafe().GetTemplate();
-        int level = profileItem.GetItemUnsafe()["attributes"]["level"].GetValue<int>();
+        int level = item.attributes?["level"].GetValue<int>() ?? 0;
         minLevel = level;
         isShardable = 
-            template["Type"]?.ToString() == "Schematic" && 
-            (template["SubType"]?.ToString() ?? "Explosive") != "Explosive" && 
-            (template["Category"]?.ToString() ?? "Trap") != "Trap";
+            item.template.Type == "Schematic" && 
+            (item.template.SubType ?? "Explosive") != "Explosive" && 
+            (item.template.Category ?? "Trap") != "Trap";
 
         //set max level based on owned homebase nodes
 

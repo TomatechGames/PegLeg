@@ -1,0 +1,372 @@
+[gd_scene load_steps=21 format=3 uid="uid://ysh5ajklts1q"]
+
+[ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="1_7xbjg"]
+[ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="1_r66cy"]
+[ext_resource type="Script" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_0vif4"]
+[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="2_c5h7f"]
+[ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://GodotThemes/Styleboxes/CheckButton/CheckSeparator.tres" id="2_d8lrk"]
+[ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/MissionZoneBackgrounds/STWShop.png" id="2_x510n"]
+[ext_resource type="AudioStream" uid="uid://cb1h7anfymfsu" path="res://Audio/Music/Fort_Building_Outpost_Main_Loop_Fixed.wav" id="3_6re0q"]
+[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_hui55"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/OnboardingInterface.cs" id="5_p8lju"]
+[ext_resource type="Script" path="res://Scripts/CodeLoginLabel.cs" id="6_t48oj"]
+[ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="8_42nsr"]
+[ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="9_gp42o"]
+[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_6kqv5"]
+[ext_resource type="Shader" path="res://Shaders/OnboardingCurtain.gdshader" id="13_m3fci"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="14_eunyv"]
+[ext_resource type="PackedScene" uid="uid://b7rnaw5epqkd6" path="res://Scenes/download_cube.tscn" id="15_jvi10"]
+[ext_resource type="Texture2D" uid="uid://bpc1i25xajfpw" path="res://Images/InterfaceIcons/PegLegChest256.png" id="16_hvg7d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tyimv"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_rx0xh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ay2nj"]
+shader = ExtResource("13_m3fci")
+shader_parameter/ControlSize = Vector2(1280, 720)
+shader_parameter/revealScale = 0.0
+
+[node name="DesktopOnboarding" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TargetResolution" type="Node" parent="."]
+script = ExtResource("1_r66cy")
+TargetResolution = Vector2i(400, 500)
+
+[node name="AutoButtonSounds" type="Node" parent="."]
+script = ExtResource("2_0vif4")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_x510n")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6re0q")
+bus = &"Music"
+
+[node name="CenterContainer" type="CenterContainer" parent="." node_paths=PackedStringArray("loginLabel", "rememberLoginToggle", "continueButton")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_p8lju")
+loginLabel = NodePath("MarginContainer/Content/VBoxContainer/MarginContainer/LinkCodeText")
+rememberLoginToggle = NodePath("MarginContainer/Content/VBoxContainer/VBoxContainer/RememberLogin")
+continueButton = NodePath("MarginContainer/Content/VBoxContainer/VBoxContainer/CompleteLogin")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(300, 320)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_c5h7f")
+
+[node name="Content" type="MarginContainer" parent="CenterContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content"]
+layout_mode = 2
+
+[node name="GreetingText" type="Label" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+text = "Welcome to Pegleg! To begin, you'll need to log in to your Epic Games account. Click the link and enter in the code shown below."
+horizontal_alignment = 3
+autowrap_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+layout_mode = 2
+
+[node name="LinkCodeText" type="LineEdit" parent="CenterContainer/MarginContainer/Content/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/selection_color = Color(1, 1, 1, 1)
+theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
+theme_override_colors/font_uneditable_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_tyimv")
+placeholder_text = "########"
+alignment = 1
+editable = false
+script = ExtResource("6_t48oj")
+
+[node name="LinkButton" type="LinkButton" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = "https://www.epicgames.com/id/activate"
+uri = "https://www.epicgames.com/id/activate"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HSeparator3" type="HSeparator" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_d8lrk")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = " Remember login details? "
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_hui55")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="CheckButton" type="CheckButton" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"LeftCheckButton"
+button_group = SubResource("ButtonGroup_rx0xh")
+text = " Yes"
+
+[node name="CheckButton2" type="CheckButton" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"RightCheckButton"
+button_pressed = true
+button_group = SubResource("ButtonGroup_rx0xh")
+text = " No"
+
+[node name="RememberLogin" type="CheckBox" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+layout_direction = 3
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Stay logged in"
+alignment = 2
+
+[node name="CompleteLogin" type="Button" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"ActionButton"
+theme_override_font_sizes/font_size = 24
+text = "Login"
+
+[node name="Label2" type="Label" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_font_sizes/font_size = 12
+text = "PegLeg is not affiliated with Epic Games"
+horizontal_alignment = 1
+
+[node name="ErrorMessage" type="MarginContainer" parent="CenterContainer/MarginContainer/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -2
+theme_override_constants/margin_bottom = -2
+
+[node name="Panel" type="Panel" parent="CenterContainer/MarginContainer/Content/ErrorMessage"]
+layout_mode = 2
+theme_type_variation = &"SecondaryPanel"
+
+[node name="ErrorContent" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/ErrorMessage"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Error"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Error Context"
+
+[node name="Button" type="Button" parent="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ActionButton"
+text = "Dismiss"
+
+[node name="LoadingIcon" parent="CenterContainer/MarginContainer" instance=ExtResource("11_6kqv5")]
+visible = false
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="CenterContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MuteBtn" type="Button" parent="CenterContainer/MarginContainer/Control2"]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 4.0
+offset_right = -4.0
+grow_horizontal = 0
+size_flags_vertical = 4
+tooltip_text = "Mute/Unmute"
+theme_type_variation = &"TinyButton"
+script = ExtResource("8_42nsr")
+targetBusName = "Master"
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/Control2/MuteBtn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_gp42o")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AppIcon" type="TextureRect" parent="CenterContainer/MarginContainer/Control2"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -128.0
+offset_right = 128.0
+offset_bottom = 128.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(128, 128)
+mouse_filter = 0
+texture = ExtResource("1_7xbjg")
+
+[node name="Curtain" type="ColorRect" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_ay2nj")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("14_eunyv")
+syncControlSize = true
+modTime = 8.0
+
+[node name="PreCurtain" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CubesOrigin" type="Control" parent="PreCurtain"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 12.7933
+
+[node name="DownloadCube" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+
+[node name="DownloadCube2" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+rotation = 0.785398
+
+[node name="DownloadCube3" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+rotation = 1.5708
+
+[node name="DownloadCube4" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+rotation = 2.35619
+
+[node name="DownloadCube5" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+rotation = 3.14159
+
+[node name="DownloadCube6" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+rotation = 3.92699
+
+[node name="DownloadCube7" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+rotation = 4.71239
+
+[node name="DownloadCube8" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
+layout_mode = 1
+rotation = 5.49779
+
+[node name="CurtainIcon" type="TextureRect" parent="PreCurtain"]
+visible = false
+z_index = 1
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+mouse_filter = 0
+texture = ExtResource("16_hvg7d")
+expand_mode = 1
+
+[connection signal="UserCodeChanged" from="CenterContainer/MarginContainer/Content/VBoxContainer/MarginContainer/LinkCodeText" to="CenterContainer/MarginContainer/Content/VBoxContainer/MarginContainer/LinkCodeText" method="set_text"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer/Button" to="CenterContainer/MarginContainer/Content/ErrorMessage" method="set_visible" binds= [false]]
+[connection signal="UpdateMuteIcon" from="CenterContainer/MarginContainer/Control2/MuteBtn" to="CenterContainer/MarginContainer/Control2/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/Control2/MuteBtn" to="CenterContainer/MarginContainer/Control2/MuteBtn" method="ToggleMute"]

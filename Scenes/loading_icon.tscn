@@ -7,7 +7,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x2uyv"]
 shader = ExtResource("1_d3dh0")
-shader_parameter/ControlSize = Vector2(256, 256)
+shader_parameter/ControlSize = Vector2(240, 240)
 shader_parameter/SliceAmount = Vector2(10, 10)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = 0

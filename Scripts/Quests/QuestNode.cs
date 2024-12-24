@@ -20,22 +20,22 @@ public partial class QuestNode : Control
     Color[] colorStages = Array.Empty<Color>();
     [Export]
     CheckButton selectedToggle;
-    QuestData questData;
+    QuestSlot questData;
 
-    public void SetupQuestNode(QuestData newQuestData, ButtonGroup buttonGroup)
+    public void SetupQuestNode(QuestSlot newQuestData, ButtonGroup buttonGroup)
     {
         selectedToggle.ButtonGroup = buttonGroup;
         if (questData is not null)
             questData.OnPropertiesUpdated -= RefreshQuestNode;
         questData = newQuestData;
         questData.OnPropertiesUpdated += RefreshQuestNode;
-        RefreshQuestNode();
+        RefreshQuestNode(null);
     }
 
-    void RefreshQuestNode()
+    void RefreshQuestNode(QuestSlot _)
     {
-        EmitSignal(SignalName.NameChanged, questData.questTemplate["DisplayName"].ToString());
-        EmitSignal(SignalName.IconChanged, questData.questTemplate.GetItemTexture());
+        EmitSignal(SignalName.NameChanged, questData.questTemplate.DisplayName);
+        EmitSignal(SignalName.IconChanged, questData.questTemplate.GetTexture());
         EmitSignal(SignalName.NotificationVisible, questData.isNew);
         EmitSignal(SignalName.PinnedVisible, questData.isPinned);
 

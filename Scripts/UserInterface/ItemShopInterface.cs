@@ -1,7 +1,8 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Nodes;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 public partial class ItemShopInterface : Control
@@ -10,14 +11,9 @@ public partial class ItemShopInterface : Control
     bool useEventShop = false;
 
     [Export]
-    PackedScene regularShopElement;
+    PackedScene shopOfferEntryScene;
     [Export]
-    PackedScene highlightShopElement;
-
-    [Export]
-    Control highlightParent;
-    [Export]
-    Control regularParent;
+    Control shopOfferEntryParent;
 
 
     public override void _Ready()
@@ -27,7 +23,7 @@ public partial class ItemShopInterface : Control
             if (IsVisibleInTree())
             {
                 await LoadShop();
-                CurrencyHighlight.Instance.SetCurrencyType("AccountResource:eventcurrency_scaling");
+                CurrencyHighlight.Instance.SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
             }
         };
 
@@ -37,60 +33,83 @@ public partial class ItemShopInterface : Control
     public override void _ExitTree()
     {
         RefreshTimerController.OnDayChanged -= OnDayChanged;
+        if(linkedStorefront is not null)
+        {
+            linkedStorefront.OnOfferAdded -= AddShopOffer;
+            linkedStorefront.OnOfferRemoved -= RemoveShopOffer;
+        }
     }
 
     private async void OnDayChanged()
     {
-        activeOffers.Clear();
         if (IsVisibleInTree())
             await LoadShop();
     }
 
-    bool isLoadingShop = false;
-    List<ShopOfferEntry> highlightPool = new();
-    List<ShopOfferEntry> regularPool = new();
-    Dictionary<string, JsonObject> activeOffers = new();
-
+    List<GameOfferEntry> inactiveEntries = new();
+    Dictionary<string, GameOfferEntry> activeEntries = new();
+    GameStorefront linkedStorefront = null;
+    static SemaphoreSlim itemShopSephamore = new(1);
     public async Task LoadShop(bool force = false)
     {
-        if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0) || !await LoginRequests.TryLogin())
+        await itemShopSephamore.WaitAsync();
+        var timerType = useEventShop ? RefreshTimeType.Weekly : RefreshTimeType.Event;
+        if (linkedStorefront is not null)
+        {
+            await linkedStorefront.Update(force);
             return;
-        activeOffers.Clear();
-        isLoadingShop = true;
-
-        var thisShop = useEventShop ? await CatalogRequests.GetEventShop() : await CatalogRequests.GetWeeklyShop();
-        PopulateShopSubsection(thisShop["highlights"].AsArray(), highlightParent, highlightShopElement, highlightPool);
-        PopulateShopSubsection(thisShop["regular"].AsArray(), regularParent, regularShopElement, regularPool);
-
-        isLoadingShop = false;
-    }
-
-    void PopulateShopSubsection(JsonArray offers, Control parent, PackedScene scene, List<ShopOfferEntry> pool)
-    {
-        for (int i = 0; i < offers.Count; i++)
-        {
-            if (pool.Count <= i)
-            {
-                var newElement = scene.Instantiate<ShopOfferEntry>();
-                newElement.Pressed += SelectShopItem;
-                parent.AddChild(newElement);
-                pool.Add(newElement);
-            }
-            pool[i].SetOffer(offers[i].AsObject());
-            pool[i].Visible = true;
-            pool[i].MoveToFront();
-            activeOffers.Add(offers[i]["offerId"].ToString(), offers[i].AsObject());
         }
-        for (int i = offers.Count; i < pool.Count; i++)
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        linkedStorefront = await GameStorefront.GetStorefront(useEventShop ? FnStorefrontTypes.EventShopCatalog : FnStorefrontTypes.WeeklyShopCatalog);
+        linkedStorefront.OnOfferAdded += AddShopOffer;
+        linkedStorefront.OnOfferRemoved += RemoveShopOffer;
+
+        foreach (var item in activeEntries.Values)
         {
-            pool[i].Visible = false;
+            item.Visible = false;
+            inactiveEntries.Add(item);
+        }
+        activeEntries.Clear();
+        for (int i = 0; i < linkedStorefront.Offers.Length; i++)
+        {
+            AddShopOffer(linkedStorefront.Offers[i]);
         }
     }
 
-    async void SelectShopItem(string offerId)
+    void SpawnShopEntry()
     {
-        var offerItem = activeOffers[offerId]["itemGrants"][0].AsObject();
-        await GameItemViewer.Instance.ShowItem(offerItem);
-        await GameItemViewer.Instance.LinkShopOffer(activeOffers[offerId].AsObject(), async ()=> await LoadShop(true));
+        var newEntry = shopOfferEntryScene.Instantiate<GameOfferEntry>();
+        newEntry.Pressed += SelectShopItem;
+        shopOfferEntryParent.AddChild(newEntry);
+        inactiveEntries.Add(newEntry);
     }
+
+    void AddShopOffer(GameOffer newOffer)
+    {
+        if (inactiveEntries.Count <= 0)
+            SpawnShopEntry();
+        var thisEntry = inactiveEntries[0];
+        inactiveEntries.Remove(thisEntry);
+        thisEntry.SetOffer(newOffer).Start();
+        thisEntry.Visible = true;
+        thisEntry.MoveToFront();
+        activeEntries.Add(newOffer.OfferId, thisEntry);
+    }
+
+    void RemoveShopOffer(GameOffer oldOffer)
+    {
+        if (!activeEntries.ContainsKey(oldOffer.OfferId))
+            return;
+        var entry = activeEntries[oldOffer.OfferId];
+        entry.Visible = false;
+        activeEntries.Remove(oldOffer.OfferId);
+        inactiveEntries.Add(entry);
+    }
+
+    void SelectShopItem(string offerId) => 
+        GameItemViewer.Instance.ShowShopOffer(activeEntries[offerId].currentOffer);
 }

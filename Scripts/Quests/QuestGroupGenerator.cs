@@ -63,9 +63,12 @@ public static class QuestGroupGenerator
                         do
                         {
                             questline.Add(nextQuest);
-                            if (BanjoAssets.TryGetTemplate(nextQuest) is JsonObject questTemplate)
+                            if (GameItemTemplate.Get(nextQuest) is GameItemTemplate questTemplate)
                             {
-                                nextQuest = questTemplate["Rewards"]?.AsArray().Select(r => r["Item"].ToString()).FirstOrDefault(i => i.StartsWith("Quest:"));
+                                nextQuest = questTemplate
+                                    .GetHiddenQuestRewards()
+                                    .Select(r => r.templateId)
+                                    .FirstOrDefault(i => i.StartsWith("Quest:"));
                             }
                             else
                                 nextQuest = null;
@@ -77,7 +80,7 @@ public static class QuestGroupGenerator
                     continue;
                 }
 
-                entry.Value["quests"] = new JsonArray(quests.Where(q => !BanjoAssets.TryGetTemplate(q)["DisplayName"].ToString().StartsWith("(Hidden)")).Select(q=>(JsonNode)q).ToArray());
+                entry.Value["quests"] = new JsonArray(quests.Where(q => !GameItemTemplate.Get(q).DisplayName.StartsWith("(Hidden)")).Select(q=>(JsonNode)q).ToArray());
                 //just lump all the quests into an array
             }
         }
@@ -124,8 +127,8 @@ public static class QuestGroupGenerator
         if (questSource["startsWith"] is JsonValue startsWith)
         {
             string startsWithVal = startsWith.ToString();
-            return BanjoAssets.GetTemplatesFromSource("Quest", item => item["Name"].ToString().ToLower().StartsWith(startsWithVal))
-                    .Select(item=>item.GetIDFromTemplate())
+            return GameItemTemplate.GetTemplatesFromSource("Quest", item => item.Name.ToLower().StartsWith(startsWithVal))
+                    .Select(item=>item.TemplateId)
                     .Except(excludedQuests)
                     .ToArray();
         }
@@ -133,8 +136,8 @@ public static class QuestGroupGenerator
         if (questSource["endsWith"] is JsonValue endsWith)
         {
             string endsWithVal = endsWith.ToString();
-            return BanjoAssets.GetTemplatesFromSource("Quest", item => item["Name"].ToString().ToLower().EndsWith(endsWithVal))
-                    .Select(item => item.GetIDFromTemplate())
+            return GameItemTemplate.GetTemplatesFromSource("Quest", item => item.Name.ToLower().EndsWith(endsWithVal))
+                    .Select(item => item.TemplateId)
                     .Except(excludedQuests)
                     .ToArray();
         }
@@ -142,8 +145,8 @@ public static class QuestGroupGenerator
         if (questSource["category"] is JsonValue category)
         {
             string categoryVal = category.ToString();
-            return BanjoAssets.GetTemplatesFromSource("Quest", item => item["Category"].ToString().ToLower() == categoryVal.ToLower())
-                    .Select(item => item.GetIDFromTemplate())
+            return GameItemTemplate.GetTemplatesFromSource("Quest", item => item.Category.ToLower() == categoryVal.ToLower())
+                    .Select(item => item.TemplateId)
                     .Except(excludedQuests)
                     .ToArray();
         }

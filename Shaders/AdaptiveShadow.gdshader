@@ -3,6 +3,8 @@ shader_type canvas_item;
 
 uniform vec2 ControlSize = vec2(100.0, 100.0);
 uniform vec2 ControlSizeScale = vec2(0.66, 1.0);
+uniform bool Expo=true;
+uniform float AlphaStart = 0.0;
 uniform float CornerRadius = 10.0;
 
 void vertex() {
@@ -11,8 +13,13 @@ void vertex() {
 
 void fragment() {
 	float usableRadius = min(CornerRadius, min(ControlSize.x*0.5, ControlSize.y*0.5));
-	float flatAlpha = max(1.0-(cornerGradient(UV,usableRadius,ControlSize*ControlSizeScale)*2.0), 0);
-	COLOR.a = flatAlpha*flatAlpha;
+	float newAlpha = clamp(1.0-(cornerGradient(UV,usableRadius,ControlSize*ControlSizeScale)*2.0), 0, 1);
+	newAlpha = clamp(newAlpha+AlphaStart-((1.0-newAlpha)*AlphaStart),0,1);
+	if(Expo)
+	{
+		newAlpha*=newAlpha;
+	}
+	COLOR.a *= newAlpha;
 }
 
 //void light() {

@@ -22,11 +22,7 @@ public static class PLSearch
    (?<Union>(?<!\!)\|)|
    (?<TextQuery>
     (?<TQVar>[a-zA-Z]+(?:\.(?:[a-zA-Z]+|(?:\^?\d+)))*)=
-    (?<TQVal>
-              (?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?|
-            \[(?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?
-       (?:,\ ?(?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?)*\]
-    )
+    (?<TQVal>[\""'][\w:\-_.!?\/\\ ]*[\""'])
    )|
    (?<NumericQuery>
     (?<NQVar>[a-zA-Z]+(?:\.(?:[a-zA-Z]+|(?:\^?\d+)))*)=
@@ -36,7 +32,7 @@ public static class PLSearch
        (?:                 \d+(?:\.\d+)?(?:\.\.)?)
     )
    )|
-   (?<FullSearchQuery>\""[\w:\-_.!?\/\\ ]+\"")|
+   (?<FullSearchQuery>[\""'][\w:\-_.!?\/\\ ]+[\""'])|
    (?<SearchQuery>[\w:\-_.!?\/\\]+)
   )
  )
@@ -59,6 +55,8 @@ public static class PLSearch
     }
     public record Instruction(int index, InstructionOperation operation, JsonNode meta = null, int endIndex = -1, bool inverted = false);
 
+    public static Instruction[] GenerateSearchInstructions(string fromText) =>
+        GenerateSearchInstructions(fromText, out var _);
     public static Instruction[] GenerateSearchInstructions(string fromText, out string failureText)
     {
         List<Instruction> instructions = new();
@@ -212,6 +210,8 @@ public static class PLSearch
     public static bool EvaluateInstructions(Instruction[] instructions, JsonObject target, out string output, bool useOutput = true)
     {
         output = "";
+        if (instructions is null)
+            return true;
         int currentDepth = 0;
         int skipUntilIndex = 0;
         bool currentState = true;
@@ -303,7 +303,7 @@ public static class PLSearch
                             {
                                 if ((string)sourceStringVal is string sourceString)
                                 {
-                                    comparisonTrue |= CheckStrings(sourceString, checks);
+                                    comparisonTrue |= MulticheckString(sourceString, checks);
                                 }
                                 if (comparisonTrue)
                                     break;
@@ -317,7 +317,7 @@ public static class PLSearch
                                 comparisonTrue = sourceBool;
                             }
                             else if(sourceVal.TryGetValue(out string sourceString))
-                                comparisonTrue = CheckStrings(sourceString, checks);
+                                comparisonTrue = MulticheckString(sourceString, checks);
                         }
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
@@ -363,8 +363,8 @@ public static class PLSearch
                         bool comparisonTrue = false;
                         if (target["searchTags"] is JsonArray tagArray)
                         {
-                            string checkString = item.meta.ToString()[1..^1];
-                            comparisonTrue = tagArray.Any(t => t?.ToString().ToLower() == checkString.ToLower());
+                            string checkString = item.meta.ToString();
+                            comparisonTrue = tagArray.Any(t => CheckString(t?.ToString().ToLower(), checkString.ToLower()));
                         }
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
@@ -451,31 +451,23 @@ public static class PLSearch
         return null;
     }
 
-    static bool CheckStrings(string sourceString, string[] checks)
+    static bool MulticheckString(string sourceString, string[] checks) => checks.Any(c => CheckString(sourceString, c));
+    static bool CheckString(string sourceString, string check)
     {
-        foreach (var check in checks)
-        {
-            bool starts = check.StartsWith("..");
-            bool ends = check.EndsWith("..");
-            if (starts && ends)
-            {
-                if (sourceString.Contains(check[3..^3]))
-                    return true;
-            }
-            else if (starts)
-            {
-                if (sourceString.EndsWith(check[3..^1]))
-                    return true;
-            }
-            else if (ends)
-            {
-                if (sourceString.StartsWith(check[1..^3]))
-                    return true;
-            }
-            else if (sourceString == check[1..^1])
-                return true;
-        }
-        return false;
+        if (check.Length <= 2)
+            return false;
+        bool ends = check.StartsWith("\'");
+        bool starts = check.EndsWith("\'");
+        string content = check[1..^1];
+
+        if (ends && starts)
+            return sourceString.Contains(content);
+        else if (ends)
+            return sourceString.EndsWith(content);
+        else if (starts)
+            return sourceString.StartsWith(content);
+        else
+            return sourceString == content;
     }
 
     static void EvaluateRegexMatches(string sourceText, string expression, Action<Match> doPerMatch)

@@ -54,7 +54,7 @@ public partial class RewardNotifications : Node
         {
             if (cancellationToken.IsCancellationRequested)
                 return;
-            await instance.WaitForFrame();
+            await Helpers.WaitForFrame();
         }
         onComplete?.Invoke(itemInstance);
     }
@@ -62,7 +62,7 @@ public partial class RewardNotifications : Node
     async void ItemNotificationProcess()
     {
         Request currentItem;
-        await instance.WaitForFrame();
+        await Helpers.WaitForFrame();
         while (true)
         {
             while (itemQueue.Count > 0)
@@ -72,18 +72,18 @@ public partial class RewardNotifications : Node
                     currentItem = itemQueue[0];
                     itemQueue.RemoveAt(0);
                 }
-                await currentItem.itemInstance.SetItemRewardNotification();
+                //await currentItem.itemInstance.SetItemRewardNotification();
                 lock (completedItems)
                 {
                     completedItems.Enqueue(currentItem);
                 }
             }
-            await instance.WaitForFrame();
+            await Helpers.WaitForFrame();
             while (itemQueue.Count == 0)
             {
                 await Task.Delay(50);
             }
-            await instance.WaitForFrame();
+            await Helpers.WaitForFrame();
         }
     }
 

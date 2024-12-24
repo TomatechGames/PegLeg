@@ -6,20 +6,40 @@ public partial class CurrencyHighlight : GameItemEntry
 {
     public static CurrencyHighlight Instance { get; private set; }
 
-    public override async void _Ready()
+    public override void _Ready()
     {
         base._Ready();
         Instance = this;
-        if (await LoginRequests.TryLogin())
-            SetCurrencyType("AccountResource:eventcurrency_scaling");
+        GameAccount.ActiveAccountChanged += OnAccountChanged;
+        SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
     }
 
-    public async void SetCurrencyType(string type)
+    public override void _ExitTree()
     {
-        var profileItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, type)).FirstOrDefault();
-        if (profileItem.Value is not null)
+        base._ExitTree();
+        GameAccount.ActiveAccountChanged -= OnAccountChanged;
+    }
+
+    void OnAccountChanged(GameAccount _)
+    {
+        SetCurrencyTemplate(currentTemplate);
+    }
+
+    GameItemTemplate currentTemplate;
+
+    public async void SetCurrencyTemplate(GameItemTemplate currencyTemplate)
+    {
+        currentTemplate = currencyTemplate;
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
         {
-            LinkProfileItem(await ProfileItemHandle.CreateHandle(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, profileItem.Key)));
+            ClearItem();
+            return;
+        }
+        var profileItem = (await account.GetProfile(FnProfileTypes.AccountItems).Query()).GetTemplateItems(currencyTemplate.TemplateId).FirstOrDefault();
+        if (profileItem is not null)
+        {
+            SetItem(profileItem);
         }
     }
 }

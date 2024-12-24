@@ -42,10 +42,9 @@ public partial class LoginInterface : Control
     protected virtual async Task ReadyTask()
     {
         ConnectButtons();
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         LoadingOverlay.AddLoadingKey("loginPreload");
-        BanjoAssets.PreloadSourcesParalell();
-        await LoginRequests.TryLogin();
+        BanjoAssets.ReadAllSources();
         LoadingOverlay.RemoveLoadingKey("loginPreload");
     }
 
@@ -59,50 +58,16 @@ public partial class LoginInterface : Control
             loginButton.Pressed += async () =>
             {
                 await Login();
-                await OnLoginSucceeded();
             };
-        if (usePersistantLogin is not null && LoginRequests.HasDeviceDetails)
+        if (usePersistantLogin is not null)
             usePersistantLogin.ButtonPressed = true;
     }
-
-    /* WIP system to detect when an endurance run ends and auto-close the game, intended for automated AFKing
-    public const string enduranceCardPackPrefix = "CardPack:ZCP_Endurance_T0";
-    protected bool enduranceTimerRunning;
-    protected virtual bool closeGameOnEnduranceCompletion => false;
-    async void CheckForEnduranceCompletion()
-    {
-        if (enduranceTimerRunning)
-            return;
-        enduranceTimerRunning = true;
-        while (closeGameOnEnduranceCompletion)
-        {
-            await Task.Delay(1000*60*5);
-            if (!closeGameOnEnduranceCompletion)
-                break;
-            //force refresh account items profile
-            ProfileRequests.InvalidateProfileCache(FnProfiles.AccountItems);
-            var matchingCardpacks = await ProfileRequests.GetSumOfProfileItems(FnProfiles.AccountItems, enduranceCardPackPrefix);
-            
-            if (matchingCardpacks>0)
-            {
-                var processes = Process.GetProcessesByName("FortniteClient-Win64-Shipping");
-                GD.Print("PROCESSES: \n" + processes.Select(val => $"{val.ProcessName} | {val.Id}").ToArray().Join("\n"));
-                if (processes.Length > 0)
-                {
-                    processes[0].CloseMainWindow();
-                }
-                break;
-            }
-        }
-        enduranceTimerRunning = false;
-    }
-    */
 
 	public void RequestLoginCode()
     {
         Process.Start(new ProcessStartInfo()
         {
-            FileName = $"https://www.epicgames.com/id/api/redirect?clientId={LoginRequests.ClientID}&responseType=code",
+            FileName = $"https://www.epicgames.com/id/api/redirect?clientId={GameClient.ClientID}&responseType=code",
             UseShellExecute = true,
         });
     }
@@ -113,55 +78,23 @@ public partial class LoginInterface : Control
             oneTimeCodeLine.Text = DisplayServer.ClipboardGet();
     }
 
-    protected async Task OnLoginSucceeded()
+    protected void OnLoginSucceeded()
     {
-        await ProfileRequests.GetProfile(FnProfileTypes.AccountItems);
-        await ProfileRequests.GetProfile(FnProfileTypes.SchematicCollection);
-        await ProfileRequests.GetProfile(FnProfileTypes.PeopleCollection);
+
     }
 
     public virtual async Task Login()
     {
-        if (!await LoginRequests.TryLogin(false))
-        {
-            if (LoginRequests.HasDeviceDetails)
-            {
-                EmitSignal(SignalName.ErrorContextChanged, LoginRequests.LatestErrorMessage);
-                EmitSignal(SignalName.ShowErrorPanel);
-                if (!usePersistantLogin.ButtonPressed)
-                    LoginRequests.DeleteDeviceDetails();
-                if (oneTimeCodeLine.Text.Trim() == "")
-                    return;
-            }
-            if(!await LoginRequests.LoginWithOneTimeCode(oneTimeCodeLine.Text.Trim()))
-            {
-                EmitSignal(SignalName.ErrorContextChanged, LoginRequests.LatestErrorMessage);
-                EmitSignal(SignalName.ShowErrorPanel);
-                return;
-            }
-        }
-        if (usePersistantLogin is null)
-            return;
-        if (!LoginRequests.HasDeviceDetails)
-        {
-            if(usePersistantLogin.ButtonPressed)
-                await LoginRequests.SetupDeviceAuth();
-        }
-        else if (!usePersistantLogin.ButtonPressed)
-        {
-            LoginRequests.DeleteDeviceDetails();
-        }
+
     }
 
 	public async Task ActivateDeviceAuth()
     {
-		if (!LoginRequests.HasDeviceDetails)
-            await LoginRequests.SetupDeviceAuth();
-        await LoginRequests.TryLogin();
+
     }
 
     public void ClearDeviceAuth()
     {
-		LoginRequests.DeleteDeviceDetails();
+
     }
 }

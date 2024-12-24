@@ -58,7 +58,7 @@ public partial class CosmeticShopInterface : Control
             {
                 //load shop
                 await LoadShop();
-                CurrencyHighlight.Instance.SetCurrencyType("AccountResource:eventcurrency_scaling");
+                CurrencyHighlight.Instance.SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
             }
         };
 
@@ -116,14 +116,25 @@ public partial class CosmeticShopInterface : Control
         string subtext = GD.Randf() > 0.85f ?
             "Your selected code normally disappears after 2 weeks, but PegLeg can automatically re-select the code on launch!" :
             "Whoever you choose to support will recieve 5% of the cost of any Real-Money or VBuck purchases you make";
-        var response = await GenericLineEditWindow.OpenLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
-        if (response is null)
+        var newCode = await GenericLineEditWindow.OpenLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
+        if (newCode is null)
             return;
+        try
+        {
+            LoadingOverlay.AddLoadingKey("setSAC");
 
-        LoadingOverlay.AddLoadingKey("setSAC");
-        await ProfileRequests.SetSACCode(response);
-        sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : (await ProfileRequests.GetSACCode());
-        LoadingOverlay.RemoveLoadingKey("setSAC");
+            var account = GameAccount.activeAccount;
+            if (!await account.Authenticate())
+                return;
+
+            await account.SetSACCode(newCode);
+            sacButton.Text = await account.IsSACExpired() ? "None" : (await account.GetSACCode());
+        }
+        finally
+        {
+            LoadingOverlay.RemoveLoadingKey("setSAC");
+        }
+
     }
 
     private void OnNavCell()
@@ -194,16 +205,20 @@ public partial class CosmeticShopInterface : Control
 
     public async Task LoadShop(bool force = false)
     {
-        if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0) || !await LoginRequests.TryLogin())
+        if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0))
             return;
 
-        string currentSACCode = await ProfileRequests.GetSACCode(false);
-        if (await ProfileRequests.GetSACTime() > 1 && AppConfig.Get("automation", "creatorcode", false))
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        string currentSACCode = await account.GetSACCode(false);
+        if (await account.GetSACTime() > 1 && AppConfig.Get("automation", "creatorcode", false))
         {
             //GD.Print(currentSACCode);
-            await ProfileRequests.SetSACCode(currentSACCode);
+            await account.SetSACCode(currentSACCode);
         }
-        sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : currentSACCode;
+        sacButton.Text = await account.IsSACExpired() ? "None" : currentSACCode;
 
         isLoadingShop = true;
         filterBlocker.Visible = true;
@@ -223,7 +238,7 @@ public partial class CosmeticShopInterface : Control
         {
             entryChild.QueueFree();
         }
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
 
         PrepareFilters();
 
@@ -236,8 +251,7 @@ public partial class CosmeticShopInterface : Control
             await GenerateComplexShop(cosmeticShop);
         }
 
-        await this.WaitForFrame();
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         CatalogRequests.CleanCosmeticResourceCache();
 
         isLoadingShop = false;
@@ -267,7 +281,7 @@ public partial class CosmeticShopInterface : Control
                         if (opCount > simpleOpsPerFrame)
                         {
                             UpdateShopOfferResourceLoading();
-                            await this.WaitForFrame();
+                            await Helpers.WaitForFrame();
                             opCount = 0;
                         }
                         opCount++;
@@ -322,7 +336,7 @@ public partial class CosmeticShopInterface : Control
                 navCat.SetMetadata(0, firstHeader);
             }
         }
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         foreach (var page in activePages)
         {
             page.pageHeader.Visible = false;
@@ -332,10 +346,11 @@ public partial class CosmeticShopInterface : Control
                 UpdateShopOfferResourceLoading();
                 if (row.FilterPage(IsValidEntry))
                     page.pageHeader.Visible = true;
-                await this.WaitForFrame();
+                await Helpers.WaitForFrame();
             }
         }
     }
+
     void PrepareFilters()
     {
         newOrOldFilterValue = 2;
@@ -353,6 +368,7 @@ public partial class CosmeticShopInterface : Control
             typeMasks[i] = typeFilters[i].ButtonPressed;
         }
     }
+
     void ApplyFilters()
     {
         if (isLoadingShop)

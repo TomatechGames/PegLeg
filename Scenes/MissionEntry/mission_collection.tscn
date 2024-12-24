@@ -1,0 +1,108 @@
+[gd_scene load_steps=4 format=3 uid="uid://c70qnky0xyx4w"]
+
+[ext_resource type="Texture2D" uid="uid://dj7i2q6htu5st" path="res://Images/InterfaceIcons/T_UI_IconLibrary_Pencil_128.png" id="1_p305g"]
+[ext_resource type="Texture2D" uid="uid://7ybxyu233td7" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_TrashCan_128.png" id="2_v4tl1"]
+[ext_resource type="PackedScene" uid="uid://bekssnfes28vf" path="res://Scenes/MissionEntry/mission_collection_entry.tscn" id="3_2dnay"]
+
+[node name="MissionCollection" type="MarginContainer"]
+custom_minimum_size = Vector2(250, 0)
+offset_right = 250.0
+offset_bottom = 242.0
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Collection Name"
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_p305g")
+expand_mode = 1
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Button2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_v4tl1")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MissionCollectionEntry" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_2dnay")]
+layout_mode = 2
+
+[node name="MissionCollectionEntry2" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_2dnay")]
+layout_mode = 2
+
+[node name="MissionCollectionEntry3" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_2dnay")]
+layout_mode = 2
+
+[node name="MissionCollectionEntry4" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_2dnay")]
+layout_mode = 2
+
+[node name="MissionCollectionEntry5" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_2dnay")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_type_variation = &"LargeButton"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+text = "+99 more"
+horizontal_alignment = 1

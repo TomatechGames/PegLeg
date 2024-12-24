@@ -40,13 +40,13 @@ public partial class PerkEntry : Control
     {
         linkedAlteration = alterationId;
         linkedIndex = index;
-        if (alterationId is not null && BanjoAssets.TryGetTemplate(alterationId, out var alteration))
+        if (alterationId is not null && GameItemTemplate.Get(alterationId) is GameItemTemplate alteration)
         {
-            EmitSignal(SignalName.NameChanged, alteration["DisplayName"].ToString());
+            EmitSignal(SignalName.NameChanged, alteration.DisplayName);
 
             if (hasRarity)
             {
-                int rarity = alteration.GetItemRarity();
+                int rarity = alteration.RarityLevel;
                 if (isSixth)
                     rarity = 6;
                 EmitSignal(SignalName.RarityIconChanged, BanjoAssets.GetReservedTexture(rarityToImage[rarity-1]));
@@ -57,7 +57,7 @@ public partial class PerkEntry : Control
 
             if (alteration.ContainsKey("ImagePaths"))
             {
-                EmitSignal(SignalName.ElementIconChanged, alteration.GetItemTexture());
+                EmitSignal(SignalName.ElementIconChanged, alteration.GetTexture());
                 EmitSignal(SignalName.ElementIconVisibilityChanged, true);
             }
             else
@@ -66,7 +66,7 @@ public partial class PerkEntry : Control
         }
         else
         {
-            EmitSignal(SignalName.NameChanged, "Click to see perks that can be in this slot");
+            EmitSignal(SignalName.NameChanged, "Preview perk possibilities");
             EmitSignal(SignalName.RarityIconVisibilityChanged, true);
             EmitSignal(SignalName.RarityIconChanged, BanjoAssets.defaultIcon);
             EmitSignal(SignalName.ElementIconVisibilityChanged, false);

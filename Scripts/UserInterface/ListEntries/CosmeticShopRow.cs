@@ -73,7 +73,7 @@ public partial class CosmeticShopRow : Control
             parent.RegisterOffer(entry);
             activeEntries.Add(entry);
 
-            await this.WaitForFrame();
+            await Helpers.WaitForFrame();
         }
         jamTrackViewerButton.Visible = useJamTrackViewer;
         entryParent.Visible = true;
@@ -103,7 +103,7 @@ public partial class CosmeticShopRow : Control
             parent.RegisterOffer(entry);
             activeEntries.Add(entry);
 
-            await this.WaitForFrame();
+            await Helpers.WaitForFrame();
             if (!IsInsideTree())
                 return;
         }

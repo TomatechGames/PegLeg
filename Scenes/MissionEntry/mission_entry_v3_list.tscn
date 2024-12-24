@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="5_jw021"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="6_4k6gs"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="8_6tlrj"]
-[ext_resource type="PackedScene" uid="uid://cabjtbslcfikw" path="res://Scenes/GameItemEntry/mission_reward_entry_list.tscn" id="8_vhh2j"]
+[ext_resource type="PackedScene" uid="uid://cabjtbslcfikw" path="res://Scenes/GameItemEntry/old/mission_reward_entry_list.tscn" id="8_vhh2j"]
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="9_mryk5"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="9_rh3hy"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="11_d81fi"]

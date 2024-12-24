@@ -43,22 +43,22 @@ public partial class DesktopLoginInterface : LoginInterface
         window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
         window.ContentScaleFactor = 1;
 
-        smallSize = ((Vector2I)sizeSource.Size) + (Vector2I.Down * 128);
-        existingSize = window.Size;
-        var sizeDiff = existingSize - smallSize;
-        window.Size = smallSize;
-        window.Position += sizeDiff / 2;
+        //smallSize = ((Vector2I)sizeSource.Size) + (Vector2I.Down * 128);
+        //existingSize = window.Size;
+        //var sizeDiff = existingSize - smallSize;
+        //window.Size = smallSize;
+        //window.Position += sizeDiff / 2;
         hasShrunk = true;
 
         sizeTarget.CustomMinimumSize = Vector2.Zero;
         logo.Scale = Vector2.One;
 
         ConnectButtons();
-        await this.WaitForFrame();
-        hasBanjoAssets = BanjoAssets.PreloadSourcesParalell();
-        var loginTask = LoginRequests.TryLogin(false);
-        await this.WaitForTimer(0.25f);
-        isLoggedIn = await loginTask;
+        await Helpers.WaitForFrame();
+        hasBanjoAssets = BanjoAssets.ReadAllSources();
+        //var loginTask = LoginRequests.TryLogin(false);
+        await Helpers.WaitForTimer(0.25f);
+        //isLoggedIn = await loginTask;
 
         if (!hasAutoLoggedIn && isLoggedIn && hasBanjoAssets)
             SwitchToMainInterface();
@@ -73,14 +73,14 @@ public partial class DesktopLoginInterface : LoginInterface
                 .SetEase(Tween.EaseType.Out);
             music.Play();
 
-            loginText.Text = isLoggedIn ? "Logged In" : (LoginRequests.IsOffline ? "OFFLINE" : "Not Logged In");
+            loginText.Text = isLoggedIn ? "Logged In" : (GameClient.IsOffline ? "OFFLINE" : "Not Logged In");
 
-            loginControls.Visible = !isLoggedIn && !LoginRequests.IsOffline;
+            loginControls.Visible = !isLoggedIn && !GameClient.IsOffline;
             banjoControls.Visible = false;
-            loginButton.Disabled = !hasBanjoAssets || LoginRequests.IsOffline;
+            loginButton.Disabled = !hasBanjoAssets || GameClient.IsOffline;
             loginButton.TooltipText = !hasBanjoAssets ? "Banjo Assets are missing or incomplete, please\nplace banjo assets in the \"External/Banjo\" folder and restart" : "";
 
-            if (LoginRequests.IsOffline)
+            if (GameClient.IsOffline)
                 loginButton.TooltipText = "Could not connect to Epic Games.\nPlease ensure you have an internet connection, and restart PegLeg.";
 
             if (isLoggedIn)
@@ -103,13 +103,13 @@ public partial class DesktopLoginInterface : LoginInterface
         loadingIcon.Visible = true;
         await base.Login();
 
-        if (LoginRequests.AuthTokenValid)
+        if (false)
         {
             var musicFadeout = GetTree().CreateTween().SetParallel();
             musicFadeout.TweenProperty(music, "volume_db", -80, 1)
                 .SetTrans(Tween.TransitionType.Expo)
                 .SetEase(Tween.EaseType.In);
-            await this.WaitForTimer(1);
+            await Helpers.WaitForTimer(1);
             SwitchToMainInterface();
         }
         else
@@ -121,7 +121,7 @@ public partial class DesktopLoginInterface : LoginInterface
 
     async void SwitchToMainInterface()
     {
-        await OnLoginSucceeded();
+        OnLoginSucceeded();
         hasAutoLoggedIn = true;
         MusicController.ResumeMusic();
         if (hasShrunk)
@@ -130,7 +130,7 @@ public partial class DesktopLoginInterface : LoginInterface
             GetWindow().Size = existingSize;
             GetWindow().Position -= sizeDiff / 2;
         }
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         GetTree().Root.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
         GetTree().ChangeSceneToFile(desktopMainInterfacePath);
     }

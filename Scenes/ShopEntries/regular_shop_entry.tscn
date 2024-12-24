@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://wb5ukb74fot1"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/ShopOfferEntry.cs" id="1_hvr15"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="1_hvr15"]
 [ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="1_io7lf"]
 [ext_resource type="Shader" uid="uid://cypncf62qx5bc" path="res://Shaders/CardTriangleEffect.tres" id="2_6kl4y"]
 [ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="2_rx7yy"]
@@ -137,9 +137,9 @@ theme_override_constants/separation = -3
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/line_spacing = 0
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 10
 text = "Hero
 "
@@ -150,9 +150,9 @@ text_overrun_behavior = 3
 [node name="NameLabel" type="Label" parent="DetailsArea/NameBox/VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
 layout_mode = 2
+theme_override_constants/line_spacing = 0
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 12
 text = "This is a Hero Name"
 horizontal_alignment = 1
@@ -184,9 +184,9 @@ expand_mode = 3
 [node name="PriceAmount" type="Label" parent="DetailsArea/PriceBox/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/line_spacing = 0
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = 0
 theme_override_font_sizes/font_size = 15
 text = "10000"
 text_overrun_behavior = 3
@@ -217,8 +217,6 @@ text = "x999"
 layout_mode = 2
 outlinePadding = 0.0
 
-[connection signal="AmountChanged" from="." to="Panel/PanelContainer/Label" method="set_text"]
-[connection signal="AmountNeeded" from="." to="Panel/PanelContainer" method="set_visible"]
 [connection signal="NameChanged" from="." to="DetailsArea/NameBox/VBoxContainer/NameLabel" method="set_text"]
 [connection signal="IconChanged" from="DetailsArea" to="ItemIcon" method="set_texture"]
 [connection signal="RarityChanged" from="DetailsArea" to="RarityGradient" method="set_self_modulate"]

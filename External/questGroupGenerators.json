@@ -57,6 +57,16 @@
                             "startsWith":"endurancedaily_t04"
                         }
                     ]
+                },
+                "Daily Frostnite":{
+                    "union":[
+                        {
+                            "startsWith":"s11_holdfastquest_d1"
+                        },
+                        {
+                            "startsWith":"s11_holdfastquest_d2"
+                        }
+                    ]
                 }
             }
         },
@@ -78,7 +88,34 @@
                 },
                 "Frostnite":
                 {
-                    "startsWith":"winterquest_2018"
+                    "startsWith":"s11_holdfastquest",
+                    "exclude":{
+                        "union":[
+                            {
+                                "endsWith":"elite"
+                            },
+                            {
+                                "startsWith":"s11_holdfastquest_seasonelite"
+                            },
+                            {
+                                "startsWith":"s11_holdfastquest_d1"
+                            },
+                            {
+                                "startsWith":"s11_holdfastquest_d2"
+                            }
+                        ]
+                    }
+                },
+                "Elite Frostnite":
+                {
+                    "union":[
+                        {
+                            "endsWith":"elite"
+                        },
+                        {
+                            "startsWith":"s11_holdfastquest_seasonelite"
+                        }
+                    ]
                 }
             }
         },

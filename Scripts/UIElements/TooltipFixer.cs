@@ -9,7 +9,7 @@ public partial class TooltipFixer : Node
     public override async void _Ready()
     {
         tooltipControl.Scale = Vector2.Zero;
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         if (tooltipControl?.GetParent() is Node parent)
             parent.RemoveChild(tooltipControl);
         tooltipControl.Scale = Vector2.One;

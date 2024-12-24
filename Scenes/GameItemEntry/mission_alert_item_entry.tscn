@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://3xbl5x8mbmjv"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_autpg"]
+[ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="2_2h86w"]
+
+[node name="MissionAlertItemEntry" type="HBoxContainer"]
+script = ExtResource("1_autpg")
+
+[node name="TextureRect6" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+texture = ExtResource("2_2h86w")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Metal Corosion"
+
+[connection signal="IconChanged" from="." to="TextureRect6" method="set_texture"]
+[connection signal="NameChanged" from="." to="Label" method="set_text"]
+[connection signal="TooltipChanged" from="." to="." method="set_tooltip_text"]

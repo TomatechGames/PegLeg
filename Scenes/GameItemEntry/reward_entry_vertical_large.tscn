@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://by677kftyapmx"]
+
+[ext_resource type="PackedScene" uid="uid://3kvmnkrrkqf1" path="res://Scenes/GameItemEntry/reward_entry_vertical.tscn" id="1_amrox"]
+
+[node name="RewardEntryVertical" instance=ExtResource("1_amrox")]
+custom_minimum_size = Vector2(128, 128)
+
+[node name="AmountLabel" parent="AmountContainer" index="1"]
+theme_override_font_sizes/font_size = 32

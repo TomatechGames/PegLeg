@@ -72,6 +72,10 @@ public partial class RefreshTimerController : Node
                 int utcDayOfWeek = (int)rightNow.DayOfWeek;
                 int daysUntilThursday = ((10 - utcDayOfWeek)) % 7;
                 return today.AddDays(daysUntilThursday + 1);
+            case RefreshTimeType.BRWeekly:
+                int utcDayOfWeekBR = (int)rightNow.AddHours(14).DayOfWeek;
+                int daysUntilTuesday = ((10 - utcDayOfWeekBR)) % 7;
+                return today.AddDays(daysUntilTuesday + 1).AddHours(14);
         }
         int dayCount = (today - referenceStartDate).Days;
         dayCount = dayCount % (weeksInSeasonalYear * 7);
@@ -96,5 +100,6 @@ public enum RefreshTimeType
     Hourly,
     Daily,
     Weekly,
+    BRWeekly,
     Event
 }

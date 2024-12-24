@@ -30,14 +30,21 @@ public partial class QuestInterface : Control
                 LoadQuests();
         };
         RefreshTimerController.OnDayChanged += OnDayChanged;
-        if (await LoginRequests.TryLogin())
-            await ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
+
+        var account = GameAccount.activeAccount;
+        if (await account.Authenticate())
+            return;
+        await account.ClientQuestLogin();
     }
 
     private async void OnDayChanged()
     {
         questsNeedUpdate = true;
-        await ProfileRequests.PerformProfileOperation(FnProfileTypes.AccountItems, "ClientQuestLogin", @"{""streamingAppKey"": """"}");
+
+        var account = GameAccount.activeAccount;
+        if (await account.Authenticate())
+            return;
+        await account.ClientQuestLogin();
         if (IsVisibleInTree())
             LoadQuests();
     }
@@ -47,15 +54,24 @@ public partial class QuestInterface : Control
         RefreshTimerController.OnDayChanged -= OnDayChanged;
     }
 
-    public void ClearPinnedQuests()=>
-        ProfileRequests.ClearPinnedQuests();
+    public async void ClearPinnedQuests()
+    {
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+        account.ClearPinnedQuests();
+    }
 
     bool questsNeedUpdate = true;
     bool isGeneratingQuests = false;
     async void LoadQuests()
     {
-        if (!await LoginRequests.TryLogin() || isGeneratingQuests || !questsNeedUpdate)
+        if (isGeneratingQuests || !questsNeedUpdate)
             return;
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
         questGroupViewer.Visible = false;
         questListLayout.Visible = false;
         loadingIcon.Visible = true;
@@ -68,7 +84,7 @@ public partial class QuestInterface : Control
             node.QueueFree();
         }
 
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
 
         ButtonGroup questButtonGroup = new();
         foreach (var collection in generatedQuestGroups)
@@ -93,7 +109,7 @@ public partial class QuestInterface : Control
                 groupEntry.Pressed += () =>
                 {
                     questGroupViewer.Visible = true;
-                    questGroupViewer.SetQuestNodes(groupEntry.QuestDataList, groupEntry.IsChain ||  group.Key == "Daily Endurance", !groupEntry.IsChain);
+                    questGroupViewer.SetQuestNodes(groupEntry.questSlotList, groupEntry.IsChain ||  group.Key == "Daily Endurance", !groupEntry.IsChain);
                 };
                 groupEntry.NotificationVisible += _ =>
                 {

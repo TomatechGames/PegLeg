@@ -4,7 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="2_2wjsr"]
 
 [node name="LlamaHighlight" type="MarginContainer"]
-custom_minimum_size = Vector2(0, 128)
+custom_minimum_size = Vector2(0, 96)
+size_flags_vertical = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -48,9 +49,8 @@ rotation = -0.164061
 theme_override_colors/font_color = Color(0.929412, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
 theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 20
 text = "FREE"
-vertical_alignment = 1
 
 [node name="Responsive Button Area" parent="." instance=ExtResource("2_2wjsr")]
 layout_mode = 2

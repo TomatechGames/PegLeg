@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 
-static class FNEndpoints
+static class FnEndpoints
 {
     public static readonly HttpClient serviceEndpoint = new()
     {

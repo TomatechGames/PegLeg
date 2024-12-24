@@ -72,7 +72,7 @@ public partial class GenericConfirmationWindow : ModalWindow
         result = null;
         SetWindowOpen(true);
         while (isSelecting)
-            await this.WaitForFrame();
+            await Helpers.WaitForFrame();
         SetWindowOpen(false);
 
         return result;

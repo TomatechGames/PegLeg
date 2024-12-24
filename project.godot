@@ -12,14 +12,16 @@ config_version=5
 
 config/name="PegLeg"
 config/description="PegLeg is a lightweight and unofficial companion app for use with Fortnite: Save The World. It aims to recreate the functionality of the Homebase menu without needing the entire game to be running. "
-config/version="0.1.1"
-run/main_scene="res://Scenes/Desktop/desktopLogin.tscn"
+config/version="0.1.3"
+run/main_scene="res://Scenes/Desktop/desktopOnboarding.tscn"
 config/custom_user_dir_name="Tomatech Games/PegLeg"
 config/features=PackedStringArray("4.3", "C#")
 run/low_processor_mode_sleep_usec=8000
-boot_splash/bg_color=Color(0, 0, 0, 0)
-boot_splash/image="res://Images/InterfaceIcons/PegLegIcon256.png"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
+boot_splash/image="res://Images/InterfaceIcons/PegLegChest256.png"
 boot_splash/fullsize=false
+boot_splash/use_filter=false
 config/icon="res://Images/InterfaceIcons/PegLegIcon256.png"
 config/use_custom_user_dir.release=true
 
@@ -32,15 +34,10 @@ GlobalScene="*res://Scenes/globalScene.tscn"
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/initial_position_type=3
-window/size/borderless=true
-window/size/transparent=true
-window/size/window_width_override=1
-window/size/window_height_override=1
 window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
-window/stretch/scale=4.0
 window/per_pixel_transparency/allowed=true
 mouse_cursor/tooltip_position_offset=Vector2(5, 5)
 
@@ -119,11 +116,10 @@ textures/webp_compression/compression_method=0
 environment/ssao/quality=0
 environment/ssil/quality=0
 anti_aliasing/screen_space_roughness_limiter/enabled=false
-viewport/transparent_background=true
 
 [shader_globals]
 
 GlobalCorners={
 "type": "bool",
-"value": true
+"value": false
 }

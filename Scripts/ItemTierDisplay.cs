@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class ItemTierController : Node
+public partial class ItemTierDisplay : Node
 {
     [Export]
     TextureRect[] tierImages;

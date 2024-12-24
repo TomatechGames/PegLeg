@@ -9,50 +9,34 @@ public partial class PerkViewer : Control
     [Export]
     float tweenDuration = 0.1f;
     [Export]
-    NodePath realPerkAreaPath;
     Control realPerkArea;
 
     [Export]
-    NodePath optionalPerkAreaPath;
     Control optionalPerkArea;
 
     [Export]
-    NodePath interactionBlockerPath;
     Control interactionBlocker;
 
     [Export(PropertyHint.ArrayType)]
-    NodePath[] realPerkEntryPaths = new NodePath[6];
     PerkEntry[] realPerkEntries;
 
     [Export(PropertyHint.ArrayType)]
-    NodePath[] optionalPerkEntryPaths = new NodePath[5];
     PerkEntry[] optionalPerkEntries;
 
     [Export]
-    NodePath tierUpSeparatorPath;
     Control tierUpSeparator;
 
     [Export]
-    NodePath reperkApplyButtonPath;
     Control reperkApplyButton;
 
     [Export(PropertyHint.ArrayType)]
-    NodePath[] reperkCostEntryPaths = new NodePath[3];
     GameItemEntry[] reperkCostEntries;
 
     static JsonObject reperkCosts;
 
     public override void _Ready()
     {
-        this.GetNodesOrNull(realPerkEntryPaths, out realPerkEntries);
-        this.GetNodesOrNull(optionalPerkEntryPaths, out optionalPerkEntries);
-        this.GetNodesOrNull(reperkCostEntryPaths, out reperkCostEntries);
-        this.GetNodeOrNull(tierUpSeparatorPath, out tierUpSeparator);
-        this.GetNodeOrNull(interactionBlockerPath, out interactionBlocker);
-        this.GetNodeOrNull(realPerkAreaPath, out realPerkArea);
-        this.GetNodeOrNull(optionalPerkAreaPath, out optionalPerkArea);
-        this.GetNodeOrNull(reperkApplyButtonPath, out reperkApplyButton);
-
+        //todo: export this via BanjoBotAssets
         using var reperkCostFile = FileAccess.Open("res://External/reperkCosts.json", FileAccess.ModeFlags.Read);
         reperkCosts = JsonNode.Parse(reperkCostFile.GetAsText()).AsObject();
 
@@ -68,33 +52,25 @@ public partial class PerkViewer : Control
 
     }
 
-    ProfileItemHandle linkedItem;
-    public void LinkItem(ProfileItemHandle profileItem)
+    GameItem currentItem;
+    public void SetItem(GameItem item)
     {
-        if(linkedItem is not null)
-            linkedItem.OnChanged -= UpdateProfileItem;
+        if (currentItem == item)
+            return;
+        bool hadItem = currentItem is not null;
+        if(hadItem)
+            currentItem.OnChanged -= UpdateItem;
 
-        linkedItem = profileItem;
+        currentItem = item;
 
-        if (linkedItem is not null)
+        if (currentItem is not null)
         {
-            linkedItem.OnChanged += UpdateProfileItem;
-            SetItem(profileItem.GetItemUnsafe());
+            currentItem.OnChanged += UpdateItem;
+            UpdateItem(currentItem, hadItem);
         }
     }
 
-    void UpdateProfileItem(ProfileItemHandle profileItem)
-    {
-        SetItem(profileItem.GetItemUnsafe());
-    }
-
-    public void SetDisplayItem(JsonObject itemInstance)
-    {
-        if (linkedItem is not null)
-            linkedItem.OnChanged -= UpdateProfileItem;
-        linkedItem = null;
-        SetItem(itemInstance);
-    }
+    void UpdateItem(GameItem item) => UpdateItem(item, true);
 
     bool isSchematic = true;
     bool isTrap = false;
@@ -102,19 +78,18 @@ public partial class PerkViewer : Control
     string[][] perkPossibilities;
     int unlockedPerks = 1;
 
-    void SetItem(JsonObject itemInstance, bool animateToReset = false)
+    void UpdateItem(GameItem item, bool animateToReset)
     {
-        var template = itemInstance.GetTemplate();
-        var maxedTemplate = template;
+        var maxedTemplate = item.template;
 
-        while (maxedTemplate.TryUpgradeTemplateRarity() is JsonObject upgradedTemplate)
+        while (maxedTemplate.TryUpgradeTemplateRarity() is GameItemTemplate upgradedTemplate)
         {
             maxedTemplate = upgradedTemplate;
         }
 
-        isSchematic = template["Type"].ToString() == "Schematic";
-        isTrap = template["Category"]?.ToString() == "Trap";
-        int itemRarity = template.GetItemRarity();
+        isSchematic = item.template.Type == "Schematic";
+        isTrap = item.template.Category == "Trap";
+        int itemRarity = item.template.RarityLevel;
 
         if (animateToReset)
         {
@@ -130,7 +105,7 @@ public partial class PerkViewer : Control
             optionalPerkArea.AnchorRight = 2;
         }
 
-        activePerks = itemInstance["attributes"]?["alterations"]?
+        activePerks = item.attributes?["alterations"]?
             .AsArray()
             .Select(e => e.ToString())
             .ToArray();
@@ -150,7 +125,7 @@ public partial class PerkViewer : Control
                 )
                 .ToArray();
             activePerks ??= new string[perkPossibilities.Length];
-            int itemLevel = itemInstance["attributes"]?["level"]?.GetValue<int>() ?? 0;
+            int itemLevel = item.attributes?["level"]?.GetValue<int>() ?? 0;
             for (int i = 0; i < perkPossibilities.Length; i++)
             {
                 int requiredLevel = maxedTemplate["AlterationSlots"][i]["RequiredLevel"].GetValue<int>();
@@ -179,7 +154,7 @@ public partial class PerkViewer : Control
                 continue;
             }
             realPerkEntries[i].SetInteractable(perkPossibilities[i].Length > 1 || PerkIsUpgradeable(activePerks[i]));
-            realPerkEntries[i].SetLocked(linkedItem is not null && i + 1 > unlockedPerks);
+            realPerkEntries[i].SetLocked(currentItem.profile is not null && i + 1 > unlockedPerks);
         }
         for (int i = activePerks.Length; i < realPerkEntries.Length; i++)
         {
@@ -283,9 +258,9 @@ public partial class PerkViewer : Control
     }
 
     string selectedReplacementPerk;
-    public async void SelectReplacementPerk(string replacementId, int replacementIndex)
+    public void SelectReplacementPerk(string replacementId, int replacementIndex)
     {
-        if (linkedItem is null)
+        if (currentItem.profile is null)
         {
             activePerks[selectedPerkIndex] = replacementId;
             RefreshActivePerks();
@@ -317,26 +292,27 @@ public partial class PerkViewer : Control
         for (int i = 0; i < costs.Count; i++)
         {
             var costItemEntry = costs.ElementAt(i);
-            BanjoAssets.TryGetTemplate(costItemEntry.Key, out var costItem);
+            var costItem = GameItemTemplate.Get(costItemEntry.Key);
             int requiredAmount = costItemEntry.Value.GetValue<int>();
-            var existingItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, costItemEntry.Key)).FirstOrDefault();
-            int existingAmount = existingItem.Value?["quantity"].GetValue<int>() ?? 0;
+            //can safely assume that this is the AccountItem profile, and that it has been queried
+            var existingItem = currentItem.profile.GetTemplateItems(costItemEntry.Key).FirstOrDefault();
+            int existingAmount = existingItem?.quantity ?? 0;
             if (existingAmount < requiredAmount)
                 allCostsMet = false;
-            reperkCostEntries[i].SetItemData(existingItem.Value?.AsObject() ?? costItem.CreateInstanceOfItem(0));
+            reperkCostEntries[i].SetItem(existingItem ?? costItem.CreateInstance(0));
             reperkCostEntries[i].Visible = true;
         }
         for (int i = costs.Count; i < reperkCostEntries.Length; i++)
         {
             reperkCostEntries[i].Visible = false;
         }
-        reperkApplyButton.Visible = allCostsMet && linkedItem is not null && selectedPerkLocked;
+        reperkApplyButton.Visible = allCostsMet && !selectedPerkLocked;
     }
 
     public void ApplyReplacementPerk()
     {
         GD.Print("applying perk: " + selectedReplacementPerk);
-        if (linkedItem is not null && selectedReplacementPerk != null)
+        if (currentItem.profile is not null && selectedReplacementPerk != null)
         {
             //await profile request
         }

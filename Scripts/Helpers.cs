@@ -8,11 +8,8 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Godot;
+using System.Threading;
 
-class MissingTreeException : Exception
-{
-    public override string Message => "The Node is not in a Tree";
-}
 static class Helpers
 {
     public static void Unpress(this ButtonGroup group)
@@ -29,6 +26,9 @@ static class Helpers
         label.Visible = !string.IsNullOrWhiteSpace(label.Text);
     }
 
+    public static T Reserialise<T>(this T toReserialise) where T : JsonNode =>
+        toReserialise is not null ? (T)JsonNode.Parse(toReserialise.ToJsonString()) : null;
+
     public static string ProperlyGlobalisePath(string godotPath)
     {
         if (godotPath.StartsWith("res://") && OS.HasFeature("template"))
@@ -36,25 +36,29 @@ static class Helpers
         else
             return ProjectSettings.GlobalizePath(godotPath);
     }
-    public static async Task WaitForFrame(this Node owner)
+
+    public static CancellationTokenSource Reset(this CancellationTokenSource original)
     {
-        if (!owner.IsInsideTree())
-            throw new MissingTreeException();
-        await owner.ToSignal(owner.GetTree(), SceneTree.SignalName.ProcessFrame);
+        original?.Cancel();
+        return new();
+    }
+    public static CancellationTokenSource Regenerate(this CancellationTokenSource original, out CancellationToken ct)
+    {
+        original?.Cancel();
+        var newSource = new CancellationTokenSource();
+        ct = newSource.Token;
+        return newSource;
     }
 
-    public static async Task WaitForTimer(this Node owner, double time)
-    {
-        if (!owner.IsInsideTree())
-            throw new MissingTreeException();
-        await owner.ToSignal(owner.GetTree().CreateTimer(time), SceneTreeTimer.SignalName.Timeout);
-    }
-    public static async Task WaitForTimer(this Node owner, SceneTreeTimer timer)
-    {
-        if (!owner.IsInsideTree())
-            throw new MissingTreeException();
-        await owner.ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
-    }
+    static SceneTree MainLoopSceneTree => (SceneTree)Engine.GetMainLoop();
+
+    public static async Task WaitForFrame() => await MainLoopSceneTree.WaitForFrame();
+    static async Task WaitForFrame(this SceneTree sceneTree) => 
+        await sceneTree.ToSignal(sceneTree, SceneTree.SignalName.ProcessFrame);
+
+    public static async Task WaitForTimer(double time) => await MainLoopSceneTree.WaitForTimer(time);
+    static async Task WaitForTimer(this SceneTree sceneTree, double time)=>await sceneTree.CreateTimer(time).WaitForTimer();
+    public static async Task WaitForTimer(this SceneTreeTimer timer) => await timer.ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
 
     public static KeyValuePair<string, JsonNode> CreateKVP(this JsonObject from, string keyTerm)
     {
@@ -106,36 +110,24 @@ static class Helpers
         return resultNodes.Count == 0 ? null : new(resultNodes.Select(n => n.Reserialise()).ToArray());
     }
 
-    public static async void RunSafely(this Task task)
+    public static async void RunWithDelay(Task task, float delay)
     {
+        await WaitForTimer(delay);
         await task;
     }
 
-    public static async void RunWithDelay(this Node owner, Task task, float delay)
-    {
-        await owner.ToSignal(owner.GetTree().CreateTimer(delay), SceneTreeTimer.SignalName.Timeout);
-        await task;
-    }
-
-    public static void GetNodeOrNull<T>(this Node owner, NodePath path, out T result) where T : Node
-    {
-        result = owner.GetNodeOrNull<T>(path);
-    }
-    public static void GetNodesOrNull<T>(this Node owner, NodePath[] paths, out T[] result) where T : Node
-    {
-        result = new T[paths.Length];
-        for (int i = 0; i < paths.Length; i++)
-        {
-            result[i] = owner.GetNodeOrNull<T>(paths[i]);
-        }
-    }
-
-    public static async void RunWithCallback<T>(this Task<T> taskWithResult, Action<T> onComplete)
-    {
-        T result = await taskWithResult;
-        if (result is not null)
-            onComplete(result);
-    }
+    //public static void GetNodeOrNull<T>(this Node owner, NodePath path, out T result) where T : Node
+    //{
+    //    result = owner.GetNodeOrNull<T>(path);
+    //}
+    //public static void GetNodesOrNull<T>(this Node owner, NodePath[] paths, out T[] result) where T : Node
+    //{
+    //    result = new T[paths.Length];
+    //    for (int i = 0; i < paths.Length; i++)
+    //    {
+    //        result[i] = owner.GetNodeOrNull<T>(paths[i]);
+    //    }
+    //}
 
     public const string cosmeticSalsa = "676b8175-a049-4f03-b829-323c95153a43";
     public static async Task<JsonNode> MakeRequest(HttpMethod method, System.Net.Http.HttpClient endpoint, string uri, string body, AuthenticationHeaderValue authentication, string mediaType = "application/x-www-form-urlencoded", bool addCosmeticHeader = false)
@@ -148,20 +140,23 @@ static class Helpers
             request.Headers.Add("x-api-key", cosmeticSalsa);
         return await MakeRequest(endpoint, request);
     }
-    public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
+
+    public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
-        using var result = await MakeRequestRaw(endpoint, request, disregardStatusCode);
-        return result is not null ? JsonNode.Parse(await result.Content.ReadAsStringAsync()) : null;
+        using var result = await MakeRequestRaw(endpoint, request);
+        var resultNode = result is not null ? JsonNode.Parse(await result.Content.ReadAsStringAsync()) : null;
+        //todo: throw exception when encountering a response with an errorMessage
+
+        return resultNode;
     }
 
-    public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
+    public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
         HttpResponseMessage response = null;
         try
         {
-            response = await endpoint.SendAsync(request); 
-            if (true)
-                response.EnsureSuccessStatusCode();
+            response = await endpoint.SendAsync(request);
+            response.EnsureSuccessStatusCode();
         }
         catch (HttpRequestException ex)
         {

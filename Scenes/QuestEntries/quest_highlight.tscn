@@ -12,10 +12,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = 64.0
-offset_bottom = 64.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
@@ -23,30 +23,32 @@ script = ExtResource("1_hvd2p")
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = -4
-theme_override_constants/margin_top = -4
-theme_override_constants/margin_right = -4
-theme_override_constants/margin_bottom = -4
+mouse_filter = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2"]
+[node name="MarginContainer" type="Control" parent="MarginContainer2"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer2/MarginContainer"]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.17
+anchor_right = 0.83
+anchor_bottom = 0.83
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("1_pef3f")
-expand_mode = 3
+expand_mode = 1
+stretch_mode = 5
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer2"]
 self_modulate = Color(0.16, 0.16, 0.16, 1)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("2_7husn")
-expand_mode = 1
+expand_mode = 3
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="MarginContainer2"]
 self_modulate = Color(1, 1, 0, 1)

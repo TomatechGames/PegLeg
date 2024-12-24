@@ -5,42 +5,41 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-public class QuestData
+public class QuestSlot
 {
-    public QuestData(string questID, JsonObject questTemplate)
+    public QuestSlot(GameItemTemplate questTemplate)
     {
-        this.questID = questID;
         this.questTemplate = questTemplate;
     }
 
-    public void LinkQuestItem(ProfileItemHandle newQuestItem)
+    public void ClearQuestItem() => LinkQuestItem(null);
+    public void LinkQuestItem(GameItem newQuestItem)
     {
+        if (newQuestItem == questItem)
+            return;
         if (questItem is not null)
             questItem.OnChanged -= ProfileItemChanged;
         questItem = newQuestItem;
         if (questItem is null)
             return;
+        OnPropertiesUpdated?.Invoke(this);
         questItem.OnChanged += ProfileItemChanged;
-        questTemplate = newQuestItem.GetItemUnsafe().GetTemplate();
-        questID = newQuestItem.GetItemUnsafe()["templateId"].ToString();
+        questTemplate = questItem.template;
     }
 
-    void ProfileItemChanged(ProfileItemHandle handle)
-    {
-        OnPropertiesUpdated?.Invoke();
-    }
+    void ProfileItemChanged(GameItem handle) => OnPropertiesUpdated?.Invoke(this);
 
-    public string questID { get; private set; }
-    public JsonObject questTemplate { get; private set; }
-    public ProfileItemHandle questItem { get; private set; }
+    public string questId => questItem?.templateId ?? questTemplate.TemplateId;
+    public GameItemTemplate questTemplate { get; private set; }
+    public GameItem questItem { get; private set; }
 
-    public event Action OnPropertiesUpdated;
+    public event Action<QuestSlot> OnPropertiesUpdated;
 
-    public bool isUnlocked => questItem is not null;
-    public bool isNew => !(questItem?.ItemSeen ?? true);
-    public bool isPinned => isUnlocked && ProfileRequests.HasPinnedQuest(questItem.itemID.uuid);
-    public bool isComplete => questItem?.GetItemUnsafe()["attributes"]["quest_state"]?.ToString() == "Claimed";
-    public bool isRerollable => isUnlocked && questItem?.GetItemUnsafe().GetTemplate()["Category"].ToString() == "DailyQuests";
+    public bool isUnlocked => questItem?.profile is not null;
+    public bool isNew => !(questItem?.IsSeen ?? true);
+    public bool isPinned => questItem?.profile?.account.HasPinnedQuest(questItem.uuid) ?? false;
+    public bool isComplete => questItem?.attributes["quest_state"]?.ToString() == "Claimed";
+    public bool isRerollable => isUnlocked && questTemplate.Category == "DailyQuests" && questItem.profile.account.CanRerollQuest();
 }
 
 public partial class QuestGroupEntry : Control
@@ -67,13 +66,18 @@ public partial class QuestGroupEntry : Control
     public bool HasNotification => hasNotification;
     bool hasAvailableQuests = false;
     public bool HasAvailableQuests => hasAvailableQuests;
-    List<QuestData> questDataList = new();
-    public List<QuestData> QuestDataList => questDataList;
+    public List<QuestSlot> questSlotList { get; private set; } = new();
 
     public async Task SetupQuestGroup(string name, JsonObject questGroup)
     {
         EmitSignal(SignalName.NameChanged, name);
-        questDataList.Clear();
+        questSlotList.Clear();
+        hasAvailableQuests = false;
+        Visible = false;
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
 
         if (questGroup["questlines"] is JsonArray questlines)
         {
@@ -85,29 +89,32 @@ public partial class QuestGroupEntry : Control
                 {
                     string currentQuestId = qline[i].ToString();
 
-                    ProfileItemHandle questHandle = null;
-                    if (await ProfileRequests.GetFirstProfileItem(FnProfileTypes.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
-                        questHandle = ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
+                    GameItem questItem = 
+                        (await account.GetProfile(FnProfileTypes.AccountItems).Query())
+                        .GetTemplateItems("Quest", item => item.templateId == currentQuestId)
+                        .FirstOrDefault();
 
-                    if (i == 0 && questHandle is null)
+                    if (i == 0 && questItem is null)
                         break;
+
                     skip = false;
 
-                    JsonObject questTemplate = BanjoAssets.TryGetTemplate(currentQuestId);
+                    GameItemTemplate questTemplate = questItem?.template ?? GameItemTemplate.Get(currentQuestId);
 
-                    QuestData newData = new(currentQuestId, questTemplate);
-                    newData.LinkQuestItem(questHandle);
+                    QuestSlot newData = new(questTemplate);
+                    newData.LinkQuestItem(questItem);
                     newData.OnPropertiesUpdated += UpdateNotificationAndIcon;
-                    questDataList.Add(newData);
+                    questSlotList.Add(newData);
 
                     if(i==qline.Count-1 && newData.isComplete)
                         EmitSignal(SignalName.IconChanged, completeTex);
                 }
                 if (skip)
                     continue;
-                hasAvailableQuests = questDataList.Count > 0;
+                hasAvailableQuests = questSlotList.Count > 0;
 
-                UpdateNotificationAndIcon();
+                UpdateNotificationAndIcon(null);
+                Visible = true;
                 return;
             }
         }
@@ -118,37 +125,42 @@ public partial class QuestGroupEntry : Control
             for (int i = 0; i < quests.Count; i++)
             {
                 string currentQuestId = quests[i].ToString();
-                JsonObject questTemplate = BanjoAssets.TryGetTemplate(currentQuestId);
 
-                ProfileItemHandle questHandle = null;
-                if (await ProfileRequests.GetFirstProfileItem(FnProfileTypes.AccountItems, kvp => kvp.Value["templateId"].ToString() == currentQuestId) is JsonObject currentQuest)
-                    questHandle = ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, currentQuest["uuid"].ToString()));
+                GameItem questItem =
+                        (await account.GetProfile(FnProfileTypes.AccountItems).Query())
+                        .GetTemplateItems("Quest", item => item.templateId == currentQuestId)
+                        .FirstOrDefault();
 
-                QuestData newData = new(currentQuestId, questTemplate);
-                newData.LinkQuestItem(questHandle);
+                GameItemTemplate questTemplate = questItem?.template ?? GameItemTemplate.Get(currentQuestId);
+
+                QuestSlot newData = new(questTemplate);
+                newData.LinkQuestItem(questItem);
                 newData.OnPropertiesUpdated += UpdateNotificationAndIcon;
-                questDataList.Add(newData);
+                questSlotList.Add(newData);
             }
-            hasAvailableQuests = questDataList.Exists(q => q.isUnlocked);
+            hasAvailableQuests = questSlotList.Exists(q => q.isUnlocked);
 
-            if(questDataList.FirstOrDefault(q => q.isUnlocked)?.questTemplate["DisplayName"].ToString() is string firstQuestName && firstQuestName.EndsWith("Wave 5"))
+            //makes the endurance daily group show which region the edurance is in
+            if(
+                questSlotList.FirstOrDefault(q => q.isUnlocked)?.questTemplate["DisplayName"].ToString() is string firstQuestName && 
+                firstQuestName.EndsWith("Wave 5")
+              )
                 EmitSignal(SignalName.NameChanged, firstQuestName[..^7]);
 
-            UpdateNotificationAndIcon();
+            UpdateNotificationAndIcon(null);
+            Visible = true;
             return;
         }
-        hasAvailableQuests = false;
 
-        Visible = false;
         //GD.PushWarning($"Error when handling Quest Group \"{name}\"");
     }
     
-    public void UpdateNotificationAndIcon()
+    public void UpdateNotificationAndIcon(QuestSlot _)
     {
-        hasNotification = questDataList.Any(questData => questData.isNew && (isChain || !questData.isComplete));
+        hasNotification = questSlotList.Any(questData => questData.isNew && (isChain || !questData.isComplete));
         EmitSignal(SignalName.NotificationVisible, hasNotification);
-        bool isPinned = questDataList.Any(q => q.isPinned);
-        bool isComplete = questDataList.All(q => q.isComplete);
+        bool isPinned = questSlotList.Any(q => q.isPinned);
+        bool isComplete = questSlotList.All(q => q.isComplete);
 
         if (isComplete)
             EmitSignal(SignalName.IconChanged, completeTex);
@@ -171,7 +183,7 @@ public partial class QuestGroupEntry : Control
 
     public override void _ExitTree()
     {
-        foreach (var questData in questDataList)
+        foreach (var questData in questSlotList)
         {
             questData.LinkQuestItem(null);
         }

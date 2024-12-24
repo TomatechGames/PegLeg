@@ -30,7 +30,7 @@ public partial class RecycleListContainer : ScrollContainer
         base._Ready();
 
         basis = elementScene.Instantiate<IRecyclableEntry>();
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         basis.node.Visible = false;
         basis.node.Size = Vector2.Zero;
         basisSize = basis.BasisSize;
@@ -109,7 +109,7 @@ public partial class RecycleListContainer : ScrollContainer
                     for (int i = newStartingIndex; i < newEndIndex; i++)
                     {
                         //GD.Print("force adding " + i);
-                        var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : GenerateNewPoolEntry();
+                        var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                         activeEntries[i] = item;
                         activeEntries[i].SetRecycleIndex(i);
                         activeEntries[i].node.Visible = true;
@@ -151,7 +151,7 @@ public partial class RecycleListContainer : ScrollContainer
                         for (int i = lastStartingIndex - 1; i > newStartingIndex - 1; i--)
                         {
                             //GD.Print("adding " + i);
-                            var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : GenerateNewPoolEntry();
+                            var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                             activeEntries[i] = item;
                             activeEntries[i].SetRecycleIndex(i);
                             activeEntries[i].node.Visible = true;
@@ -164,7 +164,7 @@ public partial class RecycleListContainer : ScrollContainer
                         for (int i = lastEndIndex; i < newEndIndex; i++)
                         {
                             //GD.Print("adding " + i);
-                            var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : GenerateNewPoolEntry();
+                            var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                             activeEntries[i] = item;
                             activeEntries[i].SetRecycleIndex(i);
                             activeEntries[i].node.Visible = true;
@@ -193,9 +193,10 @@ public partial class RecycleListContainer : ScrollContainer
         }
     }
 
-    IRecyclableEntry GenerateNewPoolEntry()
+    IRecyclableEntry SpawnPoolEntry()
     {
         var spawnedEntry = elementScene.Instantiate<IRecyclableEntry>();
+        linkedProvider.OnElementSpawned(spawnedEntry);
         spawnedEntry.SetRecyclableElementProvider(linkedProvider);
         elementParent.AddChild(spawnedEntry.node);
         return spawnedEntry;
@@ -236,6 +237,7 @@ public interface IRecyclableEntry
 public interface IRecyclableElementProvider 
 {
     public int GetRecycleElementCount();
+    public void OnElementSpawned(IRecyclableEntry entry) { }
 }
 
 public interface IRecyclableElementProvider<T> : IRecyclableElementProvider

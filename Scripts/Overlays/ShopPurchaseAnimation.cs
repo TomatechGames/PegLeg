@@ -93,7 +93,7 @@ public partial class ShopPurchaseAnimation : Control
             var cartScaleTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Back);
             cartScaleTween.TweenProperty(cartScaleNode, "scale", Vector2.One, cartGrowDuration);
 
-            await this.WaitForTimer(cartGrowDuration * 0.25);
+            await Helpers.WaitForTimer(cartGrowDuration * 0.25);
 
             await AnimateItems(animatableItems);
 
@@ -102,19 +102,19 @@ public partial class ShopPurchaseAnimation : Control
             cartRotationTween.TweenProperty(cartRotationNode, "position:x", 300, cartLeaveDuration).SetEase(Tween.EaseType.In);
             cartRotationTween.TweenProperty(cartRotationNode, "modulate", Colors.Transparent, cartLeaveDuration).SetEase(Tween.EaseType.In);
 
-            await this.WaitForTimer(textEnterDelay);
+            await Helpers.WaitForTimer(textEnterDelay);
         }
         finalText.RotationDegrees = -270;
         var textAppearTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Cubic);
         textAppearTween.TweenProperty(finalText, "rotation_degrees", 0, cartLeaveDuration);
         textAppearTween.TweenProperty(finalText, "scale", Vector2.One, cartLeaveDuration);
 
-        await this.WaitForTimer(cartLeaveDuration + textStayDuration);
+        await Helpers.WaitForTimer(cartLeaveDuration + textStayDuration);
 
         var textLeaveTween = GetTree().CreateTween().SetParallel();
         textLeaveTween.TweenProperty(finalText, "scale", Vector2.Zero, textLeaveDuration).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.In);
 
-        await this.WaitForTimer(textLeaveDuration);
+        await Helpers.WaitForTimer(textLeaveDuration);
 
         modalWindow.SetWindowOpen(false);
         lockAnimation = false;
@@ -125,7 +125,7 @@ public partial class ShopPurchaseAnimation : Control
         float timeBetweenItems = (itemFallDurationTotal - itemFallDurationSingle) / (animatableItems.Count+1);
         for (int i = 0; i < animatableItems.Count; i++)
         {
-            await this.WaitForTimer(timeBetweenItems * (i == 0 ? 0.5f : 1));
+            await Helpers.WaitForTimer(timeBetweenItems * (i == 0 ? 0.5f : 1));
             var texture = animatableItems[^(i + 1)];
             var itemFallTween = GetTree().CreateTween().SetParallel();
             itemFallTween.TweenProperty(texture, "self_modulate", Colors.White, itemFallDurationSingle * 0.75);
@@ -133,6 +133,6 @@ public partial class ShopPurchaseAnimation : Control
                 .SetEase(Tween.EaseType.Out)
                 .SetTrans(Tween.TransitionType.Bounce);
         }
-        await this.WaitForTimer(itemFallDurationSingle+(timeBetweenItems * 0.5));
+        await Helpers.WaitForTimer(itemFallDurationSingle+(timeBetweenItems * 0.5));
     }
 }

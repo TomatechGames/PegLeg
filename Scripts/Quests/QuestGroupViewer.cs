@@ -37,7 +37,7 @@ public partial class QuestGroupViewer : Control
     [Export]
     int maxNodesPerPage = 20;
 	int nodesPerPage;
-	List<QuestData> questDataList;
+	List<QuestSlot> questDataList;
 	int currentPage;
     int currentNodeIndex = 0;
     int currentQuestIndex = 0;
@@ -92,7 +92,7 @@ public partial class QuestGroupViewer : Control
     }
 
 
-    public void SetQuestNodes(List<QuestData> newQuestDataList, bool useArrows, bool onlyShowIncomplete)
+    public void SetQuestNodes(List<QuestSlot> newQuestDataList, bool useArrows, bool onlyShowIncomplete)
 	{
         if (onlyShowIncomplete)
         {
@@ -138,8 +138,8 @@ public partial class QuestGroupViewer : Control
         currentQuestIndex = pageStartIndex + nodeIndex;
         isQuestOnPage = true;
         questViewer.SetupQuest(questDataList[currentQuestIndex]);
-        if (questDataList[currentQuestIndex].questItem is ProfileItemHandle itemHandle)
-            itemHandle.MarkItemSeen();
+        if (questDataList[currentQuestIndex].isUnlocked)
+            questDataList[currentQuestIndex].questItem.MarkItemSeen();
         EmitSignal(SignalName.Pressed);
     }
 
@@ -195,8 +195,8 @@ public partial class QuestGroupViewer : Control
         leftButtonParent.Visible = currentPage > 0;
         rightButtonParent.Visible = currentPage < maxPage;
 
-        await this.WaitForFrame();
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
+        await Helpers.WaitForFrame();
 
         if (prevPage > currentPage)
         {

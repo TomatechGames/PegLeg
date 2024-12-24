@@ -57,7 +57,7 @@ public partial class GenericLineEditWindow : ModalWindow
 
         SetWindowOpen(true);
         while (isEditingText)
-            await this.WaitForFrame();
+            await Helpers.WaitForFrame();
         SetWindowOpen(false);
 
         bool isValid = this.validator(textBox.Text) is null;

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 
@@ -13,20 +14,24 @@ static class MissionRequests
 {
     const string missionCacheSavePath = "user://missions.json";
     static uint missionSample;
-    static JsonObject missionsCache;
-    const int MissionVersion = 3;
+    static DateTime missionReset;
+    static FnMission[] missions = null;
+    const int MissionVersion = 4;
 
     public static async Task<bool> CheckForMissionChanges()
     {
-        if (!await LoginRequests.TryLogin())
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
             return false;
+
         JsonNode fullMissions = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FNEndpoints.gameEndpoint,
+                FnEndpoints.gameEndpoint,
                 "fortnite/api/game/v2/world/info",
                 "",
-                LoginRequests.AccountAuthHeader
+                account.AuthHeader
             );
+
         var missionHash = fullMissions["missionAlerts"].ToString().Hash();
         if (missionSample == 0)
         {
@@ -37,7 +42,7 @@ static class MissionRequests
         {
             GD.Print(missionSample + " >> " + missionHash);
             missionSample = missionHash;
-            missionsCache = null;
+            missions = null;
             return true;
         }
         return false;
@@ -45,133 +50,114 @@ static class MissionRequests
 
     public static bool MissionsEmptyOrOutdated()
     {
-        if (missionsCache is null)
+        if (missions is null)
             return true;
-        if ((missionsCache["version"]?.GetValue<int>() ?? 0) < MissionVersion)
-            return true;
-        var refreshTime = DateTime.Parse(missionsCache["expiryDate"]?.ToString() ?? "1987-07-22T00:00:00.000Z", CultureInfo.InvariantCulture);
-        GD.Print($"MissionRefresh = {refreshTime} ({DateTime.UtcNow})");
-        return DateTime.UtcNow.CompareTo(refreshTime) >= 0;
+        return DateTime.UtcNow.CompareTo(missionReset) >= 0;
     }
 
-    static Task<JsonObject> activeMissionRequest = null;
-    public static async Task<JsonObject> GetMissions(bool forceRefresh = false)
+    static SemaphoreSlim missionSephamore = new(1);
+    static bool forceQueued = true;
+    static bool isBeingForced = true;
+    public static async Task<FnMission[]> GetMissions(bool forceRefresh = false)
     {
-        if (activeMissionRequest is not null && activeMissionRequest.IsCompleted)
-            activeMissionRequest = null;
-
-        if (forceRefresh)
+        if (isBeingForced)
+            forceRefresh = false;
+        else if (forceRefresh)
         {
-            GD.Print("forcing refresh");
-            missionsCache = null;
+            forceQueued = true;
+            forceRefresh = false;
         }
-        else if (missionsCache is null && FileAccess.FileExists(missionCacheSavePath))
+        await missionSephamore.WaitAsync();
+        try
         {
-            //load from file
-            using FileAccess missionFile = FileAccess.Open(missionCacheSavePath, FileAccess.ModeFlags.Read);
-            missionsCache = JsonNode.Parse(missionFile.GetAsText()).AsObject();
-            missionSample = missionsCache["sample"]?.AsValue().TryGetValue(out uint sampleVal) ?? false ? sampleVal : 0;
-            Debug.WriteLine("mission file loaded");
-        }
-
-        if (!forceRefresh && MissionsEmptyOrOutdated())
-        {
-            GD.Print("missions out of date or bad version");
-            missionsCache = null;
-        }
-
-        if (missionsCache is null)
-        {
-            GD.Print("requesting missions");
-            if(activeMissionRequest is null)
+            if (forceQueued)
+                forceRefresh = true;
+            JsonObject missionData = null;
+            if (forceRefresh)
             {
-                activeMissionRequest ??= RequestMissions();
-                await activeMissionRequest;
+                GD.Print("forcing refresh");
+                missions = null;
             }
-            else
+            else if (missions is not null && DateTime.UtcNow.CompareTo(missionReset) >= 0)
             {
-                await activeMissionRequest.WaitAsync(TimeSpan.FromMinutes(1));
+                GD.Print("missions expired");
+                missions = null;
             }
-        }
-        activeMissionRequest = null;
+            else if (missions is null && FileAccess.FileExists(missionCacheSavePath))
+            {
+                //load from file
+                using FileAccess missionFile = FileAccess.Open(missionCacheSavePath, FileAccess.ModeFlags.Read);
+                missionData = JsonNode.Parse(missionFile.GetAsText()).AsObject();
+                if(missionData["version"]?.GetValue<int>()== MissionVersion)
+                {
+                    missionSample = missionData["sample"]?.AsValue().TryGetValue(out uint sampleVal) ?? false ? sampleVal : 0;
+                    missionReset = DateTime.Parse(missionData["expiryDate"]?.ToString(), CultureInfo.InvariantCulture);
+                    Debug.WriteLine("mission file loaded");
+                }
+                else
+                {
+                    missionData = null;
+                    Debug.WriteLine("mission file version mismatch");
+                }
+            }
 
-        //GD.Print("max rewards: " + missionsCache.SelectMany(kvp => kvp.Value.AsArray().Select(m => m["missionRewards"].AsArray().Count)).Max());
-        //GD.Print("max alert rewards: " + missionsCache.SelectMany(kvp => kvp.Value.AsArray().Select(m => m["missionAlert"]?["rewards"].AsArray().Count ?? 0)).Max());
-        return missionsCache;
+            if(missions is not null)
+                return missions;
+
+            if (missionData is null)
+            {
+                GD.Print("requesting missions");
+                missionData = await RequestMissions();
+            }
+
+            //GD.Print("max rewards: " + missionsCache.SelectMany(kvp => kvp.Value.AsArray().Select(m => m["missionRewards"].AsArray().Count)).Max());
+            //GD.Print("max alert rewards: " + missionsCache.SelectMany(kvp => kvp.Value.AsArray().Select(m => m["missionAlert"]?["rewards"].AsArray().Count ?? 0)).Max());
+            return missions = GenerateMissions(missionData);
+        }
+        finally
+        {
+            forceQueued = false;
+            missionSephamore.Release();
+        }
     }
 
     static async Task<JsonObject> RequestMissions()
     {
-        if (!await LoginRequests.TryLogin())
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
             return null;
+
         GD.Print("retrieving missions from epic...");
-        JsonNode fullMissions = await Helpers.MakeRequest(
+        JsonNode missionData = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FNEndpoints.gameEndpoint,
+                FnEndpoints.gameEndpoint,
                 "fortnite/api/game/v2/world/info",
                 "",
-                LoginRequests.AccountAuthHeader
+                account.AuthHeader
             );
-        missionSample = fullMissions["missionAlerts"].ToString().Hash();
-        try
+        if(missionData["errorMessage"] is not null)
         {
-            missionsCache = SimplifyMissions(fullMissions);
+            GD.Print("Error: "+missionData.ToString());
+            return null;
         }
-        catch (InvalidOperationException invalidEx)
-        {
-            GD.PushWarning(invalidEx.Message);
-            var innerEx = invalidEx.InnerException;
-            GD.PushWarning(invalidEx.StackTrace);
-            while (innerEx is not null)
-            {
-                GD.PushWarning("Caused By: "+ innerEx.Message);
-                innerEx = innerEx.InnerException;
-            }
-        }
-        missionsCache["sample"] = missionSample;
+        var alerts = missionData["missionAlerts"];
+        missionData["version"] = MissionVersion;
+        missionData["expiryDate"] = alerts[0]["nextRefresh"].ToString()[..^1]; //the Z messes with daylight savings time
+        missionData["sample"] = missionSample = alerts.ToString().Hash();
         //GD.Print(fullMissions.ToString()[..350] + "...");
         //GD.Print(missionsCache.ToString()[..350] + "...");
         //save to file
+
         using FileAccess missionFile = FileAccess.Open(missionCacheSavePath, FileAccess.ModeFlags.Write);
-        missionFile.StoreString(missionsCache.ToString());
+        missionFile.StoreString(missionData.ToString());
         missionFile.Flush();
-        return missionsCache;
+        return missionData.AsObject();
     }
 
-    static Dictionary<string, string> rewardPackAssociations = new()
+
+    static FnMission[] GenerateMissions(JsonNode rootNode)
     {
-        ["CardPack:zcp_reagent_c_t04\\w*"] = "AccountResource:reagent_c_t04",
-        ["CardPack:zcp_reagent_c_t03\\w*"] = "AccountResource:reagent_c_t03",
-        ["CardPack:zcp_reagent_c_t02\\w*"] = "AccountResource:reagent_c_t02",
-        ["CardPack:zcp_reagent_c_t01\\w*"] = "AccountResource:reagent_c_t01",
-
-        ["CardPack:zcp_reagent_alteration_upgrade_sr\\w*"] = "AccountResource:reagent_alteration_upgrade_sr",
-        ["CardPack:zcp_reagent_alteration_upgrade_vr\\w*"] = "AccountResource:reagent_alteration_upgrade_vr",
-        ["CardPack:zcp_reagent_alteration_upgrade_r\\w*"] = "AccountResource:reagent_alteration_upgrade_r",
-        ["CardPack:zcp_reagent_alteration_upgrade_uc\\w*"] = "AccountResource:reagent_alteration_upgrade_uc",
-        ["CardPack:zcp_reagent_alteration_generic\\w*"] = "AccountResource:reagent_alteration_generic",
-
-        ["CardPack:zcp_phoenixxp\\w*"] = "AccountResource:phoenixxp",
-        ["CardPack:zcp_personnelxp\\w*"] = "AccountResource:personnelxp",
-        ["CardPack:zcp_heroxp\\w*"] = "AccountResource:heroxp",
-        ["CardPack:zcp_schematicxp\\w*"] = "AccountResource:schematicxp",
-
-        ["CardPack:zcp_ore_copper\\w*"] = "Ingredient:ingredient_ore_copper",
-        ["CardPack:zcp_ore_silver\\w*"] = "Ingredient:ingredient_ore_silver",
-        ["CardPack:zcp_ore_malachite\\w*"] = "Ingredient:ingredient_ore_malachite",
-        ["CardPack:zcp_ore_obsidian\\w*"] = "Ingredient:ingredient_ore_obsidian",
-        ["CardPack:zcp_ore_brightcore\\w*"] = "Ingredient:ingredient_ore_brightcore",
-
-        ["CardPack:zcp_crystal_quartz\\w*"] = "Ingredient:ingredient_crystal_quartz",
-        ["CardPack:zcp_crystal_shadowshard\\w*"] = "Ingredient:ingredient_crystal_shadowshard",
-        ["CardPack:zcp_crystal_sunbeam\\w*"] = "Ingredient:ingredient_crystal_sunbeam",
-
-        ["CardPack:zcp_eventscaling\\w*"] = "AccountResource:eventcurrency_scaling",
-    };
-
-    static JsonObject SimplifyMissions(JsonNode rootNode)
-    {
-        //Theatres
+        //Theaters
         List<string> allowedTheaterIDs = new()
         {
             "33A2311D4AE64B361CCE27BC9F313C8B",
@@ -180,21 +166,19 @@ static class MissionRequests
             "D9A801C5444D1C74D1B7DAB5C7C12C5B"
         };
 
-        //ventures theatre
+        //ventures theater
         var venturesTheater = rootNode["theaters"]
             .AsArray()
             .FirstOrDefault(t => t["missionRewardNamedWeightsRowName"]?.ToString() == "Theater.Phoenix");
         if (venturesTheater is not null)
             allowedTheaterIDs.Add(venturesTheater["uniqueId"].ToString());
 
-        BanjoAssets.TryGetSource("MissionGen", out var missionGenLookup);
-        BanjoAssets.TryGetSource("DifficultyInfo", out var difficultyInfoLookup);
         BanjoAssets.TryGetSource("ZoneTheme", out var zoneThemeLookup);
 
         JsonArray allMissions = rootNode["missions"].AsArray();
         JsonArray allMissionAlerts = rootNode["missionAlerts"].AsArray();
 
-        List<JsonObject> missionList = new();
+        List<FnMission> missionList = new();
 
         foreach (var theaterID in allowedTheaterIDs)
         {
@@ -224,176 +208,128 @@ static class MissionRequests
                 .ToDictionary(n => n["tileIndex"].GetValue<int>());
 
             var missionTiles = theater["tiles"].AsArray();
+            List<JsonObject> missionsToDetach = new();
 
             foreach (var missionObj in theaterMissions)
             {
-                //establish mission details
+                missionsToDetach.Add(missionObj.AsObject());
+
                 string missionGen = missionObj["missionGenerator"].ToString();
-                missionObj["missionGenerator"] = missionGenLookup[missionGen].Reserialise();
 
-                //skip Homebase and Story missions
-                string iconPath = missionObj["missionGenerator"]["ImagePaths"]["Icon"].ToString();
                 int tileIndex = missionObj["tileIndex"].GetValue<int>();
-                if (iconPath.EndsWith("T-Icon-Story-128.png") || 
-                    iconPath.EndsWith("T-Icon-Outpost-128.png") ||
-                    missionTiles[tileIndex]["requirements"]["eventFlag"].ToString()!="")
-                    continue;
+                var tileData = missionTiles[tileIndex].AsObject();
+                missionTiles.Remove(tileIndex);
 
-                string dificultyRow = missionObj["missionDifficultyInfo"]["rowName"].ToString();
-                missionObj["missionDifficultyInfo"] = difficultyInfoLookup[dificultyRow].Reserialise();
+                JsonObject alertObj = null;
+                if (missionAlertDict.ContainsKey(tileIndex))
+                {
+                    alertObj = missionAlertDict[tileIndex].AsObject();
+                    missionAlertDict.Remove(tileIndex);
+                }
+
+                //skip Homebase and quest exclusive missions
+                if (
+                    missionGen.Contains("_TheOutpost_") ||
+                    tileData["requirements"]["activeQuestDefinitions"].AsArray().Count > 0 //||
+                    //tileData["requirements"]["eventFlag"].ToString() != ""
+                    )
+                    continue;
 
                 missionObj["theaterCat"] = theaterCat;
 
-                var missionRewards = new JsonArray(
-                        missionObj["missionRewards"]["items"].AsArray()
-                        .GroupBy(r => r["itemType"].ToString())
-                        .Select(g =>new JsonObject()
-                        {
-                            ["itemType"] = g.Key,
-                            ["quantity"] = g.Select(r => r["quantity"].GetValue<int>()).Sum()
-                        })
-                        .ToArray()
-                    );
-                foreach (var rewardNode in missionRewards)
-                {
-                    bool hasEquiv = false;
-                    foreach (var equivelent in rewardPackAssociations)
-                    {
-                        if(Regex.Match(rewardNode["itemType"].ToString(), equivelent.Key).Success)
-                        {
-                            rewardNode["equivelent"] = equivelent.Value;
-                            rewardNode["equivelentTemplate"] = BanjoAssets.TryGetTemplate(equivelent.Value).Reserialise();
-                            rewardNode["searchTags"] = BanjoAssets.GenerateItemTemplateSearchTags(equivelent.Value);
-                            rewardNode["searchTags"].AsArray().Add("Bundle");
-                            hasEquiv = true;
-                            break;
-                        }
-                    }
-                    if (!hasEquiv)
-                    {
-                        rewardNode.GenerateItemSearchTags();
-                    }
-                }
-                missionObj["missionRewards"] = missionRewards;
+                missionList.Add(new(missionObj.AsObject(), alertObj, tileData));
+            }
 
-                missionObj["tile"] = missionTiles[tileIndex].AsObject().Reserialise();
-                string zoneTheme = missionObj["tile"]["zoneTheme"].ToString();
-                missionObj["tile"]["zoneTheme"] = zoneThemeLookup[zoneTheme].Reserialise();
-
-                //search tags
-                List<string> tags = new()
-                {
-                    theaterName,
-                    missionObj["missionGenerator"]["DisplayName"].ToString(),
-                    missionObj["tile"]["zoneTheme"]["DisplayName"].ToString(),
-                };
-                if (theaterCat == "v")
-                    tags.Add("ventures");
-
-                if (missionAlertDict.ContainsKey(tileIndex))
-                {
-                    //parse mission alert
-                    JsonObject alertObj = missionAlertDict[tileIndex].AsObject();
-                    JsonArray modifierArray = new();
-                    if (alertObj.ContainsKey("missionAlertModifiers"))
-                    {
-                        foreach (JsonNode modifierNode in alertObj["missionAlertModifiers"]["items"].AsArray())
-                        {
-                            modifierArray.Add(modifierNode["itemType"].ToString());
-                            tags.Add(modifierNode.GetTemplate()["DisplayName"].ToString());
-                        }
-                    }
-                    JsonArray rewardArray = alertObj["missionAlertRewards"]["items"].AsArray().Reserialise();
-                    foreach (var rewardNode in rewardArray)
-                    {
-                        rewardNode.GenerateItemSearchTags();
-                    }
-                    missionObj["missionAlert"] = new JsonObject
-                    {
-                        ["rewards"] = rewardArray,
-                        ["modifiers"] = modifierArray
-                    };
-                }
-
-                missionObj["searchTags"] = new JsonArray(tags.Select(t => (JsonNode)t).ToArray());
-                missionObj["powerLevel"] = missionObj["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>();
-
-                missionList.Add(missionObj.AsObject().Reserialise());
+            //detach from original json
+            foreach (var mission in missionsToDetach)
+            {
+                theaterMissions.Remove(mission);
             }
         }
-
-        //var orderedMissions = missionList.OrderBy(n => n["missionDifficultyInfo"]["RecommendedRating"].GetValue<int>());
-        JsonObject toReturn = new()
-        {
-            ["version"] = MissionVersion,
-            ["expiryDate"] = missionList[0]["availableUntil"].ToString()[..^1], //the Z messes with daylight savings time
-            ["missions"] = new JsonArray(
-                    missionList
-                    //.OrderBy(n => n["powerLevel"].GetValue<int>())
-                    .ToArray()
-                )
-        };
-        //GD.Print(toReturn.ToString()[..150]);
-        return toReturn;
+        return missionList.ToArray();
     }
+}
 
-    /* Old filtering system
-    static JsonObject FilterMissions(JsonNode rootNode, string searchText, string zoneFilterText, bool requireAllSearchTerms)
+public class FnMission
+{
+    public int powerLevel { get; private set; }
+    public int theaterIdx { get; private set; }
+    public string theaterCat { get; private set; }
+
+    public JsonObject missionData { get; private set; }
+    public JsonObject alertData { get; private set; }
+    public JsonObject tileData { get; private set; }
+    public JsonObject difficultyInfo { get; private set; }
+
+    public GameItem missionGenerator { get; private set; }
+    public GameItem zoneTheme { get; private set; }
+    public Texture2D backgroundTexture { get; private set; }
+
+    public GameItem[] rewardItems { get; private set; }
+    public GameItem[] alertModifiers { get; private set; }
+    public GameItem[] alertRewardItems { get; private set; }
+
+    public IEnumerable<GameItem> allItems => rewardItems.Union(alertRewardItems);
+
+    public FnMission(JsonObject missionData, JsonObject alertData, JsonObject tileData)
     {
-        if(string.IsNullOrWhiteSpace(searchText) && string.IsNullOrWhiteSpace(zoneFilterText))
-            return rootNode.AsObject();
+        this.missionData = missionData;
+        this.alertData = alertData;
+        this.tileData = tileData;
+        difficultyInfo = BanjoAssets.Lookup("DifficultyInfo", missionData["missionDifficultyInfo"]["rowName"].ToString());
 
-        List<JsonNode> filteredMissions = new();
-        string[] searchTerms = searchText.ToLower().Split(' ');
-        char[] zoneFilter = zoneFilterText.ToCharArray();
+        missionGenerator = GameItemTemplate.Get(missionData["missionGenerator"].ToString()).CreateInstance();
+        zoneTheme = GameItemTemplate.Get(tileData["zoneTheme"].ToString()).CreateInstance();
 
-        Func<string, bool> anySearchMethod = e => searchTerms.Any(s => e.ToLower().Contains(e));
-        Func<string, bool> allSearchMethod = e => searchTerms.All(s => e.ToLower().Contains(e));
-
-        foreach (var missionNode in rootNode["missions"].AsArray())
+        powerLevel = difficultyInfo["reccomendedRating"].GetValue<int>();
+        theaterCat = missionData["theaterCat"].ToString();
+        theaterIdx = theaterCat switch
         {
-            if (zoneFilter.Length != 0 && !zoneFilter.Contains(missionNode["theatreCat"].GetValue<char>()))
-                continue;
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                filteredMissions.Add(missionNode);
-                continue;
-            }
-
-            bool searchMatchFound = false;
-            bool searchExcluderFound = false;
-
-            if (missionNode["rewards"].AsObject().Any(e => requireAllSearchTerms ? allSearchMethod(e.ToString()) : anySearchMethod(e.ToString())))
-                searchMatchFound = true;
-            else
-                searchExcluderFound = true;
-
-            if (missionNode.AsObject().ContainsKey("missionAlert"))
-            {
-                if (missionNode["missionAlert"]["rewards"].AsObject().Any(e => requireAllSearchTerms ? allSearchMethod(e.ToString()) : anySearchMethod(e.ToString())))
-                    searchMatchFound = true;
-                else
-                    searchExcluderFound = true;
-
-                if (missionNode["missionAlert"]["modifiers"].AsArray().Any(e => requireAllSearchTerms ? allSearchMethod(e.ToString()) : anySearchMethod(e.ToString())))
-                    searchMatchFound = true;
-                else
-                    searchExcluderFound = true;
-            }
-
-            bool includeResult = searchMatchFound;
-
-            if (includeResult)
-                filteredMissions.Add(missionNode);
-        }
-
-        JsonObject filteredRoot = new()
-        {
-            ["missions"] = JsonNode.Parse(JsonSerializer.Serialize(filteredMissions)),
-            ["availableUntil"] = rootNode["availableUntil"].ToString()
+            "s" => 0,
+            "p" => 1,
+            "c" => 2,
+            "t" => 3,
+            "v" => 4,
+            _ => 0
         };
 
-        return filteredRoot;
+        missionGenerator.GetTexture(FnItemTextureType.Icon);
+        backgroundTexture = missionGenerator.GetTexture(FnItemTextureType.LoadingScreen) ?? zoneTheme.GetTexture(FnItemTextureType.LoadingScreen);
+
+        List<GameItem> rewardItemList = new();
+        foreach (var itemData in missionData["missionRewards"].AsArray())
+        {
+            GameItem item = new(null, null, itemData.AsObject());
+            item.SetSeenLocal();
+            item.GetTexture();
+            item.GenerateSearchTags();
+            rewardItemList.Add(item);
+        }
+        rewardItems = rewardItemList.ToArray();
+
+        if (missionData["missionAlert"] is JsonObject missionAlert)
+        {
+            List<GameItem> alertModifierList = new();
+            foreach (var itemData in missionAlert["modifiers"].AsArray())
+            {
+                GameItem modifier = new(null, null, itemData.AsObject());
+                modifier.SetSeenLocal();
+                modifier.GetTexture();
+                modifier.GenerateSearchTags();
+                alertModifierList.Add(modifier);
+            }
+            alertModifiers = alertModifierList.ToArray();
+
+            List<GameItem> alertRewardItemList = new();
+            foreach (var itemData in missionAlert["rewards"].AsArray())
+            {
+                GameItem item = new(null, null, itemData.AsObject());
+                item.SetSeenLocal();
+                item.GetTexture();
+                item.GenerateSearchTags();
+                alertRewardItemList.Add(item);
+            }
+            alertRewardItems = alertRewardItemList.ToArray();
+        }
     }
-    */
 }
