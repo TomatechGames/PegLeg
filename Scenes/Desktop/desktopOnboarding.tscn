@@ -12,11 +12,11 @@
 [ext_resource type="Script" path="res://Scripts/CodeLoginLabel.cs" id="6_t48oj"]
 [ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="8_42nsr"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="9_gp42o"]
+[ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="10_cpy3n"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_6kqv5"]
 [ext_resource type="Shader" path="res://Shaders/OnboardingCurtain.gdshader" id="13_m3fci"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="14_eunyv"]
 [ext_resource type="PackedScene" uid="uid://b7rnaw5epqkd6" path="res://Scenes/download_cube.tscn" id="15_jvi10"]
-[ext_resource type="Texture2D" uid="uid://bpc1i25xajfpw" path="res://Images/InterfaceIcons/PegLegChest256.png" id="16_hvg7d"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tyimv"]
 
@@ -25,7 +25,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ay2nj"]
 shader = ExtResource("13_m3fci")
 shader_parameter/ControlSize = Vector2(1280, 720)
-shader_parameter/revealScale = 0.0
+shader_parameter/RevealScale = 0.0
 
 [node name="DesktopOnboarding" type="Control"]
 layout_mode = 3
@@ -57,7 +57,7 @@ stretch_mode = 6
 stream = ExtResource("3_6re0q")
 bus = &"Music"
 
-[node name="CenterContainer" type="CenterContainer" parent="." node_paths=PackedStringArray("loginLabel", "rememberLoginToggle", "continueButton")]
+[node name="CenterContainer" type="CenterContainer" parent="." node_paths=PackedStringArray("curtain", "music", "loginLabel", "rememberLoginToggle", "retryLoginButton", "continueButton", "accountSelectionPanel")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,9 +65,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_p8lju")
-loginLabel = NodePath("MarginContainer/Content/VBoxContainer/MarginContainer/LinkCodeText")
-rememberLoginToggle = NodePath("MarginContainer/Content/VBoxContainer/VBoxContainer/RememberLogin")
-continueButton = NodePath("MarginContainer/Content/VBoxContainer/VBoxContainer/CompleteLogin")
+mainInterfacePath = "res://Scenes/Desktop/desktopInterface.tscn"
+curtain = NodePath("../Curtain")
+music = NodePath("../Music")
+loginLabel = NodePath("MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText")
+rememberLoginToggle = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/RememberLogin")
+retryLoginButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn")
+continueButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin")
+accountSelectionPanel = NodePath("MarginContainer/Content/AccountSelector")
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(300, 320)
@@ -84,21 +89,21 @@ theme_override_constants/margin_top = 70
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content"]
+[node name="LoginCode" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content"]
 layout_mode = 2
 
-[node name="GreetingText" type="Label" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+[node name="GreetingText" type="Label" parent="CenterContainer/MarginContainer/Content/LoginCode"]
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 text = "Welcome to Pegleg! To begin, you'll need to log in to your Epic Games account. Click the link and enter in the code shown below."
 horizontal_alignment = 3
 autowrap_mode = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/LoginCode"]
 layout_mode = 2
 
-[node name="LinkCodeText" type="LineEdit" parent="CenterContainer/MarginContainer/Content/VBoxContainer/MarginContainer"]
-custom_minimum_size = Vector2(160, 0)
+[node name="LinkCodeText" type="LineEdit" parent="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/selection_color = Color(1, 1, 1, 1)
@@ -111,58 +116,58 @@ alignment = 1
 editable = false
 script = ExtResource("6_t48oj")
 
-[node name="LinkButton" type="LinkButton" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+[node name="LinkButton" type="LinkButton" parent="CenterContainer/MarginContainer/Content/LoginCode"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 12
 text = "https://www.epicgames.com/id/activate"
 uri = "https://www.epicgames.com/id/activate"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content/LoginCode"]
 layout_mode = 2
 size_flags_vertical = 10
 
-[node name="HSeparator3" type="HSeparator" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer"]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer"]
 visible = false
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_d8lrk")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/PanelContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = " Remember login details? "
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/PanelContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("3_hui55")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 1
 
-[node name="CheckButton" type="CheckButton" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton" type="CheckButton" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"LeftCheckButton"
 button_group = SubResource("ButtonGroup_rx0xh")
 text = " Yes"
 
-[node name="CheckButton2" type="CheckButton" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+[node name="CheckButton2" type="CheckButton" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/PanelContainer/HBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"RightCheckButton"
 button_pressed = true
 button_group = SubResource("ButtonGroup_rx0xh")
 text = " No"
 
-[node name="RememberLogin" type="CheckBox" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+[node name="RememberLogin" type="CheckBox" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer"]
 layout_direction = 3
 layout_mode = 2
 tooltip_text = "amongus"
@@ -170,18 +175,46 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "Stay logged in"
 alignment = 2
 
-[node name="CompleteLogin" type="Button" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer"]
 layout_mode = 2
+
+[node name="CompleteLogin" type="Button" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_type_variation = &"ActionButton"
 theme_override_font_sizes/font_size = 24
 text = "Login"
 
-[node name="Label2" type="Label" parent="CenterContainer/MarginContainer/Content/VBoxContainer/VBoxContainer"]
+[node name="RetryLogn" type="Button" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+tooltip_text = "Retry Login"
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_cpy3n")
+expand_mode = 1
+
+[node name="Label2" type="Label" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
 theme_override_font_sizes/font_size = 12
 text = "PegLeg is not affiliated with Epic Games"
 horizontal_alignment = 1
+
+[node name="AccountSelector" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content"]
+visible = false
+layout_mode = 2
 
 [node name="ErrorMessage" type="MarginContainer" parent="CenterContainer/MarginContainer/Content"]
 visible = false
@@ -261,25 +294,20 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="AppIcon" type="TextureRect" parent="CenterContainer/MarginContainer/Control2"]
-z_index = 1
+custom_minimum_size = Vector2(128, 128)
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -128.0
-offset_top = -128.0
-offset_right = 128.0
-offset_bottom = 128.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(128, 128)
 mouse_filter = 0
 texture = ExtResource("1_7xbjg")
+expand_mode = 1
 
 [node name="Curtain" type="ColorRect" parent="."]
+visible = false
 texture_repeat = 2
 material = SubResource("ShaderMaterial_ay2nj")
 layout_mode = 1
@@ -303,7 +331,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CubesOrigin" type="Control" parent="PreCurtain"]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -346,7 +373,6 @@ layout_mode = 1
 rotation = 5.49779
 
 [node name="CurtainIcon" type="TextureRect" parent="PreCurtain"]
-visible = false
 z_index = 1
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 1
@@ -363,10 +389,14 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(64, 64)
 mouse_filter = 0
-texture = ExtResource("16_hvg7d")
+texture = ExtResource("1_7xbjg")
 expand_mode = 1
 
-[connection signal="UserCodeChanged" from="CenterContainer/MarginContainer/Content/VBoxContainer/MarginContainer/LinkCodeText" to="CenterContainer/MarginContainer/Content/VBoxContainer/MarginContainer/LinkCodeText" method="set_text"]
+[connection signal="LoginFailed" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer" method="LoginCodeFail"]
+[connection signal="LoginSuccess" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer" method="LoginCodeSuccess"]
+[connection signal="UserCodeChanged" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" method="set_text"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin" to="CenterContainer" method="ComplateCodeLogin"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn" to="CenterContainer" method="StartLogin"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer/Button" to="CenterContainer/MarginContainer/Content/ErrorMessage" method="set_visible" binds= [false]]
 [connection signal="UpdateMuteIcon" from="CenterContainer/MarginContainer/Control2/MuteBtn" to="CenterContainer/MarginContainer/Control2/MuteBtn/TextureRect" method="set_texture"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Control2/MuteBtn" to="CenterContainer/MarginContainer/Control2/MuteBtn" method="ToggleMute"]

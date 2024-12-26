@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
+using System.Reflection.Metadata;
 
 
 public enum OrderRange
@@ -40,7 +41,18 @@ public class GameAccount
     const string accountDataPath = "user://accounts";
     static readonly AesContext deviceDetailEncryptor = new();
 
-    static string EncryptDeviceDetails(JsonObject fromDetails)
+    static string GetDeviceDetailsKey()
+    {
+        string deviceDetailKey = System.Environment.MachineName + "custard";
+        int baseLength = deviceDetailKey.Length;
+        for (int i = 0; i < 32 - baseLength; i++)
+        {
+            deviceDetailKey += "custard"[i % 7];
+        }
+        return deviceDetailKey[..32];
+    }
+
+    static byte[] EncryptDeviceDetails(JsonObject fromDetails)
     {
         //stringify and add padding
         string deviceDetalsString = fromDetails.ToString();
@@ -51,33 +63,28 @@ public class GameAccount
             deviceDetalsString += "^";
         }
 
-        string deviceDetailKey = System.Environment.MachineName+"custard";
-        for (int i = 0; i < 32 - deviceDetailKey.Length; i++)
-        {
-            deviceDetailKey += "custard"[i%7];
-        }
-        deviceDetailKey = deviceDetailKey[..32];
+        string deviceDetailKey = GetDeviceDetailsKey();
 
         //encrypt
         deviceDetailEncryptor.Start(AesContext.Mode.EcbEncrypt, deviceDetailKey.ToUtf8Buffer());
         byte[] encryptedDetails = deviceDetailEncryptor.Update(deviceDetalsString.ToUtf8Buffer());
         deviceDetailEncryptor.Finish();
-        return Encoding.UTF8.GetString(encryptedDetails);
+        return encryptedDetails;
     }
 
-    static JsonObject DecryptDeviceDetails(string fromEncrypted)
+    static JsonObject DecryptDeviceDetails(byte[] encryptedDetails)
     {
-        if (fromEncrypted is null)
+        if (encryptedDetails is null)
             return null;
-        byte[] encryptedDetails = Encoding.UTF8.GetBytes(fromEncrypted);
+        GD.Print("DDLen: " + encryptedDetails.Length);
+        GD.Print("DDLen16: " + encryptedDetails.Length % 16);
         if (encryptedDetails.Length % 16 != 0)
             return null;
 
-        string deviceDetailKey = System.Environment.MachineName + "custard";
-        for (int i = 0; i < 32 - deviceDetailKey.Length; i++)
-        {
-            deviceDetailKey += "custard"[i % 7];
-        }
+        string deviceDetailKey = GetDeviceDetailsKey();
+        GD.Print("DDKey: "+deviceDetailKey);
+        if (deviceDetailKey.Length != 32)
+            return null;
 
         //decrypt
         deviceDetailEncryptor.Start(AesContext.Mode.EcbDecrypt, deviceDetailKey.ToUtf8Buffer());
@@ -106,12 +113,11 @@ public class GameAccount
         if(!DirAccess.DirExistsAbsolute(accountDataPath))
             return Array.Empty<GameAccount>();
         using var accountDir = DirAccess.Open(accountDataPath);
-        return accountDir.GetFiles().Where(f => !f.Contains('.')).Select(f => GetAccount(f)).ToArray();
+        return accountDir.GetFiles().Where(f => !f.Contains('.')).Select(f => GetOrCreateAccount(f)).ToArray();
     }
 
     static readonly Dictionary<string, GameAccount> gameAccountCache = new();
-    public static GameAccount GetOrCreateAccount(string accountId) => gameAccountCache[accountId] ??= new(accountId);
-    public static GameAccount GetAccount(string accountId) => gameAccountCache[accountId];
+    public static GameAccount GetOrCreateAccount(string accountId) => gameAccountCache.ContainsKey(accountId) ? gameAccountCache[accountId] : gameAccountCache[accountId] = new (accountId);
     static GameAccount _activeAccount;
     public static GameAccount activeAccount => _activeAccount ?? new(null);
     public static event Action<GameAccount> ActiveAccountChangedEarly;
@@ -145,7 +151,8 @@ public class GameAccount
         this.accountId = accountId;
     }
 
-    public bool isOwned { get; set; }
+    public bool isValid => !string.IsNullOrWhiteSpace(accountId);
+    public bool isOwned => !AuthTokenExpired || GetLocalData("DeviceDetails") is not null;
     public string accountId { get; private set; }
 
     Dictionary<string, GameProfile> profiles = new();
@@ -202,10 +209,8 @@ public class GameAccount
                 GD.Print(refreshAuth?["errorMessage"].ToString());
             }
 
-            string deviceId = "";
-            string deviceSecret = "";
-            //load device details
-            JsonNode deviceAuth = await GameClient.LoginWithDeviceAuth(accountId, deviceId, deviceSecret);
+            var dd = GetLocalData("DeviceDetails")?.AsArray().Select(n => n.GetValue<byte>()).ToArray();
+            JsonNode deviceAuth = await GameClient.LoginWithDeviceAuth(DecryptDeviceDetails(dd));
 
             if (deviceAuth is not null && deviceAuth["errorMessage"] is null)
             {
@@ -255,7 +260,7 @@ public class GameAccount
         }
     }
 
-    public async void SaveDeviceDetails()
+    public async Task SaveDeviceDetails()
     {
         if (!await Authenticate() || GetLocalData("DeviceDetails") is not null)
             return;
@@ -270,23 +275,24 @@ public class GameAccount
             ""
         ))?.AsObject();
 
-        SetLocalData("DeviceDetails", EncryptDeviceDetails(deviceDetails));
+        SetLocalData("DeviceDetails", new JsonArray(EncryptDeviceDetails(deviceDetails).Select(b => (JsonNode)b).ToArray()));
     }
 
-    public async void RemoveDeviceDetails()
+    public async Task RemoveDeviceDetails()
     {
         if(!await Authenticate())
         {
             GD.Print("Authentication failed, aborting device detail deletion");
             return;
         }
-        if (DecryptDeviceDetails(GetLocalData("DeviceDetails").ToString()) is JsonObject deviceDetails)
+        var dd = GetLocalData("DeviceDetails")?.AsArray().Select(n => n.GetValue<byte>()).ToArray();
+        if (DecryptDeviceDetails(dd) is JsonObject deviceDetails)
         {
             //tell epic we're not using the device any more. probably unneccecary, but its common courtesy
             await Helpers.MakeRequest(
                 HttpMethod.Delete,
                 FnEndpoints.loginEndpoint,
-                $"account/api/public/account/{accountId}/deviceAuth/{deviceDetails["decideId"]}",
+                $"account/api/public/account/{accountId}/deviceAuth/{deviceDetails["deviceId"]}",
                 "",
                 AuthHeader,
                 ""
@@ -298,12 +304,19 @@ public class GameAccount
     JsonObject localData;
     void LoadLocalData()
     {
-        if (!DirAccess.DirExistsAbsolute(accountDataPath))
+        if (!isValid || !DirAccess.DirExistsAbsolute(accountDataPath))
         {
+            GD.Print("invalid or no folder");
             localData = new();
             return;
         }
         using FileAccess localDataFile = FileAccess.Open($"{accountDataPath}/{accountId}", FileAccess.ModeFlags.Read);
+        if (localDataFile is null)
+        {
+            GD.Print("no file");
+            localData = new();
+            return;
+        }
         var localDataString = localDataFile.GetAsText();
 
         try
@@ -331,6 +344,9 @@ public class GameAccount
         if (localData is null)
             LoadLocalData();
         localData[key] = value;
+
+        if (!isValid)
+            return;
 
         if (!DirAccess.DirExistsAbsolute(accountDataPath))
             DirAccess.MakeDirAbsolute(accountDataPath);
@@ -441,23 +457,26 @@ public class GameAccount
             int purchaseAmount = (await GetOrderCounts(OrderRange.Daily))?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Daily Limit: {purchaseAmount}/{dailyLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.DailyLimit - purchaseAmount);
+            GD.Print($"EventLimit: ({purchaseAmount}/{offer.DailyLimit})");
         }
 
-        if (offer.WeeklyLimit != -1)
+        if (totalLimit > 0 && offer.WeeklyLimit != -1)
         {
             int purchaseAmount = (await GetOrderCounts(OrderRange.Weekly))?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Weekly Limit: {purchaseAmount}/{weeklyLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.WeeklyLimit - purchaseAmount);
+            GD.Print($"EventLimit: ({purchaseAmount}/{offer.WeeklyLimit})");
         }
 
-        if (offer.MonthlyLimit != -1)
+        if (totalLimit > 0 && offer.MonthlyLimit != -1)
         {
             int purchaseAmount = (await GetOrderCounts(OrderRange.Monthly))?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Monthly Limit: {purchaseAmount}/{monthlyLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.MonthlyLimit - purchaseAmount);
+            GD.Print($"EventLimit: ({purchaseAmount}/{offer.MonthlyLimit})");
         }
 
-        if (offer.EventLimit != -1)
+        if (totalLimit > 0 && offer.EventLimit != -1)
         {
             var commonData = await GetProfile(FnProfileTypes.Common).Query();
             GameItem eventTracker = commonData.GetItems("EventPurchaseTracker", item =>
@@ -467,9 +486,43 @@ public class GameAccount
             int purchaseAmount = eventTracker?.attributes?["event_purchases"]?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Event Limit: {purchaseAmount}/{eventLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.EventLimit - purchaseAmount);
+            GD.Print($"EventLimit: ({purchaseAmount}/{offer.EventLimit})");
         }
 
         return totalLimit;
+    }
+
+    public async Task<bool> MatchesFulfillmentRequirements(GameOffer offer)
+    {
+        if (offer.FulfillmentDenyList.Count > 0)
+        {
+            var commonData = await GetProfile(FnProfileTypes.Common).Query();
+            var fulfillments = commonData.statAttributes["in_app_purchases"]?["fulfillmentCounts"];
+            if (offer.FulfillmentDenyList.Any(check => (fulfillments[check.Key]?.GetValue<int>() ?? 0) >= check.Value))
+                return false;
+        }
+
+        if (offer.FulfillmentRequireList.Count > 0)
+        {
+            var commonData = await GetProfile(FnProfileTypes.Common).Query();
+            var fulfillments = commonData.statAttributes["in_app_purchases"]?["fulfillmentCounts"];
+            if (offer.FulfillmentRequireList.Any(check => (fulfillments[check.Key]?.GetValue<int>() ?? 0) < check.Value))
+                return false;
+        }
+
+        return true;
+    }
+
+    public async Task<bool> MatchesItemRequirements(GameOffer offer)
+    {
+        if (offer.ItemDenyList.Count > 0)
+        {
+            var athenaItems = await GetProfile(FnProfileTypes.CosmeticInventory).Query();
+            if (offer.ItemDenyList.Any(check => (athenaItems.GetItem(check.Key)?.quantity ?? 0) >= check.Value))
+                return false;
+        }
+
+        return true;
     }
 
     public async Task<string> GetSACCode(bool addExpiredText = true)
@@ -645,9 +698,19 @@ public class GameProfile
 
     public async Task<GameProfile> Query(bool force=false)
     {
-        if (!hasProfile || force)
-            await PerformOperation("QueryProfile");
-        return this;
+        await account.profileOperationSephamore.WaitAsync();
+        try
+        {
+            if (!hasProfile || force)
+            {
+                await PerformOperationUnsafe("QueryProfile");
+            }
+            return this;
+        }
+        finally
+        {
+            account.profileOperationSephamore.Release();
+        }
     }
 
     public async Task<JsonArray> PerformOperation(string operation, string content = "{}")
@@ -712,7 +775,7 @@ public class GameProfile
         using var request =
             new HttpRequestMessage(
                 HttpMethod.Post,
-                $"fortnite/api/game/v2/profile/{account.accountId}/{(account.isOwned ? "public" : "client")}/{operation}?profileId={profileId}&rvn=-1"
+                $"fortnite/api/game/v2/profile/{account.accountId}/{(account.isOwned ? "client" : "public")}/{operation}?profileId={profileId}&rvn=-1"
             )
             {
                 Content = jsonContent
@@ -773,7 +836,7 @@ public class GameProfile
         }
         foreach (var itemKey in possiblyChangedKeys)
         {
-            var from = items[itemKey].RawData.ToString();
+            var from = items[itemKey].SimpleRawData.ToString();
             var to = newItems[itemKey].ToString();
             if (from != to)
             {
@@ -929,13 +992,14 @@ public class GameItem
         SetRawData(rawData);
     }
 
-    public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, GameItem inspectorOverride = null)
+    public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)
     {
         attemptedTemplateSearch = true;
         _template = template;
         templateId = template?.TemplateId;
         this.quantity = quantity;
         this.attributes = attributes;
+        this.customData = customData ?? new();
         this.inspectorOverride = inspectorOverride;
         zcpEquivelent = FindZcpEquivelent(templateId);
         isSeenLocal = true;
@@ -963,6 +1027,7 @@ public class GameItem
     GameItemTemplate _template;
 
     public JsonObject attributes { get; private set; }
+    public JsonObject customData { get; private set; } = new();
 
     public int quantity { get; private set; }
     public void SetQuantity(int newQuant)
@@ -977,10 +1042,17 @@ public class GameItem
     public JsonObject GenerateRawData() => _rawData = new()
     {
         ["templateId"] = templateId,
-        ["template"] = template.rawData.Reserialise(),
-        ["quantity"] = quantity,
         ["attributes"] = attributes.Reserialise(),
-        ["searchTags"] = template?["searchTags"].Reserialise()
+        ["quantity"] = quantity,
+        ["template"] = template.rawData.Reserialise(),
+        ["searchTags"] = template?["searchTags"].Reserialise(),
+    };
+
+    public JsonObject SimpleRawData => new()
+    {
+        ["templateId"] = templateId,
+        ["attributes"] = attributes.Reserialise(),
+        ["quantity"] = quantity,
     };
 
     public void SetRawData(JsonObject rawData)
@@ -990,7 +1062,7 @@ public class GameItem
         {
             attemptedTemplateSearch = false;
             _template = null;
-            templateId = rawData["templateId"].ToString();
+            templateId = newTemplate;
             zcpEquivelent = FindZcpEquivelent(templateId);
         }
         quantity = rawData["quantity"].GetValue<int>();
@@ -1020,7 +1092,7 @@ public class GameItem
     {
         SetSeenLocal();
         string content = @$"{{""itemIds"": [""{uuid}""]}}";
-        profile.PerformOperation("MarkItemSeen", content).Start();
+        profile.PerformOperation("MarkItemSeen", content).StartTask();
         return this;
     }
 
@@ -1168,6 +1240,8 @@ public class GameItem
             return 0;
         }
         int subLevel = level - ratingSet["FirstLevel"].GetValue<int>();
+        if (subLevel < 0)
+            return 0;
         int rating = (int)ratingSet["Ratings"][subLevel].GetValue<float>();
 
         survivorSquad ??= attributes?["squad_id"]?.ToString();
@@ -1244,7 +1318,7 @@ public class GameItem
         }
         if(template.Type == "CardPack")
         {
-            if (textureType == FnItemTextureType.Preview && attributes?["llamaTier"]?.GetValue<int>() is int llamaTier)
+            if (textureType == FnItemTextureType.Preview && customData?["llamaTier"]?.GetValue<int>() is int llamaTier)
             {
                 string llamaPinataName =
                     (template.TryGetTexturePath(FnItemTextureType.Preview, out var imagePath) ? imagePath : null)

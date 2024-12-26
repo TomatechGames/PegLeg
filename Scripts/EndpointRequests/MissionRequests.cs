@@ -269,7 +269,7 @@ public class FnMission
     public GameItem[] alertModifiers { get; private set; }
     public GameItem[] alertRewardItems { get; private set; }
 
-    public IEnumerable<GameItem> allItems => rewardItems.Union(alertRewardItems);
+    public IEnumerable<GameItem> allItems => alertRewardItems?.Union(rewardItems) ?? rewardItems;
 
     public FnMission(JsonObject missionData, JsonObject alertData, JsonObject tileData)
     {
@@ -278,10 +278,12 @@ public class FnMission
         this.tileData = tileData;
         difficultyInfo = BanjoAssets.Lookup("DifficultyInfo", missionData["missionDifficultyInfo"]["rowName"].ToString());
 
-        missionGenerator = GameItemTemplate.Get(missionData["missionGenerator"].ToString()).CreateInstance();
-        zoneTheme = GameItemTemplate.Get(tileData["zoneTheme"].ToString()).CreateInstance();
+        missionGenerator = GameItemTemplate.Lookup("MissionGen", missionData["missionGenerator"].ToString()).CreateInstance();
+        zoneTheme = GameItemTemplate.Lookup("ZoneTheme", tileData["zoneTheme"].ToString()).CreateInstance();
 
-        powerLevel = difficultyInfo["reccomendedRating"].GetValue<int>();
+        powerLevel = difficultyInfo?["ReccomendedRating"]?.GetValue<int>() ?? 0;
+        if (powerLevel == 0)
+            GD.Print(missionData["missionDifficultyInfo"]["rowName"].ToString() + " :: " + difficultyInfo);
         theaterCat = missionData["theaterCat"].ToString();
         theaterIdx = theaterCat switch
         {
@@ -297,7 +299,7 @@ public class FnMission
         backgroundTexture = missionGenerator.GetTexture(FnItemTextureType.LoadingScreen) ?? zoneTheme.GetTexture(FnItemTextureType.LoadingScreen);
 
         List<GameItem> rewardItemList = new();
-        foreach (var itemData in missionData["missionRewards"].AsArray())
+        foreach (var itemData in missionData["missionRewards"]["items"].AsArray())
         {
             GameItem item = new(null, null, itemData.AsObject());
             item.SetSeenLocal();
@@ -307,27 +309,33 @@ public class FnMission
         }
         rewardItems = rewardItemList.ToArray();
 
-        if (missionData["missionAlert"] is JsonObject missionAlert)
+        if (alertData is not null)
         {
             List<GameItem> alertModifierList = new();
-            foreach (var itemData in missionAlert["modifiers"].AsArray())
+            if (alertData["missionAlertModifiers"]?["items"]?.AsArray() is JsonArray modifierData)
             {
-                GameItem modifier = new(null, null, itemData.AsObject());
-                modifier.SetSeenLocal();
-                modifier.GetTexture();
-                modifier.GenerateSearchTags();
-                alertModifierList.Add(modifier);
+                foreach (var itemData in modifierData)
+                {
+                    GameItem modifier = new(null, null, itemData.AsObject());
+                    modifier.SetSeenLocal();
+                    modifier.GetTexture();
+                    modifier.GenerateSearchTags();
+                    alertModifierList.Add(modifier);
+                }
             }
             alertModifiers = alertModifierList.ToArray();
 
             List<GameItem> alertRewardItemList = new();
-            foreach (var itemData in missionAlert["rewards"].AsArray())
+            if (alertData["missionAlertRewards"]?["items"]?.AsArray() is JsonArray rewardData)
             {
-                GameItem item = new(null, null, itemData.AsObject());
-                item.SetSeenLocal();
-                item.GetTexture();
-                item.GenerateSearchTags();
-                alertRewardItemList.Add(item);
+                foreach (var itemData in rewardData)
+                {
+                    GameItem item = new(null, null, itemData.AsObject());
+                    item.SetSeenLocal();
+                    item.GetTexture();
+                    item.GenerateSearchTags();
+                    alertRewardItemList.Add(item);
+                }
             }
             alertRewardItems = alertRewardItemList.ToArray();
         }

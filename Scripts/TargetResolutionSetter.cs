@@ -15,6 +15,6 @@ public partial class TargetResolutionSetter : Node
         var window = GetTree().Root;
         window.ContentScaleSize = TargetResolution;
         window.MinSize = MinResolution;
-        rootNode?.ResetControlOffsets();
+        rootNode?.ResetOffsets();
     }
 }

@@ -39,8 +39,8 @@ public partial class CardPackEntry : GameItemEntry
         }
 
         string name = item.template.DisplayName;
-        int amount = item.attributes["stackQuantity"]?.GetValue<int>() ?? item.quantity;
-        int shopAmount = item.attributes["shopQuantity"]?.GetValue<int>() ?? amount;
+        int amount = item.customData["stackQuantity"]?.GetValue<int>() ?? item.quantity;
+        int shopAmount = item.customData["shopQuantity"]?.GetValue<int>() ?? amount;
         string nameWithAmount = amount >= 0 ? $"{name} ({shopAmount} left)" : name;
         string description = item.template.Description;
 
@@ -55,7 +55,7 @@ public partial class CardPackEntry : GameItemEntry
         EmitSignal(SignalName.AmountChanged, amountText ?? null);
 
 
-        int llamaTier = item.attributes?["llamaTier"]?.GetValue<int>() ?? 0;
+        int llamaTier = item.customData?["llamaTier"]?.GetValue<int>() ?? 0;
         string llamaPinataName =
             (item.template.TryGetTexturePath(FnItemTextureType.Preview, out var imagePath) ? imagePath : null)
             ?.ToString().Split("\\")[^1];

@@ -269,7 +269,7 @@ public class GameItemTemplate
         if (sourceName is null || key is null)
             return null;
 
-        if (templateDict.ContainsKey(sourceName) && templateDict[key].ContainsKey(key))
+        if (templateDict.ContainsKey(sourceName) && templateDict[sourceName].ContainsKey(key))
             return templateDict[sourceName][key];
 
         if (!BanjoAssets.TryGetSource(sourceName, out var source))
@@ -279,7 +279,8 @@ public class GameItemTemplate
 
         if (newTemplate is not null)
         {
-            templateDict[sourceName] ??= new();
+            if (!templateDict.ContainsKey(sourceName))
+                templateDict[sourceName] = new();
             templateDict[sourceName].Add(key, newTemplate);
         }
 
@@ -607,11 +608,11 @@ public class GameItemTemplate
         rawData["searchTags"] = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
     }
 
-    public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, GameItem inspectorOverride = null)
+    public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)
     {
-        attributes ??= new JsonObject();
-        attributes["generated_by_pegleg"] = true;
-        return new(this, quantity, attributes, inspectorOverride);
+        customData ??= new();
+        customData["generated_by_pegleg"] = true;
+        return new(this, quantity, attributes, inspectorOverride, customData);
     }
 }
 

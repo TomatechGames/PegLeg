@@ -19,6 +19,7 @@ grow_vertical = 2
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5

@@ -28,6 +28,9 @@ public partial class MissionEntry : Control, IRecyclableEntry
     [Export]
     bool controlModifierParentLayoutProps = true;
     [Export]
+    bool fullItems = false;
+
+    [Export]
     Control alertModifierLayout;
     [Export]
     Control alertModifierParent;
@@ -142,7 +145,12 @@ public partial class MissionEntry : Control, IRecyclableEntry
             {
                 alertRewardLayout.Visible = true;
                 alertRewardLayout.ProcessMode = ProcessModeEnum.Inherit;
-                ApplyItems(currentMission.alertRewardItems, alertRewardParent);
+                var rewards = fullItems ? 
+                    currentMission.alertRewardItems : 
+                    currentMission.alertRewardItems
+                        .Where(r => r.template.Name != "Gold" && r.template.Name != "Venture XP")
+                        .ToArray();
+                ApplyItems(rewards, alertRewardParent);
             }
         }
         else
@@ -160,7 +168,14 @@ public partial class MissionEntry : Control, IRecyclableEntry
         }
 
         if (missionRewardParent is not null)
-            ApplyItems(currentMission.rewardItems, missionRewardParent);
+        {
+            var rewards = fullItems ?
+                currentMission.rewardItems :
+                currentMission.rewardItems
+                    .Where(r => r.template.Name != "Venture XP")
+                    .ToArray();
+            ApplyItems(rewards, missionRewardParent);
+        }
 
         UpdateHighlightedItems();
     }

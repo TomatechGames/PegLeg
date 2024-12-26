@@ -1,8 +1,4 @@
 using Godot;
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 
 public partial class CodeLoginLabel : Node
 {
@@ -14,7 +10,7 @@ public partial class CodeLoginLabel : Node
     [Signal]
     public delegate void LoginEndedEventHandler();
     [Signal]
-    public delegate void LoginSuccessEventHandler();
+    public delegate void LoginSuccessEventHandler(string accountId);
     [Signal]
     public delegate void LoginFailedEventHandler();
 
@@ -98,7 +94,9 @@ public partial class CodeLoginLabel : Node
         {
             started = false;
 
-            EmitSignal(SignalName.LoginSuccess);
+            GD.Print("APPROVE: " + linkCheckRequest);
+
+            EmitSignal(SignalName.LoginSuccess, linkCheckRequest["account_id"].ToString());
             EmitSignal(SignalName.LoginResultChanged, true);
 
             EmitSignal(SignalName.LoginEnded);

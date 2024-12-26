@@ -25,6 +25,23 @@ public partial class ShaderHook : Control
         set => Set("texture", value);
     }
 
+    public override Variant _Get(StringName property)
+    {
+        if (property?.ToString() is string propName && propName.StartsWith("SH_"))
+            return ShaderMat.GetShaderParameter(propName[3..]);
+        return base._Get(property);
+    }
+
+    public override bool _Set(StringName property, Variant value)
+    {
+        if(property?.ToString() is string propName && propName.StartsWith("SH_"))
+        {
+            ShaderMat.SetShaderParameter(propName[3..], value);
+            return true;
+        }
+        return base._Set(property, value);
+    }
+
     public override void _Ready()
     {
         ItemRectChanged += OnRectUpdated;

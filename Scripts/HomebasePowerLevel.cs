@@ -14,6 +14,7 @@ public partial class HomebasePowerLevel : Control
     public override void _Ready()
     {
         GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
+        OnActiveAccountChanged(null);
     }
 
     CancellationTokenSource accountChangeCts = new();
@@ -47,6 +48,8 @@ public partial class HomebasePowerLevel : Control
         currentProfile.OnItemRemoved += OnProfileItemChanged;
 
         currentProfile.OnStatChanged += OnProfileStatChanged;
+
+        UpdateStatsVisuals(currentProfile.account.GetFORTStats());
     }
 
     GameProfile currentProfile;

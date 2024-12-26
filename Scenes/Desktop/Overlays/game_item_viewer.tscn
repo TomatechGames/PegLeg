@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://buf6p8qyydofm"]
+[gd_scene load_steps=50 format=3 uid="uid://buf6p8qyydofm"]
 
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/GameItemViewer.cs" id="1_5fxot"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_croo3"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dnqbqca02sqwq" path="res://Images/InterfaceIcons/T-Pattern-OrArrow-128.png" id="16_3ck4t"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="17_5dqmp"]
 [ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="18_4mdgc"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="18_vptf0"]
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/GameItemUpgrader.cs" id="19_kk5po"]
 [ext_resource type="Texture2D" uid="uid://docjdjoems0ia" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Black-L.png" id="20_iom1u"]
 [ext_resource type="Texture2D" uid="uid://xcnetq4h582o" path="res://Images/TextureResources/BlankTexture.tres" id="20_nu85e"]
@@ -181,7 +182,7 @@ shader_parameter/minVal = 25.0
 shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
-shader_parameter/time = 19.724
+shader_parameter/time = 20.647
 shader_parameter/TrianglePattern = ExtResource("22_jjr7p")
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
@@ -203,7 +204,7 @@ metadata/_snap_enabled = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asdem"]
 
-[node name="GameItemViewer" node_paths=PackedStringArray("displayItemEntry", "activeTabParent", "inactiveTabParent", "upgrader", "perkDetailsPanel", "heroDetailsPanel", "heroAbilityEntries", "heroPerkEntry", "heroCommanderPerkEntry", "teamPerkEntry", "tierSlider", "levelSlider", "statsTreeContainer", "statsTree", "devTextContainer", "devText", "itemChoiceParent", "itemChoiceEntries", "itemChoiceLayoutSections", "purchasePanel") instance=ExtResource("1_iqrw2")]
+[node name="GameItemViewer" node_paths=PackedStringArray("displayItemEntry", "activeTabParent", "inactiveTabParent", "upgrader", "perkDetailsPanel", "heroDetailsPanel", "heroAbilityEntries", "heroPerkEntry", "heroCommanderPerkEntry", "teamPerkEntry", "tierSlider", "levelSlider", "statsTreeContainer", "statsTree", "devTextContainer", "devText", "itemChoiceParent", "itemChoiceEntries", "itemChoiceLayoutSections", "currentOfferEntry", "purchasePanel") instance=ExtResource("1_iqrw2")]
 theme = ExtResource("1_croo3")
 script = ExtResource("1_5fxot")
 displayItemEntry = NodePath("Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical")
@@ -225,6 +226,7 @@ devText = NodePath("Control/WindowContents/CenterContainer/window/MainContent/Ta
 itemChoiceParent = NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector")
 itemChoiceEntries = [NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/RewardEntryHorizontal")]
 itemChoiceLayoutSections = [NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3")]
+currentOfferEntry = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel")
 purchasePanel = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel")
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0"]
@@ -1115,11 +1117,13 @@ vertical_alignment = 1
 [node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/window/ActionButtons/Rarityup" index="1" instance=ExtResource("3_f2ac1")]
 layout_mode = 2
 
-[node name="PurchasePanel" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="3"]
+[node name="PurchasePanel" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="3" node_paths=PackedStringArray("priceEntry")]
 visible = false
 custom_minimum_size = Vector2(400, 75)
 layout_mode = 2
 size_flags_horizontal = 4
+script = ExtResource("18_vptf0")
+priceEntry = NodePath("PurchaseButton/VBoxContainer/HBoxContainer")
 
 [node name="PurchaseButton" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="0"]
 layout_mode = 2
@@ -1141,6 +1145,7 @@ vertical_alignment = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/VBoxContainer" index="1"]
 layout_mode = 2
 alignment = 1
+script = ExtResource("10_c8yg2")
 
 [node name="Icon" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer" index="0"]
 layout_mode = 2

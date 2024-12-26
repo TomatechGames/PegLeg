@@ -203,8 +203,8 @@ public partial class CardPackOpener : Control
         llamaItem ??= llamaOffer?.itemGrants[0];
         llamaItem ??= defaultLlamaItem;
         llamaEntry.SetItem(llamaItem);
-        GD.Print($"Tier: {llamaItem.attributes?["llamaTier"]}");
-        llamaTier = llamaItem.attributes?["llamaTier"]?.GetValue<int>() ?? 0;
+        GD.Print($"Tier: {llamaItem.customData?["llamaTier"]}");
+        llamaTier = llamaItem.customData?["llamaTier"]?.GetValue<int>() ?? 0;
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
         displayPanel.Visible = true;
         pullButton.Visible = false;

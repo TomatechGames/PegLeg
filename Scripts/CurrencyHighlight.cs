@@ -10,6 +10,7 @@ public partial class CurrencyHighlight : GameItemEntry
     {
         base._Ready();
         Instance = this;
+        Visible = false;
         GameAccount.ActiveAccountChanged += OnAccountChanged;
         SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
     }
@@ -34,12 +35,14 @@ public partial class CurrencyHighlight : GameItemEntry
         if (!await account.Authenticate())
         {
             ClearItem();
+            Visible = false;
             return;
         }
         var profileItem = (await account.GetProfile(FnProfileTypes.AccountItems).Query()).GetTemplateItems(currencyTemplate.TemplateId).FirstOrDefault();
         if (profileItem is not null)
         {
             SetItem(profileItem);
+            Visible = true;
         }
     }
 }

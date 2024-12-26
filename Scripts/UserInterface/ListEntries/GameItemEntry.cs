@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
-using System.Text.RegularExpressions;
-using System.Threading;
 
 public partial class GameItemEntry : Control, IRecyclableEntry
 {
@@ -205,13 +203,13 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         Texture2D mainIcon = item.GetTexture();
 
         description ??= "";
-        var personalityText = item.attributes["personality"]?.ToString().Split(".")[^1][2..];
-        var setBonusText = item.attributes["set_bonus"]?.ToString().Split(".")[^1][2..];
+        var personalityText = item.attributes?["personality"]?.ToString().Split(".")[^1][2..];
+        var setBonusText = item.attributes?["set_bonus"]?.ToString().Split(".")[^1][2..];
         if (type == "Worker" && name == "Survivor")
         {
             if(personalityText is not null && setBonusText is not null)
             {
-                var pronoun = item.attributes["gender"]?.ToString() is string gender ? (gender == "1" ? "him" : "her") : "them";
+                var pronoun = item.attributes?["gender"]?.ToString() is string gender ? (gender == "1" ? "him" : "her") : "them";
                 description = description
                     .Replace("{Gender}|gender(him, her)", pronoun)
                     .Replace("[Worker.Personality]", personalityText)
@@ -237,7 +235,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         int bonusMaxLevel = item.attributes?["max_level_bonus"]?.GetValue<int>() ?? 0;
         int maxLevel = Mathf.Max(tier * 10, 1) + bonusMaxLevel;
         int minLevel = Mathf.Max(maxLevel - 10, 1);
-        levelProgress = (level - minLevel) / (maxLevel - minLevel);
+        levelProgress = minLevel == maxLevel ? 1 : (level - minLevel) / (maxLevel - minLevel);
 
         if (type == "AccountResource" || type == "ConsumableAccountItem")
         {

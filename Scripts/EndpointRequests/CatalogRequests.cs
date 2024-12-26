@@ -623,6 +623,7 @@ public class GameStorefront
         }
         foreach (var sfKey in toRemove)
         {
+            GD.Print("disconnecting SF");
             storefronts[sfKey].DisconnectAll();
             storefronts.Remove(sfKey);
         }
@@ -757,7 +758,7 @@ public class GameOffer
             var priceTemplateId = dynamicBundleInfo["currencyType"].ToString() == "MtxCurrency" ? "Currency:mtxpurchased" : dynamicBundleInfo["currencySubType"].ToString();
             var priceTemplate = GameItemTemplate.Get(priceTemplateId);
 
-            discountAmount = dynamicBundleInfo["discountedBasePrice"].GetValue<int>();
+            discountAmount = -dynamicBundleInfo["discountedBasePrice"].GetValue<int>();
             discountMin = dynamicBundleInfo["floorPrice"].GetValue<int>();
             var itemsArray = dynamicBundleInfo["bundleItems"].AsArray();
             int basePriceAmount = itemsArray.Select(n => n["regularPrice"].GetValue<int>()).Sum();
@@ -776,7 +777,7 @@ public class GameOffer
             var priceTemplate = GameItemTemplate.Get(priceTemplateId);
             int basePriceAmount = priceData["regularPrice"].GetValue<int>();
             conditionalDiscounts = null;
-            discountAmount = priceData["finalPrice"].GetValue<int>() - basePriceAmount;
+            discountAmount = basePriceAmount - priceData["finalPrice"].GetValue<int>();
             discountMin = 0;
             basePrice = priceTemplate?.CreateInstance(basePriceAmount);
         }
@@ -788,7 +789,7 @@ public class GameOffer
         eventId = null;
         eventLimit = null;
         simultaniousLimit = null;
-        regularPrice = null;
+        price = null;
         personalPrice = null;
     }
 
@@ -797,28 +798,53 @@ public class GameOffer
     public JsonNode this[string propertyName] => rawData[propertyName];
 
     public string OfferId => rawData["offerId"].ToString();
-    public string GetMeta(string key) => rawData["meta"] is JsonObject meta ? meta[key]?.ToString() : rawData["metaInfo"]?.AsArray().FirstOrDefault(val => val["key"].ToString() == key)?["value"].ToString();
+    public string GetMeta(string key) => rawData["meta"] is JsonObject meta ? 
+        meta[key]?.ToString() : 
+        rawData["metaInfo"]?.AsArray()
+        .FirstOrDefault(val => val["key"].ToString() == key)?
+        ["value"].ToString();
 
     public string Title => rawData["title"]?.ToString();
     public int DailyLimit => rawData["dailyLimit"]?.GetValue<int>() ?? -1;
     public int WeeklyLimit => rawData["weeklyLimit"]?.GetValue<int>() ?? -1;
     public int MonthlyLimit => rawData["monthlyLimit"]?.GetValue<int>() ?? -1;
+
     int? eventLimit;
     public int EventLimit => eventLimit ??= int.Parse(GetMeta("EventLimit") ?? "-1");
+
     string eventId;
     public string EventId => eventId ??= GetMeta("PurchaseLimitingEventId");
+
+    Dictionary<string, int> GenerateRequirementList(string type) =>
+        rawData["requirements"].AsArray()
+        .Where(n => n["requirementType"]?.ToString() == type)
+        .ToDictionary(
+            n => n["requiredId"].ToString(),
+            n => n["minQuantity"].GetValue<int>()
+        );
+
+    Dictionary<string, int> fulfillmentDenyList;
+    public Dictionary<string, int> FulfillmentDenyList => fulfillmentDenyList ??= GenerateRequirementList("DenyOnFulfillment");
+
+    Dictionary<string, int> fulfillmentRequireList;
+    public Dictionary<string, int> FulfillmentRequireList => fulfillmentRequireList ??= GenerateRequirementList("RequireFulfillment");
+
+    Dictionary<string, int> itemDenyList;
+    public Dictionary<string, int> ItemDenyList => itemDenyList ??= GenerateRequirementList("DenyOnItemOwnership");
+
     int? simultaniousLimit;
     public int SimultaniousLimit => simultaniousLimit ??= int.Parse(GetMeta("MaxConcurrentPurchases") ?? "-1");
 
     GameItem basePrice;
+    public GameItem BasePrice => basePrice;
     int discountAmount = 0;
     int discountMin = 0;
-    public bool IsFree => discountMin == 0 && -discountAmount >= basePrice.quantity;
+    public bool IsFree => discountMin == 0 && discountAmount >= basePrice.quantity;
     public bool IsDiscountBundle => conditionalDiscounts?.Count > 0;
 
     Dictionary<string, int> conditionalDiscounts;
-    GameItem regularPrice;
-    public GameItem RegularPrice => regularPrice ??= GetRegularPrice();
+    GameItem price;
+    public GameItem Price => price ??= GetRegularPrice();
     GameItem personalPrice;
 
     public GameItem[] itemGrants { get; private set; }
@@ -828,8 +854,9 @@ public class GameOffer
         int price = basePrice.quantity;
         price -= discountAmount;
         price = Mathf.Max(price, discountMin);
+        var newPriceItem = basePrice?.template?.CreateInstance(price);
 
-        return basePrice?.template?.CreateInstance(price);
+        return newPriceItem;
     }
 
     public async Task<GameItem> GetPersonalPrice(bool forcePrice = false, bool forceCosmetics = false)

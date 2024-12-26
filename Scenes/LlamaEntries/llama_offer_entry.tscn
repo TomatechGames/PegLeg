@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b0uxwtxndd6x3"]
+[gd_scene load_steps=24 format=3 uid="uid://b0uxwtxndd6x3"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_vtoeo"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="2_dhih1"]
@@ -14,6 +14,8 @@
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="8_8g41e"]
 [ext_resource type="Shader" path="res://Shaders/LlamaPinata.gdshader" id="9_squpy"]
 [ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="10_kbdaw"]
+[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="12_vphjs"]
+[ext_resource type="Texture2D" uid="uid://hskfanlp03l8" path="res://Images/InterfaceIcons/T-UI-SoldOut.png" id="13_dsrnj"]
 [ext_resource type="ButtonGroup" uid="uid://cm7rmga74vyve" path="res://Scenes/LlamaEntries/LlamaChoices.tres" id="14_l6u0k"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="15_3uj10"]
 
@@ -63,7 +65,7 @@ size_flags_vertical = 4
 theme = ExtResource("1_vtoeo")
 script = ExtResource("2_dhih1")
 grantedItemEntry = NodePath("MarginContainer")
-priceEntry = NodePath("MarginContainer/HBoxContainer/VBoxContainer/LlamaCost")
+priceEntry = NodePath("MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem")
 selectionGraphics = NodePath("Control2/CheckButton")
 
 [node name="Control" type="Control" parent="."]
@@ -144,8 +146,11 @@ texture = ExtResource("5_hfsg2")
 expand_mode = 3
 script = ExtResource("5_u1yf7")
 
+[node name="InStockToggle" type="Node" parent="MarginContainer/HBoxContainer/PinataBG/Pinata"]
+script = ExtResource("12_vphjs")
+
 [node name="AmountLabel" type="Label" parent="MarginContainer/HBoxContainer/PinataBG/Pinata"]
-custom_minimum_size = Vector2(80, 0)
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -166,6 +171,41 @@ horizontal_alignment = 2
 vertical_alignment = 2
 autowrap_mode = 3
 
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/PinataBG/Pinata"]
+visible = false
+layout_mode = 2
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("13_dsrnj")
+expand_mode = 1
+
+[node name="SoldOutLabel" type="Label" parent="MarginContainer/HBoxContainer/PinataBG/Pinata/TextureRect"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -117.0
+offset_top = -32.0
+offset_right = 3.0
+offset_bottom = 3.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = -0.523599
+size_flags_vertical = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -6
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Sold Out"
+horizontal_alignment = 2
+vertical_alignment = 2
+autowrap_mode = 3
+
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -182,7 +222,6 @@ text_overrun_behavior = 3
 [node name="LlamaCost" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
-script = ExtResource("3_2od7b")
 
 [node name="PriceTextLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
 layout_mode = 2
@@ -190,6 +229,9 @@ size_flags_stretch_ratio = 0.25
 theme_override_font_sizes/font_size = 24
 text = "Price: "
 vertical_alignment = 1
+
+[node name="FreeToggle" type="Node" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+script = ExtResource("12_vphjs")
 
 [node name="FreeObj" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
 layout_mode = 2
@@ -207,12 +249,17 @@ theme_override_font_sizes/font_size = 30
 text = "FREE"
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+[node name="PriceItem" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+layout_mode = 2
+theme_override_constants/separation = 0
+script = ExtResource("3_2od7b")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem"]
 layout_mode = 2
 texture = ExtResource("6_n8hwd")
 expand_mode = 3
 
-[node name="PriceNumberLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+[node name="PriceNumberLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "1000"
@@ -254,9 +301,11 @@ expand_mode = 1
 layout_mode = 2
 outlinePadding = 20.0
 
-[connection signal="IsFreeChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeObj" method="set_visible"]
+[connection signal="IsFreeChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeToggle" method="EmitValues"]
+[connection signal="IsInStockChanged" from="." to="MarginContainer/HBoxContainer/PinataBG/Pinata/InStockToggle" method="EmitValues"]
 [connection signal="IsLimitedTimeChanged" from="." to="Control/LeavingTimer" method="set_visible"]
 [connection signal="NameChanged" from="." to="MarginContainer/HBoxContainer/VBoxContainer/NameLabel" method="set_text"]
+[connection signal="StockChanged" from="." to="MarginContainer/HBoxContainer/PinataBG/Pinata/AmountLabel" method="set_text"]
 [connection signal="Color1Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol1"]]
 [connection signal="Color2Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol2"]]
 [connection signal="Color3Changed" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["TriCol3"]]
@@ -264,8 +313,11 @@ outlinePadding = 20.0
 [connection signal="RarityChanged" from="MarginContainer" to="Control/Triangles" method="SetShaderColor" binds= ["BGCol"]]
 [connection signal="SubtypeIconChanged" from="MarginContainer" to="MarginContainer/HBoxContainer/PinataBG/Pinata" method="SetShaderTexture" binds= ["packIcon"]]
 [connection signal="TooltipChanged" from="MarginContainer" to="Responsive Button Area" method="set_tooltip_text"]
-[connection signal="AmountChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceNumberLabel" method="set_text"]
-[connection signal="IconChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/TextureRect" method="set_texture"]
-[connection signal="NameChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost" method="set_tooltip_text"]
+[connection signal="InvertedValue" from="MarginContainer/HBoxContainer/PinataBG/Pinata/InStockToggle" to="MarginContainer/HBoxContainer/PinataBG/Pinata/TextureRect" method="set_visible"]
+[connection signal="Value" from="MarginContainer/HBoxContainer/PinataBG/Pinata/InStockToggle" to="MarginContainer/HBoxContainer/PinataBG/Pinata/AmountLabel" method="set_visible"]
+[connection signal="InvertedValue" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeToggle" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem" method="set_visible"]
+[connection signal="Value" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeToggle" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/FreeObj" method="set_visible"]
+[connection signal="AmountChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem/PriceNumberLabel" method="set_text"]
+[connection signal="IconChanged" from="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem" to="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/PriceItem/TextureRect" method="set_texture"]
 [connection signal="toggled" from="Control2/CheckButton" to="Control2/CheckButton/TextureRect" method="set_visible"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

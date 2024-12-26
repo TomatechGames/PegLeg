@@ -6,11 +6,6 @@ public partial class MiscSettings : Control
 	[Export(PropertyHint.File, "*.tscn")]
 	string loginSceneFilePath;
 
-    public override void _Ready()
-	{
-        GameClient.OnLoginFailAlertPressed += ReturnToLogin;
-    }
-
     void SetInterfaceScale(float newInterfaceScale)
     {
         GetWindow().ContentScaleFactor = newInterfaceScale;
@@ -73,9 +68,4 @@ public partial class MiscSettings : Control
     //    metaOutputFile.StoreString(keyedUpgrades.ToString());
     //    LoadingOverlay.RemoveLoadingKey("meta");
     //}
-
-    public override void _ExitTree()
-    {
-        GameClient.OnLoginFailAlertPressed -= ReturnToLogin;
-    }
 }

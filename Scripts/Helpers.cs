@@ -152,6 +152,7 @@ static class Helpers
 
     public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
+        GD.Print("Debug: "+request.ToString());
         HttpResponseMessage response = null;
         try
         {
@@ -222,6 +223,8 @@ static class Helpers
         return text;
     }
 
+    public static async void StartTask(this Task task) => await task;
+
     public static JsonObject AsFlexibleObject(this JsonNode node, string objectKey)
     {
         if (node is JsonObject nodeObj)
@@ -279,7 +282,7 @@ static class Helpers
         control.OffsetLeft = control.OffsetLeft;
         control.OffsetRight = control.OffsetRight;
     }
-    public static void ResetControlOffsets(this Control control)
+    public static void ResetOffsets(this Control control)
     {
         control.OffsetTop = 0;
         control.OffsetBottom = 0;

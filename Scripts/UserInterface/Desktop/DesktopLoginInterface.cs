@@ -73,15 +73,12 @@ public partial class DesktopLoginInterface : LoginInterface
                 .SetEase(Tween.EaseType.Out);
             music.Play();
 
-            loginText.Text = isLoggedIn ? "Logged In" : (GameClient.IsOffline ? "OFFLINE" : "Not Logged In");
+            loginText.Text = isLoggedIn ? "Logged In" : "Not Logged In";
 
-            loginControls.Visible = !isLoggedIn && !GameClient.IsOffline;
+            loginControls.Visible = !isLoggedIn;
             banjoControls.Visible = false;
-            loginButton.Disabled = !hasBanjoAssets || GameClient.IsOffline;
+            loginButton.Disabled = !hasBanjoAssets;
             loginButton.TooltipText = !hasBanjoAssets ? "Banjo Assets are missing or incomplete, please\nplace banjo assets in the \"External/Banjo\" folder and restart" : "";
-
-            if (GameClient.IsOffline)
-                loginButton.TooltipText = "Could not connect to Epic Games.\nPlease ensure you have an internet connection, and restart PegLeg.";
 
             if (isLoggedIn)
                 loginButton.Text = "Continue";

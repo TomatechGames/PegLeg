@@ -4,22 +4,37 @@ using System.Linq;
 
 public partial class OnboardingInterface : Control
 {
+    [Export(PropertyHint.File, "*.tscn")]
+    string mainInterfacePath;
+    [Export]
+    float curtainOpenDuration = 0.25f;
     [Export]
     ShaderHook curtain;
     [Export]
-    Control curtainIcon;
+    AudioStreamPlayer music;
     //download fx
+
+    [ExportGroup("Login Code")]
     [Export]
     CodeLoginLabel loginLabel;
     [Export]
     Button rememberLoginToggle;
     [Export]
-    Control accountSelectionPanel;
+    Button retryLoginButton;
     [Export]
     Button continueButton;
 
+    [ExportGroup("Account Selection")]
+    [Export]
+    Control accountSelectionPanel;
+
     public override async void _Ready()
     {
+        retryLoginButton.Visible = false;
+        continueButton.Disabled = true;
+        continueButton.Text = "";
+        curtain.SetShaderFloat(0, "RevealScale");
+        curtain.Visible = true;
         //todo: download and import external assets during runtime using resource pack(s)
         //ZipReader zr = new();
         //zr.Open("user://pack.zip");
@@ -28,20 +43,93 @@ public partial class OnboardingInterface : Control
 
         bool hasBanjoAssets = BanjoAssets.ReadAllSources();
 
-        var authableAccounts = GameAccount.GetStoredAccounts().Where(a => a.GetLocalData("DeviceDetails") is not null).ToArray();
+        var allAccounts = GameAccount.GetStoredAccounts();
+        GD.Print("all: " + string.Join(", ", allAccounts.Select(a=>a.accountId)));
+        var authableAccounts = allAccounts.Where(a => a.GetLocalData("DeviceDetails") is not null).ToArray();
+        GD.Print("authable: " + string.Join(", ", authableAccounts.Select(a => a.accountId)));
         //TODO: if more than one account has device details, show account selector
         foreach (var a in authableAccounts)
         {
-            if(await a.SetAsActiveAccount())
-                break;
+            if(a.isValid && await a.SetAsActiveAccount())
+            {
+                GetTree().ChangeSceneToFile(mainInterfacePath);
+                return;
+            }
         }
-        var account = GameAccount.activeAccount;
-        if(account is not null)
-        {
-            //go to main interface
+
+        MusicController.StopMusic();
+
+        music.VolumeDb = -80;
+        var musicFadeout = GetTree().CreateTween().SetParallel();
+        musicFadeout.TweenProperty(music, "volume_db", 0, 1)
+            .SetTrans(Tween.TransitionType.Expo)
+            .SetEase(Tween.EaseType.Out);
+        music.Play();
+
+        TweenCurtain(true);
+        await Helpers.WaitForTimer(curtainOpenDuration);
+        curtain.Visible = false;
+
+        StartLogin();
+    }
+
+    void TweenCurtain(bool open)
+    {
+        //var iconStart = panelIcon.GlobalPosition;
+        //panelIcon.AnchorTop = panelIcon.AnchorBottom = open ? 0 : 0.5f;
+        //panelIcon.ResetOffsets();
+        //var iconEnd = panelIcon.GlobalPosition;
+        //panelIcon.GlobalPosition = iconStart;
+
+        var tween = GetTree().CreateTween().SetParallel();
+        tween.TweenProperty(curtain, "SH_RevealScale", open ? 1 : 0, curtainOpenDuration);
+        //tween.TweenProperty(panelIcon, "global_position", iconEnd, curtainOpenDuration);
+    }
+
+    public void StartLogin()
+    {
+        codeAccountId = "";
+        retryLoginButton.Visible = false;
+        loginLabel.GenerateCode();
+        continueButton.Text = "Waiting for approval...";
+        continueButton.Disabled = true;
+    }
+
+    public void LoginCodeFail()
+    {
+        retryLoginButton.Visible = true;
+        continueButton.Text = "Approval Failed";
+        continueButton.Disabled = true;
+    }
+
+    public void LoginCodeSuccess(string accountId)
+    {
+        codeAccountId = accountId;
+        continueButton.Text = "Login";
+        continueButton.Disabled = false;
+    }
+
+    string codeAccountId;
+    public async void ComplateCodeLogin()
+    {
+        if (string.IsNullOrEmpty(codeAccountId))
             return;
-        }
-        //play window open animation (empty virtual method)
-        //otherwise, show login code panel
+        var account = GameAccount.GetOrCreateAccount(codeAccountId);
+        curtain.Visible = true;
+        TweenCurtain(false);
+        var timer = Helpers.WaitForTimer(curtainOpenDuration);
+        if (rememberLoginToggle.ButtonPressed)
+            await account.SaveDeviceDetails();
+        await account.SetAsActiveAccount();
+        await timer;
+        GetTree().ChangeSceneToFile(mainInterfacePath);
+    }
+
+    public async void ContinueToMainScene()
+    {
+        curtain.Visible = true;
+        TweenCurtain(false);
+        await Helpers.WaitForTimer(curtainOpenDuration);
+        GetTree().ChangeSceneToFile(mainInterfacePath);
     }
 }

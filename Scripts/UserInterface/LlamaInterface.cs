@@ -82,10 +82,11 @@ public partial class LlamaInterface : Control
 	{
         llamaItemEntryPanel.Visible = false;
         VisibilityChanged += LoadShopLlamas;
-        LoadShopLlamas();
-
+        quantitySpinner.ValueChanged += OnQuantityChanged;
         RefreshTimerController.OnHourChanged += LoadShopLlamas;
         GameAccount.ActiveAccountChanged += OnAccountChanged;
+        OnAccountChanged(null);
+        LoadShopLlamas();
     }
 
     public override void _ExitTree()
@@ -153,7 +154,7 @@ public partial class LlamaInterface : Control
         public GameItem GetDisplayItem()
         {
             var nextItem = items.Last();
-            nextItem.attributes["stackQuantity"] = isKnown ? -1 : items.Count;
+            nextItem.customData["stackQuantity"] = isKnown ? -1 : items.Count;
             //OverridePackDisplay(ref nextPack);
             return nextItem;
         }
@@ -244,9 +245,7 @@ public partial class LlamaInterface : Control
 
         //refresh cardpacks
         var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
-            return;
-        if (ct.IsCancellationRequested)
+        if (!await account.Authenticate() || ct.IsCancellationRequested)
             return;
 
         GameProfile newLlamaItemProfile = null;
@@ -263,14 +262,19 @@ public partial class LlamaInterface : Control
         {
             offerEntry.Visible = offerEntry.GetMeta("llamaFilter", false).AsBool();
         }
-        if (newLlamaItemProfile is not null)
+
+        //disconnect prev profile
+        if (llamaItemProfile is not null)
         {
-            //disconnect prev profile
             llamaItemProfile.OnItemAdded -= AddLlamaItem;
             llamaItemProfile.OnItemRemoved -= RemoveLlamaItem;
+            llamaItemProfile = null;
+        }
 
+        if (newLlamaItemProfile is not null)
+        {
             //load new items
-            var newLlamaItems = llamaItemProfile.GetItems("CardPack");
+            var newLlamaItems = newLlamaItemProfile.GetItems("CardPack");
             foreach (var llamaStack in llamaItemStacks)
             {
                 llamaItemEntries.Enqueue(llamaStack.DetachLlamaEntry());
@@ -295,7 +299,8 @@ public partial class LlamaInterface : Control
     async void ForceLoadShopLlamas() => await LoadShopLlamasAsync(true);
     async Task LoadShopLlamasAsync(bool force = false)
     {
-        if (!IsVisibleInTree() || (!force && activeOffers.Count >= 0))
+        GD.Print($"Starting Llama Load ({!IsVisibleInTree()} || ({!force} && {activeOffers.Count > 0}))");
+        if (!IsVisibleInTree() || (!force && activeOffers.Count > 0))
             return;
         llamaShopCTS?.Cancel();
         llamaShopCTS = new();
@@ -304,6 +309,7 @@ public partial class LlamaInterface : Control
         offerListLoadingIcon.Visible = true;
         llamaScrollArea.Visible = false;
         offerListErrorIcon.Visible = false;
+        llamaOfferParent.Visible = true;
 
         activeOffers.Clear();
         ClearSelection();
@@ -317,16 +323,18 @@ public partial class LlamaInterface : Control
 
             var prevSelectedOffer = currentOfferSelection;
 
-            var storefront = await GameStorefront.GetStorefront(FnStorefrontTypes.XRayLlamaCatalog, force ? null : RefreshTimeType.Hourly);
+            var xrayStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.XRayLlamaCatalog, force ? null : RefreshTimeType.Hourly);
+            var randomStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.RandomLlamaCatalog, force ? null : RefreshTimeType.Hourly);
             if (ct.IsCancellationRequested)
                 return;
 
-            if (storefront?.isValid ?? false)
+            if (!await GameAccount.activeAccount.Authenticate() || ct.IsCancellationRequested)
                 return;
 
             int catalogEntryIndex = 0;
+            var allOffers = xrayStorefront.Offers.Union(randomStorefront.Offers);
             List<GameOffer> filteredOffers = new();
-            foreach (var offer in storefront.Offers)
+            foreach (var offer in allOffers)
             {
                 if (await LlamaOfferFilter(offer))
                     filteredOffers.Add(offer);
@@ -346,7 +354,7 @@ public partial class LlamaInterface : Control
                 activeOffers.Add(offer.OfferId, offer);
                 var thisEntry = llamaOfferEntries[catalogEntryIndex];
                 thisEntry.Visible = true;
-                thisEntry.SetOffer(offer).Start();
+                thisEntry.SetOffer(offer).StartTask();
                 catalogEntryIndex++;
             }
 
@@ -364,6 +372,7 @@ public partial class LlamaInterface : Control
             llamaShopSephamore.Release();
             offerListLoadingIcon.Visible = false;
             llamaScrollArea.Visible = true;
+            llamaOfferParent.Visible = success;
             offerListErrorIcon.Visible = !success;
         }
 
@@ -377,21 +386,28 @@ public partial class LlamaInterface : Control
         //if (offer["devName"].ToString() == "Always.UpgradePack.03")
         //    return false;
 
-        string priceTemplateId = offer.RegularPrice.templateId;
-        int price = offer.RegularPrice.quantity;
-        if (price != 1)
-            return true;
-
         var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
+
+        if (!await account.MatchesFulfillmentRequirements(offer))
             return false;
 
-        return (await account.GetProfile(FnProfileTypes.AccountItems).Query()).GetTemplateItems(priceTemplateId).Select(item => item.quantity).Sum() >= 1;
+        string priceTemplateId = offer.Price.templateId;
+        int price = offer.Price.quantity;
+        if (price == 1)
+            return (await account.GetProfile(FnProfileTypes.AccountItems).Query())
+                .GetTemplateItems(priceTemplateId)
+                .Select(item => item.quantity)
+                .Sum() >= 1;
+
+        return true;
     }
 
     public void ClearSelection()
     {
         offerCts?.Cancel();
+
+        currentOfferEntry.ClearOffer();
+        currentCardpackEntry.ClearItem();
 
         openButton.Visible = false;
         purchaseButton.Visible = false;
@@ -400,9 +416,6 @@ public partial class LlamaInterface : Control
         resultEntriesParent.Visible = false;
         surpriseResultPanel.Visible = false;
         soldOutResultPanel.Visible = false;
-
-        currentOfferEntry.ClearOffer();
-        currentCardpackEntry.ClearItem();
 
         currentOfferSelection = null;
         currentCardpackSelection = null;
@@ -423,11 +436,28 @@ public partial class LlamaInterface : Control
     public async void SetLlamaOffer(GameOffer offer)
     {
         ClearSelection();
+
         offerCts = new();
         var ct = offerCts.Token;
 
         //show loading icon
-        
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate() || ct.IsCancellationRequested)
+            return;
+
+        var purchaseLimit = await account.GetPurchaseLimit(offer);
+        if (ct.IsCancellationRequested)
+            return;
+
+        if (offer.Price.quantity > 0)
+        {
+            var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+            if (ct.IsCancellationRequested)
+                return;
+            var inInventory = accountItems.GetTemplateItems(offer.Price.templateId).Select(item => item.quantity).Sum();
+            purchaseLimit = Mathf.Min(purchaseLimit, inInventory / offer.Price.quantity);
+        }
+
         var prerollData = await offer.GetPrerollData();
         if (ct.IsCancellationRequested)
             return;
@@ -436,12 +466,29 @@ public partial class LlamaInterface : Control
         if (ct.IsCancellationRequested)
             return;
 
-        purchaseButton.Visible = true;
         currentOfferSelection = offer;
-        CurrencyHighlight.Instance.SetCurrencyTemplate(offer.RegularPrice.template);
+        CurrencyHighlight.Instance.SetCurrencyTemplate(offer.Price.template);
 
-        var resultItems = prerollData?.attributes?["items"].AsArray().Select(node => new GameItem(null, null, node.AsObject())).ToArray() ?? null;
-        SetSelectedLlamaResults(resultItems);
+        if (purchaseLimit == 0)
+        {
+            soldOutResultPanel.Visible = true;
+        }
+        else
+        {
+            var resultItems = prerollData?.attributes?["items"].AsArray().Select(node => new GameItem(null, null, node.AsObject())).ToArray() ?? null;
+            if (resultItems != null)
+                purchaseLimit = 1;
+            quantitySpinner.MaxValue = Mathf.Max(purchaseLimit, 1);
+            quantitySpinner.Visible = purchaseLimit > 1;
+            purchaseButton.Visible = true;
+            SetSelectedLlamaResults(resultItems);
+        }
+    }
+
+    private void OnQuantityChanged(double value)
+    {
+        if (currentOfferSelection is not null)
+            currentOfferEntry.SetTargetPurchaseQuantity((int)value);
     }
 
     public void SetCardPackLlama(string uuid)
@@ -458,7 +505,7 @@ public partial class LlamaInterface : Control
         purchaseButton.Visible = false;
         openButton.Visible = true;
         soldOutResultPanel.Visible = false;
-
+        
         var maxAmount = currentCardpackSelection.DisplayAmount;
         quantitySpinner.MaxValue = Mathf.Max(maxAmount, 1);
         quantitySpinner.Visible = maxAmount > 1;

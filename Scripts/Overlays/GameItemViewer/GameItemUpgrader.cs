@@ -50,7 +50,7 @@ public partial class GameItemUpgrader : Control
 
     void UpdateItem(GameItem item)
     {
-        int level = item.attributes?["level"].GetValue<int>() ?? 0;
+        int level = item.attributes?["level"]?.GetValue<int>() ?? 0;
         minLevel = level;
         isShardable = 
             item.template.Type == "Schematic" && 

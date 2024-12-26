@@ -18,8 +18,6 @@ public partial class GameOfferEntry : Control
     [Signal]
     public delegate void IsAffordableChangedEventHandler(bool isAffordable);
     [Signal]
-    public delegate void IsUnaffordableChangedEventHandler(bool isUnaffordable);
-    [Signal]
     public delegate void TotalGrantAmountChangedEventHandler(string amount);
     [Signal]
     public delegate void IsLimitedTimeChangedEventHandler(bool isLimitedTime);
@@ -40,6 +38,8 @@ public partial class GameOfferEntry : Control
     bool includeAmountInName = false;
     [Export]
     bool showSingleStockAmount = false;
+    [Export]
+    bool usePersonalPrice = false;
 
     public GameOffer currentOffer { get; private set; }
     GameItem pricePerPurchase;
@@ -82,9 +82,9 @@ public partial class GameOfferEntry : Control
         if (!IsVisibleInTree())
             return;
         if (offerDirty)
-            SetOffer(currentOffer).Start();
+            SetOffer(currentOffer).StartTask();
         else if (accountDirty)
-            RefreshAccount().Start();
+            RefreshAccount().StartTask();
     }
 
     CancellationTokenSource cts;
@@ -110,10 +110,10 @@ public partial class GameOfferEntry : Control
 
         EmitSignal(SignalName.IsErrored, false);
         currentOffer = shopOffer;
-        pricePerPurchase = shopOffer.RegularPrice;
+        pricePerPurchase = shopOffer.Price;
         //in future, add support for an item list
         grantedItem = shopOffer.itemGrants.FirstOrDefault().Clone();
-        grantedItem.attributes["shopQuantity"] = -1;
+        grantedItem.customData["shopQuantity"] = -1;
 
         targetPurchaseQuantity = 1;
         currentPurchaseQuantity = 1;
@@ -157,20 +157,23 @@ public partial class GameOfferEntry : Control
         currentStockLimit = stockLimit;
         if (currentStockLimit == 999)
             currentStockLimit = -1;
-        grantedItem.attributes["shopQuantity"] = currentStockLimit;
+        grantedItem.customData["shopQuantity"] = currentStockLimit;
 
         if (grantedItem.template.Type == "CardPack")
         {
             int tier = (await currentOffer.GetPrerollData())?.attributes?["highest_rarity"]?.GetValue<int>() ?? 0;
             if (ct.IsCancellationRequested)
                 return;
-            grantedItem.attributes["llamaTier"] = tier;
+            grantedItem.customData["llamaTier"] = tier;
         }
 
-        var finalPrice = await currentOffer.GetPersonalPrice();
-        if (ct.IsCancellationRequested)
-            return;
-        pricePerPurchase = finalPrice;
+        if (usePersonalPrice)
+        {
+            var finalPrice = await currentOffer.GetPersonalPrice();
+            if (ct.IsCancellationRequested)
+                return;
+            pricePerPurchase = finalPrice;
+        }
 
         if (pricePerPurchase.quantity > 0)
         {
@@ -225,7 +228,7 @@ public partial class GameOfferEntry : Control
 
         EmitSignal(SignalName.IsInStockChanged, currentStockLimit != 0);
         EmitSignal(SignalName.IsFreeChanged, price == 0);
-        EmitSignal(SignalName.IsAffordableChanged, pricePerPurchase.quantity <= currentPriceInInventory);
+        EmitSignal(SignalName.IsAffordableChanged, price == 0 || pricePerPurchase.quantity <= currentPriceInInventory);
         EmitSignal(SignalName.IsLimitedTimeChanged, currentOffer.OfferId == "D46EC225FA1149ADB00B4B17B2ABAB70"); //offerId of random free llamas which only last 1 hour
         //8339003D26B24F70878EE280B70C340D: offerId of Winter free llamas that restock daily for (14?) days
         //8339003D26B24F70878EE280B70C340D: offerId of Winter free llamas that restock daily for (14?) days
@@ -244,7 +247,7 @@ public partial class GameOfferEntry : Control
             EmitSignal(SignalName.StockChanged, "");
         }
 
-        var name = currentOffer.Title ?? grantedItem.template.Name;
+        var name = currentOffer.Title ?? grantedItem.template.DisplayName;
         if (includeAmountInName)
         {
             if (currentStockLimit > (showSingleStockAmount ? 1 : 0))
@@ -265,7 +268,7 @@ public partial class GameOfferEntry : Control
         if (currentOffer.SimultaniousLimit > 0)
             maxQuantity = Mathf.Min(maxQuantity, currentOffer.SimultaniousLimit);
 
-        currentPurchaseQuantity = Mathf.Clamp(targetPurchaseQuantity, 1, maxQuantity);
+        currentPurchaseQuantity = Mathf.Clamp(targetPurchaseQuantity, 1, Mathf.Max(maxQuantity, 1));
         EmitSignal(SignalName.TotalGrantAmountChanged, (grantedItem.quantity * currentPurchaseQuantity).ToString());
 
         var price = pricePerPurchase.quantity * currentPurchaseQuantity;

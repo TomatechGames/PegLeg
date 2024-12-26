@@ -25,11 +25,10 @@ static class GameClient
 
     const string fortNewSwitchClientId = "98f7e42c2e3a4f86a74eb43fbb41ed39";
     const string fortNewSwitchSecret = "0a2449a2-001a-451e-afec-3e812901c4d7";
-    static readonly string fortNewSwitchAuthString = ClientAuthHeaderFromKeys(fortAndroidClientId, fortAndroidSecret);
+    static readonly string fortNewSwitchAuthString = ClientAuthHeaderFromKeys(fortNewSwitchClientId, fortNewSwitchSecret);
 
     public static string ClientID => fortNewSwitchClientId;
-    public static string B64AuthString => fortNewSwitchAuthString;
-    public static readonly AuthenticationHeaderValue clientHeader = new("Basic", B64AuthString);
+    public static readonly AuthenticationHeaderValue clientHeader = new ("Basic", fortNewSwitchAuthString);
 
     static AuthenticationHeaderValue clientTokenHeader;
     static int clientExpiresAt = -999;
@@ -37,19 +36,23 @@ static class GameClient
 
     public static async Task<AuthenticationHeaderValue> GetClientTokenHeader()
     {
+        
         if (!ClientTokenExpired)
             return clientTokenHeader;
+
+        GD.Print(fortNewSwitchAuthString);
 
         var tokenRequest = await Helpers.MakeRequest(
             HttpMethod.Post,
             FnEndpoints.loginEndpoint,
             "/account/api/oauth/token",
-            "",
+            $"grant_type=client_credentials",
             clientHeader
         );
 
         if (tokenRequest is not null && tokenRequest["errorMessage"] is null)
         {
+            GD.Print("client token success");
             clientExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + tokenRequest["expires_in"].GetValue<int>();
             return clientTokenHeader = new("Bearer", tokenRequest["access_token"].ToString());
         }
@@ -87,6 +90,18 @@ static class GameClient
         )).AsObject();
     }
 
+    public static async Task<JsonObject> LoginWithDeviceAuth(JsonObject deviceDetails)
+    {
+        GD.Print("DD: " + deviceDetails);
+        if (deviceDetails is null)
+            return null;
+        return await LoginWithDeviceAuth(
+                deviceDetails["accountId"]?.ToString(), 
+                deviceDetails["deviceId"]?.ToString(), 
+                deviceDetails["secret"]?.ToString()
+            );
+    }
+
     public static async Task<JsonObject> LoginWithDeviceAuth(string accountId, string deviceId, string deviceSecret)
     {
         if (string.IsNullOrWhiteSpace(accountId) || string.IsNullOrWhiteSpace(deviceId) || string.IsNullOrWhiteSpace(deviceSecret))
@@ -118,7 +133,7 @@ static class GameClient
         var linkGetResult = await Helpers.MakeRequest(
             HttpMethod.Post,
             FnEndpoints.loginEndpoint,
-            "/account/api/oauth/token",
+            "/account/api/oauth/deviceAuthorization",
             "",
             clientTokenHeader
         );
@@ -143,7 +158,7 @@ static class GameClient
             FnEndpoints.loginEndpoint,
             "/account/api/oauth/token",
             $"grant_type=device_code&" +
-            $"secret={deviceCode}",
+            $"device_code={deviceCode}",
             clientHeader
         );
         if (linkCheckResult is not null && linkCheckResult["errorMessage"] is null)

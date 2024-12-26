@@ -83,7 +83,7 @@ public partial class SurvivorSquadEntry : Control
 
         List<Task> tasks = new();
 
-        bool leaderSlotUnlocked = targetProfile.GetTemplateItems("HomebaseNode:questreward_" + slotRequirements[0].ToLower()).Length > 0;
+        bool leaderSlotUnlocked = newProfile.GetTemplateItems("HomebaseNode:questreward_" + slotRequirements[0].ToLower()).Length > 0;
         if (leaderSlotUnlocked)
             tasks.Add(leadSurvivorSlot.SetSlotData(FnProfileTypes.AccountItems, "Worker", item => SurvivorMatch(item, 0)));
         bool hasAnySlot = leaderSlotUnlocked;
@@ -92,7 +92,7 @@ public partial class SurvivorSquadEntry : Control
         {
             int slotIndex = i + 1;
 
-            bool slotUnlocked = targetProfile.GetTemplateItems("HomebaseNode:questreward_" + slotRequirements[slotIndex].ToLower()).Length > 0;
+            bool slotUnlocked = newProfile.GetTemplateItems("HomebaseNode:questreward_" + slotRequirements[slotIndex].ToLower()).Length > 0;
             if (slotUnlocked)
                 tasks.Add(survivorSlots[i].SetSlotData(FnProfileTypes.AccountItems, "Worker", kvp => SurvivorMatch(kvp, slotIndex)));
             hasAnySlot |= slotUnlocked;

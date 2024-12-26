@@ -5,7 +5,7 @@ shader_type canvas_item;
 const float INV_TWO_PI = 1.0/6.28318530718;
 
 uniform vec2 ControlSize = vec2(100.0, 100.0);
-uniform float revealScale :hint_range(0.0, 1.0, 0.01) = 0;
+uniform float RevealScale :hint_range(0.0, 1.0, 0.01) = 0;
 
 void fragment() {
 	float smallest=min(ControlSize.x, ControlSize.y);
@@ -15,7 +15,7 @@ void fragment() {
 	vec2 fitUV = adaptToAspect(ControlSize, vec2(0.5), vec2(1), UV, true);
 	float gradient = distance(fitUV, vec2(0.5));
 	gradient*=20.0;
-	gradient-=(revealScale*(upperBound*20.0+5.0))-1.0;
+	gradient-=(RevealScale*(upperBound*20.0+5.0))-1.0;
 	
 	COLOR.a*=gradient;
 }

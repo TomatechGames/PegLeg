@@ -334,7 +334,7 @@ public partial class GameItemViewer : ModalWindow
     {
         purchasePanel.Visible = true;
         currentOffer = offer;
-        currentOfferEntry.SetOffer(currentOffer).Start();
+        currentOfferEntry.SetOffer(currentOffer).StartTask();
         SetDisplayItem(currentOffer.itemGrants[0]);
     }
 

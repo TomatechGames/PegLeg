@@ -94,7 +94,7 @@ public partial class ItemShopInterface : Control
             SpawnShopEntry();
         var thisEntry = inactiveEntries[0];
         inactiveEntries.Remove(thisEntry);
-        thisEntry.SetOffer(newOffer).Start();
+        thisEntry.SetOffer(newOffer).StartTask();
         thisEntry.Visible = true;
         thisEntry.MoveToFront();
         activeEntries.Add(newOffer.OfferId, thisEntry);
