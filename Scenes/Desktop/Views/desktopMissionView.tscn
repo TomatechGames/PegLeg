@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://c78gt6b2m1utg"]
+[gd_scene load_steps=30 format=3 uid="uid://c78gt6b2m1utg"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
@@ -16,8 +16,10 @@
 [ext_resource type="Texture2D" uid="uid://jipvjhedh7jy" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Epic-L.png" id="13_0u7ma"]
 [ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="14_fvpat"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="15_618bo"]
+[ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="15_g8mr2"]
 [ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="16_egkbm"]
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="17_eyhau"]
+[ext_resource type="Texture2D" uid="uid://dwam1asop7ckw" path="res://Images/InterfaceIcons/PinataMiniRewardPack.png" id="17_n40x5"]
 [ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="18_phyx5"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="19_xbd21"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="20_dnnsf"]
@@ -42,7 +44,7 @@ shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 30.0
 
-[node name="Missions" type="PanelContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemFilterButtons", "missionList", "loadingIcon")]
+[node name="Missions" type="MarginContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemFilterButtons", "missionList", "loadingIcon")]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -158,8 +160,9 @@ expand_mode = 1
 [node name="SearchBox" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "///(v-buck | worker | hero) (v-buck | leg | mythic)"
+text = "///v-buck | (worker leg !lead) | (hero leg) | (worker mythic) | (upgrade llama)"
 placeholder_text = "Search in missions"
+context_menu_enabled = false
 clear_button_enabled = true
 
 [node name="ZoneFilters" type="MarginContainer" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("checkButtonParent")]
@@ -389,33 +392,66 @@ layout_mode = 2
 tooltip_text = "Crafting Resources"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 7.0
-offset_top = 1.0
-offset_bottom = -4.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("14_fvpat")
-expand_mode = 1
-stretch_mode = 5
-
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 7.0
-offset_right = -7.0
-offset_bottom = 2.0
+offset_left = 7.0
+offset_top = -3.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("15_618bo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = 5.0
+offset_right = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.310669
+mouse_filter = 2
+texture = ExtResource("15_g8mr2")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_right = 7.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.310669
+mouse_filter = 2
+texture = ExtResource("17_n40x5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 7.0
+offset_right = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("14_fvpat")
 expand_mode = 1
 stretch_mode = 5
 
@@ -437,6 +473,7 @@ elementScene = ExtResource("17_eyhau")
 [node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -451,6 +488,7 @@ layout_mode = 2
 
 [node name="DynGridContainer" type="Container" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
 layout_mode = 2
+mouse_filter = 0
 script = ExtResource("18_phyx5")
 minCols = 3
 compressSpacing = true

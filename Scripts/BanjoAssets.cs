@@ -376,10 +376,13 @@ public class GameItemTemplate
             "Mythic" => 6,
             _ => 2 //todo: rarity items with unspecified rarity should be exported as "Uncommon", then this can be 0
         };
-    public Color RarityColor => rarityColours[RarityLevel];
+    public Color RarityColor => Name.StartsWith("ZCP_") ? Colors.Transparent : rarityColours[RarityLevel];
 
-    public int Tier => rawData["Tier"] is JsonValue tierVal ? (tierVal.TryGetValue<int>(out var tier) ? tier : 0) : 0;
+    public int Tier => rawData["Tier"]?.GetValue<int>() ?? 0;
+    //public int Tier => rawData["Tier"] is JsonValue tierVal ? (tierVal.TryGetValue<int>(out var tier) ? tier : 0) : 0;
     public string Personality => rawData["Personality"]?.ToString();
+
+    public bool IsPermenant => rawData["IsPermanent"]?.GetValue<bool>() ?? false;
 
     public Texture2D GetTexture(FnItemTextureType textureType = FnItemTextureType.Preview) => GetTexture(textureType, BanjoAssets.defaultIcon);
     public Texture2D GetTexture(Texture2D fallbackIcon) => GetTexture(FnItemTextureType.Preview, fallbackIcon);
@@ -392,7 +395,7 @@ public class GameItemTemplate
         if (Type == "Worker" && (rawData["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false))
             return GetSubtypeTexture(SubType ?? "Survivor", fallbackIcon);
 
-        if (Type == "CardPack" && textureType == FnItemTextureType.Preview && DisplayName.Contains("Legendary"))
+        if (Type == "CardPack" && textureType == FnItemTextureType.Preview && DisplayName.Contains("Legendary") && !Name.StartsWith("ZCP_"))
             return goldLlama;
 
         if (TryGetTexturePath(textureType, out var texturePath))
@@ -580,7 +583,7 @@ public class GameItemTemplate
         return rewards.ToArray();
     }
 
-    public void GenerateSearchTags(bool assumeUncommon = true)
+    public JsonArray GenerateSearchTags(bool assumeUncommon = true)
     {
         List<string> tags = new()
         {
@@ -605,7 +608,9 @@ public class GameItemTemplate
         rawData["RarityLv"] = RarityLevel;
         if (tags.Contains("Worker"))
             tags.Add("Survivor");
-        rawData["searchTags"] = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
+        var searchTags = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
+        rawData["searchTags"] = searchTags;
+        return searchTags;
     }
 
     public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)

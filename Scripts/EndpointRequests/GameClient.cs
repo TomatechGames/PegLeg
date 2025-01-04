@@ -92,7 +92,6 @@ static class GameClient
 
     public static async Task<JsonObject> LoginWithDeviceAuth(JsonObject deviceDetails)
     {
-        GD.Print("DD: " + deviceDetails);
         if (deviceDetails is null)
             return null;
         return await LoginWithDeviceAuth(

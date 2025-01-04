@@ -60,23 +60,17 @@ public partial class QuestViewer : Control
             )
             return;
 
-        try
-        {
-            LoadingOverlay.AddLoadingKey("pinnedQuest");
-            if (!await account.Authenticate())
-                return;
+        using var _ = LoadingOverlay.CreateToken();
 
-            if (pinButton.ButtonPressed)
-                await account.AddPinnedQuest(currentQuest.questItem);
-            else
-                await account.RemovePinnedQuest(currentQuest.questItem);
+        if (!await account.Authenticate())
+            return;
 
-            pinButton.ButtonPressed = currentQuest.isPinned;
-        }
-        finally
-        {
-            LoadingOverlay.RemoveLoadingKey("pinnedQuest");
-        }
+        if (pinButton.ButtonPressed)
+            await account.AddPinnedQuest(currentQuest.questItem);
+        else
+            await account.RemovePinnedQuest(currentQuest.questItem);
+
+        pinButton.ButtonPressed = currentQuest.isPinned;
     }
 
     async void RerollQuest()
@@ -88,22 +82,16 @@ public partial class QuestViewer : Control
             )
             return;
 
-        try
-        {
-            LoadingOverlay.AddLoadingKey("rerollQuest");
-            if (!await account.Authenticate())
-                return;
+        using var _ = LoadingOverlay.CreateToken();
 
-            var newQuest = await account.RerollQuest(currentQuest.questItem);
-            currentQuest.LinkQuestItem(newQuest);
+        if (!await account.Authenticate())
+            return;
 
-            SetupQuest(currentQuest);
-            rerollButton.Visible = account.CanRerollQuest();
-        }
-        finally
-        {
-            LoadingOverlay.RemoveLoadingKey("rerollQuest");
-        }
+        var newQuest = await account.RerollQuest(currentQuest.questItem);
+        currentQuest.LinkQuestItem(newQuest);
+
+        SetupQuest(currentQuest);
+        rerollButton.Visible = account.CanRerollQuest();
     }
 
     public void SetupQuest(QuestSlot quest)
@@ -130,8 +118,7 @@ public partial class QuestViewer : Control
                 rewardEntries.Add(newEntry);
             }
             rewardEntries[i].SetItem(rewards[i]);
-            rewardEntries[i].SetRewardNotification();
-            rewardEntries[i].SetInteractableSmart();
+            rewards[i].SetRewardNotification().StartTask();
             rewardEntries[i].Visible = true;
         }
 

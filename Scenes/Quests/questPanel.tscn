@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://dlby27o4y2c0o"]
 
 [ext_resource type="Script" path="res://Scripts/Quests/QuestViewer.cs" id="1_v67fr"]
-[ext_resource type="PackedScene" uid="uid://c5in0c8tv1sfq" path="res://Scenes/QuestEntries/quest_objective.tscn" id="2_2pmaq"]
+[ext_resource type="PackedScene" uid="uid://c5in0c8tv1sfq" path="res://Scenes/Quests/quest_objective.tscn" id="2_2pmaq"]
 [ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="3_q0o1l"]
 [ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="4_6x6uw"]
 [ext_resource type="Texture2D" uid="uid://0dsm5rygx6qr" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_checkmark_64.png" id="5_oqt08"]
@@ -47,9 +47,9 @@ theme_override_constants/margin_bottom = 5
 
 [node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
 layout_mode = 2
-split_offset = 150
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+custom_minimum_size = Vector2(175, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -196,7 +196,6 @@ size_flags_horizontal = 3
 [node name="Rewards" type="MarginContainer" parent="MarginContainer/HSplitContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/Rewards"]
@@ -205,7 +204,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/Rewards/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "Rewards:"
+text = "Rewards:   "
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HSplitContainer/Rewards/VBoxContainer"]
 layout_mode = 2

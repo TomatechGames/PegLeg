@@ -18,19 +18,19 @@ public partial class PerkViewer : Control
     Control interactionBlocker;
 
     [Export(PropertyHint.ArrayType)]
-    PerkEntry[] realPerkEntries;
-
-    [Export(PropertyHint.ArrayType)]
-    PerkEntry[] optionalPerkEntries;
+    PerkEntry[] currentPerkEntries;
 
     [Export]
-    Control tierUpSeparator;
+    Control perkUpArea;
 
     [Export]
-    Control reperkApplyButton;
+    PerkEntry perkUpEntry;
 
     [Export(PropertyHint.ArrayType)]
-    GameItemEntry[] reperkCostEntries;
+    PerkEntry[] reperkEntries;
+
+    [Export]
+    Button perkApplyButton;
 
     static JsonObject reperkCosts;
 
@@ -40,14 +40,15 @@ public partial class PerkViewer : Control
         using var reperkCostFile = FileAccess.Open("res://External/reperkCosts.json", FileAccess.ModeFlags.Read);
         reperkCosts = JsonNode.Parse(reperkCostFile.GetAsText()).AsObject();
 
-        for (int i = 0; i < realPerkEntries.Length; i++)
+        for (int i = 0; i < currentPerkEntries.Length; i++)
         {
-            realPerkEntries[i].Pressed += (index, id, locked) => OpenPerkChanger(index, locked);
+            currentPerkEntries[i].Pressed += (index, id, locked) => OpenPerkChanger(index, locked);
         }
 
-        for (int i = 0; i < optionalPerkEntries.Length; i++)
+        perkUpEntry.Pressed += (index, id, locked) => SelectReplacementPerk(id, index);
+        for (int i = 0; i < reperkEntries.Length; i++)
         {
-            optionalPerkEntries[i].Pressed += (index, id, locked) => SelectReplacementPerk(id, index);
+            reperkEntries[i].Pressed += (index, id, locked) => SelectReplacementPerk(id, index);
         }
 
     }
@@ -145,20 +146,20 @@ public partial class PerkViewer : Control
         activePerks ??= Array.Empty<string>();
         for (int i = 0; i < activePerks.Length; i++)
         {
-            realPerkEntries[i].Visible = true;
-            realPerkEntries[i].SetPerkAlteration(activePerks[i], isSchematic, i == 5 && !isTrap, i);
+            currentPerkEntries[i].Visible = true;
+            currentPerkEntries[i].SetPerkAlteration(activePerks[i], isSchematic, i == 5 && !isTrap, i);
             if (i >= (perkPossibilities?.Length ?? 0))
             {
-                realPerkEntries[i].SetInteractable(false);
-                realPerkEntries[i].SetLocked(true);
+                currentPerkEntries[i].SetInteractable(false);
+                currentPerkEntries[i].SetLocked(true);
                 continue;
             }
-            realPerkEntries[i].SetInteractable(perkPossibilities[i].Length > 1 || PerkIsUpgradeable(activePerks[i]));
-            realPerkEntries[i].SetLocked(currentItem.profile is not null && i + 1 > unlockedPerks);
+            currentPerkEntries[i].SetInteractable(perkPossibilities[i].Length > 1 || PerkIsUpgradeable(activePerks[i]));
+            currentPerkEntries[i].SetLocked(currentItem.profile is not null && i + 1 > unlockedPerks);
         }
-        for (int i = activePerks.Length; i < realPerkEntries.Length; i++)
+        for (int i = activePerks.Length; i < currentPerkEntries.Length; i++)
         {
-            realPerkEntries[i].Visible = false;
+            currentPerkEntries[i].Visible = false;
         }
     }
 
@@ -177,11 +178,10 @@ public partial class PerkViewer : Control
     public void OpenPerkChanger(int index, bool isLocked = false)
     {
         //GD.Print("opening perk changer for index: " + index);
-        selectedPerkLocked = isLocked;
         string baseAlteration = activePerks[index];
         string[] possibilities = perkPossibilities[index];
         string tierSource = baseAlteration?[^1..] ?? "";
-        int.TryParse(tierSource, out int tier);
+        var tierSuccess = int.TryParse(tierSource, out int tier);
         if ((baseAlteration?[^2] ?? ' ') == 'v')
             tier = 0;
         bool hasUpgrade = (index != 5 || isTrap) && tier > 0 && tier < 5;
@@ -189,8 +189,11 @@ public partial class PerkViewer : Control
         if (!hasUpgrade && possibilities.Length==0)
         {
             //this shouldnt happen, but if it does, kablam
+            GD.PushWarning("Kablam (no perk possibilities?)");
             return;
         }
+
+        selectedPerkLocked = isLocked;
 
         bool wasOpen = selectedPerkIndex != -1;
         selectedPerkIndex = index;
@@ -198,16 +201,12 @@ public partial class PerkViewer : Control
 
         if (hasUpgrade)
         {
-            string tierUpAlteration = baseAlteration[..^1] + (tier + 1);
-            optionalPerkEntries[0].SetPerkAlteration(tierUpAlteration, true);
-            optionalPerkEntries[0].Visible = true;
-            tierUpSeparator.Visible = true;
+            string perkUpAlteration = baseAlteration[..^1] + (tier + 1);
+            perkUpEntry.SetPerkAlteration(perkUpAlteration, true);
+            perkUpArea.Visible = true;
         }
         else
-        {
-            optionalPerkEntries[0].Visible = false;
-            tierUpSeparator.Visible = false;
-        }
+            perkUpArea.Visible = false;
 
         for (int i = 0; i < possibilities.Length; i++)
         {
@@ -219,27 +218,27 @@ public partial class PerkViewer : Control
 
             if (perk == baseAlteration)
             {
-                optionalPerkEntries[i + 1].Visible = false;
+                reperkEntries[i].Visible = false;
                 continue;
             }
 
-            optionalPerkEntries[i + 1].SetPerkAlteration(perk, true, index == 5 && !isTrap);
-            optionalPerkEntries[i + 1].Visible = true;
+            reperkEntries[i].SetPerkAlteration(perk, true, index == 5 && !isTrap, i + 1);
+            reperkEntries[i].Visible = true;
         }
-        if(index == 5 && !isTrap)
-            optionalPerkEntries[possibilities.Length].Visible = false;
-        for (int i = possibilities.Length; i < optionalPerkEntries.Length-1; i++)
+        //if(index == 5 && !isTrap)
+        //    reperkEntries[possibilities.Length].Visible = false;
+        for (int i = possibilities.Length; i < reperkEntries.Length; i++)
         {
-            optionalPerkEntries[i+1].Visible = false;
+            reperkEntries[i].Visible = false;
         }
 
         //reset cost visuals
         selectedReplacementPerk = null;
-        for (int i = 0; i < reperkCostEntries.Length; i++)
-        {
-            reperkCostEntries[i].Visible = false;
-        }
-        reperkApplyButton.Visible = false;
+        //for (int i = 0; i < reperkCostEntries.Length; i++)
+        //{
+        //    reperkCostEntries[i].Visible = false;
+        //}
+        perkApplyButton.Visible = false;
 
         if (wasOpen)
             return;
@@ -299,14 +298,15 @@ public partial class PerkViewer : Control
             int existingAmount = existingItem?.quantity ?? 0;
             if (existingAmount < requiredAmount)
                 allCostsMet = false;
-            reperkCostEntries[i].SetItem(existingItem ?? costItem.CreateInstance(0));
-            reperkCostEntries[i].Visible = true;
+            //reperkCostEntries[i].SetItem(existingItem ?? costItem.CreateInstance(0));
+            //reperkCostEntries[i].Visible = true;
         }
-        for (int i = costs.Count; i < reperkCostEntries.Length; i++)
-        {
-            reperkCostEntries[i].Visible = false;
-        }
-        reperkApplyButton.Visible = allCostsMet && !selectedPerkLocked;
+        //for (int i = costs.Count; i < reperkCostEntries.Length; i++)
+        //{
+        //    reperkCostEntries[i].Visible = false;
+        //}
+        perkApplyButton.Visible = !selectedPerkLocked;
+        perkApplyButton.Disabled = !allCostsMet;
     }
 
     public void ApplyReplacementPerk()

@@ -180,7 +180,7 @@ public partial class GameOfferEntry : Control
             var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
             if (ct.IsCancellationRequested)
                 return;
-            currentPriceInInventory = accountItems.GetTemplateItems(pricePerPurchase.templateId).Select(item=>item.quantity).Sum();
+            currentPriceInInventory = accountItems.GetFirstTemplateItem(pricePerPurchase.templateId)?.quantity ?? 0;
         }
 
         //async stuff complete, now update visuals

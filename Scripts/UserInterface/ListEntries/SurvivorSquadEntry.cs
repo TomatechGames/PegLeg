@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ public partial class SurvivorSquadEntry : Control
     InventoryItemSlot[] survivorSlots;
 
     bool statUpdateQueued = false;
-    GameProfile targetProfile;
+    GameAccount overrideAccount;
 
     public override void _Ready()
     {
@@ -50,6 +51,13 @@ public partial class SurvivorSquadEntry : Control
                 survivorSlots[i].UpdateItem();
             statUpdateQueued = true;
         };
+        leadSurvivorSlot.SetSlotData(
+                FnProfileTypes.AccountItems,
+                "Worker",
+                BanjoAssets.supplimentaryData.SynergyToSquadId[synergy],
+                0,
+                "HomebaseNode:questreward_" + slotRequirements[0].ToLower()
+            );
 
         for (int i = 0; i < survivorSlots.Length; i++)
         {
@@ -57,53 +65,58 @@ public partial class SurvivorSquadEntry : Control
 
             survivorSlots[i].OnItemChangeRequested += slot => HandleChangeRequest(slot, slotIndex);
             survivorSlots[i].OnSlotItemChanged += handle => statUpdateQueued = true;
+
+            survivorSlots[i].SetSlotData(
+                    FnProfileTypes.AccountItems,
+                    "Worker",
+                    BanjoAssets.supplimentaryData.SynergyToSquadId[synergy],
+                    slotIndex,
+                    "HomebaseNode:questreward_" + slotRequirements[slotIndex].ToLower()
+                );
         }
 
-        SetAccount(GameAccount.activeAccount);
+        SetOverrideAccount();
+        GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
+    }
+
+    void OnActiveAccountChanged(GameAccount _)
+    {
+        if (overrideAccount is null)
+            UpdateAccount();
+    }
+
+    public void SetOverrideAccount(GameAccount account = null)
+    {
+        overrideAccount = account;
+        UpdateAccount();
     }
 
     CancellationTokenSource accountChangeCts;
-    async void SetAccount(GameAccount account)
+    public async void UpdateAccount()
     {
         //show loading icon?
         Visible = false;
         fortPointsLabel.Text = "+???";
-        targetProfile = null;
 
         accountChangeCts?.Cancel();
         accountChangeCts = new();
         var ct = accountChangeCts.Token;
 
-        if (!await account.Authenticate() || ct.IsCancellationRequested)
-            return;
-
+        var account = overrideAccount ?? GameAccount.activeAccount;
         var newProfile = await account.GetProfile(FnProfileTypes.AccountItems).Query();
-        if (ct.IsCancellationRequested)
+        if (newProfile is null || ct.IsCancellationRequested)
             return;
 
-        List<Task> tasks = new();
+        bool hasAnySlot = slotRequirements.Distinct().Any(requirement =>
+            newProfile.GetFirstTemplateItem("HomebaseNode:questreward_" + requirement.ToLower()) is not null
+        );
 
-        bool leaderSlotUnlocked = newProfile.GetTemplateItems("HomebaseNode:questreward_" + slotRequirements[0].ToLower()).Length > 0;
-        if (leaderSlotUnlocked)
-            tasks.Add(leadSurvivorSlot.SetSlotData(FnProfileTypes.AccountItems, "Worker", item => SurvivorMatch(item, 0)));
-        bool hasAnySlot = leaderSlotUnlocked;
+        leadSurvivorSlot.SetOverrideAccount(overrideAccount);
 
         for (int i = 0; i < survivorSlots.Length; i++)
         {
-            int slotIndex = i + 1;
-
-            bool slotUnlocked = newProfile.GetTemplateItems("HomebaseNode:questreward_" + slotRequirements[slotIndex].ToLower()).Length > 0;
-            if (slotUnlocked)
-                tasks.Add(survivorSlots[i].SetSlotData(FnProfileTypes.AccountItems, "Worker", kvp => SurvivorMatch(kvp, slotIndex)));
-            hasAnySlot |= slotUnlocked;
+            survivorSlots[i].SetOverrideAccount(overrideAccount);
         }
-
-
-        await Task.WhenAll(tasks);
-        if (ct.IsCancellationRequested)
-            return;
-
-        targetProfile = newProfile;
 
         if (hasAnySlot)
             Visible = true;
@@ -111,44 +124,40 @@ public partial class SurvivorSquadEntry : Control
         UpdateFortStat();
     }
 
-    bool SurvivorMatch(GameItem item, int slotIndex) =>
-        item.attributes?["squad_id"]?.ToString() == BanjoAssets.supplimentaryData.SynergyToSquadId[synergy] &&
-        (int)item.attributes["squad_slot_idx"] == slotIndex;
 
     public override void _Process(double delta)
     {
         if (statUpdateQueued)
             UpdateFortStat();
+        statUpdateQueued = false;
     }
 
     void UpdateFortStat()
     {
         int summedValue = leadSurvivorSlot.slottedItem?.Rating ?? 0;
-        summedValue += survivorSlots.Select(slot => slot.slottedItem?.quantity ?? 0).Sum();
+        summedValue += survivorSlots.Select(slot => slot.slottedItem?.Rating ?? 0).Sum();
 
         if (IsInstanceValid(fortPointsLabel))
             fortPointsLabel.Text = $"+{summedValue}";
     }
 
-    static readonly GameItemPredicate standardFilter = item =>
+    static readonly Predicate<GameItem> standardFilter = item =>
         item.attributes?["squad_id"] is null &&
         item.template.SubType is null;
 
-    static readonly GameItemPredicate leaderFilter = item =>
+    static readonly Predicate<GameItem> leaderFilter = item =>
         item.attributes?["squad_id"] is null &&
         item.template.SubType is not null;
 
     async void HandleChangeRequest(InventoryItemSlot slot, int slotIndex)
     {
+        var profile = slot.currentProfile;
+        if (!(profile?.account.isOwned ?? false))
+            return;
+
         var filter = slot == leadSurvivorSlot ? leaderFilter : standardFilter;
         var fromItem = slot.slottedItem;
         var squadID = BanjoAssets.supplimentaryData.SynergyToSquadId[synergy];
-
-
-        GameProfile profile = null;
-        if (profile is null)
-            return;
-        await profile.Query();
 
         GameItemSelector.Instance.RestoreDefaults();
         GameItemSelector.Instance.titleText = "Select a Survivor";
@@ -185,9 +194,8 @@ public partial class SurvivorSquadEntry : Control
 
         if (body is not null && await profile?.account.Authenticate() && profile.profileId == FnProfileTypes.AccountItems)
         {
-            LoadingOverlay.AddLoadingKey("changingSurvivor");
+            using var _ = LoadingOverlay.CreateToken();
             await profile.PerformOperation("AssignWorkerToSquad", body.ToString());
-            LoadingOverlay.RemoveLoadingKey("changingSurvivor");
         }
     }
 }

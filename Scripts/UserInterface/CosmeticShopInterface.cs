@@ -12,8 +12,6 @@ public partial class CosmeticShopInterface : Control
     [Export]
     Button sacButton;
     [Export]
-    SplitContainer splitContainer;
-    [Export]
     ScrollContainer verticalScrollBox;
     [Export]
     Control navContainer;
@@ -119,21 +117,15 @@ public partial class CosmeticShopInterface : Control
         var newCode = await GenericLineEditWindow.OpenLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
         if (newCode is null)
             return;
-        try
-        {
-            LoadingOverlay.AddLoadingKey("setSAC");
 
-            var account = GameAccount.activeAccount;
-            if (!await account.Authenticate())
-                return;
+        using var _ = LoadingOverlay.CreateToken();
 
-            await account.SetSACCode(newCode);
-            sacButton.Text = await account.IsSACExpired() ? "None" : (await account.GetSACCode());
-        }
-        finally
-        {
-            LoadingOverlay.RemoveLoadingKey("setSAC");
-        }
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        await account.SetSACCode(newCode);
+        sacButton.Text = await account.IsSACExpired() ? "None" : (await account.GetSACCode());
 
     }
 
@@ -262,7 +254,6 @@ public partial class CosmeticShopInterface : Control
     async Task GenerateSimpleShop(JsonObject cosmeticShop)
     {
         navContainer.Visible = false;
-        splitContainer.Collapsed = true;
         int opCount = 0;
         foreach (var category in cosmeticShop)
         {
@@ -294,7 +285,6 @@ public partial class CosmeticShopInterface : Control
     async Task GenerateComplexShop(JsonObject cosmeticShop)
     {
         navContainer.Visible = true;
-        splitContainer.Collapsed = false;
         var navRoot = navigationPane.CreateItem();
         List<CosmeticShopRow> rowsToPopulate = new();
         foreach (var category in cosmeticShop)
@@ -315,8 +305,10 @@ public partial class CosmeticShopInterface : Control
                 var header = shopHeaderScene.Instantiate<Control>();
                 firstHeader ??= header;
                 pageParent.AddChild(header);
-                if (header.FindChild("HeaderLabel", true) is Label headerLabel)
+                if (header.GetNode("%HeaderLabel") is Label headerLabel)
                     headerLabel.Text = section.Key;
+                if (section.Key == "Jam Tracks" && header.GetNode("%JamTrackViewer") is Button jamTrackBtn)
+                    jamTrackBtn.Pressed += OpenJamTracks;
                 //navSec.AddButton(1, navButtonTexture);
                 navSection.SetMetadata(0, header);
                 List<CosmeticShopRow> pageRows = new();
@@ -350,6 +342,7 @@ public partial class CosmeticShopInterface : Control
             }
         }
     }
+    void OpenJamTracks() => OS.ShellOpen("https://www.fortnite.com/item-shop/jam-tracks");
 
     void PrepareFilters()
     {
@@ -638,11 +631,11 @@ public class CosmeticShopOfferData
             isVeryOld = lastSeenDaysAgo > 1000;
 
             if (isRecentlyNew && isAddedToday)
-                bonusText = " # NEW";
+                bonusText = "NEW TODAY";
             else if (isRecentlyNew)
                 bonusText = "NEW";
             else if (isAddedToday)
-                bonusText = " # ";
+                bonusText = "Re-Added";
         }
         else
         {
@@ -650,27 +643,29 @@ public class CosmeticShopOfferData
         }
     }
 
+    //not worth implementing here, cosmetics will be moving into GameOffer soon
+    //just wanted to comment this out to prevent compiler warnings about a synchronous async method
     bool ownershipLoadStarted;
     public bool ownershipLoadComplete { get; private set; }
     public event Action OnOwnershipLoaded;
-    public async void LoadOwnership()
-    {
-        if (ownershipLoadStarted)
-        {
-            if (ownershipLoadComplete)
-                OnOwnershipLoaded?.Invoke();
-            return;
-        }
-        ownershipLoadStarted = true;
-        if (isDiscountBundle)
-        {
-            //TODO: determine discount amount based on dynamic bundle data
-            discountAmount = price - entryData["finalPrice"].GetValue<int>();
-        }
-        isOwned = false;
-        OnOwnershipLoaded?.Invoke();
-        ownershipLoadComplete = true;
-    }
+    //public async void LoadOwnership()
+    //{
+    //    if (ownershipLoadStarted)
+    //    {
+    //        if (ownershipLoadComplete)
+    //            OnOwnershipLoaded?.Invoke();
+    //        return;
+    //    }
+    //    ownershipLoadStarted = true;
+    //    if (isDiscountBundle)
+    //    {
+    //        //TODO: determine discount amount based on dynamic bundle data
+    //        discountAmount = price - entryData["finalPrice"].GetValue<int>();
+    //    }
+    //    isOwned = false;
+    //    OnOwnershipLoaded?.Invoke();
+    //    ownershipLoadComplete = true;
+    //}
 
     bool resourceLoadStarted;
     public bool resourceLoadComplete { get; private set; }

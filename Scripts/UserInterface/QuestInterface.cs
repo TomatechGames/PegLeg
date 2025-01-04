@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 public partial class QuestInterface : Control
 {
@@ -31,20 +32,14 @@ public partial class QuestInterface : Control
         };
         RefreshTimerController.OnDayChanged += OnDayChanged;
 
-        var account = GameAccount.activeAccount;
-        if (await account.Authenticate())
-            return;
-        await account.ClientQuestLogin();
+        await GameAccount.activeAccount.ClientQuestLogin();
     }
 
     private async void OnDayChanged()
     {
-        questsNeedUpdate = true;
+        questsDirty = true;
 
-        var account = GameAccount.activeAccount;
-        if (await account.Authenticate())
-            return;
-        await account.ClientQuestLogin();
+        await GameAccount.activeAccount.ClientQuestLogin();
         if (IsVisibleInTree())
             LoadQuests();
     }
@@ -62,70 +57,73 @@ public partial class QuestInterface : Control
         account.ClearPinnedQuests();
     }
 
-    bool questsNeedUpdate = true;
-    bool isGeneratingQuests = false;
+    bool questsDirty = true;
+    SemaphoreSlim loadQuestsSephamore = new(1);
     async void LoadQuests()
     {
-        if (isGeneratingQuests || !questsNeedUpdate)
+        if (!questsDirty)
             return;
-        var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
-            return;
-
-        questGroupViewer.Visible = false;
-        questListLayout.Visible = false;
-        loadingIcon.Visible = true;
-        isGeneratingQuests = true;
-        questsNeedUpdate = false;
-        var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
-
-        foreach (var node in questGroupCollections)
+        await loadQuestsSephamore.WaitAsync();
+        try
         {
-            node.QueueFree();
-        }
+            if (!await GameAccount.activeAccount.Authenticate())
+                return;
 
-        await Helpers.WaitForFrame();
+            questGroupViewer.Visible = false;
+            questListLayout.Visible = false;
+            loadingIcon.Visible = true;
+            questsDirty = false;
+            var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
 
-        ButtonGroup questButtonGroup = new();
-        foreach (var collection in generatedQuestGroups)
-        {
-            //create foldout
-            var foldout = foldoutScene.Instantiate<Foldout>();
-            foldout.SetFoldoutName(collection["name"].ToString());
-            List<QuestGroupEntry> groupsInFoldout = new();
-            foreach (var group in collection["groupGens"].AsObject())
+            foreach (var node in questGroupCollections)
             {
-                var groupEntry = questGroupScene.Instantiate<QuestGroupEntry>();
-                await groupEntry.SetupQuestGroup(group.Key, group.Value.AsObject());
-                if (!groupEntry.HasAvailableQuests)
-                {
-                    groupEntry.QueueFree();
-                    continue;
-                }
-                groupsInFoldout.Add(groupEntry);
-                questGroups.Add(groupEntry);
-                groupEntry.LinkButtonGroup(questButtonGroup);
-                //foldout.GetInstanceId();
-                groupEntry.Pressed += () =>
-                {
-                    questGroupViewer.Visible = true;
-                    questGroupViewer.SetQuestNodes(groupEntry.questSlotList, groupEntry.IsChain ||  group.Key == "Daily Endurance", !groupEntry.IsChain);
-                };
-                groupEntry.NotificationVisible += _ =>
-                {
-                    foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
-                };
-                foldout.AddFoldoutChild(groupEntry);
+                node.QueueFree();
             }
-            foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
-            foldoutParent.AddChild(foldout);
-            questGroupCollections.Add(foldout);
-        }
 
-        questListLayout.Visible = true;
-        loadingIcon.Visible = false;
-        isGeneratingQuests = false;
-        if (questsNeedUpdate)
+            ButtonGroup questButtonGroup = new();
+            foreach (var collection in generatedQuestGroups)
+            {
+                //create foldout
+                var foldout = foldoutScene.Instantiate<Foldout>();
+                foldout.SetFoldoutName(collection["name"].ToString());
+                List<QuestGroupEntry> groupsInFoldout = new();
+                foreach (var group in collection["groupGens"].AsObject())
+                {
+                    var groupEntry = questGroupScene.Instantiate<QuestGroupEntry>();
+                    await groupEntry.SetupQuestGroup(group.Key, group.Value.AsObject());
+                    if (!groupEntry.HasAvailableQuests)
+                    {
+                        groupEntry.QueueFree();
+                        continue;
+                    }
+                    groupsInFoldout.Add(groupEntry);
+                    questGroups.Add(groupEntry);
+                    groupEntry.LinkButtonGroup(questButtonGroup);
+                    //foldout.GetInstanceId();
+                    groupEntry.Pressed += () =>
+                    {
+                        questGroupViewer.Visible = true;
+                        questGroupViewer.SetQuestNodes(groupEntry.questSlotList, groupEntry.IsChain || group.Key == "Daily Endurance", !groupEntry.IsChain);
+                    };
+                    groupEntry.NotificationVisible += _ =>
+                    {
+                        foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
+                    };
+                    foldout.AddFoldoutChild(groupEntry);
+                }
+                foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
+                foldoutParent.AddChild(foldout);
+                questGroupCollections.Add(foldout);
+            }
+
+            questListLayout.Visible = true;
+        }
+        finally
+        {
+            loadingIcon.Visible = false;
+            loadQuestsSephamore.Release();
+        }
+        if (questsDirty)
             LoadQuests();
     }
 }

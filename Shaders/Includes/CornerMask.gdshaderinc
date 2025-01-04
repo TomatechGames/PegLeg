@@ -19,12 +19,12 @@ float cornerMaskFaded(vec2 uv, float cornerRadius, vec2 controlSize, float fadeD
 {
 	cornerRadius = min(min(cornerRadius, controlSize.x*0.5), controlSize.y*0.5);
 	float gradient = cornerGradient(uv, cornerRadius, controlSize);
-	
+
 	fadeDistance=clamp(fadeDistance, 0, cornerRadius-0.01);
 	float fadeGradient=0.5*fadeDistance/cornerRadius;
 	gradient-=0.5-fadeGradient;
 	gradient/=fadeGradient;
-		
+
 	return 1.0-clamp(gradient,0,1);
 }
 

@@ -18,7 +18,8 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.1
 shader_parameter/VerticalMask = 0.0
 
-[node name="CosmeticShopRowV2" type="ScrollContainer" node_paths=PackedStringArray("entryParent", "loadingCubes", "jamTrackViewerButton", "contentNode")]
+[node name="CosmeticShopRowV2" type="ScrollContainer" node_paths=PackedStringArray("entryParent", "loadingCubes", "contentNode")]
+clip_contents = false
 custom_minimum_size = Vector2(0, 333)
 anchors_preset = 10
 anchor_right = 1.0
@@ -33,7 +34,6 @@ v2Mode = true
 cosmeticShopEntry = ExtResource("2_t6xhm")
 entryParent = NodePath("MarginContainer/HBoxContainer/HFlowContainer")
 loadingCubes = NodePath("MarginContainer/LoadingIcon5")
-jamTrackViewerButton = NodePath("MarginContainer/HBoxContainer/CenterContainer")
 contentNode = NodePath("MarginContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -54,32 +54,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(150, 0)
-layout_mode = 2
-
-[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/CenterContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/CenterContainer/Control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -60.5
-offset_top = -29.0
-offset_right = 60.5
-offset_bottom = 29.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_vertical = 4
-theme_override_font_sizes/font_size = 24
-text = "View all
-Jam Tracks "
-
 [node name="LoadingIcon5" type="TextureRect" parent="MarginContainer"]
 material = SubResource("ShaderMaterial_7ojdw")
 custom_minimum_size = Vector2(0, 150)
@@ -90,5 +64,3 @@ texture = ExtResource("4_iintn")
 expand_mode = 1
 script = ExtResource("5_e0edl")
 syncControlSize = true
-
-[connection signal="pressed" from="MarginContainer/HBoxContainer/CenterContainer/Control/Button" to="." method="OpenJamTracks"]

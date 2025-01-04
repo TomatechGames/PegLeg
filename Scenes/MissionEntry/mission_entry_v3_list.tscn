@@ -5,7 +5,7 @@
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="3_srxa7"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_3tghm"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_fx7us"]
-[ext_resource type="Script" path="res://Scripts/AdaptivePanelController.cs" id="5_jw021"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_mv5nm"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="6_4k6gs"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="8_6tlrj"]
 [ext_resource type="PackedScene" uid="uid://cabjtbslcfikw" path="res://Scenes/GameItemEntry/old/mission_reward_entry_list.tscn" id="8_vhh2j"]
@@ -50,7 +50,8 @@ material = SubResource("ShaderMaterial_wbodm")
 layout_mode = 2
 texture = ExtResource("4_3tghm")
 expand_mode = 1
-script = ExtResource("5_jw021")
+script = ExtResource("5_mv5nm")
+syncControlSize = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -215,27 +216,22 @@ columns = 7
 [node name="RewardEntryHorizontal" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="RewardEntryHorizontal2" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="RewardEntryHorizontal3" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="RewardEntryHorizontal4" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="RewardEntryHorizontal5" parent="MarginContainer/HBoxContainer/VBoxContainer/OneTimeRewards/VBoxContainer/PanelContainer/OneTimeRewardParent" instance=ExtResource("9_mryk5")]
 layout_mode = 2
 compactifyAmount = true
-includeAmountInName = true
 
 [node name="RepeatableRewards" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(214, 0)

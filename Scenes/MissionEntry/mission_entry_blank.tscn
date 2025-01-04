@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1ssbbl7tupvk"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_yl6mj"]
+[ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="2_q3hn3"]
+[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="3_wnnak"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_jv3bd"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_gu1ts"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_drqcc"]
+shader = ExtResource("3_wnnak")
+shader_parameter/ControlSize = Vector2(270, 125)
+shader_parameter/Fit = null
+shader_parameter/shiftDirection = Vector2(0.5, 0.5)
+shader_parameter/UseCorners = true
+shader_parameter/CornerRadius = 5.0
+
+[node name="MissionEntryV5_0" type="MarginContainer"]
+custom_minimum_size = Vector2(270, 125)
+offset_right = 270.0
+offset_bottom = 125.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_yl6mj")
+defaultBackground = ExtResource("2_q3hn3")
+
+[node name="BGTexture" type="TextureRect" parent="."]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_drqcc")
+layout_mode = 2
+texture = ExtResource("4_jv3bd")
+expand_mode = 1
+script = ExtResource("5_gu1ts")
+syncControlSize = true

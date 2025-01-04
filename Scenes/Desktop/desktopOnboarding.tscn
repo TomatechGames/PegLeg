@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://ysh5ajklts1q"]
+[gd_scene load_steps=22 format=3 uid="uid://ysh5ajklts1q"]
 
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="1_7xbjg"]
 [ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="1_r66cy"]
@@ -17,6 +17,7 @@
 [ext_resource type="Shader" path="res://Shaders/OnboardingCurtain.gdshader" id="13_m3fci"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="14_eunyv"]
 [ext_resource type="PackedScene" uid="uid://b7rnaw5epqkd6" path="res://Scenes/download_cube.tscn" id="15_jvi10"]
+[ext_resource type="AudioStream" uid="uid://cb1e6fcri5nxg" path="res://Audio/SFX/AssetLoading/loadingSequence.tres" id="18_pbj83"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tyimv"]
 
@@ -307,7 +308,6 @@ texture = ExtResource("1_7xbjg")
 expand_mode = 1
 
 [node name="Curtain" type="ColorRect" parent="."]
-visible = false
 texture_repeat = 2
 material = SubResource("ShaderMaterial_ay2nj")
 layout_mode = 1
@@ -322,7 +322,6 @@ syncControlSize = true
 modTime = 8.0
 
 [node name="PreCurtain" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -339,7 +338,6 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-rotation = 12.7933
 
 [node name="DownloadCube" parent="PreCurtain/CubesOrigin" instance=ExtResource("15_jvi10")]
 layout_mode = 1
@@ -391,6 +389,12 @@ pivot_offset = Vector2(64, 64)
 mouse_filter = 0
 texture = ExtResource("1_7xbjg")
 expand_mode = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="PreCurtain"]
+stream = ExtResource("18_pbj83")
+volume_db = -12.0
+max_polyphony = 2
+bus = &"SFX"
 
 [connection signal="LoginFailed" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer" method="LoginCodeFail"]
 [connection signal="LoginSuccess" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer" method="LoginCodeSuccess"]

@@ -200,6 +200,8 @@ public partial class CardPackOpener : Control
         //await this.WaitForFrame();
 
         llamaHits = 0;
+        if (llamaItem is not null)
+            llamaItem = llamaItem.Clone();
         llamaItem ??= llamaOffer?.itemGrants[0];
         llamaItem ??= defaultLlamaItem;
         llamaEntry.SetItem(llamaItem);
@@ -393,10 +395,10 @@ public partial class CardPackOpener : Control
 
         var resizePanelTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Quad);
         resizePanelTween.TweenProperty(displayPanel, "modulate", Colors.White, 0.1);
-        resizePanelTween.TweenProperty(displayPanel, "offset_top", 3, 0.2).SetDelay(0.1);
-        resizePanelTween.TweenProperty(displayPanel, "offset_bottom", -3, 0.2).SetDelay(0.1);
-        resizePanelTween.TweenProperty(displayPanel, "offset_left", 3, 0.2).SetDelay(0.1);
-        resizePanelTween.TweenProperty(displayPanel, "offset_right", -3, 0.2).SetDelay(0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_top", -10, 0.2).SetDelay(0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_bottom", 10, 0.2).SetDelay(0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_left", -10, 0.2).SetDelay(0.1);
+        resizePanelTween.TweenProperty(displayPanel, "offset_right", 10, 0.2).SetDelay(0.1);
 
         resizePanelTween.Finished += () =>
         {
@@ -421,8 +423,8 @@ public partial class CardPackOpener : Control
 
     void PlayImpactSound()
     {
-        int octave = 1 + (llamaHits / 8);
-        impactEffect.PitchScale = octave + impactProgression[llamaHits % 8];
+        int octave = 1 + (llamaHits / impactProgression.Length);
+        impactEffect.PitchScale = octave + impactProgression[llamaHits % impactProgression.Length];
         impactEffect.Play();
     }
 
@@ -918,15 +920,14 @@ public partial class CardPackOpener : Control
 
         var resultItems = queuedChoices
                     .Union(queuedItems)
-                    .Where(item =>
-                        item.template.IsCollectable &&
-                        !(item.template["IsPermanent"]?.GetValue<bool>() ?? false));
+                    .Select(item => item.inspectorOverride);
 
         if (resultItems.Any())
         {
             foreach (var item in resultItems)
             {
                 item.GenerateSearchTags();
+                item.GenerateRawData();
             }
             GameItemSelector.Instance.SetRecycleDefaults();
             GameItemSelector.Instance.allowCancel = false;
@@ -938,9 +939,8 @@ public partial class CardPackOpener : Control
                 {
                     ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
                 };
-                LoadingOverlay.AddLoadingKey("recycling");
+                using var _ = LoadingOverlay.CreateToken();
                 await account.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content.ToString());
-                LoadingOverlay.RemoveLoadingKey("recycling");
             }
         }
     }

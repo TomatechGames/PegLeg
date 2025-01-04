@@ -96,6 +96,7 @@ public partial class RecycleListContainer : ScrollContainer
                     force = true;
                 }
 
+                linkedGrid?.SetDisableSort(true);
                 if (force)
                 {
                     //complete clear and relink
@@ -108,7 +109,7 @@ public partial class RecycleListContainer : ScrollContainer
                     activeEntries.Clear();
                     for (int i = newStartingIndex; i < newEndIndex; i++)
                     {
-                        //GD.Print("force adding " + i);
+                        GD.Print("force adding " + i);
                         var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                         activeEntries[i] = item;
                         activeEntries[i].SetRecycleIndex(i);
@@ -123,7 +124,7 @@ public partial class RecycleListContainer : ScrollContainer
                         //collect elements that went offscreen
                         for (int i = lastStartingIndex; i < newStartingIndex; i++)
                         {
-                            //GD.Print("removing " + i);
+                            GD.Print("removing " + i);
                             var item = activeEntries[i];
                             activeEntries[i].ClearRecycleIndex();
                             pooledEntries.Enqueue(item);
@@ -136,7 +137,7 @@ public partial class RecycleListContainer : ScrollContainer
                         //collect elements that went offscreen
                         for (int i = newEndIndex; i < lastEndIndex; i++)
                         {
-                            //GD.Print("removing " + i);
+                            GD.Print("removing " + i);
                             var item = activeEntries[i];
                             activeEntries[i].ClearRecycleIndex();
                             pooledEntries.Enqueue(item);
@@ -150,7 +151,7 @@ public partial class RecycleListContainer : ScrollContainer
                         //deploy elements and send them to back
                         for (int i = lastStartingIndex - 1; i > newStartingIndex - 1; i--)
                         {
-                            //GD.Print("adding " + i);
+                            GD.Print("adding " + i);
                             var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                             activeEntries[i] = item;
                             activeEntries[i].SetRecycleIndex(i);
@@ -163,7 +164,7 @@ public partial class RecycleListContainer : ScrollContainer
                         //deploy elements and send them to front
                         for (int i = lastEndIndex; i < newEndIndex; i++)
                         {
-                            //GD.Print("adding " + i);
+                            GD.Print("adding " + i);
                             var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                             activeEntries[i] = item;
                             activeEntries[i].SetRecycleIndex(i);
@@ -172,6 +173,7 @@ public partial class RecycleListContainer : ScrollContainer
                         }
                     }
                 }
+                linkedGrid?.SetDisableSort(false);
 
                 lastStartingIndex = newStartingIndex;
                 lastOnScreenElements = newOnScreenElements;
@@ -206,13 +208,17 @@ public partial class RecycleListContainer : ScrollContainer
     Vector2 lastSize;
     public override void _Process(double delta)
     {
-        if (lastSize!=Size)
+        if (lastSize!=Size || lastScroll != ScrollVertical)
             UpdateList();
         lastSize = Size;
-        if (lastScroll != ScrollVertical)
-            UpdateList();
         lastScroll = ScrollVertical;
-        //todo: if pooled entries is more than the length of active entries, remove 1 pooled entry per frame
+
+        //if pooled entries is more than the length of active entries, remove 1 pooled entry per frame
+        if (pooledEntries.Count > activeEntries.Count)
+        {
+            var toFree = pooledEntries.Dequeue();
+            toFree.node.QueueFree();
+        }
     }
 }
 

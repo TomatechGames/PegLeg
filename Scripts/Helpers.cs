@@ -9,6 +9,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Godot;
 using System.Threading;
+using System.Linq.Expressions;
 
 static class Helpers
 {
@@ -147,12 +148,18 @@ static class Helpers
         var resultNode = result is not null ? JsonNode.Parse(await result.Content.ReadAsStringAsync()) : null;
         //todo: throw exception when encountering a response with an errorMessage
 
+        if (resultNode["numericErrorCode"]?.GetValue<int>() == 1031)
+        {
+            //todo: move this web stuff around so that we know which account is making the request
+            GameAccount.activeAccount.ForceExpireToken();
+        }
+
         return resultNode;
     }
 
     public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
-        GD.Print("Debug: "+request.ToString());
+        //GD.Print("Debug: "+request.ToString());
         HttpResponseMessage response = null;
         try
         {
@@ -242,11 +249,11 @@ static class Helpers
     {
         (int startIdx, int length) = range.GetOffsetAndLength(array.Count);
         JsonArray result = new();
-        for (int i = startIdx; i < startIdx + (length - 1); i++)
+        for (int i = startIdx; i < startIdx + length; i++)
         {
             result.Add(array[i].Reserialise());
         }
-        return array;
+        return result;
     }
 
     public static int RandomIndexFromWeights(float[] weights, int preventRepeat = -1)
@@ -310,4 +317,7 @@ static class Helpers
         OrderRange.Weekly => RefreshTimerController.GetRefreshTime(RefreshTimeType.Weekly).AddDays(-7),
         _ => throw new NotImplementedException(),
     };
+
+    public static Func<T, bool> ToFunc<T>(this Predicate<T> predicate, bool defaultResult = true) => t => predicate.Try(t, defaultResult);
+    public static bool Try<T>(this Predicate<T> predicate, T t, bool defaultResult = true) => predicate is not null ? predicate(t) : defaultResult;
 }

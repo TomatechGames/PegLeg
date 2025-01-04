@@ -9,7 +9,7 @@ resource_local_to_scene = true
 shader = ExtResource("1_ei87d")
 shader_parameter/Animation = false
 shader_parameter/FromColor = Color(0.901961, 0.901961, 0, 1)
-shader_parameter/ToColor = Color(0.07451, 0.090196, 0.145098, 1)
+shader_parameter/ToColor = Color(0.141176, 0.164706, 0.247059, 1)
 shader_parameter/UseCompleteColor = false
 shader_parameter/CompleteColor = Color(0.215878, 0.539241, 0.218078, 1)
 

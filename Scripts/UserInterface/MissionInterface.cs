@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-public partial class MissionInterface : Control, IRecyclableElementProvider<FnMission>
+public partial class MissionInterface : Control, IRecyclableElementProvider<GameMission>
 {
     [Export]
     VirtualTabBar zoneFilterTabBar;
@@ -64,6 +64,8 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<FnMi
         },
         new string[] {
             "AccountResource:currency_mtxswap",
+            "AccountResource:voucher_cardpack_bronze",
+            "AccountResource:voucher_basicpack",
         },
     };
 
@@ -143,10 +145,10 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<FnMi
         StartUpdateCheckTimer();
     }
 
-    List<FnMission> allMissions = new();
-    List<FnMission> activeMissions = new();
+    List<GameMission> allMissions = new();
+    List<GameMission> activeMissions = new();
 
-    public FnMission GetRecycleElement(int index) => index >= 0 && index < activeMissions.Count ? activeMissions[index] : null;
+    public GameMission GetRecycleElement(int index) => index >= 0 && index < activeMissions.Count ? activeMissions[index] : null;
     public int GetRecycleElementCount() => activeMissions.Count;
 
     public void ForceReloadMissions()
@@ -247,7 +249,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<FnMi
         return matchesItemFilters;
     }
 
-    bool MissionFilter(FnMission mission)
+    bool MissionFilter(GameMission mission)
     {
         if (!theaterFilter.Contains(mission.theaterCat[0]))
             return false;

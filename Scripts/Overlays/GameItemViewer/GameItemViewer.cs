@@ -82,7 +82,7 @@ public partial class GameItemViewer : ModalWindow
     [Export]
     GameOfferEntry currentOfferEntry;
     [Export]
-    Control purchasePanel;
+    SpinBox purchaseSpinner;
 
     public override void _Ready()
     {
@@ -97,7 +97,7 @@ public partial class GameItemViewer : ModalWindow
             int val = i;
             itemChoiceEntries[i].Pressed += () => SetChoiceIndex(val);
         }
-
+        purchaseSpinner.ValueChanged += SpinnerChanged;
     }
 
     GameItem currentItem;
@@ -112,7 +112,9 @@ public partial class GameItemViewer : ModalWindow
         itemChoiceParent.Visible = false;
         currentItem = newItem;
         SetWindowOpen(true);
-        ClearShopOffer();
+        currentOfferEntry.Visible = false;
+        currentOfferEntry.ClearOffer();
+        currentOffer = null;
 
         upgrader.Visible = currentItem.attributes?["level"] is not null;
         upgrader.SetItem(currentItem);
@@ -131,7 +133,7 @@ public partial class GameItemViewer : ModalWindow
                 var template = GameItemTemplate.Get(templateId);
                 var choiceItem = template.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
                 itemChoiceEntries[i].SetItem(choiceItem);
-                itemChoiceEntries[i].SetRewardNotification();
+                choiceItem.SetRewardNotification().StartTask();
                 choices[i] = choiceItem;
             }
 
@@ -149,6 +151,29 @@ public partial class GameItemViewer : ModalWindow
         }
     }
 
+    public async void ShowOffer(GameOffer offer)
+    {
+        upgrader.Visible = false;
+        itemChoiceParent.Visible = false;
+        currentOffer = offer;
+        currentItem = currentOffer.itemGrants[0];
+        SetDisplayItem(currentItem);
+        SetWindowOpen(true);
+        await currentOfferEntry.SetOffer(currentOffer);
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+        var totalLimit = Mathf.Min(
+            await account.GetPurchaseLimit(currentOffer),
+            await account.GetAffordableLimit(currentOffer)
+            );
+        purchaseSpinner.MaxValue = totalLimit;
+        purchaseSpinner.Visible = totalLimit > 1;
+        purchaseSpinner.Value = 1;
+        SpinnerChanged(1);
+        currentOfferEntry.Visible = true;
+    }
+
     bool showDevText = false;
     GameItem displayedItem = null;
     void SetDisplayItem(GameItem item)
@@ -157,12 +182,13 @@ public partial class GameItemViewer : ModalWindow
             showDevText ^= true;
         Visible = true;
         displayItemEntry.SetItem(item);
-        displayItemEntry.SetRewardNotification();
+        item.SetRewardNotification().StartTask();
         displayedItem = item;
         
         //TODO: add extra icons for survivors, and fix descriptions
 
         statsTreeContainer.Reparent(inactiveTabParent);
+        statsTree.HideFolding = true;
         perkDetailsPanel.Reparent(inactiveTabParent);
         heroDetailsPanel.Reparent(inactiveTabParent);
         devTextContainer.Reparent(inactiveTabParent);
@@ -207,11 +233,14 @@ public partial class GameItemViewer : ModalWindow
             statsTree.SetColumnClipContent(0, false);
             statsTree.SetColumnClipContent(1, false);
             statsTree.SetColumnExpand(1, false);
-            statsTree.SetColumnCustomMinimumWidth(1, 90);
+            statsTree.SetColumnCustomMinimumWidth(1, 100);
             var root = statsTree.CreateItem();
             JsonObject statsJson = null;
             if (item.template["RangedWeaponStats"] is JsonObject rangedWeaponStats)
+            {
+                statsTree.HideFolding = false;
                 statsJson = rangedWeaponStats;
+            }
             else if (item.template["MeleeWeaponStats"] is JsonObject meleeWeaponStats)
                 statsJson = meleeWeaponStats;
             else if (item.template["TrapStats"] is JsonObject trapStats)
@@ -251,7 +280,7 @@ public partial class GameItemViewer : ModalWindow
         {
             await heroStatsQueuedSephamore.WaitAsync();
             await heroStatsActiveSephamore.WaitAsync();
-            var account = displayedItem.profile.account;
+            var account = displayedItem.profile?.account ?? GameAccount.activeAccount;
             var fortStats = account.FortStats;
 
             statsTree.Clear();
@@ -313,36 +342,34 @@ public partial class GameItemViewer : ModalWindow
             if (item.Value is JsonObject childObject)
             {
                 GenerateTreeFromJson(childObject, entry);
-                //entry.Collapsed = true;
+                entry.Collapsed = true;
             }
             else
             {
-                string fixedVal = Regex.Replace(item.Value.ToString(), "[A-Z]", " $0");
+                string fixedVal = "";
 
                 if (item.Value.AsValue().TryGetValue(out float floatValue))
                     fixedVal = (Mathf.Round(floatValue * 100) / 100).ToString();
+                else
+                {
+                    fixedVal = Regex.Replace(item.Value.ToString(), "[A-Z]", " $0").Trim();
+                    fixedVal = fixedVal.Replace("  ", " ");
+                    if(fixedName == " Reload Type")
+                    {
+                        fixedVal = fixedVal switch
+                        {
+                            "Reload Individual Bullets" => "1 At A Time",
+                            "Reload Based On Cartridge Per Fire" => jsonParent["CartridgePerFire"].GetValue<int>()+ " At A Time",
+                            "Reload Whole Clip" => "All",
+                            _ => fixedVal,
+                        };
+                    }
+                }
 
-                if(fixedVal.StartsWith(" "))
-                    fixedVal = fixedVal[1..];
-                fixedVal = fixedVal.Replace("  ", " ");
+
                 entry.SetText(1, fixedVal);
             }
         }
-    }
-
-    public void ShowShopOffer(GameOffer offer)
-    {
-        purchasePanel.Visible = true;
-        currentOffer = offer;
-        currentOfferEntry.SetOffer(currentOffer).StartTask();
-        SetDisplayItem(currentOffer.itemGrants[0]);
-    }
-
-    void ClearShopOffer()
-    {
-        purchasePanel.Visible = false;
-        currentOfferEntry.ClearOffer();
-        currentOffer = null;
     }
 
     int latestPurchasablePrice = 0;
@@ -356,35 +383,27 @@ public partial class GameItemViewer : ModalWindow
     {
         if (currentOffer is null)
             return;
-        try
-        {
-            LoadingOverlay.AddLoadingKey("ItemPurchase");
+        using var _ = LoadingOverlay.CreateToken();
 
-            var account = GameAccount.activeAccount;
-            if (!await account.Authenticate())
-                return;
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
 
-            GD.Print("attempting to purchase offer: " + currentOffer.OfferId);
-            //fake it to test purchase animation
-            //GD.Print("FAKE PURCHASE");
-            //ShopPurchaseAnimation.PlayAnimation(latestItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
-            //return;
+        //GD.Print("attempting to purchase offer: " + currentOffer.OfferId);
+        //fake it to test purchase animation
+        //GD.Print("FAKE PURCHASE");
+        //ShopPurchaseAnimation.PlayAnimation(latestItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
+        //return;
 
-            var notifs = await account.PurchaseOffer(currentOffer, currentOfferEntry.currentPurchaseQuantity);
-            GD.Print(notifs);
-            SetWindowOpen(false);
+        var notifs = await account.PurchaseOffer(currentOffer, currentOfferEntry.currentPurchaseQuantity);
+        //GD.Print(notifs);
+        SetWindowOpen(false);
 
-            var resultItemData = notifs.First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"][0];
-            GameItem resultItem = new(null, null, resultItemData.AsObject());
-            //await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());
+        var resultItemData = notifs.First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"][0];
+        GameItem resultItem = new(null, null, resultItemData.AsObject());
+        //await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());
 
-            ShopPurchaseAnimation.PlayAnimation(resultItem.GetTexture(), currentOfferEntry.currentPurchaseQuantity);
-            ClearShopOffer();
-        }
-        finally
-        {
-            LoadingOverlay.RemoveLoadingKey("ItemPurchase");
-        }
+        ShopPurchaseAnimation.PlayAnimation(resultItem.GetTexture(), currentOfferEntry.currentPurchaseQuantity);
     }
 
 

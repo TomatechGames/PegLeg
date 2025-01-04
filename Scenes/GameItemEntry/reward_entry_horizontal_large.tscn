@@ -1,19 +1,29 @@
-[gd_scene load_steps=2 format=3 uid="uid://4cmc4075yf4i"]
+[gd_scene load_steps=4 format=3 uid="uid://4cmc4075yf4i"]
 
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="1_7nwdj"]
+[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_d7op8"]
 
-[node name="RewardEntryHorizontal" instance=ExtResource("1_7nwdj")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_67ml0"]
+resource_local_to_scene = true
+shader = ExtResource("2_d7op8")
+shader_parameter/ControlSize = Vector2(96, 96)
+shader_parameter/CornerRadius = 5.0
+
+[node name="RewardEntry" instance=ExtResource("1_7nwdj")]
 custom_minimum_size = Vector2(96, 96)
 compactifyAmount = true
-includeAmountInName = true
 
-[node name="CPUParticles2D" parent="IconContainer/RarityIcon/ParticlePosition" index="0"]
-position = Vector2(48, 46)
-scale = Vector2(1.5, 1.4375)
+[node name="TextureRect" parent="." index="0"]
+material = SubResource("ShaderMaterial_67ml0")
 
-[node name="AmountLabel" parent="AmountContainer" index="1"]
+[node name="AmountLabel" parent="." index="1"]
 theme_override_font_sizes/font_size = 32
 
-[node name="AspectRatioContainer" parent="InteractableIconContainer" index="0"]
-anchor_top = 0.75
-anchor_right = 0.25
+[node name="InteractableIcon" parent="Overlays" index="2"]
+offset_left = -25.0
+
+[node name="LeftIcon" parent="Overlays" index="3"]
+offset_right = 25.0
+
+[node name="RightIcon" parent="Overlays" index="4"]
+offset_left = -25.0

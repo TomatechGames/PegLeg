@@ -119,6 +119,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool unlinkOnInvalidHandle = true;
     [Export]
+    public bool hideMythicLeadSquad = false;
+    [Export]
     protected CheckButton selectionGraphics;
 
     public override void _Ready()
@@ -171,20 +173,28 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     {
         if (!IsInstanceValid(this) || !IsInsideTree())
             return;
+
+        if(item is null)
+        {
+            ClearItem();
+            return;
+        }
+
         if (item.template is null)
         {
             GD.Print("uh oh");
             GD.Print(item);
         }
 
-        bool isPermenant = item.template["IsPermanent"]?.GetValue<bool>() ?? false;
-
         int amount = item.quantity;
+
+        inspectorOverride = item.inspectorOverride;
+        if(inspectorOverride is not null)
+            item = inspectorOverride;
+
         if (item.template.Type == "Accolades")
             amount = item.template["AccoladeXP"]?.GetValue<int>() ?? 1;
         string amountText = compactifyAmount ? amount.Compactify() : amount.ToString();
-
-        inspectorOverride = item.inspectorOverride;
 
         if (addXToAmount)
             amountText = "x" + amountText;
@@ -203,8 +213,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         Texture2D mainIcon = item.GetTexture();
 
         description ??= "";
-        var personalityText = item.attributes?["personality"]?.ToString().Split(".")[^1][2..];
-        var setBonusText = item.attributes?["set_bonus"]?.ToString().Split(".")[^1][2..];
+        var personalityText = item.Personality;
+        var setBonusText = item.SetBonus;
         if (type == "Worker" && name == "Survivor")
         {
             if(personalityText is not null && setBonusText is not null)
@@ -221,7 +231,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
                 description = description[..104];
             }
         }
-        description = description.Replace(". ", ".\n");
+        //description = description.Replace(". ", ".\n");
 
         if (type == "Worker")
             type = "Survivor";
@@ -258,9 +268,11 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.RarityChanged, item.template.RarityColor);
 
         string tooltip = name + (amountNeeded ? $" ({(addXToAmount ? "x" : "") + amount})" : "");
-        List<string> tooltipDescriptions = new();
-        if (!string.IsNullOrWhiteSpace(description))
-            tooltipDescriptions.Add(description);
+        List<string> tooltipDescriptions = new()
+        {
+            description ?? "",
+            //"Item Id: " + item.templateId,
+        };
         if (item.template["searchTags"] is JsonArray tagArray && tagArray.Count > 0)
             tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except(new string[] { name }).ToArray().Join(", "));
         EmitSignal(
@@ -286,26 +298,27 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         //collection book algorithm is unpolished
         EmitSignal(SignalName.IsCollectable, false);
         //EmitSignal(SignalName.IsCollectable, !isPermenant && (ProfileRequests.IsItemCollectedUnsafe(itemInstance) == false));
-        EmitSignal(SignalName.CanBeLeveledChanged, !isPermenant || type != "Schematic");
+        EmitSignal(SignalName.CanBeLeveledChanged, item.template.IsCollectable && (!item.template.IsPermenant || type == "Hero"));
         EmitSignal(SignalName.LevelChanged, level);
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
         EmitSignal(SignalName.LevelProgressChanged, levelProgress);
 
-        EmitSignal(SignalName.InteractableChanged, interactableByDefault && !preventInteractability);
+        EmitSignal(SignalName.InteractableChanged, autoInteractableTypes.Contains(currentItem.template.Type.ToLower()) && !preventInteractability);
 
         //if survivor, set personality icons
 
         if (type == "Survivor")
         {
-            EmitSignal(SignalName.PersonalityIconChanged, item.GetTexture(FnItemTextureType.Personality));
-            EmitSignal(SignalName.SurvivorBoostIconChanged, item.GetTexture(FnItemTextureType.SetBonus));
+            EmitSignal(SignalName.PersonalityIconChanged, item.GetTexture(FnItemTextureType.Personality, null));
+            if (!hideMythicLeadSquad || item.template.RarityLevel != 6)
+                EmitSignal(SignalName.SurvivorBoostIconChanged, item.GetTexture(FnItemTextureType.SetBonus, null));
         }
 
         //var rarity = itemInstance.GetTemplate().GetItemRarity();
         //if (!(data.rarity < 7 && data.rarity >= 0))
         //    rarity = 0;
 
-        EmitSignal(SignalName.NotificationChanged, !(item.IsSeen));
+        EmitSignal(SignalName.NotificationChanged, !item.IsSeen);
         EmitSignal(SignalName.MaxTierChanged, Mathf.Min(item.template.RarityLevel+ 1, 5));
         EmitSignal(SignalName.TierChanged, tier);
         EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel / 2);
@@ -317,34 +330,31 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             ClearItem();
     }
 
-    public void SetRewardNotification()
-    {
-        //if (currentItemData is null || (currentItemData["rewardNotifSet"]?.GetValue<bool>() ?? false))
-        //    return;
-        //rewardNotificationRequest?.Cancel();
-        //EmitSignal(SignalName.NotificationChanged, false);
-        //rewardNotificationRequest = RewardNotifications.RequestNotification(currentItemData, itemInstance =>
-        //{
-        //    itemInstance["rewardNotifSet"] = true;
-        //    EmitSignal(SignalName.NotificationChanged, !(itemInstance?["attributes"]?["item_seen"]?.GetValue<bool>() ?? false));
-        //    rewardNotificationRequest = null;
-        //});
-
-    }
-
     public Control node => this;
 
     public Vector2 GetBasisSize() => CustomMinimumSize;
 
-    public void SetInteractableSmart()
-    {
-        SetInteractable(TypeShouldBeInteractable(currentItem.template.Type));
-    }
 
-    public void SetInteractable(bool interactable)
+
+    static readonly string[] autoInteractableTypes = new string[]
     {
-        EmitSignal(SignalName.InteractableChanged, interactable && (allowInteractableWhenEmpty || currentItem is not null) && !preventInteractability);
-    }
+        "schematic",
+        "hero",
+        "defender",
+        "cardpack"
+    };
+    
+
+    public void SetInteractable(bool interactable) =>
+        EmitSignal(SignalName.InteractableChanged, 
+            interactable && 
+            (
+                allowInteractableWhenEmpty ||
+                currentItem is not null
+            ) && 
+            !preventInteractability
+        );
+    
 
     public virtual void EmitPressedSignal()
     {
@@ -385,16 +395,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             GameItemViewer.Instance.ShowItem(currentItem);
     }
 
-    static readonly string[] reccomendedInteractableTypes = new string[]
-    {
-        "schematic",
-        "hero",
-        "worker",
-        "defender",
-        "cardpack"
-    };
-
-    public static bool TypeShouldBeInteractable(string type) => reccomendedInteractableTypes.Contains(type.ToLower());
+    //public static bool TypeShouldBeInteractable(string type) => autoInteractableTypes.Contains(type.ToLower());
 
     protected IRecyclableElementProvider<GameItem> itemProvider;
     protected GameItemSelector selector;
@@ -407,6 +408,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         else if (provider is IRecyclableElementProvider<GameItem> newHandleProvider)
         {
             itemProvider = newHandleProvider;
+            selector = null;
         }
     }
 
@@ -417,6 +419,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         {
             recycleIndex = index;
             SetItem(itemProvider.GetRecycleElement(index));
+            if (selector is not null)
+                EmitSignal(SignalName.InteractableChanged, selector.selectablePredicate(currentItem));
             UpdateSelectionVisuals();
         }
     }
@@ -437,7 +441,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         if (selector is null || selectionGraphics is null)
             return;
 
-        bool isSelected = selector.IndexIsSelected(recycleIndex);
+        bool isSelected = selector.ItemIsSelected(currentItem);
         selectionGraphics.ButtonPressed = isSelected;
         if (isSelected)
         {

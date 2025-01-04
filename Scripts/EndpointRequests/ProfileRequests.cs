@@ -36,6 +36,18 @@ public readonly struct FORTStats
     }
 }
 
+static class FnProfileTypes
+{
+    public const string AccountItems = "campaign";
+    public const string Backpack = "theater0";
+    public const string Storage = "outpost0";
+    //const string VentureBackpack = "theater2";
+    public const string PeopleCollection = "collection_book_people0";
+    public const string SchematicCollection = "collection_book_schematics0";
+    public const string CosmeticInventory = "athena";
+    public const string Common = "common_core";
+}
+
 public class GameAccount
 {
     const string accountDataPath = "user://accounts";
@@ -76,13 +88,10 @@ public class GameAccount
     {
         if (encryptedDetails is null)
             return null;
-        GD.Print("DDLen: " + encryptedDetails.Length);
-        GD.Print("DDLen16: " + encryptedDetails.Length % 16);
         if (encryptedDetails.Length % 16 != 0)
             return null;
 
         string deviceDetailKey = GetDeviceDetailsKey();
-        GD.Print("DDKey: "+deviceDetailKey);
         if (deviceDetailKey.Length != 32)
             return null;
 
@@ -191,42 +200,37 @@ public class GameAccount
         if (!AuthTokenExpired)
             return true;
 
-        try
+        using var loadToken = LoadingOverlay.CreateToken("authentication");
+        if (!loadingOverlay)
+            loadToken.Dispose();
+
+        if (!RefreshTokenExpired)
         {
-            if (loadingOverlay)
-                LoadingOverlay.AddLoadingKey("Authenticate");
+            var refreshAuth = await GameClient.LoginWithRefreshToken(refreshToken);
 
-            if (!RefreshTokenExpired)
+            if (refreshAuth is not null && refreshAuth["errorMessage"] is null)
             {
-                var refreshAuth = await GameClient.LoginWithRefreshToken(refreshToken);
-
-                if (refreshAuth is not null && refreshAuth["errorMessage"] is null)
-                {
-                    SetAuthentication(refreshAuth);
-                    return true;
-                }
-
-                GD.Print(refreshAuth?["errorMessage"].ToString());
-            }
-
-            var dd = GetLocalData("DeviceDetails")?.AsArray().Select(n => n.GetValue<byte>()).ToArray();
-            JsonNode deviceAuth = await GameClient.LoginWithDeviceAuth(DecryptDeviceDetails(dd));
-
-            if (deviceAuth is not null && deviceAuth["errorMessage"] is null)
-            {
-                SetAuthentication(deviceAuth);
+                SetAuthentication(refreshAuth);
                 return true;
             }
-            GD.Print(deviceAuth?["errorMessage"].ToString());
 
-            return false;
+            GD.Print(refreshAuth?["errorMessage"].ToString());
         }
-        finally
+
+        var dd = GetLocalData("DeviceDetails")?.AsArray().Select(n => n.GetValue<byte>()).ToArray();
+        JsonNode deviceAuth = await GameClient.LoginWithDeviceAuth(DecryptDeviceDetails(dd));
+
+        if (deviceAuth is not null && deviceAuth["errorMessage"] is null)
         {
-            if (loadingOverlay)
-                LoadingOverlay.RemoveLoadingKey("Authenticate");
+            SetAuthentication(deviceAuth);
+            return true;
         }
+        GD.Print(deviceAuth?["errorMessage"].ToString());
+
+        return false;
     }
+
+    public void ForceExpireToken() => authExpiresAt = 0;
 
     public SemaphoreSlim profileOperationSephamore { get; private set; } = new(1);
 
@@ -457,7 +461,6 @@ public class GameAccount
             int purchaseAmount = (await GetOrderCounts(OrderRange.Daily))?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Daily Limit: {purchaseAmount}/{dailyLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.DailyLimit - purchaseAmount);
-            GD.Print($"EventLimit: ({purchaseAmount}/{offer.DailyLimit})");
         }
 
         if (totalLimit > 0 && offer.WeeklyLimit != -1)
@@ -465,7 +468,6 @@ public class GameAccount
             int purchaseAmount = (await GetOrderCounts(OrderRange.Weekly))?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Weekly Limit: {purchaseAmount}/{weeklyLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.WeeklyLimit - purchaseAmount);
-            GD.Print($"EventLimit: ({purchaseAmount}/{offer.WeeklyLimit})");
         }
 
         if (totalLimit > 0 && offer.MonthlyLimit != -1)
@@ -473,7 +475,6 @@ public class GameAccount
             int purchaseAmount = (await GetOrderCounts(OrderRange.Monthly))?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Monthly Limit: {purchaseAmount}/{monthlyLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.MonthlyLimit - purchaseAmount);
-            GD.Print($"EventLimit: ({purchaseAmount}/{offer.MonthlyLimit})");
         }
 
         if (totalLimit > 0 && offer.EventLimit != -1)
@@ -486,10 +487,23 @@ public class GameAccount
             int purchaseAmount = eventTracker?.attributes?["event_purchases"]?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Event Limit: {purchaseAmount}/{eventLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.EventLimit - purchaseAmount);
-            GD.Print($"EventLimit: ({purchaseAmount}/{offer.EventLimit})");
         }
 
         return totalLimit;
+    }
+
+    public async Task<int> GetAffordableLimit(GameOffer offer, bool cosmetic = false)
+    {
+        var pricePerPurchase = cosmetic ? await offer.GetPersonalPrice() : offer.Price;
+        if (pricePerPurchase.quantity == 0)
+            return 999;
+        if (cosmetic)
+        {
+            int vbucks = 0;//put vbucks here
+            return Mathf.FloorToInt((float)vbucks / pricePerPurchase.quantity);
+        }
+        var inInventory = (await GetProfile(FnProfileTypes.AccountItems).Query()).GetFirstTemplateItem(pricePerPurchase.templateId);
+        return Mathf.FloorToInt((float)inInventory.quantity / pricePerPurchase.quantity);
     }
 
     public async Task<bool> MatchesFulfillmentRequirements(GameOffer offer)
@@ -566,10 +580,9 @@ public class GameAccount
         return accountItems;
     }
 
-    public async Task ClientQuestLogin()
-    {
-        await GetProfile(FnProfileTypes.AccountItems).PerformOperation("ClientQuestLogin", @"{""streamingAppKey"": """"}");
-    }
+    public async Task ClientQuestLogin() => 
+        await GetProfile(FnProfileTypes.AccountItems)
+            .PerformOperation("ClientQuestLogin", @"{""streamingAppKey"": """"}");
 
     public async Task AddPinnedQuest(GameItem item)
     {
@@ -669,25 +682,42 @@ public class GameProfile
     public event Action<GameItem> OnItemUpdated;
     public event Action<GameItem> OnItemRemoved;
 
-    public GameItem GetItem(string uuid) => items.ContainsKey(uuid) ? items[uuid] : null;
-    public GameItem[] GetItems(GameItemPredicate predicate) => GetItems(null, predicate);
-    public GameItem[] GetItems(string type = null, GameItemPredicate predicate = null)
+    IEnumerable<GameItem> GetItemSubset(string type)
     {
-        var typedItems = items.Values.AsEnumerable();
-        if(type is not null)
-        {
-            if(!groupedItems.ContainsKey(type))
-                return Array.Empty<GameItem>();
-            typedItems = groupedItems[type].AsEnumerable();
-        }
+        if (type is null)
+            return items.Values;
+        if (!groupedItems.ContainsKey(type))
+            return Array.Empty<GameItem>();
+        return groupedItems[type];
+    }
+
+    public GameItem GetItem(string uuid) => items.ContainsKey(uuid) ? items[uuid] : null;
+    public GameItem[] GetItems(Predicate<GameItem> predicate) => GetItems(null, predicate);
+    public GameItem[] GetItems(string type = null, Predicate<GameItem> predicate = null)
+    {
+        var typedItems = GetItemSubset(type);
         if (predicate is null)
             return typedItems.ToArray();
-        return typedItems.Where(gameItem => predicate(gameItem)).ToArray();
+        return typedItems.Where(predicate.ToFunc()).ToArray();
     }
-    public GameItem[] GetTemplateItems(string templateId = null, GameItemPredicate predicate = null)
+    public GameItem[] GetTemplateItems(string templateId = null, Predicate<GameItem> predicate = null)
     {
         string type = templateId.Split(":")[0];
-        return GetItems(type, predicate).Where(gameItem => gameItem.templateId==templateId).ToArray();
+        return GetItems(type, item => item.templateId == templateId && predicate.Try(item));
+    }
+
+    public GameItem GetFirstItem(Predicate<GameItem> predicate) => GetFirstItem(null, predicate);
+    public GameItem GetFirstItem(string type=null, Predicate<GameItem> predicate = null)
+    {
+        var typedItems = GetItemSubset(type);
+        if (predicate is null)
+            return typedItems.FirstOrDefault();
+        return typedItems.FirstOrDefault(predicate.ToFunc());
+    }
+    public GameItem GetFirstTemplateItem(string templateId = null, Predicate<GameItem> predicate = null)
+    {
+        string type = templateId.Split(":")[0];
+        return GetFirstItem(type, item => item.templateId == templateId && predicate.Try(item));
     }
 
     public void SendItemUpdate(GameItem item)
@@ -698,7 +728,11 @@ public class GameProfile
 
     public async Task<GameProfile> Query(bool force=false)
     {
-        await account.profileOperationSephamore.WaitAsync();
+        var queryAccount = account.isOwned ? account : GameAccount.activeAccount;
+        if (queryAccount is null)
+            return this;
+
+        await queryAccount.profileOperationSephamore.WaitAsync();
         try
         {
             if (!hasProfile || force)
@@ -709,20 +743,23 @@ public class GameProfile
         }
         finally
         {
-            account.profileOperationSephamore.Release();
+            queryAccount.profileOperationSephamore.Release();
         }
     }
 
     public async Task<JsonArray> PerformOperation(string operation, string content = "{}")
     {
-        await account.profileOperationSephamore.WaitAsync();
+        var opAccount = account.isOwned ? account : GameAccount.activeAccount;
+        if (opAccount is null)
+            return null;
+        await opAccount.profileOperationSephamore.WaitAsync();
         try
         {
             return await PerformOperationUnsafe(operation, content);
         }
         finally
         {
-            account.profileOperationSephamore.Release();
+            opAccount.profileOperationSephamore.Release();
         }
     }
 
@@ -764,11 +801,18 @@ public class GameProfile
         if (operation == "MarkItemSeen")
         {
             var targetItemIDs = JsonNode.Parse(content)["itemIds"].AsArray().Select(n => n.ToString());
-            foreach (var itemId in targetItemIDs)
+            var targetItems = targetItemIDs.Select(uuid => items.TryGetValue(uuid, out var item) ? item : null).Where(x => x != null);
+            bool hasUnseen = false;
+            foreach (var item in targetItems)
             {
-                if (items.ContainsKey(itemId))
-                    OnItemUpdated?.Invoke(items[itemId].SetSeenLocal());
+                if (item.attributes["item_seen"] is null)
+                {
+                    OnItemUpdated?.Invoke(item.SetSeenLocal());
+                    hasUnseen = true;
+                }
             }
+            if (!hasUnseen)
+                return null;
         }
 
         StringContent jsonContent = new(content, Encoding.UTF8, "application/json");
@@ -808,7 +852,7 @@ public class GameProfile
         if (result.ContainsKey("multiUpdate"))
             account.HandleProfileChanges(result["multiUpdate"].AsArray());
 
-        GD.Print("operation complete");
+        GD.Print($"operation complete ({operation} in {profileId})");
 
         if (result.ContainsKey("notifications"))
             return result["notifications"].AsArray();
@@ -925,8 +969,6 @@ public class GameProfile
     }
 }
 
-public delegate bool GameItemPredicate(GameItem gameItem);
-
 public class GameItem
 {
     #region Statics
@@ -1042,16 +1084,39 @@ public class GameItem
     public JsonObject GenerateRawData() => _rawData = new()
     {
         ["templateId"] = templateId,
-        ["attributes"] = attributes.Reserialise(),
+        ["attributes"] = attributes?.Reserialise(),
         ["quantity"] = quantity,
         ["template"] = template.rawData.Reserialise(),
-        ["searchTags"] = template?["searchTags"].Reserialise(),
+        ["searchTags"] = _searchTags?.Reserialise() ?? template?["searchTags"]?.Reserialise(),
     };
+
+    public string Personality=> attributes?["personality"]?.ToString() is string rawPersonality ? ParseSurvivorAttribute(rawPersonality) : null;
+    public string SetBonus => attributes?["set_bonus"]?.ToString() is string rawSetBonus ? ParseSurvivorAttribute(rawSetBonus) : null;
+    static string ParseSurvivorAttribute(string survivorAttr)
+    {
+        survivorAttr = survivorAttr.Split(".")[^1][2..];
+        if (survivorAttr.EndsWith("Low"))
+            survivorAttr = survivorAttr[..^3];
+        if (survivorAttr.EndsWith("High"))
+            survivorAttr = survivorAttr[..^4];
+        return Regex.Replace(survivorAttr, "[A-Z]", " %1").Trim();
+    }
+
+    JsonArray _searchTags;
+    public JsonArray GenerateSearchTags(bool assumeUncommon = true)
+    {
+        _searchTags = template.GenerateSearchTags(assumeUncommon);
+        if (attributes?["personality"]?.ToString() is string rawPersonality)
+            _searchTags.Add(ParseSurvivorAttribute(rawPersonality));
+        if (attributes?["set_bonus"]?.ToString() is string rawSetBonus)
+            _searchTags.Add(ParseSurvivorAttribute(rawSetBonus));
+        return _searchTags;
+    }
 
     public JsonObject SimpleRawData => new()
     {
         ["templateId"] = templateId,
-        ["attributes"] = attributes.Reserialise(),
+        ["attributes"] = attributes?.Reserialise(),
         ["quantity"] = quantity,
     };
 
@@ -1077,11 +1142,14 @@ public class GameItem
         textures.Clear();
     }
 
-    bool isSeenLocal = false;
-    public bool IsSeen => isSeenLocal || (attributes?["item_seen"]?.GetValue<bool>() ?? false);
-    public GameItem SetSeenLocal(bool newVal = true)
+    bool? isSeenLocal = null;
+    public bool IsSeen => isSeenLocal ?? attributes?["item_seen"]?.GetValue<bool>() ?? false;
+    public GameItem SetSeenLocal(bool? newVal = true)
     {
-        bool update = IsSeen != newVal;
+        if (isSeenLocal == newVal)
+            return this;
+        bool realVal = attributes?["item_seen"]?.GetValue<bool>() ?? false;
+        bool update = (newVal ?? realVal) != (isSeenLocal ?? realVal);
         isSeenLocal = newVal;
         if (update)
             NotifyChanged();
@@ -1090,54 +1158,51 @@ public class GameItem
 
     public GameItem MarkItemSeen()
     {
+        if (attributes?["item_seen"] is not null)
+            return this;
         SetSeenLocal();
         string content = @$"{{""itemIds"": [""{uuid}""]}}";
         profile.PerformOperation("MarkItemSeen", content).StartTask();
         return this;
     }
 
-    public async Task SetItemRewardNotification(GameAccount account)
+    public async Task SetRewardNotification(GameAccount account = null, bool force = false)
     {
-        if (profile is not null)
+        account ??= GameAccount.activeAccount;
+        if (profile is not null || (!force && isSeenLocal != null))
             return;
 
-        if (attributes?.ContainsKey("item_seen") ?? false)
-        {
-            attributes.Remove("item_seen");
-            _rawData = null;
-        }
+        if(!IsSeen)
+            SetSeenLocal(true);
 
-        if (template.Type == "Accolades" || template.Type == "CardPack" || template.Type == "Weapon")
+        if (
+            template.Type == "Accolades" || 
+            template.Type == "CardPack" || 
+            template.Type == "Weapon" ||
+            template.Name == "Campaign_Event_Currency" ||
+            template.Name == "Currency_MtxSwap"
+        )
         {
-            attributes ??= new JsonObject();
-            attributes["item_seen"] = true;
-            _rawData = null;
-            return;
-        }
-        if (template.Name == "Campaign_Event_Currency" || template.Name == "Currency_MtxSwap")
-        {
-            attributes ??= new JsonObject();
-            attributes["item_seen"] = true;
-            _rawData = null;
             return;
         }
 
         var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
         bool exists = accountItems
             .GetItems(template.Type, item => 
-                item.template.DisplayName == template.DisplayName && 
-                item.template.RarityLevel >= template.RarityLevel)
+                item.template?.DisplayName == (template?.DisplayName ?? "nope") && 
+                item.template?.RarityLevel >= template?.RarityLevel)
             .Any();
         if (!exists && template.IsCollectable)
         {
             var collectionBook = await account.GetProfile(template.CollectionProfile).Query();
             exists = collectionBook
             .GetItems(template.Type, item =>
-                item.template.DisplayName == template.DisplayName &&
+                item.template?.DisplayName == (template?.DisplayName ?? "nope") &&
                 item.template.RarityLevel >= template.RarityLevel)
             .Any();
         }
-        SetSeenLocal(exists);
+        if (!exists)
+            SetSeenLocal(false);
     }
 
     public bool? isCollectedCache { get; private set; }
@@ -1316,8 +1381,16 @@ public class GameItem
             if (portraitTexture is not null)
                 return textures[textureType] = portraitTexture;
         }
-        if(template.Type == "CardPack")
+        if(template.Type == "CardPack" && !template.Name.StartsWith("ZCP_"))
         {
+            if (attributes?.ContainsKey("options") ?? false)
+            {
+                if (textureType == FnItemTextureType.Preview)
+                    return llamaTierIcons[0];
+                if (textureType == FnItemTextureType.PackImage)
+                    textureType = FnItemTextureType.Preview;
+            }
+
             if (textureType == FnItemTextureType.Preview && customData?["llamaTier"]?.GetValue<int>() is int llamaTier)
             {
                 string llamaPinataName =
@@ -1326,17 +1399,9 @@ public class GameItem
                 if (llamaPinataName?.StartsWith(llamaDefaultPreviewImage) ?? false)
                     return llamaTierIcons[llamaTier];
             }
-
-            if (attributes?.ContainsKey("options") ?? false)
-            {
-                if(textureType == FnItemTextureType.Preview)
-                    return llamaTierIcons[0];
-                if (textureType == FnItemTextureType.PackImage)
-                    textureType = FnItemTextureType.Preview;
-            }
         }
 
-        return template?.GetTexture(textureType);
+        return template?.GetTexture(textureType, fallbackIcon);
     }
     
     Texture2D GetPersonalityTexture(Texture2D fallbackIcon = null)
@@ -1371,14 +1436,12 @@ public class GameItem
 
         return fallbackIcon;
     }
-
-    public void GenerateSearchTags(bool assumeUncommon = true) =>
-        template.GenerateSearchTags(assumeUncommon);
+        
 
     public override string ToString() => $"{{\n  id:{uuid}\n  template:{templateId}\n  quantity:{quantity}\n  attributes:{attributes}}}";
 
     public GameItem Clone() => Clone(quantity);
-    public GameItem Clone(int quantity) => new(template, quantity, attributes.Reserialise(), profile is null ? inspectorOverride : this);
+    public GameItem Clone(int quantity) => new(template, quantity, attributes.Reserialise(), profile is null ? inspectorOverride : this, customData.Reserialise());
 
     public void NotifyChanged()
     {
@@ -1393,16 +1456,4 @@ public class GameItem
         uuid = null;
         OnRemoved?.Invoke(this);
     }
-}
-
-static class FnProfileTypes
-{
-    public const string AccountItems = "campaign";
-    public const string Backpack = "theater0";
-    public const string Storage = "outpost0";
-    //const string VentureBackpack = "theater2";
-    public const string PeopleCollection = "collection_book_people0";
-    public const string SchematicCollection = "collection_book_schematics0";
-    public const string CosmeticInventory = "athena";
-    public const string Common = "common_core";
 }

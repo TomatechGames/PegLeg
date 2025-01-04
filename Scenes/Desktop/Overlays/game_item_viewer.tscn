@@ -1,9 +1,8 @@
-[gd_scene load_steps=50 format=3 uid="uid://buf6p8qyydofm"]
+[gd_scene load_steps=49 format=3 uid="uid://buf6p8qyydofm"]
 
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/GameItemViewer.cs" id="1_5fxot"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_croo3"]
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_iqrw2"]
-[ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Hero-Soldier-CARD.png" id="2_151di"]
 [ext_resource type="PackedScene" uid="uid://be5lic7x1too2" path="res://Scenes/PerkAndAbilityEntries/weapon_perk_selector_entry.tscn" id="2_t0h0p"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="3_f2ac1"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_fwu0d"]
@@ -20,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="17_5dqmp"]
 [ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="18_4mdgc"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="18_vptf0"]
+[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="19_gnbdk"]
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/GameItemUpgrader.cs" id="19_kk5po"]
 [ext_resource type="Texture2D" uid="uid://docjdjoems0ia" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Black-L.png" id="20_iom1u"]
 [ext_resource type="Texture2D" uid="uid://xcnetq4h582o" path="res://Images/TextureResources/BlankTexture.tres" id="20_nu85e"]
@@ -48,13 +48,6 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_wrarj"]
 resource_name = "ItemViewerChoices"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ys5or"]
-bg_color = Color(0.101563, 0.101563, 0.101563, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ph3ha"]
 content_margin_left = 5.0
@@ -182,7 +175,7 @@ shader_parameter/minVal = 25.0
 shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
-shader_parameter/time = 20.647
+shader_parameter/time = 37.472
 shader_parameter/TrianglePattern = ExtResource("22_jjr7p")
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
@@ -204,7 +197,7 @@ metadata/_snap_enabled = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_asdem"]
 
-[node name="GameItemViewer" node_paths=PackedStringArray("displayItemEntry", "activeTabParent", "inactiveTabParent", "upgrader", "perkDetailsPanel", "heroDetailsPanel", "heroAbilityEntries", "heroPerkEntry", "heroCommanderPerkEntry", "teamPerkEntry", "tierSlider", "levelSlider", "statsTreeContainer", "statsTree", "devTextContainer", "devText", "itemChoiceParent", "itemChoiceEntries", "itemChoiceLayoutSections", "currentOfferEntry", "purchasePanel") instance=ExtResource("1_iqrw2")]
+[node name="GameItemViewer" node_paths=PackedStringArray("displayItemEntry", "activeTabParent", "inactiveTabParent", "upgrader", "perkDetailsPanel", "heroDetailsPanel", "heroAbilityEntries", "heroPerkEntry", "heroCommanderPerkEntry", "teamPerkEntry", "tierSlider", "levelSlider", "statsTreeContainer", "statsTree", "devTextContainer", "devText", "itemChoiceParent", "itemChoiceEntries", "itemChoiceLayoutSections", "currentOfferEntry", "purchaseSpinner") instance=ExtResource("1_iqrw2")]
 theme = ExtResource("1_croo3")
 script = ExtResource("1_5fxot")
 displayItemEntry = NodePath("Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical")
@@ -227,7 +220,7 @@ itemChoiceParent = NodePath("Control/WindowContents/CenterContainer/window/ItemC
 itemChoiceEntries = [NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/RewardEntryHorizontal"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/RewardEntryHorizontal")]
 itemChoiceLayoutSections = [NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3")]
 currentOfferEntry = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel")
-purchasePanel = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel")
+purchaseSpinner = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseSpinBox")
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0"]
 anchors_preset = 8
@@ -268,46 +261,20 @@ custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer" index="0"]
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_right = 25
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="RewardEntryVertical" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer" index="0" instance=ExtResource("4_2nobm")]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="Control" type="Control" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
+mouse_filter = 2
 
-[node name="ExtraIcons" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control" index="0"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2.0
-offset_right = -2.0
-offset_bottom = -2.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="Tersiary" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/ExtraIcons" index="0"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-texture = ExtResource("2_151di")
-expand_mode = 3
-
-[node name="Space" type="Control" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/ExtraIcons" index="1"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Subtype" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/ExtraIcons" index="2"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-texture = ExtResource("2_151di")
-expand_mode = 3
-
-[node name="PowerLevelIndicator" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control" index="1" instance=ExtResource("6_kpnbe")]
+[node name="PowerLevelIndicator" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control" index="0" instance=ExtResource("6_kpnbe")]
 layout_mode = 0
 offset_top = 40.0
 offset_bottom = 69.0
@@ -410,12 +377,17 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_88uph")
 current_tab = 0
 use_hidden_tabs_for_min_size = true
 
-[node name="Perks" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer" index="1" node_paths=PackedStringArray("realPerkEntries", "optionalPerkEntries", "reperkCostEntries")]
+[node name="Perks" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer" index="1" node_paths=PackedStringArray("realPerkArea", "optionalPerkArea", "interactionBlocker", "currentPerkEntries", "perkUpArea", "perkUpEntry", "reperkEntries", "perkApplyButton")]
 layout_mode = 2
 script = ExtResource("7_14t7q")
-realPerkEntries = []
-optionalPerkEntries = []
-reperkCostEntries = []
+realPerkArea = NodePath("Perks/Perk Slot Selector")
+optionalPerkArea = NodePath("Perks/Perk Option Selector")
+interactionBlocker = NodePath("Perks/MouseBlocker")
+currentPerkEntries = [NodePath("Perks/Perk Slot Selector/VBoxContainer/Perk Entry"), NodePath("Perks/Perk Slot Selector/VBoxContainer/Perk Entry2"), NodePath("Perks/Perk Slot Selector/VBoxContainer/Perk Entry3"), NodePath("Perks/Perk Slot Selector/VBoxContainer/Perk Entry4"), NodePath("Perks/Perk Slot Selector/VBoxContainer/Perk Entry5"), NodePath("Perks/Perk Slot Selector/VBoxContainer/Perk Entry6")]
+perkUpArea = NodePath("Perks/Perk Option Selector/VBoxContainer/UpgradePerkLayout")
+perkUpEntry = NodePath("Perks/Perk Option Selector/VBoxContainer/UpgradePerkLayout/MarginContainer/UpgradePerk")
+reperkEntries = [NodePath("Perks/Perk Option Selector/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Reperk1"), NodePath("Perks/Perk Option Selector/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Reperk2"), NodePath("Perks/Perk Option Selector/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Reperk3"), NodePath("Perks/Perk Option Selector/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Reperk4"), NodePath("Perks/Perk Option Selector/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Reperk5"), NodePath("Perks/Perk Option Selector/VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer/Reperk6")]
+perkApplyButton = NodePath("Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/ApplyButton")
 metadata/_tab_index = 0
 
 [node name="Perks" type="Control" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks" index="0"]
@@ -425,7 +397,7 @@ layout_mode = 2
 [node name="Perk Slot Selector" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks" index="0"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.74
+anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -437,28 +409,29 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector" index="0"]
 layout_mode = 2
 
-[node name="Weapon Perk Entry" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="0" instance=ExtResource("2_t0h0p")]
+[node name="Perk Entry" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="0" instance=ExtResource("2_t0h0p")]
 layout_mode = 2
 
-[node name="Weapon Perk Entry2" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="1" instance=ExtResource("2_t0h0p")]
+[node name="Perk Entry2" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="1" instance=ExtResource("2_t0h0p")]
 layout_mode = 2
 
-[node name="Weapon Perk Entry3" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="2" instance=ExtResource("2_t0h0p")]
+[node name="Perk Entry3" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="2" instance=ExtResource("2_t0h0p")]
 layout_mode = 2
 
-[node name="Weapon Perk Entry4" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="3" instance=ExtResource("2_t0h0p")]
+[node name="Perk Entry4" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="3" instance=ExtResource("2_t0h0p")]
 layout_mode = 2
 
-[node name="Weapon Perk Entry5" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="4" instance=ExtResource("2_t0h0p")]
+[node name="Perk Entry5" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="4" instance=ExtResource("2_t0h0p")]
 layout_mode = 2
 
-[node name="Weapon Perk Entry6" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="5" instance=ExtResource("2_t0h0p")]
+[node name="Perk Entry6" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Slot Selector/VBoxContainer" index="5" instance=ExtResource("2_t0h0p")]
 layout_mode = 2
 
 [node name="Perk Option Selector" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks" index="1"]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
+anchor_left = 1.0
+anchor_right = 2.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -1117,53 +1090,79 @@ vertical_alignment = 1
 [node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/window/ActionButtons/Rarityup" index="1" instance=ExtResource("3_f2ac1")]
 layout_mode = 2
 
-[node name="PurchasePanel" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="3" node_paths=PackedStringArray("priceEntry")]
+[node name="PurchasePanel" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window" index="3" node_paths=PackedStringArray("priceEntry", "priceInInventoryEntry")]
 visible = false
 custom_minimum_size = Vector2(400, 75)
 layout_mode = 2
 size_flags_horizontal = 4
 script = ExtResource("18_vptf0")
-priceEntry = NodePath("PurchaseButton/VBoxContainer/HBoxContainer")
+priceEntry = NodePath("InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice")
+priceInInventoryEntry = NodePath("InStockContent/CantAffordContent/PriceInInventory")
 
-[node name="PurchaseButton" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="0"]
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="0"]
+layout_mode = 2
+
+[node name="InStockToggle" type="Node" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="1"]
+script = ExtResource("19_gnbdk")
+
+[node name="InStockContent" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="2"]
+layout_mode = 2
+
+[node name="AffordableToggle" type="Node" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent" index="0"]
+script = ExtResource("19_gnbdk")
+
+[node name="PurchaseButtonContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer" index="0"]
+layout_mode = 2
+
+[node name="PurchaseButton" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_ys5or")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton" index="0"]
+[node name="Panel" type="Panel" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton" index="0"]
+layout_mode = 2
+theme_type_variation = &"PanelButton"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton" index="1"]
 layout_mode = 2
 theme_override_constants/separation = -5
 alignment = 1
 
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/VBoxContainer" index="0"]
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Purchase"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/VBoxContainer" index="1"]
+[node name="TotalPrice" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer" index="1"]
 layout_mode = 2
 alignment = 1
 script = ExtResource("10_c8yg2")
 
-[node name="Icon" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer" index="0"]
+[node name="Icon" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice" index="0"]
 layout_mode = 2
 texture = ExtResource("17_5dqmp")
 expand_mode = 3
 
-[node name="PriceText" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/VBoxContainer/HBoxContainer" index="1"]
+[node name="PriceText" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice" index="1"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "2500"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton" index="1" instance=ExtResource("3_f2ac1")]
+[node name="Responsive Button Area" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton" index="2" instance=ExtResource("3_f2ac1")]
 layout_mode = 2
 useHold = true
 
-[node name="PurchaseSpinBox" type="SpinBox" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="1"]
+[node name="PurchaseSpinBox" type="SpinBox" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer" index="1"]
 layout_mode = 2
 theme = ExtResource("18_4mdgc")
 theme_type_variation = &"LineEditLarge"
@@ -1171,43 +1170,59 @@ min_value = 1.0
 max_value = 10.0
 value = 1.0
 
-[node name="OutOfStockPanel" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="4"]
+[node name="CantAffordContent" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent" index="2"]
 visible = false
-custom_minimum_size = Vector2(400, 75)
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/separation = 0
+alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/OutOfStockPanel" index="0"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_ys5or")
-
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/window/OutOfStockPanel/PanelContainer" index="0"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Out Of Stock"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="CantAffordPanel" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window" index="5"]
-visible = false
-custom_minimum_size = Vector2(400, 75)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="PanelContainer" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/CantAffordPanel" index="0"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_ys5or")
-
-[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/window/CantAffordPanel/PanelContainer" index="0"]
+[node name="CantAffordLabel" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Can't Afford"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WIP" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window" index="6"]
+[node name="PriceInInventory" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent" index="1"]
+layout_mode = 2
+alignment = 1
+script = ExtResource("10_c8yg2")
+
+[node name="Icon" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" index="0"]
+layout_mode = 2
+texture = ExtResource("17_5dqmp")
+expand_mode = 3
+
+[node name="InvPriceText" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" index="1"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "1500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlashText" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" index="2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PriceText" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" index="3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "2500"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OutOfStockLabel" type="Label" parent="Control/WindowContents/CenterContainer/window/PurchasePanel" index="3"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Out Of Stock"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WIP" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window" index="4"]
 visible = false
 layout_mode = 2
 
@@ -1426,6 +1441,8 @@ value = 45.0
 tick_count = 6
 ticks_on_borders = true
 
+[connection signal="DescriptionChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/DescriptionAndUpgradeCosts/Item Description" method="set_text"]
+[connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/Item Name" method="set_text"]
 [connection signal="RatingChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/PowerLevelIndicator/HBoxContainer/PowerLevelLabel" method="set_text"]
 [connection signal="RatingVisibility" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntryVertical" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/PowerLevelIndicator" method="set_visible"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" to="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks" method="ClosePerkChanger"]
@@ -1437,6 +1454,17 @@ ticks_on_borders = true
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2/Control3/CheckButton/TextureRect" method="set_visible"]
 [connection signal="toggled" from="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton" to="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3/Control4/CheckButton/TextureRect" method="set_visible"]
-[connection signal="HoldPressed" from="Control/WindowContents/CenterContainer/window/PurchasePanel/PurchaseButton/Responsive Button Area" to="." method="PurchaseItem"]
+[connection signal="IsAffordableChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/AffordableToggle" method="EmitValues"]
+[connection signal="IsInStockChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockToggle" method="EmitValues"]
+[connection signal="InvertedValue" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockToggle" to="Control/WindowContents/CenterContainer/window/PurchasePanel/OutOfStockLabel" method="set_visible"]
+[connection signal="Value" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockToggle" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent" method="set_visible"]
+[connection signal="InvertedValue" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/AffordableToggle" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent" method="set_visible"]
+[connection signal="Value" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/AffordableToggle" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer" method="set_visible"]
+[connection signal="AmountChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice/PriceText" method="set_text"]
+[connection signal="AmountChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory/PriceText" method="set_text"]
+[connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice/Icon" method="set_texture"]
+[connection signal="HoldPressed" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/Responsive Button Area" to="." method="PurchaseItem"]
+[connection signal="AmountChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory/InvPriceText" method="set_text"]
+[connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory/Icon" method="set_texture"]
 
 [editable path="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/PowerLevelIndicator"]

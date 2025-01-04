@@ -51,7 +51,7 @@ public partial class GameItemUpgrader : Control
     void UpdateItem(GameItem item)
     {
         int level = item.attributes?["level"]?.GetValue<int>() ?? 0;
-        minLevel = level;
+        minLevel = Mathf.Min(level, 50);
         isShardable = 
             item.template.Type == "Schematic" && 
             (item.template.SubType ?? "Explosive") != "Explosive" && 

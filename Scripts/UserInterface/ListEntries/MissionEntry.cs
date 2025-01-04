@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
@@ -36,6 +37,8 @@ public partial class MissionEntry : Control, IRecyclableEntry
     Control alertModifierParent;
 
     [Export]
+    Control missionRewardLayout;
+    [Export]
     Control missionRewardParent;
 
     [Export]
@@ -49,15 +52,15 @@ public partial class MissionEntry : Control, IRecyclableEntry
     [Export]
     Texture2D defaultBackground;
 
-    FnMission currentMission = null;
-    GameItemPredicate highlightedItemPredicate;
+    GameMission currentMission = null;
+    Predicate<GameItem> highlightedItemPredicate;
 
     public Control node => this;
 
-    IRecyclableElementProvider<FnMission> missionProvider;
+    IRecyclableElementProvider<GameMission> missionProvider;
     public void SetRecyclableElementProvider(IRecyclableElementProvider provider)
     {
-        if(provider is IRecyclableElementProvider<FnMission> newProvider)
+        if(provider is IRecyclableElementProvider<GameMission> newProvider)
             missionProvider = newProvider;
     }
 
@@ -68,7 +71,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
         SetMissionData(missionProvider.GetRecycleElement(index));
     }
 
-    public void SetMissionData(FnMission mission)
+    public void SetMissionData(GameMission mission)
 	{
         currentMission = mission;
         var missionGen = currentMission.missionGenerator;
@@ -98,9 +101,9 @@ public partial class MissionEntry : Control, IRecyclableEntry
             }
             ));
 
-        if (currentMission.alertModifiers.Length>0)
+        if(alertModifierLayout is not null && alertModifierParent is not null)
         {
-            if(alertModifierLayout is not null && alertModifierParent is not null)
+            if (currentMission.alertModifiers.Length > 0)
             {
                 for (int i = 0; i < alertModifierParent.GetChildCount(); i++)
                 {
@@ -121,7 +124,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
                         textureChild.Texture = modifierTemplate.GetTexture();
                         textureChild.TooltipText = modifierTemplate.DisplayName;
                     }
-                    else if(alertChild is GameItemEntry gameItemChild)
+                    else if (alertChild is GameItemEntry gameItemChild)
                     {
                         gameItemChild.SetItem(currentMission.alertModifiers[i]);
                     }
@@ -141,46 +144,59 @@ public partial class MissionEntry : Control, IRecyclableEntry
                 alertModifierLayout.Visible = true;
                 alertModifierLayout.ProcessMode = ProcessModeEnum.Inherit;
             }
-            if(alertRewardLayout is not null && alertRewardParent is not null)
-            {
-                alertRewardLayout.Visible = true;
-                alertRewardLayout.ProcessMode = ProcessModeEnum.Inherit;
-                var rewards = fullItems ? 
-                    currentMission.alertRewardItems : 
-                    currentMission.alertRewardItems
-                        .Where(r => r.template.Name != "Gold" && r.template.Name != "Venture XP")
-                        .ToArray();
-                ApplyItems(rewards, alertRewardParent);
-            }
-        }
-        else
-        {
-            if (alertModifierLayout is not null)
+            else
             {
                 alertModifierLayout.Visible = false;
                 alertModifierLayout.ProcessMode = ProcessModeEnum.Disabled;
             }
-            if (alertRewardLayout is not null)
+        }
+
+        if (missionRewardLayout is not null && missionRewardParent is not null)
+        {
+            var rewards = fullItems ?
+                currentMission.rewardItems :
+                currentMission.rewardItems
+                    .Where(r => r.template.DisplayName != "Gold" && r.template.DisplayName != "Venture XP")
+                    .ToArray();
+            if (rewards.Length > 0)
+            {
+                ApplyItems(rewards, missionRewardParent);
+
+                missionRewardLayout.Visible = true;
+                missionRewardLayout.ProcessMode = ProcessModeEnum.Inherit;
+            }
+            else
+            {
+                missionRewardLayout.Visible = false;
+                missionRewardLayout.ProcessMode = ProcessModeEnum.Disabled;
+            }
+        }
+
+        if (alertRewardLayout is not null && alertRewardParent is not null)
+        {
+            var rewards = fullItems ?
+                currentMission.alertRewardItems :
+                currentMission.alertRewardItems
+                    .Where(r => r.template.DisplayName != "Venture XP")
+                    .ToArray();
+            if (rewards.Length > 0)
+            {
+                ApplyItems(rewards, alertRewardParent);
+
+                alertRewardLayout.Visible = true;
+                alertRewardLayout.ProcessMode = ProcessModeEnum.Inherit;
+            }
+            else
             {
                 alertRewardLayout.Visible = false;
                 alertRewardLayout.ProcessMode = ProcessModeEnum.Disabled;
             }
         }
 
-        if (missionRewardParent is not null)
-        {
-            var rewards = fullItems ?
-                currentMission.rewardItems :
-                currentMission.rewardItems
-                    .Where(r => r.template.Name != "Venture XP")
-                    .ToArray();
-            ApplyItems(rewards, missionRewardParent);
-        }
-
         UpdateHighlightedItems();
     }
 
-    public void SetHighlightFilter(GameItemPredicate predicate)
+    public void SetHighlightFilter(Predicate<GameItem> predicate)
     {
         highlightedItemPredicate = predicate;
         if (currentMission is not null)
@@ -212,15 +228,9 @@ public partial class MissionEntry : Control, IRecyclableEntry
             bool isRewardBundle = itemArray[i].template.Name.ToLower().StartsWith("zcp_");
             controlChild.addXToAmount = isRewardBundle;
             controlChild.compactifyAmount = !isRewardBundle;
-            //controlChild.includeAmountInName = !isRewardBundle;
-
+            controlChild.preventInteractability = isRewardBundle;
+            itemArray[i].SetRewardNotification().StartTask();
             controlChild.SetItem(itemArray[i]);
-            controlChild.SetRewardNotification();
-
-            if (!isRewardBundle)
-                controlChild.SetInteractableSmart();
-            else
-                controlChild.SetInteractable(false);
         }
     }
 }

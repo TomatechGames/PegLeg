@@ -53,30 +53,37 @@ public partial class ItemShopInterface : Control
     public async Task LoadShop(bool force = false)
     {
         await itemShopSephamore.WaitAsync();
-        var timerType = useEventShop ? RefreshTimeType.Weekly : RefreshTimeType.Event;
-        if (linkedStorefront is not null)
+        try
         {
-            await linkedStorefront.Update(force);
-            return;
+            var timerType = useEventShop ? RefreshTimeType.Weekly : RefreshTimeType.Event;
+            if (linkedStorefront is not null)
+            {
+                await linkedStorefront.Update(force);
+                return;
+            }
+
+            var account = GameAccount.activeAccount;
+            if (!await account.Authenticate())
+                return;
+
+            linkedStorefront = await GameStorefront.GetStorefront(useEventShop ? FnStorefrontTypes.EventShopCatalog : FnStorefrontTypes.WeeklyShopCatalog, timerType);
+            linkedStorefront.OnOfferAdded += AddShopOffer;
+            linkedStorefront.OnOfferRemoved += RemoveShopOffer;
+
+            foreach (var item in activeEntries.Values)
+            {
+                item.Visible = false;
+                inactiveEntries.Add(item);
+            }
+            activeEntries.Clear();
+            for (int i = 0; i < linkedStorefront.Offers.Length; i++)
+            {
+                AddShopOffer(linkedStorefront.Offers[i]);
+            }
         }
-
-        var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
-            return;
-
-        linkedStorefront = await GameStorefront.GetStorefront(useEventShop ? FnStorefrontTypes.EventShopCatalog : FnStorefrontTypes.WeeklyShopCatalog);
-        linkedStorefront.OnOfferAdded += AddShopOffer;
-        linkedStorefront.OnOfferRemoved += RemoveShopOffer;
-
-        foreach (var item in activeEntries.Values)
+        finally
         {
-            item.Visible = false;
-            inactiveEntries.Add(item);
-        }
-        activeEntries.Clear();
-        for (int i = 0; i < linkedStorefront.Offers.Length; i++)
-        {
-            AddShopOffer(linkedStorefront.Offers[i]);
+            itemShopSephamore.Release();
         }
     }
 
@@ -111,5 +118,5 @@ public partial class ItemShopInterface : Control
     }
 
     void SelectShopItem(string offerId) => 
-        GameItemViewer.Instance.ShowShopOffer(activeEntries[offerId].currentOffer);
+        GameItemViewer.Instance.ShowOffer(activeEntries[offerId].currentOffer);
 }

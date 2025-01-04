@@ -2,7 +2,7 @@ shader_type canvas_item;
 #include "Includes/CornerMask.gdshaderinc"
 
 uniform vec2 ControlSize = vec2(100.0, 100.0);
-uniform vec2 ControlSizeScale = vec2(0.66, 1.0);
+uniform vec2 ControlSizeScale = vec2(1.0, 1.0);
 uniform bool Expo=true;
 uniform float AlphaStart = 0.0;
 uniform float CornerRadius = 10.0;
@@ -19,7 +19,7 @@ void fragment() {
 	{
 		newAlpha*=newAlpha;
 	}
-	COLOR.a *= newAlpha;
+	COLOR.a *= clamp(newAlpha,0,1);
 }
 
 //void light() {

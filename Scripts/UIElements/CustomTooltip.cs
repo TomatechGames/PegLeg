@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 using System.Reflection.Metadata;
 using System.Text.Json.Nodes;
 
@@ -104,6 +105,8 @@ public partial class CustomTooltip : Control
 		if (contentObject["description"] is JsonArray descriptionArray)
 		{
 			descriptionContent.Visible = true;
+            if (descriptionArray.Count > descriptionLayers.Length)
+                descriptionArray[descriptionLayers.Length - 1] = string.Join("\n", descriptionArray.Slice((descriptionLayers.Length - 1)..).Select(n => n.ToString()));
             for (int i = 0; i < descriptionLayers.Length; i++)
             {
 				if (i >= descriptionArray.Count || descriptionArray[i] is null)

@@ -2,7 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -206,7 +205,7 @@ public partial class LlamaInterface : Control
 
     void RemoveLlamaItem(GameItem item)
     {
-        if (item.template.Type != "CardPack")
+        if (item?.template?.Type != "CardPack")
             return;
         var llamaStack = llamaItemStacks.FirstOrDefault(val => val.Has(item));
         if (llamaStack is not null)
@@ -299,7 +298,6 @@ public partial class LlamaInterface : Control
     async void ForceLoadShopLlamas() => await LoadShopLlamasAsync(true);
     async Task LoadShopLlamasAsync(bool force = false)
     {
-        GD.Print($"Starting Llama Load ({!IsVisibleInTree()} || ({!force} && {activeOffers.Count > 0}))");
         if (!IsVisibleInTree() || (!force && activeOffers.Count > 0))
             return;
         llamaShopCTS?.Cancel();
@@ -515,6 +513,7 @@ public partial class LlamaInterface : Control
         {
             items = new GameItem[] { cardPackItem };
         }
+        cardPackItem.SetSeenLocal(true);
         items ??= Array.Empty<GameItem>();
 
         SetSelectedLlamaResults(items);
@@ -525,7 +524,11 @@ public partial class LlamaInterface : Control
     {
         if (items is not null)
         {
-            var sortedItems = items.OrderBy(item => -item.template.RarityLevel).ThenBy(item => item.template.Type).ToArray();
+            var sortedItems = items
+                .OrderBy(item => -item.template.RarityLevel)
+                .ThenBy(item => item.template.Type)
+                .ThenBy(item => item.template.DisplayName)
+                .ToArray();
             //fill out item list
             surpriseResultPanel.Visible = false;
             resultEntriesParent.Visible = true;
@@ -541,8 +544,7 @@ public partial class LlamaInterface : Control
                 string templateId = sortedItems[i].templateId;
                 llamaResultEntries[i].Visible = true;
                 llamaResultEntries[i].SetItem(sortedItems[i]);
-                llamaResultEntries[i].SetRewardNotification();
-                llamaResultEntries[i].SetInteractableSmart();
+                sortedItems[i].SetRewardNotification().StartTask();
             }
             for (int i = items.Length; i < llamaResultEntries.Count; i++)
             {

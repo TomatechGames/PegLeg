@@ -30,7 +30,7 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 metadata/_snap_enabled = true
 
-[node name="MissionEntryV5_0" type="MarginContainer" node_paths=PackedStringArray("alertModifierLayout", "alertModifierParent", "missionRewardParent", "alertRewardLayout", "alertRewardParent")]
+[node name="MissionEntryV5_0" type="MarginContainer" node_paths=PackedStringArray("alertModifierLayout", "alertModifierParent", "missionRewardLayout", "missionRewardParent", "alertRewardLayout", "alertRewardParent")]
 custom_minimum_size = Vector2(270, 125)
 offset_right = 270.0
 offset_bottom = 125.0
@@ -39,7 +39,8 @@ size_flags_vertical = 0
 script = ExtResource("1_qqdn1")
 alertModifierLayout = NodePath("HBoxContainer/VBoxContainer/AlertModifiers")
 alertModifierParent = NodePath("HBoxContainer/VBoxContainer/AlertModifiers/HFlowContainer")
-missionRewardParent = NodePath("")
+missionRewardLayout = NodePath("HBoxContainer/MissionRewards")
+missionRewardParent = NodePath("HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer")
 alertRewardLayout = NodePath("HBoxContainer/AlertRewards")
 alertRewardParent = NodePath("HBoxContainer/AlertRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer")
 defaultBackground = ExtResource("2_bhxmy")
@@ -60,37 +61,31 @@ layout_mode = 2
 layout_mode = 2
 alignment = 1
 
-[node name="IconContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
+[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/margin_left = -10
-theme_override_constants/margin_top = -10
-theme_override_constants/margin_right = -10
-theme_override_constants/margin_bottom = -10
+texture = ExtResource("5_hktn8")
+expand_mode = 1
 
-[node name="IconBG" type="TextureRect" parent="HBoxContainer/VBoxContainer/IconContainer"]
+[node name="IconBG" type="TextureRect" parent="HBoxContainer/VBoxContainer/Icon"]
 self_modulate = Color(0, 0, 0, 1)
-layout_mode = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_4yvdq")
-expand_mode = 5
-
-[node name="Icon" type="TextureRect" parent="HBoxContainer/VBoxContainer/IconContainer/IconBG"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("5_hktn8")
-expand_mode = 1
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_4yvdq")
+expand_mode = 5
 
 [node name="AlertModifiers" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_top = -20
 theme_override_constants/margin_bottom = -10
@@ -186,6 +181,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="AlertRewards" type="MarginContainer" parent="HBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/margin_top = 2
@@ -247,7 +243,7 @@ mouse_filter = 2
 [node name="PowerLevelIndicator" parent="PowerLevel" instance=ExtResource("10_jsq5r")]
 layout_mode = 0
 offset_top = 17.0
-offset_bottom = 46.0
+offset_bottom = 41.0
 
 [node name="VenturesIndicator" type="Control" parent="."]
 layout_mode = 2
@@ -271,9 +267,9 @@ texture = ExtResource("9_n2b4n")
 expand_mode = 1
 
 [connection signal="BackgroundChanged" from="." to="BGTexture" method="set_texture"]
-[connection signal="IconChanged" from="." to="HBoxContainer/VBoxContainer/IconContainer/IconBG/Icon" method="set_texture"]
+[connection signal="IconChanged" from="." to="HBoxContainer/VBoxContainer/Icon" method="set_texture"]
 [connection signal="PowerLevelChanged" from="." to="PowerLevel/PowerLevelIndicator/HBoxContainer/PowerLevelLabel" method="set_text"]
-[connection signal="TooltipChanged" from="." to="HBoxContainer/VBoxContainer/IconContainer/IconBG/Icon" method="set_tooltip_text"]
+[connection signal="TooltipChanged" from="." to="HBoxContainer/VBoxContainer/Icon" method="set_tooltip_text"]
 [connection signal="VenturesIndicatorVisible" from="." to="VenturesIndicator" method="set_visible"]
 
 [editable path="PowerLevel/PowerLevelIndicator"]

@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c70qnky0xyx4w" path="res://Scenes/MissionEntry/mission_collection.tscn" id="1_a6luq"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ColumnStackContainer.cs" id="1_ac3k7"]
 [ext_resource type="PackedScene" uid="uid://d2sah8mggjcus" path="res://Scenes/LlamaEntries/llama_highlight.tscn" id="7_uwope"]
-[ext_resource type="PackedScene" uid="uid://31ck1j8euqq7" path="res://Scenes/QuestEntries/quest_highlight.tscn" id="8_1vwuw"]
+[ext_resource type="PackedScene" uid="uid://31ck1j8euqq7" path="res://Scenes/Quests/quest_highlight.tscn" id="8_1vwuw"]
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="9_stolx"]
 [ext_resource type="PackedScene" uid="uid://wb5ukb74fot1" path="res://Scenes/ShopEntries/regular_shop_entry.tscn" id="10_ehus4"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="10_smvwj"]

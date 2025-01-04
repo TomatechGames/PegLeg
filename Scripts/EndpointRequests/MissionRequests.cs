@@ -15,7 +15,7 @@ static class MissionRequests
     const string missionCacheSavePath = "user://missions.json";
     static uint missionSample;
     static DateTime missionReset;
-    static FnMission[] missions = null;
+    static GameMission[] missions = null;
     const int MissionVersion = 4;
 
     public static async Task<bool> CheckForMissionChanges()
@@ -58,7 +58,7 @@ static class MissionRequests
     static SemaphoreSlim missionSephamore = new(1);
     static bool forceQueued = true;
     static bool isBeingForced = true;
-    public static async Task<FnMission[]> GetMissions(bool forceRefresh = false)
+    public static async Task<GameMission[]> GetMissions(bool forceRefresh = false)
     {
         if (isBeingForced)
             forceRefresh = false;
@@ -143,7 +143,9 @@ static class MissionRequests
         var alerts = missionData["missionAlerts"];
         missionData["version"] = MissionVersion;
         missionData["expiryDate"] = alerts[0]["nextRefresh"].ToString()[..^1]; //the Z messes with daylight savings time
+        missionReset = DateTime.Parse(missionData["expiryDate"].ToString(), CultureInfo.InvariantCulture);
         missionData["sample"] = missionSample = alerts.ToString().Hash();
+        missionSample = missionData["sample"].GetValue<uint>();
         //GD.Print(fullMissions.ToString()[..350] + "...");
         //GD.Print(missionsCache.ToString()[..350] + "...");
         //save to file
@@ -155,7 +157,7 @@ static class MissionRequests
     }
 
 
-    static FnMission[] GenerateMissions(JsonNode rootNode)
+    static GameMission[] GenerateMissions(JsonNode rootNode)
     {
         //Theaters
         List<string> allowedTheaterIDs = new()
@@ -178,7 +180,7 @@ static class MissionRequests
         JsonArray allMissions = rootNode["missions"].AsArray();
         JsonArray allMissionAlerts = rootNode["missionAlerts"].AsArray();
 
-        List<FnMission> missionList = new();
+        List<GameMission> missionList = new();
 
         foreach (var theaterID in allowedTheaterIDs)
         {
@@ -250,7 +252,7 @@ static class MissionRequests
     }
 }
 
-public class FnMission
+public class GameMission
 {
     public int powerLevel { get; private set; }
     public int theaterIdx { get; private set; }
@@ -271,7 +273,7 @@ public class FnMission
 
     public IEnumerable<GameItem> allItems => alertRewardItems?.Union(rewardItems) ?? rewardItems;
 
-    public FnMission(JsonObject missionData, JsonObject alertData, JsonObject tileData)
+    public GameMission(JsonObject missionData, JsonObject alertData, JsonObject tileData)
     {
         this.missionData = missionData;
         this.alertData = alertData;
@@ -281,9 +283,7 @@ public class FnMission
         missionGenerator = GameItemTemplate.Lookup("MissionGen", missionData["missionGenerator"].ToString()).CreateInstance();
         zoneTheme = GameItemTemplate.Lookup("ZoneTheme", tileData["zoneTheme"].ToString()).CreateInstance();
 
-        powerLevel = difficultyInfo?["ReccomendedRating"]?.GetValue<int>() ?? 0;
-        if (powerLevel == 0)
-            GD.Print(missionData["missionDifficultyInfo"]["rowName"].ToString() + " :: " + difficultyInfo);
+        powerLevel = difficultyInfo?["RecommendedRating"]?.GetValue<int>() ?? 0;
         theaterCat = missionData["theaterCat"].ToString();
         theaterIdx = theaterCat switch
         {
@@ -296,18 +296,32 @@ public class FnMission
         };
 
         missionGenerator.GetTexture(FnItemTextureType.Icon);
-        backgroundTexture = missionGenerator.GetTexture(FnItemTextureType.LoadingScreen) ?? zoneTheme.GetTexture(FnItemTextureType.LoadingScreen);
+        backgroundTexture = 
+            missionGenerator.GetTexture(FnItemTextureType.LoadingScreen, null) ?? 
+            zoneTheme.GetTexture(FnItemTextureType.LoadingScreen, null);
 
-        List<GameItem> rewardItemList = new();
+        Dictionary<string, GameItem> rewardItemList = new();
         foreach (var itemData in missionData["missionRewards"]["items"].AsArray())
         {
             GameItem item = new(null, null, itemData.AsObject());
             item.SetSeenLocal();
             item.GetTexture();
             item.GenerateSearchTags();
-            rewardItemList.Add(item);
+            var match = Regex.Match(item.template.Name.ToLower(), "zcp_.*t\\d{1,2}");
+            string key = match.Success ?
+                match.Groups[0].Value :
+                item.template.Name.ToLower();
+            if (rewardItemList.ContainsKey(key))
+            {
+                var targetItem = rewardItemList[key];
+                targetItem.SetQuantity(targetItem.quantity + item.quantity);
+            }
+            else
+            {
+                rewardItemList.Add(key, item);
+            }
         }
-        rewardItems = rewardItemList.ToArray();
+        rewardItems = rewardItemList.Values.ToArray();
 
         if (alertData is not null)
         {
@@ -339,5 +353,7 @@ public class FnMission
             }
             alertRewardItems = alertRewardItemList.ToArray();
         }
+        alertModifiers ??= Array.Empty<GameItem>();
+        alertRewardItems ??= Array.Empty<GameItem>();
     }
 }

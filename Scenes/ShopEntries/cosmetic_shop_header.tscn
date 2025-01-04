@@ -11,23 +11,29 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_wejgv"]
 gradient = SubResource("Gradient_opudt")
 
-[node name="CosmeticShopHeader" type="MarginContainer"]
-offset_right = 180.0
-offset_bottom = 46.0
-size_flags_horizontal = 0
+[node name="MarginContainer2" type="MarginContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 2
 theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
 
-[node name="HeaderBG" type="HBoxContainer" parent="."]
+[node name="CosmeticShopHeader" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="HeaderBG" type="HBoxContainer" parent="CosmeticShopHeader"]
 modulate = Color(0, 0.454902, 1, 1)
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="HeaderBG"]
+[node name="Panel" type="Panel" parent="CosmeticShopHeader/HeaderBG"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_m8y1v")
 
-[node name="TextureRect" type="TextureRect" parent="HeaderBG/Panel"]
+[node name="TextureRect" type="TextureRect" parent="CosmeticShopHeader/HeaderBG/Panel"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 1
 anchors_preset = -1
@@ -39,14 +45,24 @@ grow_vertical = 2
 texture = SubResource("GradientTexture1D_wejgv")
 expand_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="CosmeticShopHeader"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="HeaderLabel" type="Label" parent="MarginContainer"]
+[node name="HeaderLabel" type="Label" parent="CosmeticShopHeader/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Shop Header"
 vertical_alignment = 1
+
+[node name="JamTrackViewer" type="Button" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 24
+text = " View all "

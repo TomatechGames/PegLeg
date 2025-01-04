@@ -34,7 +34,7 @@ metadata/_snap_enabled = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tybqm"]
 resource_local_to_scene = true
 shader = ExtResource("2_trgqp")
-shader_parameter/TriangleTint = Color(0.9, 0.51, 0, 1)
+shader_parameter/TriangleTint = Color(0.9, 0.9, 0.9, 1)
 shader_parameter/TimeOffset = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxue7"]
@@ -75,7 +75,7 @@ border_width_bottom = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yfccu"]
 shader = ExtResource("10_acofu")
-shader_parameter/time = 485.538
+shader_parameter/time = 4376.05
 
 [sub_resource type="Gradient" id="Gradient_ir67n"]
 offsets = PackedFloat32Array(0, 0.992042)
@@ -178,6 +178,7 @@ texture = SubResource("GradientTexture2D_4arc4")
 expand_mode = 1
 
 [node name="RarityTriangles" type="TextureRect" parent="ItemContent/EdgePadding/GameItem/MarginContainer/IconWindow/MarginContainer/AspectTexture"]
+self_modulate = Color(0.9, 0.51, 0, 1)
 texture_repeat = 2
 material = SubResource("ShaderMaterial_tybqm")
 layout_mode = 1

@@ -1,30 +1,55 @@
 using Godot;
+using System;
+using System.Collections.Generic;
 
 public partial class StatusBarController : Control
 {
+    static StatusBarController instance;
+    static List<Guid> blockerTokens = new();
+
     [Export]
-    ModalWindow settingsWindow;
+    Control leftStatusBlocker;
+    [Export]
+    Control rightStatusBlocker;
 
-    bool IsMaximised => GetTree().Root.Mode == Window.ModeEnum.Maximized;
-
-    public override async void _Ready()
+    public override void _Ready()
     {
-        if (IsInstanceValid(LoadingOverlay.Instance))
+        instance = this;
+        UpdateBlockerVisibility();
+    }
+
+    void UpdateBlockerVisibility()
+    {
+        bool blockersVisible = blockerTokens.Count > 0;
+        if(leftStatusBlocker is not null)
+            leftStatusBlocker.Visible = blockersVisible;
+        if (rightStatusBlocker is not null)
+            rightStatusBlocker.Visible = blockersVisible;
+    }
+
+
+    public static StatusBlockerToken CreateToken() => new();
+
+    public struct StatusBlockerToken : IDisposable
+    {
+        Guid guid = Guid.NewGuid();
+        public StatusBlockerToken()
         {
-            LoadingOverlay.AddLoadingKey("TempLockout");
-            await Helpers.WaitForTimer(0.2);
-            LoadingOverlay.RemoveLoadingKey("TempLockout");
+            bool notify = blockerTokens.Count == 0;
+            blockerTokens.Add(guid);
+            if (notify)
+                instance?.UpdateBlockerVisibility();
+        }
+
+        public void Dispose()
+        {
+            if (blockerTokens.Contains(guid))
+            {
+                blockerTokens.Remove(guid);
+                if (blockerTokens.Count == 0)
+                    instance?.UpdateBlockerVisibility();
+            }
         }
     }
-
-    public void OpenSettings()
-    {
-        if (!LoadingOverlay.Instance.IsOpen)
-            settingsWindow.SetWindowOpen(true);
-    }
-
-    public void CloseApp()
-    {
-        GetTree().Quit();
-    }
 }
+

@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://cochrwi38s2xb"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/QuestInterface.cs" id="1_6bvuf"]
-[ext_resource type="PackedScene" uid="uid://bu88x28im6m6h" path="res://Scenes/QuestEntries/quest_group_foldout.tscn" id="2_j1c4c"]
-[ext_resource type="PackedScene" uid="uid://b7bfdlitheyn0" path="res://Scenes/QuestEntries/quest_group.tscn" id="3_oo2ti"]
+[ext_resource type="PackedScene" uid="uid://bu88x28im6m6h" path="res://Scenes/Quests/quest_group_foldout.tscn" id="2_j1c4c"]
+[ext_resource type="PackedScene" uid="uid://b7bfdlitheyn0" path="res://Scenes/Quests/quest_group.tscn" id="3_oo2ti"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="4_66lw5"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="5_n3re1"]
-[ext_resource type="PackedScene" uid="uid://c3okokomiywve" path="res://Scenes/Desktop/Views/desktopQuestGroupView.tscn" id="6_ai2ub"]
+[ext_resource type="PackedScene" uid="uid://c3okokomiywve" path="res://Scenes/Quests/questGroupPanel.tscn" id="6_ai2ub"]
 
 [node name="Quests" type="MarginContainer" node_paths=PackedStringArray("questGroupViewer", "foldoutParent", "questListLayout", "loadingIcon")]
 anchors_preset = 15
@@ -13,23 +13,30 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 0
 script = ExtResource("1_6bvuf")
 questGroupViewer = NodePath("HSplitContainer/MarginContainer/QuestGroupViewer")
-foldoutParent = NodePath("HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/QuestFoldouts")
+foldoutParent = NodePath("HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer/QuestFoldouts")
 foldoutScene = ExtResource("2_j1c4c")
 questGroupScene = ExtResource("3_oo2ti")
-questListLayout = NodePath("HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer")
-loadingIcon = NodePath("HSplitContainer/QuestGroupList/MarginContainer/LoadingIcon")
+questListLayout = NodePath("HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer")
+loadingIcon = NodePath("HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/LoadingIcon")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
 split_offset = 450
 
-[node name="QuestGroupList" type="ScrollContainer" parent="HSplitContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="HSplitContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="QuestGroupList" type="ScrollContainer" parent="HSplitContainer/MarginContainer2"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/QuestGroupList"]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/MarginContainer2/QuestGroupList"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -38,42 +45,43 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = -5
 theme_override_constants/margin_bottom = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/QuestGroupList/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="QuestFoldouts" type="VBoxContainer" parent="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer"]
+[node name="QuestFoldouts" type="VBoxContainer" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer"]
+[node name="ClearPinnedButton" type="MarginContainer" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Panel" type="Panel" parent="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer/ClearPinnedButton"]
 layout_mode = 2
 theme_type_variation = &"PanelButton"
 
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer/ClearPinnedButton"]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 4
 
-[node name="Label" type="Label" parent="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/MarginContainer/MarginContainer"]
+[node name="Label" type="Label" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer/ClearPinnedButton/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Clear Pinned Quests"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Responsive Button Area" parent="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("4_66lw5")]
+[node name="Responsive Button Area" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer/ClearPinnedButton" instance=ExtResource("4_66lw5")]
 layout_mode = 2
 useHold = true
 
-[node name="LoadingIcon" parent="HSplitContainer/QuestGroupList/MarginContainer" instance=ExtResource("5_n3re1")]
+[node name="LoadingIcon" parent="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer" instance=ExtResource("5_n3re1")]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -85,4 +93,4 @@ layout_mode = 2
 [node name="QuestGroupViewer" parent="HSplitContainer/MarginContainer" instance=ExtResource("6_ai2ub")]
 layout_mode = 2
 
-[connection signal="HoldPressed" from="HSplitContainer/QuestGroupList/MarginContainer/VBoxContainer/MarginContainer/Responsive Button Area" to="." method="ClearPinnedQuests"]
+[connection signal="HoldPressed" from="HSplitContainer/MarginContainer2/QuestGroupList/MarginContainer/VBoxContainer/ClearPinnedButton/Responsive Button Area" to="." method="ClearPinnedQuests"]

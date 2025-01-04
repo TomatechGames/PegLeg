@@ -91,8 +91,7 @@ public partial class QuestGroupEntry : Control
 
                     GameItem questItem = 
                         (await account.GetProfile(FnProfileTypes.AccountItems).Query())
-                        .GetTemplateItems("Quest", item => item.templateId == currentQuestId)
-                        .FirstOrDefault();
+                        .GetFirstTemplateItem(currentQuestId);
 
                     if (i == 0 && questItem is null)
                         break;
@@ -128,8 +127,7 @@ public partial class QuestGroupEntry : Control
 
                 GameItem questItem =
                         (await account.GetProfile(FnProfileTypes.AccountItems).Query())
-                        .GetTemplateItems("Quest", item => item.templateId == currentQuestId)
-                        .FirstOrDefault();
+                        .GetFirstTemplateItem(currentQuestId);
 
                 GameItemTemplate questTemplate = questItem?.template ?? GameItemTemplate.Get(currentQuestId);
 

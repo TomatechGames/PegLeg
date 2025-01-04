@@ -10,6 +10,13 @@ using System.Threading.Tasks;
 
 public partial class InventoryItemSlot : Node
 {
+    //todo: allow slots to show a greyed out preview of the target item under an empty slot
+    [Export]
+    bool showInspector = false;
+    [Export]
+    bool autoUpdateAccount = true;
+
+    [ExportGroup("Nodes")]
     [Export]
     GameItemEntry entry;
 
@@ -25,79 +32,109 @@ public partial class InventoryItemSlot : Node
     [Export]
     Control buttonControl;
 
+
+    [ExportGroup("Defaults")]
     [Export]
-    bool showInspector = false;
+    string slotRequirement;
 
     [Export]
-    bool useActiveAccount;
+    string profileType;
 
+    [Export]
+    string itemTypeFilter;
+
+    [Export]
+    string defaultSquadName;
+
+    [Export]
+    int defaultSquadIndex;
 
     public event Action<InventoryItemSlot> OnItemChangeRequested;
     public event Action<InventoryItemSlot> OnSlotItemChanged;
 
-    GameAccount currentAcount;
+    GameAccount overrideAccount;
     public GameProfile currentProfile { get; private set; }
     public GameItem slottedItem { get; private set; }
-    string profileType;
-    string itemTypeFilter;
-    GameItemPredicate predicateFilter = FallbackPredicate;
+    Predicate<GameItem> predicateFilter;
     bool isEmpty = true;
+
+    public static Predicate<GameItem> CreateSquadPredicate(string squadNameFilter, int squadIndexFilter)=> item =>
+            item?.attributes?["squad_id"]?.ToString() == squadNameFilter &&
+            (int)item.attributes["squad_slot_idx"] == squadIndexFilter;
 
     public override void _Ready()
     {
+        if (!string.IsNullOrWhiteSpace(defaultSquadName) && defaultSquadIndex >= 0)
+            predicateFilter = CreateSquadPredicate(defaultSquadName, defaultSquadIndex);
+        if (string.IsNullOrWhiteSpace(slotRequirement))
+            slotRequirement = null;
         SetLocked(true);
         GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
+        OnActiveAccountChanged(null);
+    }
+
+    
+
+    public void SetSlotData(string profileId, string itemType, string squadName, int squadIndex, string newSlotRequirement = null) =>
+        SetSlotData(profileId, itemType, CreateSquadPredicate(squadName, squadIndex), newSlotRequirement);
+
+    public void SetSlotData(string profileId, string itemType, Predicate<GameItem> predicate, string newSlotRequirement = null)
+    {
+        profileType = profileId;
+        itemTypeFilter = itemType;
+        predicateFilter = predicate;
+        slotRequirement = newSlotRequirement;
+
+        if (currentProfile is not null)
+            UpdateProfile();
     }
 
     void OnActiveAccountChanged(GameAccount account)
     {
-        if (useActiveAccount)
-            SetAccountInternal(account);
-    }
-
-    public void UseActiveAccount()
-    {
-        useActiveAccount = false;
-        SetAccountInternal(GameAccount.activeAccount);
+        if (autoUpdateAccount && overrideAccount==null)
+            SetProfileFromAccount();
     }
     
-    public void SetAccount(GameAccount account)
+    public void SetOverrideAccount(GameAccount account = null)
     {
-        useActiveAccount = false;
-        SetAccountInternal(account);
+        if (profileType is null || (profileType != "campaign" && account != null)) //only the campaign profile is publicly viewable
+            return;
+        overrideAccount = account;
+        SetProfileFromAccount();
     }
 
-    CancellationTokenSource setAccountCts;
-    async void SetAccountInternal(GameAccount account)
+    CancellationTokenSource setFromAccountCts;
+    async void SetProfileFromAccount()
     {
+        if (profileType is null)
+            return;
+
         profileUpdateCts?.Cancel();
-        setAccountCts?.Cancel();
+        setFromAccountCts?.Cancel();
 
-        setAccountCts = new();
-        var ct = setAccountCts.Token;
+        setFromAccountCts = new();
+        var ct = setFromAccountCts.Token;
 
-        bool isAuthed = await account.Authenticate();
-        if (ct.IsCancellationRequested)
+        var account = overrideAccount ?? GameAccount.activeAccount;
+        if (account is null)
+            return;
+        var newProfile = await account.GetProfile(profileType).Query();
+        if (currentProfile == newProfile || !newProfile.hasProfile || ct.IsCancellationRequested)
             return;
 
-        if (!isAuthed)
-        {
-            currentAcount = null;
-            SetProfile(null);
-            return;
-        }
-        currentAcount = account;
-        SetProfile(profileType is not null ? currentAcount?.GetProfile(profileType) : null);
-
+        SetProfile(newProfile);
     }
 
     void SetProfile(GameProfile newProfile)
     {
-        bool hadProfile = profileType is not null;
+        if (currentProfile == newProfile)
+            return;
+
+        bool hadProfile = currentProfile is not null;
         if (hadProfile)
         {
-            currentProfile.OnItemUpdated -= UpdateSlot;
-            currentProfile.OnItemRemoved -= UpdateSlot;
+            currentProfile.OnItemUpdated -= ProfileItemChanged;
+            currentProfile.OnItemRemoved -= ProfileItemChanged;
         }
 
         currentProfile = newProfile;
@@ -115,11 +152,8 @@ public partial class InventoryItemSlot : Node
             return;
         }
 
-        currentProfile.OnItemUpdated += UpdateSlot;
-        currentProfile.OnItemRemoved += UpdateSlot;
-
-        if (!hadProfile)
-            SetLocked(false);
+        currentProfile.OnItemUpdated += ProfileItemChanged;
+        currentProfile.OnItemRemoved += ProfileItemChanged;
 
         UpdateProfile();
     }
@@ -136,23 +170,30 @@ public partial class InventoryItemSlot : Node
         profileUpdateCts = new();
         var ct = profileUpdateCts.Token;
 
-        if (await currentAcount.Authenticate() || ct.IsCancellationRequested)
-            return;
-
         await currentProfile.Query();
-        if (ct.IsCancellationRequested)
+        if (!currentProfile.hasProfile || ct.IsCancellationRequested)
             return;
 
-        var foundItem = currentProfile.GetItems(itemTypeFilter, predicateFilter).FirstOrDefault();
+        if(slotRequirement is not null)
+        {
+            bool isUnlocked = currentProfile.GetFirstTemplateItem(slotRequirement) is not null;
+            SetLocked(!isUnlocked);
+            if (!isUnlocked)
+                return;
+        }
+        else
+            SetLocked(false);
+
+        var foundItem = currentProfile.GetFirstItem(itemTypeFilter, predicateFilter);
         ValidateItem(foundItem, true);
     }
 
     void SetLocked(bool value)
     {
         locked.Visible = value;
-        buttonControl.Visible = !value;
         if (value)
         {
+            buttonControl.Visible = false;
             entry.Visible = false;
             inspectArea.Visible = false;
             open.Visible = false;
@@ -164,26 +205,14 @@ public partial class InventoryItemSlot : Node
 
     void SetEmpty(bool value)
     {
+        buttonControl.Visible = overrideAccount is null;
         isEmpty = value;
         entry.Visible = !isEmpty;
         inspectArea.Visible = !isEmpty && showInspector;
         open.Visible = isEmpty;
     }
 
-    static bool FallbackPredicate(GameItem _) => true;
-    public async Task SetSlotData(string profileId, string itemType, GameItemPredicate predicate)
-    {
-        profileType = profileId;
-        itemTypeFilter = itemType;
-        predicateFilter = predicate ?? FallbackPredicate;
-
-        if (currentAcount is null || !await currentAcount.Authenticate())
-            return;
-
-        SetProfile(profileType is not null ? currentAcount?.GetProfile(profileType) : null);
-    }
-
-    void UpdateSlot(GameItem newItem)
+    void ProfileItemChanged(GameItem newItem)
     {
         if(predicateFilter is null)
             return;
@@ -194,11 +223,23 @@ public partial class InventoryItemSlot : Node
 
     public void UpdateItem() => entry.UpdateItem();
 
-    public void RequestChange() => OnItemChangeRequested?.Invoke(this);
+    public void RequestChange()
+    {
+        if (overrideAccount is not null)
+            OnItemChangeRequested?.Invoke(this);
+    }
 
     void ValidateItem(GameItem newItem, bool knownMatch = false)
     {
-        bool isMatch = newItem is not null && newItem.profile is not null && (knownMatch || ((itemTypeFilter is null || newItem.template.Type == itemTypeFilter) && predicateFilter(newItem)));
+        bool isMatch = 
+            newItem?.profile is not null && 
+            (
+                knownMatch || 
+                (
+                    (itemTypeFilter is null || newItem.template?.Type == itemTypeFilter) && 
+                    (predicateFilter is null || predicateFilter(newItem))
+                )
+            );
         bool wasSlotted = newItem == slottedItem;
 
         if (isMatch)
@@ -221,12 +262,12 @@ public partial class InventoryItemSlot : Node
 
     public override void _ExitTree()
     {
+        GameAccount.ActiveAccountChanged -= OnActiveAccountChanged;
         if (currentProfile is not null)
         {
-            currentProfile.OnItemUpdated -= UpdateSlot;
-            currentProfile.OnItemRemoved -= UpdateSlot;
+            currentProfile.OnItemUpdated -= ProfileItemChanged;
+            currentProfile.OnItemRemoved -= ProfileItemChanged;
         }
-        base._ExitTree();
     }
 
 }

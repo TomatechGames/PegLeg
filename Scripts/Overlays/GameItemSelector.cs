@@ -55,7 +55,8 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     public bool allowEmptySelection;
     public bool allowCancel;
     public string overrideSurvivorSquad;
-    public GameItemPredicate autoselectPredicate;
+    public Predicate<GameItem> selectablePredicate;
+    public Predicate<GameItem> autoselectPredicate;
 
     public string titleText;
     public string confirmButtonText;
@@ -81,6 +82,7 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         allowEmptySelection = false;
         allowCancel = true;
         overrideSurvivorSquad = null;
+        selectablePredicate = null;
         autoselectPredicate = null;
 
         titleText = "Select an Item";
@@ -95,8 +97,6 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
     public void SetRecycleDefaults()
     {
-        var instructions = PLSearch.GenerateSearchInstructions("template.RarityLv=..3 | (template.RarityLv=..4 !templateId=\"Worker\"..)");
-        GameItemPredicate autoRecycleFilter = item => PLSearch.EvaluateInstructions(instructions, item.RawData);
         RestoreDefaults();
         titleText = "Recycle";
         confirmButtonText = "Confirm Recycle";
@@ -105,8 +105,10 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         selectedTintColor = Colors.Red;
         collectionMarkerTex = collectionIcon;
         autoselectButtonTex = recycleIcon;
-
-        autoselectPredicate = autoRecycleFilter;
+        selectablePredicate = item => item.template.IsCollectable && !item.template.IsPermenant;
+        //var autoselectInstructions = PLSearch.GenerateSearchInstructions("template.RarityLv=..3 | (template.RarityLv=..4 !templateId=\"Worker\"..)");
+        //autoselectPredicate = item => PLSearch.EvaluateInstructions(autoselectInstructions, item.RawData);
+        autoselectPredicate = item => item.template.RarityLevel <= 3;
     }
 
     GameItem emptyItem = new(null, 1);
@@ -119,6 +121,7 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
         multiselectButtons.Visible = multiselectMode;
         autoSelectButton.Visible = autoselectPredicate is not null;
+        selectablePredicate ??= item => true;
 
         items = profileItems.ToList();
         if(allowEmptySelection && !multiselectMode)
@@ -126,10 +129,13 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
         if (multiselectMode)
         {
-            selectedItems = preSelectedItems?.ToList() ??
+            selectedItems = 
+                preSelectedItems?
+                    .Where(item => selectablePredicate.Try(item))
+                    .ToList() ??
                 (autoselectPredicate is not null ?
                     items
-                        .Where(item => autoselectPredicate(item))
+                        .Where(item => selectablePredicate.Try(item) && autoselectPredicate(item))
                         .ToList() :
                     new());
         }
@@ -167,7 +173,7 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     {
         if (!multiselectMode || autoselectPredicate is null)
             return;
-        selectedItems = items.Where(item => autoselectPredicate(item)).Union(selectedItems).ToList();
+        selectedItems = items.Where(item => selectablePredicate.Try(item) && autoselectPredicate(item)).Union(selectedItems).ToList();
         SortItems();
         container.UpdateList(true);
     }
@@ -246,11 +252,11 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
             container.UpdateList(true);
     }
 
-    public bool IndexIsSelected(int index) => multiselectMode && selectedItems.Contains(items[index]);
+    public bool ItemIsSelected(GameItem item) => multiselectMode && selectedItems.Contains(item);
 
     public void OnElementSelected(int index)
     {
-        if (isSelecting)
+        if (isSelecting && selectablePredicate.Try(items[index]))
         {
             if (multiselectMode)
             {

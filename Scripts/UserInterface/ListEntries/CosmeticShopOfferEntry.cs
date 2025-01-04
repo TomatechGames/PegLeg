@@ -532,7 +532,7 @@ public partial class CosmeticShopOfferEntry : Control
         if (metadata.isRecentlyNew && metadata.isAddedToday)
         {
             //GD.Print($"New {firstAddedDate}");
-            EmitSignal(SignalName.BonusTextChanged, "# NEW");
+            EmitSignal(SignalName.BonusTextChanged, "NEW TODAY");
         }
         else if (metadata.isRecentlyNew)
         {
@@ -542,7 +542,7 @@ public partial class CosmeticShopOfferEntry : Control
         else if (metadata.isAddedToday)
         {
             //GD.Print($"Back {lastAddedDate} ({DateTime.UtcNow.Date - firstAddedDate})");
-            EmitSignal(SignalName.BonusTextChanged, $" # ");
+            EmitSignal(SignalName.BonusTextChanged, "#");
         }
 
         EmitSignal(SignalName.BonusTextVisibility, metadata.isRecentlyNew || metadata.isAddedToday);

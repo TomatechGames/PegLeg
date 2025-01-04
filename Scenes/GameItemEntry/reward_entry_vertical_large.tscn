@@ -1,9 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://by677kftyapmx"]
+[gd_scene load_steps=4 format=3 uid="uid://by677kftyapmx"]
 
 [ext_resource type="PackedScene" uid="uid://3kvmnkrrkqf1" path="res://Scenes/GameItemEntry/reward_entry_vertical.tscn" id="1_amrox"]
+[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_xjarh"]
 
-[node name="RewardEntryVertical" instance=ExtResource("1_amrox")]
-custom_minimum_size = Vector2(128, 128)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_188jy"]
+resource_local_to_scene = true
+shader = ExtResource("2_xjarh")
+shader_parameter/ControlSize = Vector2(96, 96)
+shader_parameter/CornerRadius = 5.0
 
-[node name="AmountLabel" parent="AmountContainer" index="1"]
+[node name="RewardEntry" instance=ExtResource("1_amrox")]
+custom_minimum_size = Vector2(96, 96)
+offset_right = 96.0
+offset_bottom = 96.0
+
+[node name="TextureRect" parent="." index="0"]
+material = SubResource("ShaderMaterial_188jy")
+
+[node name="AmountLabel" parent="." index="1"]
 theme_override_font_sizes/font_size = 32
+
+[node name="InteractableIcon" parent="Overlays" index="2"]
+offset_left = -30.0
+
+[node name="LeftIcon" parent="Overlays" index="3"]
+offset_right = 25.0
+
+[node name="RightIcon" parent="Overlays" index="4"]
+offset_left = -25.0

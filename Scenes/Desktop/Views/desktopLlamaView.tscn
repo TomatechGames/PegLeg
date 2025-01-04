@@ -28,7 +28,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osi5s"]
 shader = ExtResource("8_ffqoy")
-shader_parameter/ControlSize = Vector2(708, 679)
+shader_parameter/ControlSize = Vector2(718, 720)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = null
 shader_parameter/UseCorners = true
@@ -190,6 +190,7 @@ horizontal_alignment = 1
 [node name="Responsive Button Area" parent="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/LlamaItemPanel/OpenAllButton" instance=ExtResource("7_wlhx3")]
 layout_mode = 2
 useHold = true
+holdTime = 5.0
 
 [node name="LoadingIcon" parent="MarginContainer" instance=ExtResource("6_2af65")]
 visible = false
@@ -265,11 +266,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Retry"
 
-[node name="Llama Contents" type="MarginContainer" parent="." node_paths=PackedStringArray("grantedItemEntry", "priceEntry")]
+[node name="Llama Contents" type="MarginContainer" parent="."]
 layout_mode = 2
-script = ExtResource("9_cn6d8")
-grantedItemEntry = NodePath("MarginContainer/CardPackEntry")
-priceEntry = NodePath("MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price")
 
 [node name="TextureRect" type="TextureRect" parent="Llama Contents"]
 material = SubResource("ShaderMaterial_osi5s")
@@ -309,6 +307,8 @@ mouse_filter = 2
 script = ExtResource("9_cn6d8")
 grantedItemEntry = NodePath("../CardPackEntry")
 priceEntry = NodePath("../CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price")
+includeAmountInName = true
+showSingleStockAmount = true
 
 [node name="CardPackEntry" type="VBoxContainer" parent="Llama Contents/MarginContainer"]
 layout_mode = 2
