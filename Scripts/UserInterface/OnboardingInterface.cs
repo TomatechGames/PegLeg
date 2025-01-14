@@ -35,22 +35,19 @@ public partial class OnboardingInterface : Control
         continueButton.Text = "";
         curtain.SetShaderFloat(0, "RevealScale");
         curtain.Visible = true;
+
         //todo: download and import external assets during runtime using resource pack(s)
         //ZipReader zr = new();
         //zr.Open("user://pack.zip");
         //bool isValid = !zr.GetFiles().Any(path => !path.StartsWith("External/"));
         //ProjectSettings.LoadResourcePack("user://pack.zip");
-
         bool hasBanjoAssets = BanjoAssets.ReadAllSources();
 
-        var allAccounts = GameAccount.GetStoredAccounts();
-        GD.Print("all: " + string.Join(", ", allAccounts.Select(a=>a.accountId)));
-        var authableAccounts = allAccounts.Where(a => a.GetLocalData("DeviceDetails") is not null).ToArray();
-        GD.Print("authable: " + string.Join(", ", authableAccounts.Select(a => a.accountId)));
+        var accounts = GameAccount.OwnedAccounts;
         //TODO: if more than one account has device details, show account selector
-        foreach (var a in authableAccounts)
+        foreach (var a in accounts)
         {
-            if(a.isValid && await a.SetAsActiveAccount())
+            if(await a.SetAsActiveAccount())
             {
                 GetTree().ChangeSceneToFile(mainInterfacePath);
                 return;
@@ -99,7 +96,6 @@ public partial class OnboardingInterface : Control
     {
         retryLoginButton.Visible = true;
         continueButton.Text = "Approval Failed";
-        continueButton.Disabled = true;
     }
 
     public void LoginCodeSuccess(string accountId)

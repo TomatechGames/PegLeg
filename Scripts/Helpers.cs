@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Godot;
 using System.Threading;
 using System.Linq.Expressions;
+using System.Text.Json;
+using static Godot.HttpRequest;
 
 static class Helpers
 {
@@ -145,10 +147,22 @@ static class Helpers
     public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
         using var result = await MakeRequestRaw(endpoint, request);
-        var resultNode = result is not null ? JsonNode.Parse(await result.Content.ReadAsStringAsync()) : null;
+        var resultText = result is not null ? await result.Content.ReadAsStringAsync() : null;
+        if (resultText is null)
+            return null;
+
+        JsonNode resultNode = null;
+        try
+        {
+            resultNode = JsonNode.Parse(resultText);
+        }
+        catch (JsonException _)
+        {
+            GD.Print("result was not json: " + resultText);
+        }
         //todo: throw exception when encountering a response with an errorMessage
 
-        if (resultNode["numericErrorCode"]?.GetValue<int>() == 1031)
+        if (resultNode is JsonObject && resultNode["numericErrorCode"]?.GetValue<int>() == 1031)
         {
             //todo: move this web stuff around so that we know which account is making the request
             GameAccount.activeAccount.ForceExpireToken();
@@ -168,6 +182,17 @@ static class Helpers
         }
         catch (HttpRequestException ex)
         {
+            try
+            {
+                var resultText = response is not null ? await response.Content.ReadAsStringAsync() : null;
+                var resultNode = JsonNode.Parse(resultText);
+                if (resultNode["numericErrorCode"]?.GetValue<int>() == 1012)
+                {
+                    // silences Device Code check fails
+                    return response;
+                }
+            }
+            catch (JsonException) { }
             GD.Print("\nException Caught!");
             GD.Print($"Message :{ex.Message} ");
             GD.Print($"Response :{(response is not null ? (await response.Content.ReadAsStringAsync()) : "null response")} ");

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
-using System.Reflection.Metadata;
+using System.Security.Principal;
 
 
 public enum OrderRange
@@ -117,18 +117,32 @@ public class GameAccount
         return resultDetails;
     }
 
-    public static GameAccount[] GetStoredAccounts()
+    static GameAccount[] LoadStoredAccounts()
     {
         if(!DirAccess.DirExistsAbsolute(accountDataPath))
             return Array.Empty<GameAccount>();
         using var accountDir = DirAccess.Open(accountDataPath);
-        return accountDir.GetFiles().Where(f => !f.Contains('.')).Select(f => GetOrCreateAccount(f)).ToArray();
+        return accountDir.GetFiles().Where(f => !f.Contains('.')).Select(f => new GameAccount(f)).ToArray();
     }
 
-    static readonly Dictionary<string, GameAccount> gameAccountCache = new();
-    public static GameAccount GetOrCreateAccount(string accountId) => gameAccountCache.ContainsKey(accountId) ? gameAccountCache[accountId] : gameAccountCache[accountId] = new (accountId);
+    static readonly Dictionary<string, GameAccount> gameAccountCache = LoadStoredAccounts().ToDictionary(a => a.accountId);
+    public static GameAccount[] OwnedAccounts => gameAccountCache.Values.Where(a => a.isOwned).ToArray();
+    public static GameAccount GetOrCreateAccount(string accountId) => gameAccountCache.ContainsKey(accountId) ? gameAccountCache[accountId] : gameAccountCache[accountId] = new(accountId);
+    public static async Task<bool> RemoveAccount(string accountId)
+    {
+        if (!gameAccountCache.ContainsKey(accountId))
+            return true;
+        var account = gameAccountCache[accountId];
+        if (!await account.RemoveDeviceDetails())
+            return false;
+        account.DeleteLocalData();
+        gameAccountCache.Remove(accountId);
+        account.accountId = null;
+        return true;
+    }
+
     static GameAccount _activeAccount;
-    public static GameAccount activeAccount => _activeAccount ?? new(null);
+    public static GameAccount activeAccount => _activeAccount ??= new(null);
     public static event Action<GameAccount> ActiveAccountChangedEarly;
     public static event Action<GameAccount> ActiveAccountChanged;
 
@@ -137,7 +151,7 @@ public class GameAccount
         if (!gameAccountCache.ContainsKey(accountId))
             return false;
         var account = gameAccountCache[accountId];
-        if (await account?.Authenticate())
+        if (await account.Authenticate())
         {
             _activeAccount = account;
             ActiveAccountChangedEarly?.Invoke(account);
@@ -145,6 +159,20 @@ public class GameAccount
             return true;
         }
         return false;
+    }
+
+    public static async Task RefreshActiveAccount()
+    {
+        if (!await activeAccount.Authenticate())
+            return;
+        _activeAccount.fortStatsDirty = true;
+        _activeAccount.localData = null;
+        _activeAccount.localPinnedQuests = null;
+        foreach (var profile in _activeAccount.profiles.Values)
+        {
+            profile.InvalidateProfile();
+        }
+        await SetActiveAccount(_activeAccount.accountId);
     }
 
     public static void LoginToAccount(JsonObject accountAuthResponse)
@@ -160,9 +188,17 @@ public class GameAccount
         this.accountId = accountId;
     }
 
-    public bool isValid => !string.IsNullOrWhiteSpace(accountId);
-    public bool isOwned => !AuthTokenExpired || GetLocalData("DeviceDetails") is not null;
+    public Action OnAccountUpdated;
+
     public string accountId { get; private set; }
+    bool isValid => !string.IsNullOrWhiteSpace(accountId);
+
+    public bool loginFailure { get; private set; }
+    public bool isAuthed => isValid && !loginFailure && !AuthTokenExpired;
+    public bool isOwned => isValid && (isAuthed || GetLocalData("DeviceDetails") is not null);
+
+    public string DisplayName => GetLocalData("DisplayName")?.ToString() ?? $"<{accountId}>";
+    public Texture2D ProfileIcon => GetLocalData("IconPath")?.ToString() is string iconPath ? CatalogRequests.GetLocalCosmeticResource(iconPath) : null;
 
     Dictionary<string, GameProfile> profiles = new();
 
@@ -197,8 +233,10 @@ public class GameAccount
     public AuthenticationHeaderValue AuthHeader => accountAuthHeader;
     public async Task<bool> Authenticate(bool loadingOverlay = false)
     {
-        if (!AuthTokenExpired)
+        if (isAuthed)
             return true;
+        if (!isOwned)
+            return false;
 
         using var loadToken = LoadingOverlay.CreateToken("authentication");
         if (!loadingOverlay)
@@ -226,6 +264,11 @@ public class GameAccount
             return true;
         }
         GD.Print(deviceAuth?["errorMessage"].ToString());
+        if (!loginFailure)
+        {
+            loginFailure = true;
+            OnAccountUpdated?.Invoke();
+        }
 
         return false;
     }
@@ -255,6 +298,7 @@ public class GameAccount
         if (accountId is null)
             return;
         authToken = accountAuthResponse["access_token"].ToString();
+        SetLocalData("DisplayName", accountAuthResponse["displayName"].ToString());
         accountAuthHeader = new("Bearer", authToken);
         authExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + accountAuthResponse["expires_in"].GetValue<int>();
         if (accountAuthResponse["refresh_expires"]?.GetValue<int>() is int refreshExpires)
@@ -262,6 +306,61 @@ public class GameAccount
             refreshExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + refreshExpires;
             refreshToken = accountAuthResponse["refresh_token"].ToString();
         }
+        loginFailure = false;
+        OnAccountUpdated?.Invoke();
+    }
+
+
+    SemaphoreSlim iconSephamore = new(1);
+    public async void UpdateIcon()
+    {
+        if (iconSephamore.CurrentCount <= 0)
+            return;
+        await iconSephamore.WaitAsync();
+        try
+        {
+            if (!await Authenticate())
+                return;
+
+            var avatarData = await Helpers.MakeRequest(
+                    HttpMethod.Get,
+                    FnEndpoints.avatarEndpoint,
+                    $"/v1/avatar/fortnite/ids?accountIds={accountId}",
+                    "{}",
+                    AuthHeader
+                );
+
+            string skinId = avatarData[0]?["avatarId"]?.ToString() is string avId ? avId.Split(":")[^1] : null;
+            if (skinId is null)
+                return;
+
+            var skinData = await Helpers.MakeRequest(
+                    HttpMethod.Get,
+                    ExternalEndpoints.cosmeticShopEndpoint,
+                    $"/v2/cosmetics/br/{skinId}",
+                    "{}",
+                    null,
+                    addCosmeticHeader: true
+                );
+
+            string skinIconServerPath =
+                skinData["data"]?["images"]?["icon"]?.ToString() ??
+                skinData["data"]?["images"]?["smallIcon"]?.ToString();
+            if (skinIconServerPath is null)
+                return;
+
+            var skinIcon = await CatalogRequests.GetCosmeticResource(skinIconServerPath);
+
+            if (skinIcon is null)
+                return;
+
+            OnAccountUpdated?.Invoke();
+        }
+        finally
+        {
+            iconSephamore.Release();
+        }
+        
     }
 
     public async Task SaveDeviceDetails()
@@ -282,18 +381,18 @@ public class GameAccount
         SetLocalData("DeviceDetails", new JsonArray(EncryptDeviceDetails(deviceDetails).Select(b => (JsonNode)b).ToArray()));
     }
 
-    public async Task RemoveDeviceDetails()
+    public async Task<bool> RemoveDeviceDetails()
     {
         if(!await Authenticate())
         {
             GD.Print("Authentication failed, aborting device detail deletion");
-            return;
+            return false;
         }
         var dd = GetLocalData("DeviceDetails")?.AsArray().Select(n => n.GetValue<byte>()).ToArray();
         if (DecryptDeviceDetails(dd) is JsonObject deviceDetails)
         {
             //tell epic we're not using the device any more. probably unneccecary, but its common courtesy
-            await Helpers.MakeRequest(
+            var result = await Helpers.MakeRequest(
                 HttpMethod.Delete,
                 FnEndpoints.loginEndpoint,
                 $"account/api/public/account/{accountId}/deviceAuth/{deviceDetails["deviceId"]}",
@@ -301,8 +400,17 @@ public class GameAccount
                 AuthHeader,
                 ""
             );
+
+            if (result["errorMessage"] is not null)
+            {
+                GD.Print($"Could not delete device details: {result["errorMessage"]}");
+                return false;
+            }
+
             ClearLocalData("DeviceDetails");
+            return true;
         }
+        return false;
     }
 
     JsonObject localData;
@@ -347,15 +455,23 @@ public class GameAccount
     {
         if (localData is null)
             LoadLocalData();
-        localData[key] = value;
+        localData[key] = value.Reserialise();
 
-        if (!isValid)
+        if (!isValid || !localData.ContainsKey("DeviceDetails"))
             return;
 
         if (!DirAccess.DirExistsAbsolute(accountDataPath))
             DirAccess.MakeDirAbsolute(accountDataPath);
         using FileAccess localDataFile = FileAccess.Open($"{accountDataPath}/{accountId}", FileAccess.ModeFlags.Write);
         localDataFile?.StoreString(localData.ToString());
+    }
+
+    void DeleteLocalData()
+    {
+        if (!DirAccess.DirExistsAbsolute(accountDataPath) || !FileAccess.FileExists($"{accountDataPath}/{accountId}"))
+            return;
+        using DirAccess dir = DirAccess.Open(accountDataPath);
+        dir.Remove(accountId);
     }
 
 
@@ -669,13 +785,25 @@ public class GameProfile
         this.profileId = profileId;
     }
 
+    public void InvalidateProfile()
+    {
+        hasProfile = false;
+        foreach (var item in items.Values)
+        {
+            item.DisconnectFromProfile();
+        }
+        items.Clear();
+        groupedItems.Clear();
+        statAttributes = null;
+    }
+
     public bool hasProfile { get; private set; }
     public GameAccount account { get; private set; }
     public string profileId { get; private set; }
     public JsonObject statAttributes { get; private set; }
 
     Dictionary<string, GameItem> items = new();
-    Dictionary<string, List<GameItem>> groupedItems;
+    Dictionary<string, List<GameItem>> groupedItems = new();
 
     public event Action<GameProfile> OnStatChanged;
     public event Action<GameItem> OnItemAdded;
@@ -686,7 +814,7 @@ public class GameProfile
     {
         if (type is null)
             return items.Values;
-        if (!groupedItems.ContainsKey(type))
+        if (!groupedItems?.ContainsKey(type) ?? false)
             return Array.Empty<GameItem>();
         return groupedItems[type];
     }
@@ -746,6 +874,9 @@ public class GameProfile
             queryAccount.profileOperationSephamore.Release();
         }
     }
+
+    public async Task<JsonArray> PerformOperation(string operation, JsonNode content)=>
+        await PerformOperation(operation, content.ToString());
 
     public async Task<JsonArray> PerformOperation(string operation, string content = "{}")
     {
@@ -931,6 +1062,8 @@ public class GameProfile
                     OnItemAdded?.Invoke(targetItem);
                     break;
                 case "itemRemoved":
+                    if (!items.ContainsKey(uuid))
+                        continue;
                     targetItem = items[uuid];
                     GD.Print($"REMOVING: {uuid} ({targetItem})");
                     targetItem.NotifyRemoving();
@@ -1023,9 +1156,9 @@ public class GameItem
 
     #endregion
 
-    public event Action<GameItem> OnChanged;
-    public event Action<GameItem> OnRemoving;
-    public event Action<GameItem> OnRemoved;
+    public event Action OnChanged;
+    public event Action OnRemoving;
+    public event Action OnRemoved;
 
     public GameItem(GameProfile profile, string uuid, JsonObject rawData)
     {
@@ -1081,14 +1214,21 @@ public class GameItem
 
     JsonObject _rawData;
     public JsonObject RawData => _rawData ?? GenerateRawData();
-    public JsonObject GenerateRawData() => _rawData = new()
+    public JsonObject GenerateRawData()
     {
-        ["templateId"] = templateId,
-        ["attributes"] = attributes?.Reserialise(),
-        ["quantity"] = quantity,
-        ["template"] = template.rawData.Reserialise(),
-        ["searchTags"] = _searchTags?.Reserialise() ?? template?["searchTags"]?.Reserialise(),
-    };
+        var templateData = template?.rawData.Reserialise();
+        if (templateData?.ContainsKey("searchTags") ?? false)
+            templateData.Remove("searchTags");
+        return _rawData = new()
+        {
+            ["templateId"] = templateId,
+            ["attributes"] = attributes?.Reserialise(),
+            ["quantity"] = quantity,
+            ["template"] = templateData,
+            ["custom"] = customData?.Reserialise(),
+            ["searchTags"] = _searchTags?.Reserialise() ?? template?["searchTags"]?.Reserialise(),
+        };
+    }
 
     public string Personality=> attributes?["personality"]?.ToString() is string rawPersonality ? ParseSurvivorAttribute(rawPersonality) : null;
     public string SetBonus => attributes?["set_bonus"]?.ToString() is string rawSetBonus ? ParseSurvivorAttribute(rawSetBonus) : null;
@@ -1166,7 +1306,7 @@ public class GameItem
         return this;
     }
 
-    public async Task SetRewardNotification(GameAccount account = null, bool force = false)
+    public async void SetRewardNotification(GameAccount account = null, bool force = false)
     {
         account ??= GameAccount.activeAccount;
         if (profile is not null || (!force && isSeenLocal != null))
@@ -1175,60 +1315,44 @@ public class GameItem
         if(!IsSeen)
             SetSeenLocal(true);
 
-        if (
-            template.Type == "Accolades" || 
-            template.Type == "CardPack" || 
-            template.Type == "Weapon" ||
-            template.Name == "Campaign_Event_Currency" ||
-            template.Name == "Currency_MtxSwap"
-        )
-        {
-            return;
-        }
+        bool exists = await SetCollected(account) ?? true;
 
-        var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
-        bool exists = accountItems
-            .GetItems(template.Type, item => 
-                item.template?.DisplayName == (template?.DisplayName ?? "nope") && 
-                item.template?.RarityLevel >= template?.RarityLevel)
-            .Any();
-        if (!exists && template.IsCollectable)
+        if (!exists)
         {
-            var collectionBook = await account.GetProfile(template.CollectionProfile).Query();
-            exists = collectionBook
+            var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+            exists = accountItems
             .GetItems(template.Type, item =>
                 item.template?.DisplayName == (template?.DisplayName ?? "nope") &&
-                item.template.RarityLevel >= template.RarityLevel)
+                item.template?.RarityLevel >= template?.RarityLevel)
             .Any();
         }
+
         if (!exists)
             SetSeenLocal(false);
     }
 
     public bool? isCollectedCache { get; private set; }
-    public async Task<bool> IsCollected()
+    public async Task<bool?> SetCollected(GameAccount account = null)
     {
-        if (isCollectedCache is not null)
-            return isCollectedCache ?? false;
-        await profile.account.GetProfile(template.CollectionProfile).Query();
-        return (isCollectedCache = IsCollectedUnsafe()) ?? false;
-    }
+        account ??= profile?.account ?? GameAccount.activeAccount;
+        await account.GetProfile(template.CollectionProfile).Query();
 
-    bool IsCollectedUnsafe()
-    {
-        var collectionBook = profile.account.GetProfile(template.CollectionProfile);
+        if (!template.IsCollectable)
+            return null;
+
+        var collectionBook = account.GetProfile(template.CollectionProfile);
         if (template.Type == "Worker")
         {
             if (template.Name.StartsWith("workerhalloween"))
             {
                 //with costume party attendees, 3 of each rarity can be collected
                 return collectionBook
-                    .GetItems("Worker", item => 
-                        item.template.Name.StartsWith("workerhalloween") && 
+                    .GetItems("Worker", item =>
+                        item.template.Name.StartsWith("workerhalloween") &&
                         item.template.Rarity == template.Rarity)
                     .Length < 3;
             }
-            else if(template.SubType is not null)
+            else if (template.SubType is not null)
             {
                 //with mythic lead survivors, one of each unique lead can be collected
                 if (template.Rarity == "Mythic")
@@ -1238,21 +1362,27 @@ public class GameItem
                 //with regular lead survivors, one of each subtype-rarity combo can be collected
                 else
                     return collectionBook
-                        .GetItems("Worker", item => 
-                            item.template.SubType == template.SubType && 
+                        .GetItems("Worker", item =>
+                            item.template.SubType == template.SubType &&
                             item.template.Rarity == template.Rarity)
                         .Any();
             }
             //with regular survivors, one of personality-rarity combo can be collected
             return collectionBook
-                .GetItems("Worker", item => 
-                    item.attributes["personality"].ToString() == attributes["personality"].ToString() && 
+                .GetItems("Worker", item =>
+                    item.attributes["personality"].ToString() == attributes["personality"].ToString() &&
                     item.template.Rarity == template.Rarity)
                 .Any();
         }
-        return collectionBook
+        var result = collectionBook
             .GetItems(template.Type, item => item.templateId == templateId)
             .Any();
+        if (isCollectedCache != result)
+        {
+            isCollectedCache = result;
+            NotifyChanged();
+        }
+        return result;
     }
 
     public float GetHeroStat(string stat, int givenLevel = 0, int givenTier = 0)
@@ -1291,7 +1421,8 @@ public class GameItem
             return 0;
 
         var level = attributes?["level"]?.GetValue<int>() ?? 0;
-        level = Mathf.Clamp(level, Mathf.Min(1, (tier * 10) - 10), tier * 10);
+        var bonusMax = attributes?["max_level_bonus"]?.GetValue<int>() ?? 0;
+        level = Mathf.Clamp(level, Mathf.Min(1, (tier * 10) - 10), (tier * 10) + bonusMax);
         string ratingCategory = template.Type == "Worker" ? (template.SubType is null ? "Survivor" : "LeadSurvivor") :"Default";
 
         string ratingKey = template.GetCompactRarityAndTier();
@@ -1390,8 +1521,9 @@ public class GameItem
                 if (textureType == FnItemTextureType.PackImage)
                     textureType = FnItemTextureType.Preview;
             }
-
-            if (textureType == FnItemTextureType.Preview && customData?["llamaTier"]?.GetValue<int>() is int llamaTier)
+            else if (textureType == FnItemTextureType.PackImage && (!template.DisplayName.Contains("Llama") || template.DisplayName.Contains("Mini")))
+                return null;
+            else if (textureType == FnItemTextureType.Preview && customData?["llamaTier"]?.GetValue<int>() is int llamaTier)
             {
                 string llamaPinataName =
                     (template.TryGetTexturePath(FnItemTextureType.Preview, out var imagePath) ? imagePath : null)
@@ -1446,14 +1578,14 @@ public class GameItem
     public void NotifyChanged()
     {
         ResetCachedData();
-        OnChanged?.Invoke(this);
+        OnChanged?.Invoke();
     }
 
-    public void NotifyRemoving() => OnRemoving?.Invoke(this);
+    public void NotifyRemoving() => OnRemoving?.Invoke();
     public void DisconnectFromProfile()
     {
         profile = null;
         uuid = null;
-        OnRemoved?.Invoke(this);
+        OnRemoved?.Invoke();
     }
 }

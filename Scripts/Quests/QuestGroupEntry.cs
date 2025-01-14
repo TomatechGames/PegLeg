@@ -27,7 +27,7 @@ public class QuestSlot
         questTemplate = questItem.template;
     }
 
-    void ProfileItemChanged(GameItem handle) => OnPropertiesUpdated?.Invoke(this);
+    void ProfileItemChanged() => OnPropertiesUpdated?.Invoke(this);
 
     public string questId => questItem?.templateId ?? questTemplate.TemplateId;
     public GameItemTemplate questTemplate { get; private set; }

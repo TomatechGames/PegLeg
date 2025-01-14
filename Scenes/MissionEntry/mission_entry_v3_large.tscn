@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="6_ih4qj"]
 [ext_resource type="PackedScene" uid="uid://cwt57r5ga21m2" path="res://Scenes/GameItemEntry/old/mission_reward_entry.tscn" id="7_shmen"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="8_tpt1k"]
-[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="13_5eamh"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="13_5eamh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_grr01"]
 shader = ExtResource("3_w6ueb")

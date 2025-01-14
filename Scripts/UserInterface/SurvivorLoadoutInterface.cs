@@ -119,7 +119,7 @@ public partial class SurvivorLoadoutInterface : Node
         var account = GameAccount.activeAccount;
         var loadouts = account.GetLocalData(LoadoutKey)?.AsObject() ?? new();
 
-        loadoutName ??= await GenericLineEditWindow.OpenLineEdit("Enter Survivor Loadout Name", allowCancel:true, validator: val =>
+        loadoutName ??= await GenericLineEditWindow.OpenLineEdit("Enter Survivor Loadout Name", validator: val =>
         {
             if (loadouts.ContainsKey(val))
                 return "A survivor loadout with that name already exists";
@@ -152,8 +152,8 @@ public partial class SurvivorLoadoutInterface : Node
             squadsMappings[workers.Key] = squadArray;
         }
 
-        loadouts[account.accountId] ??= new JsonObject();
-        loadouts[account.accountId][loadoutName] = squadsMappings;
+        loadouts ??= new JsonObject();
+        loadouts[loadoutName] = squadsMappings;
 
         account.SetLocalData(LoadoutKey, loadouts);
         GenerateOptions();
@@ -200,9 +200,7 @@ public partial class SurvivorLoadoutInterface : Node
                 string workerKey = squadArray[i].ToString();
 
                 if (workerKey == "")
-                {
                     continue;
-                }
 
                 //if (
                 //    existingWorkers.ContainsKey(workerKey) &&
@@ -216,12 +214,9 @@ public partial class SurvivorLoadoutInterface : Node
                 flattenedLoadout["slotIndices"].AsArray().Add(i);
             }
         }
-        JsonObject unslotBody = new()
-        {
-            ["squadIds"] = new JsonArray(survivorSquadIds.Select(s => (JsonNode)s).ToArray()),
-        }; ;
-        await accountItems.PerformOperation("UnassignAllSquads", unslotBody.ToString());
-        await accountItems.PerformOperation("AssignWorkerToSquadBatch", flattenedLoadout.ToString());
+
+        await accountItems.PerformOperation("UnassignAllSquads", new JsonObject() { ["squadIds"] = new JsonArray(survivorSquadIds.Select(s => (JsonNode)s).ToArray()) });
+        await accountItems.PerformOperation("AssignWorkerToSquadBatch", flattenedLoadout);
         await Helpers.WaitForTimer(0.1);
     }
 
@@ -231,7 +226,7 @@ public partial class SurvivorLoadoutInterface : Node
             return;
         var account = GameAccount.activeAccount;
         var loadouts = account.GetLocalData(LoadoutKey).AsObject();
-        string newLoadoutName = await GenericLineEditWindow.OpenLineEdit("Enter Survivor Loadout Name", allowCancel: true, validator: val =>
+        string newLoadoutName = await GenericLineEditWindow.OpenLineEdit("Enter Survivor Loadout Name", validator: val =>
         {
             if (val==loadoutName)
                 return "...That's already the name of the loadout";
@@ -305,11 +300,7 @@ public partial class SurvivorLoadoutInterface : Node
         var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
         var existingWorkers = accountItems.GetItems("Worker", item => item.attributes.ContainsKey("squad_id"));
 
-        JsonObject unslotBody = new()
-        {
-            ["squadIds"] = new JsonArray(survivorSquadIds.Select(s => (JsonNode)s).ToArray()),
-        }; ;
-        await accountItems.PerformOperation("UnassignAllSquads", unslotBody.ToString());
+        await accountItems.PerformOperation("UnassignAllSquads", new JsonObject() { ["squadIds"] = new JsonArray(survivorSquadIds.Select(s => (JsonNode)s).ToArray()) });
     }
 
     void GenerateOptions()
@@ -349,7 +340,7 @@ public partial class SurvivorLoadoutInterface : Node
 
         foreach (var item in filteredItems)
         {
-            await item.IsCollected();
+            await item.SetCollected();
         }
 
         loadingToken.Dispose();

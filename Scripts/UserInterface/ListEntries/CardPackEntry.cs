@@ -109,12 +109,15 @@ public partial class CardPackEntry : GameItemEntry
         EmitSignal(SignalName.GradientChanged, currentLlamaGradient);
 
 
-        var packIcon = item.GetTexture(FnItemTextureType.PackImage);
-        if (!llamaPinataName.ToLower().Contains("Pinata") || (name?.Contains("Mini") ?? false))
-            packIcon = null;
+        //var packIcon = item.GetTexture(FnItemTextureType.PackImage);
+        //if (!llamaPinataName.Contains("Pinata") || (name?.Contains("Mini") ?? false))
+        //{
+        //    GD.Print(llamaPinataName);
+        //    packIcon = null;
+        //}
 
         EmitSignal(SignalName.IconChanged, item.GetTexture());
-        EmitSignal(SignalName.SubtypeIconChanged, packIcon);
+        EmitSignal(SignalName.SubtypeIconChanged, item.GetTexture(FnItemTextureType.PackImage));
     }
 
     public override void ClearItem(Texture2D clearTexture)

@@ -5,7 +5,7 @@
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="3_yq7rn"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_wsmte"]
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="6_sg3kv"]
-[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="7_rn8k6"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="7_rn8k6"]
 [ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="8_ngfra"]
 [ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="10_6kjfm"]
 

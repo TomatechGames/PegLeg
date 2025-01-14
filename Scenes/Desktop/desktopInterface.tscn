@@ -1,7 +1,6 @@
-[gd_scene load_steps=48 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=46 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
-[ext_resource type="Script" path="res://Scripts/StatusBarController.cs" id="2_3ot56"]
 [ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
 [ext_resource type="Script" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_db3cl"]
 [ext_resource type="Script" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
@@ -22,6 +21,8 @@
 [ext_resource type="Shader" path="res://Shaders/CircleBaseMask.gdshader" id="26_jn02y"]
 [ext_resource type="PackedScene" uid="uid://b2k3opkacmxbr" path="res://Scenes/Desktop/Overlays/account_switcher.tscn" id="26_xb41w"]
 [ext_resource type="PackedScene" uid="uid://d6pm7vs0s7ta" path="res://Scenes/Desktop/Views/desktopCosmeticShopView.tscn" id="27_5ey2a"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameAccountEntry.cs" id="27_a331l"]
+[ext_resource type="Texture2D" uid="uid://cj7awxlqm1to2" path="res://Images/InterfaceIcons/T_UI_Icon_Sidebar_OnlinePlayers.png" id="28_chpxd"]
 [ext_resource type="Texture2D" uid="uid://cjtv2aa84wwwr" path="res://Images/InterfaceIcons/T_Icon_Spray_Adjustments_Tab_128.png" id="28_p4icb"]
 [ext_resource type="PackedScene" uid="uid://cochrwi38s2xb" path="res://Scenes/Desktop/Views/desktopQuestGroupListView.tscn" id="28_rt2uq"]
 [ext_resource type="Texture2D" uid="uid://fu8u7pasyjfx" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Swap_128.png" id="29_ql5qm"]
@@ -31,6 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="37_5b0rm"]
 [ext_resource type="Script" path="res://Scripts/TrayIcon.cs" id="38_s33ws"]
 [ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Desktop/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
+[ext_resource type="PackedScene" uid="uid://cji2iyaxon6uv" path="res://Scenes/Desktop/Overlays/login_popup.tscn" id="41_kf5nt"]
 [ext_resource type="Script" path="res://Scripts/HomebasePowerLevel.cs" id="44_3p6h5"]
 [ext_resource type="PackedScene" uid="uid://cvc7hj4ng7c04" path="res://Scenes/Desktop/Overlays/game_item_selector.tscn" id="44_m211x"]
 [ext_resource type="PackedScene" uid="uid://outqvmv6p0pm" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_line_edit_window.tscn" id="45_vujc8"]
@@ -50,54 +52,6 @@ shader_parameter/UseGlobalCorners = true
 shader_parameter/ApplyCornersToFit = null
 shader_parameter/CornerRadius = 10.0
 shader_parameter/ClipOOB = null
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fvehp"]
-bg_color = Color(0.184314, 0.184314, 0.184314, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7oabr"]
-bg_color = Color(0.184314, 0.184314, 0.184314, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yp78w"]
-bg_color = Color(0.184314, 0.184314, 0.184314, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cemc4"]
-bg_color = Color(0.184314, 0.184314, 0.184314, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.145098, 0.145098, 0.145098, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 12
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7h2tb"]
 shader = ExtResource("26_jn02y")
@@ -307,27 +261,6 @@ visible = false
 layout_mode = 1
 anchors_preset = -1
 
-[node name="GenericLineEditWindow" parent="OverlayWindows" instance=ExtResource("45_vujc8")]
-visible = false
-layout_mode = 1
-
-[node name="GenericConfirmationWindow" parent="OverlayWindows" instance=ExtResource("46_fbpme")]
-visible = false
-layout_mode = 1
-
-[node name="ShopPurchaseAnimation" parent="OverlayWindows" instance=ExtResource("96_2bhmt")]
-visible = false
-layout_mode = 1
-
-[node name="SettingsWindow" parent="OverlayWindows" instance=ExtResource("99_hfy7e")]
-visible = false
-layout_mode = 1
-
-[node name="LoadingOverlay" parent="OverlayWindows" instance=ExtResource("31_v6low")]
-visible = false
-layout_mode = 1
-startOpen = false
-
 [node name="MissionViewer" parent="OverlayWindows" instance=ExtResource("26_fna7y")]
 visible = false
 layout_mode = 1
@@ -343,7 +276,6 @@ mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
-script = ExtResource("2_3ot56")
 
 [node name="Left" type="HBoxContainer" parent="StatusBar"]
 layout_mode = 2
@@ -351,19 +283,19 @@ size_flags_horizontal = 0
 mouse_filter = 0
 theme_override_constants/separation = 2
 
-[node name="AccountSelector" type="MarginContainer" parent="StatusBar/Left"]
+[node name="AccountSelectorBtn" type="MarginContainer" parent="StatusBar/Left"]
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
+script = ExtResource("27_a331l")
+defaultIcon = ExtResource("28_chpxd")
+useActiveAccount = true
 
-[node name="Button" type="Button" parent="StatusBar/Left/AccountSelector"]
+[node name="Button" type="Button" parent="StatusBar/Left/AccountSelectorBtn"]
 layout_mode = 2
-theme_override_styles/disabled = SubResource("StyleBoxFlat_fvehp")
-theme_override_styles/hover = SubResource("StyleBoxFlat_7oabr")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_yp78w")
-theme_override_styles/normal = SubResource("StyleBoxFlat_cemc4")
+theme_type_variation = &"AccountButton"
 
-[node name="MarginContainer" type="MarginContainer" parent="StatusBar/Left/AccountSelector"]
+[node name="MarginContainer" type="MarginContainer" parent="StatusBar/Left/AccountSelectorBtn"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -371,7 +303,7 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Left/AccountSelector/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Left/AccountSelectorBtn/MarginContainer"]
 material = SubResource("ShaderMaterial_7h2tb")
 layout_mode = 2
 size_flags_horizontal = 0
@@ -379,7 +311,7 @@ mouse_filter = 2
 texture = ExtResource("26_2ue8b")
 expand_mode = 3
 
-[node name="TextureRect2" type="TextureRect" parent="StatusBar/Left/AccountSelector/MarginContainer"]
+[node name="TextureRect2" type="TextureRect" parent="StatusBar/Left/AccountSelectorBtn/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 2
@@ -561,12 +493,46 @@ visible = false
 layout_mode = 2
 color = Color(1, 1, 1, 0.188235)
 
-[node name="AccountSwitcher" parent="." instance=ExtResource("26_xb41w")]
+[node name="TopOverlayWindows" type="Control" parent="."]
+z_index = 6
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AccountSwitcher" parent="TopOverlayWindows" instance=ExtResource("26_xb41w")]
 visible = false
-z_index = 5
 layout_mode = 1
 offset_left = 0.0
 offset_right = 0.0
+
+[node name="SettingsWindow" parent="TopOverlayWindows" instance=ExtResource("99_hfy7e")]
+visible = false
+layout_mode = 1
+
+[node name="ShopPurchaseAnimation" parent="TopOverlayWindows" instance=ExtResource("96_2bhmt")]
+visible = false
+layout_mode = 1
+
+[node name="LoginPopup" parent="TopOverlayWindows" instance=ExtResource("41_kf5nt")]
+visible = false
+layout_mode = 1
+
+[node name="GenericLineEditWindow" parent="TopOverlayWindows" instance=ExtResource("45_vujc8")]
+visible = false
+layout_mode = 1
+
+[node name="GenericConfirmationWindow" parent="TopOverlayWindows" instance=ExtResource("46_fbpme")]
+visible = false
+layout_mode = 1
+
+[node name="LoadingOverlay" parent="TopOverlayWindows" instance=ExtResource("31_v6low")]
+visible = false
+layout_mode = 1
+startOpen = false
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 visible = false
@@ -592,12 +558,14 @@ layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0, 1, 0, 1)
 
-[connection signal="pressed" from="StatusBar/Left/AccountSelector/Button" to="AccountSwitcher" method="OpenWindow"]
+[connection signal="IconChanged" from="StatusBar/Left/AccountSelectorBtn" to="StatusBar/Left/AccountSelectorBtn/MarginContainer/TextureRect" method="set_texture"]
+[connection signal="TooltipChanged" from="StatusBar/Left/AccountSelectorBtn" to="StatusBar/Left/AccountSelectorBtn/Button" method="set_tooltip_text"]
+[connection signal="pressed" from="StatusBar/Left/AccountSelectorBtn/Button" to="TopOverlayWindows/AccountSwitcher" method="OpenWindow"]
 [connection signal="AmountChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer/AmountText" method="set_text"]
 [connection signal="IconChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer/MarginContainer/Icon" method="set_texture"]
-[connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="StatusBar" method="Refresh"]
+[connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="TopOverlayWindows/AccountSwitcher" method="ReloadAccount"]
+[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="TopOverlayWindows/SettingsWindow" method="OpenWindow"]
 [connection signal="UpdateMuteIcon" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn/TextureRect" method="set_texture"]
 [connection signal="pressed" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn" method="ToggleMute"]
 
 [editable path="MainTabs/Item Shop/Event Shop"]
-[editable path="AccountSwitcher"]

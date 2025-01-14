@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 public partial class AccountSelector : ModalWindow
@@ -14,19 +15,59 @@ public partial class AccountSelector : ModalWindow
     Foldout foldout;
     [Export]
     Button foldoutBtn;
+    [Export]
+    Control accountEntryParent;
+    [Export]
+    PackedScene accountEntryScene;
+    List<GameAccountEntry> pooledAccounts = new();
 
     protected override string OpenSound => "WipeAppear";
     protected override string CloseSound => "WipeDisappear";
 
-    protected override void CancelOpenImmediate()
+    public override void _Ready()
     {
-        base.CancelOpenImmediate();
+        for (int i = 0; i < GameAccount.OwnedAccounts.Length; i++)
+        {
+            GenerateAccountEntry();
+        }
+    }
+
+    public async void ReloadAccount()
+    {
+        using var _ = LoadingOverlay.CreateToken();
+        await GameAccount.RefreshActiveAccount();
+        var account = GameAccount.activeAccount;
+        await account.GetProfile(FnProfileTypes.AccountItems).Query();
+    }
+
+    public async void OpenLogin()
+    {
+        var account = await LoginPopup.OpenLoginPopup();
+        if (account?.isOwned ?? false)
+            PopulateAccounts();
+    }
+
+    void PopulateAccounts()
+    {
+        var accounts = GameAccount.OwnedAccounts;
+        for (int i = 0; i < accounts.Length; i++)
+        {
+            if (pooledAccounts.Count < i)
+                GenerateAccountEntry();
+            pooledAccounts[i].Visible = true;
+            pooledAccounts[i].SetAccount(accounts[i]);
+        }
+        for (int i = accounts.Length; i < pooledAccounts.Count; i++)
+        {
+            pooledAccounts[i].Visible = false;
+        }
     }
 
     protected override void BuildTween(ref Tween tween, bool openState)
     {
         if (openState)
         {
+            PopulateAccounts();
             selectorButtonIcons.Modulate = Colors.White;
             selectorButtonLabel.Modulate = Colors.Transparent;
             foldout.SetFoldoutStateImmediate(false);
@@ -38,9 +79,9 @@ public partial class AccountSelector : ModalWindow
         foldoutBtn.Disabled = true;
 
         tween.SetParallel(false);
-        tween.TweenInterval(openState ? 0 : 0.2f);
-        tween.TweenInterval(0.01);
+        tween.TweenInterval(openState ? 0 : 0.1f);
         tween.SetParallel();
+        tween.TweenProperty(this, "Dummy", 1, 0.01); // silences "started with no Tweeners" error
         base.BuildTween(ref tween, openState);
 
         tween.TweenProperty(selectorButtonIcons, "modulate", openState ? Colors.Transparent : Colors.White, TweenTime);
@@ -48,8 +89,35 @@ public partial class AccountSelector : ModalWindow
 
         tween.TweenProperty(selectorButtonLabel, "custom_minimum_size:x", openState ? selectorButtonLabelTarget.GetCombinedMinimumSize().X : 0, TweenTime);
 
+        tween.TweenInterval(0.1f);
+
+        tween.Play();
         //tween.SetParallel(false);
-        //tween.TweenInterval(0.1f);
+    }
+
+    void GenerateAccountEntry()
+    {
+        var accountEntry = accountEntryScene.Instantiate<GameAccountEntry>();
+        accountEntry.Visible = false;
+        accountEntry.Pressed += SelectAccount;
+        accountEntryParent.AddChild(accountEntry);
+        pooledAccounts.Add(accountEntry);
+    }
+
+    async void SelectAccount(string accountId)
+    {
+        if (await GameAccount.SetActiveAccount(accountId))
+        {
+            SetWindowOpen(false);
+        }
+    }
+    async void RemoveAccount(string accountId)
+    {
+        //show confirmation menu
+        if (await GameAccount.SetActiveAccount(accountId))
+        {
+            SetWindowOpen(false);
+        }
     }
 
     protected override void OnTweenFinished(bool openState)

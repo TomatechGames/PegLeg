@@ -46,22 +46,6 @@ public partial class LoadingOverlay : ModalWindow
             progressLabel.Text = string.Join("\n", loadingTokens.Where(t => !t.Value.disposed).Select(t => t.Value.ProgressText));
     }
 
-    public override void SetWindowOpen(bool openState)
-    {
-        StartStatusBlockerTask();
-        base.SetWindowOpen(openState);
-    }
-
-    async void StartStatusBlockerTask()
-    {
-        if (IsOpen)
-            return;
-        using var token = StatusBarController.CreateToken();
-        await Helpers.WaitForFrame();
-        while (IsOpen)
-            await Helpers.WaitForFrame();
-    }
-
     public static LoadingOverlayToken CreateToken(string taskName = null, float initialProgress = 0, float maxProgress = 1) =>
         new(taskName, initialProgress, maxProgress);
 
@@ -81,7 +65,7 @@ public partial class LoadingOverlay : ModalWindow
             progress = initialProgress;
             this.maxProgress = Mathf.Max(maxProgress, 0);
 
-            GD.PushWarning($"adding token \"{taskName}\" ({guid})");
+            //GD.PushWarning($"adding token \"{taskName}\" ({guid})");
             loadingTokens.Add(guid, this);
             UpdateLoadingState();
         }

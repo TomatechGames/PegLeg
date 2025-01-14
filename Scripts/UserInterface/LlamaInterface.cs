@@ -172,7 +172,7 @@ public partial class LlamaInterface : Control
 
     void AddLlamaItem(GameItem item)
     {
-        if (item.template.Type != "CardPack")
+        if (item?.template.Type != "CardPack")
             return;
         llamaItemEntryPanel.Visible = true;
         var stackableGroup = llamaItemStacks.FirstOrDefault(val=>val.IsStackable(item));
@@ -188,7 +188,6 @@ public partial class LlamaInterface : Control
         {
             //pull from queue
             newEntry = llamaItemEntries.Dequeue();
-            llamaItemEntryParent.MoveChild(newEntry, 0);
             newEntry.Visible = true;
         }
         else
@@ -199,6 +198,7 @@ public partial class LlamaInterface : Control
             newEntry.LlamaPressed += SetCardPackLlama;
         }
 
+        newEntry.MoveToFront();
         LlamaItemStack llamaStack = new(item, newEntry);
         llamaItemStacks.Add(llamaStack);
     }
@@ -230,6 +230,14 @@ public partial class LlamaInterface : Control
         accountChangeCTS = new();
         var ct = accountChangeCTS.Token;
 
+        //disconnect prev profile
+        if (llamaItemProfile is not null)
+        {
+            llamaItemProfile.OnItemAdded -= AddLlamaItem;
+            llamaItemProfile.OnItemRemoved -= RemoveLlamaItem;
+            llamaItemProfile = null;
+        }
+
         //filter offers
         if (activeOffers.Count > 0)
         {
@@ -247,14 +255,9 @@ public partial class LlamaInterface : Control
         if (!await account.Authenticate() || ct.IsCancellationRequested)
             return;
 
-        GameProfile newLlamaItemProfile = null;
-        if(llamaItemProfile is null || llamaItemProfile.account != account)
-        {
-            //get replacement items
-            newLlamaItemProfile = await account.GetProfile(FnProfileTypes.AccountItems).Query();
-            if (ct.IsCancellationRequested)
-                return;
-        }
+        var newLlamaItemProfile = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+        if (ct.IsCancellationRequested)
+            return;
 
         //apply new data synchronously
         foreach (var offerEntry in llamaOfferEntries)
@@ -262,34 +265,25 @@ public partial class LlamaInterface : Control
             offerEntry.Visible = offerEntry.GetMeta("llamaFilter", false).AsBool();
         }
 
-        //disconnect prev profile
-        if (llamaItemProfile is not null)
+        //load new items
+        var newLlamaItems = newLlamaItemProfile.GetItems("CardPack");
+        foreach (var llamaStack in llamaItemStacks)
         {
-            llamaItemProfile.OnItemAdded -= AddLlamaItem;
-            llamaItemProfile.OnItemRemoved -= RemoveLlamaItem;
-            llamaItemProfile = null;
+            llamaItemEntries.Enqueue(llamaStack.DetachLlamaEntry());
+        }
+        llamaItemStacks.Clear();
+        llamaItemEntryPanel.Visible = false;
+        if (newLlamaItems is not null)
+            GD.Print(newLlamaItems.Select(i=>i.templateId).ToArray());
+        foreach (var item in newLlamaItems)
+        {
+            AddLlamaItem(item);
         }
 
-        if (newLlamaItemProfile is not null)
-        {
-            //load new items
-            var newLlamaItems = newLlamaItemProfile.GetItems("CardPack");
-            foreach (var llamaStack in llamaItemStacks)
-            {
-                llamaItemEntries.Enqueue(llamaStack.DetachLlamaEntry());
-            }
-            llamaItemStacks.Clear();
-            llamaItemEntryPanel.Visible = false;
-            foreach (var item in newLlamaItems)
-            {
-                AddLlamaItem(item);
-            }
-
-            //connect new profile
-            llamaItemProfile = newLlamaItemProfile;
-            llamaItemProfile.OnItemAdded += AddLlamaItem;
-            llamaItemProfile.OnItemRemoved += RemoveLlamaItem;
-        }
+        //connect new profile
+        llamaItemProfile = newLlamaItemProfile;
+        llamaItemProfile.OnItemAdded += AddLlamaItem;
+        llamaItemProfile.OnItemRemoved += RemoveLlamaItem;
     }
 
     CancellationTokenSource llamaShopCTS;
@@ -321,12 +315,13 @@ public partial class LlamaInterface : Control
 
             var prevSelectedOffer = currentOfferSelection;
 
+            if (!await GameAccount.activeAccount.Authenticate() || ct.IsCancellationRequested)
+                return;
+            await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).PerformOperation("PopulatePrerolledOffers");
+
             var xrayStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.XRayLlamaCatalog, force ? null : RefreshTimeType.Hourly);
             var randomStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.RandomLlamaCatalog, force ? null : RefreshTimeType.Hourly);
             if (ct.IsCancellationRequested)
-                return;
-
-            if (!await GameAccount.activeAccount.Authenticate() || ct.IsCancellationRequested)
                 return;
 
             int catalogEntryIndex = 0;
@@ -544,7 +539,7 @@ public partial class LlamaInterface : Control
                 string templateId = sortedItems[i].templateId;
                 llamaResultEntries[i].Visible = true;
                 llamaResultEntries[i].SetItem(sortedItems[i]);
-                sortedItems[i].SetRewardNotification().StartTask();
+                sortedItems[i].SetRewardNotification();
             }
             for (int i = items.Length; i < llamaResultEntries.Count; i++)
             {

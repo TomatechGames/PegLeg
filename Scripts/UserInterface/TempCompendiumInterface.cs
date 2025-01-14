@@ -40,8 +40,9 @@ public partial class TempCompendiumInterface : Control
         foreach (var source in includedSources)
         {
 			if (BanjoAssets.TryGetSource(source, out var sourceObject))
-			{
-				Parallel.ForEach(sourceObject, sourceKVP =>
+            {
+                //Parallel.ForEach(sourceObject, sourceKVP =>
+                foreach (var sourceKVP in sourceObject)
                 {
                     var template = GameItemTemplate.Get(sourceKVP.Key);
 					if (template.Tier != 1)
@@ -54,7 +55,7 @@ public partial class TempCompendiumInterface : Control
 							uniqueTemplates[template.DisplayName] = template;
 						}
 					}
-				});
+				}//);
             }
         }
         compendiumTemplates = uniqueTemplates.Values

@@ -105,9 +105,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool preventInteractability;
     [Export]
-    public bool interactableByDefault;
+    public bool forceInteractability;
     [Export]
-    public bool allowInteractableWhenEmpty;
+    public bool interactableWhenEmpty;
     [Export]
     public bool autoLinkToViewer = true;
     [Export]
@@ -129,7 +129,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             Pressed += Inspect;
         if (autoLinkToRecycleSelection)
             Pressed += PerformRecycleSelection;
-        EmitSignal(SignalName.InteractableChanged, interactableByDefault);
+        EmitSignal(SignalName.InteractableChanged, interactableWhenEmpty);
     }
 
     public override void _ExitTree()
@@ -285,8 +285,13 @@ public partial class GameItemEntry : Control, IRecyclableEntry
                 )
             );
 
+        var subtypeIcon = item.template.GetSubtypeTexture();
+
+        if (type == "CardPack" && item.GetTexture(FnItemTextureType.PackImage, null) is Texture2D packIcon)
+            subtypeIcon = packIcon;
+
         EmitSignal(SignalName.IconChanged, mainIcon);
-        EmitSignal(SignalName.SubtypeIconChanged, item.template.GetSubtypeTexture());
+        EmitSignal(SignalName.SubtypeIconChanged, subtypeIcon);
         EmitSignal(SignalName.AmmoIconChanged, item.template.GetAmmoTexture());
 
         EmitSignal(SignalName.AmountVisibility, amountNeeded);
@@ -295,15 +300,13 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.RatingChanged, ratingText);
         EmitSignal(SignalName.RatingVisibility, rating != 0);
 
-        //collection book algorithm is unpolished
-        EmitSignal(SignalName.IsCollectable, false);
-        //EmitSignal(SignalName.IsCollectable, !isPermenant && (ProfileRequests.IsItemCollectedUnsafe(itemInstance) == false));
-        EmitSignal(SignalName.CanBeLeveledChanged, item.template.IsCollectable && (!item.template.IsPermenant || type == "Hero"));
+        EmitSignal(SignalName.IsCollectable, !(item.isCollectedCache ?? true));
+        EmitSignal(SignalName.CanBeLeveledChanged, item.template.CanBeLeveled);
         EmitSignal(SignalName.LevelChanged, level);
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
         EmitSignal(SignalName.LevelProgressChanged, levelProgress);
 
-        EmitSignal(SignalName.InteractableChanged, autoInteractableTypes.Contains(currentItem.template.Type.ToLower()) && !preventInteractability);
+        EmitSignal(SignalName.InteractableChanged, forceInteractability || (!preventInteractability && autoInteractableTypes.Contains(currentItem.template.Type.ToLower())));
 
         //if survivor, set personality icons
 
@@ -324,7 +327,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel / 2);
     }
 
-    void RemoveItem(GameItem item)
+    void RemoveItem()
     {
         if (unlinkOnInvalidHandle)
             ClearItem();
@@ -347,12 +350,15 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public void SetInteractable(bool interactable) =>
         EmitSignal(SignalName.InteractableChanged, 
-            interactable && 
+            forceInteractability ||
             (
-                allowInteractableWhenEmpty ||
-                currentItem is not null
-            ) && 
-            !preventInteractability
+                interactable && 
+                (
+                    interactableWhenEmpty ||
+                    currentItem is not null
+                ) &&
+                !preventInteractability
+            )
         );
     
 
@@ -383,7 +389,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.AmountVisibility, false);
         EmitSignal(SignalName.AmountChanged, "");
         EmitSignal(SignalName.RarityChanged, Colors.Transparent);
-        EmitSignal(SignalName.InteractableChanged, allowInteractableWhenEmpty && interactableByDefault && !preventInteractability);
+        EmitSignal(SignalName.InteractableChanged, interactableWhenEmpty);
         EmitSignal(SignalName.NotificationChanged, false);
     }
 

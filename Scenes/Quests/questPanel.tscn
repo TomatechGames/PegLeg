@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Quests/QuestViewer.cs" id="1_v67fr"]
 [ext_resource type="PackedScene" uid="uid://c5in0c8tv1sfq" path="res://Scenes/Quests/quest_objective.tscn" id="2_2pmaq"]
-[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="3_q0o1l"]
+[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_large.tscn" id="3_q0o1l"]
 [ext_resource type="Texture2D" uid="uid://dufklwoq1w2k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clipboard_128.png" id="4_6x6uw"]
 [ext_resource type="Texture2D" uid="uid://0dsm5rygx6qr" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_checkmark_64.png" id="5_oqt08"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="6_n7evw"]

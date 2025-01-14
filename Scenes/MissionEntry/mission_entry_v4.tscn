@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="3_bvmpe"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="3_laoju"]
 [ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="5_6qvft"]
-[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="5_twwar"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="5_twwar"]
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="5_ypxgn"]
 [ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="6_7hbk2"]
 [ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="9_5fgop"]

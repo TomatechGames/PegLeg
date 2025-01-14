@@ -8,10 +8,10 @@
 [ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="4_8tulo"]
 [ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="4_n2q53"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_nfikh"]
-[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="6_cam1p"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="6_cam1p"]
 [ext_resource type="Shader" path="res://Shaders/AdaptiveShadow.gdshader" id="7_q2g84"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="12_nfbfc"]
-[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="12_u3sfv"]
+[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_large.tscn" id="12_u3sfv"]
 [ext_resource type="PackedScene" uid="uid://dqjthg7kvcf2m" path="res://Scenes/power_level_indicator.tscn" id="13_ffxkp"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="26_klq7w"]
 

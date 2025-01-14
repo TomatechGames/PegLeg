@@ -39,23 +39,30 @@ public partial class CodeLoginLabel : Node
         }
 
         gettingClient=true;
-        var linkRequest = await GameClient.GetLoginLinkCode();
+        var linkData = await GameClient.GetLoginLinkData();
         gettingClient = false;
 
-        if (linkRequest is not null && linkRequest["errorMessage"] is null)
+        if (linkData is not null && linkData["errorMessage"] is null)
         {
             cooldown = 0;
             started = true;
-            codeExpiresAt = linkRequest["expires_at"].GetValue<int>();
+            codeExpiresAt = linkData["expires_at"].GetValue<int>();
 
             EmitSignal(SignalName.LoginStarted);
             EmitSignal(SignalName.LoginActiveChanged, true);
 
-            EmitSignal(SignalName.UserCodeChanged, linkRequest["user_code"].ToString());
+            EmitSignal(SignalName.UserCodeChanged, linkData["user_code"].ToString());
             return;
         }
 
-        GD.Print(linkRequest?["errorMessage"]);
+        GD.Print(linkData?["errorMessage"]);
+    }
+
+    public void Cancel()
+    {
+        if (!started)
+            return;
+        codeExpiresAt = -99;
     }
 
     float cooldown = 0;
@@ -79,35 +86,30 @@ public partial class CodeLoginLabel : Node
         }
 
         cooldown -= (float)delta;
-        if (cooldown < 0)
-        {
-            cooldown = 11;
-            CheckForCode();
-        }
+        if (cooldown >= 0)
+            return;
+        cooldown = 11;
+        CheckForCode();
     }
 
     async void CheckForCode()
     {
         var linkCheckRequest = await GameClient.CheckLoginLinkCode();
-
-        if (linkCheckRequest is not null && linkCheckRequest["errorMessage"] is null)
-        {
-            started = false;
-
-            GD.Print("APPROVE: " + linkCheckRequest);
-
-            EmitSignal(SignalName.LoginSuccess, linkCheckRequest["account_id"].ToString());
-            EmitSignal(SignalName.LoginResultChanged, true);
-
-            EmitSignal(SignalName.LoginEnded);
-            EmitSignal(SignalName.LoginActiveChanged, false);
-
-            EmitSignal(SignalName.UserCodeChanged, "");
-            GameAccount.LoginToAccount(linkCheckRequest.AsObject());
+        if (linkCheckRequest is null || linkCheckRequest["errorMessage"] is not null)
             return;
-        }
 
-        if (linkCheckRequest["errorCode"].ToString() != "errors.com.epicgames.account.oauth.authorization_pending")
-            GD.Print(linkCheckRequest);
+        started = false;
+
+        GD.Print("APPROVE: " + linkCheckRequest);
+
+        EmitSignal(SignalName.LoginSuccess, linkCheckRequest["account_id"].ToString());
+        EmitSignal(SignalName.LoginResultChanged, true);
+
+        EmitSignal(SignalName.LoginEnded);
+        EmitSignal(SignalName.LoginActiveChanged, false);
+
+        EmitSignal(SignalName.UserCodeChanged, "");
+        GameAccount.LoginToAccount(linkCheckRequest.AsObject());
+        return;
     }
 }

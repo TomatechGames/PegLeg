@@ -23,21 +23,19 @@ public partial class GenericLineEditWindow : ModalWindow
     {
         base._Ready();
         instance = this;
-        textBox.TextChanged += OnTextChanged;
-        cancelButton.Pressed += Cancel;
-        confirmButton.Pressed += Confirm;
     }
 
-    bool allowCancel;
     bool didCancel = false;
     bool isEditingText = false;
     Func<string, string> validator;
 
-    public static async Task<string> OpenLineEdit(string headerText, string contextText = "", string defaultText = "", string placeholder = "", bool allowCancel = true, Func<string, string> validator = null)=>
-        await instance.OpenLineEditInst(headerText, contextText, defaultText, placeholder, allowCancel, validator);
+    public static async Task<string> OpenLineEdit(string headerText, string contextText = "", string defaultText = "", string placeholder = "", Func<string, string> validator = null)=>
+        await instance.OpenLineEditInst(headerText, contextText, defaultText, placeholder, validator);
 
-    async Task<string> OpenLineEditInst(string headerText, string contextText, string defaultText, string placeholder, bool allowCancel, Func<string, string> validator)
+    async Task<string> OpenLineEditInst(string headerText, string contextText, string defaultText, string placeholder, Func<string, string> validator)
     {
+        if (isEditingText)
+            return null;
         this.validator = validator ?? (val => string.IsNullOrWhiteSpace(val) ? "" : null);
         header.Text = headerText;
         header.SetVisibleIfHasContent();
@@ -51,8 +49,6 @@ public partial class GenericLineEditWindow : ModalWindow
         textBox.PlaceholderText = placeholder;
         isEditingText = true;
 
-        this.allowCancel = allowCancel;
-        cancelButton.Visible = allowCancel;
         didCancel = false;
 
         SetWindowOpen(true);
@@ -67,11 +63,8 @@ public partial class GenericLineEditWindow : ModalWindow
 
     public void Cancel()
     {
-        if (allowCancel)
-        {
-            didCancel = true;
-            isEditingText = false;
-        }
+        didCancel = true;
+        isEditingText = false;
     }
 
     public void Confirm()

@@ -133,7 +133,7 @@ public partial class GameItemViewer : ModalWindow
                 var template = GameItemTemplate.Get(templateId);
                 var choiceItem = template.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
                 itemChoiceEntries[i].SetItem(choiceItem);
-                choiceItem.SetRewardNotification().StartTask();
+                choiceItem.SetRewardNotification();
                 choices[i] = choiceItem;
             }
 
@@ -182,7 +182,7 @@ public partial class GameItemViewer : ModalWindow
             showDevText ^= true;
         Visible = true;
         displayItemEntry.SetItem(item);
-        item.SetRewardNotification().StartTask();
+        item.SetRewardNotification();
         displayedItem = item;
         
         //TODO: add extra icons for survivors, and fix descriptions

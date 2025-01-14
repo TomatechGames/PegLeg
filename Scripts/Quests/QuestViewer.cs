@@ -118,7 +118,7 @@ public partial class QuestViewer : Control
                 rewardEntries.Add(newEntry);
             }
             rewardEntries[i].SetItem(rewards[i]);
-            rewards[i].SetRewardNotification().StartTask();
+            rewards[i].SetRewardNotification();
             rewardEntries[i].Visible = true;
         }
 

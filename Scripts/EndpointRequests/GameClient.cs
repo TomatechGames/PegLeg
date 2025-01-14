@@ -117,15 +117,15 @@ static class GameClient
         )).AsObject();
     }
 
-    static JsonObject activeLinkCode;
+    static JsonObject activeLinkData;
     static int linkCodeExpiresAt = -999;
     static string deviceCode;
     static bool LinkCodeHalfExpired => linkCodeExpiresAt <= (Time.GetTicksMsec() * 0.001) - 300;
     static bool LinkCodeExpired => linkCodeExpiresAt <= (Time.GetTicksMsec() * 0.001) - 10;
-    public static async Task<JsonObject> GetLoginLinkCode(bool force = false)
+    public static async Task<JsonObject> GetLoginLinkData(bool force = false)
     {
         if (!LinkCodeHalfExpired && !force)
-            return activeLinkCode;
+            return activeLinkData;
         if(await GetClientTokenHeader() is not AuthenticationHeaderValue clientTokenHeader)
             return null;
 
@@ -139,29 +139,34 @@ static class GameClient
 
         if(linkGetResult is not null && linkGetResult["errorMessage"] is null)
         {
-            activeLinkCode = linkGetResult.AsObject();
-            linkCodeExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + activeLinkCode["expires_in"].GetValue<int>();
-            activeLinkCode["expires_at"] = linkCodeExpiresAt;
-            deviceCode = activeLinkCode["device_code"].ToString();
+            activeLinkData = linkGetResult.AsObject();
+            linkCodeExpiresAt = Mathf.FloorToInt(Time.GetTicksMsec() * 0.001) + activeLinkData["expires_in"].GetValue<int>();
+            activeLinkData["expires_at"] = linkCodeExpiresAt;
+            deviceCode = activeLinkData["device_code"].ToString();
         }
 
         return linkGetResult?.AsObject();
     }
 
+    static JsonObject lastCheckResult = null;
+    static DateTime lastChecked = DateTime.MinValue;
     public static async Task<JsonObject> CheckLoginLinkCode()
     {
         if (LinkCodeExpired)
             return null;
-        var linkCheckResult = await Helpers.MakeRequest(
-            HttpMethod.Post,
-            FnEndpoints.loginEndpoint,
-            "/account/api/oauth/token",
-            $"grant_type=device_code&" +
-            $"device_code={deviceCode}",
-            clientHeader
-        );
-        if (linkCheckResult is not null && linkCheckResult["errorMessage"] is null)
+        if ((DateTime.Now - lastChecked).TotalSeconds < 10)
+            return lastCheckResult;
+        lastChecked = DateTime.Now;
+        lastCheckResult = (await Helpers.MakeRequest(
+                HttpMethod.Post,
+                FnEndpoints.loginEndpoint,
+                "/account/api/oauth/token",
+                $"grant_type=device_code&" +
+                $"device_code={deviceCode}",
+                clientHeader
+            ))?.AsObject();
+        if (lastCheckResult is not null && lastCheckResult["errorMessage"] is null)
             linkCodeExpiresAt = -99;
-        return linkCheckResult?.AsObject();
+        return lastCheckResult;
     }
 }

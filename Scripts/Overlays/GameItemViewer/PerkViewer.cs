@@ -67,11 +67,10 @@ public partial class PerkViewer : Control
         if (currentItem is not null)
         {
             currentItem.OnChanged += UpdateItem;
-            UpdateItem(currentItem, hadItem);
+            UpdateItem(hadItem);
         }
     }
 
-    void UpdateItem(GameItem item) => UpdateItem(item, true);
 
     bool isSchematic = true;
     bool isTrap = false;
@@ -79,18 +78,19 @@ public partial class PerkViewer : Control
     string[][] perkPossibilities;
     int unlockedPerks = 1;
 
-    void UpdateItem(GameItem item, bool animateToReset)
+    void UpdateItem() => UpdateItem(true);
+    void UpdateItem(bool animateToReset)
     {
-        var maxedTemplate = item.template;
+        var maxedTemplate = currentItem.template;
 
         while (maxedTemplate.TryUpgradeTemplateRarity() is GameItemTemplate upgradedTemplate)
         {
             maxedTemplate = upgradedTemplate;
         }
 
-        isSchematic = item.template.Type == "Schematic";
-        isTrap = item.template.Category == "Trap";
-        int itemRarity = item.template.RarityLevel;
+        isSchematic = currentItem.template.Type == "Schematic";
+        isTrap = currentItem.template.Category == "Trap";
+        int itemRarity = currentItem.template.RarityLevel;
 
         if (animateToReset)
         {
@@ -106,7 +106,7 @@ public partial class PerkViewer : Control
             optionalPerkArea.AnchorRight = 2;
         }
 
-        activePerks = item.attributes?["alterations"]?
+        activePerks = currentItem.attributes?["alterations"]?
             .AsArray()
             .Select(e => e.ToString())
             .ToArray();
@@ -126,7 +126,7 @@ public partial class PerkViewer : Control
                 )
                 .ToArray();
             activePerks ??= new string[perkPossibilities.Length];
-            int itemLevel = item.attributes?["level"]?.GetValue<int>() ?? 0;
+            int itemLevel = currentItem.attributes?["level"]?.GetValue<int>() ?? 0;
             for (int i = 0; i < perkPossibilities.Length; i++)
             {
                 int requiredLevel = maxedTemplate["AlterationSlots"][i]["RequiredLevel"].GetValue<int>();

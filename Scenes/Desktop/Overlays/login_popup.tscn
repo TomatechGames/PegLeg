@@ -1,0 +1,113 @@
+[gd_scene load_steps=7 format=3 uid="uid://cji2iyaxon6uv"]
+
+[ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_3q6po"]
+[ext_resource type="Script" path="res://Scripts/CodeLoginLabel.cs" id="2_8s2bt"]
+[ext_resource type="Script" path="res://Scripts/Overlays/LoginPopup.cs" id="2_byygk"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="3_droq3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6l75"]
+bg_color = Color(0.301961, 0.301961, 0.301961, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mkapk"]
+
+[node name="LoginPopup" node_paths=PackedStringArray("loginLabel", "rememberLoginButton", "confirmLoginButton") instance=ExtResource("1_3q6po")]
+script = ExtResource("2_byygk")
+loginLabel = NodePath("Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText")
+rememberLoginButton = NodePath("Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/RememberLogin")
+confirmLoginButton = NodePath("Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/CompleteLogin")
+
+[node name="CloseBtn" parent="." index="1"]
+visible = false
+
+[node name="CloseBtn2" type="Button" parent="." index="2" groups=["ExcludeButtonSounds"]]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_k6l75")
+theme_override_styles/disabled = ExtResource("3_droq3")
+theme_override_styles/hover = ExtResource("3_droq3")
+theme_override_styles/pressed = ExtResource("3_droq3")
+theme_override_styles/normal = ExtResource("3_droq3")
+
+[node name="LoginPanel" type="MarginContainer" parent="Control/WindowContents" index="0"]
+custom_minimum_size = Vector2(250, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -92.0
+offset_right = 125.0
+offset_bottom = 92.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Panel" type="Panel" parent="Control/WindowContents/LoginPanel" index="0"]
+layout_mode = 2
+theme_type_variation = &"SecondaryPanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/LoginPanel" index="1"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/LoginPanel/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="GreetingText" type="Label" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+text = "To log in to your Epic Games account, click the link and enter in the code shown below."
+autowrap_mode = 3
+
+[node name="LinkButton2" type="LinkButton" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = "https://www.epicgames.com/id/activate"
+uri = "https://www.epicgames.com/id/activate"
+
+[node name="LinkCodeText" type="LineEdit" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="2"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/selection_color = Color(1, 1, 1, 1)
+theme_override_colors/font_selected_color = Color(0, 0, 0, 1)
+theme_override_colors/font_uneditable_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_mkapk")
+placeholder_text = "########"
+alignment = 1
+editable = false
+script = ExtResource("2_8s2bt")
+
+[node name="RememberLogin" type="CheckBox" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="3"]
+layout_direction = 3
+layout_mode = 2
+tooltip_text = "amongus"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Stay logged in"
+alignment = 2
+
+[node name="CompleteLogin" type="Button" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="4"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ActionButton"
+theme_override_font_sizes/font_size = 24
+text = "Login"
+
+[connection signal="pressed" from="CloseBtn2" to="." method="Cancel"]
+[connection signal="UserCodeChanged" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" method="set_text"]

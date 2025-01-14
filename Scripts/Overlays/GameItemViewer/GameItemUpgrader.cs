@@ -44,18 +44,18 @@ public partial class GameItemUpgrader : Control
         if (currentItem is not null)
         {
             currentItem.OnChanged += UpdateItem;
-            UpdateItem(item);
+            UpdateItem();
         }
     }
 
-    void UpdateItem(GameItem item)
+    void UpdateItem()
     {
-        int level = item.attributes?["level"]?.GetValue<int>() ?? 0;
+        int level = currentItem.attributes?["level"]?.GetValue<int>() ?? 0;
         minLevel = Mathf.Min(level, 50);
-        isShardable = 
-            item.template.Type == "Schematic" && 
-            (item.template.SubType ?? "Explosive") != "Explosive" && 
-            (item.template.Category ?? "Trap") != "Trap";
+        isShardable =
+            currentItem.template.Type == "Schematic" && 
+            (currentItem.template.SubType ?? "Explosive") != "Explosive" && 
+            (currentItem.template.Category ?? "Trap") != "Trap";
 
         //set max level based on owned homebase nodes
 

@@ -8,6 +8,7 @@ public partial class BooleanState : Node, BooleanStateProvider
     bool state;
     public bool State => state;
     public void SetState(bool value) => EmitSignal(SignalName.StateChanged, state = value);
+    public void ToggleState()=> EmitSignal(SignalName.StateChanged, state = !state);
 }
 
 public interface BooleanStateProvider

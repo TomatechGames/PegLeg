@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/UserInterface/LlamaInterface.cs" id="1_n8h1q"]
 [ext_resource type="PackedScene" uid="uid://b0uxwtxndd6x3" path="res://Scenes/LlamaEntries/llama_offer_entry.tscn" id="2_eeobp"]
 [ext_resource type="PackedScene" uid="uid://bgn5vgsvgrb1u" path="res://Scenes/LlamaEntries/llama_item_entry.tscn" id="3_h03df"]
-[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_horizontal_large.tscn" id="4_1u5ij"]
+[ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_large.tscn" id="4_1u5ij"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="5_bcyag"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="6_2af65"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_wlhx3"]

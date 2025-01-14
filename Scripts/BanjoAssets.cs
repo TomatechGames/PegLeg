@@ -359,6 +359,13 @@ public class GameItemTemplate
         "Hero" or "Worker" or "Defender" or "Schematic" => true,
         _ => false
     };
+    public bool CanBeLeveled => Type switch
+    {
+        "Hero" or "Worker" => true,
+        "Defender" or "Schematic" => !IsPermenant,
+        _ => false
+    };
+
     public string CollectionProfile => Type == "Schematic" ? FnProfileTypes.SchematicCollection : FnProfileTypes.PeopleCollection;
     public string Name => rawData["Name"].ToString();
     public string DisplayName => rawData["DisplayName"]?.ToString();
@@ -395,8 +402,11 @@ public class GameItemTemplate
         if (Type == "Worker" && (rawData["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false))
             return GetSubtypeTexture(SubType ?? "Survivor", fallbackIcon);
 
-        if (Type == "CardPack" && textureType == FnItemTextureType.Preview && DisplayName.Contains("Legendary") && !Name.StartsWith("ZCP_"))
-            return goldLlama;
+        if (Type == "CardPack")
+        {
+            if (textureType == FnItemTextureType.Preview && DisplayName.Contains("Legendary") && DisplayName.Contains("Llama") && !Name.StartsWith("ZCP_"))
+                return goldLlama;
+        }
 
         if (TryGetTexturePath(textureType, out var texturePath))
         {
@@ -445,7 +455,6 @@ public class GameItemTemplate
 
     public Texture2D GetSubtypeTexture(Texture2D fallbackIcon = null)
     {
-
         switch (Type)
         {
             case "Schematic":
@@ -566,7 +575,7 @@ public class GameItemTemplate
         if (dynamicRewards.Any())
         {
             //fake a cardpack to show a choice reward
-            var cardpackID = cardPackFromRarity[dynamicRewards.Select(q => Get(q["Item"].ToString()).RarityLevel).Max()];
+            var cardpackID = cardPackFromRarity[dynamicRewards.Select(q => Get(q["Item"]?.ToString())?.RarityLevel ?? 0).Max()];
             JsonObject attributes = new()
             {
                 ["options"] = new JsonArray(dynamicRewards.Select(r => new JsonObject()

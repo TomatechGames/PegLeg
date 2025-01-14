@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="6_bx0x4"]
 [ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="7_4ivn3"]
 [ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="8_u4sp1"]
-[ext_resource type="PackedScene" uid="uid://fcp6vypncmbj" path="res://Scenes/GameItemEntry/reward_entry_horizontal_small.tscn" id="9_1grew"]
+[ext_resource type="PackedScene" uid="uid://fcp6vypncmbj" path="res://Scenes/GameItemEntry/reward_entry_small.tscn" id="9_1grew"]
 [ext_resource type="PackedScene" uid="uid://dqjthg7kvcf2m" path="res://Scenes/power_level_indicator.tscn" id="10_fbhlq"]
 [ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="11_t00et"]
 

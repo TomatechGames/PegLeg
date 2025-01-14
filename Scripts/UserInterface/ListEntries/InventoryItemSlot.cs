@@ -116,18 +116,8 @@ public partial class InventoryItemSlot : Node
         var ct = setFromAccountCts.Token;
 
         var account = overrideAccount ?? GameAccount.activeAccount;
-        if (account is null)
-            return;
         var newProfile = await account.GetProfile(profileType).Query();
-        if (currentProfile == newProfile || !newProfile.hasProfile || ct.IsCancellationRequested)
-            return;
-
-        SetProfile(newProfile);
-    }
-
-    void SetProfile(GameProfile newProfile)
-    {
-        if (currentProfile == newProfile)
+        if (ct.IsCancellationRequested)
             return;
 
         bool hadProfile = currentProfile is not null;
@@ -137,7 +127,7 @@ public partial class InventoryItemSlot : Node
             currentProfile.OnItemRemoved -= ProfileItemChanged;
         }
 
-        currentProfile = newProfile;
+        currentProfile = newProfile.hasProfile ? newProfile : null;
 
         if (currentProfile is null)
         {

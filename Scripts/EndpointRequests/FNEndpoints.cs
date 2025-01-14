@@ -21,6 +21,11 @@ static class FnEndpoints
     {
         BaseAddress = new Uri("https://account-public-service-prod.ol.epicgames.com")
     };
+
+    public static readonly HttpClient avatarEndpoint = new()
+    {
+        BaseAddress = new Uri("https://avatar-service-prod.identity.live.on.epicgames.com")
+    };
 }
 
 static class ExternalEndpoints
@@ -37,8 +42,8 @@ static class ExternalEndpoints
     {
         BaseAddress = new Uri("https://fortnitecentral.genxgames.gg")
     };
-    public static readonly HttpClient cosmeticLookupEndpoint = new()
-    {
-        BaseAddress = new Uri("https://fortniteapi.io")
-    };
+    //public static readonly HttpClient cosmeticLookupEndpoint = new()
+    //{
+    //    BaseAddress = new Uri("https://fortniteapi.io")
+    //};
 }

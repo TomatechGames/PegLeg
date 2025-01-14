@@ -24,9 +24,6 @@ public partial class GenericConfirmationWindow : ModalWindow
     {
         base._Ready();
         instance = this;
-        cancelButton.Pressed += Cancel;
-        negativeButton.Pressed += () => SetResult(false);
-        positiveButton.Pressed += () => SetResult(true);
     }
 
     bool isSelecting = false;

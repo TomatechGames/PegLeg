@@ -229,7 +229,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
             controlChild.addXToAmount = isRewardBundle;
             controlChild.compactifyAmount = !isRewardBundle;
             controlChild.preventInteractability = isRewardBundle;
-            itemArray[i].SetRewardNotification().StartTask();
+            itemArray[i].SetRewardNotification();
             controlChild.SetItem(itemArray[i]);
         }
     }

@@ -510,7 +510,7 @@ static class CatalogRequests
 
         using (var imageFile = FileAccess.Open(localPath, FileAccess.ModeFlags.Write))
         {
-            GD.Print($"Caching cosmetic: \"{localPath}\"");
+            //GD.Print($"Caching cosmetic: \"{localPath}\"");
             imageFile.StoreBuffer(imageBuffer);
         }
 

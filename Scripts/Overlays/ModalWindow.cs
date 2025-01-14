@@ -56,12 +56,14 @@ public partial class ModalWindow : Control
             windowControl.PivotOffset = windowControl.Size * 0.5f;
         }
     }
+
     public bool IsOpen { get; private set; }
     void OpenWindow() => SetWindowOpen(true);
     void CloseWindow() => SetWindowOpen(false);
 
     Tween currentTween;
     bool openedThisFrame = false;
+    public float Dummy = 0;
     public virtual void SetWindowOpen(bool openState)
     {
         if (openState == IsOpen || !IsInstanceValid(this))

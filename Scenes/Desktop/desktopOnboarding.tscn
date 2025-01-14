@@ -69,7 +69,7 @@ script = ExtResource("5_p8lju")
 mainInterfacePath = "res://Scenes/Desktop/desktopInterface.tscn"
 curtain = NodePath("../Curtain")
 music = NodePath("../Music")
-loginLabel = NodePath("MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText")
+loginLabel = NodePath("MarginContainer/Content/LoginCode/LinkCodeText")
 rememberLoginToggle = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/RememberLogin")
 retryLoginButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn")
 continueButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin")
@@ -100,10 +100,7 @@ text = "Welcome to Pegleg! To begin, you'll need to log in to your Epic Games ac
 horizontal_alignment = 3
 autowrap_mode = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/LoginCode"]
-layout_mode = 2
-
-[node name="LinkCodeText" type="LineEdit" parent="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer"]
+[node name="LinkCodeText" type="LineEdit" parent="CenterContainer/MarginContainer/Content/LoginCode"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -308,6 +305,7 @@ texture = ExtResource("1_7xbjg")
 expand_mode = 1
 
 [node name="Curtain" type="ColorRect" parent="."]
+visible = false
 texture_repeat = 2
 material = SubResource("ShaderMaterial_ay2nj")
 layout_mode = 1
@@ -322,6 +320,7 @@ syncControlSize = true
 modTime = 8.0
 
 [node name="PreCurtain" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -396,9 +395,9 @@ volume_db = -12.0
 max_polyphony = 2
 bus = &"SFX"
 
-[connection signal="LoginFailed" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer" method="LoginCodeFail"]
-[connection signal="LoginSuccess" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer" method="LoginCodeSuccess"]
-[connection signal="UserCodeChanged" from="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" to="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/LinkCodeText" method="set_text"]
+[connection signal="LoginFailed" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer" method="LoginCodeFail"]
+[connection signal="LoginSuccess" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer" method="LoginCodeSuccess"]
+[connection signal="UserCodeChanged" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" method="set_text"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin" to="CenterContainer" method="ComplateCodeLogin"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn" to="CenterContainer" method="StartLogin"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer/Button" to="CenterContainer/MarginContainer/Content/ErrorMessage" method="set_visible" binds= [false]]
