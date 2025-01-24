@@ -73,10 +73,11 @@ public partial class PerkViewer : Control
 
 
     bool isSchematic = true;
-    bool isTrap = false;
+    bool isDefender = true;
     string[] activePerks;
     string[][] perkPossibilities;
-    int unlockedPerks = 1;
+    int unlockedPerks = 0;
+    int visiblePerks = 0;
 
     void UpdateItem() => UpdateItem(true);
     void UpdateItem(bool animateToReset)
@@ -89,8 +90,10 @@ public partial class PerkViewer : Control
         }
 
         isSchematic = currentItem.template.Type == "Schematic";
-        isTrap = currentItem.template.Category == "Trap";
-        int itemRarity = currentItem.template.RarityLevel;
+        isDefender = currentItem.template.Type == "Defender";
+        int rarityMaxLevel = currentItem.template.RarityLevel * 10;
+        unlockedPerks = 10;
+        visiblePerks = 10;
 
         if (animateToReset)
         {
@@ -105,16 +108,13 @@ public partial class PerkViewer : Control
             optionalPerkArea.AnchorLeft = 1;
             optionalPerkArea.AnchorRight = 2;
         }
-
-        activePerks = currentItem.attributes?["alterations"]?
-            .AsArray()
+        activePerks = currentItem.Alterations?
             .Select(e => e.ToString())
             .ToArray();
         if (isSchematic)
         {
             //set interactable and assign possibilities (if possibilities greater than one and not max level)
-            perkPossibilities = maxedTemplate["AlterationSlots"]
-                .AsArray()
+            perkPossibilities = maxedTemplate.AlterationSlots?
                 .Select(
                     slot => slot["Alterations"][0]
                     .AsArray()
@@ -125,13 +125,18 @@ public partial class PerkViewer : Control
                     .ToArray()
                 )
                 .ToArray();
-            activePerks ??= new string[perkPossibilities.Length];
+            unlockedPerks = 0;
+            visiblePerks = 0;
+            activePerks ??= new string[perkPossibilities?.Length ?? 0];
             int itemLevel = currentItem.attributes?["level"]?.GetValue<int>() ?? 0;
-            for (int i = 0; i < perkPossibilities.Length; i++)
+            GD.Print(itemLevel);
+            for (int i = 0; i < (perkPossibilities?.Length ?? 0); i++)
             {
                 int requiredLevel = maxedTemplate["AlterationSlots"][i]["RequiredLevel"].GetValue<int>();
                 if (requiredLevel <= itemLevel)
                     unlockedPerks = i + 1;
+                if (requiredLevel <= rarityMaxLevel)
+                    visiblePerks = i + 1;
                 else
                     break;
             }
@@ -146,12 +151,24 @@ public partial class PerkViewer : Control
         activePerks ??= Array.Empty<string>();
         for (int i = 0; i < activePerks.Length; i++)
         {
+            if (i + 1 > visiblePerks && !isSchematic && !isDefender)
+            {
+                currentPerkEntries[i].Visible = false;
+                continue;
+            }
             currentPerkEntries[i].Visible = true;
-            currentPerkEntries[i].SetPerkAlteration(activePerks[i], isSchematic, i == 5 && !isTrap, i);
+            currentPerkEntries[i].SetPerkAlteration(activePerks[i], !isDefender, i);
+            if (currentItem.profile?.account?.isOwned == false)
+            {
+                currentPerkEntries[i].SetInteractable(false);
+                currentPerkEntries[i].SetLocked(i + 1 > unlockedPerks);
+                continue;
+            }
+
             if (i >= (perkPossibilities?.Length ?? 0))
             {
                 currentPerkEntries[i].SetInteractable(false);
-                currentPerkEntries[i].SetLocked(true);
+                currentPerkEntries[i].SetLocked(isSchematic || isDefender);
                 continue;
             }
             currentPerkEntries[i].SetInteractable(perkPossibilities[i].Length > 1 || PerkIsUpgradeable(activePerks[i]));
@@ -184,7 +201,8 @@ public partial class PerkViewer : Control
         var tierSuccess = int.TryParse(tierSource, out int tier);
         if ((baseAlteration?[^2] ?? ' ') == 'v')
             tier = 0;
-        bool hasUpgrade = (index != 5 || isTrap) && tier > 0 && tier < 5;
+        bool isCore = (baseAlteration ?? possibilities?[0])?.StartsWith("Alteration:aid_g_") ?? false;
+        bool hasUpgrade = isCore && tier > 0 && tier < 5;
 
         if (!hasUpgrade && possibilities.Length==0)
         {
@@ -213,7 +231,7 @@ public partial class PerkViewer : Control
             string perk = possibilities[i];
             if (tier > 0)
                 perk = perk[..^1] + tier;
-            else if (index != 5 || isTrap)
+            else if (!isCore)
                 perk = perk[..^1] + 5;
 
             if (perk == baseAlteration)
@@ -222,7 +240,7 @@ public partial class PerkViewer : Control
                 continue;
             }
 
-            reperkEntries[i].SetPerkAlteration(perk, true, index == 5 && !isTrap, i + 1);
+            reperkEntries[i].SetPerkAlteration(perk, true, i + 1);
             reperkEntries[i].Visible = true;
         }
         //if(index == 5 && !isTrap)
@@ -306,7 +324,8 @@ public partial class PerkViewer : Control
         //    reperkCostEntries[i].Visible = false;
         //}
         perkApplyButton.Visible = !selectedPerkLocked;
-        perkApplyButton.Disabled = !allCostsMet;
+        // perma disable for now
+        perkApplyButton.Disabled = true;
     }
 
     public void ApplyReplacementPerk()

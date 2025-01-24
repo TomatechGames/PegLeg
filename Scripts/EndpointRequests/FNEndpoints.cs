@@ -26,6 +26,11 @@ static class FnEndpoints
     {
         BaseAddress = new Uri("https://avatar-service-prod.identity.live.on.epicgames.com")
     };
+
+    public static readonly HttpClient userSearchEndpoint = new()
+    {
+        BaseAddress = new Uri("https://user-search-service-prod.ol.epicgames.com")
+    };
 }
 
 static class ExternalEndpoints

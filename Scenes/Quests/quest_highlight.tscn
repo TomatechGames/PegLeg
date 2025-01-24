@@ -44,7 +44,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer2"]
-self_modulate = Color(0.16, 0.16, 0.16, 1)
+self_modulate = Color(0.314316, 0.314316, 0.314316, 1)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("2_7husn")

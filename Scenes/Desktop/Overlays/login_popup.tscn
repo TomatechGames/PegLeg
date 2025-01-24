@@ -110,4 +110,6 @@ theme_override_font_sizes/font_size = 24
 text = "Login"
 
 [connection signal="pressed" from="CloseBtn2" to="." method="Cancel"]
+[connection signal="LoginFailed" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="." method="OnFail"]
+[connection signal="LoginSuccess" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="." method="RecieveAccount"]
 [connection signal="UserCodeChanged" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" method="set_text"]

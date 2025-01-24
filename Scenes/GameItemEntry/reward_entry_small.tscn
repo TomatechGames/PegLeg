@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://fcp6vypncmbj"]
+[gd_scene load_steps=7 format=3 uid="uid://fcp6vypncmbj"]
 
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="1_sj0kl"]
 [ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_0faev"]
@@ -10,6 +10,14 @@ resource_local_to_scene = true
 shader = ExtResource("2_0faev")
 shader_parameter/ControlSize = Vector2(48, 48)
 shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1tvi1"]
+resource_local_to_scene = true
+shader = ExtResource("2_0faev")
+shader_parameter/ControlSize = Vector2(48, 48)
+shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
 
 [node name="RewardEntry" instance=ExtResource("1_sj0kl")]
 custom_minimum_size = Vector2(48, 48)
@@ -24,17 +32,20 @@ expand_mode = 1
 script = ExtResource("4_2hchk")
 syncControlSize = true
 
-[node name="AmountLabel" parent="." index="1"]
+[node name="TextureRect" parent="." index="1"]
+material = SubResource("ShaderMaterial_1tvi1")
+
+[node name="LeftIconContainer" parent="Overlays/AmountContainer" index="0"]
+custom_minimum_size = Vector2(16, 0)
+
+[node name="RightIconContainer" parent="Overlays/AmountContainer" index="2"]
+custom_minimum_size = Vector2(16, 0)
+
+[node name="AmountLabel" parent="Overlays/AmountContainer" index="3"]
 theme_override_font_sizes/font_size = 16
 
-[node name="InteractableContainer" parent="Overlays" index="2"]
+[node name="InteractableContainer" parent="Overlays" index="3"]
 custom_minimum_size = Vector2(12, 0)
-
-[node name="LeftIconContainer" parent="Overlays" index="3"]
-offset_right = 19.0
-
-[node name="AspectRatioContainer" parent="Overlays" index="4"]
-offset_left = -19.0
 
 [connection signal="IconChanged" from="." to="Overlays_LeftIcon#TextureRect" method="set_texture"]
 [connection signal="RarityChanged" from="." to="Overlays_LeftIcon#TextureRect" method="set_self_modulate"]

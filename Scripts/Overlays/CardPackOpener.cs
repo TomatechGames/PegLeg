@@ -920,7 +920,7 @@ public partial class CardPackOpener : Control
 
         var resultItems = queuedChoices
                     .Union(queuedItems)
-                    .Select(item => item.inspectorOverride);
+                    .Select(item => item.template.IsCollectable ? item.inspectorOverride : item);
 
         if (resultItems.Any())
         {

@@ -1,11 +1,8 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
 using System.Text.Json.Nodes;
 using System.Threading;
-using System.Threading.Tasks;
 
 public partial class SurvivorSquadEntry : Control
 {

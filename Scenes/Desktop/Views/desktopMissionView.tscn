@@ -160,7 +160,6 @@ expand_mode = 1
 [node name="SearchBox" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "///v-buck | (worker leg !lead) | (hero leg) | (worker mythic) | (upgrade llama)"
 placeholder_text = "Search in missions"
 context_menu_enabled = false
 clear_button_enabled = true
@@ -464,13 +463,13 @@ visible = false
 layout_mode = 2
 script = ExtResource("16_egkbm")
 elementSpace = 10.0
-linkedGrid = NodePath("MarginContainer2/VBoxContainer/DynGridContainer")
-offsetControl = NodePath("MarginContainer2/VBoxContainer/Offset")
-paddingControl = NodePath("MarginContainer2/VBoxContainer/Padding")
-elementParent = NodePath("MarginContainer2/VBoxContainer/DynGridContainer")
+linkedGrid = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
 elementScene = ExtResource("17_eyhau")
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 0
@@ -479,14 +478,14 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Control/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Offset" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
+[node name="Offset" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="DynGridContainer" type="Container" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
+[node name="DynGridContainer" type="Container" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 0
 script = ExtResource("18_phyx5")
@@ -494,7 +493,7 @@ minCols = 3
 compressSpacing = true
 spacing = Vector2(10, 10)
 
-[node name="Padding" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
+[node name="Padding" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
 [node name="MissionHexViewer" type="MarginContainer" parent="VBoxContainer/Control"]

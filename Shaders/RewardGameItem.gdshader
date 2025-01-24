@@ -4,6 +4,7 @@ shader_type canvas_item;
 
 uniform vec2 ControlSize = vec2(100.0, 100.0);
 uniform float CornerRadius = 5.0;
+uniform bool Fit = true;
 
 varying vec4 modulate;
 void vertex() {
@@ -11,7 +12,7 @@ void vertex() {
 }
 
 void fragment() {
-	vec2 fitUV = adaptToAspect(ControlSize, vec2(0.5, 1), 1.0/TEXTURE_PIXEL_SIZE, UV, true);
+	vec2 fitUV = adaptToAspect(ControlSize, vec2(0.5, 1), 1.0/TEXTURE_PIXEL_SIZE, UV, Fit);
 	vec2 controlSpace = UV*ControlSize;
 	
 	float gradient = 1.0-distance(vec2(0.5, 1.25), fitUV*vec2(1,1.5));

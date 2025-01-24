@@ -50,10 +50,14 @@
 [ext_resource type="StyleBox" uid="uid://di3wragjgm1rs" path="res://GodotThemes/Styleboxes/Light/LightBoxTextEditDisabled.tres" id="36_2opty"]
 [ext_resource type="StyleBox" uid="uid://bbt0vymv5cm04" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/DisabledContainerTab.tres" id="36_mm1pl"]
 [ext_resource type="StyleBox" uid="uid://d0lwbt7ri5mu1" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTiny.tres" id="36_oln61"]
+[ext_resource type="StyleBox" uid="uid://0k74drm73ago" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox3Pad.tres" id="37_85mfp"]
 [ext_resource type="StyleBox" uid="uid://o5ml7lthvyb6" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTinyPress.tres" id="37_gk46m"]
 [ext_resource type="StyleBox" uid="uid://t8wxv3sfhwoc" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/HoveredContainerTab.tres" id="37_w5dqx"]
+[ext_resource type="StyleBox" uid="uid://d3ln5m6g6s3ct" path="res://GodotThemes/Styleboxes/Medium/MediumBox3Pad.tres" id="38_8xj45"]
+[ext_resource type="StyleBox" uid="uid://crrrd33jr5n3n" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox5Pad.tres" id="38_20j1i"]
 [ext_resource type="StyleBox" uid="uid://do88pe3uqwrwa" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/SelectedContainerTab.tres" id="38_sekc1"]
 [ext_resource type="StyleBox" uid="uid://eox0na6koe10" path="res://GodotThemes/Styleboxes/Tabs/TabContainer/UnselectedContainerTab.tres" id="39_dn4oj"]
+[ext_resource type="StyleBox" uid="uid://csftm2ov0jgym" path="res://GodotThemes/Styleboxes/Medium/MediumBox5Pad.tres" id="40_okqyd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6kcuu"]
 
@@ -67,7 +71,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dur1j"]
 
-[sub_resource type="Image" id="Image_6g7hy"]
+[sub_resource type="Image" id="Image_fjvww"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 133, 254, 254, 254, 209, 254, 254, 254, 244, 254, 254, 254, 244, 254, 254, 254, 209, 254, 254, 254, 132, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 21, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 133, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 130, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 207, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 206, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 132, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 129, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 254, 254, 254, 243, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 242, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 21, 254, 254, 254, 130, 254, 254, 254, 207, 254, 254, 254, 243, 254, 254, 254, 242, 254, 254, 254, 206, 254, 254, 254, 129, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -77,7 +81,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_ld0ou"]
-image = SubResource("Image_6g7hy")
+image = SubResource("Image_fjvww")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pxcoq"]
 bg_color = Color(1, 1, 1, 1)
@@ -275,6 +279,14 @@ MiddleCheckButton/styles/hover_pressed = ExtResource("20_7ag33")
 MiddleCheckButton/styles/normal = ExtResource("21_nw0wt")
 MiddleCheckButton/styles/pressed = ExtResource("22_4y3kj")
 Panel/styles/panel = ExtResource("26_0d32j")
+Panel3Pad/base_type = &"PanelContainer"
+Panel3Pad/styles/panel = ExtResource("37_85mfp")
+Panel3PadB/base_type = &"PanelContainer"
+Panel3PadB/styles/panel = ExtResource("38_8xj45")
+Panel5Pad/base_type = &"PanelContainer"
+Panel5Pad/styles/panel = ExtResource("38_20j1i")
+Panel5PadB/base_type = &"PanelContainer"
+Panel5PadB/styles/panel = ExtResource("40_okqyd")
 PanelButton/base_type = &"Panel"
 PanelButton/styles/panel = ExtResource("18_mdlkh")
 PanelButtonSlanted/base_type = &"Panel"

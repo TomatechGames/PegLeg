@@ -4,19 +4,22 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 
+/* Old Requests
 static class MissionRequests
 {
     const string missionCacheSavePath = "user://missions.json";
-    static uint missionSample;
-    static DateTime missionReset;
-    static GameMission[] missions = null;
     const int MissionVersion = 4;
+
+    public static uint missionHash { get; private set; }
+    static DateTime missionReset;
+    public static GameMission[] currentMissions { get; private set; }
 
     public static async Task<bool> CheckForMissionChanges()
     {
@@ -32,65 +35,63 @@ static class MissionRequests
                 account.AuthHeader
             );
 
-        var missionHash = fullMissions["missionAlerts"].ToString().Hash();
-        if (missionSample == 0)
+        var newHash = fullMissions["missionAlerts"].ToString().Hash();
+        if (missionHash == 0)
         {
-            missionSample = missionHash;
+            missionHash = newHash;
             return false;
         }
-        if (missionSample != missionHash)
+        if (missionHash != newHash)
         {
-            GD.Print(missionSample + " >> " + missionHash);
-            missionSample = missionHash;
-            missions = null;
+            GD.Print(missionHash + " >> " + newHash);
+            missionHash = newHash;
+            currentMissions = null;
+            missionReset = DateTime.Now;
             return true;
         }
         return false;
     }
 
-    public static bool MissionsEmptyOrOutdated()
+    public static bool MissionsEmptyOrOutdated(uint? compareHash = null)
     {
-        if (missions is null)
+        if (compareHash is not null && compareHash != missionHash)
+            return true;
+        if (currentMissions is null)
             return true;
         return DateTime.UtcNow.CompareTo(missionReset) >= 0;
     }
 
-    static SemaphoreSlim missionSephamore = new(1);
-    static bool forceQueued = true;
-    static bool isBeingForced = true;
+    static SemaphoreSlim missionSemaphore = new(1);
+    static bool forceQueued = false;
+    static bool isBeingForced = false;
     public static async Task<GameMission[]> GetMissions(bool forceRefresh = false)
     {
-        if (isBeingForced)
-            forceRefresh = false;
-        else if (forceRefresh)
-        {
+        if (!isBeingForced && forceRefresh)
             forceQueued = true;
-            forceRefresh = false;
-        }
-        await missionSephamore.WaitAsync();
+
+        await missionSemaphore.WaitAsync();
         try
         {
-            if (forceQueued)
-                forceRefresh = true;
             JsonObject missionData = null;
-            if (forceRefresh)
+            if (forceQueued)
             {
                 GD.Print("forcing refresh");
-                missions = null;
+                isBeingForced = true;
+                currentMissions = null;
             }
-            else if (missions is not null && DateTime.UtcNow.CompareTo(missionReset) >= 0)
+            else if (currentMissions is not null && DateTime.UtcNow.CompareTo(missionReset) >= 0)
             {
                 GD.Print("missions expired");
-                missions = null;
+                currentMissions = null;
             }
-            else if (missions is null && FileAccess.FileExists(missionCacheSavePath))
+            else if (currentMissions is null && FileAccess.FileExists(missionCacheSavePath))
             {
                 //load from file
                 using FileAccess missionFile = FileAccess.Open(missionCacheSavePath, FileAccess.ModeFlags.Read);
                 missionData = JsonNode.Parse(missionFile.GetAsText()).AsObject();
                 if(missionData["version"]?.GetValue<int>()== MissionVersion)
                 {
-                    missionSample = missionData["sample"]?.AsValue().TryGetValue(out uint sampleVal) ?? false ? sampleVal : 0;
+                    missionHash = missionData["hash"]?.AsValue().TryGetValue(out uint hashVal) ?? false ? hashVal : 0;
                     missionReset = DateTime.Parse(missionData["expiryDate"]?.ToString(), CultureInfo.InvariantCulture);
                     Debug.WriteLine("mission file loaded");
                 }
@@ -100,9 +101,10 @@ static class MissionRequests
                     Debug.WriteLine("mission file version mismatch");
                 }
             }
+            forceQueued = false;
 
-            if(missions is not null)
-                return missions;
+            if(currentMissions is not null)
+                return currentMissions;
 
             if (missionData is null)
             {
@@ -112,12 +114,13 @@ static class MissionRequests
 
             //GD.Print("max rewards: " + missionsCache.SelectMany(kvp => kvp.Value.AsArray().Select(m => m["missionRewards"].AsArray().Count)).Max());
             //GD.Print("max alert rewards: " + missionsCache.SelectMany(kvp => kvp.Value.AsArray().Select(m => m["missionAlert"]?["rewards"].AsArray().Count ?? 0)).Max());
-            return missions = GenerateMissions(missionData);
+            currentMissions = await GenerateMissions(missionData);
+            return currentMissions;
         }
         finally
         {
-            forceQueued = false;
-            missionSephamore.Release();
+            isBeingForced = false;
+            missionSemaphore.Release();
         }
     }
 
@@ -144,8 +147,8 @@ static class MissionRequests
         missionData["version"] = MissionVersion;
         missionData["expiryDate"] = alerts[0]["nextRefresh"].ToString()[..^1]; //the Z messes with daylight savings time
         missionReset = DateTime.Parse(missionData["expiryDate"].ToString(), CultureInfo.InvariantCulture);
-        missionData["sample"] = missionSample = alerts.ToString().Hash();
-        missionSample = missionData["sample"].GetValue<uint>();
+        missionData["hash"] = missionHash = alerts.ToString().Hash();
+        missionHash = missionData["hash"].GetValue<uint>();
         //GD.Print(fullMissions.ToString()[..350] + "...");
         //GD.Print(missionsCache.ToString()[..350] + "...");
         //save to file
@@ -155,9 +158,114 @@ static class MissionRequests
         missionFile.Flush();
         return missionData.AsObject();
     }
+}
+*/
+
+public class GameMission
+{
+    #region Static
+
+    public static event Action OnMissionsUpdated;
+    public static event Action OnMissionsInvalidated;
+    public static GameMission[] currentMissions { get; private set; }
+    public static DateTime missionReset { get; private set; }
 
 
-    static GameMission[] GenerateMissions(JsonNode rootNode)
+    static uint? missionHash;
+    static SemaphoreSlim missionCheckSemaphore = new(1);
+    static bool checkMissionsState = false;
+    public static async Task<bool> MissionsNeedUpdate(bool ignoreHashCheck = false)
+    {
+        using var st = await missionCheckSemaphore.AwaitToken();
+        if (!st.wasImmediate)
+            return checkMissionsState;
+
+        if (DateTime.UtcNow.CompareTo(missionReset) >= 0)
+            return checkMissionsState = true;
+
+        if (!ignoreHashCheck)
+            return checkMissionsState = false;
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return checkMissionsState = false;
+
+        JsonNode missionData = await Helpers.MakeRequest(
+                HttpMethod.Get,
+                FnEndpoints.gameEndpoint,
+                "fortnite/api/game/v2/world/info",
+                "",
+                account.AuthHeader
+            );
+
+        if (missionData["errorMessage"] is not null)
+        {
+            GD.Print("Error: " + missionData.ToString());
+            return checkMissionsState = false;
+        }
+
+        var newHash = missionData["missionAlerts"].ToString().Hash();
+        if (missionHash == newHash)
+            return checkMissionsState = true;
+
+        return checkMissionsState = false;
+    }
+
+    public static async Task CheckMissions(bool ignoreHashCheck = false)
+    {
+        if (await MissionsNeedUpdate(ignoreHashCheck))
+            await UpdateMissions();
+    }
+
+    static SemaphoreSlim missionUpdateSemaphore = new(1);
+    public static async Task UpdateMissions()
+    {
+        using var st = await missionUpdateSemaphore.AwaitToken();
+        if (!st.wasImmediate)
+            return;
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        currentMissions = null;
+        missionReset = DateTime.Now;
+        OnMissionsInvalidated?.Invoke();
+
+        while (true)
+        {
+            JsonNode missionData = await Helpers.MakeRequest(
+                    HttpMethod.Get,
+                    FnEndpoints.gameEndpoint,
+                    "fortnite/api/game/v2/world/info",
+                    "",
+                    account.AuthHeader
+                );
+            var newHash = missionData["missionAlerts"].ToString().Hash();
+
+            GD.Print(missionHash + " >> " + newHash);
+            missionHash = newHash;
+            var expiryDate = missionData["missionAlerts"][0]["nextRefresh"].ToString()[..^1]; //the Z messes with daylight savings time
+            missionReset = DateTime.Parse(expiryDate, CultureInfo.InvariantCulture);
+
+            var generatedMissions = await GenerateMissions(missionData);
+
+            //edge case where missions expire after being requested but before being converted to MissionEntries
+            if (!await MissionsNeedUpdate(true))
+                continue;
+
+            currentMissions = generatedMissions
+                .OrderBy(m => m.theaterIdx)
+                .ThenBy(m => m.powerLevel)
+                .ThenBy(m => m.isFourPlayer)
+                .ThenBy(m => m.missionGenerator.template?.DisplayName ?? "AAAAA")
+                .ToArray();
+            OnMissionsUpdated?.Invoke();
+            return;
+        }
+    }
+
+    static async Task<List<GameMission>> GenerateMissions(JsonNode rootNode)
     {
         //Theaters
         List<string> allowedTheaterIDs = new()
@@ -182,6 +290,7 @@ static class MissionRequests
 
         List<GameMission> missionList = new();
 
+        int counter = 0;
         foreach (var theaterID in allowedTheaterIDs)
         {
             var theater = rootNode["theaters"].AsArray().First(t => t["uniqueId"].ToString() == theaterID);
@@ -214,6 +323,12 @@ static class MissionRequests
 
             foreach (var missionObj in theaterMissions)
             {
+                counter++;
+                if (counter > 10)
+                {
+                    counter = 0;
+                    await Task.Delay(50);
+                }
                 missionsToDetach.Add(missionObj.AsObject());
 
                 string missionGen = missionObj["missionGenerator"].ToString();
@@ -233,7 +348,7 @@ static class MissionRequests
                 if (
                     missionGen.Contains("_TheOutpost_") ||
                     tileData["requirements"]["activeQuestDefinitions"].AsArray().Count > 0 //||
-                    //tileData["requirements"]["eventFlag"].ToString() != ""
+                                                                                           //tileData["requirements"]["eventFlag"].ToString() != ""
                     )
                     continue;
 
@@ -248,15 +363,15 @@ static class MissionRequests
                 theaterMissions.Remove(mission);
             }
         }
-        return missionList.ToArray();
+        return missionList;
     }
-}
 
-public class GameMission
-{
+    #endregion
+
     public int powerLevel { get; private set; }
     public int theaterIdx { get; private set; }
     public string theaterCat { get; private set; }
+    public bool isFourPlayer { get; private set; }
 
     public JsonObject missionData { get; private set; }
     public JsonObject alertData { get; private set; }
@@ -294,6 +409,7 @@ public class GameMission
             "v" => 4,
             _ => 0
         };
+        isFourPlayer = difficultyInfo?["DisplayName"]?.ToString().EndsWith("4 Players") ?? false;
 
         missionGenerator.GetTexture(FnItemTextureType.Icon);
         backgroundTexture = 
@@ -304,7 +420,7 @@ public class GameMission
         foreach (var itemData in missionData["missionRewards"]["items"].AsArray())
         {
             GameItem item = new(null, null, itemData.AsObject());
-            item.SetSeenLocal();
+            item.SetRewardNotification();
             item.GetTexture();
             item.GenerateSearchTags();
             var match = Regex.Match(item.template.Name.ToLower(), "zcp_.*t\\d{1,2}");
@@ -345,7 +461,7 @@ public class GameMission
                 foreach (var itemData in rewardData)
                 {
                     GameItem item = new(null, null, itemData.AsObject());
-                    item.SetSeenLocal();
+                    item.SetRewardNotification();
                     item.GetTexture();
                     item.GenerateSearchTags();
                     alertRewardItemList.Add(item);
@@ -355,5 +471,13 @@ public class GameMission
         }
         alertModifiers ??= Array.Empty<GameItem>();
         alertRewardItems ??= Array.Empty<GameItem>();
+    }
+
+    public void UpdateRewardNotifications()
+    {
+        foreach (var item in allItems)
+        {
+            item.SetRewardNotification(null, true);
+        }
     }
 }

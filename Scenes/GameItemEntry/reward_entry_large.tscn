@@ -8,6 +8,7 @@ resource_local_to_scene = true
 shader = ExtResource("2_d7op8")
 shader_parameter/ControlSize = Vector2(96, 96)
 shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
 
 [node name="RewardEntry" instance=ExtResource("1_7nwdj")]
 custom_minimum_size = Vector2(96, 96)
@@ -16,14 +17,14 @@ compactifyAmount = true
 [node name="TextureRect" parent="." index="0"]
 material = SubResource("ShaderMaterial_67ml0")
 
-[node name="AmountLabel" parent="." index="1"]
-theme_override_font_sizes/font_size = 32
-
-[node name="InteractableContainer" parent="Overlays" index="2"]
+[node name="RightIconContainer" parent="Overlays/AmountContainer" index="0"]
 custom_minimum_size = Vector2(32, 0)
 
-[node name="LeftIconContainer" parent="Overlays" index="3"]
-offset_right = 38.0
+[node name="LeftIconContainer" parent="Overlays/AmountContainer" index="2"]
+custom_minimum_size = Vector2(32, 0)
 
-[node name="AspectRatioContainer" parent="Overlays" index="4"]
-offset_left = -38.0
+[node name="AmountLabel" parent="Overlays/AmountContainer" index="4"]
+theme_override_font_sizes/font_size = 30
+
+[node name="InteractableContainer" parent="Overlays" index="3"]
+custom_minimum_size = Vector2(24, 0)

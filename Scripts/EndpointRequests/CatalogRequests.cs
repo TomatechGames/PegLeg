@@ -884,18 +884,18 @@ public class GameOffer
         return personalPrice = basePrice?.template?.CreateInstance(price);
     }
 
-    GameItem prerollData;
-    public async Task<GameItem> GetPrerollData(bool force = false)
+    Dictionary<string, GameItem> prerollData = new();
+    public async Task<GameItem> GetPrerollData(GameAccount account = null, bool force = false)
     {
-        if (!force && prerollData is not null)
-            return prerollData;
+        account ??= GameAccount.activeAccount;
         if (GetMeta("Preroll") != "True")
             return null;
-        var account = GameAccount.activeAccount;
+        if (!force && prerollData.ContainsKey(account.accountId))
+            return prerollData[account.accountId];
         if (!await account.Authenticate())
             return null;
         var prerollItems = (await account.GetProfile(FnProfileTypes.AccountItems).Query()).GetItems("PrerollData");
-        return prerollData = prerollItems.FirstOrDefault(item => item.attributes?["offerId"].ToString() == OfferId);
+        return prerollData[account.accountId] = prerollItems.FirstOrDefault(item => item.attributes?["offerId"].ToString() == OfferId);
     }
 
     public void NotifyChanged()

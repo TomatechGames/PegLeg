@@ -11,11 +11,6 @@ offset_bottom = 32.0
 script = ExtResource("1_qnyc5")
 highlightedRewardParent = NodePath("MarginContainer/HBoxContainer/Highlights")
 
-[node name="Button" type="Button" parent="."]
-custom_minimum_size = Vector2(0, 24)
-layout_mode = 2
-theme_type_variation = &"LargeButton"
-
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
@@ -47,6 +42,7 @@ text = "144"
 
 [node name="Highlights" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="MissionCollectionHighlightItem" parent="MarginContainer/HBoxContainer/Highlights" instance=ExtResource("2_8t80l")]
 layout_mode = 2
@@ -56,6 +52,12 @@ layout_mode = 2
 
 [node name="MissionCollectionHighlightItem3" parent="MarginContainer/HBoxContainer/Highlights" instance=ExtResource("2_8t80l")]
 layout_mode = 2
+
+[node name="Button" type="Button" parent="."]
+show_behind_parent = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_type_variation = &"LargeButton"
 
 [connection signal="IconChanged" from="." to="MarginContainer/HBoxContainer/Icon" method="set_texture"]
 [connection signal="PowerLevelChanged" from="." to="MarginContainer/HBoxContainer/PowerLevel" method="set_text"]

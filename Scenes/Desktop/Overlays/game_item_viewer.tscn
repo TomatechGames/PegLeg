@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://buf6p8qyydofm"]
+[gd_scene load_steps=55 format=3 uid="uid://buf6p8qyydofm"]
 
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/GameItemViewer.cs" id="1_5fxot"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_croo3"]
@@ -31,6 +31,13 @@
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="22_jjr7p"]
 [ext_resource type="Texture2D" uid="uid://d8v0v7pbda3c" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Metal-Brightcore-L.png" id="23_avs1q"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1fkd4"]
+resource_local_to_scene = true
+shader = ExtResource("14_6bwx2")
+shader_parameter/ControlSize = Vector2(200, 200)
+shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m63ph"]
 bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 5
@@ -52,6 +59,7 @@ resource_local_to_scene = true
 shader = ExtResource("14_6bwx2")
 shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_wrarj"]
 resource_name = "ItemViewerChoices"
@@ -61,18 +69,21 @@ resource_local_to_scene = true
 shader = ExtResource("14_6bwx2")
 shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jbiy1"]
 resource_local_to_scene = true
 shader = ExtResource("14_6bwx2")
 shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gnhoe"]
 resource_local_to_scene = true
 shader = ExtResource("14_6bwx2")
 shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ph3ha"]
 content_margin_left = 5.0
@@ -200,7 +211,7 @@ shader_parameter/minVal = 25.0
 shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
-shader_parameter/time = 12.721
+shader_parameter/time = 8.834
 shader_parameter/TrianglePattern = ExtResource("22_jjr7p")
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
@@ -296,9 +307,17 @@ custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 preventInteractability = true
 
+[node name="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry" index="0"]
+material = SubResource("ShaderMaterial_1fkd4")
+
+[node name="Control" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry/Overlays/AmountContainer" index="1"]
+visible = false
+
+[node name="Control2" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry/Overlays/AmountContainer" index="3"]
+visible = true
+
 [node name="Control" type="Control" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer" index="1"]
 layout_mode = 2
-mouse_filter = 2
 
 [node name="PowerLevelIndicator" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control" index="0" instance=ExtResource("6_kpnbe")]
 layout_mode = 0
@@ -1495,6 +1514,7 @@ ticks_on_borders = true
 [connection signal="NameChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/Item Name" method="set_text"]
 [connection signal="RatingChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/PowerLevelIndicator/HBoxContainer/PowerLevelLabel" method="set_text"]
 [connection signal="RatingVisibility" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/PowerLevelIndicator" method="set_visible"]
+[connection signal="TooltipChanged" from="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry" to="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control" method="set_tooltip_text"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/BackButton" to="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks" method="ClosePerkChanger"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks/Perk Option Selector/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer2/ApplyButton" to="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks" method="ApplyReplacementPerk"]
 [connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Abilities/MarginContainer/VBoxContainer/TeamPerk" to="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Abilities/MarginContainer/VBoxContainer/TeamPerk/VBoxContainer/HBoxContainer/TextureRect" method="set_texture"]
@@ -1517,6 +1537,7 @@ ticks_on_borders = true
 [connection signal="AmountChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory/InvPriceText" method="set_text"]
 [connection signal="IconChanged" from="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory" to="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/CantAffordContent/PriceInInventory/Icon" method="set_texture"]
 
+[editable path="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/RewardEntry"]
 [editable path="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/MarginContainer/VBoxContainer/MarginContainer/Control/PowerLevelIndicator"]
 [editable path="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control/RewardEntryHorizontal"]
 [editable path="Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/Control2/RewardEntryHorizontal"]

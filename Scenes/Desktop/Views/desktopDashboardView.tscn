@@ -1,7 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bqp7ax1fjc306"]
+[gd_scene load_steps=14 format=3 uid="uid://bqp7ax1fjc306"]
 
+[ext_resource type="Script" path="res://Scripts/UserInterface/Dashboard/MissionCollectionsController.cs" id="1_37xws"]
 [ext_resource type="PackedScene" uid="uid://c70qnky0xyx4w" path="res://Scenes/MissionEntry/mission_collection.tscn" id="1_a6luq"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ColumnStackContainer.cs" id="1_ac3k7"]
+[ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="2_a4xlu"]
+[ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_aag1n"]
 [ext_resource type="PackedScene" uid="uid://d2sah8mggjcus" path="res://Scenes/LlamaEntries/llama_highlight.tscn" id="7_uwope"]
 [ext_resource type="PackedScene" uid="uid://31ck1j8euqq7" path="res://Scenes/Quests/quest_highlight.tscn" id="8_1vwuw"]
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="9_stolx"]
@@ -10,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_pybot"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqxg2"]
-bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+bg_color = Color(0.314316, 0.314316, 0.314316, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -40,70 +43,137 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="MissionCollections" type="MarginContainer" parent="VBoxContainer"]
+[node name="MissionCollections" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"Panel5PadB"
+script = ExtResource("1_37xws")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MissionCollections"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/MissionCollections"]
-layout_mode = 2
-theme_type_variation = &"TransparantPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MissionCollections"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MissionCollections/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer"]
+[node name="ForceRefresh" type="Button" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(26, 0)
 layout_mode = 2
+tooltip_text = "Force Reload"
+theme_type_variation = &"LargeButton"
 
-[node name="Label" type="Label" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer/ForceRefresh"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_aag1n")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Mission Collections"
 
-[node name="Label2" type="Label" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "x Unexpected Resets Detected Today"
 
-[node name="Button" type="Button" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Go to Missions"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MissionCollections/VBoxContainer"]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
 vertical_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MissionCollection" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
+mouse_filter = 0
+mouse_force_pass_scroll_events = false
+theme_override_constants/separation = 8
 
-[node name="MissionCollection2" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
+testName = "V-Bucks"
+testSearch = "///v-buck"
 
-[node name="MissionCollection3" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection2" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
+testName = "Survivors"
+testSearch = "///(worker leg !lead) | (worker mythic)"
 
-[node name="MissionCollection4" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection3" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
+testName = "Upgrade Llamas"
+testSearch = "///llama !mini"
 
-[node name="MissionCollection5" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection4" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
+testName = "Heroes"
+testSearch = "///hero legendary"
 
-[node name="MissionCollection6" parent="VBoxContainer/MissionCollections/MarginContainer/VBoxContainer/ScrollContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection5" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
+testName = "Schematics"
+testSearch = "///schematic legendary"
+
+[node name="MissionCollection8" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+layout_mode = 2
+testName = "Defenders"
+testSearch = "///defender legendary"
+
+[node name="MissionCollection9" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+layout_mode = 2
+testName = "All"
+testSearch = "///quantity=1.."
+
+[node name="Button" type="Button" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+theme_type_variation = &"LargeButton"
+theme_override_font_sizes/font_size = 64
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_a4xlu")
+expand_mode = 1
 
 [node name="ScrollContainer2" type="ScrollContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -128,108 +198,88 @@ custom_minimum_size = Vector2(628.5, 0)
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="LlamaSummary" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp"]
+[node name="LlamaSummary" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"Panel5PadB"
 
-[node name="Panel" type="Panel" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary"]
-layout_mode = 2
-theme_type_variation = &"TransparantPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Llama Shop"
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Go to Llamas"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="LlamaHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+[node name="LlamaHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
 layout_mode = 2
 
-[node name="LlamaHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+[node name="LlamaHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
 layout_mode = 2
 
-[node name="LlamaHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+[node name="LlamaHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
 layout_mode = 2
 
-[node name="XPSummary" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp"]
+[node name="XPSummary" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_type_variation = &"Panel5PadB"
 
-[node name="Panel" type="Panel" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary"]
-layout_mode = 2
-theme_type_variation = &"TransparantPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Weekly XP Caps"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "?:??:??:??"
 script = ExtResource("10_smvwj")
 timerType = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="XPCapBar" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="XPCapBar" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = -2
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Generic (BR) Cap"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar/HBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar/HBoxContainer"]
 layout_mode = 2
 text = " (?.?/50 levels)"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar"]
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -240,25 +290,25 @@ max_value = 1.0
 value = 0.75
 show_percentage = false
 
-[node name="XPCapBar2" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer"]
+[node name="XPCapBar2" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = -2
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "STW Cap"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
 layout_mode = 2
 text = " (?.?/50 levels)"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/MarginContainer/VBoxContainer/VBoxContainer/XPCapBar2"]
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -269,55 +319,45 @@ max_value = 1.0
 value = 0.75
 show_percentage = false
 
-[node name="QuestSummary" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
+[node name="QuestSummary" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
 custom_minimum_size = Vector2(628.5, 0)
 layout_mode = 2
+theme_type_variation = &"Panel5PadB"
 
-[node name="Panel" type="Panel" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary"]
-layout_mode = 2
-theme_type_variation = &"TransparantPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Quest Summary"
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Go to Quests"
 
-[node name="DailiesAndWeeklies" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer"]
+[node name="DailiesAndWeeklies" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
 layout_mode = 2
 useFirstRewardAsIcon = true
 
-[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
 layout_mode = 2
 useFirstRewardAsIcon = true
 
-[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
 layout_mode = 2
 
-[node name="Dailies" type="HFlowContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/DailiesAndWeeklies"]
+[node name="Dailies" type="HFlowContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -325,62 +365,62 @@ theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = -2
 alignment = 1
 
-[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="EventAndEndurance" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer"]
+[node name="EventAndEndurance" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="EventQuests" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance"]
+[node name="EventQuests" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance"]
 layout_mode = 2
 
-[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance"]
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = -2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/VBoxContainer"]
 layout_mode = 2
 text = "Daily Endurance: Stonewood"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/MarginContainer/VBoxContainer/EventAndEndurance/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/VBoxContainer"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -391,148 +431,128 @@ max_value = 1.0
 value = 0.75
 show_percentage = false
 
-[node name="CosmeticShopHighlights" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
+[node name="CosmeticShopHighlights" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
 custom_minimum_size = Vector2(628.5, 0)
 layout_mode = 2
+theme_type_variation = &"Panel5PadB"
 
-[node name="Panel" type="Panel" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights"]
-layout_mode = 2
-theme_type_variation = &"TransparantPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Cosmetic Shop Highlights"
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Go to Cosmetic Shop"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_top = 10
 
-[node name="HBoxContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 columns = 3
 
-[node name="CosmeticShopEntry" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry6" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry6" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="EventShopHighlights" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
+[node name="EventShopHighlights" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
 custom_minimum_size = Vector2(628.5, 0)
 layout_mode = 2
+theme_type_variation = &"Panel5PadB"
 
-[node name="Panel" type="Panel" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights"]
-layout_mode = 2
-theme_type_variation = &"TransparantPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Event Shop Highlights"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "?:??:??:??"
 horizontal_alignment = 1
 script = ExtResource("10_smvwj")
 timerType = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Go to Event Shop"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 columns = 4
 
-[node name="RegularShopEntry" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry6" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry6" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry7" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry7" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry8" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry8" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
 [node name="MorePanelsPlanned" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
-visible = false
+custom_minimum_size = Vector2(628.5, 0)
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned"]
@@ -556,3 +576,5 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+
+[connection signal="pressed" from="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer/ForceRefresh" to="VBoxContainer/MissionCollections" method="Reload"]

@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
-using System.Security.Principal;
 
 
 public enum OrderRange
@@ -141,6 +140,26 @@ public class GameAccount
         return true;
     }
 
+    public static async Task<GameAccount> SearchForAccount(string username)
+    {
+        var activeAccount = GameAccount.activeAccount;
+        if(!await activeAccount.Authenticate())
+            return null;
+        var searchResult = await Helpers.MakeRequest(
+                HttpMethod.Get,
+                FnEndpoints.userSearchEndpoint,
+                $"/api/v1/search/{activeAccount.accountId}?platform=epic&prefix={username}",
+                "{}",
+                activeAccount.AuthHeader
+            );
+        if (searchResult is not JsonArray accountArray || accountArray.Count == 0)
+            return null;
+        var resultAccount = GetOrCreateAccount(accountArray[0]["accountId"].ToString());
+        if (resultAccount is not null && accountArray[0]["matches"]?[0]?["value"]?.ToString() is string displayName)
+            resultAccount.SetLocalData("DisplayName", displayName);
+        return resultAccount;
+    }
+
     static GameAccount _activeAccount;
     public static GameAccount activeAccount => _activeAccount ??= new(null);
     public static event Action<GameAccount> ActiveAccountChangedEarly;
@@ -156,6 +175,7 @@ public class GameAccount
             _activeAccount = account;
             ActiveAccountChangedEarly?.Invoke(account);
             ActiveAccountChanged?.Invoke(account);
+            AppConfig.Set("account", "lastUsed", accountId);
             return true;
         }
         return false;
@@ -275,7 +295,7 @@ public class GameAccount
 
     public void ForceExpireToken() => authExpiresAt = 0;
 
-    public SemaphoreSlim profileOperationSephamore { get; private set; } = new(1);
+    public SemaphoreSlim profileOperationSemaphore { get; private set; } = new(1);
 
     public async Task<JsonArray> PurchaseOffer(GameOffer offer, int purchaseQuantity = 1)
     {
@@ -311,12 +331,12 @@ public class GameAccount
     }
 
 
-    SemaphoreSlim iconSephamore = new(1);
+    SemaphoreSlim iconSemaphore = new(1);
     public async void UpdateIcon()
     {
-        if (iconSephamore.CurrentCount <= 0)
+        if (iconSemaphore.CurrentCount <= 0)
             return;
-        await iconSephamore.WaitAsync();
+        await iconSemaphore.WaitAsync();
         try
         {
             if (!await Authenticate())
@@ -353,12 +373,13 @@ public class GameAccount
 
             if (skinIcon is null)
                 return;
+            SetLocalData("IconPath", skinIconServerPath);
 
             OnAccountUpdated?.Invoke();
         }
         finally
         {
-            iconSephamore.Release();
+            iconSemaphore.Release();
         }
         
     }
@@ -561,10 +582,16 @@ public class GameAccount
     public async Task<JsonObject> GetOrderCounts(OrderRange range)
     {
         var commonData = await GetProfile(FnProfileTypes.Common).Query();
+
         var orderRange = commonData.statAttributes[range.ToAttribute()];
+        var lastInterval = orderRange?["lastInterval"]?.ToString();
+        if (lastInterval is null)
+            return null;
+
         var lastIntervalTime = DateTime.Parse(orderRange["lastInterval"].ToString(), null, DateTimeStyles.RoundtripKind);
         if (lastIntervalTime != range.ToInterval())
             return null;
+
         return orderRange["purchaseList"].AsObject();
     }
 
@@ -860,7 +887,7 @@ public class GameProfile
         if (queryAccount is null)
             return this;
 
-        await queryAccount.profileOperationSephamore.WaitAsync();
+        await queryAccount.profileOperationSemaphore.WaitAsync();
         try
         {
             if (!hasProfile || force)
@@ -871,7 +898,7 @@ public class GameProfile
         }
         finally
         {
-            queryAccount.profileOperationSephamore.Release();
+            queryAccount.profileOperationSemaphore.Release();
         }
     }
 
@@ -883,17 +910,18 @@ public class GameProfile
         var opAccount = account.isOwned ? account : GameAccount.activeAccount;
         if (opAccount is null)
             return null;
-        await opAccount.profileOperationSephamore.WaitAsync();
+        await opAccount.profileOperationSemaphore.WaitAsync();
         try
         {
             return await PerformOperationUnsafe(operation, content);
         }
         finally
         {
-            opAccount.profileOperationSephamore.Release();
+            opAccount.profileOperationSemaphore.Release();
         }
     }
 
+    public JsonObject lastOp { get; private set; }
     async Task<JsonArray> PerformOperationUnsafe(string operation, string content = "{}")
     {
         if (!account.isOwned)
@@ -958,6 +986,7 @@ public class GameProfile
         request.Headers.Authorization = authHeader;
 
         var result = (await Helpers.MakeRequest(FnEndpoints.gameEndpoint, request)).AsObject();
+        lastOp = result;
         if (result.ContainsKey("errorCode"))
         {
             var _ = GenericConfirmationWindow.ShowErrorForWebResult(result);
@@ -983,7 +1012,7 @@ public class GameProfile
         if (result.ContainsKey("multiUpdate"))
             account.HandleProfileChanges(result["multiUpdate"].AsArray());
 
-        GD.Print($"operation complete ({operation} in {profileId})");
+        GD.Print($"operation complete ({operation} in {profileId} as {account.DisplayName})");
 
         if (result.ContainsKey("notifications"))
             return result["notifications"].AsArray();
@@ -1212,6 +1241,16 @@ public class GameItem
         quantity = newQuant;
     }
 
+    public int TotalQuantity
+    {
+        get
+        {
+            if (profile is null)
+                return quantity;
+            return profile.GetTemplateItems(templateId).Select(i => i.quantity).Sum();
+        }
+    }
+
     JsonObject _rawData;
     public JsonObject RawData => _rawData ?? GenerateRawData();
     public JsonObject GenerateRawData()
@@ -1229,6 +1268,7 @@ public class GameItem
             ["searchTags"] = _searchTags?.Reserialise() ?? template?["searchTags"]?.Reserialise(),
         };
     }
+    public JsonArray Alterations => (attributes?["alterations"] ?? attributes?["alterationDefinitions"])?.AsArray();
 
     public string Personality=> attributes?["personality"]?.ToString() is string rawPersonality ? ParseSurvivorAttribute(rawPersonality) : null;
     public string SetBonus => attributes?["set_bonus"]?.ToString() is string rawSetBonus ? ParseSurvivorAttribute(rawSetBonus) : null;
@@ -1250,6 +1290,8 @@ public class GameItem
             _searchTags.Add(ParseSurvivorAttribute(rawPersonality));
         if (attributes?["set_bonus"]?.ToString() is string rawSetBonus)
             _searchTags.Add(ParseSurvivorAttribute(rawSetBonus));
+        if (attributes?["quest_state"]?.ToString() is string questState)
+            _searchTags.Add(questState);
         return _searchTags;
     }
 
@@ -1283,7 +1325,7 @@ public class GameItem
     }
 
     bool? isSeenLocal = null;
-    public bool IsSeen => isSeenLocal ?? attributes?["item_seen"]?.GetValue<bool>() ?? false;
+    public bool IsSeen => isSeenLocal ?? (attributes?["item_seen"]?.GetValue<bool>() ?? false || !template.CanBeUnseen);
     public GameItem SetSeenLocal(bool? newVal = true)
     {
         if (isSeenLocal == newVal)
@@ -1370,7 +1412,7 @@ public class GameItem
             //with regular survivors, one of personality-rarity combo can be collected
             return collectionBook
                 .GetItems("Worker", item =>
-                    item.attributes["personality"].ToString() == attributes["personality"].ToString() &&
+                    item.attributes?["personality"]?.ToString() == (attributes?["personality"]?.ToString() ?? "nope") &&
                     item.template.Rarity == template.Rarity)
                 .Any();
         }
@@ -1447,7 +1489,7 @@ public class GameItem
         if (template.SubType is string leadType)
         {
             //check for lead synergy match
-            var matchedSquadID = BanjoAssets.supplimentaryData.SynergyToSquadId[leadType.Replace(" ", "")];
+            var matchedSquadID = BanjoAssets.supplimentaryData.SynergyToSquadId.TryGetValue(leadType.Replace(" ", ""), out var match) ? match : null;
             if (matchedSquadID == survivorSquad)
                 rating *= 2;
         }
@@ -1572,8 +1614,7 @@ public class GameItem
 
     public override string ToString() => $"{{\n  id:{uuid}\n  template:{templateId}\n  quantity:{quantity}\n  attributes:{attributes}}}";
 
-    public GameItem Clone() => Clone(quantity);
-    public GameItem Clone(int quantity) => new(template, quantity, attributes.Reserialise(), profile is null ? inspectorOverride : this, customData.Reserialise());
+    public GameItem Clone(int? quantity = null, JsonObject customData = null) => new(template, quantity ?? this.quantity, attributes.Reserialise(), profile is null ? inspectorOverride : this, customData ?? this.customData.Reserialise());
 
     public void NotifyChanged()
     {

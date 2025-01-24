@@ -58,12 +58,12 @@ public partial class QuestInterface : Control
     }
 
     bool questsDirty = true;
-    SemaphoreSlim loadQuestsSephamore = new(1);
+    SemaphoreSlim loadQuestsSemaphore = new(1);
     async void LoadQuests()
     {
         if (!questsDirty)
             return;
-        await loadQuestsSephamore.WaitAsync();
+        await loadQuestsSemaphore.WaitAsync();
         try
         {
             if (!await GameAccount.activeAccount.Authenticate())
@@ -121,7 +121,7 @@ public partial class QuestInterface : Control
         finally
         {
             loadingIcon.Visible = false;
-            loadQuestsSephamore.Release();
+            loadQuestsSemaphore.Release();
         }
         if (questsDirty)
             LoadQuests();

@@ -33,14 +33,14 @@ public partial class HeroAbilityEntry : Node
 
     public void SetAbility(GameItemTemplate heroAbility, bool locked = false, string warning = null)
 	{
-        string name = heroAbility.DisplayName;
-        string description = heroAbility.Description;
+        string name = heroAbility?.DisplayName;
+        string description = heroAbility?.Description;
 
         EmitSignal(SignalName.NameChanged, name);
         EmitSignal(SignalName.DescriptionChanged, description);
         EmitSignal(SignalName.NameAndDescriptionChanged, name+"\n"+description);
 
-        EmitSignal(SignalName.IconChanged, heroAbility.GetTexture());
+        EmitSignal(SignalName.IconChanged, heroAbility?.GetTexture());
 
         EmitSignal(SignalName.WarningVisible, warning is not null);
         EmitSignal(SignalName.WarningChanged, warning ?? "");

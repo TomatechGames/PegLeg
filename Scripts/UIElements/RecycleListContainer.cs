@@ -1,8 +1,5 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 public partial class RecycleListContainer : ScrollContainer
 {
@@ -60,7 +57,7 @@ public partial class RecycleListContainer : ScrollContainer
         try
         {
             var elementSize = basis.BasisSize;
-            if (linkedGrid is not null && linkedGrid.GetChildCount() > 0)
+            if ((linkedGrid?.GetChildCount() ?? 0) > 0)
                 elementSize = linkedGrid.GetFirstChildMinSize();
             float elementHeight = elementSize.Y;
             int columns = linkedGrid?.CalcGrid(elementSize, 1).X ?? 1;
@@ -112,8 +109,8 @@ public partial class RecycleListContainer : ScrollContainer
                         //GD.Print("force adding " + i);
                         var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                         activeEntries[i] = item;
-                        activeEntries[i].SetRecycleIndex(i);
                         activeEntries[i].node.Visible = true;
+                        activeEntries[i].SetRecycleIndex(i);
                         activeEntries[i].node.MoveToFront();
                     }
                 }
@@ -154,8 +151,8 @@ public partial class RecycleListContainer : ScrollContainer
                             //GD.Print("adding " + i);
                             var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                             activeEntries[i] = item;
-                            activeEntries[i].SetRecycleIndex(i);
                             activeEntries[i].node.Visible = true;
+                            activeEntries[i].SetRecycleIndex(i);
                             elementParent.MoveChild(activeEntries[i].node, 0);
                         }
                     }
@@ -167,8 +164,8 @@ public partial class RecycleListContainer : ScrollContainer
                             //GD.Print("adding " + i);
                             var item = pooledEntries.Count > 0 ? pooledEntries.Dequeue() : SpawnPoolEntry();
                             activeEntries[i] = item;
-                            activeEntries[i].SetRecycleIndex(i);
                             activeEntries[i].node.Visible = true;
+                            activeEntries[i].SetRecycleIndex(i);
                             activeEntries[i].node.MoveToFront();
                         }
                     }
@@ -244,11 +241,10 @@ public interface IRecyclableElementProvider
 {
     public int GetRecycleElementCount();
     public void OnElementSpawned(IRecyclableEntry entry) { }
+    public void OnElementSelected(int index) { }
 }
 
 public interface IRecyclableElementProvider<T> : IRecyclableElementProvider
 {
     public T GetRecycleElement(int index);
-
-    public void OnElementSelected(int index) { }
 }

@@ -22,13 +22,12 @@ public partial class TempCompendiumInterface : Control
 		VisibilityChanged += GenerateCompendiumEntries;
 		searchBox.TextChanged += FilterItems;
 		itemList.ItemSelected += InspectItem;
-
     }
 
     bool generated = false;
 	List<GameItemTemplate> compendiumTemplates = new();
 
-	void GenerateCompendiumEntries()
+	async void GenerateCompendiumEntries()
 	{
 		if (generated)
 			return;
@@ -37,6 +36,7 @@ public partial class TempCompendiumInterface : Control
 
 		//TODO: run asynchronously
 		Dictionary<string, GameItemTemplate> uniqueTemplates = new();
+		int counter = 0;
         foreach (var source in includedSources)
         {
 			if (BanjoAssets.TryGetSource(source, out var sourceObject))
@@ -44,27 +44,39 @@ public partial class TempCompendiumInterface : Control
                 //Parallel.ForEach(sourceObject, sourceKVP =>
                 foreach (var sourceKVP in sourceObject)
                 {
+					counter++;
+					if (counter > 15)
+					{
+						counter = 0;
+                        await Helpers.WaitForFrame();
+                    }
                     var template = GameItemTemplate.Get(sourceKVP.Key);
 					if (template.Tier != 1)
-						return;
+						continue;
 
 					lock (uniqueTemplates)
 					{
 						if (!uniqueTemplates.ContainsKey(template.DisplayName) || uniqueTemplates[template.DisplayName].RarityLevel < template.RarityLevel)
-						{
-							uniqueTemplates[template.DisplayName] = template;
+                        {
+                            template.GenerateSearchTags();
+                            uniqueTemplates[template.DisplayName] = template;
 						}
 					}
 				}//);
             }
         }
-        compendiumTemplates = uniqueTemplates.Values
-            .OrderBy(item => item.Type=="Hero" ? 0 : 1)
-			.ThenBy(item => -item.RarityLevel)
-			.ThenBy(item => item.Category)
-			.ThenBy(item => item.SubType)
-			.ThenBy(item => item.DisplayName.StartsWith("The ") ? item.DisplayName[4..] : item.DisplayName)
-			.ToList();
+		List<GameItemTemplate> orderedTemplates = null;
+		await Task.Run(() =>
+        {
+            orderedTemplates = uniqueTemplates.Values
+                .OrderBy(item => item.Type == "Hero" ? 0 : 1)
+                .ThenBy(item => -item.RarityLevel)
+                .ThenBy(item => item.Category)
+                .ThenBy(item => item.SubType)
+                .ThenBy(item => item.DisplayName.StartsWith("The ") ? item.DisplayName[4..] : item.DisplayName)
+                .ToList();
+        });
+		compendiumTemplates = orderedTemplates ?? new();
 		//compendiumTemplates.ForEach(i => i.GenerateSearchTags());
         FilterItems("");
         searchBox.Editable = true;
@@ -94,12 +106,14 @@ public partial class TempCompendiumInterface : Control
 			var color = template.RarityColor;
 			color.A *= 0.5f;
             itemList.SetItemCustomBgColor(index, color);
+			itemList.SetItemMetadata(index, compendiumTemplates.IndexOf(template));
         }
     }
 
     private void InspectItem(long index)
     {
-		var template = compendiumTemplates[(int)index];
+		var templateIndex = itemList.GetItemMetadata((int)index).AsInt32();
+        var template = compendiumTemplates[templateIndex];
 		var item = template.CreateInstance();
 		item.SetSeenLocal();
         GameItemViewer.Instance.ShowItem(item);

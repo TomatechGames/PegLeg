@@ -28,6 +28,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public delegate void IconChangedEventHandler(Texture2D icon);
 
     [Signal]
+    public delegate void IconFitEventHandler(bool value);
+
+    [Signal]
     public delegate void TypeChangedEventHandler(string type);
 
     [Signal]
@@ -123,6 +126,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     protected CheckButton selectionGraphics;
 
+    bool ForceInteractability => forceInteractability;
+
     public override void _Ready()
     {
         if (autoLinkToViewer)
@@ -144,10 +149,14 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public GameItem currentItem { get; protected set; }
     protected GameItem inspectorOverride;
 
-    public void SetItem(GameItem newItem)
+    public void SetItem(GameItem newItem, bool forceUpdate = false)
     {
         if (newItem == currentItem)
+        {
+            if (forceUpdate)
+                UpdateItem(currentItem);
             return;
+        }
 
         if (currentItem is not null)
         {
@@ -189,11 +198,11 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         int amount = item.quantity;
 
         inspectorOverride = item.inspectorOverride;
-        if(inspectorOverride is not null)
+        if(inspectorOverride is not null && inspectorOverride.template is not null)
             item = inspectorOverride;
 
-        if (item.template.Type == "Accolades")
-            amount = item.template["AccoladeXP"]?.GetValue<int>() ?? 1;
+        if (item.template?.Type == "Accolades")
+            amount = item.template?["AccoladeXP"]?.GetValue<int>() ?? 1;
         string amountText = compactifyAmount ? amount.Compactify() : amount.ToString();
 
         if (addXToAmount)
@@ -202,14 +211,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             amountText = "";
         bool amountNeeded = amountText != "";
 
-        if (item.template.DisplayName is null)
-        {
-            GD.Print("No Display Name:" + item);
-        }
-
-        string name = item.template.DisplayName;
-        string description = item.template.Description;
-        string type = item.template.Type;
+        string name = item.template?.DisplayName;
+        string description = item.template?.Description;
+        string type = item.template?.Type;
         Texture2D mainIcon = item.GetTexture();
 
         description ??= "";
@@ -267,7 +271,10 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.TypeChanged, type);
         EmitSignal(SignalName.RarityChanged, item.template.RarityColor);
 
-        string tooltip = name + (amountNeeded ? $" ({(addXToAmount ? "x" : "") + amount})" : "");
+        var tooltipAmount = amountNeeded ? ((addXToAmount ? "x" : "") + amount) : null;
+        if (type == "Ingredient" && inspectorOverride is null)
+            tooltipAmount = item.TotalQuantity.ToString();
+
         List<string> tooltipDescriptions = new()
         {
             description ?? "",
@@ -275,45 +282,56 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         };
         if (item.template["searchTags"] is JsonArray tagArray && tagArray.Count > 0)
             tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except(new string[] { name }).ToArray().Join(", "));
+
         EmitSignal(
             SignalName.TooltipChanged,
             CustomTooltip.GenerateSimpleTooltip(
                 name,
-                amountNeeded ? ((addXToAmount ? "x" : "") + amount) : null,
+                tooltipAmount,
                 tooltipDescriptions.Count > 0 ? tooltipDescriptions.ToArray() : null,
-                item.template.RarityColor.ToHtml()
+                item.template?.RarityColor.ToHtml()
                 )
             );
 
-        var subtypeIcon = item.template.GetSubtypeTexture();
+        var subtypeIcon = item.template?.GetSubtypeTexture();
 
         if (type == "CardPack" && item.GetTexture(FnItemTextureType.PackImage, null) is Texture2D packIcon)
             subtypeIcon = packIcon;
 
         EmitSignal(SignalName.IconChanged, mainIcon);
+        EmitSignal(SignalName.IconFit, !(type == "Hero" || type == "Survivor" || type == "Defender"));
         EmitSignal(SignalName.SubtypeIconChanged, subtypeIcon);
-        EmitSignal(SignalName.AmmoIconChanged, item.template.GetAmmoTexture());
+        EmitSignal(SignalName.AmmoIconChanged, item.template?.GetAmmoTexture());
 
         EmitSignal(SignalName.AmountVisibility, amountNeeded);
         EmitSignal(SignalName.AmountChanged, amountText);
+        if (type == "Weapon" && item.template?.Category == "Ranged" && item.attributes?["loadedAmmo"]?.GetValue<int>() is int loadedAmmo)
+        {
+            int maxAmmo = item.template?["RangedWeaponStats"]?["Reload"]?["ClipSize"]?.GetValue<int>() ?? 0;
+            if (maxAmmo != 0)
+            {
+                EmitSignal(SignalName.AmountVisibility, true);
+                EmitSignal(SignalName.AmountChanged, $"{loadedAmmo}/{maxAmmo}");
+            }
+        }
 
         EmitSignal(SignalName.RatingChanged, ratingText);
         EmitSignal(SignalName.RatingVisibility, rating != 0);
 
         EmitSignal(SignalName.IsCollectable, !(item.isCollectedCache ?? true));
-        EmitSignal(SignalName.CanBeLeveledChanged, item.template.CanBeLeveled);
+        EmitSignal(SignalName.CanBeLeveledChanged, item.template.CanBeLeveled && item.template?.Type != "Weapon" && item.template?.Type != "Trap");
         EmitSignal(SignalName.LevelChanged, level);
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
         EmitSignal(SignalName.LevelProgressChanged, levelProgress);
 
-        EmitSignal(SignalName.InteractableChanged, forceInteractability || (!preventInteractability && autoInteractableTypes.Contains(currentItem.template.Type.ToLower())));
+        EmitSignal(SignalName.InteractableChanged, ForceInteractability || (!preventInteractability && autoInteractableTypes.Contains(currentItem.template.Type.ToLower())));
 
         //if survivor, set personality icons
 
         if (type == "Survivor")
         {
             EmitSignal(SignalName.PersonalityIconChanged, item.GetTexture(FnItemTextureType.Personality, null));
-            if (!hideMythicLeadSquad || item.template.RarityLevel != 6)
+            if (!hideMythicLeadSquad || item.template?.RarityLevel != 6 || item?.attributes?["portrait"] is not null)
                 EmitSignal(SignalName.SurvivorBoostIconChanged, item.GetTexture(FnItemTextureType.SetBonus, null));
         }
 
@@ -342,6 +360,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     static readonly string[] autoInteractableTypes = new string[]
     {
         "schematic",
+        "weapon",
+        "trap",
         "hero",
         "defender",
         "cardpack"
@@ -349,8 +369,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     
 
     public void SetInteractable(bool interactable) =>
-        EmitSignal(SignalName.InteractableChanged, 
-            forceInteractability ||
+        EmitSignal(SignalName.InteractableChanged,
+            ForceInteractability ||
             (
                 interactable && 
                 (

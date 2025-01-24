@@ -138,6 +138,7 @@ public partial class InventoryItemSlot : Node
                 isEmpty = true;
                 OnSlotItemChanged?.Invoke(this);
             }
+            GD.Print("no profile");
             SetLocked(true);
             return;
         }
@@ -164,18 +165,18 @@ public partial class InventoryItemSlot : Node
         if (!currentProfile.hasProfile || ct.IsCancellationRequested)
             return;
 
-        if(slotRequirement is not null)
+        if(slotRequirement is not null && currentProfile.GetFirstTemplateItem(slotRequirement) is null)
         {
-            bool isUnlocked = currentProfile.GetFirstTemplateItem(slotRequirement) is not null;
-            SetLocked(!isUnlocked);
-            if (!isUnlocked)
-                return;
+            SetLocked(true);
+            return;
         }
-        else
-            SetLocked(false);
+        SetLocked(false);
 
-        var foundItem = currentProfile.GetFirstItem(itemTypeFilter, predicateFilter);
-        ValidateItem(foundItem, true);
+        await Helpers.WaitForFrame();
+        if (ct.IsCancellationRequested)
+            return;
+
+        ValidateItem(currentProfile.GetFirstItem(itemTypeFilter, predicateFilter), true);
     }
 
     void SetLocked(bool value)
@@ -187,7 +188,6 @@ public partial class InventoryItemSlot : Node
             entry.Visible = false;
             inspectArea.Visible = false;
             open.Visible = false;
-            isEmpty = true;
         }
         else
             SetEmpty(isEmpty);
@@ -234,14 +234,14 @@ public partial class InventoryItemSlot : Node
 
         if (isMatch)
         {
-            if (newItem == slottedItem)
+            if (wasSlotted)
                 return;
             slottedItem = newItem;
             entry.SetItem(slottedItem);
             SetEmpty(false);
             OnSlotItemChanged?.Invoke(this);
         }
-        else if (wasSlotted) // item was slotted, but no longer matches
+        else if (wasSlotted || knownMatch) // item was slotted, but no longer matches
         {
             entry.ClearItem();
             slottedItem = null;

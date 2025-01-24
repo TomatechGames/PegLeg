@@ -21,11 +21,11 @@ public static class PLSearch
   (?>
    (?<Union>(?<!\!)\|)|
    (?<TextQuery>
-    (?<TQVar>[a-zA-Z]+(?:\.(?:[a-zA-Z]+|(?:\^?\d+)))*)=
+    (?<TQVar>[a-zA-Z_]+(?:\.(?:[a-zA-Z_]+|(?:\^?\d+)))*)=
     (?<TQVal>[\""'][\w:\-_.!?\/\\ ]*[\""'])
    )|
    (?<NumericQuery>
-    (?<NQVar>[a-zA-Z]+(?:\.(?:[a-zA-Z]+|(?:\^?\d+)))*)=
+    (?<NQVar>[a-zA-Z_]+(?:\.(?:[a-zA-Z_]+|(?:\^?\d+)))*)=
     (?<NQVal>
        (?:\d+(?:\.\d+)?\.\.\d+(?:\.\d+)?)|
        (?:             \.\.\d+(?:\.\d+)?)|

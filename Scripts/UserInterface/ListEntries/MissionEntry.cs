@@ -1,9 +1,6 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Nodes;
-using System.Text.RegularExpressions;
 
 public partial class MissionEntry : Control, IRecyclableEntry
 {
@@ -53,9 +50,24 @@ public partial class MissionEntry : Control, IRecyclableEntry
     Texture2D defaultBackground;
 
     GameMission currentMission = null;
-    Predicate<GameItem> highlightedItemPredicate;
+    IMissionHighlightProvider highlightedItemProvider;
 
     public Control node => this;
+
+    public override void _Ready()
+    {
+        GameAccount.ActiveAccountChanged += RefreshRewardNotifications;
+    }
+
+    public override void _ExitTree()
+    {
+        GameAccount.ActiveAccountChanged -= RefreshRewardNotifications;
+    }
+
+    private void RefreshRewardNotifications(GameAccount _)
+    {
+        currentMission?.UpdateRewardNotifications();
+    }
 
     IRecyclableElementProvider<GameMission> missionProvider;
     public void SetRecyclableElementProvider(IRecyclableElementProvider provider)
@@ -78,7 +90,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
 
         EmitSignal(SignalName.IconChanged, currentMission.missionGenerator.GetTexture(FnItemTextureType.Icon));
         EmitSignal(SignalName.VenturesIndicatorVisible, currentMission.theaterCat == "v");
-        EmitSignal(SignalName.TheaterCategoryChanged, currentMission.theaterCat);
+        EmitSignal(SignalName.TheaterCategoryChanged, currentMission.theaterCat.ToUpper());
         EmitSignal(SignalName.PowerLevelChanged, currentMission.powerLevel.ToString());
         EmitSignal(SignalName.BackgroundChanged, currentMission.backgroundTexture ?? defaultBackground);
         EmitSignal(SignalName.NameChanged, missionGen.template.DisplayName);
@@ -196,19 +208,30 @@ public partial class MissionEntry : Control, IRecyclableEntry
         UpdateHighlightedItems();
     }
 
-    public void SetHighlightFilter(Predicate<GameItem> predicate)
+    public void SetHighlightProvider(IMissionHighlightProvider provider)
     {
-        highlightedItemPredicate = predicate;
-        if (currentMission is not null)
-            UpdateHighlightedItems();
+        if(highlightedItemProvider is not null)
+        {
+            highlightedItemProvider.OnHighlightedItemFilterChanged -= UpdateHighlightedItems;
+        }
+        highlightedItemProvider = provider;
+        if (highlightedItemProvider is not null)
+        {
+            highlightedItemProvider.OnHighlightedItemFilterChanged += UpdateHighlightedItems;
+        }
+        UpdateHighlightedItems();
     }
 
     void UpdateHighlightedItems()
     {
-        if (highlightedRewardParent is not null && highlightedItemPredicate is not null)
+        if (highlightedRewardParent is null || currentMission is null)
+            return;
+        if (highlightedItemProvider?.HighlightedItemFilter is Predicate<GameItem> predicate)
         {
-            ApplyItems(currentMission.allItems.Where(item=>highlightedItemPredicate(item)).ToArray(), missionRewardParent);
+            ApplyItems(currentMission.allItems.Where(item => predicate(item)).ToArray(), highlightedRewardParent);
+            return;
         }
+        ApplyItems(Array.Empty<GameItem>(), highlightedRewardParent);
     }
 
     static void ApplyItems(GameItem[] itemArray, Control parent)
@@ -229,8 +252,13 @@ public partial class MissionEntry : Control, IRecyclableEntry
             controlChild.addXToAmount = isRewardBundle;
             controlChild.compactifyAmount = !isRewardBundle;
             controlChild.preventInteractability = isRewardBundle;
-            itemArray[i].SetRewardNotification();
             controlChild.SetItem(itemArray[i]);
         }
     }
+}
+
+public interface IMissionHighlightProvider
+{
+    public event Action OnHighlightedItemFilterChanged;
+    public Predicate<GameItem> HighlightedItemFilter { get; }
 }

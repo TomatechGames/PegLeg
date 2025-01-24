@@ -219,22 +219,15 @@ public partial class GameItemViewer : ModalWindow
             statsTreeContainer.Reparent(activeTabParent);
             //statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(10, 0);
         }
-        else if (type == "Schematic")
+        else if (type == "Schematic" || type == "Weapon" || type == "Trap")
         {
             //parse schematic stuff
-            perkDetailsPanel.Reparent(activeTabParent);
-            perkDetailsPanel.SetItem(item);
+            if (item.Alterations is not null || (item.template?.AlterationSlots?.Count ?? 0) > 0)
+            {
+                perkDetailsPanel.Reparent(activeTabParent);
+                perkDetailsPanel.SetItem(item);
+            }
 
-            statsTreeContainer.Reparent(activeTabParent);
-            statsTree.Clear();
-            statsTree.Columns = 2;
-            statsTree.SetColumnTitle(0, "Stat");
-            statsTree.SetColumnTitle(1, "Value");
-            statsTree.SetColumnClipContent(0, false);
-            statsTree.SetColumnClipContent(1, false);
-            statsTree.SetColumnExpand(1, false);
-            statsTree.SetColumnCustomMinimumWidth(1, 100);
-            var root = statsTree.CreateItem();
             JsonObject statsJson = null;
             if (item.template["RangedWeaponStats"] is JsonObject rangedWeaponStats)
             {
@@ -245,7 +238,20 @@ public partial class GameItemViewer : ModalWindow
                 statsJson = meleeWeaponStats;
             else if (item.template["TrapStats"] is JsonObject trapStats)
                 statsJson = trapStats;
-            GenerateTreeFromJson(statsJson, root);
+            if (statsJson is not null)
+            {
+                statsTreeContainer.Reparent(activeTabParent);
+                statsTree.Clear();
+                var root = statsTree.CreateItem();
+                statsTree.Columns = 2;
+                statsTree.SetColumnTitle(0, "Stat");
+                statsTree.SetColumnTitle(1, "Value");
+                statsTree.SetColumnClipContent(0, false);
+                statsTree.SetColumnClipContent(1, false);
+                statsTree.SetColumnExpand(1, false);
+                statsTree.SetColumnCustomMinimumWidth(1, 100);
+                GenerateTreeFromJson(statsJson, root);
+            }
             //statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(35, 0);
         }
         else if (type == "Defender")
@@ -260,8 +266,13 @@ public partial class GameItemViewer : ModalWindow
 
         if (showDevText)
         {
-            devText.Text = item.RawData.ToJsonString(new() { WriteIndented = true });
+            var rawData = item.RawData.ToJsonString(new() { WriteIndented = true });
+            devText.Text = rawData;
             devText.FoldLine(1);
+            var lines = rawData.Split("\n").ToList();
+            var templateIndex = lines.FindIndex(l => l.Trim().StartsWith("\"template\": {"));
+            if (templateIndex >= 0)
+                devText.FoldLine(templateIndex);
             devTextContainer.Reparent(activeTabParent);
         }
 
@@ -270,16 +281,16 @@ public partial class GameItemViewer : ModalWindow
             activeTabParent.CurrentTab = 0;
     }
 
-    SemaphoreSlim heroStatsActiveSephamore = new(1);
-    SemaphoreSlim heroStatsQueuedSephamore = new(2);
+    SemaphoreSlim heroStatsActiveSemaphore = new(1);
+    SemaphoreSlim heroStatsQueuedSemaphore = new(2);
     async void RefreshHeroStats()
     {
-        if (heroStatsQueuedSephamore.CurrentCount == 0)
+        if (heroStatsQueuedSemaphore.CurrentCount == 0)
             return;
         try
         {
-            await heroStatsQueuedSephamore.WaitAsync();
-            await heroStatsActiveSephamore.WaitAsync();
+            await heroStatsQueuedSemaphore.WaitAsync();
+            await heroStatsActiveSemaphore.WaitAsync();
             var account = displayedItem.profile?.account ?? GameAccount.activeAccount;
             var fortStats = account.FortStats;
 
@@ -311,8 +322,8 @@ public partial class GameItemViewer : ModalWindow
         }
         finally
         {
-            heroStatsActiveSephamore.Release();
-            heroStatsQueuedSephamore.Release();
+            heroStatsActiveSemaphore.Release();
+            heroStatsQueuedSemaphore.Release();
         }
     }
 
@@ -337,10 +348,10 @@ public partial class GameItemViewer : ModalWindow
         foreach (var item in jsonParent)
         {
             string fixedName = Regex.Replace(item.Key, "[A-Z]", " $0");
-            TreeItem entry = treeParent.CreateChild();
-            entry.SetText(0, fixedName);
             if (item.Value is JsonObject childObject)
             {
+                TreeItem entry = treeParent.CreateChild();
+                entry.SetText(0, fixedName);
                 GenerateTreeFromJson(childObject, entry);
                 entry.Collapsed = true;
             }
@@ -365,8 +376,11 @@ public partial class GameItemViewer : ModalWindow
                         };
                     }
                 }
-
-
+                if (fixedVal == "0")
+                    continue;
+                
+                TreeItem entry = treeParent.CreateChild();
+                entry.SetText(0, fixedName);
                 entry.SetText(1, fixedVal);
             }
         }

@@ -1,0 +1,325 @@
+[gd_scene load_steps=15 format=3 uid="uid://udk47ipcpsbq"]
+
+[ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="1_cq0hx"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/InventoryInterface.cs" id="1_ix0kh"]
+[ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://GodotThemes/Styleboxes/CheckButton/CheckContainer.tres" id="2_ytjya"]
+[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_jwnrv"]
+[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="4_q3ge8"]
+[ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="5_e3p2l"]
+[ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="5_g4jqb"]
+[ext_resource type="PackedScene" uid="uid://pvvhs1op16gs" path="res://Scenes/GameItemEntry/inventory_entry_dev.tscn" id="6_0bmy7"]
+[ext_resource type="Texture2D" uid="uid://boywmwfvrbmwp" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Cogs_128.png" id="6_6h6v6"]
+[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="6_a3sqn"]
+[ext_resource type="Texture2D" uid="uid://brswo336i1src" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01.png" id="8_5rj62"]
+[ext_resource type="Texture2D" uid="uid://bufu4bggy6lrs" path="res://Images/InterfaceIcons/T-Icon-Defenders_-CARD.png" id="9_my6h5"]
+[ext_resource type="Texture2D" uid="uid://dw4n1jlpyogxw" path="res://Images/InterfaceIcons/T-Icon-Nav-Squad-128.png" id="10_17ihq"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_xh1u0"]
+resource_name = "InventoryTypeFilter"
+
+[node name="Inventory" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ix0kh")
+itemList = NodePath("VBoxContainer/ScrollContainer")
+searchBox = NodePath("VBoxContainer/LineEdit")
+targetProfile = "campaign"
+typeFilters = PackedStringArray("Hero,Schematic,Defender,Worker", "", "Schematic", "Hero", "Defender", "Worker")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="TypeFilters" type="MarginContainer" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("checkButtonParent")]
+layout_mode = 2
+script = ExtResource("1_cq0hx")
+checkButtonParent = NodePath("MarginContainer/HBoxContainer")
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/TypeFilters"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_ytjya")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_jwnrv")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="All" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All"]
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"LeftCheckButton"
+button_group = SubResource("ButtonGroup_xh1u0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_g4jqb")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "All"
+
+[node name="Dev All" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All"]
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+button_pressed = true
+button_group = SubResource("ButtonGroup_xh1u0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_6h6v6")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Dev All"
+
+[node name="Schematics" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics"]
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_xh1u0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_e3p2l")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Schematics"
+
+[node name="Heroes" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes"]
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_xh1u0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_5rj62")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Heroes"
+
+[node name="Defenders" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders"]
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_xh1u0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("9_my6h5")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Defenders"
+
+[node name="Survivors" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors"]
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"RightCheckButton"
+button_group = SubResource("ButtonGroup_xh1u0")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("10_17ihq")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Survivors"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_ytjya")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+text = "Sort By Name"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" node_paths=PackedStringArray("linkedGrid", "offsetControl", "paddingControl", "elementParent")]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+script = ExtResource("4_q3ge8")
+elementSpace = 10.0
+linkedGrid = NodePath("MarginContainer/VBoxContainer/Grid")
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/Grid")
+elementScene = ExtResource("6_0bmy7")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Offset" type="Control" parent="VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Grid" type="Container" parent="VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("6_a3sqn")
+minCols = 3
+compressSpacing = true
+spacing = Vector2(10, 10)
+
+[node name="Padding" type="Control" parent="VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[connection signal="TabChanged" from="VBoxContainer/HBoxContainer/TypeFilters" to="." method="SetFilter"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/MarginContainer/MarginContainer/CheckButton" to="." method="SetSortMode"]

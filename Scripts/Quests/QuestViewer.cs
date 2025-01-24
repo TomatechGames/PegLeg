@@ -127,7 +127,7 @@ public partial class QuestViewer : Control
             rewardEntries[i].Visible = false;
         }
         rewardParent.Visible = true;
-
+        
         var objectives = quest.questTemplate["Objectives"].AsArray();
         for (int i = 0; i < objectives.Count; i++)
         {
@@ -143,7 +143,7 @@ public partial class QuestViewer : Control
                 objectiveEntries[i].Visible = false;
                 continue;
             }
-            int currentProgress = quest.isUnlocked ? (quest.questItem.attributes["completion_" + objective["BackendName"].ToString()]?.GetValue<int>() ?? 0) : 0;
+            int currentProgress = quest.isUnlocked ? (quest.questItem.attributes["completion_" + objective["BackendName"].ToString().ToLower()]?.GetValue<int>() ?? 0) : 0;
             objectiveEntries[i].SetupObjective(objective, currentProgress);
             objectiveEntries[i].Visible = true;
         }

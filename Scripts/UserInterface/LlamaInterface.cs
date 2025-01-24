@@ -85,7 +85,6 @@ public partial class LlamaInterface : Control
         RefreshTimerController.OnHourChanged += LoadShopLlamas;
         GameAccount.ActiveAccountChanged += OnAccountChanged;
         OnAccountChanged(null);
-        LoadShopLlamas();
     }
 
     public override void _ExitTree()
@@ -172,7 +171,7 @@ public partial class LlamaInterface : Control
 
     void AddLlamaItem(GameItem item)
     {
-        if (item?.template.Type != "CardPack")
+        if (item?.template?.Type != "CardPack")
             return;
         llamaItemEntryPanel.Visible = true;
         var stackableGroup = llamaItemStacks.FirstOrDefault(val=>val.IsStackable(item));
@@ -230,6 +229,8 @@ public partial class LlamaInterface : Control
         accountChangeCTS = new();
         var ct = accountChangeCTS.Token;
 
+        ForceLoadShopLlamas();
+
         //disconnect prev profile
         if (llamaItemProfile is not null)
         {
@@ -273,8 +274,8 @@ public partial class LlamaInterface : Control
         }
         llamaItemStacks.Clear();
         llamaItemEntryPanel.Visible = false;
-        if (newLlamaItems is not null)
-            GD.Print(newLlamaItems.Select(i=>i.templateId).ToArray());
+        //if (newLlamaItems is not null)
+        //    GD.Print(newLlamaItems.Select(i=>i.templateId).ToArray());
         foreach (var item in newLlamaItems)
         {
             AddLlamaItem(item);
@@ -287,7 +288,7 @@ public partial class LlamaInterface : Control
     }
 
     CancellationTokenSource llamaShopCTS;
-    SemaphoreSlim llamaShopSephamore = new(1);
+    SemaphoreSlim llamaShopSemaphore = new(1);
     async void LoadShopLlamas() => await LoadShopLlamasAsync();
     async void ForceLoadShopLlamas() => await LoadShopLlamasAsync(true);
     async Task LoadShopLlamasAsync(bool force = false)
@@ -309,15 +310,16 @@ public partial class LlamaInterface : Control
         bool success = false;
         try
         {
-            await llamaShopSephamore.WaitAsync(ct);
+            await llamaShopSemaphore.WaitAsync(ct);
             if (ct.IsCancellationRequested)
                 return;
 
             var prevSelectedOffer = currentOfferSelection;
 
-            if (!await GameAccount.activeAccount.Authenticate() || ct.IsCancellationRequested)
+            var account = GameAccount.activeAccount;
+            if (!await account.Authenticate() || ct.IsCancellationRequested)
                 return;
-            await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).PerformOperation("PopulatePrerolledOffers");
+            await account.GetProfile(FnProfileTypes.AccountItems).PerformOperation("PopulatePrerolledOffers");
 
             var xrayStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.XRayLlamaCatalog, force ? null : RefreshTimeType.Hourly);
             var randomStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.RandomLlamaCatalog, force ? null : RefreshTimeType.Hourly);
@@ -362,11 +364,14 @@ public partial class LlamaInterface : Control
         }
         finally
         {
-            llamaShopSephamore.Release();
-            offerListLoadingIcon.Visible = false;
-            llamaScrollArea.Visible = true;
-            llamaOfferParent.Visible = success;
-            offerListErrorIcon.Visible = !success;
+            llamaShopSemaphore.Release();
+            if (!ct.IsCancellationRequested)
+            {
+                offerListLoadingIcon.Visible = false;
+                llamaScrollArea.Visible = true;
+                llamaOfferParent.Visible = success;
+                offerListErrorIcon.Visible = !success;
+            }
         }
 
     }
@@ -451,7 +456,7 @@ public partial class LlamaInterface : Control
             purchaseLimit = Mathf.Min(purchaseLimit, inInventory / offer.Price.quantity);
         }
 
-        var prerollData = await offer.GetPrerollData();
+        var prerollData = await offer.GetPrerollData(account);
         if (ct.IsCancellationRequested)
             return;
 

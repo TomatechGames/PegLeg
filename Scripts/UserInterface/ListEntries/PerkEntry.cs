@@ -36,7 +36,7 @@ public partial class PerkEntry : Control
     int linkedIndex;
     bool isLocked;
 
-    public void SetPerkAlteration(string alterationId, bool hasRarity = false, bool isSixth = false, int index = 0)
+    public void SetPerkAlteration(string alterationId, bool hasRarity = false, int index = 0)
     {
         linkedAlteration = alterationId;
         linkedIndex = index;
@@ -47,7 +47,7 @@ public partial class PerkEntry : Control
             if (hasRarity)
             {
                 int rarity = alteration.RarityLevel;
-                if (isSixth)
+                if (alterationId.StartsWith("Alteration:aid_g_"))
                     rarity = 6;
                 EmitSignal(SignalName.RarityIconChanged, BanjoAssets.GetReservedTexture(rarityToImage[rarity-1]));
                 EmitSignal(SignalName.RarityIconVisibilityChanged, true);

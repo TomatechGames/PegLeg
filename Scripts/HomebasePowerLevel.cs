@@ -61,7 +61,7 @@ public partial class HomebasePowerLevel : Control
 
     void OnProfileItemChanged(GameItem item)
     {
-        if (item.template.Type == "Worker" && (item.attributes?.ContainsKey("squad_id") ?? false))
+        if (item?.template?.Type == "Worker" && (item.attributes?.ContainsKey("squad_id") ?? false))
             UpdateStatsVisuals(currentProfile.account.GetFORTStats());
     }
 

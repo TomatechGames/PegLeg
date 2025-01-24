@@ -74,7 +74,7 @@ public partial class CardPackEntry : GameItemEntry
             rarityColor = item.template.RarityColor;
 
         llamaColorData ??= OverridableFileLoader.LoadJsonFile("llamaColors.json");
-        JsonArray colorData = llamaColorData?.FirstOrDefault(kvp => llamaPinataName.StartsWith(kvp.Key)).Value?.AsArray();
+        JsonArray colorData = llamaColorData?.FirstOrDefault(kvp => llamaPinataName?.StartsWith(kvp.Key) ?? false).Value?.AsArray();
 
         currentLlamaColors = new Color[]
         {

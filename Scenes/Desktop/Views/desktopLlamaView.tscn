@@ -28,7 +28,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osi5s"]
 shader = ExtResource("8_ffqoy")
-shader_parameter/ControlSize = Vector2(718, 720)
+shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = null
 shader_parameter/UseCorners = true
@@ -493,6 +493,7 @@ max_value = 10.0
 value = 1.0
 
 [connection signal="HoldPressed" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/LlamaItemPanel/OpenAllButton/Responsive Button Area" to="." method="BulkOpenAllCardpacks"]
+[connection signal="pressed" from="MarginContainer/Error/VBoxContainer/MarginContainer/RetryButton" to="." method="ForceLoadShopLlamas"]
 [connection signal="IsAffordableChanged" from="Llama Contents/MarginContainer/OfferEntry" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableToggle" method="EmitValues"]
 [connection signal="IsFreeChanged" from="Llama Contents/MarginContainer/OfferEntry" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/FreeToggle" method="EmitValues"]
 [connection signal="NameChanged" from="Llama Contents/MarginContainer/OfferEntry" to="Llama Contents/MarginContainer/CardPackEntry/LlamaName" method="set_text"]

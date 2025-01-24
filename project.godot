@@ -116,6 +116,7 @@ textures/webp_compression/compression_method=0
 environment/ssao/quality=0
 environment/ssil/quality=0
 anti_aliasing/screen_space_roughness_limiter/enabled=false
+environment/defaults/default_clear_color=Color(0.117647, 0.14902, 0.203922, 1)
 
 [shader_globals]
 

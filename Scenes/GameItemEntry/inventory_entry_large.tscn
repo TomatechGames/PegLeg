@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://wy0yh5wkf4u4" path="res://Scenes/GameItemEntry/inventory_entry.tscn" id="1_eccir"]
 [ext_resource type="Shader" uid="uid://cypncf62qx5bc" path="res://Shaders/CardTriangleEffect.tres" id="2_2nbar"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kh5io"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lodde"]
 resource_local_to_scene = true
 shader = ExtResource("2_2nbar")
-shader_parameter/TriangleTint = Color(0.9, 0.51, 0, 1)
+shader_parameter/TriangleTint = Color(0.9, 0.9, 0.9, 1)
 shader_parameter/TimeOffset = 0.0
 
 [node name="InventoryEntryLarge" instance=ExtResource("1_eccir")]
@@ -14,5 +14,5 @@ custom_minimum_size = Vector2(120, 180)
 offset_right = 78.0
 offset_bottom = 117.0
 
-[node name="Triangles" parent="ItemContent/TriangleParent/AspectTexture" index="0"]
-material = SubResource("ShaderMaterial_kh5io")
+[node name="RarityTriangles" parent="ItemContent/EdgePadding/GameItem/MarginContainer/IconWindow/MarginContainer/AspectTexture" index="1"]
+material = SubResource("ShaderMaterial_lodde")

@@ -43,13 +43,24 @@ public partial class OnboardingInterface : Control
         //ProjectSettings.LoadResourcePack("user://pack.zip");
         bool hasBanjoAssets = BanjoAssets.ReadAllSources();
 
+        var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
+        if(lastUsedId is not null)
+        {
+            var lastUsedAccount = GameAccount.GetOrCreateAccount(lastUsedId);
+            if (lastUsedAccount.isOwned && await lastUsedAccount.SetAsActiveAccount())
+            {
+                LoadMainScene();
+                return;
+            }
+        }
+
         var accounts = GameAccount.OwnedAccounts;
         //TODO: if more than one account has device details, show account selector
         foreach (var a in accounts)
         {
             if(await a.SetAsActiveAccount())
             {
-                GetTree().ChangeSceneToFile(mainInterfacePath);
+                LoadMainScene();
                 return;
             }
         }
@@ -118,7 +129,7 @@ public partial class OnboardingInterface : Control
             await account.SaveDeviceDetails();
         await account.SetAsActiveAccount();
         await timer;
-        GetTree().ChangeSceneToFile(mainInterfacePath);
+        LoadMainScene();
     }
 
     public async void ContinueToMainScene()
@@ -126,6 +137,11 @@ public partial class OnboardingInterface : Control
         curtain.Visible = true;
         TweenCurtain(false);
         await Helpers.WaitForTimer(curtainOpenDuration);
+    }
+
+    void LoadMainScene()
+    {
         GetTree().ChangeSceneToFile(mainInterfacePath);
+        MusicController.ResumeMusic();
     }
 }

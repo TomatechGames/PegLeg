@@ -64,11 +64,15 @@ public partial class GameAccountEntry : Control
         EmitSignal(SignalName.IconChanged, currentAccount.ProfileIcon ?? defaultIcon);
         EmitSignal(SignalName.AuthenticatedChanged, currentAccount.isAuthed);
 
-        string tooltipText = $"{currentAccount.DisplayName} ({(currentAccount.isAuthed ? "" : "Not ")}Logged In)";
-        if (useActiveAccount)
-        {
-            tooltipText = currentAccount.isAuthed ? $"Logged in as {currentAccount.DisplayName}" : "Login Failure";
-        }
+        string tooltipText = CustomTooltip.GenerateSimpleTooltip(
+                $" {currentAccount.DisplayName}   ",
+                null,
+                new string[]
+                {
+                    currentAccount.isAuthed ? "Logged In" : (currentAccount.isOwned ? "Login Failure" : "External")
+                },
+                Colors.Blue.ToHtml()
+            );
         EmitSignal(SignalName.TooltipChanged, tooltipText);
     }
 

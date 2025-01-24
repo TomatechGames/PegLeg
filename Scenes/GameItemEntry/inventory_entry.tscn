@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://wy0yh5wkf4u4"]
+[gd_scene load_steps=27 format=3 uid="uid://wy0yh5wkf4u4"]
 
 [ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="1_fvh8r"]
 [ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="2_tffkh"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_mmo3m"]
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="5_0r6rn"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="5_rqbak"]
+[ext_resource type="Script" path="res://Scripts/UIElements/FittableTextureRect.cs" id="7_0l2aa"]
 [ext_resource type="Texture2D" uid="uid://lqhr4kxok8jm" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Hero-Soldier-CARD.png" id="7_4uv0h"]
 [ext_resource type="Script" path="res://Scripts/ItemTierDisplay.cs" id="8_f4ssv"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="8_mm71c"]
@@ -75,7 +76,7 @@ border_width_bottom = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yfccu"]
 shader = ExtResource("10_acofu")
-shader_parameter/time = 4376.05
+shader_parameter/time = 94353.3
 
 [sub_resource type="Gradient" id="Gradient_ir67n"]
 offsets = PackedFloat32Array(0, 0.992042)
@@ -93,8 +94,6 @@ custom_minimum_size = Vector2(80, 120)
 offset_right = 82.0
 offset_bottom = 123.0
 script = ExtResource("5_rqbak")
-interactableByDefault = true
-allowInteractableWhenEmpty = true
 autoLinkToViewer = false
 autoLinkToRecycleSelection = true
 autoSelectOnPress = false
@@ -200,6 +199,7 @@ grow_vertical = 2
 texture = ExtResource("5_0r6rn")
 expand_mode = 1
 stretch_mode = 6
+script = ExtResource("7_0l2aa")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ItemContent/EdgePadding/GameItem/MarginContainer"]
 layout_mode = 2
@@ -301,6 +301,12 @@ expand_mode = 3
 layout_mode = 2
 texture = ExtResource("7_4uv0h")
 expand_mode = 3
+
+[node name="Amount" type="Label" parent="ItemContent/EdgePadding/GameItem/MarginContainer/VBoxContainer/MarginContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+text = "999"
+horizontal_alignment = 2
 
 [node name="TierAndXp" type="MarginContainer" parent="ItemContent/EdgePadding/GameItem"]
 layout_mode = 2
@@ -422,13 +428,19 @@ texture = ExtResource("11_seqqo")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Tooltip" type="Control" parent="."]
+layout_mode = 2
+
 [node name="Responsive Button Area" parent="." instance=ExtResource("10_psg1y")]
 layout_mode = 2
 outlinePadding = 0.0
 
 [connection signal="AmmoIconChanged" from="." to="ItemContent/EdgePadding/GameItem/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/Tersiary" method="set_texture"]
+[connection signal="AmountChanged" from="." to="ItemContent/EdgePadding/GameItem/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Amount" method="set_text"]
+[connection signal="AmountVisibility" from="." to="ItemContent/EdgePadding/GameItem/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/Amount" method="set_visible"]
 [connection signal="CanBeLeveledChanged" from="." to="ItemContent/EdgePadding/GameItem/TierAndXp" method="set_visible"]
 [connection signal="IconChanged" from="." to="ItemContent/EdgePadding/GameItem/MarginContainer/IconWindow/MarginContainer/AspectTexture/ItemIcon" method="set_texture"]
+[connection signal="IconFit" from="." to="ItemContent/EdgePadding/GameItem/MarginContainer/IconWindow/MarginContainer/AspectTexture/ItemIcon" method="SetFit"]
 [connection signal="InteractableChanged" from="." to="Responsive Button Area" method="set_visible"]
 [connection signal="IsCollectable" from="." to="ItemContent/EdgePadding/GameItem/MarginContainer/VBoxContainer/Space/Collectable" method="set_visible"]
 [connection signal="ItemDoesExist" from="." to="ItemContent" method="set_visible"]
@@ -449,5 +461,7 @@ outlinePadding = 0.0
 [connection signal="SuperchargeChanged" from="." to="ItemContent/EdgePadding/GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController" method="SetSuperchargedTier"]
 [connection signal="SurvivorBoostIconChanged" from="." to="ItemContent/EdgePadding/GameItem/MarginContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/Tersiary" method="set_texture"]
 [connection signal="TierChanged" from="." to="ItemContent/EdgePadding/GameItem/TierAndXp/MarginContainer/VBoxContainer/TierController" method="SetTier"]
+[connection signal="TooltipChanged" from="." to="Tooltip" method="set_tooltip_text"]
+[connection signal="TooltipChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="toggled" from="ItemContent/SelectionVisuals" to="ItemContent/SelectionVisuals/SelectionFX" method="set_visible"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="EmitPressedSignal"]

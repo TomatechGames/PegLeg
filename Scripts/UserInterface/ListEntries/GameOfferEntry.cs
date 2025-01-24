@@ -161,7 +161,9 @@ public partial class GameOfferEntry : Control
 
         if (grantedItem.template.Type == "CardPack")
         {
-            int tier = (await currentOffer.GetPrerollData())?.attributes?["highest_rarity"]?.GetValue<int>() ?? 0;
+            int tier = (await currentOffer.GetPrerollData(account))?.attributes?["highest_rarity"]?.GetValue<int>() ?? 0;
+            if (grantedItem.template.DisplayName.Contains("Legendary"))
+                tier = 2;
             if (ct.IsCancellationRequested)
                 return;
             grantedItem.customData["llamaTier"] = tier;
@@ -282,7 +284,7 @@ public partial class GameOfferEntry : Control
             priceEntry?.ClearItem(null);
             priceInInventoryEntry?.ClearItem(null);
         }
-        grantedItemEntry?.SetItem(grantedItem);
+        grantedItemEntry?.SetItem(grantedItem, true);
     }
 
     public void EmitPressedSignal()

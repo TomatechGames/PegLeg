@@ -1,83 +1,56 @@
-[gd_scene load_steps=5 format=3 uid="uid://dbrrcnce14w8h"]
+[gd_scene load_steps=6 format=3 uid="uid://dbrrcnce14w8h"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_1qlyc"]
 [ext_resource type="Texture2D" uid="uid://docjdjoems0ia" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Black-L.png" id="1_5c4d1"]
+[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_4k5sn"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_jrnxm"]
 
-[sub_resource type="Gradient" id="Gradient_em2mw"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_udjec"]
-gradient = SubResource("Gradient_em2mw")
-width = 16
-height = 16
-fill = 1
-fill_from = Vector2(0.5, 1)
-fill_to = Vector2(0.5, 0.5)
-metadata/_snap_enabled = true
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dk7yu"]
+shader = ExtResource("2_4k5sn")
+shader_parameter/ControlSize = Vector2(26, 26)
+shader_parameter/CornerRadius = 3.0
+shader_parameter/Fit = true
 
 [node name="MissionCollectionHighlightItem" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 26)
+mouse_filter = 2
 script = ExtResource("1_1qlyc")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
 visible = false
 layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
-layout_mode = 2
-
-[node name="RarityCol" type="Control" parent="HBoxContainer/MarginContainer"]
-modulate = Color(0.75, 0, 1, 1)
-clip_contents = true
-layout_mode = 2
 mouse_filter = 2
 
-[node name="BG" type="TextureRect" parent="HBoxContainer/MarginContainer/RarityCol"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = -0.8
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture2D_udjec")
-expand_mode = 1
-
-[node name="ColorRect" type="ColorRect" parent="HBoxContainer/MarginContainer/RarityCol"]
-z_index = 1
-custom_minimum_size = Vector2(0, 3)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -2.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="Icon" type="TextureRect" parent="HBoxContainer/MarginContainer"]
+[node name="Icon" type="TextureRect" parent="HBoxContainer"]
+material = SubResource("ShaderMaterial_dk7yu")
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("1_5c4d1")
 expand_mode = 3
+script = ExtResource("4_jrnxm")
+syncControlSize = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = -12
+theme_override_constants/margin_bottom = -2
 
 [node name="Label" type="Label" parent="HBoxContainer/MarginContainer2"]
 z_index = 1
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
+theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 12
 text = "2.56k"
 
 [connection signal="AmountChanged" from="." to="HBoxContainer/MarginContainer2/Label" method="set_text"]
 [connection signal="AmountVisibility" from="." to="HBoxContainer/MarginContainer2/Label" method="set_visible"]
-[connection signal="IconChanged" from="." to="HBoxContainer/MarginContainer/Icon" method="set_texture"]
-[connection signal="RarityChanged" from="." to="HBoxContainer/MarginContainer/RarityCol" method="set_modulate"]
+[connection signal="IconChanged" from="." to="HBoxContainer/Icon" method="set_texture"]
+[connection signal="RarityChanged" from="." to="HBoxContainer/Icon" method="set_self_modulate"]

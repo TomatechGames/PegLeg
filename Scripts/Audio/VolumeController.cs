@@ -4,8 +4,9 @@ using System.Text.Json.Nodes;
 
 public partial class VolumeController : Node
 {
-    public override void _Ready()
+    public override async void _Ready()
     {
+        await Helpers.WaitForFrame();
         RefreshVolumeLevels();
     }
 

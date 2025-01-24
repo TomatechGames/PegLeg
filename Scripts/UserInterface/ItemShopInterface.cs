@@ -49,10 +49,10 @@ public partial class ItemShopInterface : Control
     List<GameOfferEntry> inactiveEntries = new();
     Dictionary<string, GameOfferEntry> activeEntries = new();
     GameStorefront linkedStorefront = null;
-    static SemaphoreSlim itemShopSephamore = new(1);
+    static SemaphoreSlim itemShopSemaphore = new(1);
     public async Task LoadShop(bool force = false)
     {
-        await itemShopSephamore.WaitAsync();
+        await itemShopSemaphore.WaitAsync();
         try
         {
             var timerType = useEventShop ? RefreshTimeType.Weekly : RefreshTimeType.Event;
@@ -83,7 +83,7 @@ public partial class ItemShopInterface : Control
         }
         finally
         {
-            itemShopSephamore.Release();
+            itemShopSemaphore.Release();
         }
     }
 

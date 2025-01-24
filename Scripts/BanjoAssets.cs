@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+using System.Xml.Linq;
 
 public static class BanjoAssets
 {
@@ -68,7 +70,7 @@ public static class BanjoAssets
         string fullPath = banjoFolderPath + "/" + texturePath;
         if(!FileAccess.FileExists(fullPath))
         {
-            GD.PushWarning($"Missing Image file: {Helpers.ProperlyGlobalisePath(fullPath)}");
+            //GD.PushWarning($"Missing Image file: {Helpers.ProperlyGlobalisePath(fullPath)}");
             return null;
         }
         Texture2D loadedTexture = ImageTexture.CreateFromImage(Image.LoadFromFile(fullPath));
@@ -359,16 +361,22 @@ public class GameItemTemplate
         "Hero" or "Worker" or "Defender" or "Schematic" => true,
         _ => false
     };
-    public bool CanBeLeveled => Type switch
+    public bool CanBeLeveled => Tier > 0 && Type switch
     {
-        "Hero" or "Worker" => true,
+        "Hero" or "Worker" or "Weapon" or "Trap" => true,
         "Defender" or "Schematic" => !IsPermenant,
+        _ => false
+    };
+    public bool CanBeUnseen=> Type switch
+    {
+        "Hero" or "Worker" or "Defender" or "Schematic" or "Quest" or "AccountResource" or "ConsumableAccountItem" or "CardPack" => true,
         _ => false
     };
 
     public string CollectionProfile => Type == "Schematic" ? FnProfileTypes.SchematicCollection : FnProfileTypes.PeopleCollection;
     public string Name => rawData["Name"].ToString();
     public string DisplayName => rawData["DisplayName"]?.ToString();
+    public string SortingDisplayName => DisplayName.StartsWith("The ") ? DisplayName[4..] : DisplayName;
     public string Description => rawData["Description"]?.ToString();
     public string Category => rawData["Category"]?.ToString();
     public string SubType => rawData["SubType"]?.ToString();
@@ -389,7 +397,9 @@ public class GameItemTemplate
     //public int Tier => rawData["Tier"] is JsonValue tierVal ? (tierVal.TryGetValue<int>(out var tier) ? tier : 0) : 0;
     public string Personality => rawData["Personality"]?.ToString();
 
-    public bool IsPermenant => rawData["IsPermanent"]?.GetValue<bool>() ?? false;
+    public bool IsPermenant => (Type == "Defender" || Type == "Schematic" || Type == "Hero") && rawData["RecycleRecipe"] is null;
+
+    public JsonArray AlterationSlots => rawData?["AlterationSlots"]?.AsArray();
 
     public Texture2D GetTexture(FnItemTextureType textureType = FnItemTextureType.Preview) => GetTexture(textureType, BanjoAssets.defaultIcon);
     public Texture2D GetTexture(Texture2D fallbackIcon) => GetTexture(FnItemTextureType.Preview, fallbackIcon);
@@ -413,7 +423,7 @@ public class GameItemTemplate
             var tex = BanjoAssets.GetReservedTexture(texturePath);
             if (tex is null)
             {
-                GD.PushWarning($"Null texture in: {TemplateId}");
+                //GD.PushWarning($"Null texture in: {TemplateId}");
                 return fallbackIcon;
             }
             return tex;
@@ -441,7 +451,7 @@ public class GameItemTemplate
             foundPath = (imagePaths["LargePreview"] ?? imagePaths["SmallPreview"])?.ToString();
             if (!FileAccess.FileExists(BanjoAssets.banjoFolderPath + "/" + foundPath))
             {
-                GD.Print($"Large Image not found: {BanjoAssets.banjoFolderPath + "/" + foundPath} ({rawData["Name"]})");
+                //GD.Print($"Large Image not found: {BanjoAssets.banjoFolderPath + "/" + foundPath} ({rawData["Name"]})");
                 foundPath = imagePaths["SmallPreview"]?.ToString();
             }
         }
@@ -467,6 +477,8 @@ public class GameItemTemplate
                     return null;
                 else
                     return GetSubtypeTexture(SubType ?? "Survivor", fallbackIcon);
+            case "Trap":
+                return GetSubtypeTexture("Trap", fallbackIcon);
             default:
                 return GetSubtypeTexture(SubType, fallbackIcon);
         }
@@ -488,10 +500,10 @@ public class GameItemTemplate
 
     public Texture2D GetAmmoTexture(Texture2D fallbackIcon = null)
     {
-        if (Type != "Schematic")
+        if (Type != "Schematic" && Type != "Weapon" && Type != "Trap")
             return fallbackIcon;
 
-        if (Category == "Trap")
+        if (Category == "Trap" || Type == "Trap")
             return GetSubtypeTexture(SubType, fallbackIcon);
 
         if (
@@ -517,8 +529,8 @@ public class GameItemTemplate
             return null;
         return heroAbilities ??= new GameItemTemplate[]
         {
-            Get($"Ability:{rawData["HeroPerkName"]}"),
-            Get($"Ability:{rawData["CommanderPerkName"]}"),
+            Get(rawData["HeroPerkTemplate"]?.ToString()),
+            Get(rawData["CommanderPerkTemplate"]?.ToString()),
             Get(rawData["HeroAbilities"]?[0].ToString()),
             Get(rawData["HeroAbilities"]?[1].ToString()),
             Get(rawData["HeroAbilities"]?[2].ToString()),
@@ -600,6 +612,7 @@ public class GameItemTemplate
             Rarity ?? (assumeUncommon ? "Uncommon" : null),
             Type,
             SubType,
+            Category,
             Personality?[2..]
         };
 
@@ -607,7 +620,7 @@ public class GameItemTemplate
         {
             foreach (var ability in abilities)
             {
-                if (!ability.DisplayName.EndsWith("+"))
+                if (!ability?.DisplayName?.EndsWith("+") ?? false)
                     tags.Add(ability.DisplayName);
             }
         }

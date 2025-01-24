@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 public partial class AccountSelector : ModalWindow
@@ -52,7 +53,7 @@ public partial class AccountSelector : ModalWindow
         var accounts = GameAccount.OwnedAccounts;
         for (int i = 0; i < accounts.Length; i++)
         {
-            if (pooledAccounts.Count < i)
+            if (pooledAccounts.Count <= i)
                 GenerateAccountEntry();
             pooledAccounts[i].Visible = true;
             pooledAccounts[i].SetAccount(accounts[i]);
@@ -108,6 +109,8 @@ public partial class AccountSelector : ModalWindow
     {
         if (await GameAccount.SetActiveAccount(accountId))
         {
+            using var _ = LoadingOverlay.CreateToken();
+            await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).Query();
             SetWindowOpen(false);
         }
     }
