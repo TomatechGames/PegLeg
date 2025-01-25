@@ -1,9 +1,7 @@
 using Godot;
-using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -30,9 +28,9 @@ public partial class CosmeticShopInterface : Control
     PackedScene shopEntryScene;
     [ExportGroup("Filter Bar")]
     [Export]
-    Control filterBlocker;
+    Control navToggle;
     [Export]
-    CheckButton simpleShopMode;
+    Control filterBlocker;
     [Export]
     int simpleOpsPerFrame = 30;
     [Export]
@@ -76,12 +74,6 @@ public partial class CosmeticShopInterface : Control
         {
             button.Pressed += ApplyFilters;
         }
-        //simpleShopMode.ButtonPressed = AppConfig.Get("item_shop", "simple_cosmetics", false);
-        simpleShopMode.Pressed += async () =>
-        {
-           // AppConfig.Set("item_shop", "simple_cosmetics", simpleShopMode.ButtonPressed);
-            await LoadShop(true);
-        };
         resetTypeFilters.Pressed += () =>
         {
             foreach (var item in typeFilters)
@@ -90,6 +82,21 @@ public partial class CosmeticShopInterface : Control
             }
             ApplyFilters();
         };
+        AppConfig.OnConfigChanged += OnConfigChanged;
+        navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true) && !AppConfig.Get("item_shop", "simple_cosmetics", false);
+    }
+
+    private void OnConfigChanged(string section, string key, JsonValue value)
+    {
+        if (section != "item_shop")
+            return;
+        if(key=="simple_cosmetics")
+            LoadShop(true).StartTask();
+        if (key == "navigation_visible")
+        {
+            if (!AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
+                navContainer.Visible = value.GetValue<bool>();
+        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -234,7 +241,7 @@ public partial class CosmeticShopInterface : Control
 
         PrepareFilters();
 
-        if (simpleShopMode.ButtonPressed)
+        if (AppConfig.Get("item_shop", "simple_cosmetics", false))
         {
             await GenerateSimpleShop(cosmeticShop);
         }
@@ -254,6 +261,7 @@ public partial class CosmeticShopInterface : Control
     async Task GenerateSimpleShop(JsonObject cosmeticShop)
     {
         navContainer.Visible = false;
+        navToggle.Visible = false;
         int opCount = 0;
         foreach (var category in cosmeticShop)
         {
@@ -284,7 +292,8 @@ public partial class CosmeticShopInterface : Control
 
     async Task GenerateComplexShop(JsonObject cosmeticShop)
     {
-        navContainer.Visible = true;
+        navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true);
+        navToggle.Visible = true;
         var navRoot = navigationPane.CreateItem();
         List<CosmeticShopRow> rowsToPopulate = new();
         foreach (var category in cosmeticShop)
@@ -308,7 +317,10 @@ public partial class CosmeticShopInterface : Control
                 if (header.GetNode("%HeaderLabel") is Label headerLabel)
                     headerLabel.Text = section.Key;
                 if (section.Key == "Jam Tracks" && header.GetNode("%JamTrackViewer") is Button jamTrackBtn)
+                {
                     jamTrackBtn.Pressed += OpenJamTracks;
+                    jamTrackBtn.Visible = true;
+                }
                 //navSec.AddButton(1, navButtonTexture);
                 navSection.SetMetadata(0, header);
                 List<CosmeticShopRow> pageRows = new();
@@ -369,7 +381,7 @@ public partial class CosmeticShopInterface : Control
 
         PrepareFilters();
         resetTypeFilters.Disabled = typeFilters.All(b => !b.ButtonPressed);
-        if (simpleShopMode.ButtonPressed)
+        if (AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
         {
             foreach (var entry in activeOffers)
             {

@@ -179,10 +179,11 @@ grow_vertical = 2
 size_flags_vertical = 3
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
-current_tab = 0
+current_tab = 2
 script = ExtResource("16_hsemp")
 
 [node name="Dashboard" parent="MainTabs" instance=ExtResource("10_xfiw1")]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -192,7 +193,6 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Missions" parent="MainTabs" instance=ExtResource("22_qlkcq")]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

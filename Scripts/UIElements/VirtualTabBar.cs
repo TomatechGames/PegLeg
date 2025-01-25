@@ -30,6 +30,7 @@ public partial class VirtualTabBar : Control
     {
         base._Ready();
         var possibleCheckButtons = checkButtonParent.GetChildren();
+        CheckButton firstVisible = null;
         for (int i = 0; i < possibleCheckButtons.Count; i++)
         {
             CheckButton checkButton = null;
@@ -42,11 +43,15 @@ public partial class VirtualTabBar : Control
                 continue;
             
             buttons.Add(checkButton);
+            if (checkButton.Visible)
+                firstVisible ??= checkButton;
             int index = i;
             if (currentTab != -1)
                 checkButton.ButtonPressed = false;
-            else if (checkButton.ButtonPressed)
+            else if (checkButton.ButtonPressed && checkButton.Visible)
+            {
                 currentTab = i;
+            }
             checkButton.Toggled += newVal =>
             {
                 if (!newVal)
@@ -55,7 +60,7 @@ public partial class VirtualTabBar : Control
             };
         }
         if(currentTab==-1 && buttons.Count>0)
-            buttons[0].ButtonPressed = true;
+            firstVisible.ButtonPressed = true;
     }
 
     void TryChangeTab(int value)

@@ -207,6 +207,15 @@ public static class PLSearch
     public static bool EvaluateInstructions(Instruction[] instructions, JsonObject target) =>
         EvaluateInstructions(instructions, target, out var _, false);
 
+    struct SearchState
+    {
+        public bool overallResult = true;
+        public bool operationResult = true;
+        public bool union = false;
+
+        public SearchState() { }
+    }
+
     public static bool EvaluateInstructions(Instruction[] instructions, JsonObject target, out string output, bool useOutput = true)
     {
         output = "";
@@ -214,14 +223,21 @@ public static class PLSearch
             return true;
         int currentDepth = 0;
         int skipUntilIndex = 0;
-        bool currentState = true;
-        bool isOrMode = false;
-        Stack<bool> stateStack = new();
-        Stack<bool> isOrStack = new();
+        SearchState currentState = new();
+        Stack<SearchState> stateStack = new();
         foreach (var item in instructions.OrderBy(i => i.index))
         {
+            if (!currentState.union && item.operation != InstructionOperation.Union)
+            {
+                currentState.overallResult &= currentState.operationResult;
+            }
+
             bool skipThisOp = item.index < skipUntilIndex;
-            if (isOrMode == currentState && item.operation != InstructionOperation.Pop && item.operation != InstructionOperation.Union)
+            if (!currentState.overallResult && item.operation != InstructionOperation.Pop)
+            {
+                skipThisOp = true;
+            }
+            if (currentState.union && currentState.operationResult)
             {
                 skipThisOp = true;
             }
@@ -234,13 +250,11 @@ public static class PLSearch
                 if (!skipThisOp)
                 {
                     stateStack.Push(currentState);
-                    isOrStack.Push(isOrMode);
-                    currentState = true;
-                    isOrMode = false;
+                    currentState = new();
                 }
                 else
                 {
-                    skipUntilIndex = item.endIndex;
+                    skipUntilIndex = Mathf.Max(item.endIndex, skipUntilIndex);
                 }
                 output += toInsert + (skipThisOp ? " (Skipped)" : "") + "\n";
                 continue;
@@ -252,35 +266,41 @@ public static class PLSearch
 
                 if (!skipThisOp)
                 {
-                    bool resolvedState = currentState;
-                    toInsert += (item.inverted ? " NOT " : " ") + (resolvedState ? "PASS" : "FAIL");
+                    bool resolvedResult = currentState.overallResult;
+                    toInsert += (item.inverted ? " NOT " : " ") + (resolvedResult ? "PASS" : "FAIL");
                     if (item.inverted)
-                        resolvedState = !resolvedState;
+                        resolvedResult = !resolvedResult;
                     currentState = stateStack.Pop();
-                    isOrMode = isOrStack.Pop();
-                    if (isOrMode)
-                        currentState |= resolvedState;
+                    if (currentState.union)
+                    {
+                        currentState.union = false;
+                        currentState.operationResult |= resolvedResult;
+                    }
                     else
-                        currentState &= resolvedState;
+                        currentState.operationResult = resolvedResult;
                 }
 
                 output += Indent(currentDepth) + toInsert + (skipThisOp ? " (Skipped)" : "") + "\n";
                 continue;
             }
-            isOrMode = false;
+
 
             if (!useOutput && skipThisOp)
+            {
+                currentState.union = false;
                 continue;
+            }
 
             toInsert += item.inverted ? "NOT " : "";
-
+            bool currentResult = false;
             JsonObject metaObj;
             switch (item.operation)
             {
                 case InstructionOperation.Union:
                     if (!skipThisOp)
-                        isOrMode = true;
-                    toInsert += "OR";
+                        currentState.union = true;
+                    toInsert += " OR";
+                    currentResult = currentState.operationResult;
                     break;
                 case InstructionOperation.TextQuery:
                     {
@@ -292,7 +312,7 @@ public static class PLSearch
                         {
                             toInsert += "T ERROR";
                             if (!skipThisOp)
-                                currentState = false;
+                                currentResult = false;
                             break;
                         }
                         string[] checks = metaObj["checks"].AsArray().Select(n => n.ToString()).ToArray();
@@ -322,7 +342,7 @@ public static class PLSearch
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
@@ -337,7 +357,7 @@ public static class PLSearch
                         {
                             toInsert += "N ERROR";
                             if (!skipThisOp)
-                                currentState = false;
+                                currentResult = false;
                             break;
                         }
                         bool comparisonTrue = true;
@@ -352,7 +372,7 @@ public static class PLSearch
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
@@ -369,7 +389,7 @@ public static class PLSearch
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
@@ -391,15 +411,23 @@ public static class PLSearch
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
             }
+            if (currentState.union && item.operation != InstructionOperation.Union)
+            {
+                currentState.union = false;
+                currentResult |= currentState.operationResult;
+            }
+            if (!skipThisOp)
+                currentState.operationResult = currentResult;
             output += Indent(currentDepth) + toInsert + (skipThisOp ? " (Skipped)" : "") + "\n";
         }
-        output += "final result: " + currentState;
-        return currentState;
+        currentState.overallResult &= currentState.operationResult;
+        output += "final result: " + currentState.overallResult;
+        return currentState.overallResult;
     }
     static string Indent(int level)
     {

@@ -1,13 +1,10 @@
 ﻿using Godot;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Nodes;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
-using System.Xml.Linq;
 
 public static class BanjoAssets
 {
@@ -16,29 +13,42 @@ public static class BanjoAssets
     public static readonly Texture2D defaultIcon = ResourceLoader.Load<Texture2D>("res://Images/InterfaceIcons/T-Icon-Unknown-128.png");
     public static readonly BanjoSuppliments supplimentaryData = ResourceLoader.Load<BanjoSuppliments>("res://banjo_suppliments.tres");
 
-    static readonly Dictionary<string, WeakRef> iconCache = new();
-    static readonly Dictionary<string, JsonObject> dataSources = new();
+    static readonly ConcurrentDictionary<string, WeakRef> iconCache = new();
+    static readonly ConcurrentDictionary<string, JsonObject> dataSources = new();
 
-    public static bool ReadAllSources()
+    static readonly string[] preloadTemplates = new string[] { "Hero", "Schematic", "Worker", "Defender", "Weapon", "Trap"};
+    public static async Task<bool> ReadAllSources()
     {
         string path = Helpers.ProperlyGlobalisePath(banjoFolderPath);
         if (!DirAccess.DirExistsAbsolute(path))
             return false;
         GD.Print(path);
         //return TryLoadJsonFile(path+"/assets.json", out banjoFile);
-        DirAccess banjoDir = DirAccess.Open(path);
-        var allFiles = banjoDir.GetFiles();
-        Parallel.ForEach(allFiles, file =>
+        using (DirAccess banjoDir = DirAccess.Open(path))
         {
-            file = file.Split("/")[^1][..^5];
-            if (TryLoadJsonFile(file, out var json))
+            var allFiles = banjoDir.GetFiles();
+            Parallel.ForEach(allFiles, file =>
             {
-                lock (dataSources)
-                {
+                file = file.Split("/")[^1][..^5];
+                if (TryLoadJsonFile(file, out var json))
                     dataSources[file] = json;
-                }
+            });
+        }
+        List<Task> templateTasks=new();
+        foreach (var templateType in preloadTemplates)
+        {
+            if(TryGetSource(templateType, out var items))
+            {
+                var templateTask = Parallel.ForEachAsync(items, (item, ct) =>
+                {
+                    GameItemTemplate.TryAdd(item.Value.AsObject());
+                    return ValueTask.CompletedTask;
+                });
+                templateTasks.Add(templateTask);
             }
-        });
+        }
+        await Task.WhenAll(templateTasks);
+
         return true;
     }
 
@@ -229,7 +239,17 @@ public class GameItemTemplate
 
     #region Static Methods
 
-    static Dictionary<string, Dictionary<string, GameItemTemplate>> templateDict = new();
+    static ConcurrentDictionary<string, ConcurrentDictionary<string, GameItemTemplate>> templateDict = new();
+    public static void TryAdd(JsonObject template)
+    {
+        if (template["Type"]?.ToString() is not string templateType || template["Name"]?.ToString().ToLower() is not string templateName)
+            return;
+        templateDict.TryAdd(templateType, new());
+        if(templateDict[templateType].ContainsKey(templateName))
+            return;
+        templateDict[templateType].TryAdd(templateName, new(template));
+    }
+
     public static GameItemTemplate Get(string templateId, JsonObject source = null)
     {
 
@@ -254,39 +274,37 @@ public class GameItemTemplate
 
         GameItemTemplate newTemplate = source[templateId] is JsonObject templateObj ? new(templateObj) : null;
 
+        bool exists = false;
         if (newTemplate is not null)
         {
-            if (!templateDict.ContainsKey(splitItemId[0]))
-                lock (templateDict)
-                    templateDict[splitItemId[0]] = new();
-            lock (templateDict[splitItemId[0]])
-                templateDict[splitItemId[0]].Add(splitItemId[1], newTemplate);
+            templateDict.TryAdd(splitItemId[0], new());
+            exists = !templateDict[splitItemId[0]].TryAdd(splitItemId[1], newTemplate);
         }
 
-        return newTemplate;
+        return exists ? templateDict[splitItemId[0]][splitItemId[1]] : newTemplate;
     }
 
     public static GameItemTemplate Lookup(string sourceName, string key)
     {
         if (sourceName is null || key is null)
             return null;
-
-        if (templateDict.ContainsKey(sourceName) && templateDict[sourceName].ContainsKey(key))
-            return templateDict[sourceName][key];
+        
+        if (templateDict.TryGetValue(sourceName, out var sourceDict) && sourceDict.TryGetValue(key, out var template))
+            return template;
 
         if (!BanjoAssets.TryGetSource(sourceName, out var source))
             return null;
 
         GameItemTemplate newTemplate = source[key] is JsonObject templateObj ? new(templateObj) : null;
 
+        bool exists = false;
         if (newTemplate is not null)
         {
-            if (!templateDict.ContainsKey(sourceName))
-                templateDict[sourceName] = new();
-            templateDict[sourceName].Add(key, newTemplate);
+            templateDict.TryAdd(sourceName, new());
+            exists = !templateDict[sourceName].TryAdd(key, newTemplate);
         }
 
-        return newTemplate;
+        return exists ? templateDict[sourceName][key] : newTemplate;
     }
 
     public static GameItemTemplate GetOrCreate(string templateId, Func<GameItemTemplate> constructor)
@@ -301,13 +319,14 @@ public class GameItemTemplate
 
         GameItemTemplate newTemplate = constructor();
 
+        bool exists = false;
         if (newTemplate is not null)
         {
-            templateDict[splitItemId[0]] ??= new();
-            templateDict[splitItemId[0]].Add(splitItemId[1], newTemplate);
+            templateDict.TryAdd(splitItemId[0], new());
+            exists = !templateDict[splitItemId[0]].TryAdd(splitItemId[1], newTemplate);
         }
 
-        return newTemplate;
+        return exists ? templateDict[splitItemId[0]][splitItemId[1]] : newTemplate;
     }
 
     public static GameItemTemplate[] GetTemplatesFromSource(string namedDataSource, Func<GameItemTemplate, bool> filter = null)
@@ -606,6 +625,9 @@ public class GameItemTemplate
 
     public JsonArray GenerateSearchTags(bool assumeUncommon = true)
     {
+        if(rawData["searchTags"] is JsonArray existingSearchTags)
+            return existingSearchTags.Reserialise();
+
         List<string> tags = new()
         {
             DisplayName,
@@ -632,7 +654,7 @@ public class GameItemTemplate
             tags.Add("Survivor");
         var searchTags = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
         rawData["searchTags"] = searchTags;
-        return searchTags;
+        return searchTags.Reserialise();
     }
 
     public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)

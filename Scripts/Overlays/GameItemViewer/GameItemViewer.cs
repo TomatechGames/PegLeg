@@ -59,6 +59,8 @@ public partial class GameItemViewer : ModalWindow
     Control devTextContainer;
     [Export]
     CodeEdit devText;
+    [Export]
+    Label searchResult;
 
     [ExportGroup("Buttons")]
     [Export]
@@ -174,12 +176,9 @@ public partial class GameItemViewer : ModalWindow
         currentOfferEntry.Visible = true;
     }
 
-    bool showDevText = false;
     GameItem displayedItem = null;
     void SetDisplayItem(GameItem item)
     {
-        if (Input.IsKeyPressed(Key.Minus))
-            showDevText ^= true;
         Visible = true;
         displayItemEntry.SetItem(item);
         item.SetRewardNotification();
@@ -264,7 +263,7 @@ public partial class GameItemViewer : ModalWindow
             }
         }
 
-        if (showDevText)
+        if (AppConfig.Get("advanced", "developer", false))
         {
             var rawData = item.RawData.ToJsonString(new() { WriteIndented = true });
             devText.Text = rawData;
@@ -279,6 +278,15 @@ public partial class GameItemViewer : ModalWindow
         activeTabParent.Visible = activeTabParent.GetChildCount() > 0;
         if (activeTabParent.Visible)
             activeTabParent.CurrentTab = 0;
+    }
+
+    public void SetSearchText(string searchText)
+    {
+        if (searchResult is null || currentItem is null)
+            return;
+        PLSearch.Instruction[] itemSearchInstructions = PLSearch.GenerateSearchInstructions(searchText) ?? Array.Empty<PLSearch.Instruction>();
+        PLSearch.EvaluateInstructions(itemSearchInstructions, currentItem.RawData, out var resultText);
+        searchResult.Text = resultText;
     }
 
     SemaphoreSlim heroStatsActiveSemaphore = new(1);

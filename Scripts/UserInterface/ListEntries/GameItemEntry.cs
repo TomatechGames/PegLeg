@@ -135,10 +135,17 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         if (autoLinkToRecycleSelection)
             Pressed += PerformRecycleSelection;
         EmitSignal(SignalName.InteractableChanged, interactableWhenEmpty);
+        AppConfig.OnConfigChanged += OnConfigChanged;
+    }
+
+    private void OnConfigChanged(string arg1, string arg2, JsonValue arg3)
+    {
+        SetInteractable();
     }
 
     public override void _ExitTree()
     {
+        AppConfig.OnConfigChanged -= OnConfigChanged;
         if (currentItem is not null)
         {
             currentItem.OnChanged -= UpdateItem;
@@ -280,7 +287,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             description ?? "",
             //"Item Id: " + item.templateId,
         };
-        if (item.template["searchTags"] is JsonArray tagArray && tagArray.Count > 0)
+        if (item.GetSearchTags() is JsonArray tagArray && tagArray.Count > 0)
             tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except(new string[] { name }).ToArray().Join(", "));
 
         EmitSignal(
@@ -288,7 +295,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             CustomTooltip.GenerateSimpleTooltip(
                 name,
                 tooltipAmount,
-                tooltipDescriptions.Count > 0 ? tooltipDescriptions.ToArray() : null,
+                tooltipDescriptions.ToArray(),
                 item.template?.RarityColor.ToHtml()
                 )
             );
@@ -324,7 +331,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
         EmitSignal(SignalName.LevelProgressChanged, levelProgress);
 
-        EmitSignal(SignalName.InteractableChanged, ForceInteractability || (!preventInteractability && autoInteractableTypes.Contains(currentItem.template.Type.ToLower())));
+        SetInteractable(autoInteractableTypes.Contains(currentItem.template.Type.ToLower()));
 
         //if survivor, set personality icons
 
@@ -366,13 +373,18 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         "defender",
         "cardpack"
     };
-    
 
-    public void SetInteractable(bool interactable) =>
+
+    bool interactableState;
+    public void SetInteractable() => SetInteractable(interactableState);
+    public void SetInteractable(bool interactable)
+    {
+        interactableState = interactable;
         EmitSignal(SignalName.InteractableChanged,
             ForceInteractability ||
+            AppConfig.Get("advanced", "developer", false) ||
             (
-                interactable && 
+                interactableState &&
                 (
                     interactableWhenEmpty ||
                     currentItem is not null
@@ -380,6 +392,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
                 !preventInteractability
             )
         );
+    }
     
 
     public virtual void EmitPressedSignal()

@@ -81,6 +81,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     {
         missionList.Visible = false;
         loadingIcon.Visible = true;
+        searchBar.Text = AppConfig.Get("missions", "default_search", "");
 
         VisibilityChanged += () =>
         {
@@ -121,13 +122,15 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     CancellationTokenSource updateCheckCTS = new();
     async void StartUpdateCheckTimer()
     {
+        if (!AppConfig.Get("missions", "reset_detection", true))
+            return;
         GD.Print("Starting update check timer");
         updateCheckCTS.Cancel();
         var ct = updateCheckCTS.Token;
         while (true)
         {
             var now = DateTime.UtcNow;
-            if (now.Hour > 1)
+            if (now.Hour > 1 || !AppConfig.Get("missions", "reset_detection", true))
             {
                 GD.Print("Ending update check timer");
                 return;
@@ -136,7 +139,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
             while (duration > 0)
             {
                 await Helpers.WaitForTimer(1);
-                if (ct.IsCancellationRequested)
+                if (ct.IsCancellationRequested || !AppConfig.Get("missions", "reset_detection", true))
                     return;
                 duration--;
             }
@@ -235,7 +238,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     string theaterFilter => theaterFilters[zoneFilterTabBar.CurrentTab];
     bool MissionFilter(GameMission mission)
     {
-        if (!theaterFilter.Contains(mission.theaterCat[0]))
+        if (!theaterFilter.Contains(mission.TheaterCat[0]))
             return false;
 
         var currentItemInstructions = itemSearchInstructions;

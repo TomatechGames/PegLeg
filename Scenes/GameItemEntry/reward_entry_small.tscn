@@ -35,13 +35,13 @@ syncControlSize = true
 [node name="TextureRect" parent="." index="1"]
 material = SubResource("ShaderMaterial_1tvi1")
 
-[node name="LeftIconContainer" parent="Overlays/AmountContainer" index="0"]
+[node name="RightIconContainer" parent="Overlays/AmountContainer" index="0"]
 custom_minimum_size = Vector2(16, 0)
 
-[node name="RightIconContainer" parent="Overlays/AmountContainer" index="2"]
+[node name="LeftIconContainer" parent="Overlays/AmountContainer" index="2"]
 custom_minimum_size = Vector2(16, 0)
 
-[node name="AmountLabel" parent="Overlays/AmountContainer" index="3"]
+[node name="AmountLabel" parent="Overlays/AmountContainer" index="4"]
 theme_override_font_sizes/font_size = 16
 
 [node name="InteractableContainer" parent="Overlays" index="3"]

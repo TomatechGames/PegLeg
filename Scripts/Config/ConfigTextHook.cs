@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Text.Json.Nodes;
 
-public partial class ConfigToggleHook : Control
+public partial class ConfigTextHook : Control
 {
     [Signal]
     public delegate void ConfigValueChangedEventHandler(bool newValue);
@@ -14,10 +14,13 @@ public partial class ConfigToggleHook : Control
     string key;
 
     [Export]
-    bool defaultValue = false;
+    string defaultValue = "";
 
     [Export]
     bool tryBind = true;
+
+    [Export]
+    double cooldown = 1;
 
     bool valueIsChanging;
 
@@ -25,13 +28,13 @@ public partial class ConfigToggleHook : Control
     {
         if (tryBind)
         {
-            if (HasSignal("toggled"))
+            if (HasSignal("text_changed"))
             {
-                Connect("toggled", Callable.From<bool>(SetValue));
+                Connect("text_changed", Callable.From<string>(TrySetValue));
             }
-            if ((bool?)Get("button_pressed") is bool)
+            if ((bool?)Get("text") is bool)
             {
-                ConfigValueChanged += newVal => Set("button_pressed", newVal);
+                ConfigValueChanged += newVal => Set("text", newVal);
             }
         }
 
@@ -51,9 +54,31 @@ public partial class ConfigToggleHook : Control
         valueIsChanging = false;
     }
 
-    public void SetValue(bool newValue)
+    string nextValue;
+    double currentCooldown = 0;
+    public void TrySetValue(string newValue)
+    {
+        if (currentCooldown <= 0)
+            SetValue(newValue);
+        else
+        {
+            currentCooldown = cooldown;
+            nextValue = newValue;
+        }
+    }
+
+    void SetValue(string newValue)
     {
         if (!valueIsChanging)
             AppConfig.Set(section, key, newValue);
+    }
+
+    public override void _Process(double delta)
+    {
+        if (currentCooldown <= 0)
+            return;
+        currentCooldown -= delta;
+        if (currentCooldown <= 0)
+            SetValue(nextValue);
     }
 }

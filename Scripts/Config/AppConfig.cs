@@ -24,9 +24,40 @@ public static class AppConfig
         LoadConfig();
         configData[section] ??= new JsonObject();
         configData[section][key] = value.JsonValue;
-        GD.Print($"Applying Change ({section}:{key} = {value.JsonValue})");
         OnConfigChanged?.Invoke(section, key, value.JsonValue);
 
+        GD.Print($"Set Config ({section}:{key} = {value.JsonValue})");
+        using var configFile = FileAccess.Open(configPath, FileAccess.ModeFlags.Write);
+        configFile.StoreString(configData.ToString());
+    }
+
+    public static void Clear(string section, string key)
+    {
+        LoadConfig();
+        configData[section] ??= new JsonObject();
+        if (configData[section].AsObject().ContainsKey(key))
+            configData[section].AsObject().Remove(key);
+        OnConfigChanged?.Invoke(section, key, null);
+
+        GD.Print($"Removed Config ({section}:{key})");
+        using var configFile = FileAccess.Open(configPath, FileAccess.ModeFlags.Write);
+        configFile.StoreString(configData.ToString());
+    }
+
+    public static void Clear(string section)
+    {
+        LoadConfig();
+        if (configData.ContainsKey(section))
+        {
+            var oldSection = configData[section].AsObject();
+            configData.Remove(section);
+            foreach (var kvp in oldSection)
+            {
+                OnConfigChanged?.Invoke(section, kvp.Key, null);
+            }
+        }
+
+        GD.Print($"Removed Config Section ({section})");
         using var configFile = FileAccess.Open(configPath, FileAccess.ModeFlags.Write);
         configFile.StoreString(configData.ToString());
     }

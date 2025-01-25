@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://d6pm7vs0s7ta"]
+[gd_scene load_steps=32 format=3 uid="uid://d6pm7vs0s7ta"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/CosmeticShopInterface.cs" id="1_cncuj"]
 [ext_resource type="PackedScene" uid="uid://3euwgkmgdey0" path="res://Scenes/ShopEntries/cosmetic_shop_header.tscn" id="2_vc6jo"]
@@ -6,9 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="4_nlhpd"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="5_0vdo0"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="6_5islc"]
+[ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_ge2gw"]
 [ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://GodotThemes/Styleboxes/CheckButton/CheckContainer.tres" id="6_n352n"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="7_k8nn6"]
 [ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="8_l3vt8"]
+[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="8_vieoo"]
 [ext_resource type="StyleBox" uid="uid://biqx82867v22n" path="res://GodotThemes/Styleboxes/CheckButton/SelectedCheck.tres" id="9_jmcpo"]
 [ext_resource type="StyleBox" uid="uid://dr65gsxfjpkwp" path="res://GodotThemes/Styleboxes/CheckButton/HoveredCheck.tres" id="10_lwt61"]
 [ext_resource type="StyleBox" uid="uid://b2ou1v5mjbih6" path="res://GodotThemes/Styleboxes/CheckButton/SelectedHoveredCheck.tres" id="11_se178"]
@@ -43,7 +45,7 @@ shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
 
-[node name="Cosmetic Shop" type="VBoxContainer" node_paths=PackedStringArray("sacButton", "verticalScrollBox", "navContainer", "navigationPane", "pageParent", "simpleShopParent", "filterBlocker", "simpleShopMode", "requireLeavingSoon", "requireAddedToday", "includeDiscountBundles", "newOrOldFilters", "typeFilters", "resetTypeFilters")]
+[node name="Cosmetic Shop" type="VBoxContainer" node_paths=PackedStringArray("sacButton", "verticalScrollBox", "navContainer", "navigationPane", "pageParent", "simpleShopParent", "navToggle", "filterBlocker", "requireLeavingSoon", "requireAddedToday", "includeDiscountBundles", "newOrOldFilters", "typeFilters", "resetTypeFilters")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -59,8 +61,8 @@ simpleShopParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/Ma
 shopHeaderScene = ExtResource("2_vc6jo")
 shopRowScene = ExtResource("3_kowyy")
 shopEntryScene = ExtResource("4_nlhpd")
+navToggle = NodePath("HSplitContainer/VBoxContainer/MarginContainer/Button")
 filterBlocker = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/FilterBlocker")
-simpleShopMode = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/SimpleShopModePanel/MarginContainer/SimpleShopMode")
 simpleOpsPerFrame = 20
 requireLeavingSoon = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/MarginContainer/HBoxContainer/OnlyLeaving")
 requireAddedToday = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/MarginContainer/HBoxContainer/OnlyAdded")
@@ -139,13 +141,18 @@ size_flags_horizontal = 3
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="HSplitContainer/VBoxContainer/MarginContainer"]
+[node name="Button" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(26, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-theme_type_variation = &"LargeButton"
+theme_type_variation = &"EmptySquareCheckButton"
+button_pressed = true
+script = ExtResource("6_ge2gw")
+section = "item_shop"
+key = "navigation_visible"
+defaultValue = true
 
-[node name="TextureRect" type="TextureRect" parent="HSplitContainer/VBoxContainer/MarginContainer/Button"]
+[node name="On" type="TextureRect" parent="HSplitContainer/VBoxContainer/MarginContainer/Button"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -158,6 +165,25 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("6_5islc")
 expand_mode = 1
+flip_h = true
+
+[node name="Off" type="TextureRect" parent="HSplitContainer/VBoxContainer/MarginContainer/Button"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = -2.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_5islc")
+expand_mode = 1
+
+[node name="ValChanged" type="Node" parent="HSplitContainer/VBoxContainer/MarginContainer/Button"]
+script = ExtResource("8_vieoo")
 
 [node name="FilterBar" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
@@ -644,3 +670,7 @@ size_flags_horizontal = 4
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Some cosmetics may not display correctly. Click on an item to view it on the official website"
+
+[connection signal="ConfigValueChanged" from="HSplitContainer/VBoxContainer/MarginContainer/Button" to="HSplitContainer/VBoxContainer/MarginContainer/Button/ValChanged" method="EmitValues"]
+[connection signal="InvertedValue" from="HSplitContainer/VBoxContainer/MarginContainer/Button/ValChanged" to="HSplitContainer/VBoxContainer/MarginContainer/Button/Off" method="set_visible"]
+[connection signal="Value" from="HSplitContainer/VBoxContainer/MarginContainer/Button/ValChanged" to="HSplitContainer/VBoxContainer/MarginContainer/Button/On" method="set_visible"]

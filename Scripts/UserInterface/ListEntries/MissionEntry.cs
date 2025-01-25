@@ -1,6 +1,9 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
+using System.Xml.Linq;
 
 public partial class MissionEntry : Control, IRecyclableEntry
 {
@@ -22,6 +25,8 @@ public partial class MissionEntry : Control, IRecyclableEntry
     public delegate void VenturesIndicatorVisibleEventHandler(bool visible);
     [Signal]
     public delegate void TheaterCategoryChangedEventHandler(string theatreCat);
+    [Signal]
+    public delegate void TheaterNameChangedEventHandler(string theatreName);
 
     [Export]
     bool controlModifierParentLayoutProps = true;
@@ -66,7 +71,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
 
     private void RefreshRewardNotifications(GameAccount _)
     {
-        currentMission?.UpdateRewardNotifications();
+        currentMission?.UpdateRewardNotifications(true);
     }
 
     IRecyclableElementProvider<GameMission> missionProvider;
@@ -81,36 +86,39 @@ public partial class MissionEntry : Control, IRecyclableEntry
         if (missionProvider is null)
             return;
         SetMissionData(missionProvider.GetRecycleElement(index));
+        currentMission?.UpdateRewardNotifications();
     }
 
     public void SetMissionData(GameMission mission)
 	{
         currentMission = mission;
-        var missionGen = currentMission.missionGenerator;
 
         EmitSignal(SignalName.IconChanged, currentMission.missionGenerator.GetTexture(FnItemTextureType.Icon));
-        EmitSignal(SignalName.VenturesIndicatorVisible, currentMission.theaterCat == "v");
-        EmitSignal(SignalName.TheaterCategoryChanged, currentMission.theaterCat.ToUpper());
-        EmitSignal(SignalName.PowerLevelChanged, currentMission.powerLevel.ToString());
+        EmitSignal(SignalName.VenturesIndicatorVisible, currentMission.TheaterCat == "v");
+        EmitSignal(SignalName.TheaterCategoryChanged, currentMission.TheaterCat.ToUpper());
+        EmitSignal(SignalName.TheaterNameChanged, currentMission.TheaterName);
+        EmitSignal(SignalName.PowerLevelChanged, currentMission.PowerLevel.ToString());
         EmitSignal(SignalName.BackgroundChanged, currentMission.backgroundTexture ?? defaultBackground);
-        EmitSignal(SignalName.NameChanged, missionGen.template.DisplayName);
-        EmitSignal(SignalName.DescriptionChanged, missionGen.template.Description);
-        EmitSignal(SignalName.LocationChanged, currentMission.zoneTheme.template.DisplayName);
+        EmitSignal(SignalName.NameChanged, currentMission.DisplayName);
+        EmitSignal(SignalName.DescriptionChanged, currentMission.Description);
+        EmitSignal(SignalName.LocationChanged, currentMission.Location);
 
         string eventFlag = currentMission.tileData["requirements"]["eventFlag"].ToString();
         bool hasEventFlag = !string.IsNullOrWhiteSpace(eventFlag);
 
         //TODO: if a mission has a quest requirement, mission entries should have the option of listing it
+        List<string> tooltipDescriptions = new()
+        {
+            currentMission.Description ?? "",
+            //"Item Id: " + item.templateId,
+        };
+        if (mission.SearchTags is JsonArray tagArray && tagArray.Count > 0)
+            tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except(new string[] { currentMission.DisplayName }).ToArray().Join(", "));
 
         EmitSignal(SignalName.TooltipChanged, CustomTooltip.GenerateSimpleTooltip(
-            missionGen.template.DisplayName,
+            currentMission.DisplayName,
             null,
-            new string[]
-            {
-                missionGen.template.Description,
-                $"Located in: {currentMission.zoneTheme.template.DisplayName}" +
-                (hasEventFlag ? $"\nEvent Flag: {eventFlag}":"")
-            }
+            tooltipDescriptions.ToArray()
             ));
 
         if(alertModifierLayout is not null && alertModifierParent is not null)
@@ -228,7 +236,12 @@ public partial class MissionEntry : Control, IRecyclableEntry
             return;
         if (highlightedItemProvider?.HighlightedItemFilter is Predicate<GameItem> predicate)
         {
-            ApplyItems(currentMission.allItems.Where(item => predicate(item)).ToArray(), highlightedRewardParent);
+            var rewards = fullItems ?
+                currentMission.allItems :
+                currentMission.allItems
+                    .Where(r => r.template.DisplayName != "Gold" && r.template.DisplayName != "Venture XP")
+                    .ToArray();
+            ApplyItems(rewards.Where(item => predicate(item)).ToArray(), highlightedRewardParent);
             return;
         }
         ApplyItems(Array.Empty<GameItem>(), highlightedRewardParent);

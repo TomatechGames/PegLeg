@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Text.Json.Nodes;
 
 public partial class InventoryInterface : Control, IRecyclableElementProvider<GameItem>
 {
@@ -9,20 +10,48 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
     [Export]
     LineEdit searchBox;
     [Export]
+    LineEdit targetUser;
+    [Export]
+    Control devAllButton;
+    [Export]
     string targetProfile;
     [Export(PropertyHint.ArrayType)]
     string[] typeFilters;
     [Export]
     bool sortByName = false;
-    [Export]
-    string testUsername = "";
 
     public override void _Ready()
     {
         GameAccount.ActiveAccountChanged += OnAccountChanged;
-        OnAccountChanged(null);
         itemList.SetProvider(this);
         searchBox.TextChanged += ApplyFilters;
+        var dev = AppConfig.Get("advanced", "developer", false);
+        if (targetUser is not null)
+        {
+            targetUser.TextSubmitted += t =>
+            {
+                AppConfig.Set("inventory", "customUser", t);
+                OnAccountChanged(null);
+            };
+            targetUser.Visible = dev;
+            targetUser.Text = dev ? AppConfig.Get("inventory", "customUser", "") : "";
+        }
+        if (devAllButton is not null)
+            devAllButton.Visible = dev;
+        AppConfig.OnConfigChanged += OnConfigChanged;
+        OnAccountChanged(null);
+    }
+
+    private void OnConfigChanged(string section, string key, JsonValue val)
+    {
+        bool dev = AppConfig.Get("advanced", "developer", false);
+        if (devAllButton is not null)
+            devAllButton.Visible = dev;
+        if (targetUser is not null)
+        {
+            targetUser.Visible = dev;
+            targetUser.Text = dev ? AppConfig.Get("inventory", "customUser", "") : "";
+        }
     }
 
     public override void _ExitTree()
@@ -56,9 +85,11 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
 
     async void OnAccountChanged(GameAccount _)
     {
+        allItems=Array.Empty<GameItem>();
+        ApplyFilters();
         var account = GameAccount.activeAccount;
-        if (!string.IsNullOrEmpty(testUsername))
-            account = (await GameAccount.SearchForAccount(testUsername)) ?? account;
+        if (!string.IsNullOrEmpty(targetUser?.Text))
+            account = (await GameAccount.SearchForAccount(targetUser?.Text)) ?? account;
         GD.Print(account?.accountId);
         if (targetProfile != FnProfileTypes.AccountItems && !await account.Authenticate())
             return;
@@ -69,7 +100,7 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
             .ToArray();
         foreach (var item in allItems)
         {
-            item.GenerateSearchTags();
+            item.GetSearchTags();
         }
         ApplyFilters();
     }

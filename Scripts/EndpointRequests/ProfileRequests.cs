@@ -1163,6 +1163,9 @@ public class GameItem
         ["CardPack:zcp_crystal_shadowshard\\w*"] = "Ingredient:ingredient_crystal_shadowshard",
         ["CardPack:zcp_crystal_sunbeam\\w*"] = "Ingredient:ingredient_crystal_sunbeam",
 
+        ["CardPack:zcp_improvised_r"] = "Ingredient:ingredient_rare_mechanism",
+        ["CardPack:zcp_improvised_vr"] = "Ingredient:ingredient_rare_powercell",
+
         ["CardPack:zcp_eventscaling\\w*"] = "AccountResource:eventcurrency_scaling",
     };
 
@@ -1176,7 +1179,7 @@ public class GameItem
             {
                 GameItem equivelentItem = GameItemTemplate.Get(equivelent.Value).CreateInstance();
                 equivelentItem.SetSeenLocal();
-                equivelentItem.GenerateSearchTags();
+                equivelentItem.GetSearchTags();
                 return equivelentItem;
             }
         }
@@ -1283,9 +1286,19 @@ public class GameItem
     }
 
     JsonArray _searchTags;
-    public JsonArray GenerateSearchTags(bool assumeUncommon = true)
+    public JsonArray GetSearchTags(bool assumeUncommon = true)
     {
-        _searchTags = template.GenerateSearchTags(assumeUncommon);
+        if(_searchTags is not null)
+            return _searchTags;
+        if(zcpEquivelent is not null)
+        {
+            _searchTags = zcpEquivelent.GetSearchTags(assumeUncommon);
+            _searchTags.Add("Bundle");
+            return _searchTags;
+        }
+        _searchTags = template?.GenerateSearchTags(assumeUncommon);
+        if (_searchTags is null)
+            return null;
         if (attributes?["personality"]?.ToString() is string rawPersonality)
             _searchTags.Add(ParseSurvivorAttribute(rawPersonality));
         if (attributes?["set_bonus"]?.ToString() is string rawSetBonus)
@@ -1314,6 +1327,8 @@ public class GameItem
         }
         quantity = rawData["quantity"].GetValue<int>();
         attributes = rawData["attributes"]?.AsObject();
+        isSeenLocal = null;
+        customData = new();
         ResetCachedData();
     }
 
@@ -1321,6 +1336,7 @@ public class GameItem
     {
         _rawData = null;
         _rating = null;
+        _searchTags = null;
         textures.Clear();
     }
 
@@ -1524,7 +1540,7 @@ public class GameItem
         return rating;
     }
 
-    Dictionary<FnItemTextureType, Texture2D> textures = new();
+    Dictionary<FnItemTextureType, string> textures = new();
 
     public Texture2D GetTexture(FnItemTextureType textureType = FnItemTextureType.Preview) => GetTexture(textureType, BanjoAssets.defaultIcon);
     public Texture2D GetTexture(Texture2D fallbackIcon) => GetTexture(FnItemTextureType.Preview, fallbackIcon);
@@ -1540,7 +1556,7 @@ public class GameItem
     public Texture2D GetTexture(FnItemTextureType textureType, Texture2D fallbackIcon)
     {
         if (textures.ContainsKey(textureType))
-            return textures[textureType];
+            return BanjoAssets.GetReservedTexture(textures[textureType]);
 
         if (textureType == FnItemTextureType.Personality)
             return GetPersonalityTexture(fallbackIcon);
@@ -1550,9 +1566,11 @@ public class GameItem
 
         if (textureType == FnItemTextureType.Preview && GameItemTemplate.Get(attributes?["portrait"]?.ToString()) is GameItemTemplate portraitTemplate)
         {
-            var portraitTexture = portraitTemplate.GetTexture(fallbackIcon);
-            if (portraitTexture is not null)
-                return textures[textureType] = portraitTexture;
+            if (portraitTemplate.TryGetTexturePath(FnItemTextureType.Preview, out var texturePath))
+            {
+                textures[textureType] = texturePath;
+                return portraitTemplate.GetTexture(fallbackIcon);
+            }
         }
         if(template.Type == "CardPack" && !template.Name.StartsWith("ZCP_"))
         {
@@ -1586,7 +1604,7 @@ public class GameItem
         var personalityId = template.Personality ?? attributes?["personality"]?.ToString()?.Split(".")?[^1];
 
         if (personalityId is not null && BanjoAssets.supplimentaryData.PersonalityIcons.ContainsKey(personalityId))
-            return textures[FnItemTextureType.Personality] = BanjoAssets.supplimentaryData.PersonalityIcons[personalityId];
+            return BanjoAssets.supplimentaryData.PersonalityIcons[personalityId];
 
         return fallbackIcon;
     }
@@ -1600,12 +1618,12 @@ public class GameItem
         {
             subType = subType.Replace("Martial Artist", "MartialArtist");
             if (BanjoAssets.supplimentaryData.SquadIcons.ContainsKey(subType))
-                return textures[FnItemTextureType.SetBonus] = BanjoAssets.supplimentaryData.SquadIcons[subType];
+                return BanjoAssets.supplimentaryData.SquadIcons[subType];
         }
         else if(attributes?["set_bonus"]?.ToString()?.Split(".")?[^1] is string setBonus)
         {
             if (BanjoAssets.supplimentaryData.SetBonusIcons.ContainsKey(setBonus))
-                return textures[FnItemTextureType.SetBonus] = BanjoAssets.supplimentaryData.SetBonusIcons[setBonus];
+                return BanjoAssets.supplimentaryData.SetBonusIcons[setBonus];
         }
 
         return fallbackIcon;

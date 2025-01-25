@@ -106,9 +106,9 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         collectionMarkerTex = collectionIcon;
         autoselectButtonTex = recycleIcon;
         selectablePredicate = item => item.template.IsCollectable && !item.template.IsPermenant;
-        //var autoselectInstructions = PLSearch.GenerateSearchInstructions("template.RarityLv=..3 | (template.RarityLv=..4 !templateId=\"Worker\"..)");
-        //autoselectPredicate = item => PLSearch.EvaluateInstructions(autoselectInstructions, item.RawData);
-        autoselectPredicate = item => item.template.RarityLevel <= 3;
+        var autoselectInstructions = PLSearch.GenerateSearchInstructions(AppConfig.Get("automation", "recycle_filter", "Common | Uncommon | Rare"));
+        autoselectPredicate = item => PLSearch.EvaluateInstructions(autoselectInstructions, item.RawData);
+        //autoselectPredicate = item => item.template.RarityLevel <= 3;
     }
 
     GameItem emptyItem = new(null, 1);

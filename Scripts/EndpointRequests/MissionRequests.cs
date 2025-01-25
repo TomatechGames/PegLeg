@@ -176,19 +176,24 @@ public class GameMission
     static bool checkMissionsState = false;
     public static async Task<bool> MissionsNeedUpdate(bool ignoreHashCheck = false)
     {
+        var (result, _) = await MissionsNeedUpdateInternal(ignoreHashCheck);
+        return result;
+    }
+    static async Task<(bool, JsonNode)> MissionsNeedUpdateInternal(bool ignoreHashCheck = false)
+    {
         using var st = await missionCheckSemaphore.AwaitToken();
         if (!st.wasImmediate)
-            return checkMissionsState;
+            return (checkMissionsState, null);
 
         if (DateTime.UtcNow.CompareTo(missionReset) >= 0)
-            return checkMissionsState = true;
+            return (checkMissionsState = true, null);
 
         if (!ignoreHashCheck)
-            return checkMissionsState = false;
+            return (checkMissionsState = false, null);
 
         var account = GameAccount.activeAccount;
         if (!await account.Authenticate())
-            return checkMissionsState = false;
+            return (checkMissionsState = false, null);
 
         JsonNode missionData = await Helpers.MakeRequest(
                 HttpMethod.Get,
@@ -201,24 +206,27 @@ public class GameMission
         if (missionData["errorMessage"] is not null)
         {
             GD.Print("Error: " + missionData.ToString());
-            return checkMissionsState = false;
+            return (checkMissionsState = false, missionData);
         }
 
         var newHash = missionData["missionAlerts"].ToString().Hash();
         if (missionHash == newHash)
-            return checkMissionsState = true;
+            return (checkMissionsState = false, missionData);
 
-        return checkMissionsState = false;
+        return (checkMissionsState = true, missionData);
     }
 
     public static async Task CheckMissions(bool ignoreHashCheck = false)
     {
-        if (await MissionsNeedUpdate(ignoreHashCheck))
-            await UpdateMissions();
+        var (result, missionData) = await MissionsNeedUpdateInternal(ignoreHashCheck);
+        if (result)
+            await UpdateMissions(missionData);
     }
 
     static SemaphoreSlim missionUpdateSemaphore = new(1);
-    public static async Task UpdateMissions()
+    public static async Task UpdateMissions() => await UpdateMissions(null);
+
+    static async Task UpdateMissions(JsonNode missionData)
     {
         using var st = await missionUpdateSemaphore.AwaitToken();
         if (!st.wasImmediate)
@@ -234,7 +242,7 @@ public class GameMission
 
         while (true)
         {
-            JsonNode missionData = await Helpers.MakeRequest(
+            missionData ??= await Helpers.MakeRequest(
                     HttpMethod.Get,
                     FnEndpoints.gameEndpoint,
                     "fortnite/api/game/v2/world/info",
@@ -248,16 +256,19 @@ public class GameMission
             var expiryDate = missionData["missionAlerts"][0]["nextRefresh"].ToString()[..^1]; //the Z messes with daylight savings time
             missionReset = DateTime.Parse(expiryDate, CultureInfo.InvariantCulture);
 
-            var generatedMissions = await GenerateMissions(missionData);
+            var generatedMissions = GenerateMissions(missionData);
 
             //edge case where missions expire after being requested but before being converted to MissionEntries
-            if (!await MissionsNeedUpdate(true))
+            if (await MissionsNeedUpdate(true))
+            {
+                missionData = null;
                 continue;
+            }
 
             currentMissions = generatedMissions
-                .OrderBy(m => m.theaterIdx)
-                .ThenBy(m => m.powerLevel)
-                .ThenBy(m => m.isFourPlayer)
+                .OrderBy(m => m.TheaterIdx)
+                .ThenBy(m => m.PowerLevel)
+                .ThenBy(m => m.IsFourPlayer)
                 .ThenBy(m => m.missionGenerator.template?.DisplayName ?? "AAAAA")
                 .ToArray();
             OnMissionsUpdated?.Invoke();
@@ -265,7 +276,7 @@ public class GameMission
         }
     }
 
-    static async Task<List<GameMission>> GenerateMissions(JsonNode rootNode)
+    static List<GameMission> GenerateMissions(JsonNode rootNode)
     {
         //Theaters
         List<string> allowedTheaterIDs = new()
@@ -290,7 +301,7 @@ public class GameMission
 
         List<GameMission> missionList = new();
 
-        int counter = 0;
+        //int counter = 0;
         foreach (var theaterID in allowedTheaterIDs)
         {
             var theater = rootNode["theaters"].AsArray().First(t => t["uniqueId"].ToString() == theaterID);
@@ -319,17 +330,11 @@ public class GameMission
                 .ToDictionary(n => n["tileIndex"].GetValue<int>());
 
             var missionTiles = theater["tiles"].AsArray();
-            List<JsonObject> missionsToDetach = new();
+            //List<JsonObject> missionsToDetach = new();
 
-            foreach (var missionObj in theaterMissions)
+            Parallel.ForEach(theaterMissions, missionObj =>
             {
-                counter++;
-                if (counter > 10)
-                {
-                    counter = 0;
-                    await Task.Delay(50);
-                }
-                missionsToDetach.Add(missionObj.AsObject());
+                //missionsToDetach.Add(missionObj.AsObject());
 
                 string missionGen = missionObj["missionGenerator"].ToString();
 
@@ -350,37 +355,58 @@ public class GameMission
                     tileData["requirements"]["activeQuestDefinitions"].AsArray().Count > 0 //||
                                                                                            //tileData["requirements"]["eventFlag"].ToString() != ""
                     )
-                    continue;
+                    return;
 
                 missionObj["theaterCat"] = theaterCat;
+                missionObj["theaterName"] = theaterName;
 
                 missionList.Add(new(missionObj.AsObject(), alertObj, tileData));
-            }
+            });
 
             //detach from original json
-            foreach (var mission in missionsToDetach)
-            {
-                theaterMissions.Remove(mission);
-            }
+            theaterMissions.Clear();
+            //foreach (var mission in missionsToDetach)
+            //{
+            //    theaterMissions.Remove(mission);
+            //}
         }
         return missionList;
     }
 
     #endregion
 
-    public int powerLevel { get; private set; }
-    public int theaterIdx { get; private set; }
-    public string theaterCat { get; private set; }
-    public bool isFourPlayer { get; private set; }
 
     public JsonObject missionData { get; private set; }
     public JsonObject alertData { get; private set; }
     public JsonObject tileData { get; private set; }
     public JsonObject difficultyInfo { get; private set; }
 
+    public string DisplayName => missionGenerator?.template?.DisplayName;
+    public string Description => missionGenerator?.template?.Description;
+    public string Location => zoneTheme?.template?.DisplayName;
+    public string LocationDescription => zoneTheme?.template?.Description;
+    public int PowerLevel => difficultyInfo?["RecommendedRating"]?.GetValue<int>() ?? 0;
+    public string TheaterName => missionData["theaterName"].ToString() is string theaterName ?
+        (theaterName.EndsWith("Venture Zone") ? theaterName[..13] : theaterName) :
+        null;
+    public string TheaterCat => missionData["theaterCat"].ToString();
+    public int TheaterIdx => TheaterCat switch
+        {
+            "s" => 0,
+            "p" => 1,
+            "c" => 2,
+            "t" => 3,
+            "v" => 4,
+            _ => 0
+        };
+    public bool IsFourPlayer => difficultyInfo?["DisplayName"]?.ToString().EndsWith("4 Players") ?? false;
+    public JsonArray SearchTags => missionData["searchTags"]?.AsArray();
+
     public GameItem missionGenerator { get; private set; }
     public GameItem zoneTheme { get; private set; }
-    public Texture2D backgroundTexture { get; private set; }
+    public Texture2D backgroundTexture =>
+            missionGenerator.GetTexture(FnItemTextureType.LoadingScreen, null) ??
+            zoneTheme.GetTexture(FnItemTextureType.LoadingScreen, null);
 
     public GameItem[] rewardItems { get; private set; }
     public GameItem[] alertModifiers { get; private set; }
@@ -398,31 +424,15 @@ public class GameMission
         missionGenerator = GameItemTemplate.Lookup("MissionGen", missionData["missionGenerator"].ToString()).CreateInstance();
         zoneTheme = GameItemTemplate.Lookup("ZoneTheme", tileData["zoneTheme"].ToString()).CreateInstance();
 
-        powerLevel = difficultyInfo?["RecommendedRating"]?.GetValue<int>() ?? 0;
-        theaterCat = missionData["theaterCat"].ToString();
-        theaterIdx = theaterCat switch
-        {
-            "s" => 0,
-            "p" => 1,
-            "c" => 2,
-            "t" => 3,
-            "v" => 4,
-            _ => 0
-        };
-        isFourPlayer = difficultyInfo?["DisplayName"]?.ToString().EndsWith("4 Players") ?? false;
-
         missionGenerator.GetTexture(FnItemTextureType.Icon);
-        backgroundTexture = 
-            missionGenerator.GetTexture(FnItemTextureType.LoadingScreen, null) ?? 
-            zoneTheme.GetTexture(FnItemTextureType.LoadingScreen, null);
+        var _ = backgroundTexture;
 
         Dictionary<string, GameItem> rewardItemList = new();
         foreach (var itemData in missionData["missionRewards"]["items"].AsArray())
         {
             GameItem item = new(null, null, itemData.AsObject());
-            item.SetRewardNotification();
             item.GetTexture();
-            item.GenerateSearchTags();
+            item.GetSearchTags();
             var match = Regex.Match(item.template.Name.ToLower(), "zcp_.*t\\d{1,2}");
             string key = match.Success ?
                 match.Groups[0].Value :
@@ -449,7 +459,7 @@ public class GameMission
                     GameItem modifier = new(null, null, itemData.AsObject());
                     modifier.SetSeenLocal();
                     modifier.GetTexture();
-                    modifier.GenerateSearchTags();
+                    modifier.GetSearchTags();
                     alertModifierList.Add(modifier);
                 }
             }
@@ -461,9 +471,8 @@ public class GameMission
                 foreach (var itemData in rewardData)
                 {
                     GameItem item = new(null, null, itemData.AsObject());
-                    item.SetRewardNotification();
                     item.GetTexture();
-                    item.GenerateSearchTags();
+                    item.GetSearchTags();
                     alertRewardItemList.Add(item);
                 }
             }
@@ -471,13 +480,24 @@ public class GameMission
         }
         alertModifiers ??= Array.Empty<GameItem>();
         alertRewardItems ??= Array.Empty<GameItem>();
+
+        JsonArray searchTags = new();
+        if (IsFourPlayer)
+            searchTags.Add("Group");
+        if(alertModifiers.Length>0)
+            searchTags.Add("Alert");
+        if (TheaterCat=="v")
+            searchTags.Add("Ventures");
+        searchTags.Add(Location);
+        searchTags.Add(TheaterName);
+        missionData["searchTags"] = searchTags;
     }
 
-    public void UpdateRewardNotifications()
+    public void UpdateRewardNotifications(bool force = false)
     {
         foreach (var item in allItems)
         {
-            item.SetRewardNotification(null, true);
+            item.SetRewardNotification(null, force);
         }
     }
 }

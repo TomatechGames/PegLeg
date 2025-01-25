@@ -27,11 +27,18 @@ public partial class MissionCollection : Node, IMissionHighlightProvider, IRecyc
     {
         missionList.SetProvider(this);
         GameMission.OnMissionsUpdated += FilterMissions;
+        GameMission.OnMissionsInvalidated += FilterMissions;
         EmitSignal(SignalName.NameChanged, testName);
         UpdateFilters();
         if (!await GameAccount.activeAccount.Authenticate())
             return;
         await GameMission.UpdateMissions();
+    }
+
+    public override void _ExitTree()
+    {
+        GameMission.OnMissionsUpdated -= FilterMissions;
+        GameMission.OnMissionsInvalidated -= FilterMissions;
     }
 
     public void OnElementSpawned(IRecyclableEntry entry)
@@ -74,11 +81,7 @@ public partial class MissionCollection : Node, IMissionHighlightProvider, IRecyc
         filteredMissions =
             GameMission.currentMissions?
             .Where(MissionFilter)
-            .ToList();
-        foreach (var item in filteredMissions)
-        {
-            GD.Print($"{testName}: {item.theaterCat}{item.powerLevel} {item.missionGenerator.template.DisplayName}");
-        }
+            .ToList() ?? new();
         missionList.UpdateList(true);
     }
 }

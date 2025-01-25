@@ -17,7 +17,7 @@
 [sub_resource type="ButtonGroup" id="ButtonGroup_xh1u0"]
 resource_name = "InventoryTypeFilter"
 
-[node name="Inventory" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox")]
+[node name="Inventory" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox", "targetUser", "devAllButton")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -25,58 +25,70 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ix0kh")
 itemList = NodePath("VBoxContainer/ScrollContainer")
-searchBox = NodePath("VBoxContainer/LineEdit")
+searchBox = NodePath("VBoxContainer/Search")
+targetUser = NodePath("VBoxContainer/HBoxContainer2/User")
+devAllButton = NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All")
 targetProfile = "campaign"
 typeFilters = PackedStringArray("Hero,Schematic,Defender,Worker", "", "Schematic", "Hero", "Defender", "Worker")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
+[node name="Search" type="LineEdit" parent="VBoxContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+placeholder_text = "Search items"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="User" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+placeholder_text = "Custom username"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 alignment = 1
 
-[node name="TypeFilters" type="MarginContainer" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("checkButtonParent")]
+[node name="TypeFilters" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer" node_paths=PackedStringArray("checkButtonParent")]
 layout_mode = 2
 script = ExtResource("1_cq0hx")
 checkButtonParent = NodePath("MarginContainer/HBoxContainer")
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/TypeFilters"]
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_ytjya")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer"]
+[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("3_jwnrv")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="All" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+[node name="All" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All"]
 layout_mode = 2
 tooltip_text = "Main Regions"
 theme_type_variation = &"LeftCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -84,32 +96,32 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("5_g4jqb")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "All"
 
-[node name="Dev All" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+[node name="Dev All" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All"]
 layout_mode = 2
 tooltip_text = "Main Regions"
 theme_type_variation = &"MiddleCheckButton"
 button_pressed = true
 button_group = SubResource("ButtonGroup_xh1u0")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -117,31 +129,31 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("6_6h6v6")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Dev All"
 
-[node name="Schematics" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+[node name="Tab1" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1"]
 layout_mode = 2
 tooltip_text = "Main Regions"
 theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -149,31 +161,31 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics/MarginContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("5_e3p2l")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Schematics/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Schematics"
 
-[node name="Heroes" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+[node name="Tab2" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2"]
 layout_mode = 2
 tooltip_text = "Main Regions"
 theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -181,31 +193,31 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes/MarginContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("8_5rj62")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Heroes/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Heroes"
 
-[node name="Defenders" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+[node name="Tab3" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3"]
 layout_mode = 2
 tooltip_text = "Main Regions"
 theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -213,31 +225,31 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders/MarginContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("9_my6h5")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Defenders/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Defenders"
 
-[node name="Survivors" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
+[node name="Tab4" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4"]
 layout_mode = 2
 tooltip_text = "Main Regions"
 theme_type_variation = &"RightCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -245,41 +257,38 @@ theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors/MarginContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("10_17ihq")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Survivors/MarginContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Survivors"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_ytjya")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/MarginContainer/MarginContainer"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer/MarginContainer"]
 layout_mode = 2
 text = "Sort By Name"
-
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" node_paths=PackedStringArray("linkedGrid", "offsetControl", "paddingControl", "elementParent")]
 layout_mode = 2
@@ -321,5 +330,5 @@ spacing = Vector2(10, 10)
 [node name="Padding" type="Control" parent="VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[connection signal="TabChanged" from="VBoxContainer/HBoxContainer/TypeFilters" to="." method="SetFilter"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer/MarginContainer/MarginContainer/CheckButton" to="." method="SetSortMode"]
+[connection signal="TabChanged" from="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters" to="." method="SetFilter"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer/MarginContainer/CheckButton" to="." method="SetSortMode"]

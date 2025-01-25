@@ -30,6 +30,8 @@ public partial class OnboardingInterface : Control
 
     public override async void _Ready()
     {
+        AppConfig.Clear("window");
+
         retryLoginButton.Visible = false;
         continueButton.Disabled = true;
         continueButton.Text = "";
@@ -41,7 +43,7 @@ public partial class OnboardingInterface : Control
         //zr.Open("user://pack.zip");
         //bool isValid = !zr.GetFiles().Any(path => !path.StartsWith("External/"));
         //ProjectSettings.LoadResourcePack("user://pack.zip");
-        bool hasBanjoAssets = BanjoAssets.ReadAllSources();
+        bool hasBanjoAssets = await BanjoAssets.ReadAllSources();
 
         var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
         if(lastUsedId is not null)

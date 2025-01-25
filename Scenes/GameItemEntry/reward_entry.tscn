@@ -51,6 +51,7 @@ offset_top = -24.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_vertical = 8
+mouse_filter = 2
 alignment = 2
 
 [node name="RightIconContainer" type="AspectRatioContainer" parent="Overlays/AmountContainer"]
@@ -89,6 +90,7 @@ expand_mode = 1
 [node name="Control" type="Control" parent="Overlays/AmountContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="LeftIconContainer" type="AspectRatioContainer" parent="Overlays/AmountContainer"]
 custom_minimum_size = Vector2(21, 0)
@@ -127,6 +129,7 @@ expand_mode = 1
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="AmountLabel" type="Label" parent="Overlays/AmountContainer"]
 visible = false
@@ -164,11 +167,13 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 grow_horizontal = 0
+mouse_filter = 2
 stretch_mode = 0
 alignment_vertical = 0
 
 [node name="InteractableIcon" type="TextureRect" parent="Overlays/InteractableContainer"]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("7_qcb58")
 expand_mode = 1
 
@@ -180,6 +185,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("8_oce35")
 expand_mode = 1
 

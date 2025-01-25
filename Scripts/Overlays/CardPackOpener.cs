@@ -926,7 +926,7 @@ public partial class CardPackOpener : Control
         {
             foreach (var item in resultItems)
             {
-                item.GenerateSearchTags();
+                item.GetSearchTags();
                 item.GenerateRawData();
             }
             GameItemSelector.Instance.SetRecycleDefaults();

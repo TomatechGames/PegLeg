@@ -22,6 +22,10 @@
                     "startsWith":"daily_"
                 },
                 "Weekly Quests":{
+                    "prefilter":
+                    {
+                        "contains":"weekly"
+                    },
                     "union":[
                         {
                             "startsWith":"weeklyquest_tiered"
@@ -34,6 +38,32 @@
                         }
                     ]
                 },
+                "Daily Frostnite":{
+                    "prefilter":
+                    {
+                        "startsWith":"s11_holdfastquest_d"
+                    },
+                    "union":[
+                        {
+                            "startsWith":"s11_holdfastquest_d1"
+                        },
+                        {
+                            "startsWith":"s11_holdfastquest_d2"
+                        }
+                    ]
+                },
+                "Daily Dungeons":{
+                    "union":[
+                        {
+                            "category":"lte_starlight",
+                            "startsWith":"starlightquest_daily_complete"
+                        },
+                        {
+                            "category":"lte_starlight",
+                            "startsWith":"starlightquest_complete_dailies"
+                        }
+                    ]
+                },
                 "Daily Wargames":{
                     "union":[
                         {
@@ -43,6 +73,10 @@
                     ]
                 },
                 "Daily Endurance":{
+                    "prefilter":
+                    {
+                        "startsWith":"endurancedaily_"
+                    },
                     "union":[
                         {
                             "startsWith":"endurancedaily_t01"
@@ -57,16 +91,6 @@
                             "startsWith":"endurancedaily_t04"
                         }
                     ]
-                },
-                "Daily Frostnite":{
-                    "union":[
-                        {
-                            "startsWith":"s11_holdfastquest_d1"
-                        },
-                        {
-                            "startsWith":"s11_holdfastquest_d2"
-                        }
-                    ]
                 }
             }
         },
@@ -78,13 +102,60 @@
                 {
                     "startsWith":"maydayquest_2019"
                 },
+                "Daily Dungeons":{
+                    "prefilter":
+                    {
+                        "category":"lte_starlight"
+                    },
+                    "union":[
+                        {
+                            "startsWith":"starlightquest_daily_complete"
+                        },
+                        {
+                            "startsWith":"starlightquest_complete_dailies"
+                        }
+                    ]
+                },
                 "Dungeons":
                 {
-                    "startsWith":"starlightquest"
+                    "category":"lte_starlight",
+                    "exclude":
+                    {
+                        "union":[
+                            {
+                                "startsWith":"starlightquest_daily_complete"
+                            },
+                            {
+                                "startsWith":"starlightquest_complete_dailies"
+                            },
+                            {
+                                "endsWith":"_hard"
+                            }
+                        ]
+                    }
+                },
+                "Elite Dungeons":
+                {
+                    "category":"lte_starlight",
+                    "endsWith":"_hard"
                 },
                 "Survive The Horde":
                 {
                     "startsWith":"hordev3"
+                },
+                "Daily Frostnite":{
+                    "prefilter":
+                    {
+                        "startsWith":"s11_holdfastquest_d"
+                    },
+                    "union":[
+                        {
+                            "startsWith":"s11_holdfastquest_d1"
+                        },
+                        {
+                            "startsWith":"s11_holdfastquest_d2"
+                        }
+                    ]
                 },
                 "Frostnite":
                 {
@@ -98,16 +169,17 @@
                                 "startsWith":"s11_holdfastquest_seasonelite"
                             },
                             {
-                                "startsWith":"s11_holdfastquest_d1"
-                            },
-                            {
-                                "startsWith":"s11_holdfastquest_d2"
+                                "startsWith":"s11_holdfastquest_d"
                             }
                         ]
                     }
                 },
                 "Elite Frostnite":
                 {
+                    "prefilter":
+                    {
+                        "startsWith":"s11_holdfastquest"
+                    },
                     "union":[
                         {
                             "endsWith":"elite"
@@ -227,7 +299,8 @@
                 "Repeatable Quests":{
                     "union": [
                         "Quest:genericquest_completestormzones_repeatable",
-                        "Quest:genericquest_killmistmonsters_repeatable"
+                        "Quest:genericquest_killmistmonsters_repeatable",
+                        "Quest:genericquest_completebetastorms_repeatable"
                     ]
                 },
                 "Side Quests":{
@@ -238,22 +311,6 @@
                 },
                 "Challenges":{
                     "category":"Challenges"
-                }
-            }
-        }
-    ],
-    "oldStuff": [
-        {
-            "name": "Weekly Challenges",
-            "groupGens":{
-                "Weekly Perks":{
-                    "startsWith":"weeklyquest_tiered"
-                },
-                "Weekly Supercharger":{
-                    "startsWith":"weekly_elder"
-                },
-                "Weekly Storm King":{
-                    "startsWith":"stw_stormkinghard_weekly"
                 }
             }
         }

@@ -22,7 +22,6 @@ public partial class QuestInterface : Control
     List<Foldout> questGroupCollections = new();
     List<QuestGroupEntry> questGroups = new();
 
-    // Called when the node enters the scene tree for the first time.
     public override async void _Ready()
 	{
         VisibilityChanged += () =>
@@ -37,8 +36,10 @@ public partial class QuestInterface : Control
 
     private async void OnDayChanged()
     {
-        questsDirty = true;
+        if (!AppConfig.Get("quests", "delay_refresh", false))
+            await Helpers.WaitForTimer(5);
 
+        questsDirty = true;
         await GameAccount.activeAccount.ClientQuestLogin();
         if (IsVisibleInTree())
             LoadQuests();
