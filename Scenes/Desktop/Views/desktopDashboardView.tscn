@@ -94,7 +94,6 @@ key = "beastmode"
 script = ExtResource("2_dckmf")
 
 [node name="StandardDashboard" type="VSplitContainer" parent="."]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -110,6 +109,17 @@ layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/MissionCollections/VBoxContainer"]
 layout_mode = 2
+
+[node name="Label" type="Label" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mission Collections"
+
+[node name="Label2" type="Label" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "xx:xx:xx"
+script = ExtResource("10_smvwj")
+timerType = 1
 
 [node name="ForceRefresh" type="Button" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
@@ -130,17 +140,6 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_aag1n")
 expand_mode = 1
-
-[node name="Label" type="Label" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Mission Collections"
-
-[node name="Label2" type="Label" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "xx:xx:xx"
-script = ExtResource("10_smvwj")
-timerType = 1
 
 [node name="Button" type="Button" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
 visible = false
@@ -257,7 +256,7 @@ columnMinWidth = 570
 minColumns = 1
 
 [node name="LlamasAndXp" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
-custom_minimum_size = Vector2(570, 0)
+custom_minimum_size = Vector2(635, 0)
 layout_mode = 2
 size_flags_vertical = 0
 
@@ -283,6 +282,7 @@ size_flags_horizontal = 3
 text = "Llama Shop"
 
 [node name="Button" type="Button" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2"]
+visible = false
 layout_mode = 2
 text = "Go to Llamas"
 
@@ -516,7 +516,7 @@ value = 0.75
 show_percentage = false
 
 [node name="QuestSummary" type="PanelContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
-custom_minimum_size = Vector2(570, 0)
+custom_minimum_size = Vector2(635, 0)
 layout_mode = 2
 theme_type_variation = &"Panel5PadB"
 
@@ -532,6 +532,7 @@ size_flags_horizontal = 3
 text = "Quest Summary"
 
 [node name="Button" type="Button" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Go to Quests"
 
@@ -795,7 +796,7 @@ custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
 [node name="MorePanelsPlanned" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
-custom_minimum_size = Vector2(570, 0)
+custom_minimum_size = Vector2(635, 0)
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned"]
@@ -815,6 +816,7 @@ text = "More Dashboard panels are in development"
 horizontal_alignment = 1
 
 [node name="BeastDashboard" type="HBoxContainer" parent="."]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

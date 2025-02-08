@@ -319,7 +319,9 @@ public class GameAccount
             ["expectedTotalPrice"] = (await offer.GetPersonalPrice(true, true)).quantity * purchaseQuantity,
             ["gameContext"] = "Pegleg",
         };
-        return await GetProfile(FnProfileTypes.Common).PerformOperation("PurchaseCatalogEntry", shopRequestBody.ToString());
+        var result = await GetProfile(FnProfileTypes.Common).PerformOperation("PurchaseCatalogEntry", shopRequestBody.ToString());
+        offer.NotifyChanged();
+        return result;
     }
 
     public async Task<bool> SetAsActiveAccount() => await SetActiveAccount(accountId);

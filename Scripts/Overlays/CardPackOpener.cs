@@ -682,7 +682,7 @@ public partial class CardPackOpener : Control
 
         bool pauseForChoice = false;
         //if current item is cardpack, add delay in fast mode or stop fast mode
-        if (nextPullIndex < TotalQueueLength && nextPullIndex >= queuedItems.Count)
+        if (nextPullIndex < TotalQueueLength && (nextPullIndex >= queuedItems.Count || choicesOnly))
         {
             EndPullCard();
             pauseForChoice = true;
