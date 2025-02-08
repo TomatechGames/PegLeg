@@ -47,7 +47,7 @@ public partial class SurvivorLoadoutInterface : Node
         UpdateAccount();
     }
 
-    private void OnActiveAccountChanged(GameAccount account)
+    private void OnActiveAccountChanged()
     {
         if (overrideAccount is null)
             UpdateAccount();
@@ -108,7 +108,7 @@ public partial class SurvivorLoadoutInterface : Node
             return;
         if(loadoutName is not null)
         {
-            if (!(await GenericConfirmationWindow.OpenConfirmation(
+            if (!(await GenericConfirmationWindow.ShowConfirmation(
                     "Overwrite Loadout?", 
                     "Overwrite", 
                     contextText: "The contents of the selected loadout will be overwritten"
@@ -119,7 +119,7 @@ public partial class SurvivorLoadoutInterface : Node
         var account = GameAccount.activeAccount;
         var loadouts = account.GetLocalData(LoadoutKey)?.AsObject() ?? new();
 
-        loadoutName ??= await GenericLineEditWindow.OpenLineEdit("Enter Survivor Loadout Name", validator: val =>
+        loadoutName ??= await GenericLineEditWindow.ShowLineEdit("Enter Survivor Loadout Name", validator: val =>
         {
             if (loadouts.ContainsKey(val))
                 return "A survivor loadout with that name already exists";
@@ -166,7 +166,7 @@ public partial class SurvivorLoadoutInterface : Node
     {
         if (eggTimer > 0 || overrideAccount is not null)
             return;
-        if (!(await GenericConfirmationWindow.OpenConfirmation(
+        if (!(await GenericConfirmationWindow.ShowConfirmation(
                 "Apply Loadout?", 
                 "Apply", 
                 contextText:"Survivors in this loadout will be slotted into their squads", 
@@ -226,7 +226,7 @@ public partial class SurvivorLoadoutInterface : Node
             return;
         var account = GameAccount.activeAccount;
         var loadouts = account.GetLocalData(LoadoutKey).AsObject();
-        string newLoadoutName = await GenericLineEditWindow.OpenLineEdit("Enter Survivor Loadout Name", validator: val =>
+        string newLoadoutName = await GenericLineEditWindow.ShowLineEdit("Enter Survivor Loadout Name", validator: val =>
         {
             if (val==loadoutName)
                 return "...That's already the name of the loadout";
@@ -251,7 +251,7 @@ public partial class SurvivorLoadoutInterface : Node
 
     private async void OnLoadoutDelete()
     {
-        if (!(await GenericConfirmationWindow.OpenConfirmation(
+        if (!(await GenericConfirmationWindow.ShowConfirmation(
                 "Delete Loadout?", 
                 "Delete", 
                 contextText: "The selected loadout will be deleted",
@@ -285,7 +285,7 @@ public partial class SurvivorLoadoutInterface : Node
 
     private async void OnSquadClear()
     {
-        if (!(await GenericConfirmationWindow.OpenConfirmation(
+        if (!(await GenericConfirmationWindow.ShowConfirmation(
                 "Clear Squad?", 
                 "Clear", 
                 contextText: "All slotted survivors in all squads will be unslotted"

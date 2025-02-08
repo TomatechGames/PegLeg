@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Principal;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -471,6 +469,7 @@ public class GameMission
                 foreach (var itemData in rewardData)
                 {
                     GameItem item = new(null, null, itemData.AsObject());
+                    var __ = item.template;
                     item.GetTexture();
                     item.GetSearchTags();
                     alertRewardItemList.Add(item);
@@ -488,9 +487,57 @@ public class GameMission
             searchTags.Add("Alert");
         if (TheaterCat=="v")
             searchTags.Add("Ventures");
+        //this is super lazy, i dont want to figure out how to query the total of specific items procedurally
+        if (rewardItems.Where(i =>
+                i.sortingTemplate.Name.StartsWith("Reagent_Alteration_Upgrade") ||
+                i.sortingTemplate.Name == "Reagent_Alteration_Generic" ||
+                i.sortingTemplate.Name.StartsWith("Reagent_C") ||
+                i.sortingTemplate.Name== "PersonnelXP" ||
+                i.sortingTemplate.Name == "SchematicXP" ||
+                i.sortingTemplate.Name == "HeroXP"
+            ).Select(i => i.quantity).Sum() >= 4)
+            searchTags.Add("LargeReward");
+        searchTags.Add(PowerLevel);
         searchTags.Add(Location);
         searchTags.Add(TheaterName);
         missionData["searchTags"] = searchTags;
+    }
+
+    public async Task SetMissionPlayableTag(GameAccount byAccount = null)
+    {
+        bool playable = await MissionIsPlayable(byAccount);
+        var searchTags = missionData["searchTags"]?.AsArray();
+        if (playable == searchTags.Contains("Playable"))
+            return;
+        if (playable)
+            searchTags.Add("Playable");
+        else
+            searchTags.Remove("Playable");
+    }
+
+    public async Task<bool> MissionIsPlayable(GameAccount byAccount=null)
+    {
+        byAccount ??= GameAccount.activeAccount;
+        if(!await byAccount.Authenticate())
+            return false;
+        var powerLevel = byAccount.GetFORTStats().PowerLevel;
+        bool isAboveMin = powerLevel >= difficultyInfo["RequiredRating"].GetValue<int>();
+        bool isBelowMax = powerLevel <= difficultyInfo["MaximumRating"].GetValue<int>();
+        if(!isAboveMin || (isBelowMax && TheaterCat=="v"))
+            return false;
+
+        string requiredQuest = tileData["requirements"]["questDefinition"].ToString().Split(".")[^1];
+        bool requiredQuestCheckPassed = requiredQuest == "None" ||
+            (
+                (await byAccount.GetProfile(FnProfileTypes.AccountItems).Query()).GetFirstTemplateItem("Quest") is GameItem targetQuest &&
+                targetQuest.QuestComplete
+            );
+        if(!requiredQuestCheckPassed)
+            return false;
+
+        //implement more checks in future
+
+        return true;
     }
 
     public void UpdateRewardNotifications(bool force = false)

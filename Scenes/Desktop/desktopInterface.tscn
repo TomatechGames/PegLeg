@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=61 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cjge5ubc1hppf" path="res://Scenes/Desktop/Views/desktopBackpackView.tscn" id="15_dlrdq"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="16_rir5i"]
+[ext_resource type="Texture2D" uid="uid://d1718pgqaawqn" path="res://Images/InterfaceIcons/T_Ui_Elastic_NoColor.png" id="20_k0gyk"]
 [ext_resource type="PackedScene" uid="uid://c78gt6b2m1utg" path="res://Scenes/Desktop/Views/desktopMissionView.tscn" id="22_qlkcq"]
 [ext_resource type="PackedScene" uid="uid://4hei03rcfvmu" path="res://Scenes/Desktop/Views/desktopLlamaView.tscn" id="23_b4gaj"]
 [ext_resource type="PackedScene" uid="uid://q7ic84srvgy5" path="res://Scenes/Desktop/Views/desktopCollectionBookView.tscn" id="24_sj3vv"]
@@ -31,8 +32,12 @@
 [ext_resource type="Texture2D" uid="uid://fu8u7pasyjfx" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Swap_128.png" id="29_ql5qm"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="29_vws3e"]
 [ext_resource type="PackedScene" uid="uid://c4lt6qwfc4cou" path="res://Scenes/Desktop/Overlays/loading_overlay.tscn" id="31_v6low"]
+[ext_resource type="Texture2D" uid="uid://07k0gr21gs5e" path="res://Images/InterfaceIcons/T_UI_VKConnectionIndicator_Error_Icon.png" id="34_tbmoj"]
+[ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="35_388tm"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="35_ix213"]
+[ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="36_2y4mq"]
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="37_5b0rm"]
+[ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="37_008xq"]
 [ext_resource type="Script" path="res://Scripts/TrayIcon.cs" id="38_s33ws"]
 [ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Desktop/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
 [ext_resource type="PackedScene" uid="uid://cji2iyaxon6uv" path="res://Scenes/Desktop/Overlays/login_popup.tscn" id="41_kf5nt"]
@@ -41,6 +46,9 @@
 [ext_resource type="PackedScene" uid="uid://outqvmv6p0pm" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_line_edit_window.tscn" id="45_vujc8"]
 [ext_resource type="PackedScene" uid="uid://2okdom0nii2b" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_confirmation_window.tscn" id="46_fbpme"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="47_6bd6x"]
+[ext_resource type="Script" path="res://Scripts/CurtainOpener.cs" id="50_2a2nn"]
+[ext_resource type="Shader" path="res://Shaders/OnboardingCurtain.gdshader" id="51_jeshi"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="52_pam8h"]
 [ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="58_7yvd6"]
 [ext_resource type="PackedScene" uid="uid://dpd06j33s360w" path="res://Scenes/Desktop/Overlays/shop_purchase_animation.tscn" id="96_2bhmt"]
 [ext_resource type="PackedScene" uid="uid://dt403r6613tos" path="res://Scenes/Desktop/Overlays/settings_window.tscn" id="99_hfy7e"]
@@ -83,6 +91,29 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_te271"]
+bg_color = Color(0.332881, 0.332881, 0.332881, 1)
+skew = Vector2(-0.2, 0)
+border_width_left = 3
+border_color = Color(0.8, 0.372549, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvx2k"]
+bg_color = Color(0.332881, 0.332881, 0.332881, 1)
+skew = Vector2(-0.2, 0)
+border_width_left = 3
+border_color = Color(0.12, 0.8, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nd2n"]
+bg_color = Color(0.332881, 0.332881, 0.332881, 1)
+skew = Vector2(-0.2, 0)
+border_width_left = 3
+border_color = Color(0, 0.76, 0.8, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4jxvi"]
+shader = ExtResource("51_jeshi")
+shader_parameter/ControlSize = Vector2(1280, 720)
+shader_parameter/RevealScale = 0.0
+
 [node name="Root" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -95,7 +126,7 @@ theme = ExtResource("1_3bqtb")
 [node name="TargetResolution" type="Node" parent="." node_paths=PackedStringArray("rootNode")]
 script = ExtResource("2_34fsc")
 rootNode = NodePath("..")
-TargetResolution = Vector2i(900, 720)
+TargetResolution = Vector2i(950, 720)
 
 [node name="AutoButtonSounds" type="Node" parent="."]
 script = ExtResource("2_db3cl")
@@ -246,6 +277,9 @@ metadata/_tab_index = 1
 [node name="Label" parent="MainTabs/Item Shop/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
 text = "Event Shop Resets: "
 
+[node name="Label2" parent="MainTabs/Item Shop/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+timerType = 4
+
 [node name="Cosmetic Shop" parent="MainTabs/Item Shop" instance=ExtResource("27_5ey2a")]
 visible = false
 layout_mode = 2
@@ -256,32 +290,29 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 6
 
-[node name="OverlayWindows" type="Control" parent="."]
-z_index = 5
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="CardPackOpenerWindow" parent="OverlayWindows" instance=ExtResource("41_alhak")]
+[node name="Extra" type="MarginContainer" parent="MainTabs"]
 visible = false
-layout_mode = 1
+layout_mode = 2
+metadata/_tab_index = 7
 
-[node name="GameItemSelector" parent="OverlayWindows" instance=ExtResource("44_m211x")]
-visible = false
-layout_mode = 1
+[node name="VBoxContainer" type="VBoxContainer" parent="MainTabs/Extra"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="GameItemViewer" parent="OverlayWindows" instance=ExtResource("25_r7yrq")]
-visible = false
-layout_mode = 1
-anchors_preset = -1
+[node name="Label" type="Label" parent="MainTabs/Extra/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 64
+text = "Under Construction"
+horizontal_alignment = 1
 
-[node name="MissionViewer" parent="OverlayWindows" instance=ExtResource("26_fna7y")]
-visible = false
-layout_mode = 1
+[node name="TextureRect" type="TextureRect" parent="MainTabs/Extra/VBoxContainer"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("20_k0gyk")
 
 [node name="StatusBar" type="MarginContainer" parent="."]
 z_index = 5
@@ -335,6 +366,27 @@ size_flags_horizontal = 8
 mouse_filter = 2
 texture = ExtResource("29_ql5qm")
 expand_mode = 3
+
+[node name="RefreshBtn" type="Button" parent="StatusBar/Left"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="StatusBar/Left/RefreshBtn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("35_ix213")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="PowerLevel" type="MarginContainer" parent="StatusBar/Left" node_paths=PackedStringArray("homebaseNumberLabel", "homebaseNumberProgressBar")]
 layout_mode = 2
@@ -407,6 +459,7 @@ alignment = 2
 [node name="ActiveCurrency" type="MarginContainer" parent="StatusBar/Right"]
 layout_mode = 2
 script = ExtResource("9_23he5")
+compactifyAmount = true
 showSingleItemAmount = true
 
 [node name="Panel" type="Panel" parent="StatusBar/Right/ActiveCurrency"]
@@ -438,27 +491,6 @@ theme_override_font_sizes/font_size = 20
 text = "???"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="RefreshBtn" type="Button" parent="StatusBar/Right"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_vertical = 4
-theme_type_variation = &"LargeButton"
-
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/RefreshBtn"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = -3.0
-offset_bottom = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("35_ix213")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="SettingsButton" type="Button" parent="StatusBar/Right"]
 custom_minimum_size = Vector2(25, 25)
@@ -511,7 +543,219 @@ visible = false
 layout_mode = 2
 color = Color(1, 1, 1, 0.188235)
 
-[node name="TopOverlayWindows" type="Control" parent="."]
+[node name="NotificationOrigin" type="VBoxContainer" parent="."]
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 0
+
+[node name="Notification" type="Control" parent="NotificationOrigin"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -525.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = -10
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_bottom = 2
+
+[node name="Panel" type="Panel" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_te271")
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("34_tbmoj")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "Missions Reset Unexpectedly "
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("35_388tm")
+expand_mode = 1
+
+[node name="Notification2" type="Control" parent="NotificationOrigin"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -460.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = -10
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_bottom = 2
+
+[node name="Panel" type="Panel" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rvx2k")
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("36_2y4mq")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "Free Llamas Available"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("35_388tm")
+expand_mode = 1
+
+[node name="Notification3" type="Control" parent="NotificationOrigin"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -440.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = -10
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification3/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_bottom = 2
+
+[node name="Panel" type="Panel" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5nd2n")
+
+[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("37_008xq")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 24
+text = "New Event Item in Shop"
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("35_388tm")
+expand_mode = 1
+
+[node name="OverlayWindows" type="Control" parent="."]
 z_index = 6
 layout_mode = 1
 anchors_preset = 15
@@ -521,36 +765,56 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="AccountSwitcher" parent="TopOverlayWindows" instance=ExtResource("26_xb41w")]
+[node name="AccountSwitcher" parent="OverlayWindows" instance=ExtResource("26_xb41w")]
 visible = false
 layout_mode = 1
 offset_left = 0.0
 offset_right = 0.0
 
-[node name="SettingsWindow" parent="TopOverlayWindows" instance=ExtResource("99_hfy7e")]
+[node name="MissionViewer" parent="OverlayWindows" instance=ExtResource("26_fna7y")]
+visible = false
+layout_mode = 1
+offset_left = 0.0
+offset_right = 0.0
+
+[node name="CardPackOpenerWindow" parent="OverlayWindows" instance=ExtResource("41_alhak")]
 visible = false
 layout_mode = 1
 
-[node name="ShopPurchaseAnimation" parent="TopOverlayWindows" instance=ExtResource("96_2bhmt")]
+[node name="GameItemViewer" parent="OverlayWindows" instance=ExtResource("25_r7yrq")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+
+[node name="GameItemSelector" parent="OverlayWindows" instance=ExtResource("44_m211x")]
 visible = false
 layout_mode = 1
 
-[node name="LoginPopup" parent="TopOverlayWindows" instance=ExtResource("41_kf5nt")]
+[node name="SettingsWindow" parent="OverlayWindows" instance=ExtResource("99_hfy7e")]
 visible = false
 layout_mode = 1
 
-[node name="GenericLineEditWindow" parent="TopOverlayWindows" instance=ExtResource("45_vujc8")]
+[node name="ShopPurchaseAnimation" parent="OverlayWindows" instance=ExtResource("96_2bhmt")]
 visible = false
 layout_mode = 1
 
-[node name="GenericConfirmationWindow" parent="TopOverlayWindows" instance=ExtResource("46_fbpme")]
+[node name="LoginPopup" parent="OverlayWindows" instance=ExtResource("41_kf5nt")]
 visible = false
 layout_mode = 1
 
-[node name="LoadingOverlay" parent="TopOverlayWindows" instance=ExtResource("31_v6low")]
+[node name="GenericLineEditWindow" parent="OverlayWindows" instance=ExtResource("45_vujc8")]
+visible = false
+layout_mode = 1
+
+[node name="GenericConfirmationWindow" parent="OverlayWindows" instance=ExtResource("46_fbpme")]
+visible = false
+layout_mode = 1
+
+[node name="LoadingOverlay" parent="OverlayWindows" instance=ExtResource("31_v6low")]
 visible = false
 layout_mode = 1
 startOpen = false
+isUserClosable = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 visible = false
@@ -576,13 +840,34 @@ layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0, 1, 0, 1)
 
+[node name="Node" type="Node" parent="." node_paths=PackedStringArray("curtain")]
+script = ExtResource("50_2a2nn")
+curtain = NodePath("../Curtain")
+
+[node name="Curtain" type="ColorRect" parent="."]
+visible = false
+z_index = 50
+texture_repeat = 2
+material = SubResource("ShaderMaterial_4jxvi")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("52_pam8h")
+syncControlSize = true
+modTime = 8.0
+
 [connection signal="IconChanged" from="StatusBar/Left/AccountSelectorBtn" to="StatusBar/Left/AccountSelectorBtn/MarginContainer/TextureRect" method="set_texture"]
 [connection signal="TooltipChanged" from="StatusBar/Left/AccountSelectorBtn" to="StatusBar/Left/AccountSelectorBtn/Button" method="set_tooltip_text"]
-[connection signal="pressed" from="StatusBar/Left/AccountSelectorBtn/Button" to="TopOverlayWindows/AccountSwitcher" method="OpenWindow"]
+[connection signal="pressed" from="StatusBar/Left/AccountSelectorBtn/Button" to="OverlayWindows/AccountSwitcher" method="OpenWindow"]
+[connection signal="pressed" from="StatusBar/Left/RefreshBtn" to="OverlayWindows/AccountSwitcher" method="ReloadAccount"]
 [connection signal="AmountChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer/AmountText" method="set_text"]
 [connection signal="IconChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer/MarginContainer/Icon" method="set_texture"]
-[connection signal="pressed" from="StatusBar/Right/RefreshBtn" to="TopOverlayWindows/AccountSwitcher" method="ReloadAccount"]
-[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="TopOverlayWindows/SettingsWindow" method="OpenWindow"]
+[connection signal="TooltipChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency" method="set_tooltip_text"]
+[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="OverlayWindows/SettingsWindow" method="OpenWindow"]
 [connection signal="UpdateMuteIcon" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn/TextureRect" method="set_texture"]
 [connection signal="pressed" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn" method="ToggleMute"]
 

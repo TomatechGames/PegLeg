@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 public partial class MissionInterface : Control, IRecyclableElementProvider<GameMission>
 {
     #region Statics
+    static MissionInterface instance;
 
     static readonly string[] theaterFilters = new string[]
     {
@@ -58,6 +59,17 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     };
     #endregion
 
+    public static void SearchInMissions(string searchText, bool showMissionTab = false)
+    {
+        instance.searchBar.Text = searchText;
+        instance.UpdateFilters();
+        if (showMissionTab)
+        {
+            instance.Visible = true;
+            instance.FilterMissions();
+        }
+    }
+
     [Export]
     VirtualTabBar zoneFilterTabBar;
     [Export]
@@ -75,10 +87,10 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     List<GameMission> filteredMissions = new();
     public GameMission GetRecycleElement(int index) => index >= 0 && index < filteredMissions.Count ? filteredMissions[index] : null;
     public int GetRecycleElementCount() => filteredMissions.Count;
-    bool needsFilter = false;
 
     public override void _Ready()
     {
+        instance = this;
         missionList.Visible = false;
         loadingIcon.Visible = true;
         searchBar.Text = AppConfig.Get("missions", "default_search", "");
@@ -94,7 +106,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
 		searchBar.TextChanged += e => UpdateFilters();
         foreach (var button in itemFilterButtons)
         {
-            button.Pressed += FilterMissions;
+            button.Pressed += UpdateFilters;
         }
         UpdateFilters();
 
@@ -105,6 +117,8 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
 
         GameMission.OnMissionsUpdated += OnMissionsUpdated;
         GameMission.OnMissionsInvalidated += OnMissionsInvalidated;
+
+        GameAccount.ActiveAccountChanged += ForceReloadMissions;
 
         GameMission.CheckMissions().StartTask();
         StartUpdateCheckTimer();
@@ -125,8 +139,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
         if (!AppConfig.Get("missions", "reset_detection", true))
             return;
         GD.Print("Starting update check timer");
-        updateCheckCTS.Cancel();
-        var ct = updateCheckCTS.Token;
+        updateCheckCTS.CancelAndRegenerate(out var ct);
         while (true)
         {
             var now = DateTime.UtcNow;
@@ -158,7 +171,6 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     {
         missionList.Visible = true;
         loadingIcon.Visible = false;
-        needsFilter = true;
         FilterMissions();
     }
 
@@ -253,8 +265,10 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
         return mission.allItems.Any(item => MatchItemOrEquivelent(item, currentItemInstructions, extraItemFilters));
     }
 
+    bool needsFilter = false;
     void FilterMissions()
-	{
+    {
+        needsFilter = true;
         if (!IsVisibleInTree())
             return;
         needsFilter = false;

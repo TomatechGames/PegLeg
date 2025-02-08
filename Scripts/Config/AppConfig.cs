@@ -24,7 +24,7 @@ public static class AppConfig
         LoadConfig();
         configData[section] ??= new JsonObject();
         configData[section][key] = value.JsonValue;
-        OnConfigChanged?.Invoke(section, key, value.JsonValue);
+        OnConfigChanged?.Invoke(section, key, configData[section][key].AsValue());
 
         GD.Print($"Set Config ({section}:{key} = {value.JsonValue})");
         using var configFile = FileAccess.Open(configPath, FileAccess.ModeFlags.Write);

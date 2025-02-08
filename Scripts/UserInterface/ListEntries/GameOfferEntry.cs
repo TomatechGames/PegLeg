@@ -22,6 +22,8 @@ public partial class GameOfferEntry : Control
     [Signal]
     public delegate void IsLimitedTimeChangedEventHandler(bool isLimitedTime);
     [Signal]
+    public delegate void IsLimitedStockChangedEventHandler(bool isLimitedStock);
+    [Signal]
     public delegate void IsErroredEventHandler(bool isErrored);
     [Signal]
     public delegate void PressedEventHandler(string currentOfferId);
@@ -39,7 +41,7 @@ public partial class GameOfferEntry : Control
     [Export]
     bool showSingleStockAmount = false;
     [Export]
-    bool usePersonalPrice = false;
+    bool cosmeticMode = false;
 
     public GameOffer currentOffer { get; private set; }
     GameItem pricePerPurchase;
@@ -64,7 +66,7 @@ public partial class GameOfferEntry : Control
         GameAccount.ActiveAccountChangedEarly -= OnActiveAccountChanged;
     }
 
-    private void OnActiveAccountChanged(GameAccount _)
+    private void OnActiveAccountChanged()
     {
         offerDirty = true;
         CheckForRefresh();
@@ -161,7 +163,7 @@ public partial class GameOfferEntry : Control
 
         if (grantedItem.template.Type == "CardPack")
         {
-            int tier = (await currentOffer.GetPrerollData(account))?.attributes?["highest_rarity"]?.GetValue<int>() ?? 0;
+            int tier = (await currentOffer.GetXRayLlamaData(account))?.attributes?["highest_rarity"]?.GetValue<int>() ?? 0;
             if (grantedItem.template.DisplayName.Contains("Legendary"))
                 tier = 2;
             if (ct.IsCancellationRequested)
@@ -169,7 +171,7 @@ public partial class GameOfferEntry : Control
             grantedItem.customData["llamaTier"] = tier;
         }
 
-        if (usePersonalPrice)
+        if (cosmeticMode)
         {
             var finalPrice = await currentOffer.GetPersonalPrice();
             if (ct.IsCancellationRequested)
@@ -179,10 +181,10 @@ public partial class GameOfferEntry : Control
 
         if (pricePerPurchase.quantity > 0)
         {
-            var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+            var inInventory = await currentOffer.GetPriceAmountInInventory();
             if (ct.IsCancellationRequested)
                 return;
-            currentPriceInInventory = accountItems.GetFirstTemplateItem(pricePerPurchase.templateId)?.quantity ?? 0;
+            currentPriceInInventory = inInventory;
         }
 
         //async stuff complete, now update visuals
@@ -204,6 +206,7 @@ public partial class GameOfferEntry : Control
 
         EmitSignal(SignalName.NameChanged, "");
         EmitSignal(SignalName.StockChanged, "");
+        EmitSignal(SignalName.IsLimitedStockChanged, false);
         EmitSignal(SignalName.IsFreeChanged, false);
         EmitSignal(SignalName.IsInStockChanged, false);
         EmitSignal(SignalName.IsAffordableChanged, false);
@@ -229,6 +232,7 @@ public partial class GameOfferEntry : Control
         var grantedQuantity = grantedItem.quantity * currentPurchaseQuantity;
 
         EmitSignal(SignalName.IsInStockChanged, currentStockLimit != 0);
+        EmitSignal(SignalName.IsLimitedStockChanged, currentStockLimit > -1);
         EmitSignal(SignalName.IsFreeChanged, price == 0);
         EmitSignal(SignalName.IsAffordableChanged, price == 0 || pricePerPurchase.quantity <= currentPriceInInventory);
         EmitSignal(SignalName.IsLimitedTimeChanged, currentOffer.OfferId == "D46EC225FA1149ADB00B4B17B2ABAB70"); //offerId of random free llamas which only last 1 hour

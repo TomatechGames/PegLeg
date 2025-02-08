@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 public partial class ConfigTextHook : Control
 {
     [Signal]
-    public delegate void ConfigValueChangedEventHandler(bool newValue);
+    public delegate void ConfigValueChangedEventHandler(string newValue);
 
     [Export]
     string section;
@@ -32,7 +32,7 @@ public partial class ConfigTextHook : Control
             {
                 Connect("text_changed", Callable.From<string>(TrySetValue));
             }
-            if ((bool?)Get("text") is bool)
+            if ((string)Get("text") is not null)
             {
                 ConfigValueChanged += newVal => Set("text", newVal);
             }
@@ -50,7 +50,7 @@ public partial class ConfigTextHook : Control
         if (section != this.section || key != this.key)
             return;
         valueIsChanging = true;
-        EmitSignal(SignalName.ConfigValueChanged, val.GetValue<bool>());
+        EmitSignal(SignalName.ConfigValueChanged, val.GetValue<string>());
         valueIsChanging = false;
     }
 

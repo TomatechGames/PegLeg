@@ -1,12 +1,6 @@
 using Godot;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Security.Principal;
-using System.Text.Json.Nodes;
 using System.Threading;
-using System.Threading.Tasks;
 
 public partial class InventoryItemSlot : Node
 {
@@ -70,7 +64,7 @@ public partial class InventoryItemSlot : Node
             slotRequirement = null;
         SetLocked(true);
         GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
-        OnActiveAccountChanged(null);
+        OnActiveAccountChanged();
     }
 
     
@@ -89,7 +83,7 @@ public partial class InventoryItemSlot : Node
             UpdateProfile();
     }
 
-    void OnActiveAccountChanged(GameAccount account)
+    void OnActiveAccountChanged()
     {
         if (autoUpdateAccount && overrideAccount==null)
             SetProfileFromAccount();
@@ -110,10 +104,7 @@ public partial class InventoryItemSlot : Node
             return;
 
         profileUpdateCts?.Cancel();
-        setFromAccountCts?.Cancel();
-
-        setFromAccountCts = new();
-        var ct = setFromAccountCts.Token;
+        setFromAccountCts.CancelAndRegenerate(out var ct);
 
         var account = overrideAccount ?? GameAccount.activeAccount;
         var newProfile = await account.GetProfile(profileType).Query();
@@ -158,8 +149,7 @@ public partial class InventoryItemSlot : Node
         if (currentProfile is null)
             return;
 
-        profileUpdateCts = new();
-        var ct = profileUpdateCts.Token;
+        profileUpdateCts.CancelAndRegenerate(out var ct);
 
         await currentProfile.Query();
         if (!currentProfile.hasProfile || ct.IsCancellationRequested)
@@ -215,7 +205,7 @@ public partial class InventoryItemSlot : Node
 
     public void RequestChange()
     {
-        if (overrideAccount is not null)
+        if (overrideAccount is null)
             OnItemChangeRequested?.Invoke(this);
     }
 

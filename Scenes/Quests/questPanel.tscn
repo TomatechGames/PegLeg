@@ -177,6 +177,7 @@ text = "This is a Daily Quest. You can have up to three Daily Quests at a time. 
 [node name="Objectives" type="VBoxContainer" parent="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
 
 [node name="Label" type="Label" parent="MarginContainer/HSplitContainer/VBoxContainer2/VSplitContainer/Objectives"]
 layout_mode = 2

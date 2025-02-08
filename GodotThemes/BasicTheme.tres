@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=83 format=3 uid="uid://cd7qoq3gay1op"]
+[gd_resource type="Theme" load_steps=89 format=3 uid="uid://cd7qoq3gay1op"]
 
 [ext_resource type="FontVariation" uid="uid://buoopfdou8nvh" path="res://fixedBurbank.tres" id="1_36sps"]
 [ext_resource type="StyleBox" uid="uid://cuvmk7mkkb3yl" path="res://GodotThemes/Styleboxes/ActionButton/ActionButtonDisabled.tres" id="1_bx6da"]
@@ -24,7 +24,9 @@
 [ext_resource type="StyleBox" uid="uid://dd6qho8cpfosj" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftHoveredCheck.tres" id="14_d16eg"]
 [ext_resource type="StyleBox" uid="uid://vi86iuk6xgdq" path="res://GodotThemes/Styleboxes/Light/LargeButton/LightBoxButtonLargeCheckHover.tres" id="15_7hk8x"]
 [ext_resource type="StyleBox" uid="uid://b6r78g45jmtb6" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftSelectedHoveredCheck.tres" id="15_dbfbl"]
+[ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://GodotThemes/Styleboxes/CheckButton/CheckContainer.tres" id="15_s7naa"]
 [ext_resource type="StyleBox" uid="uid://c3817848h1qch" path="res://GodotThemes/Styleboxes/Light/LargeButton/LightBoxButtonLargeDisabled.tres" id="16_ifrdn"]
+[ext_resource type="StyleBox" uid="uid://b2h7poa3o5ao4" path="res://GodotThemes/Styleboxes/CheckButton/CheckGroupContainer.tres" id="16_oemkr"]
 [ext_resource type="StyleBox" uid="uid://di28lqtyev8al" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftUnselectedCheck.tres" id="16_wyq3a"]
 [ext_resource type="StyleBox" uid="uid://cnmionh64752s" path="res://GodotThemes/Styleboxes/CheckButton/Left/LeftSelectedCheck.tres" id="17_ny1jq"]
 [ext_resource type="StyleBox" uid="uid://snylx12e4odj" path="res://GodotThemes/Styleboxes/Light/LargeButton/LightBoxButtonLargeCheckPress.tres" id="17_relrx"]
@@ -38,8 +40,10 @@
 [ext_resource type="StyleBox" uid="uid://c12gk82qaxksm" path="res://GodotThemes/Styleboxes/CheckButton/Middle/MiddleUnselectedCheck.tres" id="21_nw0wt"]
 [ext_resource type="StyleBox" uid="uid://b7dxw8xd3e1s8" path="res://GodotThemes/Styleboxes/Light/LightBoxLineEditDisabled.tres" id="21_o1akw"]
 [ext_resource type="StyleBox" uid="uid://bcjtrltbna38a" path="res://GodotThemes/Styleboxes/CheckButton/Middle/MiddleSelectedCheck.tres" id="22_4y3kj"]
+[ext_resource type="StyleBox" uid="uid://b264361423kx" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTinyCheckHover.tres" id="23_0idjp"]
 [ext_resource type="StyleBox" uid="uid://dp08s20l7y10u" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightHoveredCheck.tres" id="24_e4a1j"]
 [ext_resource type="StyleBox" uid="uid://d2mlslepcqqv1" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightSelectedHoveredCheck.tres" id="25_h0d8y"]
+[ext_resource type="StyleBox" uid="uid://daeddxw83mpfl" path="res://GodotThemes/Styleboxes/Light/TinyButton/LightBoxButtonTinyCheckPress.tres" id="25_w526f"]
 [ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="26_0d32j"]
 [ext_resource type="StyleBox" uid="uid://vpxwlki3d403" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightUnselectedCheck.tres" id="26_3ma2l"]
 [ext_resource type="StyleBox" uid="uid://beg45o7ecf2np" path="res://GodotThemes/Styleboxes/CheckButton/Right/RightSelectedCheck.tres" id="27_l0gjp"]
@@ -71,7 +75,11 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dur1j"]
 
-[sub_resource type="Image" id="Image_cibxj"]
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_84a74"]
+color = Color(0.498039, 0.498039, 0.498039, 1)
+thickness = 2
+
+[sub_resource type="Image" id="Image_eb3m7"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 133, 254, 254, 254, 209, 254, 254, 254, 244, 254, 254, 254, 244, 254, 254, 254, 209, 254, 254, 254, 132, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 21, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 133, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 130, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 207, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 206, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 132, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 129, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 254, 254, 254, 243, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 242, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 21, 254, 254, 254, 130, 254, 254, 254, 207, 254, 254, 254, 243, 254, 254, 254, 242, 254, 254, 254, 206, 254, 254, 254, 129, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -81,7 +89,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_ld0ou"]
-image = SubResource("Image_cibxj")
+image = SubResource("Image_eb3m7")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pxcoq"]
 bg_color = Color(1, 1, 1, 1)
@@ -184,6 +192,11 @@ corner_detail = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h4wr3"]
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ssovo"]
+color = Color(0.498039, 0.498039, 0.498039, 1)
+thickness = 2
+vertical = true
+
 [resource]
 default_font = ExtResource("1_36sps")
 AccountButton/base_type = &"Button"
@@ -217,6 +230,10 @@ CheckButton/styles/hover = ExtResource("9_bc172")
 CheckButton/styles/hover_pressed = ExtResource("9_bc172")
 CheckButton/styles/normal = ExtResource("11_j4jj6")
 CheckButton/styles/pressed = ExtResource("11_j4jj6")
+CheckContainer/base_type = &"PanelContainer"
+CheckContainer/styles/panel = ExtResource("15_s7naa")
+CheckGroupContainer/base_type = &"PanelContainer"
+CheckGroupContainer/styles/panel = ExtResource("16_oemkr")
 CodeEdit/styles/focus = SubResource("StyleBoxEmpty_khoya")
 CodeEdit/styles/normal = SubResource("StyleBoxEmpty_r8gel")
 CodeEdit/styles/read_only = SubResource("StyleBoxEmpty_dur1j")
@@ -232,10 +249,16 @@ EmptyCheckButton/icons/unchecked_mirrored = ExtResource("19_0ka8y")
 EmptyCheckButton/styles/hover_pressed = ExtResource("10_rm02j")
 EmptyCheckButton/styles/pressed = ExtResource("12_a0ked")
 EmptySquareCheckButton/base_type = &"EmptyCheckButton"
-EmptySquareCheckButton/styles/hover = ExtResource("19_pyc6l")
+EmptySquareCheckButton/styles/hover = ExtResource("17_ugm6l")
 EmptySquareCheckButton/styles/hover_pressed = ExtResource("15_7hk8x")
 EmptySquareCheckButton/styles/normal = ExtResource("18_mdlkh")
 EmptySquareCheckButton/styles/pressed = ExtResource("17_relrx")
+EmptySquareCheckButtonSmall/base_type = &"EmptyCheckButton"
+EmptySquareCheckButtonSmall/styles/hover = ExtResource("35_h2vhl")
+EmptySquareCheckButtonSmall/styles/hover_pressed = ExtResource("23_0idjp")
+EmptySquareCheckButtonSmall/styles/normal = ExtResource("36_oln61")
+EmptySquareCheckButtonSmall/styles/pressed = ExtResource("25_w526f")
+HSeparator/styles/separator = SubResource("StyleBoxLine_84a74")
 HSlider/icons/grabber = SubResource("ImageTexture_ld0ou")
 HSlider/icons/tick = ExtResource("1_ervll")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_pxcoq")
@@ -337,3 +360,4 @@ TransparantPanel/base_type = &"Panel"
 TransparantPanel/styles/panel = SubResource("StyleBoxFlat_cda43")
 Tree/styles/focus = SubResource("StyleBoxEmpty_h4wr3")
 Tree/styles/panel = ExtResource("35_xdfpj")
+VSeparator/styles/separator = SubResource("StyleBoxLine_ssovo")

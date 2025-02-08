@@ -28,11 +28,8 @@ public partial class GameAccountEntry : Control
 
     public override void _Ready()
     {
-        if (useActiveAccount)
-        {
-            GameAccount.ActiveAccountChanged += SetAccountInternal;
-            SetAccountInternal(GameAccount.activeAccount);
-        }
+        GameAccount.ActiveAccountChanged += SetActiveAccount;
+        SetActiveAccount();
     }
 
     public void SetAccount(GameAccount account)
@@ -42,10 +39,18 @@ public partial class GameAccountEntry : Control
         SetAccountInternal(account);
     }
 
+    void SetActiveAccount()
+    {
+        if (!useActiveAccount)
+            return;
+        SetAccountInternal(GameAccount.activeAccount);
+    }
+
     void SetAccountInternal(GameAccount account)
     {
         if (account == currentAccount)
         {
+            UpdateAccount();
             currentAccount.UpdateIcon();
             return;
         }
@@ -69,7 +74,7 @@ public partial class GameAccountEntry : Control
                 null,
                 new string[]
                 {
-                    currentAccount.isAuthed ? "Logged In" : (currentAccount.isOwned ? "Login Failure" : "External")
+                    currentAccount.isAuthed ? "Logged In" : (currentAccount.isOwned ? $"Login Failure:\n\"{currentAccount.loginFailureMessage}\"" : "External")
                 },
                 Colors.Blue.ToHtml()
             );
@@ -92,7 +97,7 @@ public partial class GameAccountEntry : Control
     public override void _ExitTree()
     {
         if (useActiveAccount)
-            GameAccount.ActiveAccountChanged -= SetAccountInternal;
+            GameAccount.ActiveAccountChanged -= SetActiveAccount;
         if (currentAccount is not null)
             currentAccount.OnAccountUpdated -= UpdateAccount;
     }

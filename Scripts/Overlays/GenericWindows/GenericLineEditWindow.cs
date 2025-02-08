@@ -29,10 +29,10 @@ public partial class GenericLineEditWindow : ModalWindow
     bool isEditingText = false;
     Func<string, string> validator;
 
-    public static async Task<string> OpenLineEdit(string headerText, string contextText = "", string defaultText = "", string placeholder = "", Func<string, string> validator = null)=>
-        await instance.OpenLineEditInst(headerText, contextText, defaultText, placeholder, validator);
+    public static async Task<string> ShowLineEdit(string headerText, string contextText = "", string defaultText = "", string placeholder = "", Func<string, string> validator = null)=>
+        await instance.ShowLineEditInst(headerText, contextText, defaultText, placeholder, validator);
 
-    async Task<string> OpenLineEditInst(string headerText, string contextText, string defaultText, string placeholder, Func<string, string> validator)
+    async Task<string> ShowLineEditInst(string headerText, string contextText, string defaultText, string placeholder, Func<string, string> validator)
     {
         if (isEditingText)
             return null;
@@ -60,6 +60,7 @@ public partial class GenericLineEditWindow : ModalWindow
 
         return (!didCancel && isValid) ? textBox.Text : null;
     }
+    protected override void CloseWindowViaInput() => Cancel();
 
     public void Cancel()
     {

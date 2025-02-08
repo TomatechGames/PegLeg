@@ -18,8 +18,6 @@ public partial class OnboardingInterface : Control
     [Export]
     CodeLoginLabel loginLabel;
     [Export]
-    Button rememberLoginToggle;
-    [Export]
     Button retryLoginButton;
     [Export]
     Button continueButton;
@@ -28,9 +26,10 @@ public partial class OnboardingInterface : Control
     [Export]
     Control accountSelectionPanel;
 
+    static bool firstLoad = true;
+
     public override async void _Ready()
     {
-        AppConfig.Clear("window");
 
         retryLoginButton.Visible = false;
         continueButton.Disabled = true;
@@ -38,34 +37,38 @@ public partial class OnboardingInterface : Control
         curtain.SetShaderFloat(0, "RevealScale");
         curtain.Visible = true;
 
-        //todo: download and import external assets during runtime using resource pack(s)
-        //ZipReader zr = new();
-        //zr.Open("user://pack.zip");
-        //bool isValid = !zr.GetFiles().Any(path => !path.StartsWith("External/"));
-        //ProjectSettings.LoadResourcePack("user://pack.zip");
-        bool hasBanjoAssets = await BanjoAssets.ReadAllSources();
-
-        var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
-        if(lastUsedId is not null)
-        {
-            var lastUsedAccount = GameAccount.GetOrCreateAccount(lastUsedId);
-            if (lastUsedAccount.isOwned && await lastUsedAccount.SetAsActiveAccount())
-            {
-                LoadMainScene();
-                return;
-            }
-        }
-
         var accounts = GameAccount.OwnedAccounts;
-        //TODO: if more than one account has device details, show account selector
-        foreach (var a in accounts)
+
+        if (firstLoad)
         {
-            if(await a.SetAsActiveAccount())
+            AppConfig.Clear("window");
+            //todo: download and import external assets during runtime using resource pack(s)
+            //ZipReader zr = new();
+            //zr.Open("user://pack.zip");
+            //bool isValid = !zr.GetFiles().Any(path => !path.StartsWith("External/"));
+            //ProjectSettings.LoadResourcePack("user://pack.zip");
+            bool hasBanjoAssets = await BanjoAssets.ReadAllSources();
+            var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
+            if (lastUsedId is not null)
+            {
+                var lastUsedAccount = GameAccount.GetOrCreateAccount(lastUsedId);
+                await lastUsedAccount.SetAsActiveAccount();
+            }
+
+            //TODO: if more than one account has device details, show account selector
+            foreach (var a in accounts)
+            {
+                if (await a.SetAsActiveAccount())
+                    break;
+            }
+
+            if (GameAccount.activeAccount.isOwned)
             {
                 LoadMainScene();
                 return;
             }
         }
+
 
         MusicController.StopMusic();
 
@@ -127,8 +130,7 @@ public partial class OnboardingInterface : Control
         curtain.Visible = true;
         TweenCurtain(false);
         var timer = Helpers.WaitForTimer(curtainOpenDuration);
-        if (rememberLoginToggle.ButtonPressed)
-            await account.SaveDeviceDetails();
+        await account.SaveDeviceDetails();
         await account.SetAsActiveAccount();
         await timer;
         LoadMainScene();

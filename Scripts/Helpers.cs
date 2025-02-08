@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http;
@@ -9,9 +8,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Godot;
 using System.Threading;
-using System.Linq.Expressions;
 using System.Text.Json;
-using static Godot.HttpRequest;
 
 static class Helpers
 {
@@ -29,8 +26,15 @@ static class Helpers
         label.Visible = !string.IsNullOrWhiteSpace(label.Text);
     }
 
-    public static T Reserialise<T>(this T toReserialise) where T : JsonNode =>
-        toReserialise is not null ? (T)JsonNode.Parse(toReserialise.ToJsonString()) : null;
+    public static T Reserialise<T>(this T toReserialise) where T : JsonNode
+    {
+        if(toReserialise is null)
+            return null;
+        lock (toReserialise)
+        {
+            return (T)JsonNode.Parse(toReserialise.ToJsonString());
+        }
+    }
 
     public static string ProperlyGlobalisePath(string godotPath)
     {
@@ -40,17 +44,11 @@ static class Helpers
             return ProjectSettings.GlobalizePath(godotPath);
     }
 
-    public static CancellationTokenSource Reset(this CancellationTokenSource original)
+    public static void CancelAndRegenerate(this CancellationTokenSource original, out CancellationToken ct)
     {
         original?.Cancel();
-        return new();
-    }
-    public static CancellationTokenSource Regenerate(this CancellationTokenSource original, out CancellationToken ct)
-    {
-        original?.Cancel();
-        var newSource = new CancellationTokenSource();
-        ct = newSource.Token;
-        return newSource;
+        original = new();
+        ct = original.Token;
     }
 
     static SceneTree MainLoopSceneTree => (SceneTree)Engine.GetMainLoop();
@@ -113,6 +111,17 @@ static class Helpers
         return resultNodes.Count == 0 ? null : new(resultNodes.Select(n => n.Reserialise()).ToArray());
     }
 
+    //why merge into a json array when you can just have a regular array
+    public static JsonObject[] GetAllCosmetics(this JsonObject from)
+    {
+        var brItems = from["brItems"]?.AsArray() ?? new();
+        var tracks = from["tracks"]?.AsArray() ?? new();
+        var instruments = from["instruments"]?.AsArray() ?? new();
+        var cars = from["cars"]?.AsArray() ?? new();
+        var legoKits = from["legoKits"]?.AsArray() ?? new();
+        return brItems.Union(tracks).Union(instruments).Union(cars).Union(legoKits).Select(n=>n.AsObject()).ToArray();
+    }
+
     public static async void RunWithDelay(Task task, float delay)
     {
         await WaitForTimer(delay);
@@ -160,6 +169,9 @@ static class Helpers
         {
             GD.Print("result was not json: " + resultText);
         }
+
+        if (result.IsSuccessStatusCode)
+            resultNode ??= new JsonObject() { ["success"] = true };
         //todo: throw exception when encountering a response with an errorMessage
 
         if (resultNode is JsonObject && resultNode["numericErrorCode"]?.GetValue<int>() == 1031)
@@ -185,14 +197,21 @@ static class Helpers
             try
             {
                 var resultText = response is not null ? await response.Content.ReadAsStringAsync() : null;
-                var resultNode = JsonNode.Parse(resultText);
-                if (resultNode["numericErrorCode"]?.GetValue<int>() == 1012)
+                if(resultText is not null)
                 {
-                    // silences Device Code check fails
-                    return response;
+                    var resultNode = JsonNode.Parse(resultText);
+                    if (resultNode["numericErrorCode"]?.GetValue<int>() == 1012)
+                    {
+                        // silences Device Code check fails
+                        return response;
+                    }
                 }
             }
             catch (JsonException) { }
+            catch (Exception e)
+            {
+                GD.PushError("Exception in web request: "+e.Message);
+            }
             GD.Print("\nException Caught!");
             GD.Print($"Message :{ex.Message} ");
             GD.Print($"Response :{(response is not null ? (await response.Content.ReadAsStringAsync()) : "null response")} ");
@@ -201,10 +220,11 @@ static class Helpers
     }
 
 
-    static char[] compactNumberMilestones = "KMBT".ToCharArray();
-    public static bool debugBool = false;
+    static char[] compactNumberMilestones = "KMB".ToCharArray();
     public static string Compactify(this int number)
     {
+        if (number == int.MaxValue)
+            return "Max";
         int milestoneLevel = 0;
         int solidNumber = Mathf.FloorToInt(number);
         int decimalNumber = 0;
@@ -224,13 +244,10 @@ static class Helpers
 
         int solidFigures = solidNumber.ToString().Length; //2=>2 1=>1
 
-        if (debugBool)
-            Debug.WriteLine($"Debug {solidFigures} {solidNumber} {decimalNumber}");
-
         decimalNumber = Mathf.FloorToInt(decimalNumber/Mathf.Pow(10, Mathf.Max(0, solidFigures)));//2=>push twice
         bool decimalExists = decimalNumber > 0 && solidFigures != 3;
 
-        string combinedNumber = solidNumber + (decimalExists ? ("." + decimalNumber.ToString()) : "");
+        string combinedNumber = solidNumber + (decimalExists ? ("." + (decimalNumber < 10 ? "0" : "") + decimalNumber.ToString()) : "");
         return combinedNumber + (milestoneLevel==0 ? "" : compactNumberMilestones[milestoneLevel-1]);
     }
 

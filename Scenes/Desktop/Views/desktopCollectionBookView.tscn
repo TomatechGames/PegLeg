@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://q7ic84srvgy5"]
+[gd_scene load_steps=6 format=3 uid="uid://q7ic84srvgy5"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/TempCompendiumInterface.cs" id="1_bi7hy"]
+[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="2_eixj7"]
+[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="2_pegwh"]
+[ext_resource type="PackedScene" uid="uid://cei68i5c1u3d1" path="res://Scenes/GameItemEntry/reward_entry_compendium.tscn" id="4_k5lnx"]
+[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_v321d"]
 
-[node name="Compendium" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox")]
+[node name="Compendium" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox", "loadingIcon")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,8 +14,14 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_bottom = -4
 script = ExtResource("1_bi7hy")
-itemList = NodePath("VBoxContainer/ItemList")
+itemList = NodePath("VBoxContainer/PanelContainer/ScrollContainer")
 searchBox = NodePath("VBoxContainer/LineEdit")
+loadingIcon = NodePath("LoadingIcon")
+
+[node name="LoadingIcon" parent="." instance=ExtResource("2_pegwh")]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -21,6 +31,7 @@ layout_mode = 2
 clear_button_enabled = true
 
 [node name="ItemList" type="ItemList" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -32,7 +43,52 @@ allow_reselect = true
 allow_search = false
 max_columns = 100
 same_column_width = true
-fixed_icon_size = Vector2i(48, 48)
+icon_scale = 2.0
+fixed_icon_size = Vector2i(64, 64)
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Panel5Pad"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/PanelContainer" node_paths=PackedStringArray("linkedGrid", "offsetControl", "paddingControl", "elementParent")]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("2_eixj7")
+elementSpace = 5.0
+linkedGrid = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+elementScene = ExtResource("4_k5lnx")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/PanelContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Offset" type="Control" parent="VBoxContainer/PanelContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DynGridContainer" type="Container" parent="VBoxContainer/PanelContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 0
+script = ExtResource("4_v321d")
+compressSpacing = true
+spacing = Vector2(5, 5)
+
+[node name="Padding" type="Control" parent="VBoxContainer/PanelContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2

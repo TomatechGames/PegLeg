@@ -6,6 +6,10 @@ public partial class ConfigRangeHook : Node
 {
     [Signal]
     public delegate void ConfigValueChangedEventHandler(double newValue);
+    [Signal]
+    public delegate void UnappliedLabelChangedEventHandler(string newValue);
+    [Signal]
+    public delegate void AppliedChangedEventHandler(bool value);
 
     [Export]
     string section;
@@ -18,6 +22,11 @@ public partial class ConfigRangeHook : Node
 
     [Export]
     bool tryBind = true;
+
+    [Export]
+    bool requireApply = true;
+
+
 
     public override void _Ready()
     {        
@@ -34,8 +43,9 @@ public partial class ConfigRangeHook : Node
         }
 
         base._Ready();
+        EmitSignal(SignalName.AppliedChanged, true);
         AppConfig.OnConfigChanged += UpdateValue;
-        EmitSignal(SignalName.ConfigValueChanged, AppConfig.Get<double>(section, key, defaultValue));
+        EmitSignal(SignalName.ConfigValueChanged, AppConfig.Get(section, key, defaultValue));
     }
 
     private void UpdateValue(string section, string key, JsonValue val)
@@ -47,10 +57,33 @@ public partial class ConfigRangeHook : Node
         valueIsChanging = false;
     }
 
+    double unappliedValue;
+    public void ApplyValue()
+    {
+        if (requireApply)
+        {
+            AppConfig.Set(section, key, unappliedValue);
+            EmitSignal(SignalName.AppliedChanged, true);
+        }
+    }
+
     bool valueIsChanging;
     public void SetValue(double newValue)
     {
         if (!valueIsChanging)
-            AppConfig.Set(section, key, newValue);
+        {
+            if (!requireApply)
+            {
+                AppConfig.Set(section, key, newValue);
+                EmitSignal(SignalName.UnappliedLabelChanged, newValue.ToString()[..Mathf.Min(newValue.ToString().Length, 4)]);
+                EmitSignal(SignalName.AppliedChanged, true);
+            }
+            else
+            {
+                unappliedValue = newValue;
+                EmitSignal(SignalName.UnappliedLabelChanged, unappliedValue.ToString()[..Mathf.Min(unappliedValue.ToString().Length, 4)]);
+                EmitSignal(SignalName.AppliedChanged, false);
+            }
+        }
     }
 }

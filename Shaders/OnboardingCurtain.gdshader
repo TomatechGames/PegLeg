@@ -11,12 +11,12 @@ void fragment() {
 	float smallest=min(ControlSize.x, ControlSize.y);
 	float largest=max(ControlSize.x, ControlSize.y);
 	float upperBound = 0.5*largest/smallest;
-	
+
 	vec2 fitUV = adaptToAspect(ControlSize, vec2(0.5), vec2(1), UV, true);
 	float gradient = distance(fitUV, vec2(0.5));
 	gradient*=20.0;
 	gradient-=(RevealScale*(upperBound*20.0+5.0))-1.0;
-	
+
 	COLOR.a*=gradient;
 }
 

@@ -22,6 +22,9 @@ public enum OrderRange
 
 public readonly struct FORTStats
 {
+    //todo: export this via BanjoBotAssets
+    static DataTableCurve homebaseRatingCurve = new("res://External/DataTables/HomebaseRatingMapping.json", "UIMonsterRating");
+
     public readonly float fortitude;
     public readonly float offense;
     public readonly float resistance;
@@ -33,6 +36,8 @@ public readonly struct FORTStats
         this.resistance = resistance;
         this.technology = technology;
     }
+
+    public float PowerLevel => homebaseRatingCurve.Sample(4 * (fortitude + offense + resistance + technology));
 }
 
 static class FnProfileTypes
@@ -127,16 +132,18 @@ public class GameAccount
     static readonly Dictionary<string, GameAccount> gameAccountCache = LoadStoredAccounts().ToDictionary(a => a.accountId);
     public static GameAccount[] OwnedAccounts => gameAccountCache.Values.Where(a => a.isOwned).ToArray();
     public static GameAccount GetOrCreateAccount(string accountId) => gameAccountCache.ContainsKey(accountId) ? gameAccountCache[accountId] : gameAccountCache[accountId] = new(accountId);
-    public static async Task<bool> RemoveAccount(string accountId)
+    public static async Task<bool> RemoveAccount(string accountId, bool force = false)
     {
         if (!gameAccountCache.ContainsKey(accountId))
             return true;
         var account = gameAccountCache[accountId];
-        if (!await account.RemoveDeviceDetails())
+        if (!await account.RemoveDeviceDetails(force))
             return false;
         account.DeleteLocalData();
         gameAccountCache.Remove(accountId);
         account.accountId = null;
+        if (_activeAccount == account)
+            _activeAccount = null;
         return true;
     }
 
@@ -162,8 +169,8 @@ public class GameAccount
 
     static GameAccount _activeAccount;
     public static GameAccount activeAccount => _activeAccount ??= new(null);
-    public static event Action<GameAccount> ActiveAccountChangedEarly;
-    public static event Action<GameAccount> ActiveAccountChanged;
+    public static event Action ActiveAccountChangedEarly;
+    public static event Action ActiveAccountChanged;
 
     public static async Task<bool> SetActiveAccount(string accountId)
     {
@@ -173,8 +180,8 @@ public class GameAccount
         if (await account.Authenticate())
         {
             _activeAccount = account;
-            ActiveAccountChangedEarly?.Invoke(account);
-            ActiveAccountChanged?.Invoke(account);
+            ActiveAccountChangedEarly?.Invoke();
+            ActiveAccountChanged?.Invoke();
             AppConfig.Set("account", "lastUsed", accountId);
             return true;
         }
@@ -192,6 +199,7 @@ public class GameAccount
         {
             profile.InvalidateProfile();
         }
+        await _activeAccount.GetProfile(FnProfileTypes.AccountItems).Query();
         await SetActiveAccount(_activeAccount.accountId);
     }
 
@@ -214,6 +222,7 @@ public class GameAccount
     bool isValid => !string.IsNullOrWhiteSpace(accountId);
 
     public bool loginFailure { get; private set; }
+    public string loginFailureMessage { get; private set; }
     public bool isAuthed => isValid && !loginFailure && !AuthTokenExpired;
     public bool isOwned => isValid && (isAuthed || GetLocalData("DeviceDetails") is not null);
 
@@ -283,10 +292,12 @@ public class GameAccount
             SetAuthentication(deviceAuth);
             return true;
         }
-        GD.Print(deviceAuth?["errorMessage"].ToString());
+        string failMsg = deviceAuth?["errorMessage"].ToString();
+        GD.Print(failMsg);
         if (!loginFailure)
         {
             loginFailure = true;
+            loginFailureMessage = failMsg;
             OnAccountUpdated?.Invoke();
         }
 
@@ -356,7 +367,7 @@ public class GameAccount
 
             var skinData = await Helpers.MakeRequest(
                     HttpMethod.Get,
-                    ExternalEndpoints.cosmeticShopEndpoint,
+                    ExternalEndpoints.fnApiEndpoint,
                     $"/v2/cosmetics/br/{skinId}",
                     "{}",
                     null,
@@ -402,9 +413,9 @@ public class GameAccount
         SetLocalData("DeviceDetails", new JsonArray(EncryptDeviceDetails(deviceDetails).Select(b => (JsonNode)b).ToArray()));
     }
 
-    public async Task<bool> RemoveDeviceDetails()
+    public async Task<bool> RemoveDeviceDetails(bool force = false)
     {
-        if(!await Authenticate())
+        if(!force && !await Authenticate())
         {
             GD.Print("Authentication failed, aborting device detail deletion");
             return false;
@@ -422,7 +433,7 @@ public class GameAccount
                 ""
             );
 
-            if (result["errorMessage"] is not null)
+            if (!force && (result is null || result["errorMessage"] is not null))
             {
                 GD.Print($"Could not delete device details: {result["errorMessage"]}");
                 return false;
@@ -509,7 +520,7 @@ public class GameAccount
         var statItems = accountItems.GetItems("Stat");
         var equippedWorkerItems = accountItems.GetItems("Worker", item => item.attributes.ContainsKey("squad_id"));
 
-        int LookupStatItem(string statId) => statItems.First(item => item.templateId == statId).quantity;
+        int LookupStatItem(string statId) => statItems.FirstOrDefault(item => item.templateId == statId)?.quantity ?? 0;
 
         float LookupWorkers(string squadId)
         {
@@ -536,30 +547,7 @@ public class GameAccount
         return fortStats.Value;
     }
 
-    public async Task<GameItem[]> GetAllPrerollData()
-    {
-        var accountItems = GetProfile(FnProfileTypes.AccountItems);
-        var allPrerolls = accountItems.GetItems("PrerollData");
-
-        if 
-        (
-            !accountItems.hasProfile || 
-            allPrerolls.FirstOrDefault() is not GameItem firstPreroll ||
-            DateTime.UtcNow.CompareTo(DateTime.Parse(firstPreroll.attributes["expiration"].ToString(), null, DateTimeStyles.RoundtripKind)) >= 0
-        )
-        {
-            await accountItems.PerformOperation("PopulatePrerolledOffers");
-            allPrerolls = accountItems.GetItems("PrerollData");
-        }
-
-        if (!accountItems.hasProfile)
-        {
-            await accountItems.Query();
-            allPrerolls = accountItems.GetItems("PrerollData");
-        }
-
-        return allPrerolls;
-    }
+    public async Task GenerateXRayLlamaResults() => await GetProfile(FnProfileTypes.AccountItems).PerformOperation("PopulatePrerolledOffers");
 
     public async Task<float> GetSurvivorBonus(string bonusID, int perSquadRequirement = 2, float boostBase = 5)
     {
@@ -723,9 +711,11 @@ public class GameAccount
         return accountItems;
     }
 
-    public async Task ClientQuestLogin() => 
+    public async Task ClientQuestLogin()
+    {
         await GetProfile(FnProfileTypes.AccountItems)
             .PerformOperation("ClientQuestLogin", @"{""streamingAppKey"": """"}");
+    }
 
     public async Task AddPinnedQuest(GameItem item)
     {
@@ -832,7 +822,7 @@ public class GameProfile
     Dictionary<string, GameItem> items = new();
     Dictionary<string, List<GameItem>> groupedItems = new();
 
-    public event Action<GameProfile> OnStatChanged;
+    public event Action OnStatChanged;
     public event Action<GameItem> OnItemAdded;
     public event Action<GameItem> OnItemUpdated;
     public event Action<GameItem> OnItemRemoved;
@@ -985,8 +975,10 @@ public class GameProfile
             };
         request.Headers.Authorization = authHeader;
 
-        var result = (await Helpers.MakeRequest(FnEndpoints.gameEndpoint, request)).AsObject();
+        var result = (await Helpers.MakeRequest(FnEndpoints.gameEndpoint, request))?.AsObject();
         lastOp = result;
+        if(result is null)
+            return null;
         if (result.ContainsKey("errorCode"))
         {
             var _ = GenericConfirmationWindow.ShowErrorForWebResult(result);
@@ -1086,7 +1078,15 @@ public class GameProfile
             {
                 case "itemAdded":
                     targetItem = new(this, uuid, change["item"].AsObject());
-                    items[uuid] = targetItem;
+                    lock (items)
+                    {
+                        items[uuid] = targetItem;
+                    }
+                    lock (groupedItems)
+                    {
+                        groupedItems[targetItem.templateId.Split(":")[0]] ??= new();
+                        groupedItems[targetItem.templateId.Split(":")[0]].Add(targetItem);
+                    }
                     GD.Print($"ADDED: {uuid} ({items[uuid]})");
                     OnItemAdded?.Invoke(targetItem);
                     break;
@@ -1096,13 +1096,21 @@ public class GameProfile
                     targetItem = items[uuid];
                     GD.Print($"REMOVING: {uuid} ({targetItem})");
                     targetItem.NotifyRemoving();
-                    items.Remove(uuid);
+                    lock (items)
+                    {
+                        items.Remove(uuid);
+                    }
+                    lock (groupedItems)
+                    {
+                        if (groupedItems[targetItem.templateId.Split(":")[0]] is List<GameItem> list && list.Contains(targetItem))
+                            list.Remove(targetItem);
+                    }
                     OnItemRemoved?.Invoke(targetItem);
                     targetItem.DisconnectFromProfile();
                     break;
                 case "statChanged":
                     GD.Print($"STAT CHANGED: ? ({change})");
-                    OnStatChanged?.Invoke(this);
+                    OnStatChanged?.Invoke();
                     break;
                 case "itemQuantityChanged":
                     targetItem = items[uuid];
@@ -1201,9 +1209,9 @@ public class GameItem
 
     public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)
     {
-        attemptedTemplateSearch = true;
         _template = template;
         templateId = template?.TemplateId;
+        upgradeBasis = template;
         this.quantity = quantity;
         this.attributes = attributes;
         this.customData = customData ?? new();
@@ -1215,23 +1223,13 @@ public class GameItem
     public GameProfile profile { get; private set; }
     public string uuid { get; private set; }
 
+    public GameItemTemplate sortingTemplate => zcpEquivelent?.template ?? template;
     public GameItem zcpEquivelent { get; private set; }
     public GameItem inspectorOverride { get; private set; }
 
-    bool attemptedTemplateSearch;
     public string templateId { get; private set; }
-    public GameItemTemplate template
-    {
-        get
-        {
-            if (attemptedTemplateSearch)
-                return _template;
-            _template ??= GameItemTemplate.Get(templateId);
-            attemptedTemplateSearch = true;
-            return _template;
-        }
-    }
     GameItemTemplate _template;
+    public GameItemTemplate template => _template ??= GameItemTemplate.Get(templateId);
 
     public JsonObject attributes { get; private set; }
     public JsonObject customData { get; private set; } = new();
@@ -1259,17 +1257,22 @@ public class GameItem
     public JsonObject GenerateRawData()
     {
         var templateData = template?.rawData.Reserialise();
-        if (templateData?.ContainsKey("searchTags") ?? false)
-            templateData.Remove("searchTags");
-        return _rawData = new()
+        templateData ??= new();
+        templateData["searchTags"] = null;
+        templateData.Remove("searchTags");
+        _rawData = new()
         {
             ["templateId"] = templateId,
             ["attributes"] = attributes?.Reserialise(),
             ["quantity"] = quantity,
             ["template"] = templateData,
-            ["custom"] = customData?.Reserialise(),
             ["searchTags"] = _searchTags?.Reserialise() ?? template?["searchTags"]?.Reserialise(),
         };
+        if(customData is not null)
+            _rawData["custom"] = customData.Reserialise();
+        if(zcpEquivelent is not null)
+            _rawData["bundleItem"] = zcpEquivelent.template.rawData.Reserialise();
+        return _rawData;
     }
     public JsonArray Alterations => (attributes?["alterations"] ?? attributes?["alterationDefinitions"])?.AsArray();
 
@@ -1320,7 +1323,6 @@ public class GameItem
         var newTemplate = rawData["templateId"]?.ToString() ?? rawData["itemType"]?.ToString();
         if (templateId != newTemplate)
         {
-            attemptedTemplateSearch = false;
             _template = null;
             templateId = newTemplate;
             zcpEquivelent = FindZcpEquivelent(templateId);
@@ -1339,7 +1341,7 @@ public class GameItem
         _searchTags = null;
         textures.Clear();
     }
-
+    public bool IsFavourited => attributes?["favorite"]?.GetValue<bool>() ?? false;
     bool? isSeenLocal = null;
     public bool IsSeen => isSeenLocal ?? (attributes?["item_seen"]?.GetValue<bool>() ?? false || !template.CanBeUnseen);
     public GameItem SetSeenLocal(bool? newVal = true)
@@ -1463,7 +1465,9 @@ public class GameItem
         return (float)statLookup["Values"][statKey];
     }
 
-    public bool IsPinnedQuest => profile?.account.HasPinnedQuest(this) ?? false;
+    public bool QuestPinned => profile?.account.HasPinnedQuest(this) ?? false;
+    public string QuestState => attributes?["quest_state"]?.ToString();
+    public bool QuestComplete => QuestState == "unknown" || QuestState == "Claimed"; //TODO: need to check which state value refers to unclaimed complete quests
 
     public void ClearRating() => _rating = null;
     int? _rating;
@@ -1474,7 +1478,7 @@ public class GameItem
     {
         if (!BanjoAssets.TryGetSource("ItemRatings", out var ratings))
             return 0;
-        var tier = template.Tier;
+        var tier = template?.Tier ?? 0;
         if (tier == 0)
             return 0;
 
@@ -1630,9 +1634,39 @@ public class GameItem
     }
         
 
-    public override string ToString() => $"{{\n  id:{uuid}\n  template:{templateId}\n  quantity:{quantity}\n  attributes:{attributes}}}";
+    public override string ToString() => $"{{\n  id:{uuid}\n  template:{templateId}\n  quantity:{quantity}\n  attributes:{attributes}\n  custom:{customData}\n}}";
 
-    public GameItem Clone(int? quantity = null, JsonObject customData = null) => new(template, quantity ?? this.quantity, attributes.Reserialise(), profile is null ? inspectorOverride : this, customData ?? this.customData.Reserialise());
+    public GameItem GetUpgradedClone(int rarityUp, int tierUp)
+    {
+        GameItem newItemClone = Clone(useInspectorOverride: false);
+        newItemClone.SetCloneUpgrade(rarityUp, tierUp);
+        return newItemClone;
+    }
+
+    GameItemTemplate upgradeBasis;
+    public void SetCloneUpgrade(int rarityUp, int tierUp)
+    {
+        if (upgradeBasis is null)
+            return;
+        var newTemplate = upgradeBasis;
+        for (int i = 0; i < rarityUp; i++)
+        {
+            if (newTemplate.TryGetNextRarity() is not GameItemTemplate newRarity)
+                break;
+            newTemplate = newRarity;
+        }
+        for (int i = 0; i < tierUp; i++)
+        {
+            if (newTemplate.TryGetNextTier() is not GameItemTemplate newTier)
+                break;
+            newTemplate = newTier;
+        }
+        templateId = newTemplate.TemplateId;
+        _template = newTemplate;
+        ResetCachedData();
+    }
+
+    public GameItem Clone(int? quantity = null, JsonObject customData = null, bool useInspectorOverride = true) => new(template, quantity ?? this.quantity, attributes.Reserialise(), useInspectorOverride ? (profile is null ? inspectorOverride ?? this : this) : null, customData ?? this.customData.Reserialise());
 
     public void NotifyChanged()
     {

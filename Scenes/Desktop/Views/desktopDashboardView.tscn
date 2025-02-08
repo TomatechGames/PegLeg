@@ -1,16 +1,45 @@
-[gd_scene load_steps=14 format=3 uid="uid://bqp7ax1fjc306"]
+[gd_scene load_steps=45 format=3 uid="uid://bqp7ax1fjc306"]
 
+[ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="1_1tegx"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/Dashboard/MissionCollectionsController.cs" id="1_37xws"]
 [ext_resource type="PackedScene" uid="uid://c70qnky0xyx4w" path="res://Scenes/MissionEntry/mission_collection.tscn" id="1_a6luq"]
 [ext_resource type="Script" path="res://Scripts/UIElements/ColumnStackContainer.cs" id="1_ac3k7"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/Dashboard/MissionRewardsController.cs" id="1_rx870"]
 [ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="2_a4xlu"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_aag1n"]
+[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="2_dckmf"]
+[ext_resource type="Shader" path="res://Shaders/GradientShader.gdshader" id="3_h2g04"]
+[ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="4_hmk5g"]
+[ext_resource type="Texture2D" uid="uid://hljvhk8gc1lw" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-128.png" id="5_dwmk6"]
+[ext_resource type="Texture2D" uid="uid://bsopcpbc1h78o" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-Leader-CARD.png" id="6_vrldu"]
+[ext_resource type="Texture2D" uid="uid://con6bkc8e5wf6" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Repeat_128.png" id="6_xaony"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/Dashboard/DashboardLlamasController.cs" id="7_3tsbl"]
+[ext_resource type="Texture2D" uid="uid://t0htcw48sob1" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Hero-CARD.png" id="7_grsoo"]
+[ext_resource type="Texture2D" uid="uid://dw4hobglon36k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Clock_128.png" id="7_ots04"]
 [ext_resource type="PackedScene" uid="uid://d2sah8mggjcus" path="res://Scenes/LlamaEntries/llama_highlight.tscn" id="7_uwope"]
 [ext_resource type="PackedScene" uid="uid://31ck1j8euqq7" path="res://Scenes/Quests/quest_highlight.tscn" id="8_1vwuw"]
+[ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="8_rotkf"]
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="9_stolx"]
+[ext_resource type="Texture2D" uid="uid://dwam1asop7ckw" path="res://Images/InterfaceIcons/PinataMiniRewardPack.png" id="9_xhy21"]
 [ext_resource type="PackedScene" uid="uid://wb5ukb74fot1" path="res://Scenes/ShopEntries/regular_shop_entry.tscn" id="10_ehus4"]
+[ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="10_rney3"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="10_smvwj"]
+[ext_resource type="Texture2D" uid="uid://bg8tqds2ynv72" path="res://Images/TextureResources/GradientShadow.tres" id="10_ta6o0"]
+[ext_resource type="Texture2D" uid="uid://bs2rkwdm3joj1" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Caution_128.png" id="11_nlqir"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_pybot"]
+[ext_resource type="Texture2D" uid="uid://clu8pwf3ou6au" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Ranged-CARD.png" id="11_rguep"]
+[ext_resource type="Texture2D" uid="uid://c5pk5nlltrbxc" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Melee-CARD.png" id="12_jv2yv"]
+[ext_resource type="Texture2D" uid="uid://b50pdjevad7c6" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Traps-CARD.png" id="13_y3ww7"]
+[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="14_p2qwn"]
+[ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="14_tws5x"]
+[ext_resource type="PackedScene" uid="uid://bxxycun2kva7" path="res://Scenes/MissionEntry/mission_reward_entry.tscn" id="16_sctyi"]
+[ext_resource type="PackedScene" uid="uid://dn2ji38mchobh" path="res://Scenes/dashboard_alert_summary.tscn" id="32_4xtrc"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/Dashboard/AlertSummaryController.cs" id="32_tpsvr"]
+[ext_resource type="Texture2D" uid="uid://c0n3kv5onb5c2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Hero-PromotionCurrency-L.png" id="34_sp71l"]
+[ext_resource type="PackedScene" uid="uid://pcyuj0ewudy3" path="res://Scenes/LlamaEntries/llama_highlight_db_style.tscn" id="35_muen0"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="36_8isvq"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/Dashboard/DashboardSuperchargerController.cs" id="36_tp2em"]
+[ext_resource type="Texture2D" uid="uid://b5f6h8q50sc0x" path="res://Images/InterfaceIcons/T_UI_Checkmark.png" id="39_13buu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqxg2"]
 bg_color = Color(0.314316, 0.314316, 0.314316, 1)
@@ -36,6 +65,14 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w6d4a"]
+shader = ExtResource("3_h2g04")
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_asvga"]
+resource_local_to_scene = false
+resource_name = "RewardType"
+allow_unpress = true
+
 [node name="Dashboard" type="MarginContainer"]
 custom_minimum_size = Vector2(720, 0)
 anchors_preset = 15
@@ -45,28 +82,42 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VSplitContainer" parent="."]
+[node name="CheckButton" type="CheckButton" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("1_1tegx")
+section = "advanced"
+key = "beastmode"
+
+[node name="Node" type="Node" parent="CheckButton"]
+script = ExtResource("2_dckmf")
+
+[node name="StandardDashboard" type="VSplitContainer" parent="."]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="MissionCollections" type="PanelContainer" parent="VBoxContainer"]
+[node name="MissionCollections" type="PanelContainer" parent="StandardDashboard"]
+custom_minimum_size = Vector2(635, 0)
 layout_mode = 2
 theme_type_variation = &"Panel5PadB"
 script = ExtResource("1_37xws")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MissionCollections"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/MissionCollections"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/MissionCollections/VBoxContainer"]
 layout_mode = 2
 
-[node name="ForceRefresh" type="Button" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(24, 0)
+[node name="ForceRefresh" type="Button" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 tooltip_text = "Force Reload"
 theme_type_variation = &"LargeButton"
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer/ForceRefresh"]
+[node name="TextureRect" type="TextureRect" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer/ForceRefresh"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -80,27 +131,30 @@ grow_vertical = 2
 texture = ExtResource("2_aag1n")
 expand_mode = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Mission Collections"
 
-[node name="Label2" type="Label" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "x Unexpected Resets Detected Today"
+text = "xx:xx:xx"
+script = ExtResource("10_smvwj")
+timerType = 1
 
-[node name="Button" type="Button" parent="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Go to Missions"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MissionCollections/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="StandardDashboard/MissionCollections/VBoxContainer"]
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 size_flags_vertical = 3
 mouse_force_pass_scroll_events = false
 vertical_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -110,62 +164,62 @@ theme_override_constants/margin_left = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 8
 
-[node name="MissionCollection" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "V-Bucks"
 testSearch = "///v-buck"
 
-[node name="MissionCollection2" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection2" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "Survivors"
 testSearch = "///(worker leg !lead) | (worker mythic)"
 
-[node name="MissionCollection3" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection3" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "Upgrade Llamas"
 testSearch = "///llama !mini"
 
-[node name="MissionCollection10" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection10" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "Perk-Up"
 testSearch = "!ventures ///perk-up (legendary | epic) bundle"
 
-[node name="MissionCollection4" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection4" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "Heroes"
 testSearch = "///hero (legendary | epic)"
 
-[node name="MissionCollection5" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection5" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "Schematics"
 testSearch = "///schematic (legendary | epic)"
 
-[node name="MissionCollection8" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection8" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "Defenders"
 testSearch = "///defender legendary"
 
-[node name="MissionCollection9" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
+[node name="MissionCollection9" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/HBoxContainer" instance=ExtResource("1_a6luq")]
 layout_mode = 2
 testName = "All"
 testSearch = "///quantity=1.."
 
-[node name="Button" type="Button" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 64
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/Button"]
+[node name="TextureRect" type="TextureRect" parent="StandardDashboard/MissionCollections/VBoxContainer/ScrollContainer/MarginContainer/HBoxContainer/Button"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -181,142 +235,218 @@ grow_vertical = 2
 texture = ExtResource("2_a4xlu")
 expand_mode = 1
 
-[node name="ScrollContainer2" type="ScrollContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2"]
+[node name="ScrollContainer2" type="ScrollContainer" parent="StandardDashboard"]
+custom_minimum_size = Vector2(570, 40)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_left = 5
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 4.0
 theme_override_constants/margin_right = 5
 
-[node name="Container" type="Container" parent="VBoxContainer/ScrollContainer2/MarginContainer"]
+[node name="Container" type="Container" parent="StandardDashboard/ScrollContainer2/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_ac3k7")
 columnMinWidth = 570
 minColumns = 1
 
-[node name="LlamasAndXp" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
-visible = false
-custom_minimum_size = Vector2(628.5, 0)
+[node name="LlamasAndXp" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
+custom_minimum_size = Vector2(570, 0)
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="LlamaSummary" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp"]
+[node name="LlamaSummary" type="PanelContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp" node_paths=PackedStringArray("loadingIcon", "errorIcon", "llamaEntryContainer")]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Panel5PadB"
+script = ExtResource("7_3tsbl")
+loadingIcon = NodePath("VBoxContainer/MarginContainer/LoadingIcon")
+errorIcon = NodePath("VBoxContainer/MarginContainer/Error")
+llamaEntryContainer = NodePath("VBoxContainer/MarginContainer/HBoxContainer")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary"]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Llama Shop"
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2"]
+[node name="Button" type="Button" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Go to Llamas"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="LlamaHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+[node name="LlamaHighlight" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+visible = false
 layout_mode = 2
 
-[node name="LlamaHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+[node name="LlamaHighlight2" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+visible = false
 layout_mode = 2
 
-[node name="LlamaHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+[node name="LlamaHighlight3" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+visible = false
 layout_mode = 2
 
-[node name="XPSummary" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp"]
+[node name="LlamaHighlight4" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("7_uwope")]
+visible = false
+layout_mode = 2
+size_flags_stretch_ratio = 0.5
+
+[node name="LoadingIcon" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer" instance=ExtResource("11_pybot")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Error" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error"]
+layout_mode = 2
+texture = ExtResource("10_ta6o0")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("11_nlqir")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = -2
+theme_override_font_sizes/font_size = 24
+text = "Llamas
+Unavailable"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="RetryButton" type="Button" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TextureRect" type="TextureRect" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_aag1n")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Retry"
+
+[node name="XPSummary" type="PanelContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
 theme_type_variation = &"Panel5PadB"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Weekly XP Caps"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "?:??:??:??"
 script = ExtResource("10_smvwj")
 timerType = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="XPCapBar" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer"]
+[node name="XPCapBar2" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = -2
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Generic (BR) Cap"
-
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar/HBoxContainer"]
-layout_mode = 2
-text = " (?.?/50 levels)"
-
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar"]
-custom_minimum_size = Vector2(0, 16)
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_styles/background = SubResource("StyleBoxFlat_fqxg2")
-theme_override_styles/fill = SubResource("StyleBoxFlat_saw33")
-max_value = 1.0
-value = 0.75
-show_percentage = false
-
-[node name="XPCapBar2" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = -2
-alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "STW Cap"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
+[node name="Label2" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar2/HBoxContainer"]
 layout_mode = 2
-text = " (?.?/50 levels)"
+text = " (??.?/50 levels)"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/VBoxContainer/XPCapBar2"]
+[node name="ProgressBar" type="ProgressBar" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar2"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -327,46 +457,125 @@ max_value = 1.0
 value = 0.75
 show_percentage = false
 
-[node name="QuestSummary" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
-visible = false
-custom_minimum_size = Vector2(628.5, 0)
+[node name="XPCapBar" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = -2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "BR Cap"
+
+[node name="Label2" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar/HBoxContainer"]
+layout_mode = 2
+text = " (??.?/50 levels)"
+
+[node name="ProgressBar" type="ProgressBar" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_fqxg2")
+theme_override_styles/fill = SubResource("StyleBoxFlat_saw33")
+max_value = 1.0
+value = 0.75
+show_percentage = false
+
+[node name="XPCapBar3" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = -2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar3/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lego Cap"
+
+[node name="Label2" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar3/HBoxContainer"]
+layout_mode = 2
+text = " (??.?/50 levels)"
+
+[node name="ProgressBar" type="ProgressBar" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/XPSummary/VBoxContainer/ScrollContainer/VBoxContainer/XPCapBar3"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_fqxg2")
+theme_override_styles/fill = SubResource("StyleBoxFlat_saw33")
+max_value = 1.0
+value = 0.75
+show_percentage = false
+
+[node name="QuestSummary" type="PanelContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
+custom_minimum_size = Vector2(570, 0)
 layout_mode = 2
 theme_type_variation = &"Panel5PadB"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Quest Summary"
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Go to Quests"
 
-[node name="DailiesAndWeeklies" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
+[node name="DailiesAndWeeklies" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer"]
+layout_mode = 2
+text = "Weekly"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer"]
+layout_mode = 2
+
+[node name="QuestHighlight" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer/HBoxContainer" instance=ExtResource("8_1vwuw")]
 layout_mode = 2
 useFirstRewardAsIcon = true
 
-[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight2" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer/HBoxContainer" instance=ExtResource("8_1vwuw")]
 layout_mode = 2
 useFirstRewardAsIcon = true
 
-[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight3" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer/HBoxContainer" instance=ExtResource("8_1vwuw")]
 layout_mode = 2
 
-[node name="Dailies" type="HFlowContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies"]
+[node name="VSeparator" type="VSeparator" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies"]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer2"]
+layout_mode = 2
+text = "Daily"
+horizontal_alignment = 1
+
+[node name="Dailies" type="HFlowContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer2"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -374,62 +583,85 @@ theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = -2
 alignment = 1
 
-[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer2/Dailies" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight2" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer2/Dailies" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/Dailies" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight3" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/DailiesAndWeeklies/VBoxContainer2/Dailies" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="EventAndEndurance" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer"]
 layout_mode = 2
 
-[node name="EventQuests" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Event"
+horizontal_alignment = 1
+
+[node name="EventAndEndurance" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="EventQuests" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance"]
 layout_mode = 2
 
-[node name="QuestHighlight" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight2" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight3" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight4" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="QuestHighlight5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+[node name="QuestHighlight5" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance"]
+[node name="QuestHighlight6" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance"]
+[node name="QuestHighlight7" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="QuestHighlight8" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/EventQuests" instance=ExtResource("8_1vwuw")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = -2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/VBoxContainer"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/VBoxContainer"]
 layout_mode = 2
 text = "Daily Endurance: Stonewood"
 
-[node name="ProgressBar" type="ProgressBar" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/EventAndEndurance/VBoxContainer"]
+[node name="ProgressBar" type="ProgressBar" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/QuestSummary/VBoxContainer/VBoxContainer/EventAndEndurance/VBoxContainer"]
 custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -440,147 +672,1462 @@ max_value = 1.0
 value = 0.75
 show_percentage = false
 
-[node name="CosmeticShopHighlights" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
+[node name="CosmeticShopHighlights" type="PanelContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
 visible = false
 custom_minimum_size = Vector2(632.5, 0)
 layout_mode = 2
 theme_type_variation = &"Panel5PadB"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Cosmetic Shop Highlights"
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Go to Cosmetic Shop"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_top = 10
 
-[node name="HBoxContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="GridContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 columns = 3
 
-[node name="CosmeticShopEntry" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry2" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry3" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry4" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry5" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="CosmeticShopEntry6" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
+[node name="CosmeticShopEntry6" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/CosmeticShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("9_stolx")]
 layout_mode = 2
 
-[node name="EventShopHighlights" type="PanelContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
+[node name="EventShopHighlights" type="PanelContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
 visible = false
 custom_minimum_size = Vector2(632.5, 0)
 layout_mode = 2
 theme_type_variation = &"Panel5PadB"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights"]
+[node name="VBoxContainer" type="VBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Event Shop Highlights"
 
-[node name="Label2" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
+[node name="Label2" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "?:??:??:??"
 horizontal_alignment = 1
 script = ExtResource("10_smvwj")
 timerType = 3
 
-[node name="Button" type="Button" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Go to Event Shop"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HBoxContainer" type="GridContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="GridContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 columns = 4
 
-[node name="RegularShopEntry" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry2" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry2" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry3" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry3" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry4" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry4" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry5" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry5" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry6" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry6" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry7" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry7" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="RegularShopEntry8" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
+[node name="RegularShopEntry8" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/EventShopHighlights/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("10_ehus4")]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 
-[node name="MorePanelsPlanned" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container"]
-custom_minimum_size = Vector2(1270, 0)
+[node name="MorePanelsPlanned" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container"]
+custom_minimum_size = Vector2(570, 0)
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned"]
+[node name="Panel" type="Panel" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned"]
 layout_mode = 2
 theme_type_variation = &"TransparantPanel"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned"]
+[node name="MarginContainer" type="MarginContainer" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned/MarginContainer"]
+[node name="Label" type="Label" parent="StandardDashboard/ScrollContainer2/MarginContainer/Container/MorePanelsPlanned/MarginContainer"]
 layout_mode = 2
-text = "More Dashboard panels are planned for the future"
+text = "More Dashboard panels are in development"
 horizontal_alignment = 1
+
+[node name="BeastDashboard" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard"]
+layout_mode = 2
+
+[node name="NotableRewards" type="PanelContainer" parent="BeastDashboard/VBoxContainer" node_paths=PackedStringArray("missionList", "loadingIcon", "rarityFilters", "zoneFilters", "typeFilters", "repeatabilityFilters")]
+custom_minimum_size = Vector2(370, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_type_variation = &"Panel5PadB"
+script = ExtResource("1_rx870")
+missionList = NodePath("VBoxContainer/MarginContainer/ScrollContainer")
+loadingIcon = NodePath("VBoxContainer/MarginContainer/LoadingIcon")
+notableMode = true
+rarityFilters = []
+zoneFilters = []
+typeFilters = []
+repeatabilityFilters = []
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/VBoxContainer/NotableRewards"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Notable Rewards"
+
+[node name="Label2" type="Label" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "xx:xx:xx"
+script = ExtResource("10_smvwj")
+timerType = 1
+
+[node name="Button" type="Button" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_aag1n")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer"]
+custom_minimum_size = Vector2(0, 210)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer" node_paths=PackedStringArray("offsetControl", "paddingControl", "elementParent")]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("14_p2qwn")
+elementSpace = 4.0
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+elementScene = ExtResource("16_sctyi")
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Offset" type="Control" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DynGridContainer" type="VBoxContainer" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 0
+
+[node name="Padding" type="Control" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LoadingIcon" parent="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer" instance=ExtResource("11_pybot")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="AllRewards" type="PanelContainer" parent="BeastDashboard/VBoxContainer" node_paths=PackedStringArray("missionList", "loadingIcon", "sortByPower", "rarityFilters", "zoneFilters", "typeFilters", "repeatabilityFilters")]
+custom_minimum_size = Vector2(370, 0)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+theme_type_variation = &"Panel5PadB"
+script = ExtResource("1_rx870")
+missionList = NodePath("VBoxContainer/MarginContainer/ScrollContainer")
+loadingIcon = NodePath("VBoxContainer/MarginContainer/LoadingIcon")
+sortByPower = NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/PowerLevel/CheckButton")
+rarityFilters = [NodePath("VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Mythic"), NodePath("VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Legendary"), NodePath("VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Epic"), NodePath("VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Rare"), NodePath("VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Uncommon"), NodePath("VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Common")]
+zoneFilters = [NodePath("VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Stonewood"), NodePath("VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Plankerton"), NodePath("VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Canny Valley"), NodePath("VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Twine Peaks"), NodePath("VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Ventures")]
+typeFilters = [NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Survivors"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Lead Survivors"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Heroes"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Upgrade Llamas"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Mini Llamas"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Schematics"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Ranged Weapons"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Melee Weapons"), NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Traps")]
+repeatabilityFilters = [NodePath("VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer/Alert"), NodePath("VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer/Repeatable"), NodePath("VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer/4x")]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Mission Rewards"
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HFlowContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="RarityFilters" type="PanelContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"CheckContainer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Mythic" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer"]
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"LeftCheckButton"
+text = " "
+metadata/rarity = "Mythic"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Mythic"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 0.28, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Mythic"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Mythic"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Legendary" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer"]
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/rarity = "Legendary"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Legendary"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.683333, 0, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Legendary"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Legend"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Epic" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/rarity = "Epic"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Epic"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.816667, 0, 1, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Epic"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Epic"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Rare" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/rarity = "Rare"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Rare"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0.366667, 1, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Rare"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Rare"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Uncommon" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/rarity = "Uncommon"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Uncommon"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0166667, 1, 0, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Uncommon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Uncommon"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Common" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer"]
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"RightCheckButton"
+text = " "
+metadata/rarity = "Common"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Common"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RarityFilters/HBoxContainer/Common"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Common"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ZoneFilters" type="PanelContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"CheckContainer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Stonewood" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"LeftCheckButton"
+text = " "
+metadata/zone = "s"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Stonewood"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.2296, 0.4264, 0.82, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Stonewood"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Stone"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Plankerton" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/zone = "p"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Plankerton"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.15, 1, 0, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Plankerton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Plank"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Canny Valley" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/zone = "c"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Canny Valley"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.8, 0, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Canny Valley"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Canny"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Twine Peaks" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer"]
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/zone = "t"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Twine Peaks"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.683333, 0, 1, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Twine Peaks"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Twine"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ventures" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer"]
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"RightCheckButton"
+text = " "
+metadata/zone = "v"
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Ventures"]
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0.883333, 1, 1)
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/ZoneFilters/HBoxContainer/Ventures"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/outline_size = 3
+text = "Ventures"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RewardTypeFilter" type="PanelContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"CheckContainer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RewardTypeFilter"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Alert" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Ventures"
+theme_type_variation = &"LeftCheckButton"
+button_group = SubResource("ButtonGroup_asvga")
+text = " "
+metadata/type = "Schematic>Trap"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer/Alert"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_ots04")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Repeatable" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_asvga")
+text = " "
+metadata/type = "Worker"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer/Repeatable"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_xaony")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="4x" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Ventures"
+theme_type_variation = &"RightCheckButton"
+button_group = SubResource("ButtonGroup_asvga")
+metadata/type = "Schematic>Trap"
+
+[node name="Label" type="Label" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/RewardTypeFilter/HBoxContainer/4x"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "x4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="TypeFilters" type="PanelContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"CheckContainer"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Survivors" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"LeftCheckButton"
+text = " "
+metadata/type = "Worker"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Survivors"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_dwmk6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Lead Survivors" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Plankerton"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/type = "Worker:manager"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Lead Survivors"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_vrldu")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Heroes" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Canney Valley"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/type = "Hero"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Heroes"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_grsoo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Upgrade Llamas" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Canney Valley"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/type = "AccountResource:voucher_cardpack_bronze"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Upgrade Llamas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_rotkf")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Mini Llamas" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Canney Valley"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/type = "AccountResource:voucher_basicpack"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Mini Llamas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.25, 1.25)
+pivot_offset = Vector2(11, 14)
+mouse_filter = 2
+texture = ExtResource("9_xhy21")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Schematics" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Canney Valley"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/type = "Schematic"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Schematics"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_rney3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Ranged Weapons" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Canney Valley"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/type = "Schematic>Ranged"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Ranged Weapons"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_rguep")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Melee Weapons" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Canney Valley"
+theme_type_variation = &"MiddleCheckButton"
+text = " "
+metadata/type = "Schematic>Melee"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Melee Weapons"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_jv2yv")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Traps" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Ventures"
+theme_type_variation = &"RightCheckButton"
+text = " "
+metadata/type = "Schematic>Trap"
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/HBoxContainer/Traps"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("13_y3ww7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Reset" type="Button" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+tooltip_text = "Reset Filters
+(Shift to invert)"
+theme_type_variation = &"SlantedButton"
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/Reset"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/Reset/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("14_tws5x")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PowerLevel" type="PanelContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"CheckContainer"
+
+[node name="CheckButton" type="CheckButton" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/PowerLevel"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/PowerLevel/CheckButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 2.0
+offset_bottom = -1.0
+grow_vertical = 2
+texture = ExtResource("4_hmk5g")
+expand_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/MarginContainer" node_paths=PackedStringArray("offsetControl", "paddingControl", "elementParent")]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("14_p2qwn")
+elementSpace = 4.0
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+elementScene = ExtResource("16_sctyi")
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 0
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Offset" type="Control" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DynGridContainer" type="VBoxContainer" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 0
+
+[node name="Padding" type="Control" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LoadingIcon" parent="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/MarginContainer" instance=ExtResource("11_pybot")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BeastDashboard"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="Container" parent="BeastDashboard/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("1_ac3k7")
+columnMinWidth = 400
+minColumns = 1
+maxColumns = 3
+
+[node name="Alert Summary" type="PanelContainer" parent="BeastDashboard/ScrollContainer/MarginContainer" node_paths=PackedStringArray("rewardRowParent", "loadingIcon")]
+custom_minimum_size = Vector2(450.5, 0)
+layout_mode = 2
+theme_type_variation = &"Panel5PadB"
+script = ExtResource("32_tpsvr")
+targetTemplateIds = PackedStringArray("AccountResource:currency_mtxswap", "AccountResource:reagent_alteration_upgrade_sr", "AccountResource:reagent_alteration_upgrade_vr", "AccountResource:reagent_alteration_upgrade_r", "AccountResource:reagent_alteration_upgrade_uc", "AccountResource:reagent_alteration_generic", "AccountResource:reagent_c_t01", "AccountResource:reagent_c_t02", "AccountResource:reagent_c_t03", "AccountResource:reagent_c_t04", "AccountResource:campaign_event_currency", "AccountResource:personnelxp", "AccountResource:heroxp", "AccountResource:schematicxp", "AccountResource:reagent_alteration_ele_fire", "AccountResource:reagent_alteration_ele_water", "AccountResource:reagent_alteration_ele_nature")
+rewardRowParent = NodePath("VBoxContainer/MarginContainer/VBoxContainer")
+loadingIcon = NodePath("VBoxContainer/MarginContainer/LoadingIcon")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary"]
+custom_minimum_size = Vector2(0, 530)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Alert Summary"
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Reward" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.5
+text = "Reward"
+horizontal_alignment = 1
+
+[node name="Stone" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 4
+text = "Stone"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer/Stone"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.2296, 0.4264, 0.82, 1)
+
+[node name="Plank" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 4
+text = "Plank"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer/Plank"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.15, 1, 0, 1)
+
+[node name="Canny" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 4
+text = "Canny"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer/Canny"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.8, 0, 1)
+
+[node name="Twine" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 4
+text = "Twine"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer/Twine"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.683333, 0, 1, 1)
+
+[node name="Total" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Total"
+horizontal_alignment = 1
+
+[node name="Ventures" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 4
+text = "Vent's"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="ColorRect" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/PanelContainer/HBoxContainer/Ventures"]
+show_behind_parent = true
+material = SubResource("ShaderMaterial_w6d4a")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0.883333, 1, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="DashboardAlertSummary" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary2" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary3" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary4" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary5" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary6" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary7" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary8" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary9" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary10" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary11" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary12" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary13" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary14" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary15" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary16" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="DashboardAlertSummary17" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("32_4xtrc")]
+visible = false
+layout_mode = 2
+
+[node name="LoadingIcon" parent="BeastDashboard/ScrollContainer/MarginContainer/Alert Summary/VBoxContainer/MarginContainer" instance=ExtResource("11_pybot")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/ScrollContainer/MarginContainer"]
+custom_minimum_size = Vector2(450.5, 0)
+layout_mode = 2
+
+[node name="Container" type="Container" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+script = ExtResource("1_ac3k7")
+columnMinWidth = 240
+minColumns = 1
+maxColumns = 2
+
+[node name="Supercharger" type="PanelContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container" node_paths=PackedStringArray("entry", "noSuperchargerMessage", "checkmark")]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"Panel5PadB"
+script = ExtResource("36_tp2em")
+entry = NodePath("VBoxContainer/PanelContainer/HBoxContainer")
+noSuperchargerMessage = NodePath("VBoxContainer/PanelContainer/VBoxContainer")
+checkmark = NodePath("VBoxContainer/PanelContainer/TextureRect")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Supercharger"
+
+[node name="Label2" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "xx:xx:xx"
+script = ExtResource("10_smvwj")
+timerType = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer"]
+custom_minimum_size = Vector2(230, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"Panel3Pad"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+script = ExtResource("36_8isvq")
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("34_sp71l")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Hero Superharger"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Label2" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "No Supercharger Quest"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = -2
+theme_override_font_sizes/font_size = 12
+text = "Complete the Twine Peaks SSD 10
+to unlock Weekly Supercharger Quests"
+horizontal_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer"]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture = ExtResource("39_13buu")
+expand_mode = 1
+
+[node name="LlamaShop" type="PanelContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container" node_paths=PackedStringArray("loadingIcon", "errorIcon", "llamaEntryContainer")]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"Panel5PadB"
+script = ExtResource("7_3tsbl")
+loadingIcon = NodePath("VBoxContainer/PanelContainer/LoadingIcon")
+errorIcon = NodePath("VBoxContainer/PanelContainer/Error")
+llamaEntryContainer = NodePath("VBoxContainer/PanelContainer/VBoxContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 24
+text = "Llama Shop"
+
+[node name="Label2" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "xx:xx:xx"
+script = ExtResource("10_smvwj")
+timerType = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer"]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"Panel3Pad"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="LlamaHighlightDBStyle" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("35_muen0")]
+visible = false
+layout_mode = 2
+
+[node name="LlamaHighlightDBStyle2" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("35_muen0")]
+visible = false
+layout_mode = 2
+
+[node name="LlamaHighlightDBStyle3" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("35_muen0")]
+visible = false
+layout_mode = 2
+
+[node name="LlamaHighlightDBStyle4" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/VBoxContainer" instance=ExtResource("35_muen0")]
+visible = false
+layout_mode = 2
+
+[node name="LoadingIcon" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer" instance=ExtResource("11_pybot")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Error" type="MarginContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error"]
+layout_mode = 2
+texture = ExtResource("10_ta6o0")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("11_nlqir")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = -2
+theme_override_font_sizes/font_size = 24
+text = "Llamas
+Unavailable"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="RetryButton" type="Button" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="TextureRect" type="TextureRect" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_aag1n")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Retry"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BeastDashboard/ScrollContainer/MarginContainer"]
+custom_minimum_size = Vector2(450.5, 0)
+layout_mode = 2
+
+[node name="MissionCollection" parent="BeastDashboard/ScrollContainer/MarginContainer" instance=ExtResource("1_a6luq")]
+custom_minimum_size = Vector2(450.5, 280)
+layout_mode = 2
+theme_type_variation = &"Panel3PadB"
+testName = "x4-5 Missions"
+testSearch = "LargeReward///bundle"
+sortByPower = true
+sortByZoneCat = true
+
+[node name="Name" parent="BeastDashboard/ScrollContainer/MarginContainer/MissionCollection/VBoxContainer/Header/HBoxContainer" index="0"]
+text = "x4-5 Missions"
+horizontal_alignment = 1
+
+[node name="SearchBtn" parent="BeastDashboard/ScrollContainer/MarginContainer/MissionCollection/VBoxContainer/Header/HBoxContainer" index="1"]
+visible = false
+
+[node name="EditBtn" parent="BeastDashboard/ScrollContainer/MarginContainer/MissionCollection/VBoxContainer/Header/HBoxContainer" index="2"]
+visible = false
 
 [node name="LoadingIcon" parent="." instance=ExtResource("11_pybot")]
 visible = false
@@ -588,4 +2135,17 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[connection signal="pressed" from="VBoxContainer/MissionCollections/VBoxContainer/HBoxContainer/ForceRefresh" to="VBoxContainer/MissionCollections" method="Reload"]
+[connection signal="ConfigValueChanged" from="CheckButton" to="CheckButton/Node" method="EmitValues"]
+[connection signal="InvertedValue" from="CheckButton/Node" to="StandardDashboard" method="set_visible"]
+[connection signal="Value" from="CheckButton/Node" to="BeastDashboard" method="set_visible"]
+[connection signal="pressed" from="StandardDashboard/MissionCollections/VBoxContainer/HBoxContainer/ForceRefresh" to="StandardDashboard/MissionCollections" method="Reload"]
+[connection signal="pressed" from="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/HBoxContainer2/Button" to="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary" method="GoToLlamaTab"]
+[connection signal="pressed" from="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary/VBoxContainer/MarginContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/RetryButton" to="StandardDashboard/ScrollContainer2/MarginContainer/Container/LlamasAndXp/LlamaSummary" method="ForceLoadShopLlamas"]
+[connection signal="toggled" from="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/HBoxContainer/CheckButton" to="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/MarginContainer" method="set_visible"]
+[connection signal="pressed" from="BeastDashboard/VBoxContainer/NotableRewards/VBoxContainer/HBoxContainer/Button" to="BeastDashboard/VBoxContainer/NotableRewards" method="ReloadMissions"]
+[connection signal="pressed" from="BeastDashboard/VBoxContainer/AllRewards/VBoxContainer/HBoxContainer2/HBoxContainer/Reset" to="BeastDashboard/VBoxContainer/AllRewards" method="TurnOffFilters"]
+[connection signal="IconChanged" from="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/HBoxContainer" to="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/HBoxContainer/TextureRect" method="set_texture"]
+[connection signal="NameChanged" from="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/HBoxContainer" to="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/Supercharger/VBoxContainer/PanelContainer/HBoxContainer/Label" method="set_text"]
+[connection signal="pressed" from="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop/VBoxContainer/PanelContainer/Error/VBoxContainer/VBoxContainer/MarginContainer/RetryButton" to="BeastDashboard/ScrollContainer/MarginContainer/MarginContainer/Container/LlamaShop" method="ForceLoadShopLlamas"]
+
+[editable path="BeastDashboard/ScrollContainer/MarginContainer/MissionCollection"]

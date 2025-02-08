@@ -22,32 +22,38 @@ public partial class QuestInterface : Control
     List<Foldout> questGroupCollections = new();
     List<QuestGroupEntry> questGroups = new();
 
-    public override async void _Ready()
+    public override void _Ready()
 	{
         VisibilityChanged += () =>
         {
             if (IsVisibleInTree())
                 LoadQuests();
         };
-        RefreshTimerController.OnDayChanged += OnDayChanged;
-
-        await GameAccount.activeAccount.ClientQuestLogin();
+        RefreshTimerController.OnDayChanged += ReloadQuests;
+        GameAccount.ActiveAccountChanged += ReloadQuests;
+        ReloadQuests();
     }
 
-    private async void OnDayChanged()
+    private async void ReloadQuests()
     {
-        if (!AppConfig.Get("quests", "delay_refresh", false))
-            await Helpers.WaitForTimer(5);
+        foreach (var node in questGroupCollections)
+        {
+            node.QueueFree();
+        }
+        questGroupCollections.Clear();
+
+        await GameAccount.activeAccount.ClientQuestLogin();
 
         questsDirty = true;
-        await GameAccount.activeAccount.ClientQuestLogin();
         if (IsVisibleInTree())
             LoadQuests();
+
     }
 
     public override void _ExitTree()
     {
-        RefreshTimerController.OnDayChanged -= OnDayChanged;
+        RefreshTimerController.OnDayChanged -= ReloadQuests;
+        GameAccount.ActiveAccountChanged -= ReloadQuests;
     }
 
     public async void ClearPinnedQuests()
@@ -62,24 +68,29 @@ public partial class QuestInterface : Control
     SemaphoreSlim loadQuestsSemaphore = new(1);
     async void LoadQuests()
     {
+        using var st = await loadQuestsSemaphore.AwaitToken(() => {
+            loadingIcon.Visible = false;
+            questListLayout.Visible = true;
+        });
         if (!questsDirty)
             return;
-        await loadQuestsSemaphore.WaitAsync();
-        try
+
+        if (!await GameAccount.activeAccount.Authenticate())
+            return;
+
+        questGroupViewer.Visible = false;
+        questListLayout.Visible = false;
+        loadingIcon.Visible = true;
+        var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
+
+        while (questsDirty)
         {
-            if (!await GameAccount.activeAccount.Authenticate())
-                return;
-
-            questGroupViewer.Visible = false;
-            questListLayout.Visible = false;
-            loadingIcon.Visible = true;
             questsDirty = false;
-            var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
-
             foreach (var node in questGroupCollections)
             {
                 node.QueueFree();
             }
+            questGroupCollections.Clear();
 
             ButtonGroup questButtonGroup = new();
             foreach (var collection in generatedQuestGroups)
@@ -116,15 +127,6 @@ public partial class QuestInterface : Control
                 foldoutParent.AddChild(foldout);
                 questGroupCollections.Add(foldout);
             }
-
-            questListLayout.Visible = true;
         }
-        finally
-        {
-            loadingIcon.Visible = false;
-            loadQuestsSemaphore.Release();
-        }
-        if (questsDirty)
-            LoadQuests();
     }
 }

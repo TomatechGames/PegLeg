@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ysh5ajklts1q"]
+[gd_scene load_steps=24 format=3 uid="uid://ysh5ajklts1q"]
 
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="1_7xbjg"]
 [ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="1_r66cy"]
@@ -14,6 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="9_gp42o"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="10_cpy3n"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="11_6kqv5"]
+[ext_resource type="Script" path="res://Scripts/UIElements/MaxHeightScrollContainer.cs" id="11_xg430"]
+[ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="12_6hrnm"]
 [ext_resource type="Shader" path="res://Shaders/OnboardingCurtain.gdshader" id="13_m3fci"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="14_eunyv"]
 [ext_resource type="PackedScene" uid="uid://b7rnaw5epqkd6" path="res://Scenes/download_cube.tscn" id="15_jvi10"]
@@ -56,9 +58,9 @@ stretch_mode = 6
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_6re0q")
-bus = &"Music"
+volume_db = -20.0
 
-[node name="CenterContainer" type="CenterContainer" parent="." node_paths=PackedStringArray("curtain", "music", "loginLabel", "rememberLoginToggle", "retryLoginButton", "continueButton", "accountSelectionPanel")]
+[node name="CenterContainer" type="CenterContainer" parent="." node_paths=PackedStringArray("curtain", "music", "loginLabel", "retryLoginButton", "continueButton", "accountSelectionPanel")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -70,10 +72,9 @@ mainInterfacePath = "res://Scenes/Desktop/desktopInterface.tscn"
 curtain = NodePath("../Curtain")
 music = NodePath("../Music")
 loginLabel = NodePath("MarginContainer/Content/LoginCode/LinkCodeText")
-rememberLoginToggle = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/RememberLogin")
 retryLoginButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn")
 continueButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin")
-accountSelectionPanel = NodePath("MarginContainer/Content/AccountSelector")
+accountSelectionPanel = NodePath("")
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(300, 320)
@@ -93,11 +94,34 @@ theme_override_constants/margin_bottom = 10
 [node name="LoginCode" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content"]
 layout_mode = 2
 
-[node name="GreetingText" type="Label" parent="CenterContainer/MarginContainer/Content/LoginCode"]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/LoginCode"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="GreetingText" type="Label" parent="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 text = "Welcome to Pegleg! To begin, you'll need to log in to your Epic Games account. Click the link and enter in the code shown below."
 horizontal_alignment = 3
+autowrap_mode = 3
+
+[node name="FromAccountSelector" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/FromAccountSelector"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "<- Back to Accounts"
+
+[node name="GreetingText" type="Label" parent="CenterContainer/MarginContainer/Content/LoginCode/MarginContainer/FromAccountSelector"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 15
+text = "To log in to your Epic Games account, click the link and enter in the code shown below."
 autowrap_mode = 3
 
 [node name="LinkCodeText" type="LineEdit" parent="CenterContainer/MarginContainer/Content/LoginCode"]
@@ -166,6 +190,7 @@ button_group = SubResource("ButtonGroup_rx0xh")
 text = " No"
 
 [node name="RememberLogin" type="CheckBox" parent="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer"]
+visible = false
 layout_direction = 3
 layout_mode = 2
 tooltip_text = "amongus"
@@ -213,6 +238,56 @@ horizontal_alignment = 1
 [node name="AccountSelector" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content"]
 visible = false
 layout_mode = 2
+size_flags_vertical = 0
+alignment = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer/MarginContainer/Content/AccountSelector"]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("11_xg430")
+maxSize = Vector2(0, 200)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer/Content/AccountSelector/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AddAccount" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/AccountSelector"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="CenterContainer/MarginContainer/Content/AccountSelector/AddAccount"]
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+theme_type_variation = &"AccountButton"
+text = "
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MarginContainer/Content/AccountSelector/AddAccount"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/MarginContainer/Content/AccountSelector/AddAccount/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/MarginContainer/Content/AccountSelector/AddAccount/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(21, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+texture = ExtResource("12_6hrnm")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="CenterContainer/MarginContainer/Content/AccountSelector/AddAccount/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sign In"
+horizontal_alignment = 1
+text_overrun_behavior = 3
 
 [node name="ErrorMessage" type="MarginContainer" parent="CenterContainer/MarginContainer/Content"]
 visible = false

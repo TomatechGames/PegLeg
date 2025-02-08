@@ -52,7 +52,7 @@
 [ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="37_fgxvp"]
 [ext_resource type="BitMap" uid="uid://duy6d6ydo0b63" path="res://Images/Llamas/PinataStandardMask.bmp" id="46_fixg6"]
 [ext_resource type="BitMap" uid="uid://uucu1fh5briv" path="res://Images/Llamas/PinataMiniMask.bmp" id="49_estb1"]
-
+[ext_resource type="Shader" path="res://Shaders/GradientShader.gdshader" id="52_c8cd4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_walck"]
 shader = ExtResource("9_8g8yp")
@@ -79,7 +79,7 @@ anti_aliasing = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5b1iw"]
 shader = ExtResource("12_plv7k")
-shader_parameter/ControlSize = Vector2(1274, 669)
+shader_parameter/ControlSize = Vector2(1274, 714)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = null
 shader_parameter/UseCorners = true
@@ -98,7 +98,7 @@ shader = ExtResource("16_x2r4a")
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/UseManual = null
 shader_parameter/ManualControl = null
-shader_parameter/time = 92178.8
+shader_parameter/time = 1321.1
 shader_parameter/StartTime = null
 shader_parameter/Started = true
 shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
@@ -162,17 +162,10 @@ shader = ExtResource("25_8mpme")
 shader_parameter/useMask = false
 shader_parameter/packIcon = ExtResource("26_1f0i3")
 
-[sub_resource type="Gradient" id="Gradient_i5vau"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iness"]
+shader = ExtResource("52_c8cd4")
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_dun05"]
-gradient = SubResource("Gradient_i5vau")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(0, 0.5)
-metadata/_snap_enabled = true
-
-[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "pullButton", "glowFlare", "startAudio", "fallingAudio", "landAudio", "radioAudio", "fallingCrate", "landedCrate", "landedCrateBG", "landedCrateBGCards", "landedCrateLid", "crateOpenButton", "greetingEffects", "greetingVoices", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "smallLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
+[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "pullButton", "skipAllButton", "glowFlare", "startAudio", "fallingAudio", "landAudio", "radioAudio", "fallingCrate", "landedCrate", "landedCrateBG", "landedCrateBGCards", "landedCrateLid", "crateOpenButton", "greetingEffects", "greetingVoices", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "smallLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -186,6 +179,7 @@ sortByRarity = true
 displayPanel = NodePath("Panel")
 music = NodePath("Audio/Music")
 pullButton = NodePath("Panel/PullButton")
+skipAllButton = NodePath("Panel/SkipAllButton")
 defaultBackgroundColor = Color(0.101961, 0.419608, 1, 1)
 glowFlare = NodePath("Panel/Glow")
 startAudio = NodePath("Audio/SupplyDrop/SpawnAudio")
@@ -323,8 +317,7 @@ bus = &"SFX"
 
 [node name="ImpactFX" type="AudioStreamPlayer" parent="Audio/Effects"]
 stream = ExtResource("18_g1qv6")
-volume_db = -25.0
-pitch_scale = 1.88
+volume_db = -10.0
 max_polyphony = 10
 bus = &"SFX"
 
@@ -386,7 +379,7 @@ syncControlSize = true
 
 [node name="Glow" type="TextureRect" parent="Panel"]
 material = SubResource("ShaderMaterial_3v02c")
-custom_minimum_size = Vector2(768, 768)
+custom_minimum_size = Vector2(1500, 1500)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -399,7 +392,7 @@ offset_right = 384.0
 offset_bottom = 424.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(384, 384)
+pivot_offset = Vector2(750, 750)
 mouse_filter = 2
 texture = ExtResource("37_fgxvp")
 expand_mode = 1
@@ -498,7 +491,6 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.5, 1.5)
-interactableByDefault = true
 unlinkOnInvalidHandle = false
 
 [node name="CardPullAnchor" type="Control" parent="Panel/Cards"]
@@ -1040,11 +1032,11 @@ theme_override_constants/margin_top = -50
 theme_override_constants/margin_right = -50
 theme_override_constants/margin_bottom = -50
 
-[node name="TextureRect" type="TextureRect" parent="Panel/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/MarginContainer"]
+[node name="TextureRect" type="ColorRect" parent="Panel/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/MarginContainer"]
 self_modulate = Color(0, 0, 0, 1)
+material = SubResource("ShaderMaterial_iness")
 layout_mode = 2
 mouse_filter = 2
-texture = SubResource("GradientTexture2D_dun05")
 
 [node name="Choices" type="HBoxContainer" parent="Panel/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 256)
@@ -1084,6 +1076,22 @@ grow_vertical = 0
 theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 24
 text = "Pull"
+
+[node name="SkipAllButton" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(85, 35)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.675
+anchor_top = 1.0
+anchor_right = 0.675
+anchor_bottom = 1.0
+offset_left = 170.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"LargeButton"
+theme_override_font_sizes/font_size = 24
+text = "Skip All"
 
 [node name="SkipChoiceButton" type="Button" parent="Panel"]
 visible = false
@@ -1129,5 +1137,6 @@ text = "Debug Close"
 [connection signal="pressed" from="Panel/Llama/FullLlama/SmallLlamaButton" to="." method="HitLlama"]
 [connection signal="button_down" from="Panel/PullButton" to="." method="StartPullCard"]
 [connection signal="button_up" from="Panel/PullButton" to="." method="EndPullCard"]
+[connection signal="button_down" from="Panel/SkipAllButton" to="." method="EndImmediate"]
 [connection signal="pressed" from="Panel/SkipChoiceButton" to="." method="SkipChoice"]
 [connection signal="pressed" from="Panel/Button" to="." method="CloseMenu"]

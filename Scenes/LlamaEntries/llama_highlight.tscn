@@ -1,56 +1,132 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2sah8mggjcus"]
+[gd_scene load_steps=12 format=3 uid="uid://d2sah8mggjcus"]
 
 [ext_resource type="Texture2D" uid="uid://furde0e0enip" path="res://Images/Llamas/PinataGold.png" id="1_3u34y"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="1_6kb4b"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="2_2lswe"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="2_2wjsr"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CardPackEntry.cs" id="2_h36cs"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="2_ppu0d"]
+[ext_resource type="Shader" path="res://Shaders/LlamaPinata.gdshader" id="3_7qe0w"]
+[ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="4_fotjd"]
+[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="4_qhdba"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="6_vnib3"]
 
-[node name="LlamaHighlight" type="MarginContainer"]
-custom_minimum_size = Vector2(0, 96)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mijsb"]
+resource_local_to_scene = true
+shader = ExtResource("3_7qe0w")
+shader_parameter/useMask = false
+shader_parameter/packIcon = ExtResource("4_fotjd")
+
+[node name="LlamaHighlight" type="MarginContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry")]
+custom_minimum_size = Vector2(0, 120)
 size_flags_vertical = 4
+script = ExtResource("1_6kb4b")
+grantedItemEntry = NodePath("LlamaItem")
+priceEntry = NodePath("Price")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="LlamaItem" type="MarginContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = -10
 theme_override_constants/margin_right = -10
+theme_override_constants/margin_bottom = 18
+script = ExtResource("2_h36cs")
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="LlamaItem"]
+material = SubResource("ShaderMaterial_mijsb")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 mouse_filter = 2
 texture = ExtResource("1_3u34y")
 expand_mode = 3
+script = ExtResource("6_vnib3")
 
-[node name="Label" type="Label" parent="MarginContainer/TextureRect"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -68.5
-offset_top = -20.0
-offset_right = 68.5
-grow_horizontal = 2
-grow_vertical = 0
-text = "Llama Type"
+[node name="IsFree" type="Node" parent="."]
+script = ExtResource("4_qhdba")
+
+[node name="Price" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+mouse_filter = 2
+alignment = 1
+script = ExtResource("2_2lswe")
+
+[node name="TextureRect" type="TextureRect" parent="Price"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+texture = ExtResource("2_ppu0d")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Price"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "1000"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FreeObj" type="Control" parent="."]
+[node name="Control" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="PriceNumberLabel2" type="Label" parent="FreeObj"]
-layout_mode = 2
-offset_top = 4.0
-offset_right = 57.0
-offset_bottom = 40.0
-rotation = -0.164061
+[node name="LlamaName" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+theme_override_constants/line_spacing = -2
+theme_override_font_sizes/font_size = 14
+text = "Smorgasbord Llama"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="LlamaStock" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+size_flags_vertical = 8
+theme_override_constants/line_spacing = -2
+theme_override_font_sizes/font_size = 14
+text = "x2"
+horizontal_alignment = 2
+autowrap_mode = 3
+
+[node name="FreeMarker" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -24.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_colors/font_color = Color(0.929412, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 20
 text = "FREE"
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="Responsive Button Area" parent="." instance=ExtResource("2_2wjsr")]
+visible = false
 layout_mode = 2
+
+[connection signal="IsFreeChanged" from="." to="IsFree" method="EmitValues"]
+[connection signal="NameChanged" from="." to="Control/LlamaName" method="set_text"]
+[connection signal="StockChanged" from="." to="Control/LlamaStock" method="set_text"]
+[connection signal="IconChanged" from="LlamaItem" to="LlamaItem/TextureRect" method="set_texture"]
+[connection signal="SubtypeIconChanged" from="LlamaItem" to="LlamaItem/TextureRect" method="SetShaderTexture" binds= ["packIcon"]]
+[connection signal="TooltipChanged" from="LlamaItem" to="." method="set_tooltip_text"]
+[connection signal="InvertedValue" from="IsFree" to="Price" method="set_visible"]
+[connection signal="Value" from="IsFree" to="Control/FreeMarker" method="set_visible"]
+[connection signal="AmountChanged" from="Price" to="Price/Label" method="set_text"]
+[connection signal="IconChanged" from="Price" to="Price/TextureRect" method="set_texture"]

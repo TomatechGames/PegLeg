@@ -40,9 +40,9 @@ public partial class CosmeticShopInterface : Control
     [Export]
     CheckButton includeDiscountBundles;
     [Export(PropertyHint.ArrayType)]
-    CheckButton[] newOrOldFilters = System.Array.Empty<CheckButton>();
+    CheckButton[] newOrOldFilters = Array.Empty<CheckButton>();
     [Export(PropertyHint.ArrayType)]
-    CheckButton[] typeFilters = System.Array.Empty<CheckButton>();
+    CheckButton[] typeFilters = Array.Empty<CheckButton>();
     [Export]
     Button resetTypeFilters;
 
@@ -59,8 +59,7 @@ public partial class CosmeticShopInterface : Control
         };
 
         RefreshTimerController.OnHourChanged += OnHourChanged;
-        navigationPane.ButtonClicked += OnNavButton;
-        navigationPane.CellSelected += OnNavCell;
+        navigationPane.CellSelected += OnNavSelected;
         sacButton.Pressed += OpenSACPrompt;
 
         requireAddedToday.Pressed += ApplyFilters;
@@ -78,7 +77,7 @@ public partial class CosmeticShopInterface : Control
         {
             foreach (var item in typeFilters)
             {
-                item.ButtonPressed = false;
+                item.ButtonPressed = Input.IsKeyPressed(Key.Shift);
             }
             ApplyFilters();
         };
@@ -91,7 +90,16 @@ public partial class CosmeticShopInterface : Control
         if (section != "item_shop")
             return;
         if(key=="simple_cosmetics")
-            LoadShop(true).StartTask();
+        {
+            if (AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
+                navContainer.Visible = false;
+            else
+                navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true);
+
+            activeOffers.Clear();
+            if (IsVisibleInTree())
+                LoadShop(true).StartTask();
+        }
         if (key == "navigation_visible")
         {
             if (!AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
@@ -119,9 +127,9 @@ public partial class CosmeticShopInterface : Control
     async void OpenSACPrompt()
     {
         string subtext = GD.Randf() > 0.85f ?
-            "Your selected code normally disappears after 2 weeks, but PegLeg can automatically re-select the code on launch!" :
+            "By enabling the \"Auto-apply creator code\" setting, PegLeg can automatically refresh the duration of your selected code when you load the shop!" :
             "Whoever you choose to support will recieve 5% of the cost of any Real-Money or VBuck purchases you make";
-        var newCode = await GenericLineEditWindow.OpenLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
+        var newCode = await GenericLineEditWindow.ShowLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
         if (newCode is null)
             return;
 
@@ -136,7 +144,7 @@ public partial class CosmeticShopInterface : Control
 
     }
 
-    private void OnNavCell()
+    private void OnNavSelected()
     {
         TreeItem item = navigationPane.GetSelected();
         if (item.GetChildCount() > 0 && item.GetParent() is not null)
@@ -161,12 +169,12 @@ public partial class CosmeticShopInterface : Control
         scrollTween.TweenProperty(verticalScrollBox, "scroll_vertical", scrollLevel, 0.3f);
     }
 
-    private void OnNavButton(TreeItem item, long column, long id, long mouseButtonIndex)
-    {
-        int scrollLevel = (int)((Control)item.GetMetadata(1)).Position.Y;
-        var scrollTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Expo);
-        scrollTween.TweenProperty(verticalScrollBox, "scroll_vertical", scrollLevel, 0.3f);
-    }
+    //private void OnNavButton(TreeItem item, long column, long id, long mouseButtonIndex)
+    //{
+    //    int scrollLevel = (int)((Control)item.GetMetadata(1)).Position.Y;
+    //    var scrollTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Expo);
+    //    scrollTween.TweenProperty(verticalScrollBox, "scroll_vertical", scrollLevel, 0.3f);
+    //}
 
 
     private void UpdateShopOfferResourceLoading()
@@ -257,7 +265,6 @@ public partial class CosmeticShopInterface : Control
         filterBlocker.Visible = false;
     }
 
-    
     async Task GenerateSimpleShop(JsonObject cosmeticShop)
     {
         navContainer.Visible = false;
@@ -354,6 +361,7 @@ public partial class CosmeticShopInterface : Control
             }
         }
     }
+
     void OpenJamTracks() => OS.ShellOpen("https://www.fortnite.com/item-shop/jam-tracks");
 
     void PrepareFilters()
@@ -380,7 +388,6 @@ public partial class CosmeticShopInterface : Control
             return;
 
         PrepareFilters();
-        resetTypeFilters.Disabled = typeFilters.All(b => !b.ButtonPressed);
         if (AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
         {
             foreach (var entry in activeOffers)
@@ -410,6 +417,7 @@ public partial class CosmeticShopInterface : Control
         "Character",
         "Backpack",
         "Back Bling",
+        "Shoes",
         "Pickaxe",
         "Glider",
         "Contrail",
@@ -423,11 +431,13 @@ public partial class CosmeticShopInterface : Control
         "Bass",
         "Keytar",
         "Wheels",
+        "Wheel",
         "Car Body",
         "Body",
         "Skin",
         "Decal",
         "Boost",
+        "Turbo",
         "Trail",
     };
 
@@ -473,21 +483,21 @@ public partial class CosmeticShopInterface : Control
         var types = entry.itemTypes;
 
 
-        if (typeMasks[0] && MatchAnyFilterIndex(types, 0, 4))
+        if (typeMasks[0] && MatchAnyFilterIndex(types, 0, 5))
             return true;
-        if (typeMasks[1] && MatchAnyFilterIndex(types, 4))
+        if (typeMasks[1] && MatchAnyFilterIndex(types, 5))
             return true;
-        if (typeMasks[2] && MatchAnyFilterIndex(types, 5, 2))
+        if (typeMasks[2] && MatchAnyFilterIndex(types, 6, 2))
             return true;
-        if (typeMasks[3] && MatchAnyFilterIndex(types, 7))
+        if (typeMasks[3] && MatchAnyFilterIndex(types, 8))
             return true;
-        if (typeMasks[4] && MatchAnyFilterIndex(types, 8))
+        if (typeMasks[4] && MatchAnyFilterIndex(types, 9))
             return true;
-        if (typeMasks[5] && MatchAnyFilterIndex(types, 9, 2))
+        if (typeMasks[5] && MatchAnyFilterIndex(types, 10, 2))
             return true;
-        if (typeMasks[6] && MatchAnyFilterIndex(types, 11, 5))
+        if (typeMasks[6] && MatchAnyFilterIndex(types, 12, 5))
             return true;
-        if (typeMasks[7] && MatchAnyFilterIndex(types, 16, 7))
+        if (typeMasks[7] && MatchAnyFilterIndex(types, 17, 9))
             return true;
         if (typeMasks[8] && !MatchAnyFilter(types))
             return true;

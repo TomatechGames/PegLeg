@@ -223,7 +223,7 @@ shader_parameter/minVal = 25.0
 shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
-shader_parameter/time = 15.062
+shader_parameter/time = 13.156
 shader_parameter/TrianglePattern = ExtResource("22_jjr7p")
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
@@ -270,6 +270,7 @@ itemChoiceEntries = [NodePath("Control/WindowContents/CenterContainer/window/Ite
 itemChoiceLayoutSections = [NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer2"), NodePath("Control/WindowContents/CenterContainer/window/ItemChoiceSelector/ChoiceItemSelector/MarginContainer/HBoxContainer/HBoxContainer3")]
 currentOfferEntry = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel")
 purchaseSpinner = NodePath("Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseSpinBox")
+isUserClosable = true
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0"]
 anchors_preset = 8
@@ -450,7 +451,7 @@ layout_mode = 2
 [node name="Perk Slot Selector" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks" index="0"]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
+anchor_left = -1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -483,8 +484,7 @@ layout_mode = 2
 [node name="Perk Option Selector" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Perks/Perks" index="1"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 2.0
+anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2

@@ -3,8 +3,6 @@ using System.Threading;
 
 public partial class HomebasePowerLevel : Control
 {
-    //todo: export this via BanjoBotAssets
-    static DataTableCurve homebaseRatingCurve = new("res://External/DataTables/HomebaseRatingMapping.json", "UIMonsterRating");
 
     [Export]
     Label homebaseNumberLabel;
@@ -14,13 +12,13 @@ public partial class HomebasePowerLevel : Control
     public override void _Ready()
     {
         GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
-        OnActiveAccountChanged(null);
+        OnActiveAccountChanged();
     }
-
+    //todo: move fort stat change detection logic to GameAccount and GameProfile, and subscribe to OnFortStatChanged
     CancellationTokenSource accountChangeCts = new();
-    async void OnActiveAccountChanged(GameAccount _)
+    async void OnActiveAccountChanged()
     {
-        accountChangeCts = accountChangeCts.Regenerate(out var ct);
+        accountChangeCts.CancelAndRegenerate(out var ct);
 
         if (currentProfile is not null)
         {
@@ -49,29 +47,36 @@ public partial class HomebasePowerLevel : Control
 
         currentProfile.OnStatChanged += OnProfileStatChanged;
 
-        UpdateStatsVisuals(currentProfile.account.GetFORTStats());
+        UpdateStatsVisuals(currentProfile.account.GetFORTStats(true));
     }
 
     GameProfile currentProfile;
 
-    void OnProfileStatChanged(GameProfile _)
+    void OnProfileStatChanged()
     {
-        UpdateStatsVisuals(currentProfile.account.GetFORTStats());
+        UpdateStatsVisuals(currentProfile.account.GetFORTStats(true));
     }
 
     void OnProfileItemChanged(GameItem item)
     {
-        if (item?.template?.Type == "Worker" && (item.attributes?.ContainsKey("squad_id") ?? false))
-            UpdateStatsVisuals(currentProfile.account.GetFORTStats());
+        if (item?.template?.Type == "Worker")
+            UpdateStatsVisuals(currentProfile.account.GetFORTStats(true));
     }
 
     private void UpdateStatsVisuals(FORTStats stats)
     {
-        var homebaseRatingKey = 4 * (stats.fortitude + stats.offense + stats.resistance + stats.technology);
-        var powerLevel = homebaseRatingCurve.Sample(homebaseRatingKey);
+        var powerLevel = stats.PowerLevel;
         homebaseNumberLabel.Text = Mathf.Floor(powerLevel).ToString();
         homebaseNumberProgressBar.Value = powerLevel % 1;
-        TooltipText = $"Homebase Power: {Mathf.Floor(powerLevel)}\n({Mathf.Floor((powerLevel % 1) * 100)}% progress to {Mathf.Floor(powerLevel) + 1})";
+        TooltipText = CustomTooltip.GenerateSimpleTooltip(
+                "Power Level",
+                homebaseNumberLabel.Text,
+                new string[]
+                {
+                    $"Homebase Power: {Mathf.Floor(powerLevel)}\n({Mathf.Floor((powerLevel % 1) * 100)}% progress to {Mathf.Floor(powerLevel) + 1})"
+                },
+                Colors.AliceBlue.ToHtml()
+            );
     }
 
     public override void _ExitTree()

@@ -76,6 +76,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public delegate void NotificationChangedEventHandler(bool isNotificationVisible);
 
     [Signal]
+    public delegate void FavoriteChangedEventHandler(bool isFavoriteVisible);
+
+    [Signal]
     public delegate void InteractableChangedEventHandler(bool interactable);
 
     [Signal]
@@ -95,6 +98,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     [Signal]
     public delegate void SelectionTintChangedEventHandler(Color rarityColour);
+    [Signal]
+    public delegate void OverflowWarningEventHandler(bool value);
 
     [Signal]
     public delegate void PressedEventHandler();
@@ -190,7 +195,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         if (!IsInstanceValid(this) || !IsInsideTree())
             return;
 
-        if(item is null)
+        if(item is null || item.customData?["empty"] is not null)
         {
             ClearItem();
             return;
@@ -346,7 +351,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         //if (!(data.rarity < 7 && data.rarity >= 0))
         //    rarity = 0;
 
+        EmitSignal(SignalName.OverflowWarning, item.attributes?[""] is not null);
         EmitSignal(SignalName.NotificationChanged, !item.IsSeen);
+        EmitSignal(SignalName.FavoriteChanged, item.IsFavourited);
         EmitSignal(SignalName.MaxTierChanged, Mathf.Min(item.template.RarityLevel+ 1, 5));
         EmitSignal(SignalName.TierChanged, tier);
         EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel / 2);
@@ -424,6 +431,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.RarityChanged, Colors.Transparent);
         EmitSignal(SignalName.InteractableChanged, interactableWhenEmpty);
         EmitSignal(SignalName.NotificationChanged, false);
+        EmitSignal(SignalName.FavoriteChanged, false);
     }
 
     public void Inspect()

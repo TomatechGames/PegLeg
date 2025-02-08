@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dd5q64xdgxtxp"]
+[gd_scene load_steps=16 format=3 uid="uid://dd5q64xdgxtxp"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_qqdn1"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="2_0xdrf"]
@@ -8,13 +8,14 @@
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="5_hktn8"]
 [ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="6_tr4nm"]
 [ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="7_dm8tq"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_oucdm"]
 [ext_resource type="PackedScene" uid="uid://fcp6vypncmbj" path="res://Scenes/GameItemEntry/reward_entry_small.tscn" id="8_j2jwh"]
 [ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="9_n2b4n"]
 [ext_resource type="PackedScene" uid="uid://dqjthg7kvcf2m" path="res://Scenes/power_level_indicator.tscn" id="10_jsq5r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_drqcc"]
 shader = ExtResource("2_0xdrf")
-shader_parameter/ControlSize = Vector2(270, 125)
+shader_parameter/ControlSize = Vector2(280, 125)
 shader_parameter/Fit = null
 shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
@@ -31,7 +32,7 @@ fill_to = Vector2(0.5, 0)
 metadata/_snap_enabled = true
 
 [node name="MissionEntryV5_0" type="MarginContainer" node_paths=PackedStringArray("alertModifierLayout", "alertModifierParent", "missionRewardLayout", "missionRewardParent", "alertRewardLayout", "alertRewardParent")]
-custom_minimum_size = Vector2(270, 125)
+custom_minimum_size = Vector2(280, 125)
 offset_right = 270.0
 offset_bottom = 125.0
 size_flags_horizontal = 0
@@ -45,6 +46,10 @@ alertRewardLayout = NodePath("HBoxContainer/AlertRewards")
 alertRewardParent = NodePath("HBoxContainer/AlertRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer")
 defaultBackground = ExtResource("2_bhxmy")
 
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_type_variation = &"SecondaryPanel"
+
 [node name="BGTexture" type="TextureRect" parent="."]
 modulate = Color(0.75, 0.75, 0.75, 1)
 material = SubResource("ShaderMaterial_drqcc")
@@ -56,6 +61,11 @@ syncControlSize = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(2, 0)
+layout_mode = 2
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
@@ -84,8 +94,10 @@ mouse_filter = 2
 texture = SubResource("GradientTexture2D_4yvdq")
 expand_mode = 5
 
+[node name="Responsive Button Area" parent="HBoxContainer/VBoxContainer/Icon" instance=ExtResource("7_oucdm")]
+layout_mode = 1
+
 [node name="AlertModifiers" type="MarginContainer" parent="HBoxContainer/VBoxContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_top = -20
 theme_override_constants/margin_bottom = -10
@@ -181,7 +193,6 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="AlertRewards" type="MarginContainer" parent="HBoxContainer"]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/margin_top = 2
@@ -237,6 +248,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="PowerLevel" type="Control" parent="."]
+z_index = 1
 layout_mode = 2
 mouse_filter = 2
 
@@ -246,6 +258,7 @@ offset_top = 17.0
 offset_bottom = 41.0
 
 [node name="VenturesIndicator" type="Control" parent="."]
+z_index = 1
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -267,9 +280,11 @@ texture = ExtResource("9_n2b4n")
 expand_mode = 1
 
 [connection signal="BackgroundChanged" from="." to="BGTexture" method="set_texture"]
+[connection signal="BackgroundVisible" from="." to="BGTexture" method="set_visible"]
 [connection signal="IconChanged" from="." to="HBoxContainer/VBoxContainer/Icon" method="set_texture"]
 [connection signal="PowerLevelChanged" from="." to="PowerLevel/PowerLevelIndicator/HBoxContainer/PowerLevelLabel" method="set_text"]
 [connection signal="TooltipChanged" from="." to="HBoxContainer/VBoxContainer/Icon" method="set_tooltip_text"]
 [connection signal="VenturesIndicatorVisible" from="." to="VenturesIndicator" method="set_visible"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Icon/Responsive Button Area" to="." method="InspectMission"]
 
 [editable path="PowerLevel/PowerLevelIndicator"]

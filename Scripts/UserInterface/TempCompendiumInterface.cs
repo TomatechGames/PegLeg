@@ -1,16 +1,19 @@
 using Godot;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-public partial class TempCompendiumInterface : Control
+public partial class TempCompendiumInterface : Control, IRecyclableElementProvider<GameItem>
 {
 	[Export]
-	ItemList itemList;
+	RecycleListContainer itemList;
 	[Export]
 	LineEdit searchBox;
+	[Export]
+	Control loadingIcon;
 
 	static readonly string[] includedSources = new string[]
 	{
@@ -21,101 +24,83 @@ public partial class TempCompendiumInterface : Control
 	{
 		VisibilityChanged += GenerateCompendiumEntries;
 		searchBox.TextChanged += FilterItems;
-		itemList.ItemSelected += InspectItem;
+		itemList.SetProvider(this);
+		//itemList. += InspectItem;
     }
 
-    bool generated = false;
-	List<GameItemTemplate> compendiumTemplates = new();
 
-	async void GenerateCompendiumEntries()
+    bool generated = false;
+	List<GameItem> compendiumEntries = new();
+	List<GameItem> filteredEntries = new();
+	public GameItem GetRecycleElement(int index) => filteredEntries?[index];
+
+	public int GetRecycleElementCount() => filteredEntries?.Count ?? 0;
+
+    async void GenerateCompendiumEntries()
 	{
 		if (generated)
 			return;
 		generated = true;
         searchBox.Editable = false;
+		loadingIcon.Visible = true;
+        itemList.Visible = false;
 
-		//TODO: run asynchronously
-		Dictionary<string, GameItemTemplate> uniqueTemplates = new();
-		int counter = 0;
+        //TODO: run asynchronously
+        ConcurrentDictionary<string, GameItemTemplate> uniqueTemplates = new();
+		List<Task> sourceTasks = new();
         foreach (var source in includedSources)
         {
-			if (BanjoAssets.TryGetSource(source, out var sourceObject))
+			var sourceTask = Task.Run(() =>
             {
-                //Parallel.ForEach(sourceObject, sourceKVP =>
-                foreach (var sourceKVP in sourceObject)
+                if (BanjoAssets.TryGetSource(source, out var sourceObject))
                 {
-					counter++;
-					if (counter > 15)
-					{
-						counter = 0;
-                        await Helpers.WaitForFrame();
-                    }
-                    var template = GameItemTemplate.Get(sourceKVP.Key);
-					if (template.Tier != 1)
-						continue;
+					//GD.Print("aa");
+                    Parallel.ForEach(sourceObject, sourceKVP =>
+                    {
+                        var template = GameItemTemplate.Get(sourceKVP.Key);
+                        if (template.Tier != 1)
+                            return;
 
-					lock (uniqueTemplates)
-					{
-						if (!uniqueTemplates.ContainsKey(template.DisplayName) || uniqueTemplates[template.DisplayName].RarityLevel < template.RarityLevel)
-                        {
-                            template.GenerateSearchTags();
-                            uniqueTemplates[template.DisplayName] = template;
-						}
-					}
-				}//);
-            }
+                        template.GenerateSearchTags();
+						template.GetTexture();
+
+                        uniqueTemplates.AddOrUpdate(
+                                template.DisplayName,
+                                template,
+                                (k, v) => v.RarityLevel < template.RarityLevel ? template : v
+                            );
+                    });
+                }
+            });
+			sourceTasks.Add(sourceTask);
         }
-		List<GameItemTemplate> orderedTemplates = null;
+		await Task.WhenAll(sourceTasks);
+        List<GameItem> orderedItems = null;
 		await Task.Run(() =>
         {
-            orderedTemplates = uniqueTemplates.Values
-                .OrderBy(item => item.Type == "Hero" ? 0 : 1)
-                .ThenBy(item => -item.RarityLevel)
-                .ThenBy(item => item.Category)
-                .ThenBy(item => item.SubType)
-                .ThenBy(item => item.DisplayName.StartsWith("The ") ? item.DisplayName[4..] : item.DisplayName)
-                .ToList();
+			orderedItems = uniqueTemplates.Values
+				.OrderBy(item => item.Type == "Hero" ? 0 : 1)
+				.ThenBy(item => -item.RarityLevel)
+				.ThenBy(item => item.Category)
+				.ThenBy(item => item.SubType)
+				.ThenBy(item => item.DisplayName.StartsWith("The ") ? item.DisplayName[4..] : item.DisplayName)
+				.Select(item => item.CreateInstance())
+				.ToList();
         });
-		compendiumTemplates = orderedTemplates ?? new();
-		//compendiumTemplates.ForEach(i => i.GenerateSearchTags());
+        compendiumEntries = orderedItems ?? new();
+        //compendiumTemplates.ForEach(i => i.GenerateSearchTags());
         FilterItems("");
         searchBox.Editable = true;
+        loadingIcon.Visible = false;
+		itemList.Visible = true;
     }
 
 	void FilterItems(string _)
 	{
 		var instructions = PLSearch.GenerateSearchInstructions(searchBox.Text);
-		var filteredTemplates = compendiumTemplates.Where(item => PLSearch.EvaluateInstructions(instructions, item.rawData));
+		filteredEntries = string.IsNullOrWhiteSpace(searchBox.Text) ? compendiumEntries : compendiumEntries.Where(item => PLSearch.EvaluateInstructions(instructions, item.RawData)).ToList();
 
-        itemList.Clear();
-        foreach (var template in filteredTemplates)
-        {
-            var index = itemList.AddItem("", template.GetTexture());
-			List<string> tooltipBody = new() { template.Description };
-            if (template["searchTags"] is JsonArray searchTags)
-                tooltipBody.Add(string.Join(", ", searchTags.Select(n => n.ToString()).ToArray()[1..]));
-			itemList.SetItemTooltip(index, 
-				CustomTooltip.GenerateSimpleTooltip(
-					template.DisplayName, 
-					null,
-                    tooltipBody.ToArray(), 
-					template.RarityColor.ToHtml()
-					)
-				);
-			itemList.SetItemCustomFgColor(index, Colors.Black);
-			var color = template.RarityColor;
-			color.A *= 0.5f;
-            itemList.SetItemCustomBgColor(index, color);
-			itemList.SetItemMetadata(index, compendiumTemplates.IndexOf(template));
-        }
-    }
-
-    private void InspectItem(long index)
-    {
-		var templateIndex = itemList.GetItemMetadata((int)index).AsInt32();
-        var template = compendiumTemplates[templateIndex];
-		var item = template.CreateInstance();
-		item.SetSeenLocal();
-        GameItemViewer.Instance.ShowItem(item);
+        GD.Print("filteredEntries: " + filteredEntries.Count);
+        itemList.UpdateList(true);
     }
 }

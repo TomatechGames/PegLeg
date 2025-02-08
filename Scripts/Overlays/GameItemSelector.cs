@@ -111,7 +111,7 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         //autoselectPredicate = item => item.template.RarityLevel <= 3;
     }
 
-    GameItem emptyItem = new(null, 1);
+    GameItem emptyItem = new(null, 1, customData: new() { ["empty"] = true });
     public async Task<GameItem[]> OpenSelector(IEnumerable<GameItem> profileItems, IEnumerable<GameItem> preSelectedItems = null)
     {
         EmitSignal(SignalName.TitleChanged, titleText);

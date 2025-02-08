@@ -35,14 +35,15 @@ public partial class GenericConfirmationWindow : ModalWindow
         errorResult ??= new();
         if (!errorResult.ContainsKey("errorMessage"))
             errorResult["errorMessage"] = "(No Message Provided)";
-        await instance.OpenConfirmationInst("Something Went Wrong", "\\_(*-*)_/", "", errorResult["errorMessage"].ToString(), "", false, 8);
+        await instance.ShowConfirmationInst("Something Went Wrong", "\\_(*-*)_/", "", errorResult["errorMessage"].ToString(), "", false, 8);
     }
+    public static async Task ShowError(string description, string header = "Error") =>
+        await instance.ShowConfirmationInst(header, null, "Close", description, "", false, 8);
 
+    public static async Task<bool?> ShowConfirmation(string headerText, string postiveText = "Confirm", string negativeText = "", string contextText = "", string warningText = "", bool allowCancel = true, int headerSpace = 8) =>
+        await instance.ShowConfirmationInst(headerText, postiveText, negativeText, contextText, warningText, allowCancel, headerSpace);
 
-    public static async Task<bool?> OpenConfirmation(string headerText, string postiveText = "Confirm", string negativeText = "", string contextText = "", string warningText = "", bool allowCancel = true, int headerSpace = 8) =>
-        await instance.OpenConfirmationInst(headerText, postiveText, negativeText, contextText, warningText, allowCancel, headerSpace);
-
-    public async Task<bool?> OpenConfirmationInst(string headerText, string positiveText, string negativeText, string contextText, string warningText, bool allowCancel, int headerSpace)
+    public async Task<bool?> ShowConfirmationInst(string headerText, string positiveText, string negativeText, string contextText, string warningText, bool allowCancel, int headerSpace)
     {
         for (int i = 0; i < headerSpace; i++)
         {
@@ -61,6 +62,7 @@ public partial class GenericConfirmationWindow : ModalWindow
         cancelButton.Visible = allowCancel;
 
         positiveButton.Text = positiveText;
+        positiveButton.Visible = !string.IsNullOrWhiteSpace(positiveText);
 
         negativeButton.Text = negativeText;
         negativeButton.Visible = !string.IsNullOrWhiteSpace(negativeText);
@@ -74,6 +76,8 @@ public partial class GenericConfirmationWindow : ModalWindow
 
         return result;
     }
+
+    protected override void CloseWindowViaInput() => Cancel();
 
     private void Cancel()
     {

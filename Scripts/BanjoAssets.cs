@@ -16,7 +16,7 @@ public static class BanjoAssets
     static readonly ConcurrentDictionary<string, WeakRef> iconCache = new();
     static readonly ConcurrentDictionary<string, JsonObject> dataSources = new();
 
-    static readonly string[] preloadTemplates = new string[] { "Hero", "Schematic", "Worker", "Defender", "Weapon", "Trap"};
+    static readonly string[] preloadTemplates = new string[] { "Hero", "Schematic", "Worker", "WorkerPortrait", "Ingredient", "Defender", "Weapon", "Trap", "Quest", "Ability"};
     public static async Task<bool> ReadAllSources()
     {
         string path = Helpers.ProperlyGlobalisePath(banjoFolderPath);
@@ -172,59 +172,6 @@ public class GameItemTemplate
         Color.FromString("#ffff40", Colors.White),
     };
 
-    static readonly Dictionary<string, string> itemTypeTextureMap = new()
-    {
-        //main types
-        ["Survivor"] = "Icon-Worker-L",
-        ["Lead Survivor"] = "T-Icon-Survivor-Leader-CARD",
-        ["Trap"] = "T-Icon-Traps-CARD",
-        ["Defender"] = "T-Icon-Defenders-CARD",
-
-        //hero sybtypes
-        ["Soldier"] = "T-Icon-Hero-Soldier-CARD",
-        ["Constructor"] = "T-Icon-Hero-Constructor-CARD",
-        ["Ninja"] = "T-Icon-Hero-Ninja-CARD",
-        ["Outlander"] = "T-Icon-Hero-Outlander-CARD",
-
-        //ranged subtypes
-        ["Assault"] = "T-Icon-Assault-CARD",
-        ["SMG"] = "T-Icon-SMG-CARD",
-        ["Pistol"] = "T-Icon-Pistol-CARD",
-        ["Shotgun"] = "T-Shotgun-TITLE",
-        ["Explosive"] = "T-Icon-Explosive-CARD",
-        ["Sniper"] = "T-Icon-Sniper-CARD",
-
-        //melee subtypes
-        ["Axe"] = "T-Icon-Axe-CARD",
-        ["Hardware"] = "T-Icon-Tool-CARD",
-        ["Scythe"] = "T-Icon-Scythe-CARD",
-        ["Spear"] = "T-Icon-Spear-CARD",
-        ["Sword"] = "T-Icon-Sword-CARD",
-        ["Club"] = "T-Icon-Blunt-CARD", //is this the right icon??
-
-        //lead survivor subtypes
-        ["Doctor"] = "T-Icon-Leader-Doctor-CARD",
-        ["Engineer"] = "T-Icon-Leader-Engineer-CARD",
-        ["Explorer"] = "T-Icon-Leader-Explorer-CARD",
-        ["Gadgeteer"] = "T-Icon-Leader-Gadgeteer-CARD",
-        ["Inventor"] = "T-Icon-Leader-Inventor-CARD",
-        ["Martial Artist"] = "T-Icon-Leader-MartialArtist-CARD",
-        ["Marksman"] = "T-Icon-Leader-Soldier-CARD",
-        ["Trainer"] = "T-Icon-Leader-Trainer-CARD",
-
-        //trap subtypes
-        ["Wall"] = "T-Trap-Wall-TITLE",
-        ["Ceiling"] = "T-Trap-Ceiling-TITLE",
-        ["Floor"] = "T-Trap-Floor-TITLE",
-
-        //defender subtypes
-        ["Assault Defender"] = "T-Icon-Survivor-Assault-CARD",
-        ["Shotgun Defender"] = "T-Icon-Survivor-Shotgun-CARD",
-        ["Melee Defender"] = "T-Icon-Survivor-Melee-CARD",
-        ["Pistol Defender"] = "T-Icon-Survivor-Pistol-CARD",
-        ["Sniper Defender"] = "T-Icon-Survivor-Sniper-CARD",
-    };
-
     static readonly string[] cardPackFromRarity = new string[]
     {
         "CardPack:cardpack_choice_all_r",
@@ -252,12 +199,14 @@ public class GameItemTemplate
 
     public static GameItemTemplate Get(string templateId, JsonObject source = null)
     {
-
         if (templateId is null)
             return null;
 
         if (templateId.StartsWith("STWAccoladeReward"))
             templateId = templateId.Replace("STWAccoladeReward:stwaccolade_", "Accolades:accoladeid_stw_");
+
+        if (templateId == "AccountResource:currency_mtxswap")
+            templateId = "AccountResource:currency_hybrid_mtx_xrayllama";
 
         if (!templateId.Contains(':'))
             return null;
@@ -265,8 +214,8 @@ public class GameItemTemplate
         var splitItemId = templateId.Split(':');
         splitItemId[1] = splitItemId[1].ToLower();
 
-        if (templateDict.ContainsKey(splitItemId[0]) && templateDict[splitItemId[0]].ContainsKey(splitItemId[1]))
-            return templateDict[splitItemId[0]][splitItemId[1]];
+        if (templateDict.TryGetValue(splitItemId[0], out var templateSource) && templateSource.TryGetValue(splitItemId[1], out var template))
+            return template;
 
         templateId = splitItemId[0] + ":" + splitItemId[1].ToLower();
         if (source is null && !BanjoAssets.TryGetSource(splitItemId[0], out source))
@@ -340,10 +289,9 @@ public class GameItemTemplate
     public static Texture2D GetSubtypeTexture(string key, Texture2D fallbackIcon = null)
     {
         key ??= "";
-        if (itemTypeTextureMap.ContainsKey(key))
-        {
-            return BanjoAssets.GetReservedTexture($"ExportedImages/{itemTypeTextureMap[key]}.png");
-        }
+        var dict = BanjoAssets.supplimentaryData.ItemTypeAndSubtypeIcons;
+        if (dict.ContainsKey(key))
+            return dict[key];
         return fallbackIcon;
     }
 
@@ -361,8 +309,10 @@ public class GameItemTemplate
         var splitTemplateId = templateId.Split(":");
         extraData["Type"] = splitTemplateId[0];
         extraData["Name"] = splitTemplateId[1];
-        extraData["DisplayName"] = displayName;
-        extraData["Description"] = description;
+        if (displayName is not null)
+            extraData["DisplayName"] = displayName;
+        if (description is not null)
+            extraData["Description"] = description;
         if (iconPath is not null)
             extraData["ImagePaths"] = new JsonObject() { ["LargePreview"] = iconPath };
         rawData = extraData;
@@ -373,6 +323,11 @@ public class GameItemTemplate
     public JsonNode this[string propertyName] => rawData[propertyName];
     public bool ContainsKey(string propertyName) => rawData.ContainsKey(propertyName);
     public string TemplateId => $"{Type}:{Name.ToLower()}";
+    public bool VBucksOrXRayTickets => Type == "AccountResource" && Name.ToLower() is string lowername && (
+            lowername == "currency_hybrid_mtx_xrayllama" ||
+            lowername == "currency_mtxswap" ||
+            lowername == "currency_xrayllama"
+        );
 
     public string Type => rawData["Type"].ToString();
     public bool IsCollectable => Type switch
@@ -503,17 +458,17 @@ public class GameItemTemplate
         }
     }
 
-    public GameItemTemplate TryUpgradeTemplateRarity()
+    public GameItemTemplate TryGetNextRarity()
     {
-        int rarityIndex = RarityLevel;
-        if (rarityIndex >= 6)
-            return null;
-        string fromRarity = $"_{rarityIds[rarityIndex]}_";
-        string toRarity = $"_{rarityIds[rarityIndex + 1]}_";
-        string oldName = Name.ToLower();
-        string newName = oldName.Replace(fromRarity.ToLower(), toRarity.ToLower());
-        if (Get($"{Type}:{newName}") is GameItemTemplate newTemplate && newTemplate.Name.ToLower() != oldName)
-            return newTemplate;
+        if (rawData["RarityUpRecipe"]?["Result"]?.ToString() is string rarityUpResult)
+            return Get(rarityUpResult);
+        return null;
+    }
+
+    public GameItemTemplate TryGetNextTier()
+    {
+        if (rawData["TierUpRecipe"]?["Result"]?.ToString() is string rarityUpResult)
+            return Get(rarityUpResult);
         return null;
     }
 
@@ -649,11 +604,16 @@ public class GameItemTemplate
         if(GetTeamPerk() is GameItemTemplate teamPerk)
             tags.Add(teamPerk.DisplayName);
 
-        rawData["RarityLv"] = RarityLevel;
         if (tags.Contains("Worker"))
             tags.Add("Survivor");
+        if (rawData["RecycleRecipe"] is null)
+            tags.Add("Permenant");
         var searchTags = new JsonArray(tags.Where(t => !string.IsNullOrWhiteSpace(t)).Select(t => (JsonNode)t).ToArray());
-        rawData["searchTags"] = searchTags;
+        lock (rawData)
+        {
+            rawData["RarityLv"] = RarityLevel;
+            rawData["searchTags"] = searchTags;
+        }
         return searchTags.Reserialise();
     }
 

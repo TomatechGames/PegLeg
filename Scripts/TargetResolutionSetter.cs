@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Text.Json.Nodes;
 
 public partial class TargetResolutionSetter : Node
 {
@@ -13,8 +14,32 @@ public partial class TargetResolutionSetter : Node
     public override void _Ready()
 	{
         var window = GetTree().Root;
-        window.ContentScaleSize = TargetResolution;
+        SetSize(window, (float)AppConfig.Get("ui", "scale", 1.0));
         window.MinSize = MinResolution;
         rootNode?.ResetOffsets();
+        AppConfig.OnConfigChanged += OnConfigChanged;
+    }
+
+    public override void _ExitTree()
+    {
+        AppConfig.OnConfigChanged -= OnConfigChanged;
+    }
+
+    private void OnConfigChanged(string section, string key, JsonValue property)
+    {
+        if (section != "ui")
+            return;
+
+        if (key == "scale")
+        {
+            var window = GetTree().Root;
+            SetSize(window, (float)property.GetValue<double>());
+        }
+    }
+
+    void SetSize(Window window, float value)
+    {
+        float finalScale = Mathf.Clamp(value, 0.5f, 1.0f);
+        window.ContentScaleSize = (Vector2I)((Vector2)TargetResolution / finalScale);
     }
 }

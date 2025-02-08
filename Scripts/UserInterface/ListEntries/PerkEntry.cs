@@ -40,28 +40,44 @@ public partial class PerkEntry : Control
     {
         linkedAlteration = alterationId;
         linkedIndex = index;
-        if (alterationId is not null && GameItemTemplate.Get(alterationId) is GameItemTemplate alteration)
+        if (alterationId is not null)
         {
-            EmitSignal(SignalName.NameChanged, alteration.DisplayName);
-
-            if (hasRarity)
+            if (GameItemTemplate.Get(alterationId) is GameItemTemplate alteration)
             {
-                int rarity = alteration.RarityLevel;
-                if (alterationId.StartsWith("Alteration:aid_g_"))
-                    rarity = 6;
-                EmitSignal(SignalName.RarityIconChanged, BanjoAssets.GetReservedTexture(rarityToImage[rarity-1]));
-                EmitSignal(SignalName.RarityIconVisibilityChanged, true);
+                EmitSignal(SignalName.NameChanged, alteration.DisplayName);
+
+                if (hasRarity)
+                {
+                    int rarity = alteration.RarityLevel;
+                    if (alterationId.StartsWith("Alteration:aid_g_"))
+                        rarity = 6;
+                    EmitSignal(SignalName.RarityIconChanged, BanjoAssets.GetReservedTexture(rarityToImage[rarity - 1]));
+                    EmitSignal(SignalName.RarityIconVisibilityChanged, true);
+                }
+                else
+                    EmitSignal(SignalName.RarityIconVisibilityChanged, false);
+
+                if (alteration.ContainsKey("ImagePaths"))
+                {
+                    EmitSignal(SignalName.ElementIconChanged, alteration.GetTexture());
+                    EmitSignal(SignalName.ElementIconVisibilityChanged, true);
+                }
+                else
+                    EmitSignal(SignalName.ElementIconVisibilityChanged, false);
             }
-            else
+            else if(alterationId == "")
+            {
+                EmitSignal(SignalName.NameChanged, "Empty Perk Slot");
                 EmitSignal(SignalName.RarityIconVisibilityChanged, false);
-
-            if (alteration.ContainsKey("ImagePaths"))
-            {
-                EmitSignal(SignalName.ElementIconChanged, alteration.GetTexture());
-                EmitSignal(SignalName.ElementIconVisibilityChanged, true);
+                EmitSignal(SignalName.ElementIconVisibilityChanged, false);
             }
             else
+            {
+                EmitSignal(SignalName.NameChanged, "Unknown Perk (Probably Legacy)");
+                EmitSignal(SignalName.RarityIconVisibilityChanged, true);
+                EmitSignal(SignalName.RarityIconChanged, BanjoAssets.defaultIcon);
                 EmitSignal(SignalName.ElementIconVisibilityChanged, false);
+            }
 
         }
         else

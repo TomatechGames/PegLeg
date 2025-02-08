@@ -1,56 +1,74 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbrrcnce14w8h"]
+[gd_scene load_steps=7 format=3 uid="uid://dbrrcnce14w8h"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_1qlyc"]
 [ext_resource type="Texture2D" uid="uid://docjdjoems0ia" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Black-L.png" id="1_5c4d1"]
 [ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_4k5sn"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_jrnxm"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_htaww"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dk7yu"]
 shader = ExtResource("2_4k5sn")
-shader_parameter/ControlSize = Vector2(26, 26)
+shader_parameter/ControlSize = Vector2(34, 34)
 shader_parameter/CornerRadius = 3.0
 shader_parameter/Fit = true
 
 [node name="MissionCollectionHighlightItem" type="MarginContainer"]
-custom_minimum_size = Vector2(0, 26)
+custom_minimum_size = Vector2(0, 34)
+offset_right = 34.0
+offset_bottom = 34.0
 mouse_filter = 2
 script = ExtResource("1_1qlyc")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 0
-
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-
-[node name="Icon" type="TextureRect" parent="HBoxContainer"]
+[node name="Icon" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_dk7yu")
 layout_mode = 2
-mouse_filter = 2
+size_flags_horizontal = 0
 texture = ExtResource("1_5c4d1")
 expand_mode = 3
 script = ExtResource("4_jrnxm")
 syncControlSize = true
 
-[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = -12
-theme_override_constants/margin_bottom = -2
-
-[node name="Label" type="Label" parent="HBoxContainer/MarginContainer2"]
+[node name="Label" type="Label" parent="Icon"]
 z_index = 1
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -29.0
+offset_top = -16.0
+grow_horizontal = 0
+grow_vertical = 0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 12
 text = "2.56k"
+horizontal_alignment = 2
+vertical_alignment = 2
 
-[connection signal="AmountChanged" from="." to="HBoxContainer/MarginContainer2/Label" method="set_text"]
-[connection signal="AmountVisibility" from="." to="HBoxContainer/MarginContainer2/Label" method="set_visible"]
-[connection signal="IconChanged" from="." to="HBoxContainer/Icon" method="set_texture"]
-[connection signal="RarityChanged" from="." to="HBoxContainer/Icon" method="set_self_modulate"]
+[node name="NotificationLabel" type="Label" parent="Icon"]
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 12.0
+offset_bottom = 25.0
+rotation = -0.1309
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 16
+text = " ! "
+
+[node name="Responsive Button Area" parent="Icon" instance=ExtResource("5_htaww")]
+layout_mode = 1
+outlinePadding = 3.0
+
+[connection signal="AmountChanged" from="." to="Icon/Label" method="set_text"]
+[connection signal="AmountVisibility" from="." to="Icon/Label" method="set_visible"]
+[connection signal="IconChanged" from="." to="Icon" method="set_texture"]
+[connection signal="InteractableChanged" from="." to="Icon/Responsive Button Area" method="set_visible"]
+[connection signal="NotificationChanged" from="." to="Icon/NotificationLabel" method="set_visible"]
+[connection signal="RarityChanged" from="." to="Icon" method="set_self_modulate"]
+[connection signal="TooltipChanged" from="." to="Icon" method="set_tooltip_text"]
+[connection signal="TooltipChanged" from="." to="Icon/Responsive Button Area" method="set_tooltip_text"]
+[connection signal="pressed" from="Icon/Responsive Button Area" to="." method="Inspect"]

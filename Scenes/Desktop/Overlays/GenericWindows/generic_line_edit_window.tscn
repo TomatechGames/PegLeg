@@ -19,6 +19,7 @@ textBox = NodePath("Control/WindowContents/CenterContainer/PanelContainer/Margin
 cancelButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/CancelBtn")
 confirmButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/ConfirmBtn")
 warningLabel = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Warning")
+isUserClosable = true
 
 [node name="CloseBtn" parent="." index="1"]
 visible = false

@@ -10,6 +10,11 @@ public partial class MiscSettings : Control
     {
         GetWindow().ContentScaleFactor = newInterfaceScale;
     }
+    public override void _UnhandledKeyInput(InputEvent @event)
+    {
+        if (@event is InputEventKey keyEvent && !keyEvent.IsEcho() && keyEvent.Pressed && keyEvent.Keycode == Key.M && keyEvent.CtrlPressed)
+            VolumeController.ToggleBusMuted("Master");
+    }
 
     void ReturnToLogin()
     {

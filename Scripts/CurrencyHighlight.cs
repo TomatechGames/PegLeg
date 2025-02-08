@@ -21,10 +21,7 @@ public partial class CurrencyHighlight : GameItemEntry
         GameAccount.ActiveAccountChanged -= OnAccountChanged;
     }
 
-    void OnAccountChanged(GameAccount _)
-    {
-        SetCurrencyTemplate(currentTemplate);
-    }
+    void OnAccountChanged() => SetCurrencyTemplate(currentTemplate);
 
     GameItemTemplate currentTemplate;
 

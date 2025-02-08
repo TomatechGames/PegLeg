@@ -10,6 +10,8 @@ public partial class CodeLoginLabel : Node
     [Signal]
     public delegate void LoginEndedEventHandler();
     [Signal]
+    public delegate void LoginSucceededEventHandler();
+    [Signal]
     public delegate void LoginSuccessEventHandler(string accountId);
     [Signal]
     public delegate void LoginFailedEventHandler();
@@ -103,6 +105,8 @@ public partial class CodeLoginLabel : Node
         GD.Print("APPROVE: " + linkCheckRequest);
 
         EmitSignal(SignalName.LoginSuccess, linkCheckRequest["account_id"].ToString());
+
+        EmitSignal(SignalName.LoginSucceeded);
         EmitSignal(SignalName.LoginResultChanged, true);
 
         EmitSignal(SignalName.LoginEnded);

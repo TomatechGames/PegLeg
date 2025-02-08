@@ -445,6 +445,8 @@ public static class PLSearch
             return floatValue;
         if (numberValue.TryGetValue(out int intValue))
             return intValue;
+        if (numberValue.TryGetValue(out bool boolValue))
+            return boolValue ? 1 : 0;
         return null;
     }
 

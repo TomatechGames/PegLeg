@@ -53,7 +53,9 @@ foldout = NodePath("AccountSelector")
 foldoutBtn = NodePath("AccountSelector/SelectorButton/Button")
 accountEntryParent = NodePath("AccountSelector/SelectorOptions/Control/MarginContainer/VBoxContainer/ScrollContainer/VBoxContainer")
 accountEntryScene = ExtResource("7_xgkqb")
+onboardingScene = "res://Scenes/Desktop/desktopOnboarding.tscn"
 backgroundPanel = NodePath("Background")
+isUserClosable = true
 
 [node name="Background" type="ColorRect" parent="."]
 clip_contents = true

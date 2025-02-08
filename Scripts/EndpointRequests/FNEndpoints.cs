@@ -12,6 +12,11 @@ static class FnEndpoints
         BaseAddress = new Uri("https://fortnite-public-service-prod11.ol.epicgames.com")
     };
 
+    public static readonly HttpClient contentEndpoint = new()
+    {
+        BaseAddress = new Uri("https://fortnitecontent-website-prod07.ol.epicgames.com")
+    };
+
     public static readonly HttpClient gameEndpoint = new()
     {
         BaseAddress = new Uri("https://fngw-mcp-gc-livefn.ol.epicgames.com")
@@ -35,7 +40,7 @@ static class FnEndpoints
 
 static class ExternalEndpoints
 {
-    public static readonly HttpClient cosmeticShopEndpoint = new()
+    public static readonly HttpClient fnApiEndpoint = new()
     {
         BaseAddress = new Uri("https://fortnite-api.com")
     };

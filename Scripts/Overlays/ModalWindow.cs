@@ -25,6 +25,8 @@ public partial class ModalWindow : Control
     bool startOpen;
     [Export]
     bool useSounds = true;
+    [Export]
+    protected bool isUserClosable = false;
     protected bool UseSounds => useSounds;
 
     public override void _Ready()
@@ -56,6 +58,15 @@ public partial class ModalWindow : Control
             windowControl.PivotOffset = windowControl.Size * 0.5f;
         }
     }
+
+    public override void _UnhandledKeyInput(InputEvent @event)
+    {
+        if (!isUserClosable || !IsOpen)
+            return;
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape)
+            CloseWindowViaInput();
+    }
+    protected virtual void CloseWindowViaInput() => SetWindowOpen(false);
 
     public bool IsOpen { get; private set; }
     void OpenWindow() => SetWindowOpen(true);

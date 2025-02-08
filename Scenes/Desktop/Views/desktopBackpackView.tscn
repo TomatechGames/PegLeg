@@ -15,16 +15,26 @@ resource_name = "InventoryTypeFilter"
 
 [node name="Backpack" instance=ExtResource("1_rmpt8")]
 targetProfile = "theater0"
-typeFilters = PackedStringArray("Weapon,Trap,Ingredient,WorldItem,Ammo", "", "Weapon", "Ammo", "Ingredient,WorldItem", "Trap")
+typeFilters = PackedStringArray("Weapon", "", "Weapon", "Ammo", "Ingredient,WorldItem", "Trap")
+allowDevMode = false
 
 [node name="User" parent="VBoxContainer/HBoxContainer2" index="0"]
 visible = false
 
-[node name="All" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer" index="0"]
+[node name="NewFilter" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="0"]
+visible = false
+
+[node name="FavouriteFilter" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="1"]
 visible = false
 
 [node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All" index="0"]
 button_group = SubResource("ButtonGroup_3xnev")
+
+[node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("2_8da1x")
+
+[node name="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer" index="1"]
+text = "Weapons"
 
 [node name="Dev All" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer" index="1"]
 visible = false
@@ -32,8 +42,11 @@ visible = false
 [node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All" index="0"]
 button_group = SubResource("ButtonGroup_3xnev")
 
+[node name="Tab1" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer" index="2"]
+visible = false
+
 [node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1" index="0"]
-theme_type_variation = &"LeftCheckButton"
+button_pressed = true
 button_group = SubResource("ButtonGroup_0odak")
 
 [node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer/HBoxContainer" index="0"]
@@ -69,7 +82,7 @@ texture = ExtResource("5_cy863")
 [node name="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4/MarginContainer/HBoxContainer" index="1"]
 text = "Traps"
 
-[node name="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="1"]
+[node name="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="3"]
 visible = false
 
 [node name="ScrollContainer" parent="VBoxContainer" index="2"]

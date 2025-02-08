@@ -3,6 +3,7 @@ using System;
 
 public partial class RefreshTimerHook : Label
 {
+
     [Export(PropertyHint.Enum, "Hour, Day, Week, BR Week, Event")]
     int timerType;
 
@@ -35,6 +36,7 @@ public partial class RefreshTimerHook : Label
             if (IsVisibleInTree())
                 UpdateTimeText();
         };
+        MouseFilter = MouseFilterEnum.Stop;
     }
 
     DateTime refreshTime;
@@ -51,6 +53,7 @@ public partial class RefreshTimerHook : Label
             4 => RefreshTimeType.Event,
             _ => RefreshTimeType.Daily,
         });
+        TooltipText = refreshTime.ToString("d");
     }
 
     void UpdateTimeText()

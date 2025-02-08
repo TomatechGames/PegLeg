@@ -8,8 +8,6 @@ public partial class LoginPopup : ModalWindow
     [Export]
     CodeLoginLabel loginLabel;
     [Export]
-    Button rememberLoginButton;
-    [Export]
     Button confirmLoginButton;
 
     static LoginPopup instance;
@@ -55,6 +53,7 @@ public partial class LoginPopup : ModalWindow
         confirmLoginButton.Disabled = false;
     }
 
+    protected override void CloseWindowViaInput() => Cancel();
     public async void Cancel()
     {
         if (loggedInAccount is not null)
@@ -69,11 +68,8 @@ public partial class LoginPopup : ModalWindow
     {
         if (loggedInAccount is null)
             return;
-        if (rememberLoginButton.ButtonPressed)
-        {
-            using var _ = LoadingOverlay.CreateToken();
-            await loggedInAccount.SaveDeviceDetails();
-        }
+        using var _ = LoadingOverlay.CreateToken();
+        await loggedInAccount.SaveDeviceDetails();
         isActive = false;
     }
 }

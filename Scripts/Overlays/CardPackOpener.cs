@@ -24,6 +24,8 @@ public partial class CardPackOpener : Control
     [Export]
     Control pullButton;
     [Export]
+    Control skipAllButton;
+    [Export]
     Color defaultBackgroundColor;
     [Export]
     Control glowFlare;
@@ -210,6 +212,7 @@ public partial class CardPackOpener : Control
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
         displayPanel.Visible = true;
         pullButton.Visible = false;
+        skipAllButton.Visible = false;
         cardPacksPrepared = false;
         llamaBurstComplate = false;
         this.fromPanel = fromPanel;
@@ -246,6 +249,12 @@ public partial class CardPackOpener : Control
         if (llamaOffer is not null)
         {
             var shopNotif = await account.PurchaseOffer(llamaOffer, llamaOfferQuantity);
+            if (shopNotif is null)
+            {
+                await GenericConfirmationWindow.ShowConfirmation("Oops", "", "Close", "Failed to purchase Llama", allowCancel:false);
+                CloseMenu();
+                return;
+            }
             var shopResultItems = shopNotif
                 .First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"]
                     .AsArray()
@@ -369,6 +378,7 @@ public partial class CardPackOpener : Control
         }
 
         pullButton.Visible = true;
+        skipAllButton.Visible = true;
     }
 
     int CurrentCardSeparation
@@ -468,7 +478,6 @@ public partial class CardPackOpener : Control
             llamaHits++;
             return;
         }
-        llamaHits++;
         GlowScale(false);
 
         smallLlamaButton.Visible = false;
@@ -515,6 +524,23 @@ public partial class CardPackOpener : Control
         while (IsInsideTree() && isOpen && !llamaBurstComplate)
         {
             await Helpers.WaitForFrame();
+        }
+    }
+
+    public override void _UnhandledKeyInput(InputEvent @event)
+    {
+        if (!isOpen || @event is not InputEventKey keyEvent)
+            return;
+        if (pullButton.Visible && !keyEvent.IsEcho() && keyEvent.Keycode == Key.Space)
+        {
+            if (keyEvent.Pressed)
+                StartPullCard();
+            else
+                EndPullCard();
+        }
+        if (skipAllButton.Visible && !keyEvent.IsEcho() && keyEvent.Keycode == Key.Escape && keyEvent.Pressed)
+        {
+            EndImmediate();
         }
     }
 
@@ -648,6 +674,7 @@ public partial class CardPackOpener : Control
             GlowScale(false);
             topCard.Scale = Vector2.Zero;
             pullButton.Visible = false;
+            skipAllButton.Visible = false;
             EndPullCard();
         }
 
@@ -943,6 +970,14 @@ public partial class CardPackOpener : Control
                 await account.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content);
             }
         }
+    }
+
+    public async void EndImmediate()
+    {
+        if (!isOpen)
+            return;
+        await ShowRecyclePopup();
+        CloseMenu();
     }
 
     async void CloseMenu()

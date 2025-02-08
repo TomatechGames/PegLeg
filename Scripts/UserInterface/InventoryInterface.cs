@@ -14,52 +14,79 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
     [Export]
     Control devAllButton;
     [Export]
+    VirtualTabBar tabBar;
+    [Export]
     string targetProfile;
     [Export(PropertyHint.ArrayType)]
     string[] typeFilters;
     [Export]
     bool sortByName = false;
+    [Export]
+    bool allowDevMode = true;
 
     public override void _Ready()
     {
-        GameAccount.ActiveAccountChanged += OnAccountChanged;
+        GameAccount.ActiveAccountChanged += UpdateAccount;
         itemList.SetProvider(this);
         searchBox.TextChanged += ApplyFilters;
-        var dev = AppConfig.Get("advanced", "developer", false);
+        var dev = AppConfig.Get("advanced", "developer", false) && allowDevMode;
         if (targetUser is not null)
         {
             targetUser.TextSubmitted += t =>
             {
                 AppConfig.Set("inventory", "customUser", t);
-                OnAccountChanged(null);
+                UpdateAccount();
             };
             targetUser.Visible = dev;
             targetUser.Text = dev ? AppConfig.Get("inventory", "customUser", "") : "";
         }
         if (devAllButton is not null)
             devAllButton.Visible = dev;
+        currentTypeFilter = typeFilters[0];
+        tabBar.CurrentTab = 0;
+        tabBar.TabChanged += SetTypeFilter;
         AppConfig.OnConfigChanged += OnConfigChanged;
-        OnAccountChanged(null);
+        UpdateAccount();
     }
 
     private void OnConfigChanged(string section, string key, JsonValue val)
     {
-        bool dev = AppConfig.Get("advanced", "developer", false);
+        bool dev = AppConfig.Get("advanced", "developer", false) && allowDevMode;
         if (devAllButton is not null)
             devAllButton.Visible = dev;
         if (targetUser is not null)
         {
             targetUser.Visible = dev;
             targetUser.Text = dev ? AppConfig.Get("inventory", "customUser", "") : "";
+            if (!dev && string.IsNullOrEmpty(currentTypeFilter))
+            {
+                currentTypeFilter = typeFilters[0];
+                tabBar.CurrentTab = 0;
+            }
+            UpdateAccount();
         }
     }
 
     public override void _ExitTree()
     {
-        GameAccount.ActiveAccountChanged -= OnAccountChanged;
+        GameAccount.ActiveAccountChanged -= UpdateAccount;
     }
 
-    public void SetFilter(int index)
+    bool filterNew;
+    public void SetNewFilter(bool value)
+    {
+        filterNew = value;
+        ApplyFilters();
+    }
+
+    bool filterFavorite;
+    public void SetFavoriteFilter(bool value)
+    {
+        filterFavorite = value;
+        ApplyFilters();
+    }
+
+    void SetTypeFilter(int index)
     {
         if (index < 0 || index >= typeFilters.Length)
             return;
@@ -83,12 +110,12 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
     public int GetRecycleElementCount() => currentItems?.Length ?? 0;
     public GameItem GetRecycleElement(int index) => currentItems?[index];
 
-    async void OnAccountChanged(GameAccount _)
+    async void UpdateAccount()
     {
-        allItems=Array.Empty<GameItem>();
+        allItems = Array.Empty<GameItem>();
         ApplyFilters();
         var account = GameAccount.activeAccount;
-        if (!string.IsNullOrEmpty(targetUser?.Text))
+        if (!string.IsNullOrEmpty(targetUser?.Text) && allowDevMode)
             account = (await GameAccount.SearchForAccount(targetUser?.Text)) ?? account;
         GD.Print(account?.accountId);
         if (targetProfile != FnProfileTypes.AccountItems && !await account.Authenticate())
@@ -120,6 +147,8 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
 
         filteredItems = allItems
             .Where(item =>
+                    (!filterNew || !item.IsSeen) &&
+                    (!filterFavorite || item.IsFavourited) &&
                     (possibleTypes?.Contains(item.template.Type) ?? true) &&
                     PLSearch.EvaluateInstructions(instructions, item.RawData) 
                 )
@@ -136,13 +165,18 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
         if (sortByName)
             resultItems = resultItems.ThenBy(i => i.template.SortingDisplayName);
 
-        currentItems = resultItems
-            .ThenBy(i => i.template.Category)
+        resultItems = resultItems
+            //.ThenBy(i => i.template.Category)
             .ThenBy(i => -i.Rating)
             .ThenBy(i => -i.template.RarityLevel)
             .ThenBy(i => i.template.Type == "Ingredient" ? -i.TotalQuantity : 1)
-            .ThenBy(i => -i.quantity)
-            .ToArray();
+            .ThenBy(i => -i.quantity);
+
+        if (!sortByName)
+            resultItems = resultItems.ThenBy(i => i.template.SortingDisplayName);
+
+
+        currentItems = resultItems.ToArray();
         itemList.UpdateList(true);
     }
 

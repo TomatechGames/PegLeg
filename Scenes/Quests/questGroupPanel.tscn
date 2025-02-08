@@ -9,16 +9,18 @@
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_yl7pi"]
 
-[node name="QuestGroupViewer" type="MarginContainer" node_paths=PackedStringArray("unselectedButton", "questViewer", "questNodeParent", "scrollContainer", "leftButtonParent", "rightButtonParent")]
+[node name="QuestGroupViewer" type="MarginContainer" node_paths=PackedStringArray("unselectedButton", "questViewer", "questNodeParent", "noQuestNodesAlert", "scrollContainer", "leftButtonParent", "rightButtonParent")]
 custom_minimum_size = Vector2(400, 0)
-anchors_preset = 9
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 339.0
+grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("8_uorrc")
 unselectedButton = NodePath("MarginContainer/VBoxContainer/QuestNodes/MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/Control/Unselected")
-questViewer = NodePath("MarginContainer/VBoxContainer/QuestViewer")
+questViewer = NodePath("MarginContainer/VBoxContainer/MarginContainer/QuestViewer")
 questNodeParent = NodePath("MarginContainer/VBoxContainer/QuestNodes/MarginContainer/HBoxContainer/ScrollContainer/MarginContainer/QuestNodeContainer")
+noQuestNodesAlert = NodePath("MarginContainer/VBoxContainer/QuestNodes/MarginContainer/Label")
 questNodeScene = ExtResource("9_nmloc")
 questArrowScene = ExtResource("10_ua3db")
 scrollContainer = NodePath("MarginContainer/VBoxContainer/QuestNodes/MarginContainer/HBoxContainer/ScrollContainer")
@@ -39,7 +41,11 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 12
 
-[node name="QuestViewer" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_quntk")]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="QuestViewer" parent="MarginContainer/VBoxContainer/MarginContainer" instance=ExtResource("4_quntk")]
 layout_mode = 2
 
 [node name="QuestNodes" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
@@ -50,6 +56,7 @@ z_index = -1
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/QuestNodes"]
+custom_minimum_size = Vector2(0, 138)
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
@@ -151,6 +158,12 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("12_gqjjf")
 expand_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/QuestNodes/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "No Quests"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuestNodes/MarginContainer/HBoxContainer/Prev/Button" to="." method="PrevPage"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/QuestNodes/MarginContainer/HBoxContainer/Next/Button" to="." method="NextPage"]

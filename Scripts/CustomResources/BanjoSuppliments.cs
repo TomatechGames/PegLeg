@@ -6,9 +6,65 @@ using System;
 public partial class BanjoSuppliments : Resource
 {
     static Texture2D emptyTexture = new();
+
+    [Export]
+    public Dictionary<string, Texture2D> ItemTypeAndSubtypeIcons { get; private set; } = new()
+    {
+        //main types
+        ["Survivor"] = emptyTexture,
+        ["Lead Survivor"] = emptyTexture,
+        ["Trap"] = emptyTexture,
+        ["Defender"] = emptyTexture,
+
+        //hero sybtypes
+        ["Soldier"] = emptyTexture,
+        ["Constructor"] = emptyTexture,
+        ["Ninja"] = emptyTexture,
+        ["Outlander"] = emptyTexture,
+
+        //ranged subtypes
+        ["Assault"] = emptyTexture,
+        ["SMG"] = emptyTexture,
+        ["Pistol"] = emptyTexture,
+        ["Shotgun"] = emptyTexture,
+        ["Explosive"] = emptyTexture,
+        ["Sniper"] = emptyTexture,
+
+        //melee subtypes
+        ["Axe"] = emptyTexture,
+        ["Hardware"] = emptyTexture,
+        ["Scythe"] = emptyTexture,
+        ["Spear"] = emptyTexture,
+        ["Sword"] = emptyTexture,
+        ["Club"] = emptyTexture,
+
+        //lead survivor subtypes
+        ["Doctor"] = emptyTexture,
+        ["Engineer"] = emptyTexture,
+        ["Explorer"] = emptyTexture,
+        ["Gadgeteer"] = emptyTexture,
+        ["Inventor"] = emptyTexture,
+        ["Martial Artist"] = emptyTexture,
+        ["Marksman"] = emptyTexture,
+        ["Trainer"] = emptyTexture,
+
+        //trap subtypes
+        ["Wall"] = emptyTexture,
+        ["Ceiling"] = emptyTexture,
+        ["Floor"] = emptyTexture,
+
+        //defender subtypes
+        ["Assault Defender"] = emptyTexture,
+        ["Shotgun Defender"] = emptyTexture,
+        ["Melee Defender"] = emptyTexture,
+        ["Pistol Defender"] = emptyTexture,
+        ["Sniper Defender"] = emptyTexture,
+    };
+
     [Export]
     public Dictionary<string, Texture2D> AmmoIcons { get; private set; } = new()
     {
+        //regular ammo
         ["Shells \u0027n\u0027 Slugs"] = emptyTexture,
         ["Light Bullets"] = emptyTexture,
         ["Medium Bullets"] = emptyTexture,
@@ -68,6 +124,7 @@ public partial class BanjoSuppliments : Resource
         ["IsMaxShieldHigh"] = emptyTexture,
         ["IsShieldRegenLow"] = emptyTexture
     };
+
 
     [Export]
     public Dictionary<string, string> SynergyToSquadId { get; private set; } = new()

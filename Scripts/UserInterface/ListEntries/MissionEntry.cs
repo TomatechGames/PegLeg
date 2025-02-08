@@ -22,9 +22,13 @@ public partial class MissionEntry : Control, IRecyclableEntry
     [Signal]
     public delegate void BackgroundChangedEventHandler(Texture2D background);
     [Signal]
+    public delegate void BackgroundVisibleEventHandler(bool visible);
+    [Signal]
     public delegate void VenturesIndicatorVisibleEventHandler(bool visible);
     [Signal]
     public delegate void TheaterCategoryChangedEventHandler(string theatreCat);
+    [Signal]
+    public delegate void TheaterColorChangedEventHandler(Color theatreCol);
     [Signal]
     public delegate void TheaterNameChangedEventHandler(string theatreName);
 
@@ -62,6 +66,16 @@ public partial class MissionEntry : Control, IRecyclableEntry
     public override void _Ready()
     {
         GameAccount.ActiveAccountChanged += RefreshRewardNotifications;
+        AppConfig.OnConfigChanged += OnConfigChanged;
+        EmitSignal(SignalName.BackgroundVisible, AppConfig.Get("missions", "show_background", true));
+    }
+
+    private void OnConfigChanged(string section, string key, JsonValue val)
+    {
+        if (section != "missions")
+            return;
+        if (key == "show_background")
+            EmitSignal(SignalName.BackgroundVisible, val.TryGetValue(out bool show) ? show : true);
     }
 
     public override void _ExitTree()
@@ -69,7 +83,7 @@ public partial class MissionEntry : Control, IRecyclableEntry
         GameAccount.ActiveAccountChanged -= RefreshRewardNotifications;
     }
 
-    private void RefreshRewardNotifications(GameAccount _)
+    private void RefreshRewardNotifications()
     {
         currentMission?.UpdateRewardNotifications(true);
     }
@@ -85,23 +99,33 @@ public partial class MissionEntry : Control, IRecyclableEntry
     {
         if (missionProvider is null)
             return;
-        SetMissionData(missionProvider.GetRecycleElement(index));
+        SetMission(missionProvider.GetRecycleElement(index));
         currentMission?.UpdateRewardNotifications();
     }
 
-    public void SetMissionData(GameMission mission)
+    public void SetMission(GameMission mission)
 	{
         currentMission = mission;
 
-        EmitSignal(SignalName.IconChanged, currentMission.missionGenerator.GetTexture(FnItemTextureType.Icon));
-        EmitSignal(SignalName.VenturesIndicatorVisible, currentMission.TheaterCat == "v");
-        EmitSignal(SignalName.TheaterCategoryChanged, currentMission.TheaterCat.ToUpper());
-        EmitSignal(SignalName.TheaterNameChanged, currentMission.TheaterName);
-        EmitSignal(SignalName.PowerLevelChanged, currentMission.PowerLevel.ToString());
-        EmitSignal(SignalName.BackgroundChanged, currentMission.backgroundTexture ?? defaultBackground);
         EmitSignal(SignalName.NameChanged, currentMission.DisplayName);
         EmitSignal(SignalName.DescriptionChanged, currentMission.Description);
         EmitSignal(SignalName.LocationChanged, currentMission.Location);
+        EmitSignal(SignalName.IconChanged, currentMission.missionGenerator.GetTexture(FnItemTextureType.Icon));
+        EmitSignal(SignalName.PowerLevelChanged, currentMission.PowerLevel.ToString());
+        EmitSignal(SignalName.BackgroundChanged, currentMission.backgroundTexture ?? defaultBackground);
+
+        EmitSignal(SignalName.TheaterNameChanged, currentMission.TheaterName);
+        EmitSignal(SignalName.VenturesIndicatorVisible, currentMission.TheaterCat == "v");
+        EmitSignal(SignalName.TheaterCategoryChanged, currentMission.TheaterCat.ToUpper());
+        EmitSignal(SignalName.TheaterColorChanged, currentMission.TheaterCat switch
+        {
+            "s"=>Colors.Aquamarine,
+            "p" => Colors.ForestGreen,
+            "c" => Colors.SandyBrown,
+            "t" => Colors.MediumPurple,
+            "v" => Colors.Cyan,
+            _ =>Colors.Transparent
+        });
 
         string eventFlag = currentMission.tileData["requirements"]["eventFlag"].ToString();
         bool hasEventFlag = !string.IsNullOrWhiteSpace(eventFlag);
@@ -240,6 +264,8 @@ public partial class MissionEntry : Control, IRecyclableEntry
                 currentMission.allItems :
                 currentMission.allItems
                     .Where(r => r.template.DisplayName != "Gold" && r.template.DisplayName != "Venture XP")
+                    .OrderBy(r => -r.sortingTemplate.RarityLevel)
+                    .ThenBy(r => -r.quantity)
                     .ToArray();
             ApplyItems(rewards.Where(item => predicate(item)).ToArray(), highlightedRewardParent);
             return;
@@ -268,6 +294,8 @@ public partial class MissionEntry : Control, IRecyclableEntry
             controlChild.SetItem(itemArray[i]);
         }
     }
+
+    public void InspectMission() => MissionViewer.ShowMission(currentMission);
 }
 
 public interface IMissionHighlightProvider

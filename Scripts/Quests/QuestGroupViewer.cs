@@ -17,6 +17,8 @@ public partial class QuestGroupViewer : Control
     [Export]
     Control questNodeParent;
     [Export]
+    Control noQuestNodesAlert;
+    [Export]
     PackedScene questNodeScene;
     [Export]
     PackedScene questArrowScene;
@@ -119,15 +121,22 @@ public partial class QuestGroupViewer : Control
             }
 		}
 		else
-			nodesPerPage = questDataList.Count;
+			nodesPerPage = Mathf.Max(questDataList.Count, 1);
+        currentQuestIndex = 0;
 
-        var focusNode = questDataList.FirstOrDefault(q => !q.isComplete, null) ?? questDataList[^1];
-        if(!useArrows)
-            focusNode = questDataList.FirstOrDefault(q => q.isPinned) ?? questDataList[0];
+        if (questDataList.Count>0)
+        {
+            var focusNode = questDataList.FirstOrDefault(q => !q.isComplete, null) ?? questDataList[^1];
+            if (!useArrows)
+                focusNode = questDataList.FirstOrDefault(q => q.isPinned) ?? questDataList[0];
+            currentQuestIndex = questDataList.IndexOf(focusNode);
+        }
 
-        currentQuestIndex = questDataList.IndexOf(focusNode);
-		currentPage = currentQuestIndex / nodesPerPage;
-        maxPage = (questDataList.Count - 1) / nodesPerPage;
+        questViewer.Visible = questDataList.Count > 0;
+        scrollContainer.Visible = questDataList.Count > 0;
+        noQuestNodesAlert.Visible = questDataList.Count == 0;
+        currentPage = currentQuestIndex / nodesPerPage;
+        maxPage = Mathf.Max((questDataList.Count - 1) / nodesPerPage, 0);
         SetPage(currentPage);
     }
 

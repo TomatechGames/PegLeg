@@ -51,7 +51,12 @@ public partial class RecycleListContainer : ScrollContainer
     bool lockList = false;
     public void UpdateList(bool force = false)
     {
-        if (linkedProvider is null || !Visible || lockList)
+        if(linkedProvider is null)
+        {
+            GD.PushWarning("no linked provider in recyclable list");
+            return;
+        }
+        if (!IsVisibleInTree() || lockList)
             return;
         lockList = true;
         try

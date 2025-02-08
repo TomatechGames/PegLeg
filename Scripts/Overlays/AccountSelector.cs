@@ -21,6 +21,8 @@ public partial class AccountSelector : ModalWindow
     [Export]
     PackedScene accountEntryScene;
     List<GameAccountEntry> pooledAccounts = new();
+    [Export(PropertyHint.File)]
+    string onboardingScene;
 
     protected override string OpenSound => "WipeAppear";
     protected override string CloseSound => "WipeDisappear";
@@ -37,8 +39,6 @@ public partial class AccountSelector : ModalWindow
     {
         using var _ = LoadingOverlay.CreateToken();
         await GameAccount.RefreshActiveAccount();
-        var account = GameAccount.activeAccount;
-        await account.GetProfile(FnProfileTypes.AccountItems).Query();
     }
 
     public async void OpenLogin()
@@ -101,6 +101,7 @@ public partial class AccountSelector : ModalWindow
         var accountEntry = accountEntryScene.Instantiate<GameAccountEntry>();
         accountEntry.Visible = false;
         accountEntry.Pressed += SelectAccount;
+        accountEntry.Deleted += RemoveAccount;
         accountEntryParent.AddChild(accountEntry);
         pooledAccounts.Add(accountEntry);
     }
@@ -114,13 +115,57 @@ public partial class AccountSelector : ModalWindow
             SetWindowOpen(false);
         }
     }
+
     async void RemoveAccount(string accountId)
     {
-        //show confirmation menu
-        if (await GameAccount.SetActiveAccount(accountId))
+        bool hasAuth = false;
         {
-            SetWindowOpen(false);
+            using var _ = LoadingOverlay.CreateToken();
+            var account = GameAccount.GetOrCreateAccount(accountId);
+            hasAuth = await account.Authenticate();
         }
+
+        //show confirmation menu
+        if (await GenericConfirmationWindow.ShowConfirmation(
+                "Remove Account?",
+                "Remove",
+                null,
+                hasAuth ? "This account will be signed out and it's persistant login token will be forgotten" : "This account will be removed from PegLeg",
+                hasAuth ? "" : "PegLeg couldn't log into this account to sign out. Once you remove this account you should probably Sign Out Everywhere from epicgames.com/account/password"
+            ) != true
+        )
+            return;
+
+        {
+            using var _ = LoadingOverlay.CreateToken();
+
+            if (await GameAccount.RemoveAccount(accountId, true))
+            {
+                bool hasNextAccount = false;
+                foreach (var account in GameAccount.OwnedAccounts)
+                {
+                    if (await account.SetAsActiveAccount())
+                    {
+                        hasNextAccount = true;
+                        break;
+                    }
+                }
+                if (!hasNextAccount)
+                {
+                    ReturnToLogin();
+                    return;
+                }
+                PopulateAccounts();
+            }
+        }
+        
+        await GenericConfirmationWindow.ShowError("Could not remove account, Please report this to the developer");
+    }
+
+    async void ReturnToLogin()
+    {
+        await GenericConfirmationWindow.ShowError("There are no more authenticated accounts, returning to the login screen.", "Notice");
+        GetTree().ChangeSceneToFile(onboardingScene);
     }
 
     protected override void OnTweenFinished(bool openState)

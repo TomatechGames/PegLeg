@@ -3,19 +3,20 @@
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionCollection.cs" id="1_4v5fq"]
 [ext_resource type="Texture2D" uid="uid://dj7i2q6htu5st" path="res://Images/InterfaceIcons/T_UI_IconLibrary_Pencil_128.png" id="1_p305g"]
 [ext_resource type="Texture2D" uid="uid://dl05qp6bcrs5c" path="res://Images/InterfaceIcons/T_UI_Icon_Search.png" id="2_ma4gr"]
-[ext_resource type="Texture2D" uid="uid://7ybxyu233td7" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_TrashCan_128.png" id="2_v4tl1"]
 [ext_resource type="PackedScene" uid="uid://bekssnfes28vf" path="res://Scenes/MissionEntry/mission_collection_entry.tscn" id="3_2dnay"]
 [ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="6_b35vf"]
+[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="7_y7651"]
 
-[node name="MissionCollection" type="PanelContainer" node_paths=PackedStringArray("missionList")]
-custom_minimum_size = Vector2(210, 125)
-offset_right = 250.0
-offset_bottom = 75.0
+[node name="MissionCollection" type="PanelContainer" node_paths=PackedStringArray("missionList", "loadingIcon")]
+custom_minimum_size = Vector2(255, 150)
+offset_right = 240.0
+offset_bottom = 150.0
 theme_type_variation = &"Panel3Pad"
 script = ExtResource("1_4v5fq")
 testName = "Name"
 testSearch = "///worker leg !lead"
-missionList = NodePath("VBoxContainer/ScrollContainer")
+missionList = NodePath("VBoxContainer/Body/ScrollContainer")
+loadingIcon = NodePath("VBoxContainer/Body/LoadingIcon")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -35,12 +36,12 @@ size_flags_horizontal = 3
 text = "Collection Name Very Long"
 text_overrun_behavior = 3
 
-[node name="Search" type="Button" parent="VBoxContainer/Header/HBoxContainer"]
+[node name="SearchBtn" type="Button" parent="VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Header/HBoxContainer/Search"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Header/HBoxContainer/SearchBtn"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -54,12 +55,12 @@ grow_vertical = 2
 texture = ExtResource("2_ma4gr")
 expand_mode = 1
 
-[node name="Edit" type="Button" parent="VBoxContainer/Header/HBoxContainer"]
+[node name="EditBtn" type="Button" parent="VBoxContainer/Header/HBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 theme_type_variation = &"TinyButton"
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Header/HBoxContainer/Edit"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Header/HBoxContainer/EditBtn"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -73,57 +74,49 @@ grow_vertical = 2
 texture = ExtResource("1_p305g")
 expand_mode = 1
 
-[node name="Delete" type="Button" parent="VBoxContainer/Header/HBoxContainer"]
-custom_minimum_size = Vector2(20, 0)
+[node name="Body" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"TinyButton"
+size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Header/HBoxContainer/Delete"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = -2.0
-offset_bottom = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_v4tl1")
-expand_mode = 1
+[node name="LoadingIcon" parent="VBoxContainer/Body" instance=ExtResource("7_y7651")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" node_paths=PackedStringArray("linkedGrid", "offsetControl", "paddingControl", "elementParent")]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Body" node_paths=PackedStringArray("offsetControl", "paddingControl", "elementParent")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("6_b35vf")
 elementSpace = 4.0
-linkedGrid = NodePath("")
 offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
 paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
 elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
 elementScene = ExtResource("3_2dnay")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Body/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 0
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Body/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Offset" type="Control" parent="VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Offset" type="Control" parent="VBoxContainer/Body/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="DynGridContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="DynGridContainer" type="VBoxContainer" parent="VBoxContainer/Body/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 0
 
-[node name="Padding" type="Control" parent="VBoxContainer/ScrollContainer/MarginContainer/VBoxContainer"]
+[node name="Padding" type="Control" parent="VBoxContainer/Body/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
 [connection signal="NameChanged" from="." to="VBoxContainer/Header/HBoxContainer/Name" method="set_text"]
+[connection signal="pressed" from="VBoxContainer/Header/HBoxContainer/SearchBtn" to="." method="GoToSearch"]

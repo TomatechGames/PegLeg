@@ -5,7 +5,7 @@ using System.Linq;
 using System.Resources;
 using System.Text.Json.Nodes;
 
-public partial class CosmeticShopOfferEntry : Control
+public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
 {
     [Signal]
     public delegate void NameChangedEventHandler(string name);
@@ -89,6 +89,19 @@ public partial class CosmeticShopOfferEntry : Control
     {
         ClearCosmeticOfferData();
         RefreshTimerController.OnSecondChanged -= UpdateOutTimer;
+    }
+
+    public Control node => this;
+    IRecyclableElementProvider<GameOffer> offerProvider;
+
+    public void SetRecyclableElementProvider(IRecyclableElementProvider provider)
+    {
+        offerProvider = provider is IRecyclableElementProvider<GameOffer> newOfferProvider ? newOfferProvider : null;
+    }
+
+    public void SetRecycleIndex(int index)
+    {
+        
     }
 
     DateTime? outDate;
@@ -244,6 +257,7 @@ public partial class CosmeticShopOfferEntry : Control
     }
 
     string shopUrl = null;
+    string layoutId = null;
     string resourceUrl = null;
     Vector2 resourceShift = new(0.5f, 0.5f);
     bool resourceFit = false;
@@ -257,6 +271,7 @@ public partial class CosmeticShopOfferEntry : Control
         cellWidth = (int)cellSize.X;
         if (entryData["webURL"]?.ToString() is string extraWebURL)
             shopUrl = "https://www.fortnite.com" + extraWebURL;
+        layoutId = entryData["layout"]?["id"]?.ToString();
 
         int oldPrice = entryData["regularPrice"].GetValue<int>();
         int newPrice = entryData["finalPrice"].GetValue<int>();

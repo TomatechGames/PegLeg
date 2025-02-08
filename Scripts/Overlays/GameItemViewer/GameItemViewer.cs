@@ -1,11 +1,9 @@
 using Godot;
 using System;
 using System.Linq;
-using System.Security.Principal;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 public partial class GameItemViewer : ModalWindow
 {
@@ -135,7 +133,7 @@ public partial class GameItemViewer : ModalWindow
                 var template = GameItemTemplate.Get(templateId);
                 var choiceItem = template.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
                 itemChoiceEntries[i].SetItem(choiceItem);
-                choiceItem.SetRewardNotification();
+                choiceItem.SetRewardNotification(null, true);
                 choices[i] = choiceItem;
             }
 

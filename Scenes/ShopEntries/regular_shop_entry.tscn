@@ -60,7 +60,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="RegularShopEntry" type="MarginContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry")]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(175, 0)
 offset_right = 75.0
 offset_bottom = 75.0
 size_flags_horizontal = 4
@@ -191,12 +191,12 @@ theme_override_font_sizes/font_size = 15
 text = "10000"
 text_overrun_behavior = 3
 
-[node name="StockPanel" type="Panel" parent="."]
+[node name="Outline" type="Panel" parent="."]
 self_modulate = Color(0.901961, 0.509804, 0, 1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3n3on")
 
-[node name="PanelContainer" type="PanelContainer" parent="StockPanel"]
+[node name="StockPanel" type="PanelContainer" parent="Outline"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -206,7 +206,7 @@ offset_right = -5.0
 grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_pt1cr")
 
-[node name="Stock" type="Label" parent="StockPanel/PanelContainer"]
+[node name="Stock" type="Label" parent="Outline/StockPanel"]
 layout_mode = 2
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
@@ -217,11 +217,12 @@ text = "x999"
 layout_mode = 2
 outlinePadding = 0.0
 
+[connection signal="IsLimitedStockChanged" from="." to="Outline/StockPanel" method="set_visible"]
 [connection signal="NameChanged" from="." to="DetailsArea/NameBox/VBoxContainer/NameLabel" method="set_text"]
-[connection signal="StockChanged" from="." to="StockPanel/PanelContainer/Stock" method="set_text"]
+[connection signal="StockChanged" from="." to="Outline/StockPanel/Stock" method="set_text"]
 [connection signal="IconChanged" from="DetailsArea" to="ItemIcon" method="set_texture"]
 [connection signal="RarityChanged" from="DetailsArea" to="RarityGradient" method="set_self_modulate"]
-[connection signal="RarityChanged" from="DetailsArea" to="StockPanel" method="set_self_modulate"]
+[connection signal="RarityChanged" from="DetailsArea" to="Outline" method="set_self_modulate"]
 [connection signal="RarityChanged" from="DetailsArea" to="Control/AspectTexture/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
 [connection signal="TypeChanged" from="DetailsArea" to="DetailsArea/NameBox/VBoxContainer/TypeLabel" method="set_text"]
 [connection signal="AmountChanged" from="DetailsArea/PriceBox" to="DetailsArea/PriceBox/MarginContainer/HBoxContainer/PriceAmount" method="set_text"]

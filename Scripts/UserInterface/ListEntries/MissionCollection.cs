@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public partial class MissionCollection : Node, IMissionHighlightProvider, IRecyclableElementProvider<GameMission>
+public partial class MissionCollection : Control, IMissionHighlightProvider, IRecyclableElementProvider<GameMission>
 {
     public event Action OnHighlightedItemFilterChanged;
     [Signal]
@@ -14,6 +14,12 @@ public partial class MissionCollection : Node, IMissionHighlightProvider, IRecyc
 	string testSearch;
     [Export]
     RecycleListContainer missionList;
+    [Export]
+    Control loadingIcon;
+    [Export]
+    bool sortByPower;
+    [Export]
+    bool sortByZoneCat;
 
     List<GameMission> filteredMissions = new();
 
@@ -27,18 +33,30 @@ public partial class MissionCollection : Node, IMissionHighlightProvider, IRecyc
     {
         missionList.SetProvider(this);
         GameMission.OnMissionsUpdated += FilterMissions;
-        GameMission.OnMissionsInvalidated += FilterMissions;
+        GameMission.OnMissionsInvalidated += ClearMissions;
         EmitSignal(SignalName.NameChanged, testName);
         UpdateFilters();
         if (!await GameAccount.activeAccount.Authenticate())
             return;
+        ClearMissions();
         await GameMission.UpdateMissions();
     }
 
     public override void _ExitTree()
     {
         GameMission.OnMissionsUpdated -= FilterMissions;
-        GameMission.OnMissionsInvalidated -= FilterMissions;
+        GameMission.OnMissionsInvalidated -= ClearMissions;
+    }
+
+    public void GoToSearch()
+    {
+        MissionInterface.SearchInMissions(testSearch, true);
+    }
+
+    public void SetSortByPower(bool val)
+    {
+        sortByPower = val;
+        FilterMissions();
     }
 
     public void OnElementSpawned(IRecyclableEntry entry)
@@ -75,13 +93,52 @@ public partial class MissionCollection : Node, IMissionHighlightProvider, IRecyc
 
     public Predicate<GameItem> HighlightedItemFilter => ItemFilter;
     bool ItemFilter(GameItem item) => itemSearchInstructions.Length > 0 && MissionInterface.MatchItemOrEquivelent(item, itemSearchInstructions);
+    public void ClearMissions()
+    {
+        loadingIcon.Visible = true;
+        missionList.Visible = false;
+    }
 
     public void FilterMissions()
-	{
-        filteredMissions =
+    {
+        loadingIcon.Visible = false;
+        missionList.Visible = true;
+        var sortedMissions =
             GameMission.currentMissions?
-            .Where(MissionFilter)
-            .ToList() ?? new();
+            .Where(MissionFilter).OrderBy(m=>1) ?? default;
+
+        if (sortByZoneCat)
+        {
+            sortedMissions = sortedMissions
+                .ThenBy(m => m.PowerLevel != 160)
+                .ThenBy(m => m.TheaterCat switch
+                {
+                    "v" => -5,
+                    "t" => -4,
+                    "c" => -3,
+                    "p" => -2,
+                    "s" => -1,
+                    _ => 0
+                })
+                .ThenBy(m => -m.PowerLevel);
+        }
+        else if (sortByPower)
+        {
+            sortedMissions = sortedMissions
+                .ThenBy(m => -m.PowerLevel);
+        }
+        else
+        {
+            sortedMissions = sortedMissions
+                .ThenBy(m => m.allItems
+                    .Where(ItemFilter)
+                    .Select(i => -i.sortingTemplate.RarityLevel * i.quantity)
+                    .Sum()
+                );
+        }
+
+        filteredMissions = sortedMissions.ToList();
+
         missionList.UpdateList(true);
     }
 }

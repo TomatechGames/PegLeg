@@ -114,14 +114,14 @@ static class GameClient
             $"device_id={deviceId}&" +
             $"secret={deviceSecret}",
             clientHeader
-        )).AsObject();
+        ))?.AsObject();
     }
 
     static JsonObject activeLinkData;
     static int linkCodeExpiresAt = -999;
     static string deviceCode;
-    static bool LinkCodeHalfExpired => linkCodeExpiresAt <= (Time.GetTicksMsec() * 0.001) - 300;
-    static bool LinkCodeExpired => linkCodeExpiresAt <= (Time.GetTicksMsec() * 0.001) - 10;
+    static bool LinkCodeHalfExpired => linkCodeExpiresAt <= Mathf.Max((Time.GetTicksMsec() * 0.001) - 300, 0);
+    static bool LinkCodeExpired => linkCodeExpiresAt <= Mathf.Max((Time.GetTicksMsec() * 0.001) - 10, 0);
     public static async Task<JsonObject> GetLoginLinkData(bool force = false)
     {
         if (!LinkCodeHalfExpired && !force)
@@ -166,7 +166,7 @@ static class GameClient
                 clientHeader
             ))?.AsObject();
         if (lastCheckResult is not null && lastCheckResult["errorMessage"] is null)
-            linkCodeExpiresAt = -99;
+            linkCodeExpiresAt = -999;
         return lastCheckResult;
     }
 }

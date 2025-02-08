@@ -76,7 +76,7 @@ public partial class SurvivorSquadEntry : Control
         GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
     }
 
-    void OnActiveAccountChanged(GameAccount _)
+    void OnActiveAccountChanged()
     {
         if (overrideAccount is null)
             UpdateAccount();
@@ -95,9 +95,7 @@ public partial class SurvivorSquadEntry : Control
         Visible = false;
         fortPointsLabel.Text = "+???";
 
-        accountChangeCts?.Cancel();
-        accountChangeCts = new();
-        var ct = accountChangeCts.Token;
+        accountChangeCts.CancelAndRegenerate(out var ct);
 
         var account = overrideAccount ?? GameAccount.activeAccount;
         var newProfile = await account.GetProfile(FnProfileTypes.AccountItems).Query();
@@ -193,6 +191,7 @@ public partial class SurvivorSquadEntry : Control
         {
             using var _ = LoadingOverlay.CreateToken();
             await profile.PerformOperation("AssignWorkerToSquad", body.ToString());
+            profile.account.GetFORTStats(true);
         }
     }
 }
