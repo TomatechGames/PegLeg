@@ -7,10 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://c2dqm0vsrcexk" path="res://Images/InterfaceIcons/T-Icon-Traps-128.png" id="5_cy863"]
 [ext_resource type="PackedScene" uid="uid://jsu6mxwb40t6" path="res://Scenes/GameItemEntry/inventory_entry_large_square.tscn" id="6_osdn8"]
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_3xnev"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_0odak"]
 resource_name = "InventoryTypeFilter"
 
-[sub_resource type="ButtonGroup" id="ButtonGroup_0odak"]
+[sub_resource type="ButtonGroup" id="ButtonGroup_3xnev"]
 resource_name = "InventoryTypeFilter"
 
 [node name="Backpack" instance=ExtResource("1_rmpt8")]
@@ -28,7 +28,7 @@ visible = false
 visible = false
 
 [node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All" index="0"]
-button_group = SubResource("ButtonGroup_3xnev")
+button_group = SubResource("ButtonGroup_0odak")
 
 [node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer" index="0"]
 texture = ExtResource("2_8da1x")
@@ -46,7 +46,6 @@ button_group = SubResource("ButtonGroup_3xnev")
 visible = false
 
 [node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1" index="0"]
-button_pressed = true
 button_group = SubResource("ButtonGroup_0odak")
 
 [node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer/HBoxContainer" index="0"]
@@ -83,6 +82,9 @@ texture = ExtResource("5_cy863")
 text = "Traps"
 
 [node name="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="3"]
+visible = false
+
+[node name="Button" parent="VBoxContainer/HBoxContainer2" index="2"]
 visible = false
 
 [node name="ScrollContainer" parent="VBoxContainer" index="2"]

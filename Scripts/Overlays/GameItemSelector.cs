@@ -105,10 +105,24 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         selectedTintColor = Colors.Red;
         collectionMarkerTex = collectionIcon;
         autoselectButtonTex = recycleIcon;
-        selectablePredicate = item => item.template.IsCollectable && !item.template.IsPermenant;
+        selectablePredicate = item => !item.template.Unrecyclable && item.attributes?["favorite"]?.GetValue<bool>() != true;
         var autoselectInstructions = PLSearch.GenerateSearchInstructions(AppConfig.Get("automation", "recycle_filter", "Common | Uncommon | Rare"));
         autoselectPredicate = item => PLSearch.EvaluateInstructions(autoselectInstructions, item.RawData);
         //autoselectPredicate = item => item.template.RarityLevel <= 3;
+    }
+
+    public void SetDismantleDefaults()
+    {
+        RestoreDefaults();
+        titleText = "Dismantle";
+        confirmButtonText = "Confirm Dismantle";
+        multiselectMode = true;
+        selectedMarkerTex = recycleIcon;
+        selectedTintColor = Colors.Red;
+        collectionMarkerTex = recycleIcon;
+        autoselectButtonTex = recycleIcon;
+        selectablePredicate = item => !item.template.Undismantlable;
+        autoselectPredicate = null;
     }
 
     GameItem emptyItem = new(null, 1, customData: new() { ["empty"] = true });

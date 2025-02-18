@@ -2,7 +2,6 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -67,6 +66,7 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
         }
         GameMission.OnMissionsUpdated += FilterMissions;
         GameMission.OnMissionsInvalidated += ClearMissions;
+        VisibilityChanged += TryRefresh;
         await GameMission.UpdateMissions();
     }
 
@@ -110,12 +110,25 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
         return false;
     }
 
+    void TryRefresh()
+    {
+        if (needsRefresh)
+            FilterMissions();
+    }
+
+    bool needsRefresh = false;
     CancellationTokenSource filterCTS = new();
     async void FilterMissions()
     {
         var missions = GameMission.currentMissions;
         if (lockFilter || missions is null)
             return;
+        if (!IsVisibleInTree())
+        {
+            needsRefresh = true;
+            return;
+        }
+        needsRefresh = false;
         filterCTS.CancelAndRegenerate(out var ct);
         loadingIcon.Visible = true;
         missionList.Visible = false;

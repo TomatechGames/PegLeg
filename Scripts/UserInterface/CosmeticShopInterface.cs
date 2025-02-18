@@ -83,6 +83,7 @@ public partial class CosmeticShopInterface : Control
         };
         AppConfig.OnConfigChanged += OnConfigChanged;
         navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true) && !AppConfig.Get("item_shop", "simple_cosmetics", false);
+        requireAddedToday.ButtonPressed = AppConfig.Get("item_shop", "auto_filter_new", false);
     }
 
     private void OnConfigChanged(string section, string key, JsonValue value)
@@ -413,32 +414,34 @@ public partial class CosmeticShopInterface : Control
     bool[] typeMasks;
     static readonly string[] filterTypes = new string[]
     {
-        "Outfit",
-        "Character",
-        "Backpack",
-        "Back Bling",
-        "Shoes",
-        "Pickaxe",
-        "Glider",
-        "Contrail",
-        "Emote",
-        "Wrap",
-        "Music Pack",
-        "Jam Track",
-        "Guitar",
-        "Microphone",
-        "Drums",
-        "Bass",
-        "Keytar",
-        "Wheels",
-        "Wheel",
-        "Car Body",
-        "Body",
-        "Skin",
-        "Decal",
-        "Boost",
-        "Turbo",
-        "Trail",
+        "AthenaCharacter",
+        "AthenaCharacter",
+        "AthenaBackpack",
+        "AthenaBackpack",
+        "CosmeticShoes",
+        "AthenaPickaxe",
+        "AthenaGlider",
+        "AthenaSkyDiveContrail",
+        "AthenaDance",
+        "AthenaSpray",
+        "AthenaItemWrap",
+        "AthenaMusicPack",
+        "SparksSong",
+        "SparksGuitar",
+        "SparksMic",
+        "SparksDrum",
+        "SparksBass",
+        "SparksKeyboard",
+        "VehicleCosmetics_Wheel",
+        "VehicleCosmetics_Wheel",
+        "VehicleCosmetics_Body",
+        "VehicleCosmetics_Body",
+        "VehicleCosmetics_Skin",
+        "VehicleCosmetics_Skin",
+        "VehicleCosmetics_Booster",
+        "VehicleCosmetics_Booster",
+        "VehicleCosmetics_DriftTrail",
+        "CosmeticVariantToken",
     };
 
     static bool MatchAnyFilterIndex(List<string> toCheck, int startIndex, int length = 1)
@@ -489,15 +492,15 @@ public partial class CosmeticShopInterface : Control
             return true;
         if (typeMasks[2] && MatchAnyFilterIndex(types, 6, 2))
             return true;
-        if (typeMasks[3] && MatchAnyFilterIndex(types, 8))
+        if (typeMasks[3] && MatchAnyFilterIndex(types, 8, 2))
             return true;
-        if (typeMasks[4] && MatchAnyFilterIndex(types, 9))
+        if (typeMasks[4] && MatchAnyFilterIndex(types, 10))
             return true;
-        if (typeMasks[5] && MatchAnyFilterIndex(types, 10, 2))
+        if (typeMasks[5] && MatchAnyFilterIndex(types, 11, 2))
             return true;
-        if (typeMasks[6] && MatchAnyFilterIndex(types, 12, 5))
+        if (typeMasks[6] && MatchAnyFilterIndex(types, 13, 5))
             return true;
-        if (typeMasks[7] && MatchAnyFilterIndex(types, 17, 9))
+        if (typeMasks[7] && MatchAnyFilterIndex(types, 18, 10))
             return true;
         if (typeMasks[8] && !MatchAnyFilter(types))
             return true;

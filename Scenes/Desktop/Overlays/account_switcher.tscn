@@ -12,7 +12,7 @@
 [ext_resource type="StyleBox" uid="uid://bv7qeic3nboww" path="res://GodotThemes/Styleboxes/AccountButton/AccountButton.tres" id="7_7lhwc"]
 [ext_resource type="Texture2D" uid="uid://fu8u7pasyjfx" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Swap_128.png" id="7_bsci4"]
 [ext_resource type="Script" path="res://Scripts/UIElements/MaxHeightScrollContainer.cs" id="7_gpno0"]
-[ext_resource type="PackedScene" uid="uid://b6i4qroblgrhs" path="res://Scenes/account_entry.tscn" id="7_xgkqb"]
+[ext_resource type="PackedScene" uid="uid://b6i4qroblgrhs" path="res://Scenes/Accounts/account_entry.tscn" id="7_xgkqb"]
 [ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="8_21oxt"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameAccountEntry.cs" id="11_xccdo"]
 [ext_resource type="Texture2D" uid="uid://cj7awxlqm1to2" path="res://Images/InterfaceIcons/T_UI_Icon_Sidebar_OnlinePlayers.png" id="12_ekrj2"]

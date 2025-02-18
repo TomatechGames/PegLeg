@@ -2,8 +2,10 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Resources;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
 {
@@ -135,6 +137,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
     public void CancelResourceLoadTimer() =>
         resourceLoadTimer.Stop();
 
+    bool tryLoadImageDisplayAsset;
     bool resourceLoadStarted;
     private async void StartResourceLoadSequence()
     {
@@ -149,14 +152,18 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
             return;
         }
 
-        if (resourceUrl is null)
+        if (displayAssetLoadStarted)
+            await LoadImageDisplayAsset();
+
+        if (imageUrl is null)
         {
             resourceTarget.Texture = fallbackTexture;
             GD.PushWarning("No resource URL");
             loadingCubes.Visible = false;
+            resourceTarget.Visible = true;
             return;
         }
-        var tex = await CatalogRequests.GetCosmeticResource(resourceUrl);
+        var tex = await CatalogRequests.GetCosmeticResource(imageUrl);
         if (tex is not null)
             ApplyResource(tex);
         else
@@ -168,12 +175,32 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         }
     }
 
-    public void OpenImageInBrowser()
+    private async Task LoadImageDisplayAsset()
+    {
+        var imageDA = await CatalogRequests.GetCosmeticMeta(imageDisplayAssetPath);
+        var possibleRenderImage = imageDA?["ContextualPresentations"]?[0]?["RenderImage"]?["AssetPathName"]?.ToString();
+        if (possibleRenderImage is null)
+            return;
+        imageUrl = "https://fortnitecentral.genxgames.gg/api/v1/export?path=" + possibleRenderImage.Split('.')[0];
+    }
+
+    bool displayAssetLoadStarted;
+    public void Interact()
     {
         if (Input.IsKeyPressed(Key.Shift))
         {
-            if (resourceUrl is not null)
-                OS.ShellOpen(resourceUrl);
+            if (imageUrl is not null)
+            {
+                OS.ShellOpen(imageUrl);
+            }
+            else if (!displayAssetLoadStarted)
+            {
+                displayAssetLoadStarted = true;
+                resourceLoadStarted = false;
+                loadingCubes.Visible = true;
+                resourceTarget.Visible = false;
+                StartResourceLoadSequence();
+            }
         }
         else
         {
@@ -258,7 +285,8 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
 
     string shopUrl = null;
     string layoutId = null;
-    string resourceUrl = null;
+    string imageUrl = null;
+    string imageDisplayAssetPath = null;
     Vector2 resourceShift = new(0.5f, 0.5f);
     bool resourceFit = false;
 
@@ -281,31 +309,33 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         else
             discountAmount = 0;
 
-        JsonArray allItems = entryData.MergeCosmeticItems() ?? new JsonArray();
-        if (entryData["bundle"] is not null)
-            PopulateAsBundle(entryData, allItems);
-        else if (entryData["isFallback"] is null)
-            PopulateAsItem(entryData, allItems);
-        else
-        {
-            EmitSignal(SignalName.NameChanged, "<Unknown>");
-            EmitSignal(SignalName.TypeChanged, "<Unknown>");
-            EmitSignal(SignalName.TooltipChanged, entryData["devName"].ToString());
+        imageDisplayAssetPath = entryData["fallbackDisplayAsset"]?.ToString();
 
-            EmitSignal(SignalName.PriceAmount, newPrice.ToString());
-            EmitSignal(SignalName.OldPriceAmount, oldPrice.ToString());
-
-            EmitSignal(SignalName.OwnedVisibility, false);
-            EmitSignal(SignalName.OldPriceVisibility, newPrice < oldPrice);
-            metadata = default;
-            SetMetaVisuals();
-        }
+        JsonObject[] allItems = entryData.MergeCosmeticItems()?.Select(n=>n.AsObject())?.ToArray() ?? Array.Empty<JsonObject>();
 
         foreach (var item in allItems)
         {
-            string type = item["type"]?["displayValue"].ToString();
-            if (!itemTypes.Contains(type))
+            string type = item["type"]?["backendValue"]?.ToString();
+            if (type is not null && !itemTypes.Contains(type))
                 itemTypes.Add(type);
+        }
+        if (entryData["fallbackGrants"] is JsonArray fallbackItems)
+        {
+            foreach (var item in fallbackItems)
+            {
+                string type = item.ToString().Split(':')[0];
+                if (!itemTypes.Contains(type))
+                    itemTypes.Add(type);
+            }
+        }
+
+        if (entryData["bundle"] is not null)
+        {
+            PopulateAsBundle(entryData, allItems);
+        }
+        else
+        {
+            PopulateAsItem(entryData, allItems);
         }
 
         outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
@@ -351,7 +381,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
 
         if (resourceRender is not null)
         {
-            resourceUrl =
+            imageUrl =
                 resourceRender["image"]?.ToString();
             if (resourceRender["productTag"]?.ToString() == "Product.DelMar")
             {
@@ -361,19 +391,19 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         }
         else if (resourceMat?["images"]?["CarTexture"] is not null)
         {
-            resourceUrl =
+            imageUrl =
                 resourceMat["images"]?["CarTexture"]?.ToString();
             resourceShift = new Vector2(0.5f, 0.5f);
         }
         else if (resourceMat is not null)
         {
-            resourceUrl =
+            imageUrl =
                 resourceMat["images"]["Background"]?.ToString() ??
                 resourceMat["images"]["OfferImage"]?.ToString();
         }
         else if (allItems.Any())
         {
-            resourceUrl =
+            imageUrl =
                 allItems[0]["images"]?["featured"]?.ToString() ??
                 allItems[0]["images"]?["large"]?.ToString() ??
                 allItems[0]["images"]?["small"]?.ToString() ??
@@ -382,7 +412,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
             resourceShift = new Vector2(0.5f, 0.5f);
         }
         else
-            resourceUrl = null;
+            imageUrl = null;
 
         var nonLobbyMusicItems = allItems.Where(i => i["type"]?["displayValue"].ToString() != "Lobby Music").ToArray();
         if (nonLobbyMusicItems.Length == 1 && nonLobbyMusicItems[0]["type"]?["displayValue"].ToString() == "Jam Track")
@@ -392,11 +422,20 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
             //TODO: if jam track, use dedicated jam track tile format
         }
 
-        if (resourceUrl is not null && CatalogRequests.GetLocalCosmeticResource(resourceUrl) is Texture2D tex)
+        if (imageUrl is null && imageDisplayAssetPath  is not null && CatalogRequests.GetLocalCosmeticMeta(imageDisplayAssetPath) is JsonNode imageDA)
+        {
+            var possibleRenderImage = imageDA?["ContextualPresentations"]?[0]?["RenderImage"]?["AssetPathName"]?.ToString();
+            if (possibleRenderImage is null)
+                return;
+            imageUrl = "https://fortnitecentral.genxgames.gg/api/v1/export?path=" + possibleRenderImage.Split('.')[0];
+        }
+
+        if (imageUrl is not null && CatalogRequests.GetLocalCosmeticResource(imageUrl) is Texture2D tex)
             ApplyResource(tex);
         else
             resourceTarget.Texture = null;
     }
+
     public struct CosmeticMetadata
     {
         public int lastSeenDaysAgo { get; private set; }
@@ -405,7 +444,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         public bool isLeavingSoon { get; private set; }
         public bool isOld { get; private set; }
         public bool isVeryOld { get; private set; }
-        public DateTime? firstAddedDate { get; private set; }
+        public DateTime firstAddedDate { get; private set; }
         public DateTime? lastAddedDate { get; private set; }
         //public DateTime isVeryOld { get; private set; }
 
@@ -414,8 +453,15 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
             DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
             DateTime outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
 
-            var shopHistory = firstItem["shopHistory"]?.AsArray();
-            firstAddedDate = shopHistory[0]?.ToString() is string firstAddedDateText ? DateTime.Parse(firstAddedDateText).ToUniversalTime() : DateTime.UtcNow.Date;
+            var shopHistory = firstItem?["shopHistory"]?.AsArray();
+            var type = firstItem?["type"]?["backendValue"]?.ToString();
+            firstAddedDate = shopHistory?[0]?.ToString() is string firstAddedDateText ? 
+                DateTime.Parse(firstAddedDateText).ToUniversalTime() : 
+                (
+                    type == "CosmeticVariantToken" ? 
+                        DateTime.MinValue : 
+                        DateTime.UtcNow.Date
+                );
             lastAddedDate = null;
             if (shopHistory is not null)
             {
@@ -432,7 +478,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
 
             lastSeenDaysAgo = lastAddedDate.HasValue ? (int)(DateTime.UtcNow.Date - lastAddedDate.Value).TotalDays : 0;
             isAddedToday = inDate == DateTime.UtcNow.Date/* && (lastSeenDaysAgo > 1 || DateTime.UtcNow.Date == firstAddedDate)*/;
-            isRecentlyNew = ((DateTime.UtcNow.Date - firstAddedDate)?.TotalDays ?? 0) < 7;
+            isRecentlyNew = (DateTime.UtcNow.Date - firstAddedDate).TotalDays < 7 && entryData["fallbackGrants"]?.AsArray()?.Any(n => n.ToString().StartsWith("CosmeticVariantToken:")) != true;
             isLeavingSoon = (outDate - DateTime.UtcNow.Date).TotalHours < 24;
 
             int oldThreshold = AppConfig.Get("item_shop", "oldThreshold", 500);
@@ -442,6 +488,11 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
 
         public CosmeticMetadata(CosmeticMetadata[] itemMetadatas)
         {
+            if (itemMetadatas.Length == 0)
+            {
+                this = default;
+                return;
+            }
             lastSeenDaysAgo = itemMetadatas.Select(m => m.lastSeenDaysAgo).Max();
             isRecentlyNew = itemMetadatas.Any(m => m.isRecentlyNew);
             isAddedToday = itemMetadatas.Any(m => m.isAddedToday);
@@ -458,16 +509,15 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
     public int discountAmount { get; private set; }
     public bool isDiscountBundle { get; private set; }
 
-    void PopulateAsItem(JsonObject entryData, JsonArray allItems)
+    void PopulateAsItem(JsonObject entryData, JsonObject[] allItems)
     {
-        JsonObject firstItem = allItems[0].AsObject();
+        JsonObject firstItem = allItems.FirstOrDefault();
 
-        int totalItemCount = allItems.Count;
         string extraItemsText = null;
         string fullExtraItemsText = null;
-        if (totalItemCount > 1)
+        if (allItems.Length > 1)
         {
-            extraItemsText = $" (+{totalItemCount - 1})";
+            extraItemsText = $" (+{allItems.Length - 1})";
             fullExtraItemsText = allItems
                 .GroupBy(i => i["type"]?["displayValue"].ToString())
                 .Select(g => g.Key + (g.Count() > 1 ? " x" + g.Count() : ""))
@@ -475,8 +525,8 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
                 .Join(", ");
         }
 
-        string mainName = firstItem["name"]?.ToString() ?? "???";
-        string mainType = firstItem["type"]?["displayValue"].ToString() ?? "???";
+        string mainName = firstItem?["name"]?.ToString() ?? "<Unknown>";
+        string mainType = firstItem?["type"]?["displayValue"].ToString() ?? (entryData["dynamicBundleInfo"] is null ? "<Item>" : "<Bundle>");
         Name = mainName;
 
         EmitSignal(SignalName.NameChanged, mainName);
@@ -498,16 +548,18 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         string tooltip = mainName + " - " + mainType;
         if (fullExtraItemsText is not null)
             tooltip += "\nContents include: " + fullExtraItemsText;
+        if (entryData["isFallback"] is not null)
+            tooltip += "\nShift+Click to force download the Image";
 
         EmitSignal(SignalName.TooltipChanged, tooltip);
     }
 
-    void PopulateAsBundle(JsonObject entryData, JsonArray allItems)
+    void PopulateAsBundle(JsonObject entryData, JsonObject[] allItems)
     {
         string mainName = entryData["bundle"]["name"].ToString();
 
         EmitSignal(SignalName.NameChanged, mainName);
-        EmitSignal(SignalName.TypeChanged, $"Bundle [{allItems.Count} items]");
+        EmitSignal(SignalName.TypeChanged, $"Bundle [{allItems.Length} items]");
 
         int oldPrice = entryData["regularPrice"].GetValue<int>();
         int newPrice = entryData["finalPrice"].GetValue<int>();

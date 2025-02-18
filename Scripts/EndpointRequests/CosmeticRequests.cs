@@ -36,7 +36,7 @@ static class CosmeticRequests
     {
         JsonNode cosmeticDisplayData = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                ExternalEndpoints.fnApiEndpoint,
+                ExternalWebAddresses.fnApi,
                 "v2/shop?responseFlags=4", // 1 = paths, 2 = gameplayTags, 4 = shop history
                 "",
                 null,

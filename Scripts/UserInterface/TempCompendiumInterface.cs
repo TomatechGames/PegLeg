@@ -52,7 +52,7 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
         {
 			var sourceTask = Task.Run(() =>
             {
-                if (BanjoAssets.TryGetSource(source, out var sourceObject))
+                if (BanjoAssets.TryGetDataSource(source, out var sourceObject))
                 {
 					//GD.Print("aa");
                     Parallel.ForEach(sourceObject, sourceKVP =>

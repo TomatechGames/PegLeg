@@ -2,15 +2,22 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
 public partial class MissionInterface : Control, IRecyclableElementProvider<GameMission>
 {
     #region Statics
     static MissionInterface instance;
+
+    static NotificationData _unexpectedResetNotif;
+    static NotificationData unexpectedResetNotif => _unexpectedResetNotif ??= new()
+    {
+        header = "Unexpected Reset Detected",
+        icon = instance?.unexpectedResetNotifIcon,
+        sound = instance?.unexpectedResetSound,
+        color = Color.FromHtml("#ff5555"),
+    };
 
     static readonly string[] theaterFilters = new string[]
     {
@@ -54,7 +61,6 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
         new string[] {
             "AccountResource:currency_mtxswap",
             "AccountResource:voucher_cardpack_bronze",
-            "AccountResource:voucher_basicpack",
         },
     };
     #endregion
@@ -69,6 +75,11 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
             instance.FilterMissions();
         }
     }
+
+    [Export]
+    Texture2D unexpectedResetNotifIcon;
+    [Export]
+    AudioStream unexpectedResetSound;
 
     [Export]
     VirtualTabBar zoneFilterTabBar;
@@ -157,8 +168,18 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
                 duration--;
             }
             if (await GameMission.MissionsNeedUpdate())
+            {
+                GD.Print("Unexpected reset detected");
+                NotificationManager.PushNotification(unexpectedResetNotif);
                 await GameMission.UpdateMissions();
+            }
         }
+    }
+
+    public async void FakeUnexpectedReset()
+    {
+        await Helpers.WaitForTimer(1);
+        NotificationManager.PushNotification(unexpectedResetNotif);
     }
 
     void OnMissionsInvalidated()

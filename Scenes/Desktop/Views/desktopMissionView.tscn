@@ -1,9 +1,13 @@
-[gd_scene load_steps=25 format=3 uid="uid://c78gt6b2m1utg"]
+[gd_scene load_steps=29 format=3 uid="uid://c78gt6b2m1utg"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
+[ext_resource type="Texture2D" uid="uid://07k0gr21gs5e" path="res://Images/InterfaceIcons/T_UI_VKConnectionIndicator_Error_Icon.png" id="2_nynxn"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="2_rrtg2"]
+[ext_resource type="AudioStream" uid="uid://dyyj8ukisrvoc" path="res://Audio/SFX/UI/Notification/fort_UI_Important_Update.wav" id="3_kmfkq"]
 [ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="4_ebt37"]
+[ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="5_6m3c7"]
+[ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_p6lk0"]
 [ext_resource type="Texture2D" uid="uid://gak2hv6itgoo" path="res://Images/InterfaceIcons/T-Icon-Survivor-Leader-CARD.png" id="7_lvf0s"]
 [ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="8_kmmrq"]
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="9_oiae4"]
@@ -42,6 +46,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_474w2")
+unexpectedResetNotifIcon = ExtResource("2_nynxn")
+unexpectedResetSound = ExtResource("3_kmfkq")
 zoneFilterTabBar = NodePath("VBoxContainer/HBoxContainer/ZoneFilters")
 searchBar = NodePath("VBoxContainer/HBoxContainer/SearchBox")
 itemFilterButtons = [NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Survivors"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Schematics"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Heroes"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/UpgradeMats"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/PerkUps"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Tickets")]
@@ -298,6 +304,7 @@ stretch_mode = 5
 flip_h = true
 
 [node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Tickets"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -388,7 +395,36 @@ theme_type_variation = &"RightCheckButton"
 button_group = SubResource("ButtonGroup_fb3nj")
 text = " V"
 
+[node name="TestNotif" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+tooltip_text = "Debug Notification"
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TestNotif"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_6m3c7")
+expand_mode = 1
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TestNotif"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+mouse_filter = 2
+script = ExtResource("6_p6lk0")
+section = "advanced"
+key = "developer"
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 26)
 layout_mode = 2
 
@@ -465,3 +501,5 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ForceRefresh" to="." method="ForceReloadMissions"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/TestNotif" to="." method="FakeUnexpectedReset"]
+[connection signal="ConfigValueChanged" from="VBoxContainer/HBoxContainer/TestNotif/CheckButton" to="VBoxContainer/HBoxContainer/TestNotif" method="set_visible"]

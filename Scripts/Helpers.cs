@@ -108,6 +108,8 @@ static class Helpers
             resultNodes.AddRange(carArray);
         if (from["legoKits"] is JsonArray legoArray)
             resultNodes.AddRange(legoArray);
+        if (from["fallbackItems"] is JsonArray fallbackItems)
+            resultNodes.AddRange(fallbackItems);
         return resultNodes.Count == 0 ? null : new(resultNodes.Select(n => n.Reserialise()).ToArray());
     }
 
@@ -168,6 +170,11 @@ static class Helpers
         catch (JsonException _)
         {
             GD.Print("result was not json: " + resultText);
+            resultNode =new JsonObject()
+            {
+                ["success"] = result.IsSuccessStatusCode,
+                ["response"]= resultText,
+            };
         }
 
         if (result.IsSuccessStatusCode)

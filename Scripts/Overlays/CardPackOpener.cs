@@ -960,7 +960,7 @@ public partial class CardPackOpener : Control
             GameItemSelector.Instance.allowCancel = false;
             GameItemSelector.Instance.allowEmptySelection = true;
             var toRecycle = await GameItemSelector.Instance.OpenSelector(resultItems, null);
-            if (toRecycle.Length > 0)
+            if (toRecycle.Length > 0 && await account.Authenticate())
             {
                 JsonObject content = new()
                 {

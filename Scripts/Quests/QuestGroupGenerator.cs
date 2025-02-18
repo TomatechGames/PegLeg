@@ -26,7 +26,7 @@ public static class QuestGroupGenerator
             if (collection["autoPopulateQuestlines"]?.GetValue<bool>() ?? false)
             {
                 //generate questlines from banjo questline files
-                BanjoAssets.TryGetSource("MainQuestLines", out var mainQuests);
+                BanjoAssets.TryGetDataSource("MainQuestLines", out var mainQuests);
                 JsonObject groupGens = new();
                 JsonArray mainQuestLine = new();
 
@@ -36,7 +36,7 @@ public static class QuestGroupGenerator
 
                 groupGens["Campaign"] = new JsonObject() { ["questlines"] = new JsonArray() { mainQuestLine } };
 
-                BanjoAssets.TryGetSource("EventQuestLines", out var eventQuests);
+                BanjoAssets.TryGetDataSource("EventQuestLines", out var eventQuests);
                 foreach (var eventQuestLine in eventQuests)
                 {
                     JsonArray eventQuestLineArray = new();
@@ -62,7 +62,7 @@ public static class QuestGroupGenerator
                         var currentQuest = quest;
                         do
                         {
-                            questline.Add(currentQuest);
+                            questline.Add(currentQuest.TemplateId);
 
                             var nextQuestId = currentQuest
                                 .GetHiddenQuestRewards()
@@ -73,6 +73,7 @@ public static class QuestGroupGenerator
                         while (currentQuest != null);
                         questlines.Add(questline);
                     }
+                    var stringified = questlines.ToString();
                     entry.Value["questlines"] = questlines;
                     continue;
                 }
@@ -102,7 +103,8 @@ public static class QuestGroupGenerator
     {
         if(questSource is JsonValue val)
         {
-            return new GameItemTemplate[] { GameItemTemplate.Get(val.ToString()) };
+            var quest = GameItemTemplate.Get(val.ToString());
+            return quest is null ? Array.Empty<GameItemTemplate>() : new GameItemTemplate[] { quest };
         }
 
         if (questSource["prefilter"] is JsonNode prefilteredQuests)
@@ -128,8 +130,9 @@ public static class QuestGroupGenerator
         if(category is not null || startsWith is not null || endsWith is not null || contains is not null)
         {
             filteredQuests = filteredQuests.Where(item =>
-                    (category == null || item.Category.ToLower() == category) &&
-                    item.Name.ToLower() is string name &&
+                    item is not null &&
+                    (category == null || item.Category?.ToLower() == category) &&
+                    item.Name?.ToLower() is string name &&
                     (startsWith == null || name.StartsWith(startsWith)) &&
                     (endsWith == null || name.EndsWith(endsWith)) &&
                     (contains == null || name.Contains(contains))

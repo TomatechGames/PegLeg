@@ -479,5 +479,5 @@ expand_mode = 1
 [connection signal="TooltipChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="TooltipChanged" from="." to="Button" method="set_tooltip_text"]
 [connection signal="TypeChanged" from="." to="DetailsArea/NameBox/VBoxContainer/TypeLabel" method="set_text"]
-[connection signal="pressed" from="Responsive Button Area" to="." method="OpenImageInBrowser"]
+[connection signal="pressed" from="Responsive Button Area" to="." method="Interact"]
 [connection signal="pressed" from="Button" to="." method="OpenImageInBrowser"]

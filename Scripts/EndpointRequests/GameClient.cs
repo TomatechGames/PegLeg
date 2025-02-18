@@ -44,7 +44,7 @@ static class GameClient
 
         var tokenRequest = await Helpers.MakeRequest(
             HttpMethod.Post,
-            FnEndpoints.loginEndpoint,
+            FnWebAddresses.account,
             "/account/api/oauth/token",
             $"grant_type=client_credentials",
             clientHeader
@@ -68,7 +68,7 @@ static class GameClient
             return null;
         return (await Helpers.MakeRequest(
             HttpMethod.Post,
-            FnEndpoints.loginEndpoint,
+            FnWebAddresses.account,
             "account/api/oauth/token",
             $"grant_type=authorization_code&code={oneTimeCode}",
             clientHeader
@@ -81,7 +81,7 @@ static class GameClient
             return null;
         return (await Helpers.MakeRequest(
             HttpMethod.Post,
-            FnEndpoints.loginEndpoint,
+            FnWebAddresses.account,
             "account/api/oauth/token",
             $"grant_type=refresh_token&" +
             $"refresh_token={refreshToken}&" +
@@ -107,7 +107,7 @@ static class GameClient
             return null;
         return (await Helpers.MakeRequest(
             HttpMethod.Post,
-            FnEndpoints.loginEndpoint,
+            FnWebAddresses.account,
             "account/api/oauth/token",
             $"grant_type=device_auth&" +
             $"account_id={accountId}&" +
@@ -131,7 +131,7 @@ static class GameClient
 
         var linkGetResult = await Helpers.MakeRequest(
             HttpMethod.Post,
-            FnEndpoints.loginEndpoint,
+            FnWebAddresses.account,
             "/account/api/oauth/deviceAuthorization",
             "",
             clientTokenHeader
@@ -159,7 +159,7 @@ static class GameClient
         lastChecked = DateTime.Now;
         lastCheckResult = (await Helpers.MakeRequest(
                 HttpMethod.Post,
-                FnEndpoints.loginEndpoint,
+                FnWebAddresses.account,
                 "/account/api/oauth/token",
                 $"grant_type=device_code&" +
                 $"device_code={deviceCode}",

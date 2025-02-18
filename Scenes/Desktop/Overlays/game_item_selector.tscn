@@ -122,6 +122,7 @@ spacing = Vector2(10, 10)
 layout_mode = 2
 
 [node name="MultiselectButtons" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer" index="2"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_right = 3

@@ -600,7 +600,16 @@ script = ExtResource("12_12lms")
 section = "item_shop"
 key = "simple_cosmetics"
 
-[node name="AutoDetectMissionReset" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="7"]
+[node name="ShowMissionBackgrounds2" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="7"]
+layout_direction = 3
+layout_mode = 2
+text = "Auto filter new cosmetics"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "item_shop"
+key = "auto_filter_new"
+
+[node name="AutoDetectMissionReset" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="8"]
 layout_direction = 3
 layout_mode = 2
 button_pressed = true
@@ -611,7 +620,7 @@ section = "missions"
 key = "reset_detection"
 defaultValue = true
 
-[node name="ShowMissionBackgrounds" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="8"]
+[node name="ShowMissionBackgrounds" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="9"]
 layout_direction = 3
 layout_mode = 2
 button_pressed = true
@@ -622,7 +631,7 @@ section = "missions"
 key = "show_background"
 defaultValue = true
 
-[node name="DelayQuestRefresh" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="9"]
+[node name="DelayQuestRefresh" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="10"]
 visible = false
 layout_direction = 3
 layout_mode = 2
@@ -632,7 +641,7 @@ script = ExtResource("12_12lms")
 section = "quests"
 key = "delay_refresh"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="10"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="11"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer" index="0"]

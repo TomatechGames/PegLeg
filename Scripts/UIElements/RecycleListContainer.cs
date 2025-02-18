@@ -69,7 +69,7 @@ public partial class RecycleListContainer : ScrollContainer
 
             //calculate how many elements fit on screen (cols*(ceil(heightOfElement/heightOfThis)+1))
             int totalElements = linkedProvider.GetRecycleElementCount();
-            int newOnScreenElements = columns * (Mathf.CeilToInt(Size.Y / (elementHeight + elementSpace)) + 1);
+            int newOnScreenElements = columns * (Mathf.CeilToInt(Size.Y / (elementHeight + elementSpace)) + 2);
 
             //use scrollVertical and elementParent y pos to get the offset height
             float offsetHeight = (GlobalPosition.Y - elementParent.GlobalPosition.Y) + offsetControl.Size.Y;
@@ -210,13 +210,13 @@ public partial class RecycleListContainer : ScrollContainer
     Vector2 lastSize;
     public override void _Process(double delta)
     {
-        if (lastSize!=Size || lastScroll != ScrollVertical)
+        if (lastSize != Size || lastScroll != ScrollVertical)
             UpdateList();
         lastSize = Size;
         lastScroll = ScrollVertical;
 
-        //if pooled entries is more than the length of active entries, remove 1 pooled entry per frame
-        if (pooledEntries.Count > activeEntries.Count)
+        //if pooled entries is more than the length of active entries (plus a buffer of 2), remove 1 pooled entry per frame
+        if (pooledEntries.Count > activeEntries.Count + 2)
         {
             var toFree = pooledEntries.Dequeue();
             toFree.node.QueueFree();

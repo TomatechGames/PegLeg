@@ -96,9 +96,15 @@ public partial class QuestGroupViewer : Control
 
     public void SetQuestNodes(List<QuestSlot> newQuestDataList, bool useArrows, bool onlyShowIncomplete)
 	{
+        //onlyShowIncomplete = false;
         if (onlyShowIncomplete)
         {
             questDataList = newQuestDataList.Where(q=>q.isUnlocked && (!q.isComplete || useArrows)).ToList();
+            if (useArrows)
+            {
+                //sort endurances by wave
+                questDataList = questDataList.OrderBy(q => int.TryParse(q.questTemplate.DisplayName.Split(" ")[^1], out int wave) ? wave : 0).ToList();
+            }
         }
         else
         {

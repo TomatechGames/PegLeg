@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Security.Principal;
 using System.Text.Json.Nodes;
 
 public partial class InventoryInterface : Control, IRecyclableElementProvider<GameItem>
@@ -23,9 +24,13 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
     bool sortByName = false;
     [Export]
     bool allowDevMode = true;
+    [Export]
+    Control creatorImageParent;
+    Control[] creatorImages;
 
     public override void _Ready()
     {
+        creatorImages = creatorImageParent.GetChildren().Select(c => (Control)c).ToArray();
         GameAccount.ActiveAccountChanged += UpdateAccount;
         itemList.SetProvider(this);
         searchBox.TextChanged += ApplyFilters;
@@ -46,11 +51,15 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
         tabBar.CurrentTab = 0;
         tabBar.TabChanged += SetTypeFilter;
         AppConfig.OnConfigChanged += OnConfigChanged;
+        VisibilityChanged += TryUpdateAccount;
         UpdateAccount();
     }
 
     private void OnConfigChanged(string section, string key, JsonValue val)
     {
+        if (!(section == "advanced" && key == "developer") && !(section == "inventory" && key == "customUser"))
+            return;
+
         bool dev = AppConfig.Get("advanced", "developer", false) && allowDevMode;
         if (devAllButton is not null)
             devAllButton.Visible = dev;
@@ -109,18 +118,39 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
     string currentTypeFilter = "";
     public int GetRecycleElementCount() => currentItems?.Length ?? 0;
     public GameItem GetRecycleElement(int index) => currentItems?[index];
+    GameAccount displayedAccount;
+    bool needsUpdate = false;
+
+    void TryUpdateAccount()
+    {
+        if (needsUpdate)
+            UpdateAccount();
+    }
 
     async void UpdateAccount()
     {
+        if (!IsVisibleInTree())
+        {
+            needsUpdate = true;
+            return;
+        }
+        needsUpdate = false;
+
         allItems = Array.Empty<GameItem>();
         ApplyFilters();
-        var account = GameAccount.activeAccount;
+        displayedAccount = GameAccount.activeAccount;
         if (!string.IsNullOrEmpty(targetUser?.Text) && allowDevMode)
-            account = (await GameAccount.SearchForAccount(targetUser?.Text)) ?? account;
-        GD.Print(account?.accountId);
-        if (targetProfile != FnProfileTypes.AccountItems && !await account.Authenticate())
+            displayedAccount = (await GameAccount.SearchForAccount(targetUser?.Text)) ?? displayedAccount;
+        GD.Print("Inventory: "+displayedAccount?.accountId);
+        if (targetProfile != FnProfileTypes.AccountItems && !await displayedAccount.Authenticate())
             return;
-        var itemProfile = await account.GetProfile(targetProfile).Query();
+
+        foreach (var image in creatorImages)
+        {
+            image.Visible = displayedAccount.accountId == image.Name;
+        }
+
+        var itemProfile = await displayedAccount.GetProfile(targetProfile).Query();
         allItems = itemProfile
             .GetItems()
             .Where(i => i.template is not null)
@@ -130,6 +160,61 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
             item.GetSearchTags();
         }
         ApplyFilters();
+    }
+
+    public async void BulkRecycle()
+    {
+        if (targetProfile != FnProfileTypes.AccountItems || displayedAccount is null || !await displayedAccount.Authenticate())
+            return;
+
+        if (filteredItems.Any())
+        {
+            //foreach (var item in filteredItems)
+            //{
+            //    item.GetSearchTags();
+            //    item.GenerateRawData();
+            //}
+            GameItemSelector.Instance.SetRecycleDefaults();
+            var toRecycle = await GameItemSelector.Instance.OpenSelector(filteredItems, null);
+            if ((toRecycle?.Length ?? 0) > 0 && await displayedAccount.Authenticate())
+            {
+                JsonObject content = new()
+                {
+                    ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
+                };
+                using var _ = LoadingOverlay.CreateToken();
+                await displayedAccount.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content);
+            }
+        }
+    }
+
+    public async void BulkDismantle()
+    {
+        //implement item amount selection in recycling
+        return;
+
+        if (targetProfile != FnProfileTypes.Backpack || displayedAccount is null || !await displayedAccount.Authenticate())
+            return;
+
+        if (filteredItems.Any())
+        {
+            //foreach (var item in filteredItems)
+            //{
+            //    item.GetSearchTags();
+            //    item.GenerateRawData();
+            //}
+            GameItemSelector.Instance.SetDismantleDefaults();
+            var toRecycle = await GameItemSelector.Instance.OpenSelector(filteredItems, null);
+            if ((toRecycle?.Length ?? 0) > 0 && await displayedAccount.Authenticate())
+            {
+                JsonObject content = new()
+                {
+                    ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
+                };
+                using var _ = LoadingOverlay.CreateToken();
+                await displayedAccount.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content);
+            }
+        }
     }
 
     void ApplyFilters(string _) => ApplyFilters();

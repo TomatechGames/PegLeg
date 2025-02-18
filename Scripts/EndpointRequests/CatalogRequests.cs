@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -124,7 +125,7 @@ static class CatalogRequests
             return cachedCosmeticLayouts;
         var rawLayoutData = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FnEndpoints.contentEndpoint,
+                FnWebAddresses.content,
                 "content/api/pages/fortnite-game/mp-item-shop",
                 "",
                 null
@@ -192,84 +193,97 @@ static class CatalogRequests
     //    };
     //}
 
-    static string ParseLayoutName(string basis) =>
-        Regex.Replace(basis, "([a-z0-9])([A-Z])", "$1 $2");
-
     static async Task<JsonObject> ProcessCosmetics(JsonObject cosmeticDisplayData)
     {
         var shopOfferList = storefrontCache[FnStorefrontTypes.WeeklyCosmeticShopCatalog]?.AsArray().ToList();
         if(shopOfferList is null)
             return null;
-        shopOfferList.AddRange(storefrontCache[FnStorefrontTypes.DailyCosmeticShopCatalog].AsArray());
+        //shopOfferList.AddRange(storefrontCache[FnStorefrontTypes.DailyCosmeticShopCatalog].AsArray());
         var shopOfferDict = shopOfferList.ToDictionary(n => n["offerId"].ToString());
+        bool experimentalFallbackData = AppConfig.Get("advanced", "experimentalShop", false);
 
         await Parallel.ForEachAsync(shopOfferDict, async (offer, _) =>
         {
-            if (!cosmeticDisplayData.ContainsKey(offer.Key))
+            bool needsFallback = false;
+            lock (cosmeticDisplayData)
+            {
+                needsFallback = !cosmeticDisplayData.ContainsKey(offer.Key);
+            }
+
+            if (needsFallback)
             {
                 var fallbackDisplayData = new JsonObject()
                 {
                     ["isFallback"] = true,
-                    ["devName"] = offer.Value["devName"]?.ToString() ?? null,
-                    ["fallbackType"] = offer.Value["meta"]?["templateId"]?.ToString().Split(":")[0] ?? null,
-                    ["offerId"] = offer.Value["offerId"]?.ToString() ?? null,
-                    ["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null,
-                    ["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null,
-                    ["regularPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["regularPrice"]?.GetValue<int>() ?? null,
-                    ["finalPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["finalPrice"]?.GetValue<int>() ?? null,
-                    ["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null,
-                    ["layoutId"] = offer.Value["meta"]?["LayoutId"]?.ToString() ?? null,
+                    ["devName"] = offer.Value["devName"]?.ToString(),
+                    ["fallbackType"] = offer.Value["meta"]?["templateId"]?.ToString().Split(":")[0],
+                    ["offerId"] = offer.Value["offerId"]?.ToString(),
+                    ["inDate"] = offer.Value["meta"]?["inDate"]?.ToString(),
+                    ["outDate"] = offer.Value["meta"]?["outDate"]?.ToString(),
+                    ["regularPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["regularPrice"]?.GetValue<int>(),
+                    ["finalPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["finalPrice"]?.GetValue<int>(),
+                    ["webURL"] = offer.Value["meta"]?["webURL"]?.ToString(),
+                    ["layoutId"] = offer.Value["meta"]?["LayoutId"]?.ToString(),
                     ["layout"] = new JsonObject()
                     {
-                        ["id"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString() ?? null,
+                        ["id"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString(),
                     },
-                    ["tileSize"] = offer.Value["meta"]?["TileSize"]?.ToString() ?? null,
-                    ["sortPriority"] = offer.Value["sortPriority"]?.GetValue<int>() ?? null,
+                    ["colors"] = new JsonObject()
+                    {
+                        ["color1"] = offer.Value["meta"]?["color1"]?.ToString(),
+                        ["color2"] = offer.Value["meta"]?["color2"]?.ToString(),
+                        ["color3"] = offer.Value["meta"]?["color3"]?.ToString(),
+                        ["textBackgroundColor"] = offer.Value["meta"]?["textBackgroundColor"]?.ToString(),
+                    },
+                    ["tileSize"] = offer.Value["meta"]?["TileSize"]?.ToString(),
+                    ["sortPriority"] = offer.Value["sortPriority"]?.GetValue<int>(),
                 };
+
                 if (cachedCosmeticLayouts[fallbackDisplayData["layout"]["id"]?.ToString()] is JsonObject fallbackLayoutData)
                 {
                     fallbackDisplayData["layout"]["name"] = fallbackLayoutData["displayName"]?.ToString();
                     fallbackDisplayData["layout"]["category"] = fallbackLayoutData["category"]?.ToString();
                     fallbackDisplayData["layout"]["rank"] = fallbackLayoutData["rank"]?.ToString();
                 }
+
                 if (offer.Value["dynamicBundleInfo"] is JsonObject bundleInfo)
                 {
+                    fallbackDisplayData["dynamicBundleInfo"] = bundleInfo.Reserialise();
+
                     int totalPrice = bundleInfo["bundleItems"].AsArray().Select(n => n["regularPrice"].GetValue<int>()).Sum();
                     fallbackDisplayData["regularPrice"] = totalPrice;
                     fallbackDisplayData["finalPrice"] = totalPrice + bundleInfo["discountedBasePrice"].GetValue<int>();
+
+                    if (experimentalFallbackData && offer.Value["meta"]?["displayAssetPath"]?.ToString() is string nameDaPath && nameDaPath.Contains("/DisplayAssets/"))
+                    {
+                        fallbackDisplayData["bundleDisplayAsset"] = nameDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
+                    }
                 }
-                if (false && offer.Value["meta"]?["NewDisplayAssetPath"]?.ToString() is string imgDaPath && imgDaPath.Contains("/NewDisplayAssetPath/"))
+
+                if (experimentalFallbackData && offer.Value["meta"]?["NewDisplayAssetPath"]?.ToString() is string imgDaPath && imgDaPath.Contains("/NewDisplayAssets/"))
                 {
-                    imgDaPath = imgDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
-                    bool isBundle = offer.Value["dynamicBundleInfo"] is not null;
-                    string nameDaPath = isBundle ?
-                        offer.Value["meta"]?["displayAssetPath"]?.ToString().Replace("/Game/Catalog/", "/OfferCatalog/"):"";
-
-                    var nameDisplayAssetTask = Helpers.MakeRequest(
-                        HttpMethod.Get,
-                        ExternalEndpoints.fnCentralEndpoint,
-                        $"api/v1/export?path={nameDaPath}",
-                        "",
-                        null
-                    );
-                    var imageDisplayAssetTask = Helpers.MakeRequest(
-                        HttpMethod.Get,
-                        ExternalEndpoints.fnCentralEndpoint,
-                        $"api/v1/export?path={imgDaPath}",
-                        "",
-                        null
-                    );
-
-                    await imageDisplayAssetTask;
-                    await imageDisplayAssetTask;
-
-                    fallbackDisplayData["fallbackImage"] = imageDisplayAssetTask.Result?["jsonOutput"]?[0]["Properties"][0];
+                    fallbackDisplayData["fallbackDisplayAsset"] = imgDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
                 }
-                cosmeticDisplayData.Add(offer.Key, fallbackDisplayData);
+
+                fallbackDisplayData["fallbackGrants"] = new JsonArray(
+                    offer.Value["itemGrants"]
+                    .AsArray()
+                    .Select(g => (JsonNode)g["templateId"].ToString())
+                    .ToArray()
+                );
+
+                lock (cosmeticDisplayData)
+                {
+                    cosmeticDisplayData[offer.Key] = fallbackDisplayData;
+                }
                 return;
             }
 
-            var displayData = cosmeticDisplayData[offer.Key];
+            JsonNode displayData = null;
+            lock (cosmeticDisplayData)
+            {
+                displayData = cosmeticDisplayData[offer.Key];
+            }
 
             //additions
             displayData["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null;
@@ -290,9 +304,6 @@ static class CatalogRequests
                 displayData["layout"]["rank"] = layoutData["rank"]?.ToString();
             }
 
-            if (offer.Value.AsObject().ContainsKey("dynamicBundleInfo"))
-                displayData["dynamicBundleInfo"] = offer.Value["dynamicBundleInfo"].Reserialise();
-
             if ((offer.Value["prices"]?.AsArray().Count ?? 0) > 0)
                 displayData["prices"] = offer.Value["prices"].Reserialise();
 
@@ -310,6 +321,7 @@ static class CatalogRequests
                     {
                         ["value"] = "track",
                         ["displayValue"] = "Jam Track",
+                        ["backendValue"] = "SparksSong",
                     };
                     trackObj["rarity"] = new JsonObject()
                     {
@@ -424,7 +436,7 @@ static class CatalogRequests
         GD.Print("retrieving catalog from epic...");
         JsonNode fullStorefront = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FnEndpoints.gameEndpoint,
+                FnWebAddresses.game,
                 "fortnite/api/storefront/v2/catalog",
                 "",
                 account.AuthHeader
@@ -447,7 +459,7 @@ static class CatalogRequests
         GD.Print("retrieving cosmetic visuals from fortnite-api...");
         JsonNode cosmeticDisplayData = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                ExternalEndpoints.fnApiEndpoint,
+                ExternalWebAddresses.fnApi,
                 "v2/shop?responseFlags=4", // 1 = paths, 2 = gameplayTags, 4 = shop history
                 "",
                 null,
@@ -485,24 +497,35 @@ static class CatalogRequests
 
     const string fnapiLinkPrefix = "https://fortnite-api.com/images/cosmetics/";
     const string fnapiJamTrackPrefix = "https://cdn.fortnite-api.com/tracks/";
-    const string cacheFolderPath = "user://cosmetic_images/";
+    const string fnCentralPrefix = "https://fortnitecentral.genxgames.gg/api/v1/export?path=";
+    const string imageCacheFolderPath = "user://cosmetic_images/";
+    const string metaCacheFolderPath = "user://cosmetic_meta/";
     static readonly Dictionary<string, WeakRef> activeResourceCache = new();
+    static readonly Dictionary<string, JsonObject> activeMetaCache = new();
 
     public static ImageTexture GetLocalCosmeticResource(string serverPath)
     {
-        if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath]?.GetRef().Obj is ImageTexture cachedTexture)
+        lock (activeResourceCache)
         {
-            //GD.Print("cache exists");
-            return cachedTexture;
+            if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath]?.GetRef().Obj is ImageTexture cachedTexture)
+                return cachedTexture;
         }
         
         bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
-        string localPath = cacheFolderPath +
-            (
-                isJamTrack ?
-                    serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-") :
-                    serverPath[fnapiLinkPrefix.Length..].Replace("/", "-")
-            );
+        bool isFNCentral = serverPath.StartsWith(fnCentralPrefix);
+        string localPath = imageCacheFolderPath;
+        if (isFNCentral)
+        {
+            localPath += "/" + serverPath.Split('/')[^1] + ".webp";
+        }
+        else if (isJamTrack)
+        {
+            localPath += serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-");
+        }
+        else
+        {
+            localPath += serverPath[fnapiLinkPrefix.Length..].Replace("/", "-");
+        }
 
         if (!FileAccess.FileExists(localPath))
             return null;
@@ -522,45 +545,51 @@ static class CatalogRequests
         imageFile.Store8(temp);
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
-        activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
         imageTex.ResourceName = serverPath;
+        lock (activeResourceCache)
+        {
+            activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        }
 
         return imageTex;
     }
 
     public static async Task<ImageTexture> GetCosmeticResource(string serverPath)
     {
-        var localImageTex = GetLocalCosmeticResource(serverPath);
-        if(localImageTex is not null)
-        {
-            //GD.Print("using local");
+        if (GetLocalCosmeticResource(serverPath) is ImageTexture localImageTex)
             return localImageTex;
-        }
 
         bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
+        bool isFNCentral = serverPath.StartsWith(fnCentralPrefix);
         //if (isJamTrack)
         //{
         //    GD.Print("Interpreting as Jam Track");
         //    GD.Print("/tracks/" + serverPath[fnapiJamTrackPrefix.Length..]);
         //    GD.Print(ExternalEndpoints.jamTracksEndpoint);
         //}
-        string localPath = cacheFolderPath + 
-            ( 
-                isJamTrack ?
-                    serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-") : 
-                    serverPath[fnapiLinkPrefix.Length..].Replace("/", "-")
-            );
+        string localPath = imageCacheFolderPath;
+        string halfPath = "";
+        var client = ExternalWebAddresses.fnApi;
+        if (isFNCentral)
+        {
+            client = ExternalWebAddresses.fnCentral;
+            localPath += "/" + serverPath.Split('/')[^1] + ".webp";
+            halfPath = "/api/v1/export?path=" + serverPath[fnCentralPrefix.Length..];
+        }
+        else if (isJamTrack)
+        {
+            client = ExternalWebAddresses.fnApiJamTrakcs;
+            localPath += serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-");
+            halfPath = "/tracks/" + serverPath[fnapiJamTrackPrefix.Length..];
+        }
+        else
+        {
+            localPath += serverPath[fnapiLinkPrefix.Length..].Replace("/", "-");
+            halfPath = "/images/cosmetics/" + serverPath[fnapiLinkPrefix.Length..];
+        }
 
-        using var request =
-        new HttpRequestMessage(
-            HttpMethod.Get,
-            isJamTrack ? 
-                "/tracks/" + serverPath[fnapiJamTrackPrefix.Length..] : 
-                "/images/cosmetics/" + serverPath[fnapiLinkPrefix.Length..]
-        );
-
-        GD.Print($"Requesting cosmetic \"{serverPath}\"");
-        using var result = await Helpers.MakeRequestRaw(isJamTrack ? ExternalEndpoints.jamTracksEndpoint : ExternalEndpoints.fnApiEndpoint, request);
+        GD.Print($"Requesting cosmetic ({client}, {halfPath}, {localPath})");
+        using var result = await Helpers.MakeRequestRaw(client, new(HttpMethod.Get, halfPath));
         if (!result.IsSuccessStatusCode)
         {
             GD.Print(result);
@@ -570,25 +599,181 @@ static class CatalogRequests
 
         Image resourceImage = new();
         byte[] imageBuffer = await result.Content.ReadAsByteArrayAsync();
-        var error = LoadImageWithCtx(resourceImage, imageBuffer, serverPath);
+        var error = LoadImageWithCtx(resourceImage, imageBuffer, localPath);
         if (error != Error.Ok)
             return null;
         //GD.Print("remote file loaded");
 
-        if (!DirAccess.DirExistsAbsolute(cacheFolderPath))
-            DirAccess.MakeDirAbsolute(cacheFolderPath);
+        if (!DirAccess.DirExistsAbsolute(imageCacheFolderPath))
+            DirAccess.MakeDirAbsolute(imageCacheFolderPath);
 
         using (var imageFile = FileAccess.Open(localPath, FileAccess.ModeFlags.Write))
         {
-            //GD.Print($"Caching cosmetic: \"{localPath}\"");
             imageFile.StoreBuffer(imageBuffer);
         }
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
-        activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
         imageTex.ResourceName = serverPath;
 
+        lock (activeResourceCache)
+        {
+            activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        }
+
         return imageTex;
+    }
+
+    public static JsonObject GetLocalCosmeticMeta(string pathOrTemplateID)
+    {
+        lock (activeMetaCache)
+        {
+            if (activeMetaCache.TryGetValue(pathOrTemplateID, out var cachedMeta))
+                return cachedMeta;
+        }
+        var localIdentifier = pathOrTemplateID.Split(".")[^1];
+        string localPath = $"{metaCacheFolderPath}/{localIdentifier}.json";
+        if (!FileAccess.FileExists(localPath))
+            return null;
+        using var metaFile = FileAccess.Open(localPath, FileAccess.ModeFlags.ReadWrite);
+
+        var localMeta = JsonNode.Parse(metaFile.GetAsText()).AsObject();
+
+        //make a fake modification to change the modified date when the file is disposed
+        metaFile.SeekEnd(-1);
+        byte temp = metaFile.Get8();
+        metaFile.SeekEnd(-1);
+        metaFile.Store8(temp);
+
+        lock (activeMetaCache)
+        {
+            activeMetaCache.TryAdd(pathOrTemplateID, localMeta);
+        }
+
+        return localMeta;
+    }
+
+    public static async Task<JsonObject> GetCosmeticMeta(string pathOrTemplateID)
+    {
+        if (GetLocalCosmeticMeta(pathOrTemplateID) is JsonObject localMeta)
+            return localMeta;
+
+        var localIdentifier = pathOrTemplateID.Split('.')[^1];
+        string localPath = $"{metaCacheFolderPath}/{localIdentifier}.json";
+
+        JsonObject metaObject = null;
+        if (pathOrTemplateID.Contains('.'))
+        {
+            //treat as path (probably display asset)
+            GD.Print(pathOrTemplateID.Split('.')[0]);
+            JsonNode resultObject = await Helpers.MakeRequest(
+                HttpMethod.Get,
+                ExternalWebAddresses.fnCentral,
+                $"api/v1/export?path={pathOrTemplateID.Split('.')[0]}",
+                "",
+                null
+            );
+            GD.Print(resultObject);
+            if (resultObject is not null && resultObject?["result"]?.ToString()?.StartsWith("Too many requests") != true && resultObject["errored"]?.GetValue<bool>() != true)
+            {
+                metaObject = resultObject["jsonOutput"]?[0]?["Properties"]?.AsObject()?.Reserialise();
+            }
+            GD.Print(metaObject);
+        }
+        else if (pathOrTemplateID.Contains(':'))
+        {
+            string[] remotePaths = CosmeticTemplateToPaths(pathOrTemplateID);
+            foreach (var remotePath in remotePaths)
+            {
+                JsonNode resultObject = await Helpers.MakeRequest(
+                    HttpMethod.Get,
+                    ExternalWebAddresses.fnCentral,
+                    $"api/v1/export?path={remotePath}",
+                    "",
+                    null
+                );
+                if (resultObject is null)
+                    continue;
+                if (resultObject?["result"]?.ToString()?.StartsWith("Too many requests") ?? false)
+                    continue;
+                if (resultObject?["errored"]?.GetValue<bool>() == true)
+                    continue;
+
+                var splitTemplateId = pathOrTemplateID.Split(":");
+                var resultObjects = resultObject["jsonOutput"].AsArray();
+                var cosmetic = resultObjects.FirstOrDefault(n => n["Type"]?.ToString() == $"{splitTemplateId[0]}ItemDefinition")?["Properties"]?.AsObject();
+                if (cosmetic is null)
+                    continue;
+
+                metaObject = new()
+                {
+                    ["id"] = splitTemplateId[1],
+                    ["name"] = cosmetic["ItemName"]?["sourceString"].ToString(),
+                    ["description"] = cosmetic["ItemDescription"]?["sourceString"].ToString(),
+                    ["type"] = new JsonObject()
+                    {
+                        ["backendValue"] = splitTemplateId[0],
+                        ["displayValue"] = cosmetic["ItemShortDescription"]?["sourceString"].ToString(),
+                    }
+                };
+                var dataList = cosmetic["DataList"].AsArray();
+                if (dataList.FirstOrDefault(n => n["LargeIcon"] is not null)?["LargeIcon"]?["AssetPathName"]?.ToString() is string largeImagePath)
+                {
+                    metaObject["images"] ??= new JsonObject();
+                    metaObject["images"]["icon"] = fnCentralPrefix + largeImagePath.Split('.')[0];
+                }
+                if (dataList.FirstOrDefault(n => n["Icon"] is not null)?["Icon"]?["AssetPathName"]?.ToString() is string smallImagePath)
+                {
+                    metaObject["images"] ??= new JsonObject();
+                    metaObject["images"]["smallIcon"] = fnCentralPrefix + smallImagePath.Split('.')[0];
+                }
+            }
+        }
+        else
+        {
+            GD.Print("Unknown Meta: " + pathOrTemplateID);
+            return null;
+        }
+
+        if (metaObject is null)
+            return null;
+
+        if (!DirAccess.DirExistsAbsolute(metaCacheFolderPath))
+            DirAccess.MakeDirAbsolute(metaCacheFolderPath);
+
+        using (var metaFile = FileAccess.Open(localPath, FileAccess.ModeFlags.Write))
+        {
+            metaFile.StoreString(metaObject.ToString());
+        }
+
+        lock (activeMetaCache)
+        {
+            activeMetaCache.TryAdd(pathOrTemplateID, metaObject);
+        }
+
+        return metaObject;
+    }
+
+    static string[] CosmeticTemplateToPaths(string templateId)
+    {
+        var splitTemplateId = templateId.Split(":");
+        if (splitTemplateId.Length <= 1)
+        {
+            GD.Print("Can't split: " + templateId);
+            return Array.Empty<string>();
+        }
+        return splitTemplateId[0] switch
+        {
+            "AthenaCharacter" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Characters/{splitTemplateId[1]}.uasset" },
+            "AthenaBackpack" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Backpacks/{splitTemplateId[1]}.uasset" },
+            "AthenaPickaxe" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Pickaxes/{splitTemplateId[1]}.uasset" },
+            "AthenaGlider" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Gliders/{splitTemplateId[1]}.uasset" },
+            "AthenaSkyDiveContrail" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Contrails/{splitTemplateId[1]}.uasset" },
+            "AthenaDance" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Dances/{splitTemplateId[1]}.uasset" },
+            "AthenaItemWrap" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/ItemWraps/{splitTemplateId[1]}.uasset" },
+
+            //TODO: car parts, instruments, etc
+            _ => Array.Empty<string>(),
+        };
     }
 
     static Error LoadImageWithCtx(Image image, byte[] data, string path)
@@ -609,14 +794,14 @@ static class CatalogRequests
 
     public static void CleanCosmeticResourceCache()
     {
-        if (!DirAccess.DirExistsAbsolute(cacheFolderPath))
+        if (!DirAccess.DirExistsAbsolute(imageCacheFolderPath))
             return;
 
-        var cacheFolder = DirAccess.Open(cacheFolderPath);
+        var cacheFolder = DirAccess.Open(imageCacheFolderPath);
         DateTime invalidDateTime = DateTime.Now.AddDays(-2); //images are removed if they havent been used in more than 2 days
         var invalidCacheFilePaths = cacheFolder.GetFiles()
             .Where(p => p.EndsWith(".png") || p.EndsWith(".webp"))
-            .Select(p => cacheFolderPath + "/" + p)
+            .Select(p => imageCacheFolderPath + "/" + p)
             .Where(p => DateTime.Parse(Time.GetDatetimeStringFromUnixTime((long)FileAccess.GetModifiedTime(p))).CompareTo(invalidDateTime) < 0);
 
         foreach (var filePath in invalidCacheFilePaths)
@@ -669,7 +854,7 @@ public class GameStorefront
         GD.Print("retrieving catalog from epic...");
         var catalog = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FnEndpoints.gameEndpoint,
+                FnWebAddresses.game,
                 "fortnite/api/storefront/v2/catalog",
                 "",
                 account.AuthHeader

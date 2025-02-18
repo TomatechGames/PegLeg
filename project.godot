@@ -31,7 +31,7 @@ GlobalScene="*res://Scenes/globalScene.tscn"
 
 [display]
 
-window/size/viewport_width=1280
+window/size/viewport_width=1350
 window/size/viewport_height=720
 window/size/initial_position_type=3
 window/energy_saving/keep_screen_on=false

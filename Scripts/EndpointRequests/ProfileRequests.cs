@@ -154,7 +154,7 @@ public class GameAccount
             return null;
         var searchResult = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FnEndpoints.userSearchEndpoint,
+                FnWebAddresses.userSearch,
                 $"/api/v1/search/{activeAccount.accountId}?platform=epic&prefix={username}",
                 "{}",
                 activeAccount.AuthHeader
@@ -357,7 +357,7 @@ public class GameAccount
 
             var avatarData = await Helpers.MakeRequest(
                     HttpMethod.Get,
-                    FnEndpoints.avatarEndpoint,
+                    FnWebAddresses.avatar,
                     $"/v1/avatar/fortnite/ids?accountIds={accountId}",
                     "{}",
                     AuthHeader
@@ -369,7 +369,7 @@ public class GameAccount
 
             var skinData = await Helpers.MakeRequest(
                     HttpMethod.Get,
-                    ExternalEndpoints.fnApiEndpoint,
+                    ExternalWebAddresses.fnApi,
                     $"/v2/cosmetics/br/{skinId}",
                     "{}",
                     null,
@@ -405,7 +405,7 @@ public class GameAccount
         //generate device details
         JsonObject deviceDetails = (await Helpers.MakeRequest(
             HttpMethod.Post,
-            FnEndpoints.loginEndpoint,
+            FnWebAddresses.account,
             $"account/api/public/account/{accountId}/deviceAuth",
             "",
             AuthHeader,
@@ -428,7 +428,7 @@ public class GameAccount
             //tell epic we're not using the device any more. probably unneccecary, but its common courtesy
             var result = await Helpers.MakeRequest(
                 HttpMethod.Delete,
-                FnEndpoints.loginEndpoint,
+                FnWebAddresses.account,
                 $"account/api/public/account/{accountId}/deviceAuth/{deviceDetails["deviceId"]}",
                 "",
                 AuthHeader,
@@ -620,6 +620,18 @@ public class GameAccount
             int purchaseAmount = eventTracker?.attributes?["event_purchases"]?[offer.OfferId]?.GetValue<int>() ?? 0;
             //GD.Print($"Event Limit: {purchaseAmount}/{eventLimit}");
             totalLimit = Mathf.Min(totalLimit, offer.EventLimit - purchaseAmount);
+        }
+
+        if (offer.itemGrants[0].templateId == "Token:accountinventorybonus")
+        {
+            var accountItemData = await GetProfile(FnProfileTypes.AccountItems).Query();
+            totalLimit = Mathf.Min(totalLimit, 3000 - accountItemData.GetFirstTemplateItem("Token:accountinventorybonus")?.quantity ?? 0);
+        }
+
+        if (offer.itemGrants[0].templateId == "CampaignHeroLoadout:purchaseabledefaultloadout")
+        {
+            var accountItemData = await GetProfile(FnProfileTypes.AccountItems).Query();
+            totalLimit = Mathf.Min(totalLimit, 11 - accountItemData.GetTemplateItems("CampaignHeroLoadout:purchaseabledefaultloadout").Length);
         }
 
         return totalLimit;
@@ -977,7 +989,7 @@ public class GameProfile
             };
         request.Headers.Authorization = authHeader;
 
-        var result = (await Helpers.MakeRequest(FnEndpoints.gameEndpoint, request))?.AsObject();
+        var result = (await Helpers.MakeRequest(FnWebAddresses.game, request))?.AsObject();
         lastOp = result;
         if(result is null)
             return null;
@@ -1287,7 +1299,7 @@ public class GameItem
             survivorAttr = survivorAttr[..^3];
         if (survivorAttr.EndsWith("High"))
             survivorAttr = survivorAttr[..^4];
-        return Regex.Replace(survivorAttr, "[A-Z]", " %1").Trim();
+        return Regex.Replace(survivorAttr, "[A-Z]", " $&").Trim();
     }
 
     JsonArray _searchTags;
@@ -1449,7 +1461,7 @@ public class GameItem
 
     public float GetHeroStat(string stat, int givenLevel = 0, int givenTier = 0)
     {
-        if (!BanjoAssets.TryGetSource("HeroStats", out var stats))
+        if (!BanjoAssets.TryGetDataSource("HeroStats", out var stats))
             return 0;
 
         if (givenLevel <= 0)
@@ -1458,9 +1470,9 @@ public class GameItem
             givenTier = template.Tier;
         }
 
-        string heroStatType = template["HeroStatType"].ToString();
+        string heroStatLine = template["HeroStatLine"].ToString();
         string heroRarityAndTier = template.GetCompactRarityAndTier(givenTier);
-        var statLookup = stats["Types"]?[$"{template.SubType}_{heroStatType}"]?[heroRarityAndTier]?[stat]?.AsObject();
+        var statLookup = stats["Types"]?[$"{template.SubType}_{heroStatLine}"]?[heroRarityAndTier]?[stat]?.AsObject();
         if (statLookup is null)
             return 0;
         int statKey = Mathf.Clamp(givenLevel - (int)statLookup["FirstLevel"], 0, statLookup["Values"].AsArray().Count - 1);
@@ -1478,7 +1490,7 @@ public class GameItem
 
     public int CalculateRating(string survivorSquad = null)
     {
-        if (!BanjoAssets.TryGetSource("ItemRatings", out var ratings))
+        if (!BanjoAssets.TryGetDataSource("ItemRatings", out var ratings))
             return 0;
         var tier = template?.Tier ?? 0;
         if (tier == 0)

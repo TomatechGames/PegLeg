@@ -195,7 +195,7 @@ public class GameMission
 
         JsonNode missionData = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FnEndpoints.gameEndpoint,
+                FnWebAddresses.game,
                 "fortnite/api/game/v2/world/info",
                 "",
                 account.AuthHeader
@@ -242,7 +242,7 @@ public class GameMission
         {
             missionData ??= await Helpers.MakeRequest(
                     HttpMethod.Get,
-                    FnEndpoints.gameEndpoint,
+                    FnWebAddresses.game,
                     "fortnite/api/game/v2/world/info",
                     "",
                     account.AuthHeader
@@ -292,7 +292,7 @@ public class GameMission
         if (venturesTheater is not null)
             allowedTheaterIDs.Add(venturesTheater["uniqueId"].ToString());
 
-        BanjoAssets.TryGetSource("ZoneTheme", out var zoneThemeLookup);
+        BanjoAssets.TryGetDataSource("ZoneTheme", out var zoneThemeLookup);
 
         JsonArray allMissions = rootNode["missions"].AsArray();
         JsonArray allMissionAlerts = rootNode["missionAlerts"].AsArray();
@@ -417,10 +417,10 @@ public class GameMission
         this.missionData = missionData;
         this.alertData = alertData;
         this.tileData = tileData;
-        difficultyInfo = BanjoAssets.Lookup("DifficultyInfo", missionData["missionDifficultyInfo"]["rowName"].ToString());
+        difficultyInfo = BanjoAssets.LookupData("DifficultyInfo", missionData["missionDifficultyInfo"]["rowName"].ToString());
 
-        missionGenerator = GameItemTemplate.Lookup("MissionGen", missionData["missionGenerator"].ToString()).CreateInstance();
-        zoneTheme = GameItemTemplate.Lookup("ZoneTheme", tileData["zoneTheme"].ToString()).CreateInstance();
+        missionGenerator = GameItemTemplate.Get($"MissionGen:{missionData["missionGenerator"].ToString().Split(".")[1]}").CreateInstance();
+        zoneTheme = GameItemTemplate.Get($"ZoneTheme:{tileData["zoneTheme"].ToString().Split(".")[1]}").CreateInstance();
 
         missionGenerator.GetTexture(FnItemTextureType.Icon);
         var _ = backgroundTexture;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=55 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
@@ -32,12 +32,9 @@
 [ext_resource type="Texture2D" uid="uid://fu8u7pasyjfx" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Swap_128.png" id="29_ql5qm"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="29_vws3e"]
 [ext_resource type="PackedScene" uid="uid://c4lt6qwfc4cou" path="res://Scenes/Desktop/Overlays/loading_overlay.tscn" id="31_v6low"]
-[ext_resource type="Texture2D" uid="uid://07k0gr21gs5e" path="res://Images/InterfaceIcons/T_UI_VKConnectionIndicator_Error_Icon.png" id="34_tbmoj"]
-[ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="35_388tm"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="35_ix213"]
-[ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="36_2y4mq"]
+[ext_resource type="PackedScene" uid="uid://bbslhgnstt07v" path="res://Scenes/Desktop/Notifications/desktop_notification_panel.tscn" id="35_qspmm"]
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="37_5b0rm"]
-[ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="37_008xq"]
 [ext_resource type="Script" path="res://Scripts/TrayIcon.cs" id="38_s33ws"]
 [ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Desktop/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
 [ext_resource type="PackedScene" uid="uid://cji2iyaxon6uv" path="res://Scenes/Desktop/Overlays/login_popup.tscn" id="41_kf5nt"]
@@ -91,27 +88,9 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_te271"]
-bg_color = Color(0.332881, 0.332881, 0.332881, 1)
-skew = Vector2(-0.2, 0)
-border_width_left = 3
-border_color = Color(0.8, 0.372549, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rvx2k"]
-bg_color = Color(0.332881, 0.332881, 0.332881, 1)
-skew = Vector2(-0.2, 0)
-border_width_left = 3
-border_color = Color(0.12, 0.8, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nd2n"]
-bg_color = Color(0.332881, 0.332881, 0.332881, 1)
-skew = Vector2(-0.2, 0)
-border_width_left = 3
-border_color = Color(0, 0.76, 0.8, 1)
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4jxvi"]
 shader = ExtResource("51_jeshi")
-shader_parameter/ControlSize = Vector2(1280, 720)
+shader_parameter/ControlSize = Vector2(1350, 720)
 shader_parameter/RevealScale = 0.0
 
 [node name="Root" type="Control"]
@@ -543,217 +522,9 @@ visible = false
 layout_mode = 2
 color = Color(1, 1, 1, 0.188235)
 
-[node name="NotificationOrigin" type="VBoxContainer" parent="."]
-visible = false
-z_index = 2
+[node name="DesktopNotificationPanel" parent="." instance=ExtResource("35_qspmm")]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -50.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_constants/separation = 0
-
-[node name="Notification" type="Control" parent="NotificationOrigin"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -525.0
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = -10
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/margin_bottom = 2
-
-[node name="Panel" type="Panel" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_te271")
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("34_tbmoj")
-expand_mode = 3
-
-[node name="Label" type="Label" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "Missions Reset Unexpectedly "
-vertical_alignment = 1
-
-[node name="Button" type="Button" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(15, 15)
-layout_mode = 2
-size_flags_vertical = 0
-theme_type_variation = &"TinyButton"
-
-[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification/MarginContainer/MarginContainer/MarginContainer/HBoxContainer/Button"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("35_388tm")
-expand_mode = 1
-
-[node name="Notification2" type="Control" parent="NotificationOrigin"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -460.0
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = -10
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification2/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/margin_bottom = 2
-
-[node name="Panel" type="Panel" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rvx2k")
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("36_2y4mq")
-expand_mode = 3
-
-[node name="Label" type="Label" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "Free Llamas Available"
-vertical_alignment = 1
-
-[node name="Button" type="Button" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(15, 15)
-layout_mode = 2
-size_flags_vertical = 0
-theme_type_variation = &"TinyButton"
-
-[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification2/MarginContainer/MarginContainer/MarginContainer/HBoxContainer/Button"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("35_388tm")
-expand_mode = 1
-
-[node name="Notification3" type="Control" parent="NotificationOrigin"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -440.0
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = -10
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification3/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-theme_override_constants/margin_bottom = 2
-
-[node name="Panel" type="Panel" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_5nd2n")
-
-[node name="MarginContainer" type="MarginContainer" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-texture = ExtResource("37_008xq")
-expand_mode = 3
-
-[node name="Label" type="Label" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 24
-text = "New Event Item in Shop"
-vertical_alignment = 1
-
-[node name="Button" type="Button" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(15, 15)
-layout_mode = 2
-size_flags_vertical = 0
-theme_type_variation = &"TinyButton"
-
-[node name="TextureRect" type="TextureRect" parent="NotificationOrigin/Notification3/MarginContainer/MarginContainer/MarginContainer/HBoxContainer/Button"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("35_388tm")
-expand_mode = 1
 
 [node name="OverlayWindows" type="Control" parent="."]
 z_index = 6

@@ -34,6 +34,7 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
         missionList.SetProvider(this);
         GameMission.OnMissionsUpdated += FilterMissions;
         GameMission.OnMissionsInvalidated += ClearMissions;
+        VisibilityChanged += TryFilterMissions;
         EmitSignal(SignalName.NameChanged, testName);
         UpdateFilters();
         if (!await GameAccount.activeAccount.Authenticate())
@@ -99,10 +100,26 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
         missionList.Visible = false;
     }
 
+    void TryFilterMissions()
+    {
+        if (needsUpdate)
+            FilterMissions();
+    }
+
+    bool needsUpdate = false;
+
     public void FilterMissions()
     {
         loadingIcon.Visible = false;
         missionList.Visible = true;
+
+        if (!IsVisibleInTree())
+        {
+            needsUpdate = true;
+            return;
+        }
+        needsUpdate = false;
+
         var sortedMissions =
             GameMission.currentMissions?
             .Where(MissionFilter).OrderBy(m=>1) ?? default;
