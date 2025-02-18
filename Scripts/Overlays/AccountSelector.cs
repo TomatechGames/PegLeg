@@ -148,11 +148,10 @@ public partial class AccountSelector : ModalWindow
                     }
                 }
                 if (!hasNextAccount)
-                {
                     ReturnToLogin();
-                    return;
-                }
-                PopulateAccounts();
+                else
+                    PopulateAccounts();
+                return;
             }
         }
         
