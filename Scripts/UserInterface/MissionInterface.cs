@@ -167,7 +167,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
                     return;
                 duration--;
             }
-            if (await GameMission.MissionsNeedUpdate())
+            if (await GameMission.MissionsNeedUpdate() && GameMission.currentMissions is not null)
             {
                 GD.Print("Unexpected reset detected");
                 NotificationManager.PushNotification(unexpectedResetNotif);
