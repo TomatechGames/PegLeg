@@ -200,7 +200,6 @@ static class CatalogRequests
             return null;
         //shopOfferList.AddRange(storefrontCache[FnStorefrontTypes.DailyCosmeticShopCatalog].AsArray());
         var shopOfferDict = shopOfferList.ToDictionary(n => n["offerId"].ToString());
-        bool experimentalFallbackData = AppConfig.Get("advanced", "experimentalShop", false);
 
         await Parallel.ForEachAsync(shopOfferDict, async (offer, _) =>
         {
@@ -254,13 +253,13 @@ static class CatalogRequests
                     fallbackDisplayData["regularPrice"] = totalPrice;
                     fallbackDisplayData["finalPrice"] = totalPrice + bundleInfo["discountedBasePrice"].GetValue<int>();
 
-                    if (experimentalFallbackData && offer.Value["meta"]?["displayAssetPath"]?.ToString() is string nameDaPath && nameDaPath.Contains("/DisplayAssets/"))
+                    if (offer.Value["meta"]?["displayAssetPath"]?.ToString() is string nameDaPath && nameDaPath.Contains("/DisplayAssets/"))
                     {
                         fallbackDisplayData["bundleDisplayAsset"] = nameDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
                     }
                 }
 
-                if (experimentalFallbackData && offer.Value["meta"]?["NewDisplayAssetPath"]?.ToString() is string imgDaPath && imgDaPath.Contains("/NewDisplayAssets/"))
+                if (offer.Value["meta"]?["NewDisplayAssetPath"]?.ToString() is string imgDaPath && imgDaPath.Contains("/NewDisplayAssets/"))
                 {
                     fallbackDisplayData["fallbackDisplayAsset"] = imgDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
                 }
@@ -625,6 +624,8 @@ static class CatalogRequests
 
     public static JsonObject GetLocalCosmeticMeta(string pathOrTemplateID)
     {
+        if(pathOrTemplateID is null)
+            return null;
         lock (activeMetaCache)
         {
             if (activeMetaCache.TryGetValue(pathOrTemplateID, out var cachedMeta))
@@ -654,6 +655,8 @@ static class CatalogRequests
 
     public static async Task<JsonObject> GetCosmeticMeta(string pathOrTemplateID)
     {
+        if(pathOrTemplateID is null)
+            return null;
         if (GetLocalCosmeticMeta(pathOrTemplateID) is JsonObject localMeta)
             return localMeta;
 
