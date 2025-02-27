@@ -7,8 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="5_1nhqt"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="5_bcyag"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="6_2af65"]
+[ext_resource type="AudioStream" uid="uid://cueximnj2vdji" path="res://Audio/SFX/UI/Appear/Fort_UI_RewardEarned_02.ogg" id="6_dm3r4"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="6_lypfg"]
-[ext_resource type="AudioStream" uid="uid://cv4csmk2ov7l2" path="res://Audio/SFX/UI/Appear/Fort_UI_RewardEarned_02.wav" id="6_wl8qi"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_wlhx3"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CardPackEntry.cs" id="8_4nkxo"]
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="8_ffqoy"]
@@ -58,6 +58,8 @@ script = ExtResource("1_n8h1q")
 catalogLlamaEntryScene = ExtResource("2_eeobp")
 cardpackLlamaEntryScene = ExtResource("3_h03df")
 itemEntryScene = ExtResource("4_1u5ij")
+freeLlamaNotifIcon = ExtResource("5_1nhqt")
+freeLlamaSound = ExtResource("6_dm3r4")
 offerListLoadingIcon = NodePath("MarginContainer/LoadingIcon")
 offerListErrorIcon = NodePath("MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/Error")
 llamaScrollArea = NodePath("MarginContainer/ScrollContainer")
@@ -73,8 +75,6 @@ quantitySpinner = NodePath("Llama Contents/MarginContainer/CardPackEntry/VBoxCon
 resultEntriesParent = NodePath("Llama Contents/MarginContainer/CardPackEntry/MarginContainer/Items/HBoxContainer/RewardsContainer")
 surpriseResultPanel = NodePath("Llama Contents/MarginContainer/CardPackEntry/MarginContainer/Items/HBoxContainer/SurpriseContainer")
 soldOutResultPanel = NodePath("Llama Contents/MarginContainer/CardPackEntry/MarginContainer/Items/HBoxContainer/SoldOutContainer")
-freeLlamaNotifIcon = ExtResource("5_1nhqt")
-freeLlamaSound = ExtResource("6_wl8qi")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -314,10 +314,10 @@ script = ExtResource("10_qedio")
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("9_cn6d8")
-grantedItemEntry = NodePath("../CardPackEntry")
-priceEntry = NodePath("../CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price")
 includeAmountInName = true
 showSingleStockAmount = true
+grantedItemEntry = NodePath("../CardPackEntry")
+priceEntry = NodePath("../CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price")
 
 [node name="CardPackEntry" type="VBoxContainer" parent="Llama Contents/MarginContainer"]
 layout_mode = 2
@@ -534,21 +534,5 @@ max_value = 10.0
 value = 1.0
 
 [connection signal="pressed" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/Error/VBoxContainer/MarginContainer/RetryButton" to="." method="ForceLoadShopLlamas"]
-[connection signal="HoldPressed" from="MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/LlamaItemPanel/OpenAllButton/Responsive Button Area" to="." method="BulkOpenAllCardpacks"]
-[connection signal="IsAffordableChanged" from="Llama Contents/MarginContainer/OfferEntry" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableToggle" method="EmitValues"]
-[connection signal="IsFreeChanged" from="Llama Contents/MarginContainer/OfferEntry" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/FreeToggle" method="EmitValues"]
-[connection signal="NameChanged" from="Llama Contents/MarginContainer/OfferEntry" to="Llama Contents/MarginContainer/CardPackEntry/HBoxContainer/LlamaName" method="set_text"]
-[connection signal="IconChanged" from="Llama Contents/MarginContainer/CardPackEntry" to="Llama Contents/MarginContainer/Pinata" method="set_texture"]
-[connection signal="NameChanged" from="Llama Contents/MarginContainer/CardPackEntry" to="Llama Contents/MarginContainer/CardPackEntry/HBoxContainer/LlamaName" method="set_text"]
-[connection signal="SubtypeIconChanged" from="Llama Contents/MarginContainer/CardPackEntry" to="Llama Contents/MarginContainer/Pinata" method="SetShaderTexture" binds= ["packIcon"]]
 [connection signal="pressed" from="Llama Contents/MarginContainer/CardPackEntry/HBoxContainer/TestNotif" to="." method="FakeFreeLlamas"]
-[connection signal="ConfigValueChanged" from="Llama Contents/MarginContainer/CardPackEntry/HBoxContainer/TestNotif/CheckButton" to="Llama Contents/MarginContainer/CardPackEntry/HBoxContainer/TestNotif" method="set_visible"]
-[connection signal="InvertedValue" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableToggle" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/CantAffordLabel" method="set_visible"]
-[connection signal="Value" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableToggle" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent" method="set_visible"]
-[connection signal="InvertedValue" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/FreeToggle" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent" method="set_visible"]
-[connection signal="Value" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/FreeToggle" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/FreeLabel" method="set_visible"]
-[connection signal="AmountChanged" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price/PriceText" method="set_text"]
-[connection signal="IconChanged" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price" to="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/NotFreeContent/Price/Icon" method="set_texture"]
-[connection signal="HoldPressed" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/PurchaseButton/AffordableContent/Responsive Button Area" to="." method="PurchaseLlama"]
-[connection signal="HoldPressed" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/Buttons/OpenButton/Responsive Button Area" to="." method="OpenSelectedCardpack"]
 [connection signal="value_changed" from="Llama Contents/MarginContainer/CardPackEntry/VBoxContainer/QuantitySpinBox" to="." method="SpinnerChanged"]

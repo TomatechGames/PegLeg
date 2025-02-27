@@ -6,8 +6,8 @@
 [ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="2_c5h7f"]
 [ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://GodotThemes/Styleboxes/CheckButton/CheckSeparator.tres" id="2_d8lrk"]
 [ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/MissionZoneBackgrounds/STWShop.png" id="2_x510n"]
-[ext_resource type="AudioStream" uid="uid://cb1h7anfymfsu" path="res://Audio/Music/Fort_Building_Outpost_Main_Loop_Fixed.wav" id="3_6re0q"]
 [ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_hui55"]
+[ext_resource type="AudioStream" uid="uid://dya2vufoh3dch" path="res://Audio/Music/Fort_Building_Outpost_Main_Loop_Fixed.ogg" id="4_xqkmk"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/OnboardingInterface.cs" id="5_p8lju"]
 [ext_resource type="Script" path="res://Scripts/CodeLoginLabel.cs" id="6_t48oj"]
 [ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="8_42nsr"]
@@ -27,7 +27,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ay2nj"]
 shader = ExtResource("13_m3fci")
-shader_parameter/ControlSize = Vector2(1280, 720)
+shader_parameter/ControlSize = Vector2(1350, 720)
 shader_parameter/RevealScale = 0.0
 
 [node name="DesktopOnboarding" type="Control"]
@@ -57,10 +57,10 @@ expand_mode = 1
 stretch_mode = 6
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_6re0q")
+stream = ExtResource("4_xqkmk")
 volume_db = -20.0
 
-[node name="CenterContainer" type="CenterContainer" parent="." node_paths=PackedStringArray("curtain", "music", "loginLabel", "retryLoginButton", "continueButton", "accountSelectionPanel")]
+[node name="CenterContainer" type="CenterContainer" parent="." node_paths=PackedStringArray("curtain", "music", "loginLabel", "retryLoginButton", "continueButton")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,7 +74,6 @@ music = NodePath("../Music")
 loginLabel = NodePath("MarginContainer/Content/LoginCode/LinkCodeText")
 retryLoginButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn")
 continueButton = NodePath("MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin")
-accountSelectionPanel = NodePath("")
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(300, 320)
@@ -470,11 +469,7 @@ volume_db = -12.0
 max_polyphony = 2
 bus = &"SFX"
 
-[connection signal="LoginFailed" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer" method="LoginCodeFail"]
-[connection signal="LoginSuccess" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer" method="LoginCodeSuccess"]
-[connection signal="UserCodeChanged" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" method="set_text"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin" to="CenterContainer" method="ComplateCodeLogin"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn" to="CenterContainer" method="StartLogin"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer/Button" to="CenterContainer/MarginContainer/Content/ErrorMessage" method="set_visible" binds= [false]]
-[connection signal="UpdateMuteIcon" from="CenterContainer/MarginContainer/Control2/MuteBtn" to="CenterContainer/MarginContainer/Control2/MuteBtn/TextureRect" method="set_texture"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Control2/MuteBtn" to="CenterContainer/MarginContainer/Control2/MuteBtn" method="ToggleMute"]

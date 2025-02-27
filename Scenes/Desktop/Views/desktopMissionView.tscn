@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
 [ext_resource type="Texture2D" uid="uid://07k0gr21gs5e" path="res://Images/InterfaceIcons/T_UI_VKConnectionIndicator_Error_Icon.png" id="2_nynxn"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="2_rrtg2"]
-[ext_resource type="AudioStream" uid="uid://dyyj8ukisrvoc" path="res://Audio/SFX/UI/Notification/fort_UI_Important_Update.wav" id="3_kmfkq"]
+[ext_resource type="AudioStream" uid="uid://dweoot2qw456d" path="res://Audio/SFX/UI/Notification/fort_UI_Important_Update.ogg" id="3_m7b6w"]
 [ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="4_ebt37"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="5_6m3c7"]
 [ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_p6lk0"]
@@ -38,7 +38,7 @@ shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 30.0
 
-[node name="Missions" type="MarginContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemFilterButtons", "missionList", "loadingIcon")]
+[node name="Missions" type="MarginContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "missionList", "loadingIcon")]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,10 +47,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_474w2")
 unexpectedResetNotifIcon = ExtResource("2_nynxn")
-unexpectedResetSound = ExtResource("3_kmfkq")
+unexpectedResetSound = ExtResource("3_m7b6w")
 zoneFilterTabBar = NodePath("VBoxContainer/HBoxContainer/ZoneFilters")
 searchBar = NodePath("VBoxContainer/HBoxContainer/SearchBox")
-itemFilterButtons = [NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Survivors"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Schematics"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Heroes"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/UpgradeMats"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/PerkUps"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Tickets")]
 missionList = NodePath("VBoxContainer/Control/ScrollContainer")
 loadingIcon = NodePath("VBoxContainer/Control/LoadingIcon")
 
@@ -437,11 +436,11 @@ visible = false
 layout_mode = 2
 script = ExtResource("16_egkbm")
 elementSpace = 10.0
+elementScene = ExtResource("17_eyhau")
 linkedGrid = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
 offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
 paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
 elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
-elementScene = ExtResource("17_eyhau")
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
 layout_mode = 2
@@ -502,4 +501,3 @@ size_flags_vertical = 4
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ForceRefresh" to="." method="ForceReloadMissions"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/TestNotif" to="." method="FakeUnexpectedReset"]
-[connection signal="ConfigValueChanged" from="VBoxContainer/HBoxContainer/TestNotif/CheckButton" to="VBoxContainer/HBoxContainer/TestNotif" method="set_visible"]

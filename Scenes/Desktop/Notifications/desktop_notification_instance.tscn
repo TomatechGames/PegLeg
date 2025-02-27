@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://dsboqdh06riu4"]
 
 [ext_resource type="Script" path="res://Scripts/Notifications/AnimatedNotificationEntry.cs" id="1_8chc8"]
-[ext_resource type="AudioStream" uid="uid://bipynit2guvp3" path="res://Audio/SFX/UI/Notification/mission_update_mid.wav" id="2_g51xk"]
 [ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="2_s2q2f"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="3_0pu27"]
+[ext_resource type="AudioStream" uid="uid://qiwfnfwjfwb4" path="res://Audio/SFX/UI/Notification/mission_update_mid.ogg" id="5_hd5bk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wtds7"]
 bg_color = Color(1, 1, 1, 1)
@@ -26,10 +26,10 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_8chc8")
+autoBindVisibility = false
+fallbackSound = ExtResource("5_hd5bk")
 animatedTarget = NodePath("AnimTarget")
 animatedBasis = NodePath("AnimTarget/AnimBasis")
-autoBindVisibility = false
-fallbackSound = ExtResource("2_g51xk")
 player = NodePath("SoundEffect")
 
 [node name="AnimTarget" type="MarginContainer" parent="."]
@@ -129,13 +129,9 @@ texture = ExtResource("2_s2q2f")
 expand_mode = 1
 
 [node name="SoundEffect" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("2_g51xk")
+stream = ExtResource("5_hd5bk")
 volume_db = -10.0
 bus = &"SFX"
 
-[connection signal="BodyChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer/BodyLabel" method="set_text"]
-[connection signal="ColorChanged" from="." to="AnimTarget/AnimBasis/EdgePanel" method="set_self_modulate"]
-[connection signal="HeaderChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer/HeaderLabel" method="set_text"]
-[connection signal="IconChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/TextureRect" method="set_texture"]
 [connection signal="pressed" from="AnimTarget/AnimBasis/Button" to="." method="Dismiss"]
 [connection signal="pressed" from="AnimTarget/AnimBasis/Content/HBoxContainer/Button" to="." method="Dismiss"]

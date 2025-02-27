@@ -3,20 +3,22 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dhv0msu3x04at"
-path="res://.godot/imported/PegLegLoadingWheelRenderSmall.png-6b61540b82816eff28e40752ec7f1d48.ctex"
+path.bptc="res://.godot/imported/PegLegLoadingWheelRenderSmall.png-6b61540b82816eff28e40752ec7f1d48.bptc.ctex"
+path.astc="res://.godot/imported/PegLegLoadingWheelRenderSmall.png-6b61540b82816eff28e40752ec7f1d48.astc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Images/InterfaceIcons/LoadingIconV2/PegLegLoadingWheelRenderSmall.png"
-dest_files=["res://.godot/imported/PegLegLoadingWheelRenderSmall.png-6b61540b82816eff28e40752ec7f1d48.ctex"]
+dest_files=["res://.godot/imported/PegLegLoadingWheelRenderSmall.png-6b61540b82816eff28e40752ec7f1d48.bptc.ctex", "res://.godot/imported/PegLegLoadingWheelRenderSmall.png-6b61540b82816eff28e40752ec7f1d48.astc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0

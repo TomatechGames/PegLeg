@@ -1,13 +1,13 @@
 [gd_resource type="AudioStreamRandomizer" load_steps=5 format=3 uid="uid://bwqwduwv5odqq"]
 
-[ext_resource type="AudioStream" uid="uid://b54or6wbnemxc" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLLama_UpgradeSilver_01.wav" id="1_yuoku"]
-[ext_resource type="AudioStream" uid="uid://i5s8ffmxlcvd" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLlama_UpgradeSilver_02.wav" id="2_f2cjs"]
-[ext_resource type="AudioStream" uid="uid://dq6hc7u22gbkb" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLlama_UpgradeSilver_03.wav" id="3_ly3lj"]
-[ext_resource type="AudioStream" uid="uid://dpokbv8w8ejwd" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLlama_UpgradeSilver_04.wav" id="4_76tmi"]
+[ext_resource type="AudioStream" uid="uid://dw6ag1sqdryfb" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLLama_UpgradeSilver_01.ogg" id="1_r3i03"]
+[ext_resource type="AudioStream" uid="uid://b0ggirf5x6gwn" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLlama_UpgradeSilver_02.ogg" id="2_1e67m"]
+[ext_resource type="AudioStream" uid="uid://det3o0jv8trhm" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLlama_UpgradeSilver_03.ogg" id="3_gknji"]
+[ext_resource type="AudioStream" uid="uid://crw6q3i736vj1" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/JB_BasicLlama_UpgradeSilver_04.ogg" id="4_h0fb2"]
 
 [resource]
 streams_count = 4
-stream_0/stream = ExtResource("1_yuoku")
-stream_1/stream = ExtResource("2_f2cjs")
-stream_2/stream = ExtResource("3_ly3lj")
-stream_3/stream = ExtResource("4_76tmi")
+stream_0/stream = ExtResource("1_r3i03")
+stream_1/stream = ExtResource("2_1e67m")
+stream_2/stream = ExtResource("3_gknji")
+stream_3/stream = ExtResource("4_h0fb2")

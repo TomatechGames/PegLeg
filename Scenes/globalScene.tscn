@@ -2,23 +2,23 @@
 
 [ext_resource type="Script" path="res://Scripts/ThemeController.cs" id="1_e4vaa"]
 [ext_resource type="Script" path="res://Scripts/Audio/MusicController.cs" id="1_lrhe1"]
-[ext_resource type="AudioStream" uid="uid://djjwwckpemtkx" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Quiet_Press.wav" id="7_hily7"]
-[ext_resource type="AudioStream" uid="uid://bjysqvlwrw55a" path="res://Audio/SFX/UI/Complete/UI_Button_Press_Hold_Quiet_Complete.wav" id="8_bhpfh"]
-[ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="9_qmvhy"]
+[ext_resource type="AudioStream" uid="uid://dl78ygjlmhvaw" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Loud_Pressed.ogg" id="5_acjcw"]
+[ext_resource type="AudioStream" uid="uid://mcpx00xqcdg5" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Quiet_Press.ogg" id="6_mojjs"]
+[ext_resource type="AudioStream" uid="uid://dvjrl0yqa8eo4" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Normal_Press.ogg" id="7_2v3vb"]
+[ext_resource type="AudioStream" uid="uid://d1ipibd5opu0t" path="res://Audio/SFX/UI/Complete/UI_Button_Press_Hold_Normal_Complete.ogg" id="7_ukq6r"]
+[ext_resource type="AudioStream" uid="uid://c500hojxqjn3h" path="res://Audio/SFX/UI/Complete/UI_Button_Press_Hold_Quiet_Complete.ogg" id="8_d4kyr"]
+[ext_resource type="AudioStream" uid="uid://ct0dfc5exy6br" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Loud_Release.ogg" id="9_aed50"]
 [ext_resource type="Script" path="res://Scripts/Audio/UISounds.cs" id="10_h6vwh"]
-[ext_resource type="AudioStream" uid="uid://b22lmgkepdplm" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Loud_Pressed.wav" id="11_uxdx7"]
-[ext_resource type="AudioStream" uid="uid://cvaxby8ky3uf4" path="res://Audio/SFX/UI/Complete/UI_Button_Press_Hold_Normal_Complete.wav" id="12_7pb27"]
-[ext_resource type="AudioStream" uid="uid://dwke1b6gcp264" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Loud_Release.wav" id="13_7512v"]
-[ext_resource type="AudioStream" uid="uid://ce7d4r657ejpl" path="res://Audio/SFX/UI/Press/UI_FN_Button_Click_Main_01.wav" id="13_n4lwu"]
-[ext_resource type="AudioStream" uid="uid://rvtwvo6nxssw" path="res://Audio/SFX/UI/Press/Fortnite_UI_MainMenu_Generic_01.wav" id="14_08l5g"]
-[ext_resource type="AudioStream" uid="uid://bvfqakfxmbwrj" path="res://Audio/SFX/UI/Hover/UI_FN_Button_Hover.wav" id="14_nr2fa"]
-[ext_resource type="AudioStream" uid="uid://kpsd7sh24nql" path="res://Audio/SFX/UI/Hover/UI_FN_Button_Hover_Click_01.wav" id="16_5xiou"]
-[ext_resource type="AudioStream" uid="uid://1suqautpywih" path="res://Audio/SFX/UI/Appear/UI_PartyInvite_Appear.wav" id="16_ij6f4"]
-[ext_resource type="AudioStream" uid="uid://xib1gr0xsvsf" path="res://Audio/SFX/UI/Disappear/UI_PartyInvite_Close.wav" id="17_i1cyr"]
-[ext_resource type="AudioStream" uid="uid://cnakd7hmjcsn4" path="res://Audio/SFX/UI/Appear/UI_Page_Wipe_Whoosh_A_01.wav" id="19_28nxy"]
+[ext_resource type="AudioStream" uid="uid://bn2qcgfrgliue" path="res://Audio/SFX/UI/Hold/UI_Button_Press_Hold_Normal_Release.ogg" id="11_26oey"]
+[ext_resource type="AudioStream" uid="uid://8x1mo87tb2cl" path="res://Audio/SFX/UI/Press/UI_FN_Button_Click_Main_01.ogg" id="12_ykx28"]
+[ext_resource type="AudioStream" uid="uid://dde0c82cvrj2x" path="res://Audio/SFX/UI/Appear/UI_PartyInvite_Appear.ogg" id="13_src81"]
+[ext_resource type="AudioStream" uid="uid://0j3ws7oxrx5u" path="res://Audio/SFX/UI/Hover/UI_FN_Button_Hover.ogg" id="13_uw6ph"]
+[ext_resource type="AudioStream" uid="uid://d4kric2anj6qb" path="res://Audio/SFX/UI/Hover/UI_FN_Button_Hover_Click_01.ogg" id="14_at3hd"]
+[ext_resource type="AudioStream" uid="uid://b6tgtvgm8anpn" path="res://Audio/SFX/UI/Appear/UI_Page_Wipe_Whoosh_A_01.ogg" id="14_sgpu8"]
+[ext_resource type="AudioStream" uid="uid://bno3vjyhutov7" path="res://Audio/SFX/UI/Disappear/UI_PartyInvite_Close.ogg" id="15_pq5wg"]
+[ext_resource type="AudioStream" uid="uid://c6h74kp3cntns" path="res://Audio/SFX/UI/Disappear/UI_LeftScreen_Text_Return_01.ogg" id="16_1wsdy"]
 [ext_resource type="PackedScene" uid="uid://bsbgxpgoycn6r" path="res://Scenes/Desktop/desktopTooltip.tscn" id="20_jfqgg"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerController.cs" id="21_ipr1n"]
-[ext_resource type="AudioStream" uid="uid://dwa721np8q5x" path="res://Audio/SFX/UI/Disappear/UI_LeftScreen_Text_Return_01.wav" id="21_mucvh"]
 [ext_resource type="Script" path="res://Scripts/UIElements/TooltipFixer.cs" id="24_bhfc3"]
 [ext_resource type="Script" path="res://Scripts/Audio/VolumeController.cs" id="25_a8u1q"]
 
@@ -47,7 +47,6 @@ mix_target = 1
 bus = &"Music"
 
 [node name="MusicC" type="AudioStreamPlayer" parent="MusicController"]
-stream = ExtResource("9_qmvhy")
 volume_db = 10.0
 mix_target = 1
 bus = &"Music"
@@ -56,68 +55,71 @@ bus = &"Music"
 script = ExtResource("10_h6vwh")
 
 [node name="ButtonHold" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("11_uxdx7")
+stream = ExtResource("5_acjcw")
 bus = &"SFX"
 
 [node name="ButtonHold2" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("7_hily7")
+stream = ExtResource("7_2v3vb")
+bus = &"SFX"
+
+[node name="ButtonHold3" type="AudioStreamPlayer" parent="UISounds"]
+stream = ExtResource("6_mojjs")
 bus = &"SFX"
 
 [node name="ButtonHoldComplete" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("12_7pb27")
+stream = ExtResource("7_ukq6r")
 bus = &"SFX"
 
 [node name="ButtonHoldComplete2" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("8_bhpfh")
+stream = ExtResource("8_d4kyr")
 volume_db = 10.0
 bus = &"SFX"
 
 [node name="ButtonHoldCancel" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("13_7512v")
+stream = ExtResource("9_aed50")
+bus = &"SFX"
+
+[node name="ButtonHoldCancel2" type="AudioStreamPlayer" parent="UISounds"]
+stream = ExtResource("11_26oey")
 bus = &"SFX"
 
 [node name="ButtonPress" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("13_n4lwu")
+stream = ExtResource("12_ykx28")
 max_polyphony = 5
 bus = &"SFX"
 
 [node name="Hover" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("14_nr2fa")
+stream = ExtResource("13_uw6ph")
 max_polyphony = 5
 bus = &"SFX"
 
 [node name="Hover2" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("16_5xiou")
+stream = ExtResource("14_at3hd")
 volume_db = 15.0
 max_polyphony = 5
 bus = &"SFX"
 
-[node name="ButtonPressLarge" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("14_08l5g")
-max_polyphony = 5
-bus = &"SFX"
-
 [node name="PanelAppear" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("16_ij6f4")
+stream = ExtResource("13_src81")
 volume_db = -5.0
 pitch_scale = 2.0
 max_polyphony = 3
 bus = &"SFX"
 
 [node name="WipeAppear" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("19_28nxy")
+stream = ExtResource("14_sgpu8")
 volume_db = -5.0
 max_polyphony = 3
 bus = &"SFX"
 
 [node name="PanelDisappear" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("17_i1cyr")
+stream = ExtResource("15_pq5wg")
 volume_db = -5.0
 max_polyphony = 3
 bus = &"SFX"
 
 [node name="WipeDisappear" type="AudioStreamPlayer" parent="UISounds"]
-stream = ExtResource("21_mucvh")
+stream = ExtResource("16_1wsdy")
 volume_db = 2.0
 max_polyphony = 3
 bus = &"SFX"

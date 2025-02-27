@@ -1,11 +1,11 @@
 [gd_scene load_steps=16 format=3 uid="uid://dpd06j33s360w"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_f51aj"]
+[ext_resource type="AudioStream" uid="uid://db1iimlt7vmi7" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.ogg" id="2_hcda8"]
 [ext_resource type="Script" path="res://Scripts/Overlays/ShopPurchaseAnimation.cs" id="2_jxg4g"]
 [ext_resource type="Texture2D" uid="uid://by27usoarfre0" path="res://Images/InterfaceIcons/PegLegShoppingCartInside.png" id="2_x56qt"]
 [ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/GameItemEntry/shop_purchase_anim_item_element.tscn" id="3_h11w1"]
 [ext_resource type="Texture2D" uid="uid://dgyw7mbhfodhy" path="res://Images/InterfaceIcons/PegLegShoppingCart.png" id="4_0gyrh"]
-[ext_resource type="AudioStream" uid="uid://bu3vc152hx7ks" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.wav" id="4_5c6ij"]
 [ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="5_8k3hh"]
 [ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="6_1aa5w"]
 [ext_resource type="Shader" path="res://Shaders/AdvancedLabel.gdshader" id="6_abafb"]
@@ -46,7 +46,7 @@ offset_right = 0.0
 visible = false
 
 [node name="PurchaseSound" type="AudioStreamPlayer" parent="Control/WindowContents" index="0"]
-stream = ExtResource("4_5c6ij")
+stream = ExtResource("2_hcda8")
 max_polyphony = 3
 bus = &"SFX"
 
@@ -255,5 +255,3 @@ theme_override_font_sizes/font_size = 70
 text = "Complete"
 horizontal_alignment = 1
 script = ExtResource("7_gi68h")
-
-[connection signal="WindowOpened" from="." to="Control/WindowContents/PurchaseSound" method="play" binds= [0.0]]
