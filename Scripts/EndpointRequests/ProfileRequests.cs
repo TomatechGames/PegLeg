@@ -1098,7 +1098,7 @@ public class GameProfile
                     }
                     lock (groupedItems)
                     {
-                        groupedItems[targetItem.templateId.Split(":")[0]] ??= new();
+                        groupedItems.TryAdd(targetItem.templateId.Split(":")[0], new());
                         groupedItems[targetItem.templateId.Split(":")[0]].Add(targetItem);
                     }
                     GD.Print($"ADDED: {uuid} ({items[uuid]})");

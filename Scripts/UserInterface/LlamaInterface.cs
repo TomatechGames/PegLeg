@@ -361,7 +361,7 @@ public partial class LlamaInterface : Control
                     newEntry.Pressed += SetLlamaOffer;
                     llamaOfferEntries.Add(newEntry);
                 }
-                activeOffers.Add(offer.OfferId, offer);
+                activeOffers.TryAdd(offer.OfferId, offer);
                 var thisEntry = llamaOfferEntries[catalogEntryIndex];
                 thisEntry.Visible = true;
                 thisEntry.SetOffer(offer).StartTask();

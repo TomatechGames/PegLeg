@@ -783,9 +783,14 @@ public partial class CardPackOpener : Control
         choiceOpen.TweenProperty(choiceCanvas, "scale", Vector2.One, 0.25f).SetEase(Tween.EaseType.Out);
         choiceOpen.TweenProperty(choiceCanvas, "self_modulate", Colors.White, 0.25f);
 
-        int nextChoiceIndex = nextPullIndex - queuedItems.Count;
-        GD.Print(queuedChoices[nextChoiceIndex - 1]);
-        var currentChoices = queuedChoices[nextChoiceIndex - 1].attributes["options"]?.AsArray();
+        int nextChoiceIndex = choicesOnly ? nextPullIndex - 1 : nextPullIndex - (queuedItems.Count + 1);
+        GD.Print(nextChoiceIndex);
+        nextChoiceIndex = Mathf.Clamp(nextChoiceIndex, 0, queuedChoices.Count-1);
+        GD.Print(nextChoiceIndex);
+        GD.Print(queuedChoices[nextChoiceIndex]);
+        JsonArray currentChoices = null;
+        if (queuedChoices[nextChoiceIndex].profile is not null && queuedChoices[nextChoiceIndex].attributes["options"]?.AsArray() is JsonArray choices)
+            currentChoices = choices;
         if (currentChoices is null)
         {
             choiceOpen.Kill();

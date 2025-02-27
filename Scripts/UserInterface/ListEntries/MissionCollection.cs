@@ -127,14 +127,13 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
         if (sortByZoneCat)
         {
             sortedMissions = sortedMissions
-                .ThenBy(m => m.PowerLevel != 160)
                 .ThenBy(m => m.TheaterCat switch
                 {
-                    "v" => -5,
                     "t" => -4,
                     "c" => -3,
                     "p" => -2,
                     "s" => -1,
+                    "v" => 0,
                     _ => 0
                 })
                 .ThenBy(m => -m.PowerLevel);

@@ -47,34 +47,28 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
 
         //TODO: run asynchronously
         ConcurrentDictionary<string, GameItemTemplate> uniqueTemplates = new();
-		List<Task> sourceTasks = new();
         foreach (var source in includedSources)
         {
-			var sourceTask = Task.Run(() =>
+            if (BanjoAssets.TryGetItemSource(source, out var sourceObject))
             {
-                if (BanjoAssets.TryGetDataSource(source, out var sourceObject))
+				//GD.Print("aa");
+                Parallel.ForEach(sourceObject, sourceKVP =>
                 {
-					//GD.Print("aa");
-                    Parallel.ForEach(sourceObject, sourceKVP =>
-                    {
-                        var template = GameItemTemplate.Get(sourceKVP.Key);
-                        if (template.Tier != 1)
-                            return;
+                    var template = GameItemTemplate.Get(sourceKVP.Key);
+                    if (template.Tier != 1)
+                        return;
 
-                        template.GenerateSearchTags();
-						template.GetTexture();
+                    template.GenerateSearchTags();
+					template.GetTexture();
 
-                        uniqueTemplates.AddOrUpdate(
-                                template.DisplayName,
-                                template,
-                                (k, v) => v.RarityLevel < template.RarityLevel ? template : v
-                            );
-                    });
-                }
-            });
-			sourceTasks.Add(sourceTask);
+                    uniqueTemplates.AddOrUpdate(
+                            template.DisplayName,
+                            template,
+                            (k, v) => v.RarityLevel < template.RarityLevel ? template : v
+                        );
+                });
+            }
         }
-		await Task.WhenAll(sourceTasks);
         List<GameItem> orderedItems = null;
 		await Task.Run(() =>
         {

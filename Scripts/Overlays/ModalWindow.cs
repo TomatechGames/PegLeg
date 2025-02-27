@@ -1,9 +1,13 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 public partial class ModalWindow : Control
 {
+    protected static List<ModalWindow> windowStack = new();
+
     [Signal]
     public delegate void WindowOpenedEventHandler();
     [Signal]
@@ -61,10 +65,13 @@ public partial class ModalWindow : Control
 
     public override void _UnhandledKeyInput(InputEvent @event)
     {
-        if (!isUserClosable || !IsOpen)
+        if (!isUserClosable || !IsOpen || windowStack.LastOrDefault() != this)
             return;
         if (@event is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape)
+        {
+            GetViewport().SetInputAsHandled();
             CloseWindowViaInput();
+        }
     }
     protected virtual void CloseWindowViaInput() => SetWindowOpen(false);
 
@@ -79,6 +86,11 @@ public partial class ModalWindow : Control
     {
         if (openState == IsOpen || !IsInstanceValid(this))
             return;
+
+        windowStack.Remove(this);
+        if (openState)
+            windowStack.Add(this);
+
         if (currentTween is not null && currentTween.IsRunning())
             currentTween.Kill();
         IsOpen = openState;
