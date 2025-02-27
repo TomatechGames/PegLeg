@@ -30,32 +30,6 @@ public partial class CardPackOpener : Control
     [Export]
     Control glowFlare;
 
-    [ExportGroup("Supply Crate")]
-    [Export]
-    AudioStreamPlayer startAudio;
-    [Export]
-    AudioStreamPlayer fallingAudio;
-    [Export]
-    AudioStreamPlayer landAudio;
-    [Export]
-    AudioStreamPlayer radioAudio;
-    [Export]
-    Control fallingCrate;
-    [Export]
-    Control landedCrate;
-    [Export]
-    Control landedCrateBG;
-    [Export]
-    Control landedCrateBGCards;
-    [Export]
-    TextureRect landedCrateLid;
-    [Export]
-    Texture2D lidBasicTexture;
-    [Export]
-    Texture2D lidFlippingTexture;
-    [Export]
-    Control crateOpenButton;
-
     [ExportGroup("Llama")]
     [Export]
     int minLlamaImpacts = 3;
@@ -164,7 +138,6 @@ public partial class CardPackOpener : Control
         Visible = true;
         displayPanel.Visible = false;
         choiceResultCard.Visible = false;
-        crateOpenButton.Visible = false;
         displayPanel.Visible = false;
         choiceCanvas.Scale = Vector2.Zero;
         choiceCanvas.SelfModulate = Colors.Transparent;

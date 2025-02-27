@@ -1,22 +1,17 @@
-[gd_scene load_steps=71 format=3 uid="uid://b5elx1mhn5ahk"]
+[gd_scene load_steps=63 format=3 uid="uid://b5elx1mhn5ahk"]
 
 [ext_resource type="PackedScene" uid="uid://c47svw0ruq2i3" path="res://Scenes/GameItemEntry/reward_entry_card.tscn" id="1_4na64"]
 [ext_resource type="Script" path="res://Scripts/Overlays/CardPackOpener.cs" id="1_7ayxj"]
 [ext_resource type="AudioStream" uid="uid://pp2evr3c3ty" path="res://Audio/SFX/CardpackOpen/sfx_supplydrop_reticle_appear.wav" id="2_t7mpn"]
 [ext_resource type="AudioStream" uid="uid://b5yktju6n3mv5" path="res://Audio/SFX/CardpackOpen/SupplyDrop_Falling_Loop_Mono.wav" id="3_453dg"]
-[ext_resource type="Texture2D" uid="uid://ppx4lkl3gdw8" path="res://Images/InterfaceIcons/SupplyDrop/LidFlip.tres" id="3_gev0u"]
 [ext_resource type="AudioStream" uid="uid://bsii483wtc3y4" path="res://Audio/SFX/CardpackOpen/supply_drop_land3_Reverb.wav" id="4_ccx0t"]
 [ext_resource type="PackedScene" uid="uid://cs7kqufoy7ii3" path="res://Scenes/llamaImpactParticles.tscn" id="4_xqhbu"]
 [ext_resource type="AudioStream" uid="uid://cp87usj1hhnd1" path="res://Audio/SFX/CardpackOpen/supply_drop_radio.wav" id="5_62ahg"]
-[ext_resource type="Texture2D" uid="uid://dxrre7seon0uy" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenBG.png" id="8_4oqsw"]
 [ext_resource type="AudioStream" uid="uid://yo2wf58ok7uf" path="res://Audio/Music/Fort_Building_Day_Main_Loop_Fixed.wav" id="8_8qitq"]
 [ext_resource type="AudioStream" uid="uid://cr73qyj4jlm6t" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/StandardLlamaGreetingVoice.tres" id="9_01w3s"]
 [ext_resource type="Shader" uid="uid://b78lxdhf2v56q" path="res://Shaders/GradientMaskedBackground.tres" id="9_8g8yp"]
-[ext_resource type="Texture2D" uid="uid://ofyoqhupoowa" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateOpenFG.png" id="9_jsr57"]
 [ext_resource type="AudioStream" uid="uid://bwqwduwv5odqq" path="res://Audio/SFX/LlamaSounds/Greet/SilverVoice/SilverLlamaGreetingVoice.tres" id="10_53pq8"]
-[ext_resource type="Texture2D" uid="uid://c4tescxyper60" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateLid.png" id="10_k5gyc"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="11_jtcf2"]
-[ext_resource type="Texture2D" uid="uid://dcqqspl8haau7" path="res://Images/InterfaceIcons/SupplyDrop/SupplyCrateFalling.png" id="11_pxkh0"]
 [ext_resource type="AudioStream" uid="uid://cim885psnd4a4" path="res://Audio/SFX/LlamaSounds/Greet/GoldVoice/GoldLlamaGreetingVoice.tres" id="11_td5ti"]
 [ext_resource type="AudioStream" uid="uid://bf1j0dpvu0fo0" path="res://Audio/SFX/LlamaSounds/Greet/MiniVoice/MiniLlamaGreetingVoice.tres" id="12_an5i4"]
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="12_plv7k"]
@@ -25,7 +20,6 @@
 [ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="14_8eotn"]
 [ext_resource type="AudioStream" uid="uid://o0r1uu6u5fby" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlamaImpactVoice.tres" id="14_v6cqy"]
 [ext_resource type="AudioStream" uid="uid://bd8s0vbm0dx5t" path="res://Audio/SFX/LlamaSounds/Open/OpenVoice/LlamaOpenVoice.tres" id="15_lqidj"]
-[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="16_88i1x"]
 [ext_resource type="PackedScene" uid="uid://tso3qs0wxppc" path="res://Scenes/GameItemEntry/choice_entry_card.tscn" id="16_cms4w"]
 [ext_resource type="AudioStream" uid="uid://dgqxarrgjrwxd" path="res://Audio/SFX/LlamaSounds/Open/MiniOpenVoice/MiniLlamaOpenVoice.tres" id="16_iycih"]
 [ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="16_x2r4a"]
@@ -36,7 +30,6 @@
 [ext_resource type="AudioStream" uid="uid://badp2x0yvoic8" path="res://Audio/SFX/LlamaSounds/Hover/PinataHoverFX.tres" id="19_0w7mr"]
 [ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/InterfaceIcons/ChoiceCardV2/Base-sheet.png" id="19_fhj62"]
 [ext_resource type="AudioStream" uid="uid://cc27xvccuw3jl" path="res://Audio/SFX/LlamaSounds/Open/SupplyDrop_Llama_Interact_Open.wav" id="19_ltfue"]
-[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="21_w5401"]
 [ext_resource type="Shader" path="res://Shaders/LlamaPinata.gdshader" id="25_8mpme"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="25_gyuod"]
 [ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="26_1f0i3"]
@@ -50,8 +43,6 @@
 [ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="36_3qbti"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CardPackEntry.cs" id="36_7l4e4"]
 [ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="37_fgxvp"]
-[ext_resource type="BitMap" uid="uid://duy6d6ydo0b63" path="res://Images/Llamas/PinataStandardMask.bmp" id="46_fixg6"]
-[ext_resource type="BitMap" uid="uid://uucu1fh5briv" path="res://Images/Llamas/PinataMiniMask.bmp" id="49_estb1"]
 [ext_resource type="Shader" path="res://Shaders/GradientShader.gdshader" id="52_c8cd4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_walck"]
@@ -98,13 +89,16 @@ shader = ExtResource("16_x2r4a")
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/UseManual = null
 shader_parameter/ManualControl = null
-shader_parameter/time = 185182.0
+shader_parameter/time = 3663.11
 shader_parameter/StartTime = null
 shader_parameter/Started = true
 shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
 shader_parameter/UVTexture = ExtResource("18_5uyrt")
 shader_parameter/PatternTexture = ExtResource("14_8eotn")
 shader_parameter/IconTexture = ExtResource("17_knkpm")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nn5rl"]
+load_path = "res://.godot/imported/SupplyCrateOpenBG.png-ca1f0a21edb9f23ee95fa9cfabd73857.ctex"
 
 [sub_resource type="Curve" id="Curve_fjmi8"]
 max_value = 100.0
@@ -165,7 +159,7 @@ shader_parameter/packIcon = ExtResource("26_1f0i3")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iness"]
 shader = ExtResource("52_c8cd4")
 
-[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "pullButton", "skipAllButton", "glowFlare", "startAudio", "fallingAudio", "landAudio", "radioAudio", "fallingCrate", "landedCrate", "landedCrateBG", "landedCrateBGCards", "landedCrateLid", "crateOpenButton", "greetingEffects", "greetingVoices", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "smallLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
+[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "pullButton", "skipAllButton", "glowFlare", "greetingEffects", "greetingVoices", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "smallLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -182,18 +176,6 @@ pullButton = NodePath("Panel/PullButton")
 skipAllButton = NodePath("Panel/SkipAllButton")
 defaultBackgroundColor = Color(0.101961, 0.419608, 1, 1)
 glowFlare = NodePath("Panel/Glow")
-startAudio = NodePath("Audio/SupplyDrop/SpawnAudio")
-fallingAudio = NodePath("Audio/SupplyDrop/FallingAudio")
-landAudio = NodePath("Audio/SupplyDrop/LandAudio")
-radioAudio = NodePath("Audio/SupplyDrop/RadioAudio")
-fallingCrate = NodePath("Panel/SupplyDrop/LandingOffset/FallingCrate")
-landedCrate = NodePath("Panel/SupplyDrop/LandedCrate")
-landedCrateBG = NodePath("Panel/SupplyDrop/LandedCrate/LandedBg")
-landedCrateBGCards = NodePath("Panel/Cards/CardPullAnchor2/LandedBgCard")
-landedCrateLid = NodePath("Panel/SupplyDrop/LandedCrateLid/LandedLid")
-lidBasicTexture = ExtResource("10_k5gyc")
-lidFlippingTexture = ExtResource("3_gev0u")
-crateOpenButton = NodePath("Panel/SupplyDrop/CrateOpen")
 impactParticlePool = 4
 greetingEffects = [NodePath("Audio/Effects/StandardGreetingFX"), NodePath("Audio/Effects/SilverGreetingFX"), NodePath("Audio/Effects/GoldGreetingFX")]
 greetingVoices = [NodePath("Audio/Voices/StandardGreetingV"), NodePath("Audio/Voices/SilverGreetingV"), NodePath("Audio/Voices/GoldGreetingV"), NodePath("Audio/Voices/MiniGreetingV")]
@@ -465,7 +447,7 @@ offset_bottom = 192.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("8_4oqsw")
+texture = SubResource("CompressedTexture2D_nn5rl")
 expand_mode = 1
 
 [node name="RewardEntryCardPrev" parent="Panel/Cards" instance=ExtResource("1_4na64")]
@@ -556,188 +538,6 @@ layout_mode = 2
 
 [node name="RewardEntryCard6" parent="Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack" instance=ExtResource("1_4na64")]
 layout_mode = 2
-
-[node name="SupplyDrop" type="Control" parent="Panel"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="LandedCrate" type="Control" parent="Panel/SupplyDrop"]
-custom_minimum_size = Vector2(384, 384)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -192.0
-offset_top = -517.0
-offset_right = 192.0
-offset_bottom = -133.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.5, 1.5)
-pivot_offset = Vector2(192, 192)
-mouse_filter = 2
-
-[node name="LandedBg" type="TextureRect" parent="Panel/SupplyDrop/LandedCrate"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("8_4oqsw")
-expand_mode = 1
-
-[node name="ParticleCenter" type="Control" parent="Panel/SupplyDrop/LandedCrate"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = 32.0
-offset_bottom = 32.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="CPUParticles2D" type="CPUParticles2D" parent="Panel/SupplyDrop/LandedCrate/ParticleCenter"]
-emitting = false
-amount = 200
-lifetime = 0.5
-emission_shape = 3
-emission_rect_extents = Vector2(50, 1)
-direction = Vector2(0, -1)
-spread = 10.0
-gravity = Vector2(0, 4000)
-initial_velocity_min = 1000.0
-initial_velocity_max = 1200.0
-angular_velocity_min = -720.0
-angular_velocity_max = 720.0
-orbit_velocity_min = -0.1
-orbit_velocity_max = 0.1
-damping_min = 5.0
-damping_max = 8.0
-damping_curve = SubResource("Curve_fjmi8")
-scale_amount_min = 7.0
-scale_amount_max = 9.0
-scale_amount_curve = SubResource("Curve_uoomx")
-color_ramp = SubResource("Gradient_vmhvw")
-color_initial_ramp = SubResource("Gradient_q3qjt")
-
-[node name="LandedFG" type="TextureRect" parent="Panel/SupplyDrop/LandedCrate"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("9_jsr57")
-expand_mode = 1
-
-[node name="LandedCrateLid" type="Control" parent="Panel/SupplyDrop"]
-custom_minimum_size = Vector2(384, 384)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="LandedLid" type="TextureRect" parent="Panel/SupplyDrop/LandedCrateLid"]
-visible = false
-custom_minimum_size = Vector2(384, 384)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -192.0
-offset_top = -384.0
-offset_right = 192.0
-grow_horizontal = 2
-grow_vertical = 0
-scale = Vector2(1.5, 1.5)
-pivot_offset = Vector2(192, 192)
-mouse_filter = 2
-texture = ExtResource("10_k5gyc")
-expand_mode = 1
-
-[node name="LandingOffset" type="Control" parent="Panel/SupplyDrop"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="FallingCrate" type="TextureRect" parent="Panel/SupplyDrop/LandingOffset"]
-visible = false
-custom_minimum_size = Vector2(384, 384)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -192.0
-offset_top = -192.0
-offset_right = 192.0
-offset_bottom = 192.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.5, 1.5)
-pivot_offset = Vector2(192, 192)
-mouse_filter = 2
-texture = ExtResource("11_pxkh0")
-expand_mode = 1
-
-[node name="CrateOpenOld" parent="Panel/SupplyDrop" instance=ExtResource("16_88i1x")]
-visible = false
-custom_minimum_size = Vector2(330, 330)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = -15.0
-offset_bottom = -15.0
-
-[node name="CrateOpen" parent="Panel/SupplyDrop" instance=ExtResource("21_w5401")]
-visible = false
-custom_minimum_size = Vector2(350, 350)
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = -25.0
-offset_bottom = -25.0
-useHold = true
-holdTime = 0.75
-holdRecoverTime = 0.25
 
 [node name="Llama" type="Control" parent="Panel"]
 layout_mode = 1
@@ -973,7 +773,6 @@ offset_right = 256.0
 offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
-texture_click_mask = ExtResource("46_fixg6")
 stretch_mode = 0
 
 [node name="SmallLlamaButton" type="TextureButton" parent="Panel/Llama/FullLlama" groups=["ExcludeButtonSounds"]]
@@ -990,7 +789,6 @@ offset_right = 256.0
 offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
-texture_click_mask = ExtResource("49_estb1")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -1118,7 +916,6 @@ offset_right = 10.0
 grow_vertical = 0
 text = "Debug Close"
 
-[connection signal="pressed" from="Panel/SupplyDrop/CrateOpenOld" to="." method="PlaySupplyOpenAnimation"]
 [connection signal="GradientChanged" from="Panel/Llama" to="Panel/Llama/BurstParticles/CPUParticles2D" method="set_color_initial_ramp"]
 [connection signal="IconChanged" from="Panel/Llama" to="Panel/Llama/LargeShards/StandardShard" method="set_texture"]
 [connection signal="IconChanged" from="Panel/Llama" to="Panel/Llama/LargeShards/StandardShard2" method="set_texture"]
