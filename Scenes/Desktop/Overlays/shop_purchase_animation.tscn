@@ -255,3 +255,5 @@ theme_override_font_sizes/font_size = 70
 text = "Complete"
 horizontal_alignment = 1
 script = ExtResource("7_gi68h")
+
+[connection signal="WindowOpened" from="." to="Control/WindowContents/PurchaseSound" method="play" binds= [0.0]]

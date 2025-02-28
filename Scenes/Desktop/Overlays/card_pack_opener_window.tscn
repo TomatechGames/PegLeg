@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://b5elx1mhn5ahk"]
+[gd_scene load_steps=60 format=3 uid="uid://b5elx1mhn5ahk"]
 
 [ext_resource type="PackedScene" uid="uid://c47svw0ruq2i3" path="res://Scenes/GameItemEntry/reward_entry_card.tscn" id="1_4na64"]
 [ext_resource type="Script" path="res://Scripts/Overlays/CardPackOpener.cs" id="1_7ayxj"]
@@ -13,15 +13,17 @@
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="12_plv7k"]
 [ext_resource type="AudioStream" uid="uid://b4h4wy2udm64f" path="res://Audio/SFX/LlamaSounds/Impact/ImpactVoice/LlamaImpactVoice.tres" id="13_gf4i8"]
 [ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/MissionZoneBackgrounds/STWShop.png" id="13_ps080"]
+[ext_resource type="AudioStream" uid="uid://qe86vjs1x5xq" path="res://Audio/SFX/LlamaSounds/Greet/UI_Frontend_Llama_PopUp_Silver.ogg" id="13_vqexb"]
 [ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="14_8eotn"]
 [ext_resource type="AudioStream" uid="uid://o0r1uu6u5fby" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlamaImpactVoice.tres" id="14_v6cqy"]
+[ext_resource type="AudioStream" uid="uid://belvq04k8nvcu" path="res://Audio/SFX/LlamaSounds/Greet/UI_Frontend_Llama_PopUp_Gold.ogg" id="14_y8dlj"]
 [ext_resource type="AudioStream" uid="uid://dcbh837testx2" path="res://Audio/SFX/LlamaSounds/Impact/crit_impact_secondpass_01.ogg" id="14_yug88"]
 [ext_resource type="AudioStream" uid="uid://j3d162ng2wot" path="res://Audio/SFX/LlamaSounds/Open/SupplyDrop_Llama_Interact_Open.ogg" id="15_lpagr"]
 [ext_resource type="AudioStream" uid="uid://bd8s0vbm0dx5t" path="res://Audio/SFX/LlamaSounds/Open/OpenVoice/LlamaOpenVoice.tres" id="15_lqidj"]
 [ext_resource type="PackedScene" uid="uid://tso3qs0wxppc" path="res://Scenes/GameItemEntry/choice_entry_card.tscn" id="16_cms4w"]
 [ext_resource type="AudioStream" uid="uid://dgqxarrgjrwxd" path="res://Audio/SFX/LlamaSounds/Open/MiniOpenVoice/MiniLlamaOpenVoice.tres" id="16_iycih"]
 [ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="16_x2r4a"]
-[ext_resource type="AudioStream" uid="uid://divk7fb2gdm8x" path="res://Audio/SFX/LlamaSounds/Greet/PinataGreetingFX.tres" id="17_eaptb"]
+[ext_resource type="AudioStream" uid="uid://divk7fb2gdm8x" path="res://Audio/SFX/LlamaSounds/Greet/StandardPinataGreetingFX.tres" id="17_eaptb"]
 [ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="17_knkpm"]
 [ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/InterfaceIcons/ChoiceCardV2/LabelUV-sheet.png" id="18_5uyrt"]
 [ext_resource type="AudioStream" uid="uid://badp2x0yvoic8" path="res://Audio/SFX/LlamaSounds/Hover/PinataHoverFX.tres" id="19_0w7mr"]
@@ -85,7 +87,7 @@ shader = ExtResource("16_x2r4a")
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/UseManual = null
 shader_parameter/ManualControl = null
-shader_parameter/time = 66.847
+shader_parameter/time = 23610.8
 shader_parameter/StartTime = null
 shader_parameter/Started = true
 shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
@@ -152,7 +154,7 @@ shader_parameter/packIcon = ExtResource("26_1f0i3")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iness"]
 shader = ExtResource("52_c8cd4")
 
-[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "pullButton", "skipAllButton", "glowFlare", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "smallLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "choiceCanvas", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
+[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "pullButton", "skipAllButton", "glowFlare", "greetingEffects", "greetingVoices", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -163,14 +165,15 @@ mouse_filter = 2
 script = ExtResource("1_7ayxj")
 pullTime = 0.5
 sortByRarity = true
-defaultBackgroundColor = Color(0.101961, 0.419608, 1, 1)
-impactParticlePool = 4
-impactParticlesScene = ExtResource("4_xqhbu")
 displayPanel = NodePath("Panel")
 music = NodePath("Audio/Music")
 pullButton = NodePath("Panel/PullButton")
 skipAllButton = NodePath("Panel/SkipAllButton")
+defaultBackgroundColor = Color(0.101961, 0.419608, 1, 1)
 glowFlare = NodePath("Panel/Glow")
+impactParticlePool = 4
+greetingEffects = [NodePath("Audio/Effects/StandardGreetingFX"), NodePath("Audio/Effects/SilverGreetingFX"), NodePath("Audio/Effects/GoldGreetingFX")]
+greetingVoices = [NodePath("Audio/Voices/StandardGreetingV"), NodePath("Audio/Voices/SilverGreetingV"), NodePath("Audio/Voices/GoldGreetingV"), NodePath("Audio/Voices/MiniGreetingV")]
 hoverEffect = NodePath("Audio/Effects/HoverFX")
 impactEffect = NodePath("Audio/Effects/ImpactFX")
 impactVoice = NodePath("Audio/Voices/ImpactV")
@@ -178,10 +181,10 @@ miniImpactVoice = NodePath("Audio/Voices/MiniImpactV")
 burstEffect = NodePath("Audio/Effects/OpenFX")
 burstVoice = NodePath("Audio/Voices/OpenV")
 miniBurstVoice = NodePath("Audio/Voices/MiniOpenV")
+impactParticlesScene = ExtResource("4_xqhbu")
 impactParticleParent = NodePath("Panel/Llama/ImpactParticles")
 llamaGlow = NodePath("Panel/Glow")
-standardLlamaButton = NodePath("Panel/Llama/FullLlama/LargeLlamaButton")
-smallLlamaButton = NodePath("Panel/Llama/FullLlama/SmallLlamaButton")
+standardLlamaButton = NodePath("Panel/Llama/FullLlama/Button")
 confettiParticles = NodePath("Panel/Llama/BurstParticles/CPUParticles2D")
 llamaEntry = NodePath("Panel/Llama")
 fullLlama = NodePath("Panel/Llama/FullLlama/TextureRect")
@@ -192,7 +195,9 @@ prevCard = NodePath("Panel/Cards/RewardEntryCardPrev")
 mainCardsParent = NodePath("Panel/Cards")
 smallCardsOffset = NodePath("Panel/Cards/CardPullAnchor/Control/Offset")
 smallCardParent = NodePath("Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack")
+smallCards = [NodePath("Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard"), NodePath("Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard2"), NodePath("Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard3"), NodePath("Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard4"), NodePath("Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard5"), NodePath("Panel/Cards/CardPullAnchor/Control/Offset/VBoxContainer2/CardStack/RewardEntryCard6")]
 choiceCanvas = NodePath("Panel/ChoiceArea/ChoiceCanvas")
+choiceCards = [NodePath("Panel/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard"), NodePath("Panel/ChoiceArea/ChoiceCanvas/CenterContainer/MarginContainer/Choices/ChoiceEntryCard2")]
 choiceResultCard = NodePath("Panel/ChoiceResultBackgroundLayer/ChoiceResultCardTexture")
 choiceResultFGParent = NodePath("Panel/ChoiceResultForegroundLayer")
 choiceResultBGParent = NodePath("Panel/ChoiceResultBackgroundLayer")
@@ -243,17 +248,16 @@ bus = &"SFX"
 
 [node name="StandardGreetingFX" type="AudioStreamPlayer" parent="Audio/Effects"]
 stream = ExtResource("17_eaptb")
-volume_db = -10.0
 bus = &"SFX"
 
 [node name="SilverGreetingFX" type="AudioStreamPlayer" parent="Audio/Effects"]
-stream = ExtResource("17_eaptb")
-volume_db = -10.0
+stream = ExtResource("13_vqexb")
+volume_db = 5.0
 bus = &"SFX"
 
 [node name="GoldGreetingFX" type="AudioStreamPlayer" parent="Audio/Effects"]
-stream = ExtResource("17_eaptb")
-volume_db = -10.0
+stream = ExtResource("14_y8dlj")
+volume_db = 5.0
 bus = &"SFX"
 
 [node name="HoverFX" type="AudioStreamPlayer" parent="Audio/Effects"]
@@ -481,6 +485,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("36_7l4e4")
+debug = true
 
 [node name="BurstParticles" type="Control" parent="Panel/Llama"]
 layout_mode = 1
@@ -693,7 +698,8 @@ texture = ExtResource("25_gyuod")
 expand_mode = 1
 script = ExtResource("11_jtcf2")
 
-[node name="LargeLlamaButton" type="TextureButton" parent="Panel/Llama/FullLlama" groups=["ExcludeButtonSounds"]]
+[node name="Button" type="Button" parent="Panel/Llama/FullLlama" groups=["ExcludeButtonSounds"]]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -706,24 +712,6 @@ offset_right = 256.0
 offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
-stretch_mode = 0
-
-[node name="SmallLlamaButton" type="TextureButton" parent="Panel/Llama/FullLlama" groups=["ExcludeButtonSounds"]]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -256.0
-offset_top = -256.0
-offset_right = 256.0
-offset_bottom = 256.0
-grow_horizontal = 2
-grow_vertical = 2
-ignore_texture_size = true
-stretch_mode = 0
 
 [node name="ImpactParticles" type="Control" parent="Panel/Llama"]
 layout_mode = 1
@@ -849,8 +837,15 @@ offset_right = 10.0
 grow_vertical = 0
 text = "Debug Close"
 
-[connection signal="pressed" from="Panel/Llama/FullLlama/LargeLlamaButton" to="." method="HitLlama"]
-[connection signal="pressed" from="Panel/Llama/FullLlama/SmallLlamaButton" to="." method="HitLlama"]
+[connection signal="GradientChanged" from="Panel/Llama" to="Panel/Llama/BurstParticles/CPUParticles2D" method="set_color_initial_ramp"]
+[connection signal="IconChanged" from="Panel/Llama" to="Panel/Llama/LargeShards/StandardShard" method="set_texture"]
+[connection signal="IconChanged" from="Panel/Llama" to="Panel/Llama/LargeShards/StandardShard2" method="set_texture"]
+[connection signal="IconChanged" from="Panel/Llama" to="Panel/Llama/LargeShards/StandardShard3" method="set_texture"]
+[connection signal="IconChanged" from="Panel/Llama" to="Panel/Llama/FullLlama/TextureRect" method="set_texture"]
+[connection signal="RarityChanged" from="Panel/Llama" to="Panel/Glow" method="set_self_modulate"]
+[connection signal="mouse_entered" from="Panel/Llama/FullLlama/Button" to="." method="SetLlamaHover" binds= [true]]
+[connection signal="mouse_exited" from="Panel/Llama/FullLlama/Button" to="." method="SetLlamaHover" binds= [false]]
+[connection signal="pressed" from="Panel/Llama/FullLlama/Button" to="." method="HitLlama"]
 [connection signal="button_down" from="Panel/PullButton" to="." method="StartPullCard"]
 [connection signal="button_up" from="Panel/PullButton" to="." method="EndPullCard"]
 [connection signal="button_down" from="Panel/SkipAllButton" to="." method="EndImmediate"]

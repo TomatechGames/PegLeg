@@ -26,10 +26,10 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_8chc8")
-autoBindVisibility = false
-fallbackSound = ExtResource("5_hd5bk")
 animatedTarget = NodePath("AnimTarget")
 animatedBasis = NodePath("AnimTarget/AnimBasis")
+autoBindVisibility = false
+fallbackSound = ExtResource("5_hd5bk")
 player = NodePath("SoundEffect")
 
 [node name="AnimTarget" type="MarginContainer" parent="."]
@@ -133,5 +133,9 @@ stream = ExtResource("5_hd5bk")
 volume_db = -10.0
 bus = &"SFX"
 
+[connection signal="BodyChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer/BodyLabel" method="set_text"]
+[connection signal="ColorChanged" from="." to="AnimTarget/AnimBasis/EdgePanel" method="set_self_modulate"]
+[connection signal="HeaderChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer/HeaderLabel" method="set_text"]
+[connection signal="IconChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/TextureRect" method="set_texture"]
 [connection signal="pressed" from="AnimTarget/AnimBasis/Button" to="." method="Dismiss"]
 [connection signal="pressed" from="AnimTarget/AnimBasis/Content/HBoxContainer/Button" to="." method="Dismiss"]

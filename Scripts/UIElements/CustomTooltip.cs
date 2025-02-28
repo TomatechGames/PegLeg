@@ -109,13 +109,16 @@ public partial class CustomTooltip : Control
                 descriptionArray[descriptionLayers.Length - 1] = string.Join("\n", descriptionArray.Slice((descriptionLayers.Length - 1)..).Select(n => n.ToString()));
             for (int i = 0; i < descriptionLayers.Length; i++)
             {
-				if (i >= descriptionArray.Count || descriptionArray[i] is null)
+                if (
+                    i >= descriptionArray.Count || 
+                    descriptionArray[i]?.ToString() is not string descText || 
+                    string.IsNullOrWhiteSpace(descText))
 				{
 					descriptionLayers[i].Visible = false;
 					continue;
                 }
                 descriptionLayers[i].Visible = true;
-				descriptionLayers[i].Text = descriptionArray[i].ToString();
+				descriptionLayers[i].Text = descText;
 
                 descriptionLayers[i].AutowrapMode = TextServer.AutowrapMode.Off;
                 descriptionLayers[i].CustomMinimumSize = Vector2.Zero;

@@ -20,6 +20,8 @@ public partial class CardPackEntry : GameItemEntry
 
     [Export]
     bool includeAmountInName;
+    [Export]
+    bool debug = false;
 
     const string defaultPreviewImage = "PinataStandardPack";
     static JsonObject llamaColorData;
@@ -34,6 +36,7 @@ public partial class CardPackEntry : GameItemEntry
 
         if (item.template.Type != "CardPack")
         {
+            GD.Print("not a cardpack");
             base.UpdateItem(item);
             return;
         }
@@ -56,11 +59,15 @@ public partial class CardPackEntry : GameItemEntry
 
 
         int llamaTier = item.customData?["llamaTier"]?.GetValue<int>() ?? 0;
+        if (debug)
+            GD.Print("cardPackTier: " + llamaTier);
         string llamaPinataName =
             (item.template.TryGetTexturePath(FnItemTextureType.Preview, out var imagePath) ? imagePath : null)
             ?.ToString().Split("\\")[^1];
         if (llamaPinataName?.StartsWith(defaultPreviewImage) ?? false)
         {
+            if (debug)
+                GD.Print("using tier");
             llamaPinataName = llamaTier switch
             {
                 2 => "Gold",
@@ -92,8 +99,8 @@ public partial class CardPackEntry : GameItemEntry
                 amountText,
                 new string[] { description },
                 currentLlamaColors[0].ToHtml()
-                )
-            );
+            )
+        );
 
         currentLlamaGradient ??= new()
         {

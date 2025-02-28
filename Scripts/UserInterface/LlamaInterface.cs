@@ -584,11 +584,13 @@ public partial class LlamaInterface : Control
             return;
 
         GD.Print("attempting to purchase offer: "+ currentOfferSelection.OfferId);
-
+        bool isUpgrade = currentOfferSelection.itemGrants[0]?.template?.DisplayName == "Upgrade Llama";
         var itemsKnown = await currentOfferSelection.GetXRayLlamaData() is not null;
         await CardPackOpener.Instance.StartOpening(null, selectedLlamaPanel, currentOfferSelection, currentOfferEntry.currentPurchaseQuantity, itemsKnown);
-
-        SetLlamaOffer(currentOfferSelection);
+        if (isUpgrade)
+            ForceLoadShopLlamas();
+        else
+            SetLlamaOffer(currentOfferSelection);
     }
 
     public async void OpenSelectedCardpack()

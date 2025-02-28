@@ -1171,12 +1171,17 @@ public class GameOffer
         account ??= GameAccount.activeAccount;
         if (!await account.Authenticate())
             return null;
-        var prerollItems = (await account.GetProfile(FnProfileTypes.AccountItems).Query()).GetItems("PrerollData");
-        //GD.Print("Offer: \n    " + OfferId);
-        //GD.Print("Preroll: \n    "+string.Join("\n    ", prerollItems.Select(p => p.attributes["offerId"].ToString())));
+        await account.GetProfile(FnProfileTypes.AccountItems).Query();
+        return GetXRayLlamaDataUnsafe(account);
+    }
+
+    public GameItem GetXRayLlamaDataUnsafe(GameAccount account = null)
+    {
+        if (!IsXRayLlama)
+            return null;
+        account ??= GameAccount.activeAccount;
+        var prerollItems = account.GetProfile(FnProfileTypes.AccountItems).GetItems("PrerollData");
         var match = prerollItems.FirstOrDefault(item => item.attributes?["offerId"].ToString() == OfferId);
-        //if (match is null)
-            //GD.Print("preroll: no match");
         return match;
     }
 

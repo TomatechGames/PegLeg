@@ -9,7 +9,7 @@ public partial class ExternalFolderExporter : EditorExportPlugin
     static List<string> excludeFiles = new()
     {
         ".gdignore",
-        //"Banjo",
+        "Backup",
     };
 
     public override string _GetName() => "ExternalExporter";
@@ -17,31 +17,7 @@ public partial class ExternalFolderExporter : EditorExportPlugin
     public override void _ExportBegin(string[] features, bool isDebug, string path, uint flags)
     {
         string exportFolderPath = "res://"+path.Split("/")[..^1].Join("/");
-        using (var projectExternalFolder = DirAccess.Open("res://External"))
-        {
-            if (projectExternalFolder is not null)
-            {
-                if (!DirAccess.DirExistsAbsolute(exportFolderPath + "/External"))
-                    DirAccess.MakeDirAbsolute(exportFolderPath + "/External");
-                projectExternalFolder.ListDirBegin();
-                string currentEntry = projectExternalFolder.GetNext();
-                while (currentEntry != "")
-                {
-                    if (!excludeFiles.Contains(currentEntry))
-                    {
-                        if (projectExternalFolder.CurrentIsDir())
-                        {
-                            CopyFolder("res://External/" + currentEntry, exportFolderPath + "/External/" + currentEntry);
-                        }
-                        else
-                        {
-                            DirAccess.CopyAbsolute("res://External/" + currentEntry, exportFolderPath + "/External/" + currentEntry);
-                        }
-                    }
-                    currentEntry = projectExternalFolder.GetNext();
-                }
-            }
-        }
+        CopyFolder("res://External", exportFolderPath + "/External");
     }
 
     static void CopyFolder(string fromPath, string toPath)
@@ -49,6 +25,12 @@ public partial class ExternalFolderExporter : EditorExportPlugin
         if (!DirAccess.DirExistsAbsolute(toPath))
             DirAccess.MakeDirAbsolute(toPath);
         using var fromFolder = DirAccess.Open(fromPath);
+        if (fromFolder is null)
+        {
+            GD.PushWarning($"missing folder: \"{fromPath}\"");
+            return;
+        }
+        //GD.Print($"copying \"{fromPath}\"");
         fromFolder.ListDirBegin();
         string currentEntry = fromFolder.GetNext();
         while (currentEntry != "")
@@ -57,10 +39,12 @@ public partial class ExternalFolderExporter : EditorExportPlugin
             {
                 if (fromFolder.CurrentIsDir())
                 {
+                    //GD.Print($"\"{currentEntry}\" is folder");
                     CopyFolder(fromPath + "/" + currentEntry, toPath + "/" + currentEntry);
                 }
                 else
                 {
+                    //GD.Print($"\"{currentEntry}\" is file");
                     DirAccess.CopyAbsolute(fromPath + "/" + currentEntry, toPath + "/" + currentEntry);
                 }
             }

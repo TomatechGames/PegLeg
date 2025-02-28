@@ -47,20 +47,27 @@ public partial class OnboardingInterface : Control
             //ProjectSettings.LoadResourcePack("user://pack.zip");
             bool hasBanjoAssets = await BanjoAssets.ReadAllSources();
             var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
+            bool hasAccount = false;
             if (lastUsedId is not null)
             {
+                GD.Print("last: " + lastUsedId);
                 var lastUsedAccount = GameAccount.GetOrCreateAccount(lastUsedId);
-                await lastUsedAccount.SetAsActiveAccount();
+                hasAccount = await lastUsedAccount.SetAsActiveAccount();
             }
 
             //TODO: if more than one account has device details, show account selector
-            foreach (var a in accounts)
+            if (!hasAccount)
             {
-                if (await a.SetAsActiveAccount())
+                foreach (var a in accounts)
+                {
+                    if (!await a.SetAsActiveAccount())
+                        continue;
+                    hasAccount = true;
                     break;
+                }
             }
 
-            if (GameAccount.activeAccount.isOwned)
+            if (hasAccount)
             {
                 LoadMainScene();
                 return;

@@ -436,11 +436,11 @@ visible = false
 layout_mode = 2
 script = ExtResource("16_egkbm")
 elementSpace = 10.0
-elementScene = ExtResource("17_eyhau")
 linkedGrid = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
 offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
 paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
 elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+elementScene = ExtResource("17_eyhau")
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
 layout_mode = 2
@@ -501,3 +501,4 @@ size_flags_vertical = 4
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ForceRefresh" to="." method="ForceReloadMissions"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/TestNotif" to="." method="FakeUnexpectedReset"]
+[connection signal="ConfigValueChanged" from="VBoxContainer/HBoxContainer/TestNotif/CheckButton" to="VBoxContainer/HBoxContainer/TestNotif" method="set_visible"]

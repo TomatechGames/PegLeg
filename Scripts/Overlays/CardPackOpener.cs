@@ -64,8 +64,6 @@ public partial class CardPackOpener : Control
     [Export]
     Control standardLlamaButton;
     [Export]
-    Control smallLlamaButton;
-    [Export]
     CpuParticles2D confettiParticles;
     [Export]
     CardPackEntry llamaEntry;
@@ -123,6 +121,7 @@ public partial class CardPackOpener : Control
     bool choicesOnly;
     bool isPulling;
     bool isFast;
+    bool waitForFirstHit = false;
 
 
     public List<GameItem> queuedChoices = new();
@@ -179,9 +178,21 @@ public partial class CardPackOpener : Control
             llamaItem = llamaItem.Clone();
         llamaItem ??= llamaOffer?.itemGrants[0];
         llamaItem ??= defaultLlamaItem;
+        if(llamaOffer is not null)
+        {
+            llamaTier = llamaOffer.GetXRayLlamaDataUnsafe(account)?.attributes?["highest_rarity"]?.GetValue<int>() ?? 0;
+            if (llamaItem.template.DisplayName.Contains("Legendary"))
+                llamaTier = 2;
+            llamaItem.customData["llamaTier"] = llamaTier;
+            GD.Print($"Offer Tier: {llamaTier}");
+        }
+        else
+        {
+            llamaTier = llamaItem.customData?["llamaTier"]?.GetValue<int>() ?? 0;
+            GD.Print($"Item Tier: {llamaTier}");
+        }
         llamaEntry.SetItem(llamaItem);
-        GD.Print($"Tier: {llamaItem.customData?["llamaTier"]}");
-        llamaTier = llamaItem.customData?["llamaTier"]?.GetValue<int>() ?? 0;
+        waitForFirstHit = true;
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
         displayPanel.Visible = true;
         pullButton.Visible = false;
@@ -195,7 +206,6 @@ public partial class CardPackOpener : Control
         LlamaScale(false);
         smallLlamaPartParent.Visible = false;
         standardLlamaPartParent.Visible = false;
-        smallLlamaButton.Visible = false;
         standardLlamaButton.Visible = false;
 
         topCard.Scale = Vector2.Zero;
@@ -213,6 +223,10 @@ public partial class CardPackOpener : Control
         //start llama animation
         ResizePanelOpen();
         await Helpers.WaitForTimer(0.31);
+        while (waitForFirstHit)
+        {
+            await Helpers.WaitForFrame();
+        }
 
         cardPacks ??= Array.Empty<GameItem>();
 
@@ -386,7 +400,7 @@ public partial class CardPackOpener : Control
         resizePanelTween.Finished += () =>
         {
             greetingVoices[isSmall ? 3 : llamaTier].Play();
-            (isSmall ? smallLlamaButton : standardLlamaButton).Visible = true;
+            standardLlamaButton.Visible = true;
             smallCardParent.Visible = true;
             CurrentCardSeparation = 0;
         };
@@ -434,6 +448,7 @@ public partial class CardPackOpener : Control
 
     void HitLlama()
     {
+        waitForFirstHit = false;
         if (!cardPacksPrepared || llamaHits < minLlamaImpacts)
         {
             //play impact sound and voiceline
@@ -453,7 +468,6 @@ public partial class CardPackOpener : Control
         }
         GlowScale(false);
 
-        smallLlamaButton.Visible = false;
         standardLlamaButton.Visible = false;
         PlayImpactSound();
         burstEffect.Play();
