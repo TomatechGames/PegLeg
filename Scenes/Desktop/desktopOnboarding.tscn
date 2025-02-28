@@ -469,6 +469,11 @@ volume_db = -12.0
 max_polyphony = 2
 bus = &"SFX"
 
+[connection signal="LoginFailed" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer" method="LoginCodeFail"]
+[connection signal="LoginStarted" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" method="set_placeholder" binds= ["########"]]
+[connection signal="LoginSucceeded" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" method="set_placeholder" binds= ["Success"]]
+[connection signal="LoginSuccess" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer" method="LoginCodeSuccess"]
+[connection signal="UserCodeChanged" from="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" to="CenterContainer/MarginContainer/Content/LoginCode/LinkCodeText" method="set_text"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/CompleteLogin" to="CenterContainer" method="ComplateCodeLogin"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/LoginCode/VBoxContainer/HBoxContainer/RetryLogn" to="CenterContainer" method="StartLogin"]
 [connection signal="pressed" from="CenterContainer/MarginContainer/Content/ErrorMessage/ErrorContent/VBoxContainer/Button" to="CenterContainer/MarginContainer/Content/ErrorMessage" method="set_visible" binds= [false]]
