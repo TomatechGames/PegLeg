@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class ScrollWheelBlocker : Control
 {
@@ -33,10 +34,11 @@ public partial class ScrollWheelBlocker : Control
             {
                 var prevMouseFilter = linkedParent.MouseFilter;
                 linkedParent.MouseFilter = MouseFilterEnum.Ignore;
-                ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame).OnCompleted(()=> {linkedParent.MouseFilter = prevMouseFilter;});
+                ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame).OnCompleted(()=> {
+                    linkedParent.MouseFilter = prevMouseFilter;
+                });
                 return;
             }
         }
-        base._GuiInput(@event);
     }
 }

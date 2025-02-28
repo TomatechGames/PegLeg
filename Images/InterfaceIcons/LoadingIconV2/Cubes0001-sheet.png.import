@@ -3,20 +3,22 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://vqcvro57t5by"
-path="res://.godot/imported/Cubes0001-sheet.png-424fee22587d0618b59351b08d3bbf42.ctex"
+path.bptc="res://.godot/imported/Cubes0001-sheet.png-424fee22587d0618b59351b08d3bbf42.bptc.ctex"
+path.astc="res://.godot/imported/Cubes0001-sheet.png-424fee22587d0618b59351b08d3bbf42.astc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://Images/InterfaceIcons/LoadingIconV2/Cubes0001-sheet.png"
-dest_files=["res://.godot/imported/Cubes0001-sheet.png-424fee22587d0618b59351b08d3bbf42.ctex"]
+dest_files=["res://.godot/imported/Cubes0001-sheet.png-424fee22587d0618b59351b08d3bbf42.bptc.ctex", "res://.godot/imported/Cubes0001-sheet.png-424fee22587d0618b59351b08d3bbf42.astc.ctex"]
 
 [params]
 
-compress/mode=0
-compress/high_quality=false
+compress/mode=2
+compress/high_quality=true
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0

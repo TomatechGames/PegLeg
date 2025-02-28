@@ -17,6 +17,8 @@ public partial class QuestGroupViewer : Control
     [Export]
     Control questNodeParent;
     [Export]
+    Control noQuestNodesAlert;
+    [Export]
     PackedScene questNodeScene;
     [Export]
     PackedScene questArrowScene;
@@ -37,7 +39,7 @@ public partial class QuestGroupViewer : Control
     [Export]
     int maxNodesPerPage = 20;
 	int nodesPerPage;
-	List<QuestData> questDataList;
+	List<QuestSlot> questDataList;
 	int currentPage;
     int currentNodeIndex = 0;
     int currentQuestIndex = 0;
@@ -92,11 +94,17 @@ public partial class QuestGroupViewer : Control
     }
 
 
-    public void SetQuestNodes(List<QuestData> newQuestDataList, bool useArrows, bool onlyShowIncomplete)
+    public void SetQuestNodes(List<QuestSlot> newQuestDataList, bool useArrows, bool onlyShowIncomplete)
 	{
+        //onlyShowIncomplete = false;
         if (onlyShowIncomplete)
         {
             questDataList = newQuestDataList.Where(q=>q.isUnlocked && (!q.isComplete || useArrows)).ToList();
+            if (useArrows)
+            {
+                //sort endurances by wave
+                questDataList = questDataList.OrderBy(q => int.TryParse(q.questTemplate.DisplayName.Split(" ")[^1], out int wave) ? wave : 0).ToList();
+            }
         }
         else
         {
@@ -119,15 +127,22 @@ public partial class QuestGroupViewer : Control
             }
 		}
 		else
-			nodesPerPage = questDataList.Count;
+			nodesPerPage = Mathf.Max(questDataList.Count, 1);
+        currentQuestIndex = 0;
 
-        var focusNode = questDataList.FirstOrDefault(q => !q.isComplete, null) ?? questDataList[^1];
-        if(!useArrows)
-            focusNode = questDataList.FirstOrDefault(q => q.isPinned) ?? questDataList[0];
+        if (questDataList.Count>0)
+        {
+            var focusNode = questDataList.FirstOrDefault(q => !q.isComplete, null) ?? questDataList[^1];
+            if (!useArrows)
+                focusNode = questDataList.FirstOrDefault(q => q.isPinned) ?? questDataList[0];
+            currentQuestIndex = questDataList.IndexOf(focusNode);
+        }
 
-        currentQuestIndex = questDataList.IndexOf(focusNode);
-		currentPage = currentQuestIndex / nodesPerPage;
-        maxPage = (questDataList.Count - 1) / nodesPerPage;
+        questViewer.Visible = questDataList.Count > 0;
+        scrollContainer.Visible = questDataList.Count > 0;
+        noQuestNodesAlert.Visible = questDataList.Count == 0;
+        currentPage = currentQuestIndex / nodesPerPage;
+        maxPage = Mathf.Max((questDataList.Count - 1) / nodesPerPage, 0);
         SetPage(currentPage);
     }
 
@@ -138,8 +153,8 @@ public partial class QuestGroupViewer : Control
         currentQuestIndex = pageStartIndex + nodeIndex;
         isQuestOnPage = true;
         questViewer.SetupQuest(questDataList[currentQuestIndex]);
-        if (questDataList[currentQuestIndex].questItem is ProfileItemHandle itemHandle)
-            itemHandle.MarkItemSeen();
+        if (questDataList[currentQuestIndex].isUnlocked)
+            questDataList[currentQuestIndex].questItem.MarkItemSeen();
         EmitSignal(SignalName.Pressed);
     }
 
@@ -195,8 +210,8 @@ public partial class QuestGroupViewer : Control
         leftButtonParent.Visible = currentPage > 0;
         rightButtonParent.Visible = currentPage < maxPage;
 
-        await this.WaitForFrame();
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
+        await Helpers.WaitForFrame();
 
         if (prevPage > currentPage)
         {

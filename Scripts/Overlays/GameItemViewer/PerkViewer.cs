@@ -9,112 +9,95 @@ public partial class PerkViewer : Control
     [Export]
     float tweenDuration = 0.1f;
     [Export]
-    NodePath realPerkAreaPath;
     Control realPerkArea;
 
     [Export]
-    NodePath optionalPerkAreaPath;
     Control optionalPerkArea;
 
     [Export]
-    NodePath interactionBlockerPath;
     Control interactionBlocker;
 
     [Export(PropertyHint.ArrayType)]
-    NodePath[] realPerkEntryPaths = new NodePath[6];
-    PerkEntry[] realPerkEntries;
-
-    [Export(PropertyHint.ArrayType)]
-    NodePath[] optionalPerkEntryPaths = new NodePath[5];
-    PerkEntry[] optionalPerkEntries;
+    PerkEntry[] currentPerkEntries;
 
     [Export]
-    NodePath tierUpSeparatorPath;
-    Control tierUpSeparator;
+    Control perkUpArea;
 
     [Export]
-    NodePath reperkApplyButtonPath;
-    Control reperkApplyButton;
+    PerkEntry perkUpEntry;
 
     [Export(PropertyHint.ArrayType)]
-    NodePath[] reperkCostEntryPaths = new NodePath[3];
-    GameItemEntry[] reperkCostEntries;
+    PerkEntry[] reperkEntries;
+
+    [Export]
+    Button perkApplyButton;
 
     static JsonObject reperkCosts;
 
     public override void _Ready()
     {
-        this.GetNodesOrNull(realPerkEntryPaths, out realPerkEntries);
-        this.GetNodesOrNull(optionalPerkEntryPaths, out optionalPerkEntries);
-        this.GetNodesOrNull(reperkCostEntryPaths, out reperkCostEntries);
-        this.GetNodeOrNull(tierUpSeparatorPath, out tierUpSeparator);
-        this.GetNodeOrNull(interactionBlockerPath, out interactionBlocker);
-        this.GetNodeOrNull(realPerkAreaPath, out realPerkArea);
-        this.GetNodeOrNull(optionalPerkAreaPath, out optionalPerkArea);
-        this.GetNodeOrNull(reperkApplyButtonPath, out reperkApplyButton);
-
+        //todo: export this via BanjoBotAssets
         using var reperkCostFile = FileAccess.Open("res://External/reperkCosts.json", FileAccess.ModeFlags.Read);
         reperkCosts = JsonNode.Parse(reperkCostFile.GetAsText()).AsObject();
 
-        for (int i = 0; i < realPerkEntries.Length; i++)
+        for (int i = 0; i < currentPerkEntries.Length; i++)
         {
-            realPerkEntries[i].Pressed += (index, id, locked) => OpenPerkChanger(index, locked);
+            currentPerkEntries[i].Pressed += (index, id, locked) => OpenPerkChanger(index, locked);
         }
 
-        for (int i = 0; i < optionalPerkEntries.Length; i++)
+        perkUpEntry.Pressed += (index, id, locked) => SelectReplacementPerk(id, index);
+        for (int i = 0; i < reperkEntries.Length; i++)
         {
-            optionalPerkEntries[i].Pressed += (index, id, locked) => SelectReplacementPerk(id, index);
+            reperkEntries[i].Pressed += (index, id, locked) => SelectReplacementPerk(id, index);
         }
 
     }
 
-    ProfileItemHandle linkedItem;
-    public void LinkItem(ProfileItemHandle profileItem)
+    GameItem currentItem;
+    public void SetItem(GameItem item)
     {
-        if(linkedItem is not null)
-            linkedItem.OnChanged -= UpdateProfileItem;
+        if (currentItem == item)
+            return;
+        bool hadItem = currentItem is not null;
+        if(hadItem)
+            currentItem.OnChanged -= UpdateItem;
 
-        linkedItem = profileItem;
+        currentItem = item;
 
-        if (linkedItem is not null)
+        if (currentItem is not null)
         {
-            linkedItem.OnChanged += UpdateProfileItem;
-            SetItem(profileItem.GetItemUnsafe());
+            currentItem.OnChanged += UpdateItem;
+            UpdateItem(hadItem);
         }
     }
 
-    void UpdateProfileItem(ProfileItemHandle profileItem)
-    {
-        SetItem(profileItem.GetItemUnsafe());
-    }
-
-    public void SetDisplayItem(JsonObject itemInstance)
-    {
-        if (linkedItem is not null)
-            linkedItem.OnChanged -= UpdateProfileItem;
-        linkedItem = null;
-        SetItem(itemInstance);
-    }
 
     bool isSchematic = true;
-    bool isTrap = false;
+    bool isDefender = true;
     string[] activePerks;
-    string[][] perkPossibilities;
-    int unlockedPerks = 1;
+    string[][][] perkPossibilities;
+    int unlockedPerks = 0;
+    int visiblePerks = 0;
 
-    void SetItem(JsonObject itemInstance, bool animateToReset = false)
+    void UpdateItem() => UpdateItem(true);
+    void UpdateItem(bool animateToReset)
     {
-        var template = itemInstance.GetTemplate();
-        var maxedTemplate = template;
-
-        while (maxedTemplate.TryUpgradeTemplateRarity() is JsonObject upgradedTemplate)
+        var maxedTemplate = currentItem.template;
+        if (currentItem.profile is null)
         {
-            maxedTemplate = upgradedTemplate;
+            while (maxedTemplate.TryGetNextRarity() is GameItemTemplate upgradedTemplate)
+            {
+                maxedTemplate = upgradedTemplate;
+            }
         }
 
-        isSchematic = template["Type"].ToString() == "Schematic";
-        isTrap = template["Category"]?.ToString() == "Trap";
-        int itemRarity = template.GetItemRarity();
+        isSchematic = currentItem.template.Type == "Schematic";
+        isDefender = currentItem.template.Type == "Defender";
+        unlockedPerks = 10;
+        visiblePerks = currentItem.template["AlterationSlots"]?.AsArray().Count ?? 10;
+        if (currentItem.profile is null || (!isSchematic && !isDefender))
+            visiblePerks = 10;
+
 
         if (animateToReset)
         {
@@ -129,35 +112,36 @@ public partial class PerkViewer : Control
             optionalPerkArea.AnchorLeft = 1;
             optionalPerkArea.AnchorRight = 2;
         }
-
-        activePerks = itemInstance["attributes"]?["alterations"]?
-            .AsArray()
+        activePerks = currentItem.Alterations?
             .Select(e => e.ToString())
             .ToArray();
         if (isSchematic)
         {
             //set interactable and assign possibilities (if possibilities greater than one and not max level)
-            perkPossibilities = maxedTemplate["AlterationSlots"]
-                .AsArray()
+            perkPossibilities = maxedTemplate.AlterationSlots?
                 .Select(
-                    slot => slot["Alterations"][0]
+                    slot => slot["Alterations"]
                     .AsArray()
-                    .Select(
-                        alt=>alt
-                        .ToString()
+                    .Select(rarity=> rarity
+                        .AsArray()
+                        .Select(
+                            alt=>alt
+                            .ToString()
+                        )
+                        .ToArray()
                     )
                     .ToArray()
                 )
                 .ToArray();
-            activePerks ??= new string[perkPossibilities.Length];
-            int itemLevel = itemInstance["attributes"]?["level"]?.GetValue<int>() ?? 0;
-            for (int i = 0; i < perkPossibilities.Length; i++)
+            unlockedPerks = 0;
+            activePerks ??= new string[perkPossibilities?.Length ?? 0];
+            int itemLevel = currentItem.attributes?["level"]?.GetValue<int>() ?? 0;
+            GD.Print(itemLevel);
+            for (int i = 0; i < (perkPossibilities?.Length ?? 0); i++)
             {
                 int requiredLevel = maxedTemplate["AlterationSlots"][i]["RequiredLevel"].GetValue<int>();
                 if (requiredLevel <= itemLevel)
                     unlockedPerks = i + 1;
-                else
-                    break;
             }
         }
         else
@@ -170,20 +154,32 @@ public partial class PerkViewer : Control
         activePerks ??= Array.Empty<string>();
         for (int i = 0; i < activePerks.Length; i++)
         {
-            realPerkEntries[i].Visible = true;
-            realPerkEntries[i].SetPerkAlteration(activePerks[i], isSchematic, i == 5 && !isTrap, i);
-            if (i >= (perkPossibilities?.Length ?? 0))
+            if (i + 1 > visiblePerks)
             {
-                realPerkEntries[i].SetInteractable(false);
-                realPerkEntries[i].SetLocked(true);
+                currentPerkEntries[i].Visible = false;
                 continue;
             }
-            realPerkEntries[i].SetInteractable(perkPossibilities[i].Length > 1 || PerkIsUpgradeable(activePerks[i]));
-            realPerkEntries[i].SetLocked(linkedItem is not null && i + 1 > unlockedPerks);
+            currentPerkEntries[i].Visible = true;
+            currentPerkEntries[i].SetPerkAlteration(activePerks[i], !isDefender, i);
+            if (currentItem.profile?.account?.isOwned == false)
+            {
+                currentPerkEntries[i].SetInteractable(true);
+                currentPerkEntries[i].SetLocked(i + 1 > unlockedPerks);
+                continue;
+            }
+
+            if (i >= (perkPossibilities?.Length ?? 0))
+            {
+                currentPerkEntries[i].SetInteractable(false);
+                currentPerkEntries[i].SetLocked(isSchematic || isDefender);
+                continue;
+            }
+            currentPerkEntries[i].SetInteractable(perkPossibilities[i][0].Length > 1 || PerkIsUpgradeable(activePerks[i]));
+            currentPerkEntries[i].SetLocked(currentItem.profile is not null && i + 1 > unlockedPerks);
         }
-        for (int i = activePerks.Length; i < realPerkEntries.Length; i++)
+        for (int i = activePerks.Length; i < currentPerkEntries.Length; i++)
         {
-            realPerkEntries[i].Visible = false;
+            currentPerkEntries[i].Visible = false;
         }
     }
 
@@ -195,76 +191,70 @@ public partial class PerkViewer : Control
         perk.EndsWith("t04");
 
     int selectedPerkIndex = -1;
-    int selectedPerkTier;
+    GameItemTemplate selectedPerk;
     bool selectedPerkLocked = false;
     Tween wipeTween = null;
 
     public void OpenPerkChanger(int index, bool isLocked = false)
     {
         //GD.Print("opening perk changer for index: " + index);
-        selectedPerkLocked = isLocked;
-        string baseAlteration = activePerks[index];
-        string[] possibilities = perkPossibilities[index];
-        string tierSource = baseAlteration?[^1..] ?? "";
-        int.TryParse(tierSource, out int tier);
-        if ((baseAlteration?[^2] ?? ' ') == 'v')
-            tier = 0;
-        bool hasUpgrade = (index != 5 || isTrap) && tier > 0 && tier < 5;
+        var baseAlteration = activePerks[index] is not null ? GameItemTemplate.Get(activePerks[index]) : null;
+        string[][] allPossibilities = perkPossibilities[index];
+        bool isCore = (baseAlteration?.TemplateId ?? allPossibilities?[0][0])?.StartsWith("Alteration:aid_g_") ?? false;
+        string[] possibilities = allPossibilities[isCore ? 0 : baseAlteration?.RarityLevel ?? (Input.IsKeyPressed(Key.Shift)? 5 : 1) - 1];
 
-        if (!hasUpgrade && possibilities.Length==0)
+        selectedPerk = null;
+        if (baseAlteration?["RarityUpRecipe"] is null && possibilities.Length==0)
         {
             //this shouldnt happen, but if it does, kablam
+            GD.PushWarning("Kablam (no perk possibilities?)");
             return;
         }
 
+        selectedPerkLocked = isLocked;
+
         bool wasOpen = selectedPerkIndex != -1;
         selectedPerkIndex = index;
-        selectedPerkTier = tier;
+        selectedPerk = baseAlteration;
 
-        if (hasUpgrade)
+        if (baseAlteration?["RarityUpRecipe"] is JsonObject rarityUpRecipe)
         {
-            string tierUpAlteration = baseAlteration[..^1] + (tier + 1);
-            optionalPerkEntries[0].SetPerkAlteration(tierUpAlteration, true);
-            optionalPerkEntries[0].Visible = true;
-            tierUpSeparator.Visible = true;
+            string perkUpAlteration = rarityUpRecipe["Result"].ToString();
+            perkUpEntry.SetPerkAlteration(perkUpAlteration, true);
+            perkUpEntry.SetInteractable(currentItem?.profile?.account == GameAccount.activeAccount || currentItem?.profile?.account == null);
+            perkUpArea.Visible = true;
         }
         else
-        {
-            optionalPerkEntries[0].Visible = false;
-            tierUpSeparator.Visible = false;
-        }
+            perkUpArea.Visible = false;
 
         for (int i = 0; i < possibilities.Length; i++)
         {
             string perk = possibilities[i];
-            if (tier > 0)
-                perk = perk[..^1] + tier;
-            else if (index != 5 || isTrap)
-                perk = perk[..^1] + 5;
 
-            if (perk == baseAlteration)
+            if (perk == baseAlteration?.TemplateId)
             {
-                optionalPerkEntries[i + 1].Visible = false;
+                reperkEntries[i].Visible = false;
                 continue;
             }
 
-            optionalPerkEntries[i + 1].SetPerkAlteration(perk, true, index == 5 && !isTrap);
-            optionalPerkEntries[i + 1].Visible = true;
+            reperkEntries[i].SetPerkAlteration(perk, true, i + 1);
+            reperkEntries[i].SetInteractable(currentItem?.profile?.account == GameAccount.activeAccount || currentItem?.profile?.account == null);
+            reperkEntries[i].Visible = true;
         }
-        if(index == 5 && !isTrap)
-            optionalPerkEntries[possibilities.Length].Visible = false;
-        for (int i = possibilities.Length; i < optionalPerkEntries.Length-1; i++)
+        //if(index == 5 && !isTrap)
+        //    reperkEntries[possibilities.Length].Visible = false;
+        for (int i = possibilities.Length; i < reperkEntries.Length; i++)
         {
-            optionalPerkEntries[i+1].Visible = false;
+            reperkEntries[i].Visible = false;
         }
 
         //reset cost visuals
         selectedReplacementPerk = null;
-        for (int i = 0; i < reperkCostEntries.Length; i++)
-        {
-            reperkCostEntries[i].Visible = false;
-        }
-        reperkApplyButton.Visible = false;
+        //for (int i = 0; i < reperkCostEntries.Length; i++)
+        //{
+        //    reperkCostEntries[i].Visible = false;
+        //}
+        perkApplyButton.Visible = false;
 
         if (wasOpen)
             return;
@@ -283,9 +273,9 @@ public partial class PerkViewer : Control
     }
 
     string selectedReplacementPerk;
-    public async void SelectReplacementPerk(string replacementId, int replacementIndex)
+    public void SelectReplacementPerk(string replacementId, int replacementIndex)
     {
-        if (linkedItem is null)
+        if (currentItem.profile is null)
         {
             activePerks[selectedPerkIndex] = replacementId;
             RefreshActivePerks();
@@ -298,45 +288,42 @@ public partial class PerkViewer : Control
         selectedReplacementPerk = replacementId;
 
         JsonObject costs = null;
-        if (selectedPerkIndex == 6)
+        if (replacementIndex == 0)
         {
-            costs = reperkCosts["core"].AsObject();
-        }
-        else if (replacementIndex==0)
-        {
-            costs = reperkCosts["upgrades"][selectedPerkTier-1].AsObject();
+
         }
         else
         {
-            var elementalCheck = reperkCosts["elemental"].AsObject().FirstOrDefault(kvp => selectedReplacementPerk.Contains(kvp.Key));
-            if (elementalCheck.Value is not null)
-                costs = elementalCheck.Value.AsObject();
+
         }
         costs ??= reperkCosts["generic"].AsObject();
-        bool allCostsMet = true;
+        bool allCostsMet = false;
         for (int i = 0; i < costs.Count; i++)
         {
             var costItemEntry = costs.ElementAt(i);
-            BanjoAssets.TryGetTemplate(costItemEntry.Key, out var costItem);
+            var costItem = GameItemTemplate.Get(costItemEntry.Key);
             int requiredAmount = costItemEntry.Value.GetValue<int>();
-            var existingItem = (await ProfileRequests.GetProfileItems(FnProfileTypes.AccountItems, costItemEntry.Key)).FirstOrDefault();
-            int existingAmount = existingItem.Value?["quantity"].GetValue<int>() ?? 0;
+            //can safely assume that this is the AccountItem profile, and that it has been queried
+            var existingItem = currentItem.profile.GetTemplateItems(costItemEntry.Key).FirstOrDefault();
+            int existingAmount = existingItem?.quantity ?? 0;
             if (existingAmount < requiredAmount)
                 allCostsMet = false;
-            reperkCostEntries[i].SetItemData(existingItem.Value?.AsObject() ?? costItem.CreateInstanceOfItem(0));
-            reperkCostEntries[i].Visible = true;
+            //reperkCostEntries[i].SetItem(existingItem ?? costItem.CreateInstance(0));
+            //reperkCostEntries[i].Visible = true;
         }
-        for (int i = costs.Count; i < reperkCostEntries.Length; i++)
-        {
-            reperkCostEntries[i].Visible = false;
-        }
-        reperkApplyButton.Visible = allCostsMet && linkedItem is not null && selectedPerkLocked;
+        //for (int i = costs.Count; i < reperkCostEntries.Length; i++)
+        //{
+        //    reperkCostEntries[i].Visible = false;
+        //}
+        perkApplyButton.Visible = !selectedPerkLocked;
+        // perma disable for now
+        perkApplyButton.Disabled = true;
     }
 
     public void ApplyReplacementPerk()
     {
         GD.Print("applying perk: " + selectedReplacementPerk);
-        if (linkedItem is not null && selectedReplacementPerk != null)
+        if (currentItem.profile is not null && selectedReplacementPerk != null)
         {
             //await profile request
         }

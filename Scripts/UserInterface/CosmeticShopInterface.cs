@@ -1,9 +1,7 @@
 using Godot;
-using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -11,8 +9,6 @@ public partial class CosmeticShopInterface : Control
 {
     [Export]
     Button sacButton;
-    [Export]
-    SplitContainer splitContainer;
     [Export]
     ScrollContainer verticalScrollBox;
     [Export]
@@ -32,9 +28,9 @@ public partial class CosmeticShopInterface : Control
     PackedScene shopEntryScene;
     [ExportGroup("Filter Bar")]
     [Export]
-    Control filterBlocker;
+    Control navToggle;
     [Export]
-    CheckButton simpleShopMode;
+    Control filterBlocker;
     [Export]
     int simpleOpsPerFrame = 30;
     [Export]
@@ -44,9 +40,9 @@ public partial class CosmeticShopInterface : Control
     [Export]
     CheckButton includeDiscountBundles;
     [Export(PropertyHint.ArrayType)]
-    CheckButton[] newOrOldFilters = System.Array.Empty<CheckButton>();
+    CheckButton[] newOrOldFilters = Array.Empty<CheckButton>();
     [Export(PropertyHint.ArrayType)]
-    CheckButton[] typeFilters = System.Array.Empty<CheckButton>();
+    CheckButton[] typeFilters = Array.Empty<CheckButton>();
     [Export]
     Button resetTypeFilters;
 
@@ -58,13 +54,12 @@ public partial class CosmeticShopInterface : Control
             {
                 //load shop
                 await LoadShop();
-                CurrencyHighlight.Instance.SetCurrencyType("AccountResource:eventcurrency_scaling");
+                CurrencyHighlight.Instance.SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
             }
         };
 
         RefreshTimerController.OnHourChanged += OnHourChanged;
-        navigationPane.ButtonClicked += OnNavButton;
-        navigationPane.CellSelected += OnNavCell;
+        navigationPane.CellSelected += OnNavSelected;
         sacButton.Pressed += OpenSACPrompt;
 
         requireAddedToday.Pressed += ApplyFilters;
@@ -78,20 +73,39 @@ public partial class CosmeticShopInterface : Control
         {
             button.Pressed += ApplyFilters;
         }
-        //simpleShopMode.ButtonPressed = AppConfig.Get("item_shop", "simple_cosmetics", false);
-        simpleShopMode.Pressed += async () =>
-        {
-           // AppConfig.Set("item_shop", "simple_cosmetics", simpleShopMode.ButtonPressed);
-            await LoadShop(true);
-        };
         resetTypeFilters.Pressed += () =>
         {
             foreach (var item in typeFilters)
             {
-                item.ButtonPressed = false;
+                item.ButtonPressed = Input.IsKeyPressed(Key.Shift);
             }
             ApplyFilters();
         };
+        AppConfig.OnConfigChanged += OnConfigChanged;
+        navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true) && !AppConfig.Get("item_shop", "simple_cosmetics", false);
+        requireAddedToday.ButtonPressed = AppConfig.Get("item_shop", "auto_filter_new", false);
+    }
+
+    private void OnConfigChanged(string section, string key, JsonValue value)
+    {
+        if (section != "item_shop")
+            return;
+        if(key=="simple_cosmetics")
+        {
+            if (AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
+                navContainer.Visible = false;
+            else
+                navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true);
+
+            activeOffers.Clear();
+            if (IsVisibleInTree())
+                LoadShop(true).StartTask();
+        }
+        if (key == "navigation_visible")
+        {
+            if (!AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
+                navContainer.Visible = value.GetValue<bool>();
+        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -114,19 +128,24 @@ public partial class CosmeticShopInterface : Control
     async void OpenSACPrompt()
     {
         string subtext = GD.Randf() > 0.85f ?
-            "Your selected code normally disappears after 2 weeks, but PegLeg can automatically re-select the code on launch!" :
+            "By enabling the \"Auto-apply creator code\" setting, PegLeg can automatically refresh the duration of your selected code when you load the shop!" :
             "Whoever you choose to support will recieve 5% of the cost of any Real-Money or VBuck purchases you make";
-        var response = await GenericLineEditWindow.OpenLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
-        if (response is null)
+        var newCode = await GenericLineEditWindow.ShowLineEdit("Support A Creator!", subtext, sacButton.Text, "Who do you want to support?");
+        if (newCode is null)
             return;
 
-        LoadingOverlay.AddLoadingKey("setSAC");
-        await ProfileRequests.SetSACCode(response);
-        sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : (await ProfileRequests.GetSACCode());
-        LoadingOverlay.RemoveLoadingKey("setSAC");
+        using var _ = LoadingOverlay.CreateToken();
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        await account.SetSACCode(newCode);
+        sacButton.Text = await account.IsSACExpired() ? "None" : (await account.GetSACCode());
+
     }
 
-    private void OnNavCell()
+    private void OnNavSelected()
     {
         TreeItem item = navigationPane.GetSelected();
         if (item.GetChildCount() > 0 && item.GetParent() is not null)
@@ -151,12 +170,12 @@ public partial class CosmeticShopInterface : Control
         scrollTween.TweenProperty(verticalScrollBox, "scroll_vertical", scrollLevel, 0.3f);
     }
 
-    private void OnNavButton(TreeItem item, long column, long id, long mouseButtonIndex)
-    {
-        int scrollLevel = (int)((Control)item.GetMetadata(1)).Position.Y;
-        var scrollTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Expo);
-        scrollTween.TweenProperty(verticalScrollBox, "scroll_vertical", scrollLevel, 0.3f);
-    }
+    //private void OnNavButton(TreeItem item, long column, long id, long mouseButtonIndex)
+    //{
+    //    int scrollLevel = (int)((Control)item.GetMetadata(1)).Position.Y;
+    //    var scrollTween = GetTree().CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Expo);
+    //    scrollTween.TweenProperty(verticalScrollBox, "scroll_vertical", scrollLevel, 0.3f);
+    //}
 
 
     private void UpdateShopOfferResourceLoading()
@@ -194,16 +213,20 @@ public partial class CosmeticShopInterface : Control
 
     public async Task LoadShop(bool force = false)
     {
-        if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0) || !await LoginRequests.TryLogin())
+        if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0))
             return;
 
-        string currentSACCode = await ProfileRequests.GetSACCode(false);
-        if (await ProfileRequests.GetSACTime() > 1 && AppConfig.Get("automation", "creatorcode", false))
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        string currentSACCode = await account.GetSACCode(false);
+        if (await account.GetSACTime() > 1 && AppConfig.Get("automation", "creatorcode", false))
         {
             //GD.Print(currentSACCode);
-            await ProfileRequests.SetSACCode(currentSACCode);
+            await account.SetSACCode(currentSACCode);
         }
-        sacButton.Text = await ProfileRequests.IsSACExpired() ? "None" : currentSACCode;
+        sacButton.Text = await account.IsSACExpired() ? "None" : currentSACCode;
 
         isLoadingShop = true;
         filterBlocker.Visible = true;
@@ -223,11 +246,11 @@ public partial class CosmeticShopInterface : Control
         {
             entryChild.QueueFree();
         }
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
 
         PrepareFilters();
 
-        if (simpleShopMode.ButtonPressed)
+        if (AppConfig.Get("item_shop", "simple_cosmetics", false))
         {
             await GenerateSimpleShop(cosmeticShop);
         }
@@ -236,19 +259,17 @@ public partial class CosmeticShopInterface : Control
             await GenerateComplexShop(cosmeticShop);
         }
 
-        await this.WaitForFrame();
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         CatalogRequests.CleanCosmeticResourceCache();
 
         isLoadingShop = false;
         filterBlocker.Visible = false;
     }
 
-    
     async Task GenerateSimpleShop(JsonObject cosmeticShop)
     {
         navContainer.Visible = false;
-        splitContainer.Collapsed = true;
+        navToggle.Visible = false;
         int opCount = 0;
         foreach (var category in cosmeticShop)
         {
@@ -267,7 +288,7 @@ public partial class CosmeticShopInterface : Control
                         if (opCount > simpleOpsPerFrame)
                         {
                             UpdateShopOfferResourceLoading();
-                            await this.WaitForFrame();
+                            await Helpers.WaitForFrame();
                             opCount = 0;
                         }
                         opCount++;
@@ -279,8 +300,8 @@ public partial class CosmeticShopInterface : Control
 
     async Task GenerateComplexShop(JsonObject cosmeticShop)
     {
-        navContainer.Visible = true;
-        splitContainer.Collapsed = false;
+        navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true);
+        navToggle.Visible = true;
         var navRoot = navigationPane.CreateItem();
         List<CosmeticShopRow> rowsToPopulate = new();
         foreach (var category in cosmeticShop)
@@ -301,8 +322,13 @@ public partial class CosmeticShopInterface : Control
                 var header = shopHeaderScene.Instantiate<Control>();
                 firstHeader ??= header;
                 pageParent.AddChild(header);
-                if (header.FindChild("HeaderLabel", true) is Label headerLabel)
+                if (header.GetNode("%HeaderLabel") is Label headerLabel)
                     headerLabel.Text = section.Key;
+                if (section.Key == "Jam Tracks" && header.GetNode("%JamTrackViewer") is Button jamTrackBtn)
+                {
+                    jamTrackBtn.Pressed += OpenJamTracks;
+                    jamTrackBtn.Visible = true;
+                }
                 //navSec.AddButton(1, navButtonTexture);
                 navSection.SetMetadata(0, header);
                 List<CosmeticShopRow> pageRows = new();
@@ -322,7 +348,7 @@ public partial class CosmeticShopInterface : Control
                 navCat.SetMetadata(0, firstHeader);
             }
         }
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         foreach (var page in activePages)
         {
             page.pageHeader.Visible = false;
@@ -332,10 +358,13 @@ public partial class CosmeticShopInterface : Control
                 UpdateShopOfferResourceLoading();
                 if (row.FilterPage(IsValidEntry))
                     page.pageHeader.Visible = true;
-                await this.WaitForFrame();
+                await Helpers.WaitForFrame();
             }
         }
     }
+
+    void OpenJamTracks() => OS.ShellOpen("https://www.fortnite.com/item-shop/jam-tracks");
+
     void PrepareFilters()
     {
         newOrOldFilterValue = 2;
@@ -353,14 +382,14 @@ public partial class CosmeticShopInterface : Control
             typeMasks[i] = typeFilters[i].ButtonPressed;
         }
     }
+
     void ApplyFilters()
     {
         if (isLoadingShop)
             return;
 
         PrepareFilters();
-        resetTypeFilters.Disabled = typeFilters.All(b => !b.ButtonPressed);
-        if (simpleShopMode.ButtonPressed)
+        if (AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
         {
             foreach (var entry in activeOffers)
             {
@@ -385,29 +414,34 @@ public partial class CosmeticShopInterface : Control
     bool[] typeMasks;
     static readonly string[] filterTypes = new string[]
     {
-        "Outfit",
-        "Character",
-        "Backpack",
-        "Back Bling",
-        "Pickaxe",
-        "Glider",
-        "Contrail",
-        "Emote",
-        "Wrap",
-        "Music Pack",
-        "Jam Track",
-        "Guitar",
-        "Microphone",
-        "Drums",
-        "Bass",
-        "Keytar",
-        "Wheels",
-        "Car Body",
-        "Body",
-        "Skin",
-        "Decal",
-        "Boost",
-        "Trail",
+        "AthenaCharacter",
+        "AthenaCharacter",
+        "AthenaBackpack",
+        "AthenaBackpack",
+        "CosmeticShoes",
+        "AthenaPickaxe",
+        "AthenaGlider",
+        "AthenaSkyDiveContrail",
+        "AthenaDance",
+        "AthenaSpray",
+        "AthenaItemWrap",
+        "AthenaMusicPack",
+        "SparksSong",
+        "SparksGuitar",
+        "SparksMic",
+        "SparksDrum",
+        "SparksBass",
+        "SparksKeyboard",
+        "VehicleCosmetics_Wheel",
+        "VehicleCosmetics_Wheel",
+        "VehicleCosmetics_Body",
+        "VehicleCosmetics_Body",
+        "VehicleCosmetics_Skin",
+        "VehicleCosmetics_Skin",
+        "VehicleCosmetics_Booster",
+        "VehicleCosmetics_Booster",
+        "VehicleCosmetics_DriftTrail",
+        "CosmeticVariantToken",
     };
 
     static bool MatchAnyFilterIndex(List<string> toCheck, int startIndex, int length = 1)
@@ -452,21 +486,21 @@ public partial class CosmeticShopInterface : Control
         var types = entry.itemTypes;
 
 
-        if (typeMasks[0] && MatchAnyFilterIndex(types, 0, 4))
+        if (typeMasks[0] && MatchAnyFilterIndex(types, 0, 5))
             return true;
-        if (typeMasks[1] && MatchAnyFilterIndex(types, 4))
+        if (typeMasks[1] && MatchAnyFilterIndex(types, 5))
             return true;
-        if (typeMasks[2] && MatchAnyFilterIndex(types, 5, 2))
+        if (typeMasks[2] && MatchAnyFilterIndex(types, 6, 2))
             return true;
-        if (typeMasks[3] && MatchAnyFilterIndex(types, 7))
+        if (typeMasks[3] && MatchAnyFilterIndex(types, 8, 2))
             return true;
-        if (typeMasks[4] && MatchAnyFilterIndex(types, 8))
+        if (typeMasks[4] && MatchAnyFilterIndex(types, 10))
             return true;
-        if (typeMasks[5] && MatchAnyFilterIndex(types, 9, 2))
+        if (typeMasks[5] && MatchAnyFilterIndex(types, 11, 2))
             return true;
-        if (typeMasks[6] && MatchAnyFilterIndex(types, 11, 5))
+        if (typeMasks[6] && MatchAnyFilterIndex(types, 13, 5))
             return true;
-        if (typeMasks[7] && MatchAnyFilterIndex(types, 16, 7))
+        if (typeMasks[7] && MatchAnyFilterIndex(types, 18, 10))
             return true;
         if (typeMasks[8] && !MatchAnyFilter(types))
             return true;
@@ -622,11 +656,11 @@ public class CosmeticShopOfferData
             isVeryOld = lastSeenDaysAgo > 1000;
 
             if (isRecentlyNew && isAddedToday)
-                bonusText = " # NEW";
+                bonusText = "NEW TODAY";
             else if (isRecentlyNew)
                 bonusText = "NEW";
             else if (isAddedToday)
-                bonusText = " # ";
+                bonusText = "Re-Added";
         }
         else
         {
@@ -634,27 +668,29 @@ public class CosmeticShopOfferData
         }
     }
 
+    //not worth implementing here, cosmetics will be moving into GameOffer soon
+    //just wanted to comment this out to prevent compiler warnings about a synchronous async method
     bool ownershipLoadStarted;
     public bool ownershipLoadComplete { get; private set; }
     public event Action OnOwnershipLoaded;
-    public async void LoadOwnership()
-    {
-        if (ownershipLoadStarted)
-        {
-            if (ownershipLoadComplete)
-                OnOwnershipLoaded?.Invoke();
-            return;
-        }
-        ownershipLoadStarted = true;
-        if (isDiscountBundle)
-        {
-            //TODO: determine discount amount based on dynamic bundle data
-            discountAmount = price - entryData["finalPrice"].GetValue<int>();
-        }
-        isOwned = false;
-        OnOwnershipLoaded?.Invoke();
-        ownershipLoadComplete = true;
-    }
+    //public async void LoadOwnership()
+    //{
+    //    if (ownershipLoadStarted)
+    //    {
+    //        if (ownershipLoadComplete)
+    //            OnOwnershipLoaded?.Invoke();
+    //        return;
+    //    }
+    //    ownershipLoadStarted = true;
+    //    if (isDiscountBundle)
+    //    {
+    //        //TODO: determine discount amount based on dynamic bundle data
+    //        discountAmount = price - entryData["finalPrice"].GetValue<int>();
+    //    }
+    //    isOwned = false;
+    //    OnOwnershipLoaded?.Invoke();
+    //    ownershipLoadComplete = true;
+    //}
 
     bool resourceLoadStarted;
     public bool resourceLoadComplete { get; private set; }

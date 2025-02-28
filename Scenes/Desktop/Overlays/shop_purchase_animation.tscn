@@ -1,11 +1,11 @@
 [gd_scene load_steps=16 format=3 uid="uid://dpd06j33s360w"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_f51aj"]
+[ext_resource type="AudioStream" uid="uid://db1iimlt7vmi7" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.ogg" id="2_hcda8"]
 [ext_resource type="Script" path="res://Scripts/Overlays/ShopPurchaseAnimation.cs" id="2_jxg4g"]
 [ext_resource type="Texture2D" uid="uid://by27usoarfre0" path="res://Images/InterfaceIcons/PegLegShoppingCartInside.png" id="2_x56qt"]
-[ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/Desktop/Overlays/shop_purchase_item_element.tscn" id="3_h11w1"]
+[ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/GameItemEntry/shop_purchase_anim_item_element.tscn" id="3_h11w1"]
 [ext_resource type="Texture2D" uid="uid://dgyw7mbhfodhy" path="res://Images/InterfaceIcons/PegLegShoppingCart.png" id="4_0gyrh"]
-[ext_resource type="AudioStream" uid="uid://bu3vc152hx7ks" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.wav" id="4_5c6ij"]
 [ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="5_8k3hh"]
 [ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="6_1aa5w"]
 [ext_resource type="Shader" path="res://Shaders/AdvancedLabel.gdshader" id="6_abafb"]
@@ -21,11 +21,13 @@ shader_parameter/rotationSpeed = 0.5
 shader = ExtResource("7_qlxkn")
 shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/ControlSizeScale = Vector2(0.66, 1)
+shader_parameter/Expo = true
+shader_parameter/AlphaStart = 0.0
 shader_parameter/CornerRadius = 100.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u3030"]
 shader = ExtResource("6_abafb")
-shader_parameter/ControlSize = Vector2(388, 100)
+shader_parameter/ControlSize = Vector2(283, 75)
 shader_parameter/PixelsPerLine = 200.0
 shader_parameter/debug = false
 shader_parameter/fillColor = Color(1, 1, 1, 1)
@@ -37,12 +39,14 @@ shader_parameter/gradientTo = Color(1, 1, 0.588235, 1)
 shader_parameter/gradientHorizontal = null
 
 [node name="ShopPurchaseAnimation" instance=ExtResource("1_f51aj")]
+offset_left = 0.0
+offset_right = 0.0
 
 [node name="CloseBtn" parent="." index="1"]
 visible = false
 
 [node name="PurchaseSound" type="AudioStreamPlayer" parent="Control/WindowContents" index="0"]
-stream = ExtResource("4_5c6ij")
+stream = ExtResource("2_hcda8")
 max_polyphony = 3
 bus = &"SFX"
 
@@ -232,7 +236,7 @@ theme_override_constants/line_spacing = 12
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 96
+theme_override_font_sizes/font_size = 70
 text = "Purchase"
 horizontal_alignment = 1
 script = ExtResource("7_gi68h")
@@ -247,7 +251,7 @@ theme_override_constants/line_spacing = 12
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 10
-theme_override_font_sizes/font_size = 96
+theme_override_font_sizes/font_size = 70
 text = "Complete"
 horizontal_alignment = 1
 script = ExtResource("7_gi68h")

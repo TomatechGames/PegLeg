@@ -23,6 +23,7 @@ multiselectButtons = NodePath("Control/MarginContainer/VBoxContainer/Multiselect
 confirmButton = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons/Confirm")
 skipButton = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons/Skip")
 windowControl = NodePath("Control")
+isUserClosable = true
 
 [node name="Control" parent="." index="2"]
 anchors_preset = 15
@@ -121,6 +122,7 @@ spacing = Vector2(10, 10)
 layout_mode = 2
 
 [node name="MultiselectButtons" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer" index="2"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_right = 3

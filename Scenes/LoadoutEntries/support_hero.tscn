@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="1_3peps"]
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="1_23qqt"]
-[ext_resource type="Script" path="res://Scripts/ItemTierController.cs" id="2_syipb"]
+[ext_resource type="Script" path="res://Scripts/ItemTierDisplay.cs" id="2_syipb"]
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="2_vb4bp"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="3_38f6u"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="3_l5ld5"]

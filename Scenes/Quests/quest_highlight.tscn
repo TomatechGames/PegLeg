@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=3 uid="uid://31ck1j8euqq7"]
+
+[ext_resource type="Script" path="res://Scripts/Quests/QuestHighlight.cs" id="1_hvd2p"]
+[ext_resource type="Texture2D" uid="uid://c0n3kv5onb5c2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Hero-PromotionCurrency-L.png" id="1_pef3f"]
+[ext_resource type="Texture2D" uid="uid://dlbasrvn2ilmd" path="res://Images/TextureResources/progress-wheel.tres" id="2_7husn"]
+[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="3_k5n5p"]
+
+[node name="QuestHighlight" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 128)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+script = ExtResource("1_hvd2p")
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="Control" parent="MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2/MarginContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.17
+anchor_top = 0.17
+anchor_right = 0.83
+anchor_bottom = 0.83
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_pef3f")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer2"]
+self_modulate = Color(0.314316, 0.314316, 0.314316, 1)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_7husn")
+expand_mode = 3
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="MarginContainer2"]
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 2
+mouse_filter = 2
+max_value = 10.0
+value = 6.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = ExtResource("2_7husn")
+
+[node name="Responsive Button Circle" parent="." instance=ExtResource("3_k5n5p")]
+layout_mode = 2
+useHold = true
+baseLineSize = 0
+
+[connection signal="ColorChanged" from="." to="MarginContainer2/TextureProgressBar" method="set_self_modulate"]
+[connection signal="IconChanged" from="." to="MarginContainer2/MarginContainer/TextureRect" method="set_texture"]
+[connection signal="TooltipChanged" from="." to="Responsive Button Circle" method="set_tooltip_text"]

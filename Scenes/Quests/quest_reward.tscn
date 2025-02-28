@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://ud6lqq36e5me"]
+
+[ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="1_klwx7"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="2_34uyv"]
+
+[node name="QuestReward" type="MarginContainer"]
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_klwx7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RewardEntryHorizontal" parent="MarginContainer/HBoxContainer" instance=ExtResource("2_34uyv")]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Reward Name Here"
+
+[connection signal="NameChanged" from="MarginContainer/HBoxContainer/RewardEntryHorizontal" to="MarginContainer/HBoxContainer/Label" method="set_text"]

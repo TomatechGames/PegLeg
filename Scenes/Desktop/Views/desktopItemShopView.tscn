@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="3_l6e2c"]
 [ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_xaiqb"]
 
-[node name="Item Shop" type="VBoxContainer" node_paths=PackedStringArray("highlightParent", "regularParent")]
+[node name="Item Shop" type="VBoxContainer" node_paths=PackedStringArray("shopOfferEntryParent")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,10 +14,8 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_kwhsc")
-regularShopElement = ExtResource("2_g1chj")
-highlightShopElement = ExtResource("2_g1chj")
-highlightParent = NodePath("ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
-regularParent = NodePath("ScrollContainer/MarginContainer/HBoxContainer/RegularItems")
+shopOfferEntryScene = ExtResource("2_g1chj")
+shopOfferEntryParent = NodePath("ScrollContainer/MarginContainer/HBoxContainer/ShopItems")
 
 [node name="Timer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -70,18 +68,7 @@ size_flags_vertical = 4
 theme_override_constants/separation = 5
 alignment = 1
 
-[node name="HighlightItems" type="Container" parent="ScrollContainer/MarginContainer/HBoxContainer"]
-visible = false
-layout_mode = 2
-script = ExtResource("4_xaiqb")
-minCols = 2
-spacing = Vector2(5, 5)
-
-[node name="HSeparator" type="HSeparator" parent="ScrollContainer/MarginContainer/HBoxContainer"]
-visible = false
-layout_mode = 2
-
-[node name="RegularItems" type="Container" parent="ScrollContainer/MarginContainer/HBoxContainer"]
+[node name="ShopItems" type="Container" parent="ScrollContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 script = ExtResource("4_xaiqb")
 minCols = 2

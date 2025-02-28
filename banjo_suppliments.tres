@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="BanjoSuppliments" load_steps=36 format=3 uid="uid://b54qi542h2qhh"]
+[gd_resource type="Resource" script_class="BanjoSuppliments" load_steps=72 format=3 uid="uid://b54qi542h2qhh"]
 
 [ext_resource type="Texture2D" uid="uid://dyjbukdhiuqef" path="res://Images/BanjoSuppliments/AmmoIcons/T-Icon-Shell-128.png" id="1_85x12"]
 [ext_resource type="Script" path="res://Scripts/CustomResources/BanjoSuppliments.cs" id="1_jb5ck"]
@@ -8,36 +8,110 @@
 [ext_resource type="Texture2D" uid="uid://c0axxyd1tcg88" path="res://Images/BanjoSuppliments/AmmoIcons/T-Icon-Special-128.png" id="5_k6hb1"]
 [ext_resource type="Texture2D" uid="uid://buwwm68xfwe3" path="res://Images/BanjoSuppliments/AmmoIcons/T-Icon-Cell-128.png" id="6_fm2f3"]
 [ext_resource type="Texture2D" uid="uid://c14xo8fbe7lbf" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Adventurer-64.png" id="7_fb7a3"]
+[ext_resource type="Texture2D" uid="uid://hljvhk8gc1lw" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-128.png" id="7_uquyh"]
+[ext_resource type="Texture2D" uid="uid://bsopcpbc1h78o" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-Leader-CARD.png" id="8_8xgxt"]
 [ext_resource type="Texture2D" uid="uid://773xh3crsgff" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Analytical-64.png" id="8_l8671"]
+[ext_resource type="Texture2D" uid="uid://b50pdjevad7c6" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Traps-CARD.png" id="9_6bbkx"]
 [ext_resource type="Texture2D" uid="uid://drdfqwfg3d6jn" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Competitive-64.png" id="9_wbt7l"]
 [ext_resource type="Texture2D" uid="uid://bdgy576jvmfi2" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Cooperative-64.png" id="10_gm0x3"]
+[ext_resource type="Texture2D" uid="uid://qds412jx7jxo" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Defenders_-CARD.png" id="10_p46sy"]
+[ext_resource type="Texture2D" uid="uid://cmn4da6rguckl" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Hero-Soldier-CARD.png" id="11_8rajf"]
 [ext_resource type="Texture2D" uid="uid://dpn523odmb7b3" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Curious-64.png" id="11_kdhia"]
+[ext_resource type="Texture2D" uid="uid://txjswxofat0l" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Hero-Constructor-CARD.png" id="12_kylh2"]
 [ext_resource type="Texture2D" uid="uid://dxk4o1rhltu3m" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Dependable-64.png" id="12_s4fto"]
+[ext_resource type="Texture2D" uid="uid://c6ttnp784q521" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Hero-Ninja-CARD.png" id="13_1bbfu"]
 [ext_resource type="Texture2D" uid="uid://brdmm333hwqrp" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Dreamer-64.png" id="13_tccle"]
 [ext_resource type="Texture2D" uid="uid://cmq64hqru2uuv" path="res://Images/BanjoSuppliments/PersonalityIcons/T-Icon-Pragmatic-64.png" id="14_5taq3"]
+[ext_resource type="Texture2D" uid="uid://diu2yl6mevrnb" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Hero-Outlander-CARD.png" id="14_cbx4r"]
+[ext_resource type="Texture2D" uid="uid://du0bur6rij2i7" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Assault-CARD.png" id="15_bfwst"]
 [ext_resource type="Texture2D" uid="uid://bt81euuahx40p" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Hospital-128.png" id="15_gjcd8"]
 [ext_resource type="Texture2D" uid="uid://ckpmji3cw6g4v" path="res://Images/BanjoSuppliments/SetBonusIcons/icon_alteration_trapdamage1-128.png" id="15_pkl1i"]
 [ext_resource type="Texture2D" uid="uid://dilgei6spgx21" path="res://Images/BanjoSuppliments/SetBonusIcons/icon_alteration_rangeddamage1-64.png" id="16_2xuvk"]
+[ext_resource type="Texture2D" uid="uid://csmp5p30r5m5y" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-SMG-CARD.png" id="16_k60gw"]
 [ext_resource type="Texture2D" uid="uid://dcwgvtn2kn1pu" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Gym-128.png" id="16_wye61"]
 [ext_resource type="Texture2D" uid="uid://b2yrws3fr4lqu" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Firing-Range-128.png" id="17_3a5ji"]
 [ext_resource type="Texture2D" uid="uid://08ifogyw5mry" path="res://Images/BanjoSuppliments/SetBonusIcons/icon_alteration_meleedamage1-64.png" id="17_dwguq"]
+[ext_resource type="Texture2D" uid="uid://c808sg2s5ss6y" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Pistol-CARD.png" id="17_l12ld"]
 [ext_resource type="Texture2D" uid="uid://4d7mmswhlxnv" path="res://Images/BanjoSuppliments/SetBonusIcons/icon_alteration_trapdurability1-128.png" id="18_1dmhy"]
+[ext_resource type="Texture2D" uid="uid://c0qw4qjf6mc0i" path="res://Images/BanjoSuppliments/TypeIcons/T-Shotgun-TITLE.png" id="18_am7mj"]
 [ext_resource type="Texture2D" uid="uid://b1tdadk46txxp" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Combat-Academy-128.png" id="18_fml83"]
 [ext_resource type="Texture2D" uid="uid://ce35dut8a2ush" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Explorers-Guild-128.png" id="19_88qyy"]
 [ext_resource type="Texture2D" uid="uid://dtqw0skxiimxo" path="res://Images/BanjoSuppliments/SetBonusIcons/T-Icon-Tech-128.png" id="19_nv50p"]
+[ext_resource type="Texture2D" uid="uid://cusyi1kr77sfv" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Explosive-CARD.png" id="19_xjyrq"]
 [ext_resource type="Texture2D" uid="uid://miw1whe7y5a8" path="res://Images/BanjoSuppliments/SetBonusIcons/T-Icon-Fortitude-128.png" id="20_576gh"]
 [ext_resource type="Texture2D" uid="uid://jm3hs6dhp1e3" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Drone-Manufactory-128.png" id="20_l8sqg"]
+[ext_resource type="Texture2D" uid="uid://bx406k35ibdwh" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Sniper-CARD.png" id="20_w68ni"]
 [ext_resource type="Texture2D" uid="uid://biaij7pgktfqf" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Engineering-Workshop-128.png" id="21_cahnh"]
 [ext_resource type="Texture2D" uid="uid://bgjkyrcgq8st5" path="res://Images/BanjoSuppliments/SetBonusIcons/T-Icon-Defense-128.png" id="21_dgjqk"]
+[ext_resource type="Texture2D" uid="uid://0uqydby64peq" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Axe-CARD.png" id="21_ingvn"]
 [ext_resource type="Texture2D" uid="uid://cvsx41ho5svlp" path="res://Images/BanjoSuppliments/SurvivorSquadIcons/T-Icon-Trap-Workshop-128.png" id="22_egkme"]
 [ext_resource type="Texture2D" uid="uid://ci5xktxr3q4re" path="res://Images/BanjoSuppliments/SetBonusIcons/T-Icon-HealthBattery-64.png" id="22_i57hf"]
+[ext_resource type="Texture2D" uid="uid://c22eb33bkumhd" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Blunt-CARD.png" id="22_oa0pt"]
+[ext_resource type="Texture2D" uid="uid://b65efqac3f5qt" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Scythe-CARD.png" id="23_5bs8s"]
 [ext_resource type="Texture2D" uid="uid://cvwtk44p8tt24" path="res://Images/BanjoSuppliments/FORTIcons/T-Icon-Fortitude-128.png" id="23_jn0cw"]
 [ext_resource type="Texture2D" uid="uid://becuvle4r3ykw" path="res://Images/BanjoSuppliments/FORTIcons/T-Icon-Offense-128.png" id="24_56tcb"]
+[ext_resource type="Texture2D" uid="uid://cnbcvwq874i0f" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Spear-CARD.png" id="24_ggfbo"]
 [ext_resource type="Texture2D" uid="uid://hvyy4b23ntuf" path="res://Images/BanjoSuppliments/FORTIcons/T-Icon-Defense-128.png" id="24_jsxyy"]
+[ext_resource type="Texture2D" uid="uid://bgx5oqnyjdldq" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Sword-CARD.png" id="25_3nq7i"]
 [ext_resource type="Texture2D" uid="uid://bjx3s01dyryrx" path="res://Images/BanjoSuppliments/FORTIcons/T-Icon-Tech-128.png" id="25_vkikc"]
+[ext_resource type="Texture2D" uid="uid://hjsiyensomyq" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Club-128.png" id="26_ihgaw"]
+[ext_resource type="Texture2D" uid="uid://b184ua34g2ad6" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-Doctor-CARD.png" id="27_7hxfr"]
+[ext_resource type="Texture2D" uid="uid://owf6xty8r2v4" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-Engineer-CARD.png" id="28_3cpi2"]
+[ext_resource type="Texture2D" uid="uid://1eegjbut62hv" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-Explorer-CARD.png" id="29_c1all"]
+[ext_resource type="Texture2D" uid="uid://bt4jcte068yia" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-Gadgeteer-CARD.png" id="30_rjsk0"]
+[ext_resource type="Texture2D" uid="uid://cxwy7747xff0a" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-Inventor-CARD.png" id="31_34b3c"]
+[ext_resource type="Texture2D" uid="uid://cwixjnlpun7f8" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-MartialArtist-CARD.png" id="32_mnyy5"]
+[ext_resource type="Texture2D" uid="uid://ba0wrp1vddgxu" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-Soldier-CARD.png" id="33_xfrx5"]
+[ext_resource type="Texture2D" uid="uid://b125eev5o8a30" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Leader-Trainer-CARD.png" id="34_x47xo"]
+[ext_resource type="Texture2D" uid="uid://bpgeso3wqo87r" path="res://Images/BanjoSuppliments/TypeIcons/T-Trap-Wall-TITLE.png" id="35_qlqgu"]
+[ext_resource type="Texture2D" uid="uid://baiqsawhcp58m" path="res://Images/BanjoSuppliments/TypeIcons/T-Trap-Ceiling-TITLE.png" id="36_l0f1w"]
+[ext_resource type="Texture2D" uid="uid://dbuf04r766lk6" path="res://Images/BanjoSuppliments/TypeIcons/T-Trap-Floor-TITLE.png" id="37_uk0og"]
+[ext_resource type="Texture2D" uid="uid://bkd4881uooc7o" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-Assault-CARD.png" id="38_ldcsn"]
+[ext_resource type="Texture2D" uid="uid://cdjnypjo75464" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-Shotgun-CARD.png" id="39_5o788"]
+[ext_resource type="Texture2D" uid="uid://brhrmu43yf1qa" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-Melee-CARD.png" id="40_8h1y5"]
+[ext_resource type="Texture2D" uid="uid://bimg0dt1ksn23" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-Pistol-CARD.png" id="41_fra2r"]
+[ext_resource type="Texture2D" uid="uid://vxvm5tp77g2k" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Survivor-Sniper-CARD.png" id="42_cltrw"]
 
 [resource]
 script = ExtResource("1_jb5ck")
+ItemTypeAndSubtypeIcons = {
+"Assault": ExtResource("15_bfwst"),
+"Assault Defender": ExtResource("38_ldcsn"),
+"Axe": ExtResource("21_ingvn"),
+"Ceiling": ExtResource("36_l0f1w"),
+"Club": ExtResource("26_ihgaw"),
+"Constructor": ExtResource("12_kylh2"),
+"Defender": ExtResource("10_p46sy"),
+"Doctor": ExtResource("27_7hxfr"),
+"Engineer": ExtResource("28_3cpi2"),
+"Explorer": ExtResource("29_c1all"),
+"Explosive": ExtResource("19_xjyrq"),
+"Floor": ExtResource("37_uk0og"),
+"Gadgeteer": ExtResource("30_rjsk0"),
+"Hardware": ExtResource("22_oa0pt"),
+"Inventor": ExtResource("31_34b3c"),
+"Lead Survivor": ExtResource("8_8xgxt"),
+"Marksman": ExtResource("33_xfrx5"),
+"Martial Artist": ExtResource("32_mnyy5"),
+"Melee Defender": ExtResource("40_8h1y5"),
+"Ninja": ExtResource("13_1bbfu"),
+"Outlander": ExtResource("14_cbx4r"),
+"Pistol": ExtResource("17_l12ld"),
+"Pistol Defender": ExtResource("41_fra2r"),
+"SMG": ExtResource("16_k60gw"),
+"Scythe": ExtResource("23_5bs8s"),
+"Shotgun": ExtResource("18_am7mj"),
+"Shotgun Defender": ExtResource("39_5o788"),
+"Sniper": ExtResource("20_w68ni"),
+"Sniper Defender": ExtResource("42_cltrw"),
+"Soldier": ExtResource("11_8rajf"),
+"Spear": ExtResource("24_ggfbo"),
+"Survivor": ExtResource("7_uquyh"),
+"Sword": ExtResource("25_3nq7i"),
+"Trainer": ExtResource("34_x47xo"),
+"Trap": ExtResource("9_6bbkx"),
+"Wall": ExtResource("35_qlqgu")
+}
 AmmoIcons = {
 "Energy Cell": ExtResource("6_fm2f3"),
 "Explosive": ExtResource("5_k6hb1"),

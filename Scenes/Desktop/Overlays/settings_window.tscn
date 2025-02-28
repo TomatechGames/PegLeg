@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dt403r6613tos"]
+[gd_scene load_steps=18 format=3 uid="uid://dt403r6613tos"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/Settings/MiscSettings.cs" id="2_dybhj"]
@@ -11,6 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="8_nh2gq"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="9_yv42k"]
 [ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="12_12lms"]
+[ext_resource type="Script" path="res://Scripts/Config/ConfigTextHook.cs" id="12_ld0ka"]
+[ext_resource type="Texture2D" uid="uid://b5f6h8q50sc0x" path="res://Images/InterfaceIcons/T_UI_Checkmark.png" id="12_pwy1u"]
+[ext_resource type="Script" path="res://Scripts/Config/ConfigRangeHook.cs" id="12_v5jo8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjqpy"]
 shader = ExtResource("5_1lymk")
@@ -34,6 +37,7 @@ fill_to = Vector2(1, 1)
 metadata/_snap_enabled = true
 
 [node name="SettingsWindow" instance=ExtResource("1_p7b2a")]
+isUserClosable = true
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0"]
 anchors_preset = 8
@@ -67,6 +71,7 @@ theme_override_constants/margin_bottom = 5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer" index="0"]
 layout_mode = 2
+scroll_vertical = 100
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer" index="0"]
 layout_mode = 2
@@ -393,6 +398,7 @@ backgroundPreview = NodePath("VBoxContainer/Aspect/TextureRect")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme" index="0"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer" index="0"]
 layout_mode = 2
@@ -543,6 +549,7 @@ loginSceneFilePath = "res://Scenes/Desktop/desktopLogin.tscn"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc" index="0"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="0"]
 layout_mode = 2
@@ -575,16 +582,7 @@ layout_mode = 2
 text = "Auto-Recycle free Llama rewards"
 alignment = 2
 
-[node name="Boardered" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="5"]
-layout_direction = 3
-layout_mode = 2
-text = "Enable window boarder"
-alignment = 2
-script = ExtResource("12_12lms")
-section = "window"
-key = "boardered"
-
-[node name="AutoCreatorCode" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="6"]
+[node name="AutoCreatorCode" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="5"]
 layout_direction = 3
 layout_mode = 2
 text = "Auto-apply creator code"
@@ -593,24 +591,98 @@ script = ExtResource("12_12lms")
 section = "automation"
 key = "creatorcode"
 
-[node name="MetaDebug" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="7"]
-visible = false
+[node name="CompactCosmetics" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="6"]
+layout_direction = 3
 layout_mode = 2
-text = "Process Meta Recipes (Debug)"
+text = "Compact cosmetic shop"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "item_shop"
+key = "simple_cosmetics"
 
-[node name="Login" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="8"]
+[node name="ShowMissionBackgrounds2" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="7"]
+layout_direction = 3
 layout_mode = 2
-text = "Return to Login Screen"
+text = "Auto filter new cosmetics"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "item_shop"
+key = "auto_filter_new"
 
-[node name="ForgetLoginDebug" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="9"]
-visible = false
+[node name="AutoDetectMissionReset" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="8"]
+layout_direction = 3
 layout_mode = 2
-text = "Forget Login (Debug)"
+button_pressed = true
+text = "Auto-detect multiple mission resets"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "missions"
+key = "reset_detection"
+defaultValue = true
 
-[node name="ForgetRefreshDebug" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="10"]
-visible = false
+[node name="ShowMissionBackgrounds" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="9"]
+layout_direction = 3
 layout_mode = 2
-text = "Forget Refresh (Debug)"
+button_pressed = true
+text = "Show mission background images"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "missions"
+key = "show_background"
+defaultValue = true
+
+[node name="DelayQuestRefresh" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="10"]
+visible = false
+layout_direction = 3
+layout_mode = 2
+text = "Delay quest refresh"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "quests"
+key = "delay_refresh"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="11"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer" index="0"]
+layout_mode = 2
+text = "UI Scale  "
+
+[node name="HSlider" type="HSlider" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 1.0
+step = 0.05
+value = 1.0
+tick_count = 11
+ticks_on_borders = true
+script = ExtResource("12_v5jo8")
+section = "ui"
+key = "scale"
+defaultValue = 1.0
+
+[node name="Label2" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(35, 0)
+layout_mode = 2
+text = "0.85"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer" index="3"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/Button" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_pwy1u")
+expand_mode = 1
 
 [node name="FileDialog" type="FileDialog" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc" index="1"]
 title = "Open a Directory"
@@ -627,35 +699,65 @@ layout_mode = 2
 [node name="Advanced" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer" index="10"]
 layout_mode = 2
 script = ExtResource("2_dybhj")
-loginSceneFilePath = "res://Scenes/Desktop/desktopLogin.tscn"
+loginSceneFilePath = "res://Scenes/Desktop/desktopOnboarding.tscn"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced" index="0"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
 [node name="Label" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="0"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "Advanced"
 
-[node name="Label2" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="1"]
-visible = false
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="1"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="AutoRecycleParamsLabel" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer/VBoxContainer" index="0"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_override_constants/line_spacing = 0
 text = "Auto-Recycle Parameters"
 
-[node name="TextEdit" type="TextEdit" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="2"]
-visible = false
-custom_minimum_size = Vector2(0, 125)
+[node name="AutoRecycleParams" type="LineEdit" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer/VBoxContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "template.RarityLv=..3 | 
-(
-	template.RarityLv=..4 
-	!templateId=\"Worker\"..
-)"
+text = "Common | Uncommon | Rare"
+placeholder_text = "eg: Common | Uncommon | Rare"
+script = ExtResource("12_ld0ka")
+section = "automation"
+key = "recycle_filter"
+defaultValue = "Common | Uncommon | Rare"
 
-[node name="CheckBox" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="3"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="2"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="DefaultMissionSearchLabel" type="Label" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer/VBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/line_spacing = 0
+text = "Default Mission Search"
+
+[node name="DefaultMissionSearch" type="LineEdit" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer/VBoxContainer2" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "eg: v-bucks | (legendary perk-up bundle)"
+script = ExtResource("12_ld0ka")
+section = "missions"
+key = "default_search"
+
+[node name="DeveloperDetails" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="3"]
+layout_direction = 3
+layout_mode = 2
+text = "Enable developer features"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "advanced"
+key = "developer"
+
+[node name="BeastMode" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="4"]
 layout_direction = 3
 layout_mode = 2
 text = "Beast Mode"
@@ -690,7 +792,7 @@ key = "beastmode"
 [connection signal="value_changed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Voices/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Voices" method="SetVolume"]
 [connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Voices/HBoxContainer/MuteBtn" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Audio/VBoxContainer/Voices" method="ToggleMute"]
 [connection signal="HoldPressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme/VBoxContainer/Aspect/Responsive Button Area" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Theme" method="ApplyTheme"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/MetaDebug" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc" method="ProcessMeta"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/Login" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc" method="ReturnToLogin"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/ForgetLoginDebug" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc" method="ForgetAuthDebug"]
-[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/ForgetRefreshDebug" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc" method="ForgetRefreshDebug"]
+[connection signal="AppliedChanged" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/Button" method="set_disabled"]
+[connection signal="ConfigValueChanged" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/HSlider" method="SetValue"]
+[connection signal="UnappliedLabelChanged" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/HSlider" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/Label2" method="set_text"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/Button" to="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer/HBoxContainer/HSlider" method="ApplyValue"]

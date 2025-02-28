@@ -1,0 +1,141 @@
+[gd_scene load_steps=7 format=3 uid="uid://dsboqdh06riu4"]
+
+[ext_resource type="Script" path="res://Scripts/Notifications/AnimatedNotificationEntry.cs" id="1_8chc8"]
+[ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="2_s2q2f"]
+[ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="3_0pu27"]
+[ext_resource type="AudioStream" uid="uid://qiwfnfwjfwb4" path="res://Audio/SFX/UI/Notification/mission_update_mid.ogg" id="5_hd5bk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wtds7"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(-0.2, 0)
+corner_radius_top_left = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_te271"]
+bg_color = Color(0.332881, 0.332881, 0.332881, 1)
+skew = Vector2(-0.2, 0)
+border_width_left = 4
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.33, 0.33, 0.33, 0)
+corner_radius_top_left = 1
+corner_radius_bottom_left = 1
+
+[node name="DesktopNotificationInstance" type="Control" node_paths=PackedStringArray("animatedTarget", "animatedBasis", "player")]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_8chc8")
+animatedTarget = NodePath("AnimTarget")
+animatedBasis = NodePath("AnimTarget/AnimBasis")
+autoBindVisibility = false
+fallbackSound = ExtResource("5_hd5bk")
+player = NodePath("SoundEffect")
+
+[node name="AnimTarget" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -350.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = -10
+
+[node name="AnimBasis" type="MarginContainer" parent="AnimTarget"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/margin_bottom = 2
+
+[node name="EdgePanel" type="Panel" parent="AnimTarget/AnimBasis"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wtds7")
+
+[node name="MainPanel" type="Panel" parent="AnimTarget/AnimBasis"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_te271")
+
+[node name="Button" type="Button" parent="AnimTarget/AnimBasis" groups=["ExcludeHoverSounds"]]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+button_mask = 4
+
+[node name="Content" type="MarginContainer" parent="AnimTarget/AnimBasis"]
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AnimTarget/AnimBasis/Content"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="AnimTarget/AnimBasis/Content/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("3_0pu27")
+expand_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AnimTarget/AnimBasis/Content/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -4
+alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 20
+text = "Notification"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BodyLabel" type="Label" parent="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_spacing = -4
+theme_override_font_sizes/font_size = 14
+text = "Missions Reset Unexpectedly "
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
+
+[node name="Button" type="Button" parent="AnimTarget/AnimBasis/Content/HBoxContainer"]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="AnimTarget/AnimBasis/Content/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_s2q2f")
+expand_mode = 1
+
+[node name="SoundEffect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_hd5bk")
+volume_db = -10.0
+bus = &"SFX"
+
+[connection signal="BodyChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer/BodyLabel" method="set_text"]
+[connection signal="ColorChanged" from="." to="AnimTarget/AnimBasis/EdgePanel" method="set_self_modulate"]
+[connection signal="HeaderChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/VBoxContainer/HeaderLabel" method="set_text"]
+[connection signal="IconChanged" from="." to="AnimTarget/AnimBasis/Content/HBoxContainer/TextureRect" method="set_texture"]
+[connection signal="pressed" from="AnimTarget/AnimBasis/Button" to="." method="Dismiss"]
+[connection signal="pressed" from="AnimTarget/AnimBasis/Content/HBoxContainer/Button" to="." method="Dismiss"]

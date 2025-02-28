@@ -2,634 +2,632 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Nodes;
+using System.Threading;
 using System.Threading.Tasks;
 
 public partial class LlamaInterface : Control
 {
+    static LlamaInterface instance;
+    public static void SelectLlamaTab() => instance.Visible = true;
+
+    static NotificationData _freeLlamaNotif;
+    static NotificationData freeLlamaNotif => _freeLlamaNotif ??= new()
+    {
+        header = "Free Llamas",
+        icon = instance?.freeLlamaNotifIcon,
+        sound = instance?.freeLlamaSound,
+        color = Color.FromHtml("#bf00ff"),
+    };
+
+    [ExportGroup("Scenes")]
     [Export]
     PackedScene catalogLlamaEntryScene;
+
     [Export]
     PackedScene cardpackLlamaEntryScene;
+
     [Export]
     PackedScene itemEntryScene;
 
+    [ExportGroup("List")]
     [Export]
-    NodePath loadingIconPath;
-    Control loadingIcon;
+    Control offerListLoadingIcon;
+
+    [Export]
+    Control offerListErrorIcon;
 
     [Export]
     Control llamaScrollArea;
 
     [Export]
-    NodePath catalogLlamaParentPath;
-    Control catalogLlamaParent;
+    Control llamaOfferParent;
 
     [Export]
-    NodePath cardpackLlamaPanelPath;
-    Control cardpackLlamaPanel;
+    Control llamaItemEntryPanel;
 
     [Export]
-    NodePath cardpackLlamaParentPath;
-    Control cardpackLlamaParent;
+    Control llamaItemEntryParent;
 
     [ExportGroup("Selected")]
     [Export]
     Control selectedLlamaPanel;
 
     [Export]
-    NodePath selectedLlamaEntryPath;
-    LlamaEntry selectedCardPackEntry;
+    GameOfferEntry currentOfferEntry;
 
     [Export]
-    NodePath selectedOpenPanelPath;
-    Control selectedOpenPanel;
+    CardPackEntry currentCardpackEntry;
 
     [Export]
-    NodePath selectedPurchasePanelPath;
-    Control selectedPurchasePanel;
+    Control purchaseButton;
 
     [Export]
-    NodePath selectedBrokePanelPath;
-    Control selectedBrokePanel;
+    Control openButton;
 
     [Export]
-    NodePath selectedPriceIconPath;
-    TextureRect selectedPriceIcon;
+    SpinBox quantitySpinner;
 
     [Export]
-    NodePath selectedPriceLabelPath;
-    Label selectedPriceLabel;
+    Control resultEntriesParent;
 
     [Export]
-    SpinBox selectedPurchaseCountSpinner;
+    Control surpriseResultPanel;
 
     [Export]
-    NodePath selectedItemEntryParentPath;
-    Control selectedItemEntryParent;
+    Control soldOutResultPanel;
 
+    [ExportGroup("Notifications")]
     [Export]
-    NodePath selectedSurprisePanelPath;
-    Control selectedSurprisePanel;
-
+    Texture2D freeLlamaNotifIcon;
     [Export]
-    NodePath selectedNoStockPanelPath;
-    Control selectedNoStockPanel;
+    AudioStream freeLlamaSound;
 
 
-    List<ShopOfferEntry> pooledCatalogLlamas = new();
-    Queue<LlamaEntry> pooledCardpackLlamas = new();
-    List<GameItemEntry> pooledGameItems = new();
+    List<GameOfferEntry> llamaOfferEntries = new();
+    Queue<CardPackEntry> llamaItemEntries = new();
+    List<GameItemEntry> llamaResultEntries = new();
+
+    GameProfile llamaItemProfile;
+    List<LlamaItemStack> llamaItemStacks = new();
+    LlamaItemStack currentCardpackSelection = null;
+
+    Dictionary<string, GameOffer> activeOffers = new();
+    GameOffer currentOfferSelection;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
-        this.GetNodeOrNull(catalogLlamaParentPath, out catalogLlamaParent);
-        this.GetNodeOrNull(cardpackLlamaParentPath, out cardpackLlamaParent);
-        this.GetNodeOrNull(loadingIconPath, out loadingIcon);
-        this.GetNodeOrNull(selectedLlamaEntryPath, out selectedCardPackEntry);
-        this.GetNodeOrNull(selectedOpenPanelPath, out selectedOpenPanel);
-        this.GetNodeOrNull(selectedPurchasePanelPath, out selectedPurchasePanel);
-        this.GetNodeOrNull(selectedBrokePanelPath, out selectedBrokePanel);
-        this.GetNodeOrNull(selectedPriceLabelPath, out selectedPriceLabel);
-        this.GetNodeOrNull(selectedPriceIconPath, out selectedPriceIcon);
-        this.GetNodeOrNull(selectedItemEntryParentPath, out selectedItemEntryParent);
-        this.GetNodeOrNull(selectedSurprisePanelPath, out selectedSurprisePanel);
-        this.GetNodeOrNull(selectedNoStockPanelPath, out selectedNoStockPanel);
-        this.GetNodeOrNull(cardpackLlamaPanelPath, out cardpackLlamaPanel);
-
-        availableCardPacks.Clear();
-
-        VisibilityChanged += OnVisibilityChanged;
-        OnVisibilityChanged();
-
-        RefreshTimerController.OnHourChanged += OnHourChanged;
-    }
-
-    async void OnVisibilityChanged()
-    {
-        if (!IsVisibleInTree())
-            return;
-        await LoadLlamas();
-        if (!string.IsNullOrWhiteSpace(currentPurchaseSelection) && activeOffers.ContainsKey(currentPurchaseSelection))
-        {
-            var offer = activeOffers[currentPurchaseSelection];
-            string priceType = offer["prices"][0]["currencySubType"].ToString();
-            CurrencyHighlight.Instance.SetCurrencyType(priceType);
-        }
-        if (cardPackListener is null)
-        {
-            cardPackListener = await ProfileListener.CreateListener(FnProfileTypes.AccountItems, "CardPack");
-            cardPackListener.OnAdded += AddCardPackEntry;
-            cardPackListener.OnRemoved += RemoveCardPackEntry;
-            foreach (var item in cardPackListener.Items)
-            {
-                AddCardPackEntry(item);
-            }
-        }
+        instance = this;
+        llamaItemEntryPanel.Visible = false;
+        VisibilityChanged += LoadShopLlamas;
+        quantitySpinner.ValueChanged += OnQuantityChanged;
+        RefreshTimerController.OnHourChanged += ForceLoadShopLlamas;
+        GameAccount.ActiveAccountChanged += OnAccountChanged;
+        OnAccountChanged();
     }
 
     public override void _ExitTree()
     {
-        RefreshTimerController.OnHourChanged -= OnHourChanged;
-        //cardPackListener?.Free();
+        RefreshTimerController.OnHourChanged -= ForceLoadShopLlamas;
+        GameAccount.ActiveAccountChanged -= OnAccountChanged;
+        if(llamaItemProfile is not null)
+        {
+            llamaItemProfile.OnItemAdded -= AddItem;
+            llamaItemProfile.OnItemRemoved -= RemoveLlamaItem;
+        }
     }
 
-    private async void OnHourChanged()
+    class LlamaItemStack
     {
-        if (IsVisibleInTree())
-            await LoadLlamas();
-    }
-
-    ProfileListener cardPackListener;
-    List<CardPackGroup> availableCardPacks = new();
-
-    class CardPackGroup
-    {
-        public string PressData => linkedHandles.First().itemID.uuid;
-
-        public readonly string type;
+        public readonly string templateId;
         public readonly string customType;
         public readonly bool isKnown;
-        public readonly List<ProfileItemHandle> linkedHandles = new();
-        public readonly LlamaEntry llamaEntry;
+        public readonly List<GameItem> items;
+        public CardPackEntry llamaEntry { get; private set; }
 
-        public CardPackGroup(ProfileItemHandle firstHandle, LlamaEntry linkedEntry)
+        public LlamaItemStack(GameItem firstItem, CardPackEntry linkedEntry)
         {
             llamaEntry = linkedEntry;
-            var firstItem = firstHandle.GetItemUnsafe();
 
-            type = firstItem["templateId"].ToString();
+            templateId = firstItem.templateId;
 
-            if (firstItem.GetTemplate()["DisplayName"].ToString().Contains("Accolade"))
+            if (firstItem.template.DisplayName.Contains("Accolade"))
                 customType = "Accolade";
 
-            isKnown = firstItem["attributes"].AsObject().ContainsKey("options");
-            AddHandle(firstHandle);
+            isKnown = firstItem.attributes.ContainsKey("options");
+
+            items = new() { firstItem };
+            UpdateEntry();
         }
 
-        public bool Has(ProfileItemHandle handle) => linkedHandles.Contains(handle);
-        public bool Has(string uuid) => linkedHandles.Any(val => val.itemID.uuid == uuid);
+        public bool Has(GameItem item) => items.Contains(item);
+        public bool Has(string uuid) => items.Any(val => val.uuid == uuid);
+        public int DisplayAmount => isKnown ? -1 : items.Count;
 
-        public int DisplayAmount => isKnown ? -1 : linkedHandles.Count;
-
-        public bool IsStackable(ProfileItemHandle handle)
+        public bool IsStackable(GameItem item)
         {
-            var item = handle.GetItemUnsafe();
-            if (item["attributes"].AsObject().ContainsKey("options"))
+            if (item.attributes.ContainsKey("options"))
                 return false;
-            if (type == item["templateId"].ToString())
+            if (templateId == item.templateId)
                 return true;
-            if (item.GetTemplate()["DisplayName"].ToString().Contains("Accolade") && customType== "Accolade")
+            if (item.template.DisplayName.Contains("Accolade") && customType == "Accolade")
                 return true;
             return false;
         }
 
-        void OverridePackDisplay(ref JsonObject baseObject)
+        public void AddItem(GameItem item)
         {
-            if (customType == "Accolade")
-            {
-                baseObject["template"]["DisplayName"] = "Battle Royale Xp Bundle";
-                baseObject["template"]["ImagePaths"] ??= new JsonObject();
-                baseObject["template"]["ImagePaths"]["SmallPreview"] = "ExportedImages\\T_UI_FNBR_XPeverywhere_S.png";
-            }
-        }
-
-        public void AddHandle(ProfileItemHandle handle)
-        {
-            linkedHandles.Add(handle);
+            items.Add(item);
             UpdateEntry();
         }
 
-        public void RemoveHandle(ProfileItemHandle handle)
+        public void RemoveItem(GameItem item)
         {
-            linkedHandles.Remove(handle);
-            if (linkedHandles.Count > 0)
+            items.Remove(item);
+            if (items.Count > 0)
                 UpdateEntry();
         }
 
-        public JsonObject GetDisplayCardpack()
+        public GameItem GetDisplayItem()
         {
-            var nextHandle = linkedHandles.Last();
-            var nextPack = nextHandle.GetItemUnsafe()?.Reserialise();
-            if(nextPack is null)
-                return null;
-            nextPack["quantity"] = isKnown ? -1 : linkedHandles.Count;
-            nextPack.GetTemplate();
-            OverridePackDisplay(ref nextPack);
-            return nextPack;
+            var nextItem = items.Last();
+            nextItem.customData["stackQuantity"] = isKnown ? -1 : items.Count;
+            //OverridePackDisplay(ref nextPack);
+            return nextItem;
         }
 
-        void UpdateEntry()
+        void UpdateEntry() => llamaEntry?.SetItem(GetDisplayItem());
+
+        public CardPackEntry DetachLlamaEntry()
         {
-            var nextHandle = linkedHandles.Last();
-            llamaEntry.SetItemData(GetDisplayCardpack());
-            llamaEntry.SetLinkedItemId(nextHandle.itemID.uuid);
+            items.Clear();
+            llamaEntry.Visible = false;
+            var oldEntry = llamaEntry;
+            llamaEntry = null;
+            return oldEntry;
         }
     }
 
-    void AddCardPackEntry(ProfileItemHandle handle)
+    void AddItem(GameItem item)
     {
-        cardpackLlamaPanel.Visible = true;
-        var stackableGroup = availableCardPacks.FirstOrDefault(val=>val.IsStackable(handle));
+        if (item?.template?.Type != "CardPack")
+            return;
+        llamaItemEntryPanel.Visible = true;
+        var stackableGroup = llamaItemStacks.FirstOrDefault(val=>val.IsStackable(item));
 
         if (stackableGroup is not null)
         {
-            stackableGroup.AddHandle(handle);
+            stackableGroup.AddItem(item);
             return;
         }
 
-        LlamaEntry newEntry;
-        if (pooledCardpackLlamas.Count > 0)
+        CardPackEntry newEntry;
+        if (llamaItemEntries.Count > 0)
         {
             //pull from queue
-            newEntry = pooledCardpackLlamas.Dequeue();
-            cardpackLlamaParent.MoveChild(newEntry, 0);
+            newEntry = llamaItemEntries.Dequeue();
             newEntry.Visible = true;
         }
         else
         {
             //spawn new
-            newEntry = cardpackLlamaEntryScene.Instantiate<LlamaEntry>();
-            cardpackLlamaParent.AddChild(newEntry);
+            newEntry = cardpackLlamaEntryScene.Instantiate<CardPackEntry>();
+            llamaItemEntryParent.AddChild(newEntry);
             newEntry.LlamaPressed += SetCardPackLlama;
         }
 
-        CardPackGroup newGroup = new(handle, newEntry); 
-        availableCardPacks.Add(newGroup);
+        newEntry.MoveToFront();
+        LlamaItemStack llamaStack = new(item, newEntry);
+        llamaItemStacks.Add(llamaStack);
     }
 
-    void RemoveCardPackEntry(ProfileItemHandle handle)
+    void RemoveLlamaItem(GameItem item)
     {
-        var stackableGroup = availableCardPacks.FirstOrDefault(val => val.Has(handle));
-        if (stackableGroup is not null)
+        if (item?.template?.Type != "CardPack")
+            return;
+        var llamaStack = llamaItemStacks.FirstOrDefault(val => val.Has(item));
+        if (llamaStack is not null)
         {
-            GD.Print("found stack");
-            stackableGroup.RemoveHandle(handle);
-            if (stackableGroup.linkedHandles.Count == 0)
+            llamaStack.RemoveItem(item);
+            if (llamaStack.items.Count == 0)
             {
-                GD.Print("stack depleted");
-                if (stackableGroup.llamaEntry.IsInsideTree())
+                llamaItemEntries.Enqueue(llamaStack.DetachLlamaEntry());
+                llamaItemStacks.Remove(llamaStack);
+                if (llamaItemStacks.Count == 0)
                 {
-                    stackableGroup.llamaEntry.Visible = false;
-                    //pooledCardpackLlamas.Enqueue(stackableGroup.llamaEntry);
-                }
-                availableCardPacks.Remove(stackableGroup);
-                if (availableCardPacks.Count == 0)
-                {
-                    cardpackLlamaPanel.Visible = false;
+                    llamaItemEntryPanel.Visible = false;
                 }
             }
         }
     }
 
-    bool isLoadingLlamas = false;
-    Dictionary<string, JsonObject> activeOffers = new();
-    async Task LoadLlamas(bool force = false, bool clearSelection = true)
+    CancellationTokenSource accountChangeCTS;
+    private async void OnAccountChanged()
     {
-        if (isLoadingLlamas || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count==0) || !await LoginRequests.TryLogin())
+        accountChangeCTS.CancelAndRegenerate(out var ct);
+
+        ForceLoadShopLlamas();
+
+        //disconnect prev profile
+        if (llamaItemProfile is not null)
+        {
+            llamaItemProfile.OnItemAdded -= AddItem;
+            llamaItemProfile.OnItemRemoved -= RemoveLlamaItem;
+            llamaItemProfile = null;
+        }
+
+        //refresh cardpacks
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate() || ct.IsCancellationRequested)
             return;
-        isLoadingLlamas = true;
 
-        loadingIcon.Visible = true;
-        llamaScrollArea.Visible = false;
-        activeOffers.Clear();
-        if (clearSelection)
-            ClearSelection();
+        var newLlamaItemProfile = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+        if (ct.IsCancellationRequested)
+            return;
 
-        for (int i = 0; i < pooledCatalogLlamas.Count; i++)
+        //apply new data synchronously
+        foreach (var offerEntry in llamaOfferEntries)
         {
-            pooledCatalogLlamas[i].Visible = false;
+            offerEntry.Visible = offerEntry.GetMeta("llamaFilter", false).AsBool();
         }
 
-        var llamaCatalog = await CatalogRequests.GetLlamaShop(force);
-        var filteredLlamaCatalog = await FilterLlamas(llamaCatalog);
-
-        while (pooledCatalogLlamas.Count <= filteredLlamaCatalog.Length)
+        //load new items
+        var newLlamaItems = newLlamaItemProfile.GetItems("CardPack");
+        foreach (var llamaStack in llamaItemStacks)
         {
-            var newEntry = catalogLlamaEntryScene.Instantiate<ShopOfferEntry>();
-            catalogLlamaParent.AddChild(newEntry);
-            newEntry.Pressed += SetCatalogLlama;
-            pooledCatalogLlamas.Add(newEntry);
+            llamaItemEntries.Enqueue(llamaStack.DetachLlamaEntry());
+        }
+        llamaItemStacks.Clear();
+        llamaItemEntryPanel.Visible = false;
+        //if (newLlamaItems is not null)
+        //    GD.Print(newLlamaItems.Select(i=>i.templateId).ToArray());
+        foreach (var item in newLlamaItems)
+        {
+            AddItem(item);
         }
 
-        int catalogEntryIndex = 0;
-        foreach (var offer in filteredLlamaCatalog)
-        {
-            if (offer is null)
-                continue;
-            activeOffers.Add(offer["offerId"].ToString(), offer);
-            var thisEntry = pooledCatalogLlamas[catalogEntryIndex];
-            thisEntry.Visible = true;
-            thisEntry.SetOffer(offer);
-            catalogEntryIndex++;
-        }
-        for (int i = catalogEntryIndex; i < pooledCatalogLlamas.Count; i++)
-        {
-            pooledCatalogLlamas[i].Visible = false;
-        }
-
-        loadingIcon.Visible = false;
-        llamaScrollArea.Visible = true;
-        isLoadingLlamas = false;
+        //connect new profile
+        llamaItemProfile = newLlamaItemProfile;
+        llamaItemProfile.OnItemAdded += AddItem;
+        llamaItemProfile.OnItemRemoved += RemoveLlamaItem;
     }
 
-    static async Task<bool> LlamaFilterFunc(JsonObject offer)
+    CancellationTokenSource llamaShopCTS;
+    SemaphoreSlim llamaShopSemaphore = new(1);
+    bool hadFreeLlamas = false;
+    async void LoadShopLlamas() => await LoadShopLlamasAsync();
+    async void ForceLoadShopLlamas() => await LoadShopLlamasAsync(true);
+    bool llamasDirty = false;
+    async Task LoadShopLlamasAsync(bool force = false)
+    {
+        if (force)
+            llamasDirty = true;
+        if (!IsVisibleInTree() || (!llamasDirty && activeOffers.Count > 0))
+            return;
+        llamasDirty = false;
+        llamaShopCTS.CancelAndRegenerate(out var ct);
+
+        offerListLoadingIcon.Visible = true;
+        llamaScrollArea.Visible = false;
+        offerListErrorIcon.Visible = false;
+        llamaOfferParent.Visible = true;
+
+        activeOffers.Clear();
+        ClearSelection();
+
+        bool success = false;
+        try
+        {
+            await llamaShopSemaphore.WaitAsync(ct);
+            if (ct.IsCancellationRequested)
+                return;
+
+            var prevSelectedOffer = currentOfferSelection?.OfferId;
+
+            var account = GameAccount.activeAccount;
+            if (!await account.Authenticate() || ct.IsCancellationRequested)
+                return;
+            await account.GenerateXRayLlamaResults();
+
+            var xrayStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.XRayLlamaCatalog, force ? null : RefreshTimeType.Hourly);
+            var randomStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.RandomLlamaCatalog, force ? null : RefreshTimeType.Hourly);
+            if (ct.IsCancellationRequested)
+                return;
+
+            int catalogEntryIndex = 0;
+            var allOffers = xrayStorefront.Offers.Union(randomStorefront.Offers);
+            List<GameOffer> filteredOffers = new();
+            foreach (var offer in allOffers)
+            {
+                if (await LlamaOfferFilter(offer))
+                    filteredOffers.Add(offer);
+                if (ct.IsCancellationRequested)
+                    return;
+            }
+
+            bool hasFreeLlamas = filteredOffers.Any(o => o.Price.quantity == 0);
+            if(hasFreeLlamas && !hadFreeLlamas)
+            {
+                NotificationManager.PushNotification(freeLlamaNotif);
+            }
+            hadFreeLlamas = hasFreeLlamas;
+
+            foreach (var offer in filteredOffers)
+            {
+                if (llamaOfferEntries.Count <= catalogEntryIndex)
+                {
+                    var newEntry = catalogLlamaEntryScene.Instantiate<GameOfferEntry>();
+                    llamaOfferParent.AddChild(newEntry);
+                    newEntry.Pressed += SetLlamaOffer;
+                    llamaOfferEntries.Add(newEntry);
+                }
+                activeOffers.TryAdd(offer.OfferId, offer);
+                var thisEntry = llamaOfferEntries[catalogEntryIndex];
+                thisEntry.Visible = true;
+                thisEntry.SetOffer(offer).StartTask();
+                catalogEntryIndex++;
+            }
+
+            for (int i = catalogEntryIndex; i < llamaOfferEntries.Count; i++)
+            {
+                llamaOfferEntries[i].Visible = false;
+            }
+
+            if (prevSelectedOffer is not null)
+                SetLlamaOffer(prevSelectedOffer);
+            success = true;
+        }
+        finally
+        {
+            llamaShopSemaphore.Release();
+            if (!ct.IsCancellationRequested)
+            {
+                offerListLoadingIcon.Visible = false;
+                llamaScrollArea.Visible = true;
+                llamaOfferParent.Visible = success;
+                offerListErrorIcon.Visible = !success;
+            }
+        }
+    }
+
+    public async void FakeFreeLlamas()
+    {
+        await Helpers.WaitForTimer(1);
+        NotificationManager.PushNotification(freeLlamaNotif);
+    }
+
+    static async Task<bool> LlamaOfferFilter(GameOffer offer)
     {
         //get rid of weird mini llama and free llama
-        if (offer["devName"].ToString() == "Mini Llama Manual Tutorial - high SharedDisplayPriority")
+        //if (offer["devName"].ToString() == "Mini Llama Manual Tutorial - high SharedDisplayPriority")
+        //    return false;
+        //if (offer["devName"].ToString() == "Always.UpgradePack.03")
+        //    return false;
+
+        var account = GameAccount.activeAccount;
+
+        if (!await account.MatchesFulfillmentRequirements(offer))
             return false;
-        if (offer["devName"].ToString() == "Always.UpgradePack.03")
-            return false;
 
-        
-        string priceType = offer["prices"][0]["currencySubType"].ToString();
-        int price = offer["prices"][0]["finalPrice"].GetValue<int>();
-        int inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfileTypes.AccountItems, priceType);
+        string priceTemplateId = offer.Price.templateId;
+        int price = offer.Price.quantity;
+        if (price == 1)
+            return (await account.GetProfile(FnProfileTypes.AccountItems).Query())
+                .GetTemplateItems(priceTemplateId)
+                .Select(item => item.quantity)
+                .Sum() >= 1;
 
-        return price != 1 || inInventory >= 1;
-    }
-
-    async Task<JsonObject[]> FilterLlamas(JsonObject[] llamaCatalog)
-    {
-        List<JsonObject> matchedOffers = new();
-        foreach (var offer in llamaCatalog)
-        {
-            if(await LlamaFilterFunc(offer))
-                matchedOffers.Add(offer);
-        }
-        return matchedOffers.ToArray();
-    }
-    async Task<JsonObject[]> GroupAndFilterLlamas(JsonObject[] llamaCatalog)
-    {
-        var groupedLlamaCatalog = llamaCatalog.GroupBy(val => val["catalogGroup"].ToString());
-
-        var degrouped = groupedLlamaCatalog
-            .Select(
-                grouping => grouping
-                .OrderBy(val => val["sortPriority"].GetValue<int>())
-                .LastOrDefault(item =>
-                {
-                    if (grouping.Key == "")
-                        return false;
-                    return true;
-                })
-            )
-            .Union(groupedLlamaCatalog.FirstOrDefault(grouping => grouping.Key == "")?.ToArray() ?? Array.Empty<JsonObject>())
-            .ToArray();
-
-        return await FilterLlamas(degrouped);
+        return true;
     }
 
     public void ClearSelection()
     {
-        selectedOpenPanel.Visible = false;
-        selectedPurchasePanel.Visible = false;
-        selectedBrokePanel.Visible = false;
-        selectedSurprisePanel.Visible = false;
-        selectedItemEntryParent.Visible = false;
-        selectedPurchaseCountSpinner.Visible = false;
+        offerCts?.Cancel();
 
-        selectedCardPackEntry.ClearItem();
+        currentOfferEntry.ClearOffer();
+        currentCardpackEntry.ClearItem();
 
-        currentPurchaseSelection = "";
+        openButton.Visible = false;
+        purchaseButton.Visible = false;
+        quantitySpinner.Visible = false;
+
+        resultEntriesParent.Visible = false;
+        surpriseResultPanel.Visible = false;
+        soldOutResultPanel.Visible = false;
+
+        currentOfferSelection = null;
         currentCardpackSelection = null;
     }
 
-    string currentPurchaseSelection = "";
-    JsonObject currentPurchaseItem;
-    public async void SetCatalogLlama(string offerId)
-    {
-        //TODO: if offerid isnt in active offers, reset purchase section
+    CancellationTokenSource offerCts;
 
+    public void SetLlamaOffer(string offerId)
+    {
         if (!activeOffers.ContainsKey(offerId))
         {
             ClearSelection();
             return;
         }
-        currentCardpackSelection = null;
+        SetLlamaOffer(activeOffers[offerId]);
+    }
 
-        var offer = activeOffers[offerId];
-        var items = offer["prerollData"]?["attributes"]["items"].AsArray() ?? null;
-        SetSelectedLlamaItems(items);
+    public async void SetLlamaOffer(GameOffer offer)
+    {
+        ClearSelection();
 
-        currentPurchaseItem = offer["itemGrants"][0].AsObject();
-        selectedCardPackEntry.SetItemData(currentPurchaseItem);
+        offerCts.CancelAndRegenerate(out var ct);
 
-        //maybe replace this stuff with a ShopOfferEntry?
-        string priceType = offer["prices"][0]["currencySubType"].ToString();
-        int price = offer["prices"][0]["finalPrice"].GetValue<int>();
-        var inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfileTypes.AccountItems, priceType);
+        //show loading icon
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate() || ct.IsCancellationRequested)
+            return;
 
-        int maxAffordable = price == 0 ? 999 : Mathf.FloorToInt(inInventory / price);
-        int maxInStock = await offer.GetPurchaseLimitFromOffer();
-        int maxAmount = Mathf.Min(maxAffordable, maxInStock);
+        var purchaseLimit = await account.GetPurchaseLimit(offer);
+        bool inStock = purchaseLimit > 0;
+        if (ct.IsCancellationRequested)
+            return;
 
-        int maxSimultaniousAmount = Mathf.Min(int.Parse(
-            offer["metaInfo"]?
-                .AsArray()
-                .FirstOrDefault(val => val["key"].ToString() == "MaxConcurrentPurchases")?
-                ["value"]
-                .ToString() 
-            ??
-            maxAmount.ToString()
-        ), maxAmount);
-
-        CurrencyHighlight.Instance.SetCurrencyType(priceType);
-
-        selectedOpenPanel.Visible = false;
-        selectedPurchasePanel.Visible = false;
-        selectedBrokePanel.Visible = false;
-        selectedNoStockPanel.Visible = false;
-        selectedPurchaseCountSpinner.Visible = false;
-
-        if (maxAmount > 0)
+        if (offer.Price.quantity > 0)
         {
-            currentPurchaseSelection = offerId;
-            selectedPurchasePanel.Visible = true;
-            selectedPurchaseCountSpinner.MaxValue = maxSimultaniousAmount;
-            selectedPurchaseCountSpinner.Visible = maxSimultaniousAmount > 1;
-            latestPurchasablePrice = price;
-            SpinnerChanged(selectedPurchaseCountSpinner.Value);
-            BanjoAssets.TryGetTemplate(priceType, out var priceTemplate);
-            selectedPriceIcon.Texture = priceTemplate.GetItemTexture();
+            var inInventory = await offer.GetPriceAmountInInventory();
+            if (ct.IsCancellationRequested)
+                return;
+            purchaseLimit = Mathf.Min(purchaseLimit, inInventory / offer.Price.quantity);
         }
-        else if (maxInStock <= 0)
-        {
-            //out of stock
-            selectedSurprisePanel.Visible = false;
-            selectedItemEntryParent.Visible = false;
 
-            selectedNoStockPanel.Visible = true;
+        var prerollData = await offer.GetXRayLlamaData(account);
+        if (ct.IsCancellationRequested)
+            return;
+
+        await currentOfferEntry.SetOffer(offer);
+        if (ct.IsCancellationRequested)
+            return;
+
+        currentOfferSelection = offer;
+        CurrencyHighlight.Instance.SetCurrencyTemplate(offer.Price.template);
+
+        if (!inStock)
+        {
+            soldOutResultPanel.Visible = true;
         }
         else
         {
-            //can't afford
-            selectedBrokePanel.Visible = true;
+            var resultItems = prerollData?.attributes?["items"].AsArray().Select(node => new GameItem(null, null, node.AsObject())).ToArray() ?? null;
+            if (resultItems != null)
+                purchaseLimit = 1;
+            quantitySpinner.MaxValue = Mathf.Max(purchaseLimit, 1);
+            quantitySpinner.Visible = purchaseLimit > 1;
+            purchaseButton.Visible = true;
+            SetSelectedLlamaResults(resultItems);
         }
     }
 
-    void SetSelectedLlamaItems(JsonArray items)
+    private void OnQuantityChanged(double value)
+    {
+        if (currentOfferSelection is not null)
+            currentOfferEntry.SetTargetPurchaseQuantity((int)value);
+    }
+
+    public void SetCardPackLlama(string uuid)
+    {
+        ClearSelection();
+
+        var cardPackStack = llamaItemStacks.FirstOrDefault(val => val.Has(uuid));
+        var cardPackItem = cardPackStack?.GetDisplayItem();
+
+        if (cardPackItem is null)
+            return;
+
+        currentCardpackSelection = cardPackStack;
+        purchaseButton.Visible = false;
+        openButton.Visible = true;
+        soldOutResultPanel.Visible = false;
+        
+        var maxAmount = currentCardpackSelection.DisplayAmount;
+        quantitySpinner.MaxValue = Mathf.Max(maxAmount, 1);
+        quantitySpinner.Visible = maxAmount > 1;
+
+        GameItem[] items = null;
+        if (cardPackItem.attributes.ContainsKey("options"))
+        {
+            items = new GameItem[] { cardPackItem };
+        }
+        cardPackItem.SetSeenLocal(true);
+        items ??= Array.Empty<GameItem>();
+
+        SetSelectedLlamaResults(items);
+        currentCardpackEntry.SetItem(cardPackItem);
+    }
+
+    void SetSelectedLlamaResults(GameItem[] items)
     {
         if (items is not null)
         {
-            var sortedItems = items.OrderBy(var => -var.AsObject().GetTemplate().GetItemRarity()).ToArray();
+            var sortedItems = items
+                .OrderBy(item => -item.template.RarityLevel)
+                .ThenBy(item => item.template.Type)
+                .ThenBy(item => item.template.DisplayName)
+                .ToArray();
             //fill out item list
-            selectedSurprisePanel.Visible = false;
-            selectedItemEntryParent.Visible = true;
+            surpriseResultPanel.Visible = false;
+            resultEntriesParent.Visible = true;
 
-            while (pooledGameItems.Count <= items.Count)
+            while (llamaResultEntries.Count <= items.Length)
             {
                 var newEntry = itemEntryScene.Instantiate<GameItemEntry>();
-                selectedItemEntryParent.AddChild(newEntry);
-                pooledGameItems.Add(newEntry);
+                resultEntriesParent.AddChild(newEntry);
+                llamaResultEntries.Add(newEntry);
             }
-            for (int i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Length; i++)
             {
-                string templateId = sortedItems[i]?["itemType"]?.ToString() ?? sortedItems[i]["templateId"].ToString();
-                if (templateId.StartsWith("ConsumableAccountItem"))
-                {
-                    pooledGameItems[i].Visible = false;
-                    continue;
-                }
-                pooledGameItems[i].Visible = true;
-                pooledGameItems[i].SetItemData(sortedItems[i].AsObject());
-                pooledGameItems[i].SetRewardNotification();
-                pooledGameItems[i].SetInteractableSmart();
+                string templateId = sortedItems[i].templateId;
+                llamaResultEntries[i].Visible = true;
+                llamaResultEntries[i].SetItem(sortedItems[i]);
+                sortedItems[i].SetRewardNotification();
             }
-            for (int i = items.Count; i < pooledGameItems.Count; i++)
+            for (int i = items.Length; i < llamaResultEntries.Count; i++)
             {
-                pooledGameItems[i].Visible = false;
+                llamaResultEntries[i].Visible = false;
             }
         }
         else
         {
             //it's a surprise
-            selectedSurprisePanel.Visible = true;
-            selectedItemEntryParent.Visible = false;
+            surpriseResultPanel.Visible = true;
+            resultEntriesParent.Visible = false;
         }
-    }
-
-    int latestPurchasablePrice = 0;
-
-    public void SpinnerChanged(double newValue)
-    {
-        selectedPriceLabel.Text = (latestPurchasablePrice * newValue).ToString();
     }
 
     public async void PurchaseLlama()
     {
-        if (string.IsNullOrWhiteSpace(currentPurchaseSelection))
+        if (currentOfferSelection is null)
             return;
-        GD.Print("attempting to purchase offer: "+ currentPurchaseSelection);
-        var offer = (await CatalogRequests.GetLlamaShop()).FirstOrDefault(var => var["offerId"].ToString() == currentPurchaseSelection);
-        JsonObject shopRequestBody = new()
-        {
-            ["offerId"] = currentPurchaseSelection,
-            ["purchaseQuantity"] = selectedPurchaseCountSpinner.Value,
-            ["currency"] = offer["prices"][0]["currencyType"].ToString(),
-            ["currencySubType"] = offer["prices"][0]["currencySubType"].ToString(),
-            ["expectedTotalPrice"] = offer["prices"][0]["finalPrice"].GetValue<int>() * selectedPurchaseCountSpinner.Value,
-            ["gameContext"] = "Pegleg",
-        };
-        var itemsKnown = offer["prerollData"]?["attributes"]["items"].AsArray() is not null;
-        await CardPackOpener.Instance.StartOpening(null, selectedLlamaPanel, currentPurchaseItem, shopRequestBody, itemsKnown);
-        await LoadLlamas(true);
-        
-        SetCatalogLlama(currentPurchaseSelection);
-    }
 
-    CardPackGroup currentCardpackSelection = null;
-    public void SetCardPackLlama(string itemId)
-    {
-        //GD.Print("selecting cardpack: " + itemId);
-
-        //TODO: get a cardpack with prerolled items
-        currentPurchaseSelection = "";
-        currentCardpackSelection = availableCardPacks.FirstOrDefault(val=>val.Has(itemId));
-
-        if(currentCardpackSelection is null)
-        {
-            ClearSelection();
-            return;
-        }
-
-        var cardPackItem = currentCardpackSelection.GetDisplayCardpack();
-
-        if (cardPackItem is null)
-        {
-            ClearSelection();
-            return;
-        }
-
-        selectedPurchasePanel.Visible = false;
-        selectedBrokePanel.Visible = false;
-        selectedNoStockPanel.Visible = false;
-
-        var maxAmount = currentCardpackSelection.DisplayAmount;
-        cardPackItem["quantity"] = currentCardpackSelection.DisplayAmount;
-        if (maxAmount > 1)
-        {
-            selectedPurchaseCountSpinner.MaxValue = maxAmount;
-            selectedPurchaseCountSpinner.Visible = true;
-        }
+        GD.Print("attempting to purchase offer: "+ currentOfferSelection.OfferId);
+        bool isUpgrade = currentOfferSelection.itemGrants[0]?.template?.DisplayName == "Upgrade Llama";
+        var itemsKnown = await currentOfferSelection.GetXRayLlamaData() is not null;
+        await CardPackOpener.Instance.StartOpening(null, selectedLlamaPanel, currentOfferSelection, currentOfferEntry.currentPurchaseQuantity, itemsKnown);
+        if (isUpgrade)
+            ForceLoadShopLlamas();
         else
-        {
-            selectedPurchaseCountSpinner.MaxValue = 1;
-            selectedPurchaseCountSpinner.Visible = false;
-        }
-
-        bool allowOpen = true;
-
-        JsonArray items = null;
-
-        if (cardPackItem["attributes"].AsObject().ContainsKey("options"))
-        {
-            items = new()
-            {
-                cardPackItem.Reserialise()
-            };
-            //allowOpen = false;
-        }
-
-        SetSelectedLlamaItems(items);
-        selectedCardPackEntry.SetItemData(cardPackItem);
-        selectedOpenPanel.Visible = allowOpen;
+            SetLlamaOffer(currentOfferSelection);
     }
 
     public async void OpenSelectedCardpack()
     {
         if (currentCardpackSelection is null)
             return;
-        int amount = (int)selectedPurchaseCountSpinner.Value;
-        var handles = currentCardpackSelection.linkedHandles.ToArray()[^amount..];
-        bool depletesSelected = currentCardpackSelection.linkedHandles.Count <= amount;
+        int amount = (int)quantitySpinner.Value;
+        var items = currentCardpackSelection.items.ToArray()[^amount..];
+        bool depletesSelected = currentCardpackSelection.items.Count <= amount;
 
         //await BulkOpenCardpacks(handles.Select(val=>val.uuid).ToArray());
-        await CardPackOpener.Instance.StartOpening(handles, selectedLlamaPanel, currentCardpackSelection.GetDisplayCardpack());
+        await CardPackOpener.Instance.StartOpening(items, selectedLlamaPanel, currentCardpackSelection.GetDisplayItem());
 
         if (depletesSelected)
             ClearSelection();
         else
-            SetCardPackLlama(currentCardpackSelection.linkedHandles.Last().itemID.uuid);
+            SetCardPackLlama(currentCardpackSelection.items.Last().uuid);
     }
 
+    static GameItem allTheLlamas;
     public async void BulkOpenAllCardpacks()
     {
-        List<ProfileItemHandle> handles = new();
+        List<GameItem> allCardpacks = new();
         bool includesSelected = false;
-        foreach (var group in availableCardPacks)
+        foreach (var group in llamaItemStacks)
         {
             //if (group.isKnown)
             //    continue;
             if (currentCardpackSelection == group)
                 includesSelected = true;
-            foreach (var handle in group.linkedHandles)
+            foreach (var item in group.items)
             {
-                handles.Add(handle);
+                allCardpacks.Add(item);
             }
         }
-        await CardPackOpener.Instance.StartOpening(handles.ToArray(), selectedLlamaPanel);
+        allTheLlamas ??= GameItemTemplate.Get("CardPack:cardpack_bronze_10x").CreateInstance();
+        await CardPackOpener.Instance.StartOpening(allCardpacks.ToArray(), selectedLlamaPanel, allTheLlamas);
         //await BulkOpenCardpacks(itemIds.ToArray());
         if (includesSelected)
             ClearSelection();

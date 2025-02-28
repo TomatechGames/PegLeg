@@ -1,0 +1,30 @@
+{
+    "backgrounds":
+    [
+        "T_Temperate_Forest.png"
+    ],
+    "music":
+    {
+        "tracks":
+        [
+            {
+                "layers":
+                [
+                    {
+                        "path" : "fortnite_onboarding_cave_music.wav",
+                        "mixRate" : 48000
+                    }
+                ]
+            },
+            {
+                "layers":
+                [
+                    {
+                        "path" : "fortnite_homebase_music_loop.wav",
+                        "mixRate" : 48000
+                    }
+                ]
+            }
+        ]
+    }
+}

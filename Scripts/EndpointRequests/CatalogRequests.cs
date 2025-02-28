@@ -1,100 +1,54 @@
 using Godot;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
-//using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 static class CatalogRequests
 {
     static JsonObject storefrontCache;
 
-    static JsonObject[] llamaCache;
-    public static async Task<JsonObject[]> GetLlamaShop(bool forceRefresh = false)
-    {
-        if(!StorefrontRequiresUpdate() && !forceRefresh && llamaCache is not null)
-            return llamaCache;
+    //static JsonObject[] llamaCache;
+    //public static async Task<JsonObject[]> GetLlamaShop(bool forceRefresh = false)
+    //{
+    //    if(!StorefrontRequiresUpdate() && !forceRefresh && llamaCache is not null)
+    //        return llamaCache;
 
-        await EnsureStorefront(forceRefresh);
+    //    await EnsureStorefront(forceRefresh);
 
-        var prerollOffers = storefrontCache[XRayLlamaCatalog].AsArray();
+    //    var prerollOffers = storefrontCache[XRayLlamaCatalog].AsArray();
 
-        if (!prerollOffers[0].AsObject().ContainsKey("prerollData"))
-        {
-            //assume that prerolls havent been generated for any offer
-            var prerollDatas = await ProfileRequests.GetAllPrerollDatas();
-            for (int i = 0; i < prerollOffers.Count; i++)
-            {
-                var thisOffer = prerollOffers[i].AsObject();
-                var thisPreroll = prerollDatas.FirstOrDefault(val => val["attributes"]?["offerId"]?.ToString() == thisOffer["offerId"].ToString());
-                thisPreroll ??= prerollDatas.FirstOrDefault(val => val["attributes"]?["linked_offer"]?.ToString() == "OfferId:" + thisOffer["offerId"].ToString());
-                if (thisPreroll is not null)
-                    thisOffer["prerollData"] = thisPreroll.Reserialise();
-            }
-        }
-        llamaCache = prerollOffers
-            .Select(val=>val.AsObject().Reserialise())
-            .Union(
-                storefrontCache[RandomLlamaCatalog]
-                .AsArray()
-                .Select(val=>val.AsObject().Reserialise())
-            )
-            .ToArray();
+    //    if (!prerollOffers[0].AsObject().ContainsKey("prerollData"))
+    //    {
+    //        //assume that prerolls havent been generated for any offer
+    //        var prerollData = await GameAccount.activeAccount.GetAllPrerollData();
+    //        for (int i = 0; i < prerollOffers.Count; i++)
+    //        {
+    //            var thisOffer = prerollOffers[i].AsObject();
+    //            var thisPreroll = prerollData.FirstOrDefault(item => item.attributes?["offerId"]?.ToString() == thisOffer["offerId"].ToString());
+    //            thisPreroll ??= prerollData.FirstOrDefault(item => item.attributes?["linked_offer"]?.ToString() == "OfferId:" + thisOffer["offerId"].ToString());
+    //            if (thisPreroll is not null)
+    //                thisOffer["prerollData"] = thisPreroll.attributes.Reserialise();
+    //        }
+    //    }
+    //    llamaCache = prerollOffers
+    //        .Select(val=>val.AsObject().Reserialise())
+    //        .Union(
+    //            storefrontCache[RandomLlamaCatalog]
+    //            .AsArray()
+    //            .Select(val=>val.AsObject().Reserialise())
+    //        )
+    //        .ToArray();
 
-        return llamaCache;
-    }
+    //    return llamaCache;
+    //}
 
-    public static async Task<int> GetPurchaseLimitFromOffer(this JsonObject offer)
-    {
-        string offerId = offer["offerId"].ToString();
-        int totalLimit = 999;
-
-        int dailyLimit = offer["dailyLimit"].GetValue<int>();
-        if (dailyLimit != -1)
-        {
-            int purchaseAmount = (await ProfileRequests.GetOrderCounts(OrderRange.Daily))?[offerId]?.GetValue<int>() ?? 0;
-            //GD.Print($"Daily Limit: {purchaseAmount}/{dailyLimit}");
-            totalLimit = Mathf.Min(totalLimit, dailyLimit-purchaseAmount);
-        }
-
-        int weeklyLimit = offer["weeklyLimit"].GetValue<int>();
-        if (weeklyLimit != -1)
-        {
-            int purchaseAmount = (await ProfileRequests.GetOrderCounts(OrderRange.Weekly))?[offerId]?.GetValue<int>() ?? 0;
-            //GD.Print($"Weekly Limit: {purchaseAmount}/{weeklyLimit}");
-            totalLimit = Mathf.Min(totalLimit, weeklyLimit - purchaseAmount);
-        }
-
-        int monthlyLimit = offer["monthlyLimit"].GetValue<int>();
-        if (monthlyLimit != -1)
-        {
-            int purchaseAmount = (await ProfileRequests.GetOrderCounts(OrderRange.Monthly))?[offerId]?.GetValue<int>() ?? 0;
-            //GD.Print($"Monthly Limit: {purchaseAmount}/{monthlyLimit}");
-            totalLimit = Mathf.Min(totalLimit, monthlyLimit - purchaseAmount);
-        }
-
-        int eventLimit = int.Parse(offer["metaInfo"]?.AsArray().FirstOrDefault(val => val["key"].ToString() == "EventLimit")?["value"].ToString() ?? "-1");
-        if (eventLimit != -1)
-        {
-            string eventId = offer["metaInfo"].AsArray().First(val => val["key"].ToString() == "PurchaseLimitingEventId")["value"].ToString();
-
-            JsonObject eventTracker = (await ProfileRequests.GetProfileItems(FnProfileTypes.Common, kvp =>
-                    kvp.Value["templateId"].ToString().StartsWith("EventPurchaseTracker") &&
-                    kvp.Value["attributes"]["event_instance_id"].ToString() == eventId
-                )).FirstOrDefault().Value?.AsObject();
-
-            int purchaseAmount = eventTracker?["attributes"]["event_purchases"]?[offerId]?.GetValue<int>() ?? 0;
-            //GD.Print($"Event Limit: {purchaseAmount}/{eventLimit}");
-            totalLimit = Mathf.Min(totalLimit, eventLimit - purchaseAmount);
-        }
-
-        return totalLimit;
-    }
 
     static JsonObject cosmeticCache;
     public static async Task<JsonObject> GetCosmeticShop(bool forceRefresh = false)
@@ -102,36 +56,43 @@ static class CatalogRequests
         if (!StorefrontRequiresUpdate() && !forceRefresh && cosmeticCache is not null)
             return cosmeticCache;
 
+        var layoutTask = GetCosmeticLayouts(true);
         var storefrontTask = EnsureStorefront(forceRefresh);
         var cosmeticDisplayData = await RequestCosmeticDisplayData();
         await storefrontTask;
+        await layoutTask;
 
         return cosmeticCache = await ProcessCosmetics(cosmeticDisplayData);
     }
 
-    static JsonObject weeklyCache;
-    public static async Task<JsonObject> GetWeeklyShop(bool forceRefresh = false)
+    public static JsonObject GetCachedCosmeticOfferData(string offerId)
     {
-        if (!StorefrontRequiresUpdate() && !forceRefresh && weeklyCache is not null)
-            return weeklyCache;
-        await EnsureStorefront(forceRefresh);
-
-        return weeklyCache = ProcessShop(WeeklyShopCatalog);
+        return null;
     }
 
-    static JsonObject eventCache;
-    public static async Task<JsonObject> GetEventShop(bool forceRefresh = false)
-    {
-        if (!StorefrontRequiresUpdate() && !forceRefresh && eventCache is not null)
-            return eventCache;
-        await EnsureStorefront(forceRefresh);
+    //static JsonObject weeklyCache;
+    //public static async Task<JsonObject> GetWeeklyShop(bool forceRefresh = false)
+    //{
+    //    if (!StorefrontRequiresUpdate() && !forceRefresh && weeklyCache is not null)
+    //        return weeklyCache;
+    //    await EnsureStorefront(forceRefresh);
 
-        return eventCache = ProcessShop(EventShopCatalog);
-    }
+    //    return weeklyCache = ProcessShop(WeeklyShopCatalog);
+    //}
+
+    //static JsonObject eventCache;
+    //public static async Task<JsonObject> GetEventShop(bool forceRefresh = false)
+    //{
+    //    if (!StorefrontRequiresUpdate() && !forceRefresh && eventCache is not null)
+    //        return eventCache;
+    //    await EnsureStorefront(forceRefresh);
+
+    //    return eventCache = ProcessShop(EventShopCatalog);
+    //}
 
     static readonly Dictionary<string, string[]> defaultShops = new()
     {
-        [WeeklyShopCatalog] = new string[]
+        [FnStorefrontTypes.WeeklyShopCatalog] = new string[]
         {
             "v2:/8833e6245fe4bf6f0a87e2d248398ec079aac302a1d0b17d036cdd6a1f485d85",
             "v2:/a3eeb54f8f9d2f32ba2f1769a095a9fa406a5c6f239235a8d810d7263cd727e5",
@@ -145,7 +106,7 @@ static class CatalogRequests
             "v2:/9af32d7a9a16f864eae99d17542ec08763d118f3ce9c72ad05d5fc5f44586dc1",
             "v2:/fd2b5edc1839496be18a0cb1ef1bc74c07f391b4448de53d07bb63f695f1763b"
         },
-        [EventShopCatalog] = new string[]
+        [FnStorefrontTypes.EventShopCatalog] = new string[]
         {
             "v2:/222374fc7ea9f6ef8eb0b3c20f3a5d7f64f612e9f3435c74e3d51d785739bf9f",
             "v2:/570ff3bed6fc8a1f7006610dbb6ce9e4bcd244a32caa435a60392460da356c88",
@@ -155,101 +116,173 @@ static class CatalogRequests
         }
     };
 
-    static JsonObject ProcessShop(string shopId)
+    static JsonObject cachedCosmeticLayouts;
+    static SemaphoreSlim cosmeticLayoutSemaphore = new(1);
+    public static async Task<JsonObject> GetCosmeticLayouts(bool force = false)
     {
-        var shopOffers = storefrontCache[shopId]?.AsArray().Reserialise();
-        JsonArray highlights = new();
-        for (int i = 0; i < shopOffers.Count; i++)
+        using var st = await cosmeticLayoutSemaphore.AwaitToken();
+        if (!st.wasImmediate && !force)
+            return cachedCosmeticLayouts;
+        var rawLayoutData = await Helpers.MakeRequest(
+                HttpMethod.Get,
+                FnWebAddresses.content,
+                "content/api/pages/fortnite-game/mp-item-shop",
+                "",
+                null
+            );
+        if (rawLayoutData["errorMessage"] is not null)
+            return cachedCosmeticLayouts;
+        JsonObject layoutResult = new();
+        await Task.Run(() =>
         {
-            var item = shopOffers[i];
-            if (!(defaultShops[shopId]?.Contains(item["offerId"].ToString()) ?? true))
+            foreach (var section in rawLayoutData["shopData"]?["sections"]?.AsArray())
             {
-                highlights.Add(item.Reserialise());
-                shopOffers.RemoveAt(i);
-                i--;
+                JsonObject sectionData = null;
+                try
+                {
+                    sectionData = new()
+                    {
+                        ["displayName"] = section["displayName"].ToString(),
+                        ["category"] = section["category"]?.ToString(),
+                        ["background"] = section["metadata"]["background"]?.Reserialise(),
+                        ["rank"] = section["metadata"]["stackRanks"][0]["stackRankValue"].GetValue<int>(),
+                        ["pages"] = new JsonObject()
+                    };
+                }
+                catch
+                {
+                    GD.PushError("Error Parsing Layout: \n"+section);
+                }
+                foreach (var page in section["metadata"]["offerGroups"].AsArray())
+                {
+                    JsonObject pageData = new()
+                    {
+                        ["displayType"] = page["displayType"].ToString()
+                    };
+                    if (page["metadata"]["textureMetadata"]?.AsArray() is JsonArray textureMeta)
+                        pageData["images"] = new JsonObject(textureMeta.Select(n => KeyValuePair.Create(n["key"].ToString(), (JsonNode)n["value"].ToString())));
+                    if (page["metadata"]["textMetadata"]?.AsArray() is JsonArray textMeta)
+                        pageData["text"] = new JsonObject(textMeta.Select(n => KeyValuePair.Create(n["key"].ToString(), (JsonNode)n["value"].ToString())));
+                    sectionData["pages"][$"{section["sectionID"]}.{page["offerGroupId"]}"] = pageData;
+                }
+                layoutResult[$"{section["sectionID"]}"] = sectionData;
             }
-        }
-
-        return new()
-        {
-            ["regular"] = shopOffers,
-            ["highlights"] = highlights
-        };
+        });
+        return cachedCosmeticLayouts = layoutResult;
     }
 
-    static string ParseLayoutName(string basis) =>
-        Regex.Replace(basis, "([a-z0-9])([A-Z])", "$1 $2");
+    //static JsonObject ProcessShop(string shopId)
+    //{
+    //    var shopOffers = storefrontCache[shopId]?.AsArray().Reserialise();
+    //    JsonArray highlights = new();
+    //    for (int i = 0; i < shopOffers.Count; i++)
+    //    {
+    //        var item = shopOffers[i];
+    //        if (!(defaultShops[shopId]?.Contains(item["offerId"].ToString()) ?? true))
+    //        {
+    //            highlights.Add(item.Reserialise());
+    //            shopOffers.RemoveAt(i);
+    //            i--;
+    //        }
+    //    }
+
+    //    return new()
+    //    {
+    //        ["regular"] = shopOffers,
+    //        ["highlights"] = highlights
+    //    };
+    //}
 
     static async Task<JsonObject> ProcessCosmetics(JsonObject cosmeticDisplayData)
     {
-        var shopOfferList = storefrontCache[WeeklyCosmeticShopCatalog]?.AsArray().ToList();
+        var shopOfferList = storefrontCache[FnStorefrontTypes.WeeklyCosmeticShopCatalog]?.AsArray().ToList();
         if(shopOfferList is null)
             return null;
-        shopOfferList.AddRange(storefrontCache[DailyCosmeticShopCatalog].AsArray());
+        //shopOfferList.AddRange(storefrontCache[FnStorefrontTypes.DailyCosmeticShopCatalog].AsArray());
         var shopOfferDict = shopOfferList.ToDictionary(n => n["offerId"].ToString());
 
         await Parallel.ForEachAsync(shopOfferDict, async (offer, _) =>
         {
-            if (!cosmeticDisplayData.ContainsKey(offer.Key))
+            bool needsFallback = false;
+            lock (cosmeticDisplayData)
+            {
+                needsFallback = !cosmeticDisplayData.ContainsKey(offer.Key);
+            }
+
+            if (needsFallback)
             {
                 var fallbackDisplayData = new JsonObject()
                 {
                     ["isFallback"] = true,
-                    ["devName"] = offer.Value["devName"]?.ToString() ?? null,
-                    ["fallbackType"] = offer.Value["meta"]?["templateId"]?.ToString().Split(":")[0] ?? null,
-                    ["offerId"] = offer.Value["offerId"]?.ToString() ?? null,
-                    ["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null,
-                    ["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null,
-                    ["regularPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["regularPrice"]?.GetValue<int>() ?? null,
-                    ["finalPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["finalPrice"]?.GetValue<int>() ?? null,
-                    ["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null,
-                    ["layoutId"] = offer.Value["meta"]?["LayoutId"]?.ToString() ?? null,
+                    ["devName"] = offer.Value["devName"]?.ToString(),
+                    ["fallbackType"] = offer.Value["meta"]?["templateId"]?.ToString().Split(":")[0],
+                    ["offerId"] = offer.Value["offerId"]?.ToString(),
+                    ["inDate"] = offer.Value["meta"]?["inDate"]?.ToString(),
+                    ["outDate"] = offer.Value["meta"]?["outDate"]?.ToString(),
+                    ["regularPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["regularPrice"]?.GetValue<int>(),
+                    ["finalPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["finalPrice"]?.GetValue<int>(),
+                    ["webURL"] = offer.Value["meta"]?["webURL"]?.ToString(),
+                    ["layoutId"] = offer.Value["meta"]?["LayoutId"]?.ToString(),
                     ["layout"] = new JsonObject()
                     {
-                        ["id"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString() ?? null,
-                        ["name"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString() ?? null,
+                        ["id"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString(),
                     },
-                    ["tileSize"] = offer.Value["meta"]?["TileSize"]?.ToString() ?? null,
-                    ["sortPriority"] = offer.Value["sortPriority"]?.GetValue<int>() ?? null,
+                    ["colors"] = new JsonObject()
+                    {
+                        ["color1"] = offer.Value["meta"]?["color1"]?.ToString(),
+                        ["color2"] = offer.Value["meta"]?["color2"]?.ToString(),
+                        ["color3"] = offer.Value["meta"]?["color3"]?.ToString(),
+                        ["textBackgroundColor"] = offer.Value["meta"]?["textBackgroundColor"]?.ToString(),
+                    },
+                    ["tileSize"] = offer.Value["meta"]?["TileSize"]?.ToString(),
+                    ["sortPriority"] = offer.Value["sortPriority"]?.GetValue<int>(),
                 };
+
+                if (cachedCosmeticLayouts[fallbackDisplayData["layout"]["id"]?.ToString()] is JsonObject fallbackLayoutData)
+                {
+                    fallbackDisplayData["layout"]["name"] = fallbackLayoutData["displayName"]?.ToString();
+                    fallbackDisplayData["layout"]["category"] = fallbackLayoutData["category"]?.ToString();
+                    fallbackDisplayData["layout"]["rank"] = fallbackLayoutData["rank"]?.ToString();
+                }
+
                 if (offer.Value["dynamicBundleInfo"] is JsonObject bundleInfo)
                 {
+                    fallbackDisplayData["dynamicBundleInfo"] = bundleInfo.Reserialise();
+
                     int totalPrice = bundleInfo["bundleItems"].AsArray().Select(n => n["regularPrice"].GetValue<int>()).Sum();
                     fallbackDisplayData["regularPrice"] = totalPrice;
                     fallbackDisplayData["finalPrice"] = totalPrice + bundleInfo["discountedBasePrice"].GetValue<int>();
+
+                    if (offer.Value["meta"]?["displayAssetPath"]?.ToString() is string nameDaPath && nameDaPath.Contains("/DisplayAssets/"))
+                    {
+                        fallbackDisplayData["bundleDisplayAsset"] = nameDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
+                    }
                 }
-                if (false && offer.Value["meta"]?["NewDisplayAssetPath"]?.ToString() is string imgDaPath && imgDaPath.Contains("/NewDisplayAssetPath/"))
+
+                if (offer.Value["meta"]?["NewDisplayAssetPath"]?.ToString() is string imgDaPath && imgDaPath.Contains("/NewDisplayAssets/"))
                 {
-                    imgDaPath = imgDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
-                    bool isBundle = offer.Value["dynamicBundleInfo"] is not null;
-                    string nameDaPath = isBundle ?
-                        offer.Value["meta"]?["displayAssetPath"]?.ToString().Replace("/Game/Catalog/", "/OfferCatalog/"):"";
-
-                    var nameDisplayAssetTask = Helpers.MakeRequest(
-                        HttpMethod.Get,
-                        ExternalEndpoints.fnCentralEndpoint,
-                        $"api/v1/export?path={nameDaPath}",
-                        "",
-                        null
-                    );
-                    var imageDisplayAssetTask = Helpers.MakeRequest(
-                        HttpMethod.Get,
-                        ExternalEndpoints.fnCentralEndpoint,
-                        $"api/v1/export?path={imgDaPath}",
-                        "",
-                        null
-                    );
-
-                    await imageDisplayAssetTask;
-                    await imageDisplayAssetTask;
-
-                    fallbackDisplayData["fallbackImage"] = imageDisplayAssetTask.Result?["jsonOutput"]?[0]["Properties"][0];
+                    fallbackDisplayData["fallbackDisplayAsset"] = imgDaPath.Replace("/Game/Catalog/", "/OfferCatalog/");
                 }
-                cosmeticDisplayData.Add(offer.Key, fallbackDisplayData);
+
+                fallbackDisplayData["fallbackGrants"] = new JsonArray(
+                    offer.Value["itemGrants"]
+                    .AsArray()
+                    .Select(g => (JsonNode)g["templateId"].ToString())
+                    .ToArray()
+                );
+
+                lock (cosmeticDisplayData)
+                {
+                    cosmeticDisplayData[offer.Key] = fallbackDisplayData;
+                }
                 return;
             }
 
-            var displayData = cosmeticDisplayData[offer.Key];
+            JsonNode displayData = null;
+            lock (cosmeticDisplayData)
+            {
+                displayData = cosmeticDisplayData[offer.Key];
+            }
 
             //additions
             displayData["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null;
@@ -262,12 +295,13 @@ static class CatalogRequests
             //sometimes these are just missing
             displayData["layoutId"] ??= offer.Value["meta"]?["LayoutId"].ToString() ?? "?";
             displayData["layout"] ??= new JsonObject();
-            displayData["layout"]["name"] ??= ParseLayoutName(offer.Value["meta"]?["AnalyticOfferGroupId"].ToString() ?? "?");
-            displayData["layout"]["index"] = int.TryParse(displayData["layoutId"].ToString().Split(".")[^1], out int result) ? result : 0;
-
-
-            if (offer.Value.AsObject().ContainsKey("dynamicBundleInfo"))
-                displayData["dynamicBundleInfo"] = offer.Value["dynamicBundleInfo"].Reserialise();
+            displayData["layout"]["id"] ??= offer.Value["meta"]?["AnalyticOfferGroupId"].ToString();
+            if (cachedCosmeticLayouts[displayData["layout"]["id"]?.ToString()] is JsonObject layoutData)
+            {
+                displayData["layout"]["name"] = layoutData["displayName"]?.ToString();
+                displayData["layout"]["category"] = layoutData["category"]?.ToString();
+                displayData["layout"]["rank"] = layoutData["rank"]?.ToString();
+            }
 
             if ((offer.Value["prices"]?.AsArray().Count ?? 0) > 0)
                 displayData["prices"] = offer.Value["prices"].Reserialise();
@@ -286,6 +320,7 @@ static class CatalogRequests
                     {
                         ["value"] = "track",
                         ["displayValue"] = "Jam Track",
+                        ["backendValue"] = "SparksSong",
                     };
                     trackObj["rarity"] = new JsonObject()
                     {
@@ -393,16 +428,17 @@ static class CatalogRequests
 
     static async Task<JsonObject> RequestStorefront()
     {
-        if (!await LoginRequests.TryLogin())
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
             return null;
 
         GD.Print("retrieving catalog from epic...");
         JsonNode fullStorefront = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                FNEndpoints.gameEndpoint,
+                FnWebAddresses.game,
                 "fortnite/api/storefront/v2/catalog",
                 "",
-                LoginRequests.AccountAuthHeader
+                account.AuthHeader
             );
         if (fullStorefront["errorCode"] is not null)
         {
@@ -422,7 +458,7 @@ static class CatalogRequests
         GD.Print("retrieving cosmetic visuals from fortnite-api...");
         JsonNode cosmeticDisplayData = await Helpers.MakeRequest(
                 HttpMethod.Get,
-                ExternalEndpoints.cosmeticShopEndpoint,
+                ExternalWebAddresses.fnApi,
                 "v2/shop?responseFlags=4", // 1 = paths, 2 = gameplayTags, 4 = shop history
                 "",
                 null,
@@ -434,20 +470,14 @@ static class CatalogRequests
             .Select(n => n.AsObject().CreateKVP("offerId")));
     }
 
-    const string XRayLlamaCatalog = "CardPackStorePreroll";
-    const string RandomLlamaCatalog = "CardPackStoreGameplay";
-    const string WeeklyShopCatalog = "STWRotationalEventStorefront";
-    const string EventShopCatalog = "STWSpecialEventStorefront";
-    const string WeeklyCosmeticShopCatalog = "BRWeeklyStorefront";
-    const string DailyCosmeticShopCatalog = "BRDailyStorefront";
-    static readonly string[] relevantStorefronts = new string[]
+    public static readonly string[] relevantStorefronts = new string[]
     {
-        XRayLlamaCatalog,
-        RandomLlamaCatalog,
-        WeeklyShopCatalog,
-        EventShopCatalog,
-        WeeklyCosmeticShopCatalog,
-        DailyCosmeticShopCatalog
+        FnStorefrontTypes.XRayLlamaCatalog,
+        FnStorefrontTypes.RandomLlamaCatalog,
+        FnStorefrontTypes.WeeklyShopCatalog,
+        FnStorefrontTypes.EventShopCatalog,
+        FnStorefrontTypes.WeeklyCosmeticShopCatalog,
+        FnStorefrontTypes.DailyCosmeticShopCatalog
     };
 
     static JsonObject SimplifyStorefront(JsonNode fullStorefront)
@@ -466,24 +496,35 @@ static class CatalogRequests
 
     const string fnapiLinkPrefix = "https://fortnite-api.com/images/cosmetics/";
     const string fnapiJamTrackPrefix = "https://cdn.fortnite-api.com/tracks/";
-    const string cacheFolderPath = "user://cosmetic_images/";
+    const string fnCentralPrefix = "https://fortnitecentral.genxgames.gg/api/v1/export?path=";
+    const string imageCacheFolderPath = "user://cosmetic_images/";
+    const string metaCacheFolderPath = "user://cosmetic_meta/";
     static readonly Dictionary<string, WeakRef> activeResourceCache = new();
+    static readonly Dictionary<string, JsonObject> activeMetaCache = new();
 
     public static ImageTexture GetLocalCosmeticResource(string serverPath)
     {
-        if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath]?.GetRef().Obj is ImageTexture cachedTexture)
+        lock (activeResourceCache)
         {
-            //GD.Print("cache exists");
-            return cachedTexture;
+            if (activeResourceCache.ContainsKey(serverPath) && activeResourceCache[serverPath]?.GetRef().Obj is ImageTexture cachedTexture)
+                return cachedTexture;
         }
         
         bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
-        string localPath = cacheFolderPath +
-            (
-                isJamTrack ?
-                    serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-") :
-                    serverPath[fnapiLinkPrefix.Length..].Replace("/", "-")
-            );
+        bool isFNCentral = serverPath.StartsWith(fnCentralPrefix);
+        string localPath = imageCacheFolderPath;
+        if (isFNCentral)
+        {
+            localPath += "/" + serverPath.Split('/')[^1] + ".webp";
+        }
+        else if (isJamTrack)
+        {
+            localPath += serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-");
+        }
+        else
+        {
+            localPath += serverPath[fnapiLinkPrefix.Length..].Replace("/", "-");
+        }
 
         if (!FileAccess.FileExists(localPath))
             return null;
@@ -503,45 +544,51 @@ static class CatalogRequests
         imageFile.Store8(temp);
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
-        activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
         imageTex.ResourceName = serverPath;
+        lock (activeResourceCache)
+        {
+            activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        }
 
         return imageTex;
     }
 
     public static async Task<ImageTexture> GetCosmeticResource(string serverPath)
     {
-        var localImageTex = GetLocalCosmeticResource(serverPath);
-        if(localImageTex is not null)
-        {
-            //GD.Print("using local");
+        if (GetLocalCosmeticResource(serverPath) is ImageTexture localImageTex)
             return localImageTex;
-        }
 
         bool isJamTrack = serverPath.StartsWith(fnapiJamTrackPrefix);
+        bool isFNCentral = serverPath.StartsWith(fnCentralPrefix);
         //if (isJamTrack)
         //{
         //    GD.Print("Interpreting as Jam Track");
         //    GD.Print("/tracks/" + serverPath[fnapiJamTrackPrefix.Length..]);
         //    GD.Print(ExternalEndpoints.jamTracksEndpoint);
         //}
-        string localPath = cacheFolderPath + 
-            ( 
-                isJamTrack ?
-                    serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-") : 
-                    serverPath[fnapiLinkPrefix.Length..].Replace("/", "-")
-            );
+        string localPath = imageCacheFolderPath;
+        string halfPath = "";
+        var client = ExternalWebAddresses.fnApi;
+        if (isFNCentral)
+        {
+            client = ExternalWebAddresses.fnCentral;
+            localPath += "/" + serverPath.Split('/')[^1] + ".webp";
+            halfPath = "/api/v1/export?path=" + serverPath[fnCentralPrefix.Length..];
+        }
+        else if (isJamTrack)
+        {
+            client = ExternalWebAddresses.fnApiJamTrakcs;
+            localPath += serverPath[fnapiJamTrackPrefix.Length..].Replace("/", "-");
+            halfPath = "/tracks/" + serverPath[fnapiJamTrackPrefix.Length..];
+        }
+        else
+        {
+            localPath += serverPath[fnapiLinkPrefix.Length..].Replace("/", "-");
+            halfPath = "/images/cosmetics/" + serverPath[fnapiLinkPrefix.Length..];
+        }
 
-        using var request =
-        new HttpRequestMessage(
-            HttpMethod.Get,
-            isJamTrack ? 
-                "/tracks/" + serverPath[fnapiJamTrackPrefix.Length..] : 
-                "/images/cosmetics/" + serverPath[fnapiLinkPrefix.Length..]
-        );
-
-        GD.Print($"Requesting cosmetic \"{serverPath}\"");
-        using var result = await Helpers.MakeRequestRaw(isJamTrack ? ExternalEndpoints.jamTracksEndpoint : ExternalEndpoints.cosmeticShopEndpoint, request);
+        GD.Print($"Requesting cosmetic ({client}, {halfPath}, {localPath})");
+        using var result = await Helpers.MakeRequestRaw(client, new(HttpMethod.Get, halfPath));
         if (!result.IsSuccessStatusCode)
         {
             GD.Print(result);
@@ -551,25 +598,185 @@ static class CatalogRequests
 
         Image resourceImage = new();
         byte[] imageBuffer = await result.Content.ReadAsByteArrayAsync();
-        var error = LoadImageWithCtx(resourceImage, imageBuffer, serverPath);
+        var error = LoadImageWithCtx(resourceImage, imageBuffer, localPath);
         if (error != Error.Ok)
             return null;
         //GD.Print("remote file loaded");
 
-        if (!DirAccess.DirExistsAbsolute(cacheFolderPath))
-            DirAccess.MakeDirAbsolute(cacheFolderPath);
+        if (!DirAccess.DirExistsAbsolute(imageCacheFolderPath))
+            DirAccess.MakeDirAbsolute(imageCacheFolderPath);
 
         using (var imageFile = FileAccess.Open(localPath, FileAccess.ModeFlags.Write))
         {
-            GD.Print($"Caching cosmetic: \"{localPath}\"");
             imageFile.StoreBuffer(imageBuffer);
         }
 
         var imageTex = ImageTexture.CreateFromImage(resourceImage);
-        activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
         imageTex.ResourceName = serverPath;
 
+        lock (activeResourceCache)
+        {
+            activeResourceCache[serverPath] = GodotObject.WeakRef(imageTex);
+        }
+
         return imageTex;
+    }
+
+    public static JsonObject GetLocalCosmeticMeta(string pathOrTemplateID)
+    {
+        if(pathOrTemplateID is null)
+            return null;
+        lock (activeMetaCache)
+        {
+            if (activeMetaCache.TryGetValue(pathOrTemplateID, out var cachedMeta))
+                return cachedMeta;
+        }
+        var localIdentifier = pathOrTemplateID.Split(".")[^1];
+        string localPath = $"{metaCacheFolderPath}/{localIdentifier}.json";
+        if (!FileAccess.FileExists(localPath))
+            return null;
+        using var metaFile = FileAccess.Open(localPath, FileAccess.ModeFlags.ReadWrite);
+
+        var localMeta = JsonNode.Parse(metaFile.GetAsText()).AsObject();
+
+        //make a fake modification to change the modified date when the file is disposed
+        metaFile.SeekEnd(-1);
+        byte temp = metaFile.Get8();
+        metaFile.SeekEnd(-1);
+        metaFile.Store8(temp);
+
+        lock (activeMetaCache)
+        {
+            activeMetaCache.TryAdd(pathOrTemplateID, localMeta);
+        }
+
+        return localMeta;
+    }
+
+    public static async Task<JsonObject> GetCosmeticMeta(string pathOrTemplateID)
+    {
+        if(pathOrTemplateID is null)
+            return null;
+        if (GetLocalCosmeticMeta(pathOrTemplateID) is JsonObject localMeta)
+            return localMeta;
+
+        var localIdentifier = pathOrTemplateID.Split('.')[^1];
+        string localPath = $"{metaCacheFolderPath}/{localIdentifier}.json";
+
+        JsonObject metaObject = null;
+        if (pathOrTemplateID.Contains('.'))
+        {
+            //treat as path (probably display asset)
+            GD.Print(pathOrTemplateID.Split('.')[0]);
+            JsonNode resultObject = await Helpers.MakeRequest(
+                HttpMethod.Get,
+                ExternalWebAddresses.fnCentral,
+                $"api/v1/export?path={pathOrTemplateID.Split('.')[0]}",
+                "",
+                null
+            );
+            GD.Print(resultObject);
+            if (resultObject is not null && resultObject?["result"]?.ToString()?.StartsWith("Too many requests") != true && resultObject["errored"]?.GetValue<bool>() != true)
+            {
+                metaObject = resultObject["jsonOutput"]?[0]?["Properties"]?.AsObject()?.Reserialise();
+            }
+            GD.Print(metaObject);
+        }
+        else if (pathOrTemplateID.Contains(':'))
+        {
+            string[] remotePaths = CosmeticTemplateToPaths(pathOrTemplateID);
+            foreach (var remotePath in remotePaths)
+            {
+                JsonNode resultObject = await Helpers.MakeRequest(
+                    HttpMethod.Get,
+                    ExternalWebAddresses.fnCentral,
+                    $"api/v1/export?path={remotePath}",
+                    "",
+                    null
+                );
+                if (resultObject is null)
+                    continue;
+                if (resultObject?["result"]?.ToString()?.StartsWith("Too many requests") ?? false)
+                    continue;
+                if (resultObject?["errored"]?.GetValue<bool>() == true)
+                    continue;
+
+                var splitTemplateId = pathOrTemplateID.Split(":");
+                var resultObjects = resultObject["jsonOutput"].AsArray();
+                var cosmetic = resultObjects.FirstOrDefault(n => n["Type"]?.ToString() == $"{splitTemplateId[0]}ItemDefinition")?["Properties"]?.AsObject();
+                if (cosmetic is null)
+                    continue;
+
+                metaObject = new()
+                {
+                    ["id"] = splitTemplateId[1],
+                    ["name"] = cosmetic["ItemName"]?["sourceString"].ToString(),
+                    ["description"] = cosmetic["ItemDescription"]?["sourceString"].ToString(),
+                    ["type"] = new JsonObject()
+                    {
+                        ["backendValue"] = splitTemplateId[0],
+                        ["displayValue"] = cosmetic["ItemShortDescription"]?["sourceString"].ToString(),
+                    }
+                };
+                var dataList = cosmetic["DataList"].AsArray();
+                if (dataList.FirstOrDefault(n => n["LargeIcon"] is not null)?["LargeIcon"]?["AssetPathName"]?.ToString() is string largeImagePath)
+                {
+                    metaObject["images"] ??= new JsonObject();
+                    metaObject["images"]["icon"] = fnCentralPrefix + largeImagePath.Split('.')[0];
+                }
+                if (dataList.FirstOrDefault(n => n["Icon"] is not null)?["Icon"]?["AssetPathName"]?.ToString() is string smallImagePath)
+                {
+                    metaObject["images"] ??= new JsonObject();
+                    metaObject["images"]["smallIcon"] = fnCentralPrefix + smallImagePath.Split('.')[0];
+                }
+            }
+        }
+        else
+        {
+            GD.Print("Unknown Meta: " + pathOrTemplateID);
+            return null;
+        }
+
+        if (metaObject is null)
+            return null;
+
+        if (!DirAccess.DirExistsAbsolute(metaCacheFolderPath))
+            DirAccess.MakeDirAbsolute(metaCacheFolderPath);
+
+        using (var metaFile = FileAccess.Open(localPath, FileAccess.ModeFlags.Write))
+        {
+            metaFile.StoreString(metaObject.ToString());
+        }
+
+        lock (activeMetaCache)
+        {
+            activeMetaCache.TryAdd(pathOrTemplateID, metaObject);
+        }
+
+        return metaObject;
+    }
+
+    static string[] CosmeticTemplateToPaths(string templateId)
+    {
+        var splitTemplateId = templateId.Split(":");
+        if (splitTemplateId.Length <= 1)
+        {
+            GD.Print("Can't split: " + templateId);
+            return Array.Empty<string>();
+        }
+        return splitTemplateId[0] switch
+        {
+            "AthenaCharacter" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Characters/{splitTemplateId[1]}.uasset" },
+            "AthenaBackpack" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Backpacks/{splitTemplateId[1]}.uasset" },
+            "AthenaPickaxe" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Pickaxes/{splitTemplateId[1]}.uasset" },
+            "AthenaGlider" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Gliders/{splitTemplateId[1]}.uasset" },
+            "AthenaSkyDiveContrail" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Contrails/{splitTemplateId[1]}.uasset" },
+            "AthenaDance" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/Dances/{splitTemplateId[1]}.uasset" },
+            "AthenaItemWrap" => new string[] { $"BRCosmetics/Athena/Items/Cosmetics/ItemWraps/{splitTemplateId[1]}.uasset" },
+
+            //TODO: car parts, instruments, etc
+            _ => Array.Empty<string>(),
+        };
     }
 
     static Error LoadImageWithCtx(Image image, byte[] data, string path)
@@ -590,14 +797,14 @@ static class CatalogRequests
 
     public static void CleanCosmeticResourceCache()
     {
-        if (!DirAccess.DirExistsAbsolute(cacheFolderPath))
+        if (!DirAccess.DirExistsAbsolute(imageCacheFolderPath))
             return;
 
-        var cacheFolder = DirAccess.Open(cacheFolderPath);
+        var cacheFolder = DirAccess.Open(imageCacheFolderPath);
         DateTime invalidDateTime = DateTime.Now.AddDays(-2); //images are removed if they havent been used in more than 2 days
         var invalidCacheFilePaths = cacheFolder.GetFiles()
             .Where(p => p.EndsWith(".png") || p.EndsWith(".webp"))
-            .Select(p => cacheFolderPath + "/" + p)
+            .Select(p => imageCacheFolderPath + "/" + p)
             .Where(p => DateTime.Parse(Time.GetDatetimeStringFromUnixTime((long)FileAccess.GetModifiedTime(p))).CompareTo(invalidDateTime) < 0);
 
         foreach (var filePath in invalidCacheFilePaths)
@@ -607,4 +814,386 @@ static class CatalogRequests
         }
     }
 
+}
+
+public static class FnStorefrontTypes
+{
+    public const string XRayLlamaCatalog = "CardPackStorePreroll";
+    public const string RandomLlamaCatalog = "CardPackStoreGameplay";
+    public const string WeeklyShopCatalog = "STWRotationalEventStorefront";
+    public const string EventShopCatalog = "STWSpecialEventStorefront";
+    public const string WeeklyCosmeticShopCatalog = "BRWeeklyStorefront";
+    public const string DailyCosmeticShopCatalog = "BRDailyStorefront";
+}
+
+public class GameStorefront
+{
+    #region Static Methods
+
+    static Dictionary<RefreshTimeType, DateTime> expirationDates = new()
+    {
+        [RefreshTimeType.Hourly] = default,
+        [RefreshTimeType.Daily] = default,
+        [RefreshTimeType.Weekly] = default,
+        [RefreshTimeType.Event] = default,
+    };
+
+    static Dictionary<string, JsonObject> storefrontCache;
+    static Dictionary<string, GameStorefront> storefronts = new();
+    public static bool RequiresUpdate(RefreshTimeType? refreshType)
+    {
+        return storefronts is null || refreshType is null || DateTime.UtcNow.CompareTo(expirationDates[refreshType.Value]) >= 0;
+    }
+
+    public static async Task<bool> UpdateCatalog(RefreshTimeType? refreshType = null)
+    {
+        if (!RequiresUpdate(refreshType))
+            return true;
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return false;
+
+        GD.Print("retrieving catalog from epic...");
+        var catalog = await Helpers.MakeRequest(
+                HttpMethod.Get,
+                FnWebAddresses.game,
+                "fortnite/api/storefront/v2/catalog",
+                "",
+                account.AuthHeader
+            );
+        if (catalog["errorCode"] is not null)
+        {
+            await GenericConfirmationWindow.ShowErrorForWebResult(catalog.AsObject());
+            return false;
+        }
+        storefrontCache = catalog["storefronts"].AsArray().Select(n => n.AsObject()).ToDictionary(n => n["name"].ToString());
+
+        List<string> toRemove = new();
+        foreach (var kvp in storefronts)
+        {
+            if(!storefrontCache.ContainsKey(kvp.Key))
+            {
+                toRemove.Add(kvp.Key);
+                continue;
+            }
+            kvp.Value.CheckForChanges(storefrontCache[kvp.Key]["catalogEntries"].AsArray());
+        }
+        foreach (var sfKey in toRemove)
+        {
+            GD.Print("disconnecting SF");
+            storefronts[sfKey].DisconnectAll();
+            storefronts.Remove(sfKey);
+        }
+
+        foreach (var refreshTypeKey in expirationDates.Keys)
+        {
+            expirationDates[refreshTypeKey] = RefreshTimerController.GetRefreshTime(refreshTypeKey);
+        }
+
+        return true;
+    }
+
+    static GameStorefront GetOrCreateStorefront(string storefrontKey, RefreshTimeType? refreshType = null)
+    {
+        if (storefronts.ContainsKey(storefrontKey))
+            return storefronts[storefrontKey];
+
+        if (!storefrontCache.ContainsKey(storefrontKey))
+            return null;
+
+        return storefronts[storefrontKey] = new(storefrontCache[storefrontKey], refreshType);
+    }
+
+    public static async Task<GameStorefront> GetStorefront(string storefrontKey, RefreshTimeType? refreshType = null)
+    {
+        if (!await UpdateCatalog(refreshType))
+            return null;
+        return GetOrCreateStorefront(storefrontKey, refreshType);
+    }
+
+    public static async Task<GameStorefront[]> GetStorefronts(params string[] storefrontKeys) => await GetStorefronts(RefreshTimeType.Hourly, storefrontKeys);
+    public static async Task<GameStorefront[]> GetStorefronts(RefreshTimeType? refreshType, params string[] storefrontKeys)
+    {
+        if(!await UpdateCatalog(refreshType))
+            return Array.Empty<GameStorefront>();
+        return storefrontKeys.Select(sfKey => GetOrCreateStorefront(sfKey)).Where(sf => sf is not null).ToArray();
+    }
+
+    #endregion
+
+    public event Action<GameOffer> OnOfferAdded;
+    public event Action<GameOffer> OnOfferChanged;
+    public event Action<GameOffer> OnOfferRemoved;
+
+    RefreshTimeType linkedRefreshType;
+    public bool isValid { get; private set; } = true;
+    public string storefrontId { get; private set; }
+    Dictionary<string, GameOffer> offers;
+
+    public GameStorefront(JsonObject rawData, RefreshTimeType? linkedRefreshType = null)
+    {
+        storefrontId = rawData["name"].ToString();
+        offers = rawData["catalogEntries"].AsArray().Select(n => new GameOffer(this, n.AsObject())).ToDictionary(offer => offer.OfferId);
+        this.linkedRefreshType = linkedRefreshType ?? RefreshTimeType.Hourly;
+    }
+
+    public async Task Update(bool force = false) => await UpdateCatalog(force ? null : linkedRefreshType);
+
+    void CheckForChanges(JsonArray catalogEntries)
+    {
+        var catalogEntriesDict = catalogEntries.Select(n => n.AsObject()).ToDictionary(n => n["offerId"].ToString());
+        var oldOfferIds = offers.Keys.ToArray();
+        var newOfferIds = catalogEntries.Select(n => n["offerId"].ToString()).ToArray();
+
+        var addedOffers = newOfferIds.Except(oldOfferIds);
+        var removedOffers = oldOfferIds.Except(newOfferIds);
+        var possiblyChangedOffers = oldOfferIds.Intersect(newOfferIds);
+
+        foreach (var offerId in removedOffers)
+        {
+            var offer = offers[offerId];
+            offer.NotifyRemoving();
+            offers.Remove(offerId);
+            OnOfferRemoved?.Invoke(offer);
+            offer.DisconnectFromStorefront();
+        }
+        foreach (var offerId in possiblyChangedOffers)
+        {
+            var offer = offers[offerId];
+            var from = offer.rawData.ToString();
+            var to = catalogEntriesDict[offerId].ToString();
+            if (from != to)
+            {
+                offer.SetRawData(catalogEntriesDict[offerId]);
+                offer.NotifyChanged();
+                OnOfferChanged?.Invoke(offer);
+            }
+        }
+        foreach (var offerId in addedOffers)
+        {
+            GameOffer offer = new(this, catalogEntriesDict[offerId]);
+            offers[offerId] = offer;
+            OnOfferAdded?.Invoke(offer);
+        }
+    }
+
+    public void DisconnectAll()
+    {
+        isValid = false;
+
+        foreach (var offer in offers?.Values)
+        {
+            offer.DisconnectFromStorefront();
+        }
+
+        offers.Clear();
+    }
+
+    public GameOffer this[string offerId] => offers[offerId];
+    public GameOffer[] Offers => offers.Values.ToArray();
+
+}
+
+public class GameOffer
+{
+    public event Action<GameOffer> OnChanged;
+    public event Action<GameOffer> OnRemoving;
+    public event Action<GameOffer> OnRemoved;
+
+    public GameStorefront storefront { get; private set; }
+    public JsonObject rawData { get; private set; }
+    public JsonNode this[string propertyName] => rawData[propertyName];
+
+    public string OfferId => rawData["offerId"].ToString();
+    JsonObject metadata;
+    public int? GetMetaInt(string key) => int.TryParse(GetMeta(key), out var simLimit) ? simLimit : null;
+    public string GetMeta(string key)
+    {
+        if (metadata[key] is JsonNode metaVal)
+            return metaVal.ToString();
+        var metaInfoTarget = rawData["metaInfo"]?
+            .AsArray()
+            .FirstOrDefault(val => val["key"].ToString() == key)
+            ?.AsObject();
+        if (metaInfoTarget is null)
+            return null;
+        return (metadata[key] = metaInfoTarget["value"].ToString()).ToString();
+    }
+
+    public string Title => rawData["title"]?.ToString();
+    public bool IsXRayLlama => GetMeta("Preroll")?.ToString() == "True";
+
+    public int SimultaniousLimit => GetMetaInt("MaxConcurrentPurchases") ?? -1;
+    public int DailyLimit => rawData["dailyLimit"]?.GetValue<int>() ?? -1;
+    public int WeeklyLimit => rawData["weeklyLimit"]?.GetValue<int>() ?? -1;
+    public int MonthlyLimit => rawData["monthlyLimit"]?.GetValue<int>() ?? -1;
+    public int EventLimit => GetMetaInt("EventLimit") ?? -1;
+    public string EventId => GetMeta("PurchaseLimitingEventId")?.ToString();
+
+    public string Color0 => GetMeta("textBackgroundColor")?.ToString();
+    public string Color1 => GetMeta("color1")?.ToString();
+    public string Color2 => GetMeta("color2")?.ToString();
+
+    public string CosmeticDisplayAssetPath => rawData["displayAssetPath"]?.ToString();
+    public string CosmeticNewDisplayAssetPath => GetMeta("NewDisplayAssetPath")?.ToString();
+    public string CosmeticLayoutId => GetMeta("LayoutId")?.ToString();
+    public int SortPriority => rawData["sortPriority"]?.GetValue<int>() ?? 0;
+
+    Dictionary<string, int> GenerateRequirementList(string type) =>
+        rawData["requirements"].AsArray()
+        .Where(n => n["requirementType"]?.ToString() == type)
+        .ToDictionary(
+            n => n["requiredId"].ToString(),
+            n => n["minQuantity"].GetValue<int>()
+        );
+
+    Dictionary<string, int> fulfillmentDenyList;
+    public Dictionary<string, int> FulfillmentDenyList => fulfillmentDenyList ??= GenerateRequirementList("DenyOnFulfillment");
+
+    Dictionary<string, int> fulfillmentRequireList;
+    public Dictionary<string, int> FulfillmentRequireList => fulfillmentRequireList ??= GenerateRequirementList("RequireFulfillment");
+
+    Dictionary<string, int> itemDenyList;
+    public Dictionary<string, int> ItemDenyList => itemDenyList ??= GenerateRequirementList("DenyOnItemOwnership");
+
+    GameItem basePrice;
+    public GameItem BasePrice => basePrice;
+    int discountAmount = 0;
+    int discountMin = 0;
+    public bool IsFree => discountMin == 0 && discountAmount >= basePrice.quantity;
+    public bool IsDiscountBundle => conditionalDiscounts?.Count > 0;
+
+    Dictionary<string, int> conditionalDiscounts;
+    GameItem price;
+    public GameItem Price => price ??= GetRegularPrice();
+    GameItem personalPrice;
+
+    public GameItem[] itemGrants { get; private set; }
+
+    public GameOffer(GameStorefront storefront, JsonObject rawData)
+    {
+        this.storefront = storefront;
+        SetRawData(rawData);
+    }
+
+    public void SetRawData(JsonObject rawData)
+    {
+        this.rawData = rawData;
+        itemGrants = rawData["itemGrants"].AsArray().Select(n => new GameItem(null, null, n.AsObject())).ToArray();
+        metadata = rawData["meta"]?.AsObject() ?? new();
+
+        if (rawData["dynamicBundleInfo"] is JsonObject dynamicBundleInfo)
+        {
+            var priceTemplateId = dynamicBundleInfo["currencyType"].ToString() == "MtxCurrency" ? "Currency:mtxpurchased" : dynamicBundleInfo["currencySubType"].ToString();
+            var priceTemplate = GameItemTemplate.Get(priceTemplateId);
+
+            discountAmount = -dynamicBundleInfo["discountedBasePrice"].GetValue<int>();
+            discountMin = dynamicBundleInfo["floorPrice"].GetValue<int>();
+            var itemsArray = dynamicBundleInfo["bundleItems"].AsArray();
+            int basePriceAmount = itemsArray.Select(n => n["regularPrice"].GetValue<int>()).Sum();
+
+            conditionalDiscounts = new(
+                    itemsArray
+                        .Where(n => n["alreadyOwnedPriceReduction"].GetValue<int>() > 0)
+                        .Select(n => new KeyValuePair<string, int>(n["item"]["templateId"].ToString(), n["alreadyOwnedPriceReduction"].GetValue<int>()))
+                );
+
+            basePrice = priceTemplate?.CreateInstance(basePriceAmount);
+        }
+        else if (rawData["prices"][0]?.AsObject() is JsonObject priceData)
+        {
+            var priceTemplateId = priceData["currencyType"].ToString() == "MtxCurrency" ? "Currency:mtxpurchased" : priceData["currencySubType"].ToString();
+            var priceTemplate = GameItemTemplate.Get(priceTemplateId);
+            int basePriceAmount = priceData["regularPrice"].GetValue<int>();
+            conditionalDiscounts = null;
+            discountAmount = basePriceAmount - priceData["finalPrice"].GetValue<int>();
+            discountMin = 0;
+            basePrice = priceTemplate?.CreateInstance(basePriceAmount);
+        }
+        price = null;
+        personalPrice = null;
+    }
+
+    public async Task GetCosmeticData()
+    {
+
+    }
+
+    GameItem GetRegularPrice()
+    {
+        int price = basePrice.quantity;
+        price -= discountAmount;
+        price = Mathf.Max(price, discountMin);
+        var newPriceItem = basePrice?.template?.CreateInstance(price);
+
+        return newPriceItem;
+    }
+
+    public async Task<int> GetPriceAmountInInventory()
+    {
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return 0;
+        var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+        return accountItems.GetFirstTemplateItem(basePrice.templateId)?.quantity ?? 0;
+    }
+
+    public async Task<GameItem> GetPersonalPrice(bool forcePrice = false, bool forceCosmetics = false)
+    {
+        if (!forcePrice && personalPrice is not null)
+            return personalPrice;
+
+        int price = basePrice.quantity;
+        price -= discountAmount;
+
+        //if dynamic bundle, generate discount based on owned items
+        var account = GameAccount.activeAccount;
+        if (IsDiscountBundle && await account.Authenticate())
+        {
+            var cosmeticItems = await account.GetProfile(FnProfileTypes.CosmeticInventory).Query(forceCosmetics);
+            foreach (var kvp in conditionalDiscounts)
+            {
+                if (cosmeticItems.GetTemplateItems(kvp.Key).Any())
+                    price -= kvp.Value;
+            }
+        }
+
+        price = Mathf.Max(price, discountMin);
+
+        return personalPrice = basePrice?.template?.CreateInstance(price);
+    }
+
+    public async Task<GameItem> GetXRayLlamaData(GameAccount account = null)
+    {
+        if (!IsXRayLlama)
+            return null;
+        account ??= GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return null;
+        await account.GetProfile(FnProfileTypes.AccountItems).Query();
+        return GetXRayLlamaDataUnsafe(account);
+    }
+
+    public GameItem GetXRayLlamaDataUnsafe(GameAccount account = null)
+    {
+        if (!IsXRayLlama)
+            return null;
+        account ??= GameAccount.activeAccount;
+        var prerollItems = account.GetProfile(FnProfileTypes.AccountItems).GetItems("PrerollData");
+        var match = prerollItems.FirstOrDefault(item => item.attributes?["offerId"].ToString() == OfferId);
+        return match;
+    }
+
+    public void NotifyChanged()
+    {
+        OnChanged?.Invoke(this);
+    }
+
+    public void NotifyRemoving() => OnRemoving?.Invoke(this);
+    public void DisconnectFromStorefront()
+    {
+        storefront = null;
+        OnRemoved?.Invoke(this);
+    }
 }

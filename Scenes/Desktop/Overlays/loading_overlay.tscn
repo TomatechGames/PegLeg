@@ -15,4 +15,16 @@ visible = false
 max_value = 1.0
 step = 0.0
 
+[node name="Label" type="RichTextLabel" parent="Control/WindowContents/LoadingIcon" index="1"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -0.5
+offset_right = 0.5
+offset_bottom = 20.0
+grow_horizontal = 2
+
 [connection signal="ProgressChanged" from="." to="Control/WindowContents/LoadingIcon" method="set_value"]

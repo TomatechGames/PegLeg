@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Http;
@@ -8,11 +7,9 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Godot;
+using System.Threading;
+using System.Text.Json;
 
-class MissingTreeException : Exception
-{
-    public override string Message => "The Node is not in a Tree";
-}
 static class Helpers
 {
     public static void Unpress(this ButtonGroup group)
@@ -29,6 +26,16 @@ static class Helpers
         label.Visible = !string.IsNullOrWhiteSpace(label.Text);
     }
 
+    public static T Reserialise<T>(this T toReserialise) where T : JsonNode
+    {
+        if(toReserialise is null)
+            return null;
+        lock (toReserialise)
+        {
+            return (T)JsonNode.Parse(toReserialise.ToJsonString());
+        }
+    }
+
     public static string ProperlyGlobalisePath(string godotPath)
     {
         if (godotPath.StartsWith("res://") && OS.HasFeature("template"))
@@ -36,25 +43,23 @@ static class Helpers
         else
             return ProjectSettings.GlobalizePath(godotPath);
     }
-    public static async Task WaitForFrame(this Node owner)
+
+    public static void CancelAndRegenerate(this CancellationTokenSource original, out CancellationToken ct)
     {
-        if (!owner.IsInsideTree())
-            throw new MissingTreeException();
-        await owner.ToSignal(owner.GetTree(), SceneTree.SignalName.ProcessFrame);
+        original?.Cancel();
+        original = new();
+        ct = original.Token;
     }
 
-    public static async Task WaitForTimer(this Node owner, double time)
-    {
-        if (!owner.IsInsideTree())
-            throw new MissingTreeException();
-        await owner.ToSignal(owner.GetTree().CreateTimer(time), SceneTreeTimer.SignalName.Timeout);
-    }
-    public static async Task WaitForTimer(this Node owner, SceneTreeTimer timer)
-    {
-        if (!owner.IsInsideTree())
-            throw new MissingTreeException();
-        await owner.ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
-    }
+    static SceneTree MainLoopSceneTree => (SceneTree)Engine.GetMainLoop();
+
+    public static async Task WaitForFrame() => await MainLoopSceneTree.WaitForFrame();
+    static async Task WaitForFrame(this SceneTree sceneTree) => 
+        await sceneTree.ToSignal(sceneTree, SceneTree.SignalName.ProcessFrame);
+
+    public static async Task WaitForTimer(double time) => await MainLoopSceneTree.WaitForTimer(time);
+    static async Task WaitForTimer(this SceneTree sceneTree, double time)=>await sceneTree.CreateTimer(time).WaitForTimer();
+    public static async Task WaitForTimer(this SceneTreeTimer timer) => await timer.ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
 
     public static KeyValuePair<string, JsonNode> CreateKVP(this JsonObject from, string keyTerm)
     {
@@ -103,39 +108,40 @@ static class Helpers
             resultNodes.AddRange(carArray);
         if (from["legoKits"] is JsonArray legoArray)
             resultNodes.AddRange(legoArray);
+        if (from["fallbackItems"] is JsonArray fallbackItems)
+            resultNodes.AddRange(fallbackItems);
         return resultNodes.Count == 0 ? null : new(resultNodes.Select(n => n.Reserialise()).ToArray());
     }
 
-    public static async void RunSafely(this Task task)
+    //why merge into a json array when you can just have a regular array
+    public static JsonObject[] GetAllCosmetics(this JsonObject from)
     {
+        var brItems = from["brItems"]?.AsArray() ?? new();
+        var tracks = from["tracks"]?.AsArray() ?? new();
+        var instruments = from["instruments"]?.AsArray() ?? new();
+        var cars = from["cars"]?.AsArray() ?? new();
+        var legoKits = from["legoKits"]?.AsArray() ?? new();
+        return brItems.Union(tracks).Union(instruments).Union(cars).Union(legoKits).Select(n=>n.AsObject()).ToArray();
+    }
+
+    public static async void RunWithDelay(Task task, float delay)
+    {
+        await WaitForTimer(delay);
         await task;
     }
 
-    public static async void RunWithDelay(this Node owner, Task task, float delay)
-    {
-        await owner.ToSignal(owner.GetTree().CreateTimer(delay), SceneTreeTimer.SignalName.Timeout);
-        await task;
-    }
-
-    public static void GetNodeOrNull<T>(this Node owner, NodePath path, out T result) where T : Node
-    {
-        result = owner.GetNodeOrNull<T>(path);
-    }
-    public static void GetNodesOrNull<T>(this Node owner, NodePath[] paths, out T[] result) where T : Node
-    {
-        result = new T[paths.Length];
-        for (int i = 0; i < paths.Length; i++)
-        {
-            result[i] = owner.GetNodeOrNull<T>(paths[i]);
-        }
-    }
-
-    public static async void RunWithCallback<T>(this Task<T> taskWithResult, Action<T> onComplete)
-    {
-        T result = await taskWithResult;
-        if (result is not null)
-            onComplete(result);
-    }
+    //public static void GetNodeOrNull<T>(this Node owner, NodePath path, out T result) where T : Node
+    //{
+    //    result = owner.GetNodeOrNull<T>(path);
+    //}
+    //public static void GetNodesOrNull<T>(this Node owner, NodePath[] paths, out T[] result) where T : Node
+    //{
+    //    result = new T[paths.Length];
+    //    for (int i = 0; i < paths.Length; i++)
+    //    {
+    //        result[i] = owner.GetNodeOrNull<T>(paths[i]);
+    //    }
+    //}
 
     public const string cosmeticSalsa = "676b8175-a049-4f03-b829-323c95153a43";
     public static async Task<JsonNode> MakeRequest(HttpMethod method, System.Net.Http.HttpClient endpoint, string uri, string body, AuthenticationHeaderValue authentication, string mediaType = "application/x-www-form-urlencoded", bool addCosmeticHeader = false)
@@ -148,23 +154,71 @@ static class Helpers
             request.Headers.Add("x-api-key", cosmeticSalsa);
         return await MakeRequest(endpoint, request);
     }
-    public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
+
+    public static async Task<JsonNode> MakeRequest(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
-        using var result = await MakeRequestRaw(endpoint, request, disregardStatusCode);
-        return result is not null ? JsonNode.Parse(await result.Content.ReadAsStringAsync()) : null;
+        using var result = await MakeRequestRaw(endpoint, request);
+        var resultText = result is not null ? await result.Content.ReadAsStringAsync() : null;
+        if (resultText is null)
+            return null;
+
+        JsonNode resultNode = null;
+        try
+        {
+            resultNode = JsonNode.Parse(resultText);
+        }
+        catch (JsonException _)
+        {
+            GD.Print("result was not json: " + resultText);
+            resultNode =new JsonObject()
+            {
+                ["success"] = result.IsSuccessStatusCode,
+                ["response"]= resultText,
+            };
+        }
+
+        if (result.IsSuccessStatusCode)
+            resultNode ??= new JsonObject() { ["success"] = true };
+        //todo: throw exception when encountering a response with an errorMessage
+
+        if (resultNode is JsonObject && resultNode["numericErrorCode"]?.GetValue<int>() == 1031)
+        {
+            //todo: move this web stuff around so that we know which account is making the request
+            GameAccount.activeAccount.ForceExpireToken();
+        }
+
+        return resultNode;
     }
 
-    public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request, bool disregardStatusCode = false)
+    public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
+        //GD.Print("Debug: "+request.ToString());
         HttpResponseMessage response = null;
         try
         {
-            response = await endpoint.SendAsync(request); 
-            if (true)
-                response.EnsureSuccessStatusCode();
+            response = await endpoint.SendAsync(request);
+            response.EnsureSuccessStatusCode();
         }
         catch (HttpRequestException ex)
         {
+            try
+            {
+                var resultText = response is not null ? await response.Content.ReadAsStringAsync() : null;
+                if(resultText is not null)
+                {
+                    var resultNode = JsonNode.Parse(resultText);
+                    if (resultNode["numericErrorCode"]?.GetValue<int>() == 1012)
+                    {
+                        // silences Device Code check fails
+                        return response;
+                    }
+                }
+            }
+            catch (JsonException) { }
+            catch (Exception e)
+            {
+                GD.PushError("Exception in web request: "+e.Message);
+            }
             GD.Print("\nException Caught!");
             GD.Print($"Message :{ex.Message} ");
             GD.Print($"Response :{(response is not null ? (await response.Content.ReadAsStringAsync()) : "null response")} ");
@@ -173,10 +227,11 @@ static class Helpers
     }
 
 
-    static char[] compactNumberMilestones = "KMBT".ToCharArray();
-    public static bool debugBool = false;
+    static char[] compactNumberMilestones = "KMB".ToCharArray();
     public static string Compactify(this int number)
     {
+        if (number == int.MaxValue)
+            return "Max";
         int milestoneLevel = 0;
         int solidNumber = Mathf.FloorToInt(number);
         int decimalNumber = 0;
@@ -196,13 +251,10 @@ static class Helpers
 
         int solidFigures = solidNumber.ToString().Length; //2=>2 1=>1
 
-        if (debugBool)
-            Debug.WriteLine($"Debug {solidFigures} {solidNumber} {decimalNumber}");
-
         decimalNumber = Mathf.FloorToInt(decimalNumber/Mathf.Pow(10, Mathf.Max(0, solidFigures)));//2=>push twice
         bool decimalExists = decimalNumber > 0 && solidFigures != 3;
 
-        string combinedNumber = solidNumber + (decimalExists ? ("." + decimalNumber.ToString()) : "");
+        string combinedNumber = solidNumber + (decimalExists ? ("." + (decimalNumber < 10 ? "0" : "") + decimalNumber.ToString()) : "");
         return combinedNumber + (milestoneLevel==0 ? "" : compactNumberMilestones[milestoneLevel-1]);
     }
 
@@ -227,6 +279,8 @@ static class Helpers
         return text;
     }
 
+    public static async void StartTask(this Task task) => await task;
+
     public static JsonObject AsFlexibleObject(this JsonNode node, string objectKey)
     {
         if (node is JsonObject nodeObj)
@@ -244,11 +298,38 @@ static class Helpers
     {
         (int startIdx, int length) = range.GetOffsetAndLength(array.Count);
         JsonArray result = new();
-        for (int i = startIdx; i < startIdx + (length - 1); i++)
+        for (int i = startIdx; i < startIdx + length; i++)
         {
             result.Add(array[i].Reserialise());
         }
-        return array;
+        return result;
+    }
+
+    public static async Task<SemaphoreToken> AwaitToken(this SemaphoreSlim source, Action onRelease = null)
+    {
+        bool immadiate = source.CurrentCount > 0;
+        await source.WaitAsync();
+        return new SemaphoreToken(source, onRelease, immadiate);
+    }
+
+    public struct SemaphoreToken : IDisposable
+    {
+        private readonly SemaphoreSlim _source;
+        private readonly Action _onRelease;
+        public readonly bool wasImmediate;
+
+        public SemaphoreToken(SemaphoreSlim source, Action onRelease, bool wasImmediate)
+        {
+            _source = source;
+            _onRelease = onRelease;
+            this.wasImmediate = wasImmediate;
+        }
+
+        public void Dispose()
+        {
+            _onRelease?.Invoke();
+            _source?.Release();
+        }
     }
 
     public static int RandomIndexFromWeights(float[] weights, int preventRepeat = -1)
@@ -284,7 +365,7 @@ static class Helpers
         control.OffsetLeft = control.OffsetLeft;
         control.OffsetRight = control.OffsetRight;
     }
-    public static void ResetControlOffsets(this Control control)
+    public static void ResetOffsets(this Control control)
     {
         control.OffsetTop = 0;
         control.OffsetBottom = 0;
@@ -312,4 +393,7 @@ static class Helpers
         OrderRange.Weekly => RefreshTimerController.GetRefreshTime(RefreshTimeType.Weekly).AddDays(-7),
         _ => throw new NotImplementedException(),
     };
+
+    public static Func<T, bool> ToFunc<T>(this Predicate<T> predicate, bool defaultResult = true) => t => predicate.Try(t, defaultResult);
+    public static bool Try<T>(this Predicate<T> predicate, T t, bool defaultResult = true) => predicate is not null ? predicate(t) : defaultResult;
 }

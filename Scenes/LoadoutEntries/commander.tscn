@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://3ic5fe2i0n0w"]
 
-[ext_resource type="Script" path="res://Scripts/ItemTierController.cs" id="1_2i6xj"]
+[ext_resource type="Script" path="res://Scripts/ItemTierDisplay.cs" id="1_2i6xj"]
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="1_i8r4h"]
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="1_vxoke"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="2_jv7tl"]

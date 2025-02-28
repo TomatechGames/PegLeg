@@ -6,10 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_3r8la"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="5_1xckd"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_8heov"]
-[ext_resource type="PackedScene" uid="uid://cwt57r5ga21m2" path="res://Scenes/GameItemEntry/mission_reward_entry.tscn" id="6_sdl61"]
+[ext_resource type="PackedScene" uid="uid://cwt57r5ga21m2" path="res://Scenes/GameItemEntry/old/mission_reward_entry.tscn" id="6_sdl61"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="7_7hyka"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="9_ohsgl"]
-[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry_horizontal.tscn" id="10_ikr4t"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="10_ikr4t"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nw2yo"]
 shader = ExtResource("3_u64bs")

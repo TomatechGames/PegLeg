@@ -1,8 +1,13 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 public partial class ModalWindow : Control
 {
+    protected static List<ModalWindow> windowStack = new();
+
     [Signal]
     public delegate void WindowOpenedEventHandler();
     [Signal]
@@ -17,18 +22,22 @@ public partial class ModalWindow : Control
 
     [Export]
     float tweenTime = 0.1f;
+    protected float TweenTime => tweenTime;
     [Export]
     float shrunkScale = 0.5f;
     [Export]
     bool startOpen;
     [Export]
     bool useSounds = true;
+    [Export]
+    protected bool isUserClosable = false;
+    protected bool UseSounds => useSounds;
 
     public override void _Ready()
     {
         backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
         MouseFilter = MouseFilterEnum.Ignore;
-        backgroundPanel.SelfModulate = Colors.Transparent;
+        backgroundPanel.Modulate = Colors.Transparent;
 
         if (windowCanvas is not null)
         {
@@ -53,35 +62,82 @@ public partial class ModalWindow : Control
             windowControl.PivotOffset = windowControl.Size * 0.5f;
         }
     }
+
+    public override void _UnhandledKeyInput(InputEvent @event)
+    {
+        if (!isUserClosable || !IsOpen || windowStack.LastOrDefault() != this)
+            return;
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Escape)
+        {
+            GetViewport().SetInputAsHandled();
+            CloseWindowViaInput();
+        }
+    }
+    protected virtual void CloseWindowViaInput() => SetWindowOpen(false);
+
     public bool IsOpen { get; private set; }
+    void OpenWindow() => SetWindowOpen(true);
     void CloseWindow() => SetWindowOpen(false);
 
     Tween currentTween;
     bool openedThisFrame = false;
+    public float Dummy = 0;
     public virtual void SetWindowOpen(bool openState)
     {
+        if (openState == IsOpen || !IsInstanceValid(this))
+            return;
+
+        windowStack.Remove(this);
+        if (openState)
+            windowStack.Add(this);
+
         if (currentTween is not null && currentTween.IsRunning())
             currentTween.Kill();
+        IsOpen = openState;
         if (openedThisFrame && !openState)
         {
-            openedThisFrame = false;
-            backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
-            MouseFilter = MouseFilterEnum.Ignore;
-            Visible = false;
-            UISounds.StopSound("PanelAppear");
-            ProcessMode = ProcessModeEnum.Disabled;
+            CancelOpenImmediate();
             return;
         }
-        if (!IsInstanceValid(this))
-            return;
         if (openState)
+        {
             openedThisFrame = true;
+            WhileOpen().StartTask();
+        }
         currentTween = GetTree().CreateTween().SetParallel();
-        IsOpen = openState;
+        BuildTween(ref currentTween, openState);
+        currentTween.Finished += () =>
+        {
+            if (IsInstanceValid(this))
+                OnTweenFinished(openState);
+        };
+        currentTween.Play();
+    }
+
+    protected virtual async Task WhileOpen()
+    {
+        while (IsOpen)
+            await Helpers.WaitForFrame();
+    }
+
+    protected virtual string OpenSound => "PanelAppear";
+    protected virtual string CloseSound => "PanelDisappear";
+
+    protected virtual void CancelOpenImmediate()
+    {
+        backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
+        MouseFilter = MouseFilterEnum.Ignore;
+        Visible = false;
+        UISounds.StopSound(OpenSound);
+        ProcessMode = ProcessModeEnum.Disabled;
+    }
+
+    protected virtual void BuildTween(ref Tween tween, bool openState)
+    {
         if (openState)
         {
             if (useSounds)
-                UISounds.PlaySound("PanelAppear");
+                UISounds.PlaySound(OpenSound);
             backgroundPanel.MouseFilter = MouseFilterEnum.Stop;
             MouseFilter = MouseFilterEnum.Stop;
             Visible = true;
@@ -93,35 +149,35 @@ public partial class ModalWindow : Control
         else
         {
             if (useSounds)
-                UISounds.PlaySound("PanelDisappear");
+                UISounds.PlaySound(CloseSound);
             EmitSignal(SignalName.WindowClosed);
         }
 
         var newSize = openState ? 1 : shrunkScale;
         var newColour = openState ? Colors.White : Colors.Transparent;
-        currentTween.TweenProperty(backgroundPanel, "self_modulate", newColour, tweenTime);
+        tween.TweenProperty(backgroundPanel, "modulate", newColour, tweenTime);
 
-        if(windowCanvas is not null)
+        if (windowCanvas is not null)
         {
-            currentTween.TweenProperty(windowCanvas, "self_modulate", newColour, tweenTime);
-            currentTween.TweenProperty(windowCanvas, "scale", Vector2.One * newSize, tweenTime);
+            tween.TweenProperty(windowCanvas, "self_modulate", newColour, tweenTime);
+            tween.TweenProperty(windowCanvas, "scale", Vector2.One * newSize, tweenTime);
         }
 
-        if(windowControl is not null)
+        if (windowControl is not null)
         {
-            currentTween.TweenProperty(windowControl, "modulate", newColour, tweenTime);
-            currentTween.TweenProperty(windowControl, "scale", Vector2.One * newSize, tweenTime);
+            tween.TweenProperty(windowControl, "modulate", newColour, tweenTime);
+            tween.TweenProperty(windowControl, "scale", Vector2.One * newSize, tweenTime);
         }
+    }
 
-        currentTween.Finished += () =>
+    protected virtual void OnTweenFinished(bool openState)
+    {
+        if (!openState)
         {
-            if (!openState && IsInstanceValid(this))
-            {
-                backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
-                MouseFilter = MouseFilterEnum.Ignore;
-                Visible = false;
-                ProcessMode = ProcessModeEnum.Disabled;
-            }
-        };
+            backgroundPanel.MouseFilter = MouseFilterEnum.Ignore;
+            MouseFilter = MouseFilterEnum.Ignore;
+            Visible = false;
+            ProcessMode = ProcessModeEnum.Disabled;
+        }
     }
 }

@@ -36,37 +36,53 @@ public partial class PerkEntry : Control
     int linkedIndex;
     bool isLocked;
 
-    public void SetPerkAlteration(string alterationId, bool hasRarity = false, bool isSixth = false, int index = 0)
+    public void SetPerkAlteration(string alterationId, bool hasRarity = false, int index = 0)
     {
         linkedAlteration = alterationId;
         linkedIndex = index;
-        if (alterationId is not null && BanjoAssets.TryGetTemplate(alterationId, out var alteration))
+        if (alterationId is not null)
         {
-            EmitSignal(SignalName.NameChanged, alteration["DisplayName"].ToString());
-
-            if (hasRarity)
+            if (GameItemTemplate.Get(alterationId) is GameItemTemplate alteration)
             {
-                int rarity = alteration.GetItemRarity();
-                if (isSixth)
-                    rarity = 6;
-                EmitSignal(SignalName.RarityIconChanged, BanjoAssets.GetReservedTexture(rarityToImage[rarity-1]));
-                EmitSignal(SignalName.RarityIconVisibilityChanged, true);
+                EmitSignal(SignalName.NameChanged, alteration.DisplayName);
+
+                if (hasRarity)
+                {
+                    int rarity = alteration.RarityLevel;
+                    if (alterationId.StartsWith("Alteration:aid_g_"))
+                        rarity = 6;
+                    EmitSignal(SignalName.RarityIconChanged, BanjoAssets.GetReservedTexture(rarityToImage[rarity - 1]));
+                    EmitSignal(SignalName.RarityIconVisibilityChanged, true);
+                }
+                else
+                    EmitSignal(SignalName.RarityIconVisibilityChanged, false);
+
+                if (alteration.ContainsKey("ImagePaths"))
+                {
+                    EmitSignal(SignalName.ElementIconChanged, alteration.GetTexture());
+                    EmitSignal(SignalName.ElementIconVisibilityChanged, true);
+                }
+                else
+                    EmitSignal(SignalName.ElementIconVisibilityChanged, false);
             }
-            else
+            else if(alterationId == "")
+            {
+                EmitSignal(SignalName.NameChanged, "Empty Perk Slot");
                 EmitSignal(SignalName.RarityIconVisibilityChanged, false);
-
-            if (alteration.ContainsKey("ImagePaths"))
-            {
-                EmitSignal(SignalName.ElementIconChanged, alteration.GetItemTexture());
-                EmitSignal(SignalName.ElementIconVisibilityChanged, true);
+                EmitSignal(SignalName.ElementIconVisibilityChanged, false);
             }
             else
+            {
+                EmitSignal(SignalName.NameChanged, "Unknown Perk (Probably Legacy)");
+                EmitSignal(SignalName.RarityIconVisibilityChanged, true);
+                EmitSignal(SignalName.RarityIconChanged, BanjoAssets.defaultIcon);
                 EmitSignal(SignalName.ElementIconVisibilityChanged, false);
+            }
 
         }
         else
         {
-            EmitSignal(SignalName.NameChanged, "Click to see perks that can be in this slot");
+            EmitSignal(SignalName.NameChanged, "Preview perk possibilities");
             EmitSignal(SignalName.RarityIconVisibilityChanged, true);
             EmitSignal(SignalName.RarityIconChanged, BanjoAssets.defaultIcon);
             EmitSignal(SignalName.ElementIconVisibilityChanged, false);

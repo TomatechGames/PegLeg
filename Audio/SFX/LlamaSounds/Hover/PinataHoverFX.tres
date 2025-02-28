@@ -1,11 +1,11 @@
 [gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://badp2x0yvoic8"]
 
-[ext_resource type="AudioStream" uid="uid://bcq5kb01kdu65" path="res://Audio/SFX/LlamaSounds/Hover/UI_Frontend_Llama_PopUp_05.wav" id="1_pkvvy"]
-[ext_resource type="AudioStream" uid="uid://c7g5yslbxnm2j" path="res://Audio/SFX/LlamaSounds/Hover/UI_Frontend_Llama_PopUp_06.wav" id="2_vo2kl"]
+[ext_resource type="AudioStream" uid="uid://bqgvocrac3u85" path="res://Audio/SFX/LlamaSounds/Hover/UI_Frontend_Llama_PopUp_05.ogg" id="1_jrv5k"]
+[ext_resource type="AudioStream" uid="uid://bp1k4ri2eca5b" path="res://Audio/SFX/LlamaSounds/Hover/UI_Frontend_Llama_PopUp_06.ogg" id="2_pr6yg"]
 
 [resource]
 playback_mode = 1
 random_pitch = 1.05
 streams_count = 2
-stream_0/stream = ExtResource("1_pkvvy")
-stream_1/stream = ExtResource("2_vo2kl")
+stream_0/stream = ExtResource("1_jrv5k")
+stream_1/stream = ExtResource("2_pr6yg")

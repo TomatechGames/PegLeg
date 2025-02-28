@@ -1,0 +1,68 @@
+[gd_resource type="AudioStreamInteractive" load_steps=7 format=3 uid="uid://cb1e6fcri5nxg"]
+
+[ext_resource type="AudioStream" uid="uid://dwcq5mryfpeme" path="res://Audio/SFX/AssetLoading/1_LoadingLoop1.ogg" id="1_rx72g"]
+[ext_resource type="AudioStream" uid="uid://biwoalxd3b0u7" path="res://Audio/SFX/AssetLoading/2_LoadingLoop2.ogg" id="2_3fenm"]
+[ext_resource type="AudioStream" uid="uid://bem30sgr7q37g" path="res://Audio/SFX/AssetLoading/6_LoadingEnd.ogg" id="3_3bigx"]
+[ext_resource type="AudioStream" uid="uid://by7tx2psb63tl" path="res://Audio/SFX/AssetLoading/3_LoadingLoop3.ogg" id="3_5qqr5"]
+[ext_resource type="AudioStream" uid="uid://dyerfg5m0466u" path="res://Audio/SFX/AssetLoading/4_LoadingLoop4.ogg" id="5_suk2x"]
+[ext_resource type="AudioStream" uid="uid://mv6f44fhunea" path="res://Audio/SFX/AssetLoading/5_LoadingLoop5.ogg" id="6_ihafy"]
+
+[resource]
+clip_count = 11
+clip_0/name = &"loading1"
+clip_0/stream = ExtResource("1_rx72g")
+clip_0/auto_advance = 1
+clip_0/next_clip = 1
+clip_1/name = &"loading2"
+clip_1/stream = ExtResource("2_3fenm")
+clip_1/auto_advance = 1
+clip_1/next_clip = 2
+clip_2/name = &"loading3"
+clip_2/stream = ExtResource("3_5qqr5")
+clip_2/auto_advance = 1
+clip_2/next_clip = 3
+clip_3/name = &"loading4"
+clip_3/stream = ExtResource("2_3fenm")
+clip_3/auto_advance = 1
+clip_3/next_clip = 4
+clip_4/name = &"loading5"
+clip_4/stream = ExtResource("5_suk2x")
+clip_4/auto_advance = 1
+clip_4/next_clip = 5
+clip_5/name = &"loading6"
+clip_5/stream = ExtResource("1_rx72g")
+clip_5/auto_advance = 1
+clip_5/next_clip = 6
+clip_6/name = &"loading7"
+clip_6/stream = ExtResource("2_3fenm")
+clip_6/auto_advance = 1
+clip_6/next_clip = 7
+clip_7/name = &"loading8"
+clip_7/stream = ExtResource("3_5qqr5")
+clip_7/auto_advance = 1
+clip_7/next_clip = 8
+clip_8/name = &"loading9"
+clip_8/stream = ExtResource("2_3fenm")
+clip_8/auto_advance = 1
+clip_8/next_clip = 9
+clip_9/name = &"loading10"
+clip_9/stream = ExtResource("6_ihafy")
+clip_9/auto_advance = 1
+clip_9/next_clip = 0
+clip_10/name = &"loadingEnd"
+clip_10/stream = ExtResource("3_3bigx")
+clip_10/auto_advance = 0
+_transitions = {
+Vector2i(-1, -1): {
+"fade_beats": 1,
+"fade_mode": 0,
+"from_time": 0,
+"to_time": 0
+},
+Vector2i(-1, 10): {
+"fade_beats": 1,
+"fade_mode": 4,
+"from_time": 3,
+"to_time": 1
+}
+}

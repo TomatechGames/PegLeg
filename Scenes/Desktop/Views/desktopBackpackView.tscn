@@ -1,0 +1,91 @@
+[gd_scene load_steps=9 format=3 uid="uid://cjge5ubc1hppf"]
+
+[ext_resource type="PackedScene" uid="uid://udk47ipcpsbq" path="res://Scenes/Desktop/Views/desktopInventoryView.tscn" id="1_rmpt8"]
+[ext_resource type="Texture2D" uid="uid://c0r4xvm7cbo3u" path="res://Images/InterfaceIcons/T-Icon-Nav-Armory-64.png" id="2_8da1x"]
+[ext_resource type="Texture2D" uid="uid://r3avhn5m2bxk" path="res://Images/InterfaceIcons/Icon-Soldier-WasteNotWantNot-128.png" id="3_4b2mk"]
+[ext_resource type="Texture2D" uid="uid://dc3tlokw50j6q" path="res://Images/InterfaceIcons/T-Icon-Harvesting-128.png" id="4_q4rx2"]
+[ext_resource type="Texture2D" uid="uid://c2dqm0vsrcexk" path="res://Images/InterfaceIcons/T-Icon-Traps-128.png" id="5_cy863"]
+[ext_resource type="PackedScene" uid="uid://jsu6mxwb40t6" path="res://Scenes/GameItemEntry/inventory_entry_large_square.tscn" id="6_osdn8"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_0odak"]
+resource_name = "InventoryTypeFilter"
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_3xnev"]
+resource_name = "InventoryTypeFilter"
+
+[node name="Backpack" instance=ExtResource("1_rmpt8")]
+targetProfile = "theater0"
+typeFilters = PackedStringArray("Weapon", "", "Weapon", "Ammo", "Ingredient,WorldItem", "Trap")
+allowDevMode = false
+
+[node name="User" parent="VBoxContainer/HBoxContainer2" index="0"]
+visible = false
+
+[node name="NewFilter" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="0"]
+visible = false
+
+[node name="FavouriteFilter" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="1"]
+visible = false
+
+[node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All" index="0"]
+button_group = SubResource("ButtonGroup_0odak")
+
+[node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("2_8da1x")
+
+[node name="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer" index="1"]
+text = "Weapons"
+
+[node name="Dev All" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer" index="1"]
+visible = false
+
+[node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All" index="0"]
+button_group = SubResource("ButtonGroup_3xnev")
+
+[node name="Tab1" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer" index="2"]
+visible = false
+
+[node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1" index="0"]
+button_group = SubResource("ButtonGroup_0odak")
+
+[node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("2_8da1x")
+
+[node name="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer/HBoxContainer" index="1"]
+text = "Weapons"
+
+[node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2" index="0"]
+button_group = SubResource("ButtonGroup_0odak")
+
+[node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("3_4b2mk")
+
+[node name="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2/MarginContainer/HBoxContainer" index="1"]
+text = "Ammo"
+
+[node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3" index="0"]
+button_group = SubResource("ButtonGroup_0odak")
+
+[node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("4_q4rx2")
+
+[node name="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3/MarginContainer/HBoxContainer" index="1"]
+text = "Ingredients"
+
+[node name="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4" index="0"]
+button_group = SubResource("ButtonGroup_0odak")
+
+[node name="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4/MarginContainer/HBoxContainer" index="0"]
+texture = ExtResource("5_cy863")
+
+[node name="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4/MarginContainer/HBoxContainer" index="1"]
+text = "Traps"
+
+[node name="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer" index="3"]
+visible = false
+
+[node name="Button" parent="VBoxContainer/HBoxContainer2" index="2"]
+visible = false
+
+[node name="ScrollContainer" parent="VBoxContainer" index="2"]
+elementScene = ExtResource("6_osdn8")

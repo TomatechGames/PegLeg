@@ -5,42 +5,29 @@ public partial class WheelproofScrollContainer : ScrollContainer
 {
     [Export]
     bool allowOnShift = true;
-    [Export]
-    ScrollContainer parentContainer;
 
+    ScrollMode defaultHMode;
+    ScrollMode defaultVMode;
     public override void _Ready()
     {
         base._Ready();
-
+        defaultHMode = HorizontalScrollMode;
+        defaultVMode = VerticalScrollMode;
         GetHScrollBar().AddChild(new ScrollWheelBlocker(allowOnShift));
         GetVScrollBar().AddChild(new ScrollWheelBlocker(allowOnShift));
-
-        if (parentContainer is not null)
-            return;
-        Control currentParent = GetParent<Control>();
-        for (int i = 0; i < 5; i++)
-        {
-            if (currentParent is ScrollContainer scrollParent)
-            {
-                parentContainer = scrollParent;
-                break;
-            }
-            currentParent = currentParent.GetParent<Control>();
-        }
     }
 
+    //I dont like that you cant REPLACE native functionality in Godot, this will run ScrollContainers _GuiInput before mine... bit rude innit
     public override void _GuiInput(InputEvent @event)
     {
-        if (@event is InputEventMouseButton mb)
+        if (@event is InputEventKey kb)
         {
-            if (mb.IsPressed() && (mb.ButtonIndex==MouseButton.WheelUp || mb.ButtonIndex == MouseButton.WheelDown) && !(allowOnShift && mb.ShiftPressed))
-            {
-                GD.Print("ScrollContainer:" + (allowOnShift && mb.ShiftPressed));
-                GD.Print(parentContainer?.Name);
-                parentContainer._GuiInput(@event);
+            if (kb.Keycode != Key.Shift)
                 return;
+            if (kb.Pressed)
+            {
+                HorizontalScrollMode = defaultHMode;
             }
         }
-        //base._GuiInput(@event);
     }
 }

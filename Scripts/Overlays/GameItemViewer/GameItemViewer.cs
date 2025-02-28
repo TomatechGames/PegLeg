@@ -3,15 +3,14 @@ using System;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static HomebasePowerLevel;
+using System.Threading;
 
 public partial class GameItemViewer : ModalWindow
 {
     public static GameItemViewer Instance { get; private set; }
 
     [Export]
-    GameItemEntry primaryItemEntry;
+    GameItemEntry displayItemEntry;
     [Export]
     TabContainer activeTabParent;
     [Export]
@@ -58,6 +57,8 @@ public partial class GameItemViewer : ModalWindow
     Control devTextContainer;
     [Export]
     CodeEdit devText;
+    [Export]
+    Label searchResult;
 
     [ExportGroup("Buttons")]
     [Export]
@@ -79,17 +80,9 @@ public partial class GameItemViewer : ModalWindow
 
     [ExportGroup("Purchases")]
     [Export]
-    Control purchasePanel;
+    GameOfferEntry currentOfferEntry;
     [Export]
-    Control outOfStockPanel;
-    [Export]
-    Control cantAffordPanel;
-    [Export]
-    SpinBox purchaseCountSpinner;
-    [Export]
-    TextureRect priceIcon;
-    [Export]
-    Label priceLabel;
+    SpinBox purchaseSpinner;
 
     public override void _Ready()
     {
@@ -99,68 +92,49 @@ public partial class GameItemViewer : ModalWindow
         levelSlider.ValueChanged += _ => RefreshHeroStats();
         tierSlider.ValueChanged += _ => RefreshHeroStats();
 
-        purchaseCountSpinner.ValueChanged += SpinnerChanged;
-
         for (int i = 0; i < itemChoiceEntries.Length; i++)
         {
             int val = i;
             itemChoiceEntries[i].Pressed += () => SetChoiceIndex(val);
         }
-
+        purchaseSpinner.ValueChanged += SpinnerChanged;
     }
 
-    ProfileItemHandle linkedProfileItem;
-    JsonObject linkedShopOffer;
-    Action purchaseCallback;
+    GameItem currentItem;
+    GameOffer currentOffer;
 
-    public async Task ShowItemHandle(ProfileItemHandle profileItem)
-    {
-        itemChoiceParent.Visible = false;
-        linkedProfileItem = profileItem;
-        linkedShopOffer = null;
-        purchasePanel.Visible = false;
-        outOfStockPanel.Visible = false;
-        cantAffordPanel.Visible = false;
-        var itemInstance = await profileItem.GetItem();
-        upgrader.Visible = itemInstance["attributes"]["level"] is not null;
-        upgrader.LinkItem(upgrader.Visible ? profileItem : null);
-        SetWindowOpen(true);
-        await SetDisplayItem(itemInstance);
-    }
-
-    JsonObject[] choices;
+    GameItem[] choices;
     int itemTier = 1;
     int itemLevel = 1;
 
-    public async Task ShowItem(JsonObject itemInstance)
+    public void ShowItem(GameItem newItem)
     {
         itemChoiceParent.Visible = false;
-        linkedProfileItem = null;
+        currentItem = newItem;
         SetWindowOpen(true);
+        currentOfferEntry.Visible = false;
+        currentOfferEntry.ClearOffer();
+        currentOffer = null;
 
-        purchasePanel.Visible = false;
-        outOfStockPanel.Visible = false;
-        cantAffordPanel.Visible = false;
-        linkedShopOffer = null;
-        purchaseCallback = null;
-        upgrader.Visible = false;
-        upgrader.LinkItem(null);
+        upgrader.Visible = currentItem.attributes?["level"] is not null;
+        upgrader.SetItem(currentItem);
 
         //if choice cardpack, display choices instead
-        if (itemInstance["templateId"].ToString().StartsWith("CardPack") && (itemInstance["attributes"]?.AsObject().ContainsKey("options") ?? false))
+        if (currentItem.template.Type == "CardPack" && (currentItem.attributes?.ContainsKey("options") ?? false))
         {
             itemChoiceParent.Visible = true;
-            var optionsArr = itemInstance["attributes"]["options"].AsArray();
-            choices = new JsonObject[optionsArr.Count];
+            var optionsArr = currentItem.attributes["options"].AsArray();
+            choices = new GameItem[optionsArr.Count];
 
-            for (int i=0; i<optionsArr.Count; i++)
+            for (int i = 0; i < optionsArr.Count; i++)
             {
                 var thisChoice = optionsArr[i];
-                BanjoAssets.TryGetTemplate(thisChoice["itemType"].ToString().Replace("Weapon:w", "Schematic:s"), out var itemTemplate);
-                var itemStack = itemTemplate.CreateInstanceOfItem(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
-                itemChoiceEntries[i].SetItemData(itemStack);
-                itemChoiceEntries[i].SetRewardNotification();
-                choices[i] = itemStack;
+                var templateId = thisChoice["itemType"].ToString().Replace("Weapon:w", "Schematic:s");
+                var template = GameItemTemplate.Get(templateId);
+                var choiceItem = template.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
+                itemChoiceEntries[i].SetItem(choiceItem);
+                choiceItem.SetRewardNotification(null, true);
+                choices[i] = choiceItem;
             }
 
             for (int i = 0; i < optionsArr.Count-2; i++)
@@ -168,57 +142,70 @@ public partial class GameItemViewer : ModalWindow
             for (int i = optionsArr.Count - 2; i < itemChoiceLayoutSections.Length; i++)
                 itemChoiceLayoutSections[i].Visible = false;
 
-            await SetDisplayItem(choices[0]);
+            SetDisplayItem(choices[0]);
             itemChoiceEntries[0].EmitPressedSignal();
         }
         else
         {
-            await SetDisplayItem(itemInstance);
+            SetDisplayItem(currentItem);
         }
     }
 
-    bool showDevText = false;
-    JsonObject latestItem = null;
-    async Task SetDisplayItem(JsonObject itemInstance)
+    public async void ShowOffer(GameOffer offer)
     {
-        if (Input.IsKeyPressed(Key.Minus))
-            showDevText ^= true;
-        Visible = true;
-        if (linkedProfileItem is null)
-        {
-            primaryItemEntry.SetItemData(itemInstance);
-            primaryItemEntry.SetRewardNotification();
-        }
-        else
-        {
-            primaryItemEntry.LinkProfileItem(linkedProfileItem);
-        }
-        var template = itemInstance.GetTemplate();
-        latestItem = itemInstance;
-        await GetFORTStats();
+        upgrader.Visible = false;
+        itemChoiceParent.Visible = false;
+        currentOffer = offer;
+        currentItem = currentOffer.itemGrants[0];
+        SetDisplayItem(currentItem);
+        SetWindowOpen(true);
+        await currentOfferEntry.SetOffer(currentOffer);
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+        var totalLimit = Mathf.Min(
+            await account.GetPurchaseLimit(currentOffer),
+            await account.GetAffordableLimit(currentOffer)
+            );
+        purchaseSpinner.MaxValue = totalLimit;
+        purchaseSpinner.Visible = totalLimit > 1;
+        purchaseSpinner.Value = 1;
+        SpinnerChanged(1);
+        currentOfferEntry.Visible = true;
+    }
 
+    GameItem displayedItem = null;
+    void SetDisplayItem(GameItem item)
+    {
+        Visible = true;
+        displayItemEntry.SetItem(item);
+        item.SetRewardNotification();
+        displayedItem = item;
+        
         //TODO: add extra icons for survivors, and fix descriptions
 
         statsTreeContainer.Reparent(inactiveTabParent);
+        statsTree.HideFolding = true;
         perkDetailsPanel.Reparent(inactiveTabParent);
         heroDetailsPanel.Reparent(inactiveTabParent);
         devTextContainer.Reparent(inactiveTabParent);
 
-        if (template["Type"].ToString() == "Hero")
+        var type = item.template.Type;
+        if (type == "Hero")
         {
             //parse hero stuff
             heroDetailsPanel.Reparent(activeTabParent);
-            int tier = template["Tier"].GetValue<int>();
-            var heroItems = template.GetHeroAbilities();
+            int tier = item.template.Tier;
+            var heroItems = item.template.GetHeroAbilities();
+            heroPerkEntry.SetAbility(heroItems[0], false);
+            heroCommanderPerkEntry.SetAbility(heroItems[1], tier < 2);
             for (int i = 0; i < 3; i++)
             {
-                heroAbilityEntries[i].SetAbility(heroItems["HeroAbilities"][i].AsObject(), tier<=i);
+                heroAbilityEntries[i].SetAbility(heroItems[i + 2], tier <= i);
             }
-            heroPerkEntry.SetAbility(heroItems["HeroPerk"].AsObject(), false);
-            heroCommanderPerkEntry.SetAbility(heroItems["CommanderPerk"].AsObject(), tier<2);
-            if (template["UnlocksTeamPerk"]?.ToString() is string teamPerk)
+            if (item.template["UnlocksTeamPerk"]?.ToString() is string teamPerk)
             {
-                teamPerkEntry.SetItemData(BanjoAssets.TryGetTemplate(teamPerk).CreateInstanceOfItem());
+                teamPerkEntry.SetItem(GameItemTemplate.Get(teamPerk).CreateInstance());
                 teamPerkEntry.Visible = true;
             }
             else
@@ -229,84 +216,121 @@ public partial class GameItemViewer : ModalWindow
             statsTreeContainer.Reparent(activeTabParent);
             //statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(10, 0);
         }
-        else if (template["Type"].ToString() == "Schematic")
+        else if (type == "Schematic" || type == "Weapon" || type == "Trap")
         {
             //parse schematic stuff
-            perkDetailsPanel.Reparent(activeTabParent);
-            if (linkedProfileItem is not null)
-                perkDetailsPanel.LinkItem(linkedProfileItem);
-            else 
-                perkDetailsPanel.SetDisplayItem(itemInstance);
+            if (item.Alterations is not null || (item.template?.AlterationSlots?.Count ?? 0) > 0)
+            {
+                perkDetailsPanel.Reparent(activeTabParent);
+                perkDetailsPanel.SetItem(item);
+            }
 
-            statsTreeContainer.Reparent(activeTabParent);
-            statsTree.Clear();
-            statsTree.Columns = 2;
-            statsTree.SetColumnTitle(0, "Stat");
-            statsTree.SetColumnTitle(1, "Value");
-            statsTree.SetColumnClipContent(0, false);
-            statsTree.SetColumnClipContent(1, false);
-            statsTree.SetColumnExpand(1, false);
-            statsTree.SetColumnCustomMinimumWidth(1, 90);
-            var root = statsTree.CreateItem();
             JsonObject statsJson = null;
-            if (template.ContainsKey("RangedWeaponStats"))
-                statsJson = template["RangedWeaponStats"].AsObject();
-            else if (template.ContainsKey("MeleeWeaponStats"))
-                statsJson = template["MeleeWeaponStats"].AsObject();
-            else if (template.ContainsKey("TrapStats"))
-                statsJson = template["TrapStats"].AsObject();
-            GenerateTreeFromJson(statsJson, root);
+            if (item.template["RangedWeaponStats"] is JsonObject rangedWeaponStats)
+            {
+                statsTree.HideFolding = false;
+                statsJson = rangedWeaponStats;
+            }
+            else if (item.template["MeleeWeaponStats"] is JsonObject meleeWeaponStats)
+                statsJson = meleeWeaponStats;
+            else if (item.template["TrapStats"] is JsonObject trapStats)
+                statsJson = trapStats;
+            if (statsJson is not null)
+            {
+                statsTreeContainer.Reparent(activeTabParent);
+                statsTree.Clear();
+                var root = statsTree.CreateItem();
+                statsTree.Columns = 2;
+                statsTree.SetColumnTitle(0, "Stat");
+                statsTree.SetColumnTitle(1, "Value");
+                statsTree.SetColumnClipContent(0, false);
+                statsTree.SetColumnClipContent(1, false);
+                statsTree.SetColumnExpand(1, false);
+                statsTree.SetColumnCustomMinimumWidth(1, 100);
+                GenerateTreeFromJson(statsJson, root);
+            }
             //statsTree.CustomMinimumSize = statsTree.GetMinimumSize() + new Vector2(35, 0);
         }
-        else if (template["Type"].ToString() == "Defender")
+        else if (type == "Defender")
         {
             //parse defender stuff
-            perkDetailsPanel.Reparent(activeTabParent);
-            if (linkedProfileItem is not null)
-                perkDetailsPanel.LinkItem(linkedProfileItem);
-            else if (itemInstance["attributes"]?.AsObject().ContainsKey("alterations") ?? false)
-                perkDetailsPanel.SetDisplayItem(itemInstance);
-            else
-                perkDetailsPanel.Visible = false;
+            if (item.attributes?.ContainsKey("alterations") ?? false)
+            {
+                perkDetailsPanel.Reparent(activeTabParent);
+                perkDetailsPanel.SetItem(item);
+            }
         }
 
-        devText.Text = itemInstance.ToJsonString(new() { WriteIndented = true });
-        devText.FoldLine(1);
-        if (showDevText)
+        if (AppConfig.Get("advanced", "developer", false))
+        {
+            var rawData = item.RawData.ToJsonString(new() { WriteIndented = true });
+            devText.Text = rawData;
+            devText.FoldLine(1);
+            var lines = rawData.Split("\n").ToList();
+            var templateIndex = lines.FindIndex(l => l.Trim().StartsWith("\"template\": {"));
+            if (templateIndex >= 0)
+                devText.FoldLine(templateIndex);
             devTextContainer.Reparent(activeTabParent);
+        }
 
         activeTabParent.Visible = activeTabParent.GetChildCount() > 0;
         if (activeTabParent.Visible)
             activeTabParent.CurrentTab = 0;
     }
 
-    void RefreshHeroStats()
+    public void SetSearchText(string searchText)
     {
-        var fortStats = GetFORTStatsUnsafe();
-        statsTree.Clear();
-        statsTree.Columns = 3;
-        statsTree.SetColumnTitle(0, "Stat");
-        statsTree.SetColumnTitle(1, "Value");
-        statsTree.SetColumnTitle(2, "Scaled Value");
+        if (searchResult is null || currentItem is null)
+            return;
+        PLSearch.Instruction[] itemSearchInstructions = PLSearch.GenerateSearchInstructions(searchText) ?? Array.Empty<PLSearch.Instruction>();
+        PLSearch.EvaluateInstructions(itemSearchInstructions, currentItem.RawData, out var resultText);
+        searchResult.Text = resultText;
+    }
 
-        statsTree.SetColumnClipContent(0, false);
-        statsTree.SetColumnClipContent(1, false);
-        statsTree.SetColumnClipContent(2, false);
+    SemaphoreSlim heroStatsActiveSemaphore = new(1);
+    SemaphoreSlim heroStatsQueuedSemaphore = new(2);
+    async void RefreshHeroStats()
+    {
+        if (heroStatsQueuedSemaphore.CurrentCount == 0)
+            return;
+        try
+        {
+            await heroStatsQueuedSemaphore.WaitAsync();
+            await heroStatsActiveSemaphore.WaitAsync();
+            var account = displayedItem.profile?.account ?? GameAccount.activeAccount;
+            var fortStats = account.FortStats;
 
-        statsTree.SetColumnExpand(0, true);
-        statsTree.SetColumnExpand(1, false);
-        statsTree.SetColumnExpand(2, false);
+            statsTree.Clear();
+            statsTree.Columns = 3;
+            statsTree.SetColumnTitle(0, "Stat");
+            statsTree.SetColumnTitle(1, "Value");
+            statsTree.SetColumnTitle(2, "Scaled Value");
 
-        statsTree.SetColumnCustomMinimumWidth(1, 40);
-        statsTree.SetColumnCustomMinimumWidth(2, 75);
+            statsTree.SetColumnClipContent(0, false);
+            statsTree.SetColumnClipContent(1, false);
+            statsTree.SetColumnClipContent(2, false);
 
-        var root = statsTree.CreateItem();
-        AddStatTreeEntry(root, "Health", latestItem.GetHeroStat(HeroStats.MaxHealth), latestItem.GetHeroStat(HeroStats.MaxHealth, (int)levelSlider.Value, (int) tierSlider.Value), fortStats.fortitude + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.MaxHealth));
-        AddStatTreeEntry(root, "Shield", latestItem.GetHeroStat(HeroStats.MaxShields), latestItem.GetHeroStat(HeroStats.MaxShields, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.resistance + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.MaxShields));
-        AddStatTreeEntry(root, "Health Regen Rate", latestItem.GetHeroStat(HeroStats.HealthRegenRate), latestItem.GetHeroStat(HeroStats.HealthRegenRate, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.fortitude);
-        AddStatTreeEntry(root, "Shield Regen Rate", latestItem.GetHeroStat(HeroStats.ShieldRegenRate), latestItem.GetHeroStat(HeroStats.ShieldRegenRate, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.resistance + ProfileRequests.GetSurvivorBonusUnsafe(SurvivorBonus.ShieldRegenRate));
-        AddStatTreeEntry(root, "Ability Damage", latestItem.GetHeroStat(HeroStats.AbilityDamage), latestItem.GetHeroStat(HeroStats.AbilityDamage, (int)levelSlider.Value, (int)tierSlider.Value), 0, 10); //ingame UI doesnt scale these by tech, should it?
-        AddStatTreeEntry(root, "Healing Modifier", latestItem.GetHeroStat(HeroStats.HealingModifier), latestItem.GetHeroStat(HeroStats.HealingModifier, (int)levelSlider.Value, (int)tierSlider.Value), 0, 100);
+            statsTree.SetColumnExpand(0, true);
+            statsTree.SetColumnExpand(1, false);
+            statsTree.SetColumnExpand(2, false);
+
+            statsTree.SetColumnCustomMinimumWidth(1, 40);
+            statsTree.SetColumnCustomMinimumWidth(2, 75);
+
+            var root = statsTree.CreateItem();
+            AddStatTreeEntry(root, "Health", displayedItem.GetHeroStat(HeroStats.MaxHealth), displayedItem.GetHeroStat(HeroStats.MaxHealth, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.fortitude + await account.GetSurvivorBonus(SurvivorBonus.MaxHealth));
+            AddStatTreeEntry(root, "Shield", displayedItem.GetHeroStat(HeroStats.MaxShields), displayedItem.GetHeroStat(HeroStats.MaxShields, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.resistance + await account.GetSurvivorBonus(SurvivorBonus.MaxShields));
+            AddStatTreeEntry(root, "Health Regen Rate", displayedItem.GetHeroStat(HeroStats.HealthRegenRate), displayedItem.GetHeroStat(HeroStats.HealthRegenRate, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.fortitude);
+            AddStatTreeEntry(root, "Shield Regen Rate", displayedItem.GetHeroStat(HeroStats.ShieldRegenRate), displayedItem.GetHeroStat(HeroStats.ShieldRegenRate, (int)levelSlider.Value, (int)tierSlider.Value), fortStats.resistance + await account.GetSurvivorBonus(SurvivorBonus.ShieldRegenRate));
+            AddStatTreeEntry(root, "Ability Damage", displayedItem.GetHeroStat(HeroStats.AbilityDamage), displayedItem.GetHeroStat(HeroStats.AbilityDamage, (int)levelSlider.Value, (int)tierSlider.Value), 0, 10); //ingame UI doesnt scale these by tech, should it?
+            AddStatTreeEntry(root, "Healing Modifier", displayedItem.GetHeroStat(HeroStats.HealingModifier), displayedItem.GetHeroStat(HeroStats.HealingModifier, (int)levelSlider.Value, (int)tierSlider.Value), 0, 100);
+
+        }
+        finally
+        {
+            heroStatsActiveSemaphore.Release();
+            heroStatsQueuedSemaphore.Release();
+        }
     }
 
     static void AddStatTreeEntry(TreeItem parent, string name, float baseValue = 5, float upgradeValue = 5, float scalar = 0, int roundingDivisor = 1)
@@ -330,119 +354,81 @@ public partial class GameItemViewer : ModalWindow
         foreach (var item in jsonParent)
         {
             string fixedName = Regex.Replace(item.Key, "[A-Z]", " $0");
-            TreeItem entry = treeParent.CreateChild();
-            entry.SetText(0, fixedName);
             if (item.Value is JsonObject childObject)
             {
+                TreeItem entry = treeParent.CreateChild();
+                entry.SetText(0, fixedName);
                 GenerateTreeFromJson(childObject, entry);
-                //entry.Collapsed = true;
+                entry.Collapsed = true;
             }
             else
             {
-                string fixedVal = Regex.Replace(item.Value.ToString(), "[A-Z]", " $0");
+                string fixedVal = "";
 
                 if (item.Value.AsValue().TryGetValue(out float floatValue))
                     fixedVal = (Mathf.Round(floatValue * 100) / 100).ToString();
-
-                if(fixedVal.StartsWith(" "))
-                    fixedVal = fixedVal[1..];
-                fixedVal = fixedVal.Replace("  ", " ");
+                else
+                {
+                    fixedVal = Regex.Replace(item.Value.ToString(), "[A-Z]", " $0").Trim();
+                    fixedVal = fixedVal.Replace("  ", " ");
+                    if(fixedName == " Reload Type")
+                    {
+                        fixedVal = fixedVal switch
+                        {
+                            "Reload Individual Bullets" => "1 At A Time",
+                            "Reload Based On Cartridge Per Fire" => jsonParent["CartridgePerFire"].GetValue<int>()+ " At A Time",
+                            "Reload Whole Clip" => "All",
+                            _ => fixedVal,
+                        };
+                    }
+                }
+                if (fixedVal == "0")
+                    continue;
+                
+                TreeItem entry = treeParent.CreateChild();
+                entry.SetText(0, fixedName);
                 entry.SetText(1, fixedVal);
             }
         }
     }
 
-    public async Task LinkShopOffer(JsonObject offer, Action purchaseCallback = null)
-    {
-        linkedShopOffer = offer;
-        this.purchaseCallback = purchaseCallback;
-
-        string priceType = offer["prices"][0]["currencySubType"].ToString();
-        int price = offer["prices"][0]["finalPrice"].GetValue<int>();
-        var inInventory = await ProfileRequests.GetSumOfProfileItems(FnProfileTypes.AccountItems, priceType);
-
-        int maxAffordable = price == 0 ? 999 : Mathf.FloorToInt(inInventory / price);
-        int maxInStock = await offer.GetPurchaseLimitFromOffer();
-        int maxAmount = Mathf.Min(maxAffordable, maxInStock);
-
-        int maxSimultaniousAmount = Mathf.Min(int.Parse(
-            offer["metaInfo"]?
-                .AsArray()
-                .FirstOrDefault(val => val["key"].ToString() == "MaxConcurrentPurchases")?
-                ["value"]
-                .ToString()
-            ??
-            maxAmount.ToString()
-        ), maxAmount);
-
-        purchasePanel.Visible = false;
-        outOfStockPanel.Visible = false;
-        cantAffordPanel.Visible = false;
-
-        if (maxAmount > 0)
-        {
-            purchasePanel.Visible = true;
-            latestPurchasablePrice = price;
-            SpinnerChanged(purchaseCountSpinner.Value);
-            purchaseCountSpinner.MaxValue = maxSimultaniousAmount;
-            purchaseCountSpinner.Visible = maxSimultaniousAmount > 1;
-            BanjoAssets.TryGetTemplate(priceType, out var priceTemplate);
-            priceIcon.Texture = priceTemplate.GetItemTexture();
-        }
-        else if (maxInStock <= 0)
-        {
-            //out of stock
-            outOfStockPanel.Visible = true;
-        }
-        else
-        {
-            //can't afford
-            cantAffordPanel.Visible = true;
-        }
-    }
     int latestPurchasablePrice = 0;
 
     public void SpinnerChanged(double newValue)
     {
-        priceLabel.Text = (latestPurchasablePrice * newValue).ToString();
+        currentOfferEntry.SetTargetPurchaseQuantity((int)newValue);
     }
+
     public async void PurchaseItem()
     {
-        if (linkedShopOffer is null)
+        if (currentOffer is null)
             return;
-        GD.Print("attempting to purchase offer: " + linkedShopOffer);
+        using var _ = LoadingOverlay.CreateToken();
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        //GD.Print("attempting to purchase offer: " + currentOffer.OfferId);
         //fake it to test purchase animation
         //GD.Print("FAKE PURCHASE");
         //ShopPurchaseAnimation.PlayAnimation(latestItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
         //return;
 
-        JsonObject body = new()
-        {
-            ["offerId"] = linkedShopOffer["offerId"].ToString(),
-            ["purchaseQuantity"] = purchaseCountSpinner.Value,
-            ["currency"] = linkedShopOffer["prices"][0]["currencyType"].ToString(),
-            ["currencySubType"] = linkedShopOffer["prices"][0]["currencySubType"].ToString(),
-            ["expectedTotalPrice"] = linkedShopOffer["prices"][0]["finalPrice"].GetValue<int>() * purchaseCountSpinner.Value,
-            ["gameContext"] = "Pegleg",
-        };
-        LoadingOverlay.AddLoadingKey("ItemPurchase");
-        var result = (await ProfileRequests.PerformProfileOperation(FnProfileTypes.Common, "PurchaseCatalogEntry", body.ToString()));
-        GD.Print(result["notifications"]);
-        GD.Print(result["multiUpdate"]);
+        var notifs = await account.PurchaseOffer(currentOffer, currentOfferEntry.currentPurchaseQuantity);
+        //GD.Print(notifs);
         SetWindowOpen(false);
-        LoadingOverlay.RemoveLoadingKey("ItemPurchase");
 
-        var resultItem = result["notifications"].AsArray().First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"][0];
+        var resultItemData = notifs.First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"][0];
+        GameItem resultItem = new(null, null, resultItemData.AsObject());
         //await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());
 
-        ShopPurchaseAnimation.PlayAnimation(resultItem.GetTemplate().GetItemTexture(), (int)purchaseCountSpinner.Value);
-        purchaseCallback?.Invoke();
-        purchaseCallback = null;
+        ShopPurchaseAnimation.PlayAnimation(resultItem.GetTexture(), currentOfferEntry.currentPurchaseQuantity);
     }
 
 
-    public async void SetChoiceIndex(int index)
+    public void SetChoiceIndex(int index)
     {
-        await SetDisplayItem(choices[index]);
+        SetDisplayItem(choices[index]);
     }
 }

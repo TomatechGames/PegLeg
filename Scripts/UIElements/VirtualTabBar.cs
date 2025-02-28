@@ -17,39 +17,59 @@ public partial class VirtualTabBar : Control
         get => currentTab;
         set
         {
-            if (value == currentTab)
+            if (buttons.Count <= value || value < 0)
                 return;
-            currentTab = value;
-            EmitSignal(SignalName.TabChanged, value);
+            buttons[value].ButtonPressed = true;
+            TryChangeTab(value);
         }
     }
+
+    ButtonGroup test;
 
     public override void _Ready()
     {
         base._Ready();
         var possibleCheckButtons = checkButtonParent.GetChildren();
+        CheckButton firstVisible = null;
         for (int i = 0; i < possibleCheckButtons.Count; i++)
         {
+            CheckButton checkButton = null;
             var buttonNode = possibleCheckButtons[i];
-            if (buttonNode is CheckButton checkButton)
+            if(buttonNode is CheckButton cb)
+                checkButton = cb;
+            else if (buttonNode.FindChild("CheckButton") is CheckButton childCb)
+                checkButton = childCb;
+            if (checkButton is null)
+                continue;
+            
+            buttons.Add(checkButton);
+            if (checkButton.Visible)
+                firstVisible ??= checkButton;
+            int index = i;
+            if (currentTab != -1)
+                checkButton.ButtonPressed = false;
+            else if (checkButton.ButtonPressed && checkButton.Visible)
             {
-                buttons.Add(checkButton);
-                int index = i;
-                if (checkButton.ButtonPressed)
-                    currentTab = i;
-                checkButton.Toggled += newVal =>
-                {
-                    if (!newVal)
-                        return;
-                    CurrentTab = index;
-                };
+                currentTab = i;
             }
+            checkButton.Toggled += newVal =>
+            {
+                if (!newVal)
+                    return;
+                TryChangeTab(index);
+            };
         }
         if(currentTab==-1 && buttons.Count>0)
-            buttons[0].ButtonPressed = true;
+            firstVisible.ButtonPressed = true;
     }
-    bool isUpdatingValue = false;
 
+    void TryChangeTab(int value)
+    {
+        if (value == currentTab)
+            return;
+        currentTab = value;
+        EmitSignal(SignalName.TabChanged, value);
+    }
 
 
 }

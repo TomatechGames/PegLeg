@@ -272,7 +272,11 @@ public partial class ThemeController : Node
 
     public class MusicLayer : ThemeFile<AudioStreamWav>
     {
-        public MusicLayer(JsonNode fileNode, string themeName) : base(fileNode, themeName) { }
+        public int mixRate { get; init; } = 96000;
+        public MusicLayer(JsonNode fileNode, string themeName) : base(fileNode, themeName)
+        {
+            mixRate = fileNode is JsonObject fileObj && fileObj[nameof(mixRate)] is JsonValue mixRateVal && mixRateVal.TryGetValue(out int newMixRate) ? newMixRate : 96000;
+        }
 
         protected override AudioStreamWav LoadFileFromPath(string fullPath)
         {
@@ -281,7 +285,7 @@ public partial class ThemeController : Node
             {
                 Data = layerFile.GetBuffer((long)layerFile.GetLength()),
                 Format = AudioStreamWav.FormatEnum.Format16Bits,
-                MixRate = 96000,
+                MixRate = mixRate,
             };
             return layerStream;
         }
@@ -310,8 +314,10 @@ public partial class ThemeController : Node
 
         public ThemeFile(JsonNode fileNode, string themeName)
         {
-            var fileObj = fileNode.AsFlexibleObject(nameof(path));
-            path = fileObj[nameof(path)].ToString();
+            //GD.Print(fileNode);
+            var fileObj = fileNode.AsFlexibleObject("path");
+            //GD.Print(fileObj);
+            path = fileObj["path"].ToString();
             if (path.Contains(":"))
             {
                 var splitPath = path.Split(':');
@@ -320,7 +326,7 @@ public partial class ThemeController : Node
             }
             else
                 sourceTheme = themeName;
-            weight = fileObj[nameof(weight)]?.GetValue<float>() ?? weight;
+            weight = fileObj["weight"]?.GetValue<float>() ?? weight;
         }
 
         public float RealWeight => fileData is null ? 0 : weight;

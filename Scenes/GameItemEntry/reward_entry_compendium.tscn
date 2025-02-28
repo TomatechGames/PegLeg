@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cei68i5c1u3d1"]
+
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="1_0v6tw"]
+[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_fx4gk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pb7ax"]
+resource_local_to_scene = true
+shader = ExtResource("2_fx4gk")
+shader_parameter/ControlSize = Vector2(96, 96)
+shader_parameter/CornerRadius = 5.0
+shader_parameter/Fit = false
+
+[node name="RewardEntryCompendium" instance=ExtResource("1_0v6tw")]
+custom_minimum_size = Vector2(96, 96)
+
+[node name="Panel" type="Panel" parent="." index="0"]
+layout_mode = 2
+
+[node name="TextureRect" parent="." index="1"]
+material = SubResource("ShaderMaterial_pb7ax")
+
+[node name="AmountContainer" parent="Overlays" index="0"]
+visible = false
+
+[node name="RightIconContainer" parent="Overlays/AmountContainer" index="0"]
+visible = false
+
+[node name="LeftIconContainer" parent="Overlays/AmountContainer" index="2"]
+visible = false
+
+[node name="InteractableIcon" parent="Overlays/InteractableContainer" index="0"]
+visible = false

@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://b6i4qroblgrhs"]
+
+[ext_resource type="Shader" path="res://Shaders/CircleBaseMask.gdshader" id="1_6n3co"]
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameAccountEntry.cs" id="1_flh3e"]
+[ext_resource type="Texture2D" uid="uid://cj7awxlqm1to2" path="res://Images/InterfaceIcons/T_UI_Icon_Sidebar_OnlinePlayers.png" id="2_krnhj"]
+[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="2_oc5xf"]
+[ext_resource type="Texture2D" uid="uid://djcvidllqfmt5" path="res://Images/InterfaceIcons/T_UI_LevelManagement_Trashcan_Icon.png" id="4_l8hq6"]
+[ext_resource type="Texture2D" uid="uid://dvaxtvga1xl7j" path="res://Images/InterfaceIcons/T-Icon-Warning-32.png" id="4_py8uw"]
+[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/InvertBoolean.cs" id="5_5y5dk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pkso0"]
+shader = ExtResource("1_6n3co")
+
+[node name="AccountEntry" type="HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+script = ExtResource("1_flh3e")
+defaultIcon = ExtResource("2_krnhj")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+theme_type_variation = &"AccountButton"
+text = "
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/MarginContainer/HBoxContainer"]
+material = SubResource("ShaderMaterial_pkso0")
+custom_minimum_size = Vector2(21, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_oc5xf")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "TomatechGames"
+text_overrun_behavior = 3
+
+[node name="AuthAlert" type="TextureRect" parent="MarginContainer/MarginContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(21, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Could not authenticate, please sign in again"
+texture = ExtResource("4_py8uw")
+expand_mode = 1
+
+[node name="InvertHasAuth" type="Node" parent="MarginContainer/MarginContainer/HBoxContainer/AuthAlert"]
+script = ExtResource("5_5y5dk")
+
+[node name="DeleteButton" type="Button" parent="."]
+self_modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(27, 0)
+layout_mode = 2
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="DeleteButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_l8hq6")
+expand_mode = 1
+
+[connection signal="AuthenticatedChanged" from="." to="MarginContainer/MarginContainer/HBoxContainer/AuthAlert/InvertHasAuth" method="EmitInverted"]
+[connection signal="IconChanged" from="." to="MarginContainer/MarginContainer/HBoxContainer/Icon" method="set_texture"]
+[connection signal="NameChanged" from="." to="MarginContainer/MarginContainer/HBoxContainer/Label" method="set_text"]
+[connection signal="TooltipChanged" from="." to="MarginContainer/Button" method="set_tooltip_text"]
+[connection signal="pressed" from="MarginContainer/Button" to="." method="Press"]
+[connection signal="InvertedValue" from="MarginContainer/MarginContainer/HBoxContainer/AuthAlert/InvertHasAuth" to="MarginContainer/Button" method="set_disabled"]
+[connection signal="InvertedValue" from="MarginContainer/MarginContainer/HBoxContainer/AuthAlert/InvertHasAuth" to="MarginContainer/MarginContainer/HBoxContainer/AuthAlert" method="set_visible"]
+[connection signal="pressed" from="DeleteButton" to="." method="Delete"]

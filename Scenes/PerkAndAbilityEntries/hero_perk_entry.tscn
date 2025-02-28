@@ -25,10 +25,11 @@ lockText = "Evolve Hero to 2 Stars to unlock Commander Perk"
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
-custom_minimum_size = Vector2(75, 0)
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
+size_flags_vertical = 0
 texture = ExtResource("3_ibav2")
-expand_mode = 1
+expand_mode = 5
 stretch_mode = 5
 
 [node name="LockIconPos" type="Control" parent="HBoxContainer/TextureRect"]
@@ -75,7 +76,7 @@ theme_override_constants/separation = 0
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 28
 text = "A Long Hero Perk Name"
 text_overrun_behavior = 3
 
@@ -83,6 +84,7 @@ text_overrun_behavior = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 20
 text = "this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. this description is very very big. "
 
 [connection signal="DescriptionChanged" from="." to="HBoxContainer/VBoxContainer/RichTextLabel" method="set_text"]

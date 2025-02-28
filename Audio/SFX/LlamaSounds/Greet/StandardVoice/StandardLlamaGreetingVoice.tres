@@ -1,15 +1,15 @@
 [gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://cr73qyj4jlm6t"]
 
-[ext_resource type="AudioStream" uid="uid://b75urydh2eu3n" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_01.wav" id="1_seisw"]
-[ext_resource type="AudioStream" uid="uid://cwse4w8i5v2if" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLLama_Greet_02.wav" id="2_vtmny"]
-[ext_resource type="AudioStream" uid="uid://dfvvhqnvqggn4" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_03.wav" id="3_7puid"]
-[ext_resource type="AudioStream" uid="uid://bnaajug6aag0d" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_04.wav" id="4_nqu8j"]
-[ext_resource type="AudioStream" uid="uid://drw0ebviickr" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_05.wav" id="5_fdaic"]
+[ext_resource type="AudioStream" uid="uid://5a5was2up45d" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_01.ogg" id="1_1u0md"]
+[ext_resource type="AudioStream" uid="uid://bh1vlg3pqj8wg" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLLama_Greet_02.ogg" id="2_r4p07"]
+[ext_resource type="AudioStream" uid="uid://c5onbj0yj8lwf" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_03.ogg" id="3_4wo8w"]
+[ext_resource type="AudioStream" uid="uid://c3tcy75wb65bx" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_04.ogg" id="4_d877k"]
+[ext_resource type="AudioStream" uid="uid://q0nfj4ioxyco" path="res://Audio/SFX/LlamaSounds/Greet/StandardVoice/JB_BasicLlama_Greet_05.ogg" id="5_o54dw"]
 
 [resource]
 streams_count = 5
-stream_0/stream = ExtResource("1_seisw")
-stream_1/stream = ExtResource("2_vtmny")
-stream_2/stream = ExtResource("3_7puid")
-stream_3/stream = ExtResource("4_nqu8j")
-stream_4/stream = ExtResource("5_fdaic")
+stream_0/stream = ExtResource("1_1u0md")
+stream_1/stream = ExtResource("2_r4p07")
+stream_2/stream = ExtResource("3_4wo8w")
+stream_3/stream = ExtResource("4_d877k")
+stream_4/stream = ExtResource("5_o54dw")

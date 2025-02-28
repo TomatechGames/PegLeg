@@ -1,12 +1,13 @@
-[gd_scene load_steps=28 format=3 uid="uid://c78gt6b2m1utg"]
+[gd_scene load_steps=29 format=3 uid="uid://c78gt6b2m1utg"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
+[ext_resource type="Texture2D" uid="uid://07k0gr21gs5e" path="res://Images/InterfaceIcons/T_UI_VKConnectionIndicator_Error_Icon.png" id="2_nynxn"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="2_rrtg2"]
+[ext_resource type="AudioStream" uid="uid://dweoot2qw456d" path="res://Audio/SFX/UI/Notification/fort_UI_Important_Update.ogg" id="3_m7b6w"]
 [ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="4_ebt37"]
-[ext_resource type="Texture2D" uid="uid://bao6ptsdb0lxd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_FloppyDisc_128.png" id="4_tmf5n"]
-[ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://GodotThemes/Styleboxes/CheckButton/CheckContainer.tres" id="5_njejm"]
-[ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="6_bo112"]
+[ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="5_6m3c7"]
+[ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_p6lk0"]
 [ext_resource type="Texture2D" uid="uid://gak2hv6itgoo" path="res://Images/InterfaceIcons/T-Icon-Survivor-Leader-CARD.png" id="7_lvf0s"]
 [ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="8_kmmrq"]
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="9_oiae4"]
@@ -16,20 +17,15 @@
 [ext_resource type="Texture2D" uid="uid://jipvjhedh7jy" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Epic-L.png" id="13_0u7ma"]
 [ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="14_fvpat"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="15_618bo"]
+[ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="15_g8mr2"]
 [ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="16_egkbm"]
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="17_eyhau"]
+[ext_resource type="Texture2D" uid="uid://dwam1asop7ckw" path="res://Images/InterfaceIcons/PinataMiniRewardPack.png" id="17_n40x5"]
 [ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="18_phyx5"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="19_xbd21"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="20_dnnsf"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="21_6608v"]
 [ext_resource type="PackedScene" uid="uid://cbntw4mx14x6o" path="res://MissionHex/mission_hex_grid.tscn" id="22_6i1lp"]
-
-[sub_resource type="Gradient" id="Gradient_08e2c"]
-colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_60hgg"]
-gradient = SubResource("Gradient_08e2c")
-width = 1
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_fb3nj"]
 resource_name = "MissionZoneFilter"
@@ -42,7 +38,7 @@ shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 30.0
 
-[node name="Missions" type="PanelContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "itemFilterButtons", "missionList", "loadingIcon")]
+[node name="Missions" type="MarginContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "missionList", "loadingIcon")]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,9 +46,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_474w2")
+unexpectedResetNotifIcon = ExtResource("2_nynxn")
+unexpectedResetSound = ExtResource("3_m7b6w")
 zoneFilterTabBar = NodePath("VBoxContainer/HBoxContainer/ZoneFilters")
 searchBar = NodePath("VBoxContainer/HBoxContainer/SearchBox")
-itemFilterButtons = [NodePath("VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Survivors"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Schematics"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Heroes"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/UpgradeMats"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/PerkUps"), NodePath("VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets")]
 missionList = NodePath("VBoxContainer/Control/ScrollContainer")
 loadingIcon = NodePath("VBoxContainer/Control/LoadingIcon")
 
@@ -109,158 +106,42 @@ vertical_alignment = 1
 script = ExtResource("2_rrtg2")
 timerType = 1
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
 visible = false
-custom_minimum_size = Vector2(26, 0)
 layout_mode = 2
-theme_override_colors/font_disabled_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 0)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 0)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 0)
-theme_override_colors/font_color = Color(0, 0, 0, 0)
-theme_override_icons/arrow = SubResource("GradientTexture1D_60hgg")
-alignment = 2
-text_overrun_behavior = 2
-selected = 1
-fit_to_longest_item = false
-item_count = 8
-popup/item_0/text = "preset the first"
-popup/item_1/text = "preset the second"
-popup/item_1/id = 1
-popup/item_2/text = "preset the third"
-popup/item_2/id = 2
-popup/item_3/id = 3
-popup/item_3/separator = true
-popup/item_4/text = "Create New Preset"
-popup/item_4/id = 5
-popup/item_5/text = "Save Preset"
-popup/item_5/id = 4
-popup/item_6/text = "Rename Preset"
-popup/item_6/id = 7
-popup/item_7/text = "Delete Preset"
-popup/item_7/id = 6
-
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/OptionButton"]
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(10, 10)
-texture = ExtResource("4_tmf5n")
-expand_mode = 1
+size_flags_horizontal = 3
 
 [node name="SearchBox" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "///(v-buck | worker | hero) (v-buck | leg | mythic)"
 placeholder_text = "Search in missions"
+context_menu_enabled = false
 clear_button_enabled = true
 
-[node name="ZoneFilters" type="MarginContainer" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("checkButtonParent")]
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
-script = ExtResource("4_ebt37")
-checkButtonParent = NodePath("MarginContainer/HBoxContainer")
+selected = 0
+item_count = 2
+popup/item_0/text = "Grid View"
+popup/item_1/text = "List View"
+popup/item_1/id = 1
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/ZoneFilters"]
+[node name="ItemFilters" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("5_njejm")
+theme_type_variation = &"CheckGroupContainer"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/ZoneFilters"]
-layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer"]
-layout_mode = 2
-theme_override_styles/panel = ExtResource("6_bo112")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 1
-
-[node name="Main" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Main Regions"
-theme_type_variation = &"LeftCheckButton"
-button_group = SubResource("ButtonGroup_fb3nj")
-text = " M"
-
-[node name="All" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "All Regions"
-theme_type_variation = &"MiddleCheckButton"
-button_pressed = true
-button_group = SubResource("ButtonGroup_fb3nj")
-text = "  All"
-
-[node name="Stonewood" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Stonewood"
-theme_type_variation = &"MiddleCheckButton"
-button_group = SubResource("ButtonGroup_fb3nj")
-text = "  S"
-
-[node name="Plankerton" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Plankerton"
-theme_type_variation = &"MiddleCheckButton"
-button_group = SubResource("ButtonGroup_fb3nj")
-text = " P"
-
-[node name="Canny Valley" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Canney Valley"
-theme_type_variation = &"MiddleCheckButton"
-button_group = SubResource("ButtonGroup_fb3nj")
-text = " CV"
-
-[node name="Twine Peaks" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Twine Peaks"
-theme_type_variation = &"MiddleCheckButton"
-button_group = SubResource("ButtonGroup_fb3nj")
-text = " TP"
-
-[node name="Ventures" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/MarginContainer/HBoxContainer"]
-layout_mode = 2
-tooltip_text = "Ventures"
-theme_type_variation = &"RightCheckButton"
-button_group = SubResource("ButtonGroup_fb3nj")
-text = " V"
-
-[node name="ItemFilters" type="MarginContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/ItemFilters"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer/ItemFilters"]
-layout_mode = 2
-theme_override_styles/panel = ExtResource("5_njejm")
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/ItemFilters"]
-layout_mode = 2
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer"]
-layout_mode = 2
-
-[node name="Survivors" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer"]
+[node name="Survivors" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Legendary Survivors
 Mythic Lead Survivors"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Survivors"]
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Survivors"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -274,13 +155,13 @@ texture = ExtResource("7_lvf0s")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Schematics" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer"]
+[node name="Schematics" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Schematics"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Schematics"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Schematics"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -294,14 +175,14 @@ texture = ExtResource("8_kmmrq")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Heroes" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer"]
+[node name="Heroes" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Heros
 Defenders"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Heroes"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Heroes"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -315,13 +196,13 @@ texture = ExtResource("9_oiae4")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="UpgradeMats" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer"]
+[node name="UpgradeMats" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Upgrade Materials"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/UpgradeMats"]
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/UpgradeMats"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -335,7 +216,7 @@ texture = ExtResource("10_5ywbn")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/UpgradeMats"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/UpgradeMats"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -349,13 +230,13 @@ texture = ExtResource("11_3yuk1")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PerkUps" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer"]
+[node name="PerkUps" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Perk-Up"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/PerkUps"]
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/PerkUps"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -369,7 +250,7 @@ texture = ExtResource("12_jljfs")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/PerkUps"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/PerkUps"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -383,20 +264,69 @@ texture = ExtResource("13_0u7ma")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Tickets" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer"]
+[node name="Tickets" type="CheckButton" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Crafting Resources"
 theme_type_variation = &"EmptyCheckButton"
 
-[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets"]
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Tickets"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 7.0
-offset_top = 1.0
-offset_bottom = -4.0
+offset_top = -3.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("15_618bo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Tickets"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = 5.0
+offset_right = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.310669
+mouse_filter = 2
+texture = ExtResource("15_g8mr2")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="TextureRect4" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Tickets"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_right = 7.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.310669
+mouse_filter = 2
+texture = ExtResource("17_n40x5")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/HBoxContainer/Tickets"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 7.0
+offset_right = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -404,20 +334,98 @@ texture = ExtResource("14_fvpat")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/ItemFilters/MarginContainer/HBoxContainer/Tickets"]
+[node name="ZoneFilters" type="PanelContainer" parent="VBoxContainer/HBoxContainer" node_paths=PackedStringArray("checkButtonParent")]
+layout_mode = 2
+theme_type_variation = &"CheckContainer"
+script = ExtResource("4_ebt37")
+checkButtonParent = NodePath("HBoxContainer")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/ZoneFilters"]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="Main" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Main Regions"
+theme_type_variation = &"LeftCheckButton"
+button_group = SubResource("ButtonGroup_fb3nj")
+text = " M"
+
+[node name="All" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "All Regions"
+theme_type_variation = &"MiddleCheckButton"
+button_pressed = true
+button_group = SubResource("ButtonGroup_fb3nj")
+text = "  All"
+
+[node name="Stonewood" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Stonewood"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_fb3nj")
+text = "  S"
+
+[node name="Plankerton" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Plankerton"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_fb3nj")
+text = " P"
+
+[node name="Canny Valley" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Canney Valley"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_fb3nj")
+text = " CV"
+
+[node name="Twine Peaks" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Twine Peaks"
+theme_type_variation = &"MiddleCheckButton"
+button_group = SubResource("ButtonGroup_fb3nj")
+text = " TP"
+
+[node name="Ventures" type="CheckButton" parent="VBoxContainer/HBoxContainer/ZoneFilters/HBoxContainer"]
+layout_mode = 2
+tooltip_text = "Ventures"
+theme_type_variation = &"RightCheckButton"
+button_group = SubResource("ButtonGroup_fb3nj")
+text = " V"
+
+[node name="TestNotif" type="Button" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(26, 0)
+layout_mode = 2
+tooltip_text = "Debug Notification"
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/TestNotif"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 7.0
-offset_right = -7.0
-offset_bottom = 2.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("15_618bo")
+texture = ExtResource("5_6m3c7")
 expand_mode = 1
-stretch_mode = 5
+
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer/TestNotif"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+mouse_filter = 2
+script = ExtResource("6_p6lk0")
+section = "advanced"
+key = "developer"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
 
 [node name="Control" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
@@ -428,35 +436,37 @@ visible = false
 layout_mode = 2
 script = ExtResource("16_egkbm")
 elementSpace = 10.0
-linkedGrid = NodePath("MarginContainer2/VBoxContainer/DynGridContainer")
-offsetControl = NodePath("MarginContainer2/VBoxContainer/Offset")
-paddingControl = NodePath("MarginContainer2/VBoxContainer/Padding")
-elementParent = NodePath("MarginContainer2/VBoxContainer/DynGridContainer")
+linkedGrid = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
+offsetControl = NodePath("MarginContainer/VBoxContainer/Offset")
+paddingControl = NodePath("MarginContainer/VBoxContainer/Padding")
+elementParent = NodePath("MarginContainer/VBoxContainer/DynGridContainer")
 elementScene = ExtResource("17_eyhau")
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Control/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Control/ScrollContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Offset" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
+[node name="Offset" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="DynGridContainer" type="Container" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
+[node name="DynGridContainer" type="Container" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+mouse_filter = 0
 script = ExtResource("18_phyx5")
 minCols = 3
 compressSpacing = true
 spacing = Vector2(10, 10)
 
-[node name="Padding" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer2/VBoxContainer"]
+[node name="Padding" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
 [node name="MissionHexViewer" type="MarginContainer" parent="VBoxContainer/Control"]
@@ -490,3 +500,5 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ForceRefresh" to="." method="ForceReloadMissions"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/TestNotif" to="." method="FakeUnexpectedReset"]
+[connection signal="ConfigValueChanged" from="VBoxContainer/HBoxContainer/TestNotif/CheckButton" to="VBoxContainer/HBoxContainer/TestNotif" method="set_visible"]

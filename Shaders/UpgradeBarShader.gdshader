@@ -27,17 +27,17 @@ void fragment() {
 	float cornerRadius = min(CornerRadius, min(ControlSize.x, ControlSize.y));
 	float cornerPercent = cornerRadius/ControlSize.x;
 	float valRange = ((UV.x*(1.0+(cornerPercent*2.0)))-cornerPercent)*totalVal;
-	
+
 	vec2 patternTexRes=1.0/vec2(textureSize(TrianglePattern, 0));
 	vec2 patternUV = adaptToAspect(ControlSize, vec2(0,0), patternTexRes, UV, true);
-	
+
 	vec2 moddedPatternUV = patternUV*0.5;
 	moddedPatternUV.y+=floor(moddedPatternUV.x)*0.5*0.5;
 	moddedPatternUV = mod(moddedPatternUV, vec2(1,1));
 	float patternResult = texture(TrianglePattern, moddedPatternUV).r;
-	
-	
-	
+
+
+
 	if(valRange<currentVal)
 	{
 		float rippleGradient = ((patternResult+0.2)*6.0)+patternUV.x-(time*6.0);
@@ -45,7 +45,7 @@ void fragment() {
 		rippleGradient = 1.0-abs(rippleGradient);
 		rippleGradient=clamp(rippleGradient,0,1);
 		float patternScale = 0.6+((patternResult+rippleGradient*2.0)*0.2);
-		
+
 		COLOR=mix(CompleteColor*(0.6+(patternResult*0.25)), ProgressColor*patternScale, clamp((valRange-(minVal-0.5))*2.0,0,1));
 	}
 	else

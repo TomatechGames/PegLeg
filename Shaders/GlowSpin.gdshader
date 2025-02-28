@@ -40,6 +40,7 @@ void fragment()
 	vec4 anticlockwiseGlow = texture(TEXTURE, anticlockwiseUV)*maskUV(anticlockwiseUV);
 	
 	vec4 result = mix(clockwiseGlow, anticlockwiseGlow, 0.5);
+	result = clockwiseGlow*anticlockwiseGlow;
 	COLOR = modulate;
 	COLOR.a *= result.r*result.a;
 }

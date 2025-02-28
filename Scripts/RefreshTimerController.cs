@@ -28,12 +28,21 @@ public partial class RefreshTimerController : Node
         perSecondTimer.Timeout += UpdateTimers;
         lastTime = DateTime.UtcNow;
         instance = this;
+        AppConfig.OnConfigChanged += OnConfigChanged;
+        offset = AppConfig.Get("advanced", "developer", false) ? 0 : 5;
     }
+
+    float offset = 5;
+    private void OnConfigChanged(string arg1, string arg2, System.Text.Json.Nodes.JsonValue arg3)
+    {
+        offset = AppConfig.Get("advanced", "developer", false) ? 0 : 5;
+    }
+
     DateTime lastTime;
     private void UpdateTimers()
     {
         OnSecondChanged?.Invoke();
-        var currentTime = DateTime.UtcNow;
+        var currentTime = DateTime.UtcNow.AddSeconds(offset);
         if (currentTime.Hour != lastTime.Hour)
             OnHourChanged?.Invoke();
         if (currentTime.Day != lastTime.Day)
@@ -72,6 +81,10 @@ public partial class RefreshTimerController : Node
                 int utcDayOfWeek = (int)rightNow.DayOfWeek;
                 int daysUntilThursday = ((10 - utcDayOfWeek)) % 7;
                 return today.AddDays(daysUntilThursday + 1);
+            case RefreshTimeType.BRWeekly:
+                int utcDayOfWeekBR = (int)rightNow.AddHours(14).DayOfWeek;
+                int daysUntilTuesday = ((10 - utcDayOfWeekBR)) % 7;
+                return today.AddDays(daysUntilTuesday + 1).AddHours(14);
         }
         int dayCount = (today - referenceStartDate).Days;
         dayCount = dayCount % (weeksInSeasonalYear * 7);
@@ -96,5 +109,6 @@ public enum RefreshTimeType
     Hourly,
     Daily,
     Weekly,
+    BRWeekly,
     Event
 }

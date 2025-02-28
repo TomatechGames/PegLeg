@@ -2,32 +2,26 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 
-public partial class MissionInterface : Control, IRecyclableElementProvider<MissionData>
+public partial class MissionInterface : Control, IRecyclableElementProvider<GameMission>
 {
-    [Export]
-    VirtualTabBar zoneFilterTabBar;
-    [Export]
-	LineEdit searchBar;
+    #region Statics
+    static MissionInterface instance;
 
-    [Export]
-    CheckButton[] itemFilterButtons = Array.Empty<CheckButton>();
-
-    [Export]
-    RecycleListContainer missionList;
-
-    [Export]
-	TextureProgressBar loadingIcon;
-
-    string currentTheaterFilter => theaterFilters[zoneFilterTabBar.CurrentTab];
+    static NotificationData _unexpectedResetNotif;
+    static NotificationData unexpectedResetNotif => _unexpectedResetNotif ??= new()
+    {
+        header = "Unexpected Reset Detected",
+        icon = instance?.unexpectedResetNotifIcon,
+        sound = instance?.unexpectedResetSound,
+        color = Color.FromHtml("#ff5555"),
+    };
 
     static readonly string[] theaterFilters = new string[]
-	{
-		"spct",
+    {
+        "spct",
         "spctv",
         "s",
         "p",
@@ -59,323 +53,250 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Miss
         },
         new string[] {
             "AccountResource:reagent_alteration_generic",
-            "AccountResource:reagent_alteration_upgrade_uc", 
+            "AccountResource:reagent_alteration_upgrade_uc",
             "AccountResource:reagent_alteration_upgrade_r",
             "AccountResource:reagent_alteration_upgrade_vr",
             "AccountResource:reagent_alteration_upgrade_sr",
         },
         new string[] {
             "AccountResource:currency_mtxswap",
+            "AccountResource:voucher_cardpack_bronze",
         },
     };
+    #endregion
 
+    public static void SearchInMissions(string searchText, bool showMissionTab = false)
+    {
+        instance.searchBar.Text = searchText;
+        instance.UpdateFilters();
+        if (showMissionTab)
+        {
+            instance.Visible = true;
+            instance.FilterMissions();
+        }
+    }
 
-    public override async void _Ready()
-	{
-        await this.WaitForFrame();
-        await this.WaitForFrame();
+    [Export]
+    Texture2D unexpectedResetNotifIcon;
+    [Export]
+    AudioStream unexpectedResetSound;
+
+    [Export]
+    VirtualTabBar zoneFilterTabBar;
+    [Export]
+	LineEdit searchBar;
+
+    [Export]
+    CheckButton[] itemFilterButtons = Array.Empty<CheckButton>();
+
+    [Export]
+    RecycleListContainer missionList;
+
+    [Export]
+	TextureProgressBar loadingIcon;
+
+    List<GameMission> filteredMissions = new();
+    public GameMission GetRecycleElement(int index) => index >= 0 && index < filteredMissions.Count ? filteredMissions[index] : null;
+    public int GetRecycleElementCount() => filteredMissions.Count;
+
+    public override void _Ready()
+    {
+        instance = this;
+        missionList.Visible = false;
+        loadingIcon.Visible = true;
+        searchBar.Text = AppConfig.Get("missions", "default_search", "");
 
         VisibilityChanged += () =>
         {
-			if (IsVisibleInTree())
-				LoadMissions();
-            StartUpdateCheckTimer();
+            if (needsFilter)
+                FilterMissions();
         };
 
-        zoneFilterTabBar.TabChanged += e => FilterMissionGrid();
-        searchBar.TextSubmitted += e => FilterMissionGrid();
-		searchBar.TextChanged += e =>
-		{
-            //if (string.IsNullOrWhiteSpace(e))
-            GenerateSearchInstructions(searchBar.Text);
-            FilterMissionGrid();
-		};
+        zoneFilterTabBar.TabChanged += e => FilterMissions();
+        searchBar.TextSubmitted += e => UpdateFilters();
+		searchBar.TextChanged += e => UpdateFilters();
         foreach (var button in itemFilterButtons)
         {
-            button.Pressed += () =>
-            {
-                GenerateSearchFilters();
-                FilterMissionGrid();
-            };
+            button.Pressed += UpdateFilters;
         }
-        GenerateSearchInstructions(searchBar.Text);
-        GenerateSearchFilters();
+        UpdateFilters();
 
         missionList.SetProvider(this);
 
-        RefreshTimerController.OnDayChanged += OnDayChanged;
-        if (IsVisibleInTree())
-            LoadMissions();
-        StartUpdateCheckTimer();
-    }
+        RefreshTimerController.OnDayChanged += ForceReloadMissions;
+        RefreshTimerController.OnDayChanged += StartUpdateCheckTimer;
 
-    SceneTreeTimer refreshCooldown;
-    void StartUpdateCheckTimer(bool force = false)
-    {
-        //GD.Print($"HOUR IS {DateTime.UtcNow.Hour}");
-        if (force)
-        {
-            if (refreshCooldown is not null)
-                refreshCooldown.Timeout -= CheckForUpdate;
-            refreshCooldown = null;
-        }
-        var now = DateTime.UtcNow;
-        if (now.Hour < 1 && (refreshCooldown?.TimeLeft ?? 0) <= 0)
-        {
-            refreshCooldown = GetTree().CreateTimer(now.Minute < 10 ? 15 : 90);
-            refreshCooldown.Timeout += CheckForUpdate;
-        }
-    }
+        GameMission.OnMissionsUpdated += OnMissionsUpdated;
+        GameMission.OnMissionsInvalidated += OnMissionsInvalidated;
 
-    public async void CheckForUpdate()
-    {
+        GameAccount.ActiveAccountChanged += ForceReloadMissions;
+
+        GameMission.CheckMissions().StartTask();
         StartUpdateCheckTimer();
-        if (!await MissionRequests.CheckForMissionChanges())
-            return;
-        GD.Print("DOUBLE RESET");
-        missionsUpToDate = false;
-        if (IsVisibleInTree())
-            LoadMissions(true);
     }
 
     public override void _ExitTree()
     {
-        RefreshTimerController.OnDayChanged -= OnDayChanged;
+        RefreshTimerController.OnDayChanged -= ForceReloadMissions;
+        RefreshTimerController.OnDayChanged -= StartUpdateCheckTimer;
+
+        GameMission.OnMissionsUpdated -= OnMissionsUpdated;
+        GameMission.OnMissionsInvalidated -= OnMissionsInvalidated;
     }
 
-    private void OnDayChanged()
+    CancellationTokenSource updateCheckCTS = new();
+    async void StartUpdateCheckTimer()
     {
-        missionsUpToDate = false;
-        if (IsVisibleInTree())
-            LoadMissions();
-        StartUpdateCheckTimer();
-    }
-
-    PLSearch.Instruction[] currentMissionSearchInstructions;
-    PLSearch.Instruction[] currentItemSearchInstructions;
-    List<MissionData> allMissions = new();
-    List<MissionData> activeMissions = new();
-    List<string> currentItemFilters = new();
-
-    public MissionData GetRecycleElement(int index) => index >= 0 && index < activeMissions.Count ? activeMissions[index] : null;
-    public int GetRecycleElementCount() => activeMissions.Count;
-
-    public void ForceReloadMissions()
-    {
-        LoadMissions(true);
-        StartUpdateCheckTimer(true);
-    }
-
-    bool missionsUpToDate = false;
-    bool isLoadingMissions = false;
-    bool hasMissions = false;
-    async void LoadMissions(bool force = false)
-    {
-        if (isLoadingMissions || !await LoginRequests.TryLogin())
+        if (!AppConfig.Get("missions", "reset_detection", true))
             return;
-        missionsUpToDate = true;
-        isLoadingMissions = true;
-        if (MissionRequests.MissionsEmptyOrOutdated() || force || !hasMissions)
+        GD.Print("Starting update check timer");
+        updateCheckCTS.CancelAndRegenerate(out var ct);
+        while (true)
         {
-            try
+            var now = DateTime.UtcNow;
+            if (now.Hour > 1 || !AppConfig.Get("missions", "reset_detection", true))
             {
-                await ProfileRequests.GetProfile(FnProfileTypes.AccountItems);
-                missionList.Visible = false;
-                loadingIcon.Visible = true;
-                await this.WaitForFrame();
-
-                var allMissionData = await MissionRequests.GetMissions(force);
-                await this.WaitForFrame();
-                var allMissionsArray = allMissionData["missions"].AsArray();
-                allMissions ??= new();
-                allMissions.Clear();
-                Thread missionProcessingThread = new(new ThreadStart(() =>
-                {
-                    Parallel.ForEach(allMissionsArray, m =>
-                    {
-                        var newMission = new MissionData(m.AsObject());
-                        lock (allMissions)
-                        {
-                            allMissions.Add(newMission);
-                        }
-                    });
-                }));
-                missionProcessingThread.Start();
-                while (missionProcessingThread.IsAlive)
-                {
-                    await this.WaitForFrame();
-                }
-                allMissions = allMissions
-                    .OrderBy(m => m.powerLevel)
-                    .ThenBy(m => m.theaterIdx)
-                    .ThenBy(m => m.missionName)
-                    .ToList();
-                //GD.Print("Missions processed");
+                GD.Print("Ending update check timer");
+                return;
             }
-            finally
+            int duration = now.Minute < 10 ? 15 : 90;
+            while (duration > 0)
             {
-                missionList.Visible = true;
-                loadingIcon.Visible = false;
+                await Helpers.WaitForTimer(1);
+                if (ct.IsCancellationRequested || !AppConfig.Get("missions", "reset_detection", true))
+                    return;
+                duration--;
             }
-            hasMissions = true;
+            if (await GameMission.MissionsNeedUpdate() && GameMission.currentMissions is not null)
+            {
+                GD.Print("Unexpected reset detected");
+                NotificationManager.PushNotification(unexpectedResetNotif);
+                await GameMission.UpdateMissions();
+            }
         }
-
-        await this.WaitForFrame();
-        FilterMissionGrid();
-        isLoadingMissions = false;
-        if(!missionsUpToDate)
-            LoadMissions();
     }
 
-    void GenerateSearchInstructions(string searchText)
+    public async void FakeUnexpectedReset()
     {
+        await Helpers.WaitForTimer(1);
+        NotificationManager.PushNotification(unexpectedResetNotif);
+    }
+
+    void OnMissionsInvalidated()
+    {
+        missionList.Visible = false;
+        loadingIcon.Visible = true;
+    }
+
+    void OnMissionsUpdated()
+    {
+        missionList.Visible = true;
+        loadingIcon.Visible = false;
+        FilterMissions();
+    }
+
+    public void ForceReloadMissions() => GameMission.UpdateMissions().StartTask();
+    public void ReloadMissions() => GameMission.CheckMissions().StartTask();
+
+    public async void LoadMissions(bool force = false)
+    {
+
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        if (force || await GameMission.MissionsNeedUpdate(true))
+            await GameMission.UpdateMissions();
+    }
+
+    PLSearch.Instruction[] missionSearchInstructions = Array.Empty<PLSearch.Instruction>();
+    PLSearch.Instruction[] itemSearchInstructions = Array.Empty<PLSearch.Instruction>();
+    string[] extraItemFilters = Array.Empty<string>();
+    void UpdateFilters()
+    {
+        var searchText = searchBar.Text;
         if (searchText.Contains("///"))
         {
             string[] splitSearchText = searchText.Split("///");
-            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0], out var _) ?? Array.Empty<PLSearch.Instruction>();
-            currentItemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join(), out var _) ?? Array.Empty<PLSearch.Instruction>();
+            missionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0]) ?? Array.Empty<PLSearch.Instruction>();
+            itemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join()) ?? Array.Empty<PLSearch.Instruction>();
         }
         else
         {
-            currentMissionSearchInstructions = PLSearch.GenerateSearchInstructions(searchText, out var _) ?? Array.Empty<PLSearch.Instruction>();
-            currentItemSearchInstructions = Array.Empty<PLSearch.Instruction>();
+            missionSearchInstructions = PLSearch.GenerateSearchInstructions(searchText) ?? Array.Empty<PLSearch.Instruction>();
+            itemSearchInstructions = Array.Empty<PLSearch.Instruction>();
         }
-    }
 
-    void GenerateSearchFilters()
-    {
-        currentItemFilters.Clear();
+        List<string> extraItemFilterList = new();
         for (int i = 0; i < itemFilters.Length; i++)
         {
-            if (itemFilterButtons.Length>i && itemFilterButtons[i].ButtonPressed)
+            if (itemFilterButtons.Length > i && itemFilterButtons[i].ButtonPressed)
             {
-                currentItemFilters.AddRange(itemFilters[i]);
+                extraItemFilterList.AddRange(itemFilters[i]);
             }
         }
+        extraItemFilters = extraItemFilterList.ToArray();
+        FilterMissions();
     }
 
-    void FilterMissionGrid()
-	{
-        activeMissions = allMissions
-            .Where(m => 
-                m.Filter(
-                    currentMissionSearchInstructions, 
-                    currentItemSearchInstructions, 
-                    currentTheaterFilter, 
-                    currentItemFilters.ToArray()
-                )
-            ).
-            ToList();
-        missionList.UpdateList(true);
-    }
-}
+    public static bool MatchItemOrEquivelent(GameItem item, PLSearch.Instruction[] itemInstructions, string[] extraItemFilters = null) =>
+        MatchItem(item, itemInstructions, extraItemFilters) ||
+        (
+            item.zcpEquivelent is not null &&
+            MatchItem(item.zcpEquivelent, itemInstructions, extraItemFilters)
+        );
 
-public class MissionData
-{
-    public string missionName { get; private set; }
-    public int powerLevel { get; private set; }
-    public int theaterIdx { get; private set; }
-    public string theaterCat { get; private set; }
-
-    public JsonObject missionJson { get; private set; }
-
-    List<Texture2D> textureDependancies = new();
-    List<JsonObject> rewardItems = new();
-
-    public MissionData(JsonObject missionJson)
+    public static bool MatchItem(GameItem item, PLSearch.Instruction[] itemInstructions, string[] extraItemFilters = null)
     {
-        this.missionJson = missionJson;
-
-        missionName = missionJson["missionGenerator"]["DisplayName"].ToString();
-        powerLevel = missionJson["powerLevel"].GetValue<int>();
-        theaterCat = missionJson["theaterCat"].ToString();
-        theaterIdx = theaterCat switch
+        extraItemFilters ??= Array.Empty<string>();
+        bool matchesItemFilters = extraItemFilters.Length == 0;
+        foreach (var itemFilter in extraItemFilters)
         {
-            "s" => 0,
-            "p" => 1,
-            "c" => 2,
-            "t" => 3,
-            "v" => 4,
-            _ => 0
-        };
+            matchesItemFilters = item.templateId.Contains(itemFilter);
+            if (itemFilter.EndsWith("*"))
+                matchesItemFilters = item.templateId.StartsWith(itemFilter[..^1]);
 
-        textureDependancies.Add(missionJson["missionGenerator"].AsObject().GetItemTexture(ItemTextureType.Icon));
+            if (itemFilter == "MYTHICLEAD")
+                matchesItemFilters = Regex.Match(item.templateId, "Worker:manager\\w+_sr_\\w*").Success;
 
-        if (missionJson["missionGenerator"].AsObject().GetItemTexture(ItemTextureType.LoadingScreen) is Texture2D missionLoadingScreen)
-            textureDependancies.Add(missionLoadingScreen);
-        else if (missionJson["tile"]["zoneTheme"].AsObject().GetItemTexture(ItemTextureType.LoadingScreen) is Texture2D zoneLoadingScreen)
-            textureDependancies.Add(zoneLoadingScreen);
-
-        foreach (var item in missionJson["missionRewards"].AsArray())
-        {
-            textureDependancies.Add(item.AsObject().GetItemTexture());
-            item["attributes"] ??= new JsonObject();
-            item["attributes"]["item_seen"] = true;
-            rewardItems.Add(item.AsObject());
+            if (matchesItemFilters)
+                break;
         }
-
-        if (missionJson["missionAlert"] is JsonObject missionAlert)
-        {
-            foreach (var item in missionAlert["modifiers"].AsArray())
-            {
-                textureDependancies.Add(item.GetTemplate().GetItemTexture());
-            }
-            foreach (var item in missionAlert["rewards"].AsArray())
-            {
-                textureDependancies.Add(item.AsObject().GetItemTexture());
-                item["attributes"] ??= new JsonObject();
-                item["attributes"]["item_seen"] = true;
-                rewardItems.Add(item.AsObject());
-            }
-        }
-    }
-
-    public bool Filter(PLSearch.Instruction[] missionInstructions, PLSearch.Instruction[] itemInstructions, string theaterFilter, string[] extraItemFilters)
-    {
-        if (!theaterFilter.Contains(theaterCat[0]))
+        if (!matchesItemFilters)
             return false;
-        if(!PLSearch.EvaluateInstructions(missionInstructions, missionJson))
+        matchesItemFilters = PLSearch.EvaluateInstructions(itemInstructions, item.RawData); //search item instructions
+        return matchesItemFilters;
+    }
+
+    string theaterFilter => theaterFilters[zoneFilterTabBar.CurrentTab];
+    bool MissionFilter(GameMission mission)
+    {
+        if (!theaterFilter.Contains(mission.TheaterCat[0]))
+            return false;
+
+        var currentItemInstructions = itemSearchInstructions;
+        if (!PLSearch.EvaluateInstructions(missionSearchInstructions, mission.missionData))
         {
-            if (itemInstructions.Length == 0)
-                itemInstructions = missionInstructions;
+            if (currentItemInstructions.Length == 0)
+                currentItemInstructions = missionSearchInstructions;
             else
                 return false;
         }
 
-        //GD.Print("matching: "+itemFilter);
-        bool matchesItemFilter = true;
-        foreach (var reward in rewardItems)
-        {
-            matchesItemFilter = extraItemFilters.Length == 0;
-            foreach (var itemFilter in extraItemFilters)
-            {
-                string rewardId = reward["itemType"].ToString();
-                var template = reward.GetTemplate();
+        return mission.allItems.Any(item => MatchItemOrEquivelent(item, currentItemInstructions, extraItemFilters));
+    }
 
-                //GD.Print("reward: " + rewardId);
-                if (reward.ContainsKey("equivelent"))
-                {
-                    rewardId = reward["equivelent"].ToString();
-                    template = reward["equivelentTemplate"].AsObject();
-                    //GD.Print("equivelent: " + rewardId);
-                }
-
-                matchesItemFilter = rewardId.Contains(itemFilter);
-                if (itemFilter.EndsWith("*"))
-                    matchesItemFilter = rewardId.StartsWith(itemFilter[..^1]);
-
-                if (itemFilter == "MYTHICLEAD")
-                    matchesItemFilter = Regex.Match(rewardId, "Worker:manager\\w+_sr_\\w*").Success;
-
-                if (matchesItemFilter)
-                    break;
-            }
-            if (!matchesItemFilter)
-                continue;
-            matchesItemFilter = PLSearch.EvaluateInstructions(itemInstructions, reward); //search item instructions
-            if (matchesItemFilter)
-                break;
-        }
-        return matchesItemFilter;
+    bool needsFilter = false;
+    void FilterMissions()
+    {
+        needsFilter = true;
+        if (!IsVisibleInTree())
+            return;
+        needsFilter = false;
+        filteredMissions = GameMission.currentMissions?
+            .Where(MissionFilter)
+            .ToList() ?? new();
+        missionList.UpdateList(true);
     }
 }
+

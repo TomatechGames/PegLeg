@@ -22,7 +22,7 @@ public partial class QuestHighlight : Control
     [Export]
     Color completeColor;
 
-    public void SetHighlightedQuest(QuestData questData)
+    public void SetHighlightedQuest(QuestSlot questData)
     {
         Visible = questData.isUnlocked;
         ProcessMode = questData.isUnlocked ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
@@ -42,7 +42,7 @@ public partial class QuestHighlight : Control
             var objectives = questData.questTemplate["Objectives"].AsArray();
             foreach (var objective in objectives)
             {
-                int currentProgress = questData.questItem.GetItemUnsafe()["attributes"]["completion_" + objective["BackendName"].ToString()]?.GetValue<int>() ?? 0;
+                int currentProgress = questData.questItem.attributes["completion_" + objective["BackendName"].ToString()]?.GetValue<int>() ?? 0;
                 int maxProgress = objective["Count"].GetValue<int>();
                 progressTotal += ((float)currentProgress / maxProgress) / objectives.Count;
             }
@@ -51,20 +51,21 @@ public partial class QuestHighlight : Control
 
         if (useFirstRewardAsIcon)
         {
-            var rewards = questData.questTemplate["Rewards"].AsArray();
+            var rewards = questData.questTemplate.GetVisibleQuestRewards();
             var firstReward = rewards.First();
-            if (rewards.Any(r => r["Selectable"].GetValue<bool>()))
+            if (firstReward.attributes["quest_selectable"].GetValue<bool>())
             {
-                firstReward = rewards
-                    .Where(r => r["Selectable"].GetValue<bool>())
-                    .OrderBy(r => BanjoAssets.TryGetTemplate(r["Item"].ToString()).GetItemRarity())
-                    .FirstOrDefault() ?? firstReward;
+                firstReward = firstReward.attributes["options"]
+                    .AsArray()
+                    .Select(n=>new GameItem(null, null, n.AsObject()))
+                    .OrderBy(item=>-item.template.RarityLevel)
+                    .FirstOrDefault();
             }
-            EmitSignal(SignalName.IconChanged, firstReward.AsObject().GetItemTexture());
+            EmitSignal(SignalName.IconChanged, firstReward.GetTexture());
         }
         else
         {
-            EmitSignal(SignalName.IconChanged, questData.questTemplate.GetItemTexture());
+            EmitSignal(SignalName.IconChanged, questData.questTemplate.GetTexture());
         }
     }
 }

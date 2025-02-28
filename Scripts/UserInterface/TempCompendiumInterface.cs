@@ -1,16 +1,19 @@
 using Godot;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-public partial class TempCompendiumInterface : Control
+public partial class TempCompendiumInterface : Control, IRecyclableElementProvider<GameItem>
 {
 	[Export]
-	ItemList itemList;
+	RecycleListContainer itemList;
 	[Export]
 	LineEdit searchBox;
+	[Export]
+	Control loadingIcon;
 
 	static readonly string[] includedSources = new string[]
 	{
@@ -21,115 +24,77 @@ public partial class TempCompendiumInterface : Control
 	{
 		VisibilityChanged += GenerateCompendiumEntries;
 		searchBox.TextChanged += FilterItems;
-		itemList.ItemSelected += InspectItem;
-	}
+		itemList.SetProvider(this);
+		//itemList. += InspectItem;
+    }
+
 
     bool generated = false;
-    List<CompendiumEntry> compendiumEntries = new();
-	struct CompendiumEntry
-	{
-        public string displayName;
-        public string description;
-        public Texture2D texture;
-		public string templateId;
-		public int rarity;
-        public string rarityCol;
-        public bool isHero;
-        public string category;
-        public string subtype;
-        public string extraSearchTerm;
-	}
+	List<GameItem> compendiumEntries = new();
+	List<GameItem> filteredEntries = new();
+	public GameItem GetRecycleElement(int index) => filteredEntries?[index];
 
-	void GenerateCompendiumEntries()
+	public int GetRecycleElementCount() => filteredEntries?.Count ?? 0;
+
+    async void GenerateCompendiumEntries()
 	{
 		if (generated)
 			return;
 		generated = true;
+        searchBox.Editable = false;
+		loadingIcon.Visible = true;
+        itemList.Visible = false;
 
+        //TODO: run asynchronously
+        ConcurrentDictionary<string, GameItemTemplate> uniqueTemplates = new();
         foreach (var source in includedSources)
         {
-			if (BanjoAssets.TryGetSource(source, out var sourceFile))
-			{
-				Parallel.ForEach(sourceFile, item =>
+            if (BanjoAssets.TryGetItemSource(source, out var sourceObject))
+            {
+				//GD.Print("aa");
+                Parallel.ForEach(sourceObject, sourceKVP =>
                 {
-					if (item.Value["Tier"].GetValue<int>() != 1)
-						return;
-					else
-					{
-						string entryName = item.Value["DisplayName"].ToString();
-						string extraSearchTerm = $"[{item.Value["Rarity"]}]";
-						if (source == "Hero" && BanjoAssets.TryGetTemplate("Ability:"+item.Value["HeroPerkName"], out var ability))
-						{
-							extraSearchTerm += " "+ability["DisplayName"].ToString();
-						}
-						CompendiumEntry result = new()
-						{
-							displayName = entryName,
-							description = item.Value["Description"]?.ToString(),
-                            isHero = source == "Hero",
-							texture = item.Value.AsObject().GetItemTexture(),
-							templateId = item.Key,
-							rarity = item.Value.AsObject().GetItemRarity(),
-                            rarityCol = item.Value.AsObject().GetItemRarityColor().ToHtml(),
-                            category = item.Value.AsObject()["Category"]?.ToString() ?? "Hero",
-                            subtype = item.Value.AsObject()["SubType"].ToString(),
-                            extraSearchTerm = extraSearchTerm
-						};
-						lock (compendiumEntries)
-                        {
-                            if (!compendiumEntries.Exists(e => e.displayName == result.displayName && e.rarity >= result.rarity))
-								compendiumEntries.Add(result);
-							compendiumEntries.Remove(compendiumEntries.FirstOrDefault(e => e.displayName == result.displayName && e.rarity < result.rarity));
-                        }
-					}
+                    var template = GameItemTemplate.Get(sourceKVP.Key);
+                    if (template.Tier != 1)
+                        return;
+
+                    template.GenerateSearchTags();
+					template.GetTexture();
+
+                    uniqueTemplates.AddOrUpdate(
+                            template.DisplayName,
+                            template,
+                            (k, v) => v.RarityLevel < template.RarityLevel ? template : v
+                        );
                 });
             }
         }
-		compendiumEntries = compendiumEntries
-			.OrderBy(val => val.isHero ? 0 : 1)
-			.ThenBy(val => -val.rarity)
-			.ThenBy(val => val.category)
-			.ThenBy(val => val.subtype)
-			.ThenBy(val => val.displayName.StartsWith("The ") ? val.displayName[4..] : val.displayName)
-			.ToList();
-		FilterItems("");
-    }
-
-	void FilterItems(string searchTerm)
-	{
-		itemList.Clear();
-        foreach (var item in compendiumEntries)
+        List<GameItem> orderedItems = null;
+		await Task.Run(() =>
         {
-			if (
-				!string.IsNullOrWhiteSpace(searchTerm) && 
-				!item.displayName.ToLower().Contains(searchTerm.ToLower()) &&
-                (!item.extraSearchTerm?.ToLower().Contains(searchTerm.ToLower()) ?? false)
-				)
-				continue;
-            var index = itemList.AddItem("", item.texture);
-            itemList.SetItemMetadata(index, item.templateId);
-			itemList.SetItemTooltip(index, 
-				CustomTooltip.GenerateSimpleTooltip(
-					item.displayName, 
-					null, 
-					new string[] {
-						item.description,
-						item.extraSearchTerm
-					}, 
-					item.rarityCol
-					)
-				);
-			itemList.SetItemCustomFgColor(index, Colors.Black);
-			var color = BanjoAssets.rarityColours[item.rarity];
-			color.A *= 0.5f;
-            itemList.SetItemCustomBgColor(index, color);
-        }
+			orderedItems = uniqueTemplates.Values
+				.OrderBy(item => item.Type == "Hero" ? 0 : 1)
+				.ThenBy(item => -item.RarityLevel)
+				.ThenBy(item => item.Category)
+				.ThenBy(item => item.SubType)
+				.ThenBy(item => item.DisplayName.StartsWith("The ") ? item.DisplayName[4..] : item.DisplayName)
+				.Select(item => item.CreateInstance())
+				.ToList();
+        });
+        compendiumEntries = orderedItems ?? new();
+        //compendiumTemplates.ForEach(i => i.GenerateSearchTags());
+        FilterItems("");
+        searchBox.Editable = true;
+        loadingIcon.Visible = false;
+		itemList.Visible = true;
     }
 
-    private async void InspectItem(long index)
-    {
-		string templateId = (string)itemList.GetItemMetadata((int)index);
-		if (BanjoAssets.TryGetTemplate(templateId, out var template))
-			await GameItemViewer.Instance.ShowItem(template.CreateInstanceOfItem(1, new() { ["item_seen"] = true }));
+	void FilterItems(string _)
+	{
+		var instructions = PLSearch.GenerateSearchInstructions(searchBox.Text);
+		filteredEntries = string.IsNullOrWhiteSpace(searchBox.Text) ? compendiumEntries : compendiumEntries.Where(item => PLSearch.EvaluateInstructions(instructions, item.RawData)).ToList();
+
+        GD.Print("filteredEntries: " + filteredEntries.Count);
+        itemList.UpdateList(true);
     }
 }

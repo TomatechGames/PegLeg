@@ -3,7 +3,8 @@ using System;
 
 public partial class RefreshTimerHook : Label
 {
-    [Export(PropertyHint.Enum, "Hour, Day, Week, Event")]
+
+    [Export(PropertyHint.Enum, "Hour, Day, Week, BR Week, Event")]
     int timerType;
 
     public override void _Ready()
@@ -14,7 +15,8 @@ public partial class RefreshTimerHook : Label
             0 => 1,         // last minute of hour
             1 => 5,         // last 5 minutes of day
             2 => 60,        // last hour of week
-            3 => 60 * 24,   // last day of event
+            3 => 60,        // last hour of week
+            4 => 60 * 24,   // last day of event
             _ => 5,
         };
         warningCountdownTime = timerType switch
@@ -22,7 +24,8 @@ public partial class RefreshTimerHook : Label
             0 => 10,            // last 10 minutes of hour
             1 => 60,            // last hour of day
             2 => 60 * 24,       // last 24 hours of week
-            3 => 60 * 24 * 7,   // last week of event
+            3 => 60 * 24,       // last 24 hours of week
+            4 => 60 * 24 * 7,   // last week of event
             _ => 60,
         };
         RefreshTimerController.OnSecondChanged += UpdateTimeText;
@@ -33,6 +36,7 @@ public partial class RefreshTimerHook : Label
             if (IsVisibleInTree())
                 UpdateTimeText();
         };
+        MouseFilter = MouseFilterEnum.Stop;
     }
 
     DateTime refreshTime;
@@ -45,9 +49,11 @@ public partial class RefreshTimerHook : Label
             0 => RefreshTimeType.Hourly,
             1 => RefreshTimeType.Daily,
             2 => RefreshTimeType.Weekly,
-            3 => RefreshTimeType.Event,
+            3 => RefreshTimeType.BRWeekly,
+            4 => RefreshTimeType.Event,
             _ => RefreshTimeType.Daily,
         });
+        TooltipText = refreshTime.ToString("d");
     }
 
     void UpdateTimeText()

@@ -21,22 +21,18 @@ public static class PLSearch
   (?>
    (?<Union>(?<!\!)\|)|
    (?<TextQuery>
-    (?<TQVar>[a-zA-Z]+(?:\.(?:[a-zA-Z]+|(?:\^?\d+)))*)=
-    (?<TQVal>
-              (?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?|
-            \[(?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?
-       (?:,\ ?(?:\.\.)?\""[\w:\-_.!?\/\\ ]*\""(?:\.\.)?)*\]
-    )
+    (?<TQVar>[a-zA-Z_]+(?:\.(?:[a-zA-Z_]+|(?:\^?\d+)))*)=
+    (?<TQVal>[\""'][\w:\-_.!?\/\\ ]*[\""'])
    )|
    (?<NumericQuery>
-    (?<NQVar>[a-zA-Z]+(?:\.(?:[a-zA-Z]+|(?:\^?\d+)))*)=
+    (?<NQVar>[a-zA-Z_]+(?:\.(?:[a-zA-Z_]+|(?:\^?\d+)))*)=
     (?<NQVal>
        (?:\d+(?:\.\d+)?\.\.\d+(?:\.\d+)?)|
        (?:             \.\.\d+(?:\.\d+)?)|
        (?:                 \d+(?:\.\d+)?(?:\.\.)?)
     )
    )|
-   (?<FullSearchQuery>\""[\w:\-_.!?\/\\ ]+\"")|
+   (?<FullSearchQuery>[\""'][\w:\-_.!?\/\\ ]+[\""'])|
    (?<SearchQuery>[\w:\-_.!?\/\\]+)
   )
  )
@@ -59,6 +55,8 @@ public static class PLSearch
     }
     public record Instruction(int index, InstructionOperation operation, JsonNode meta = null, int endIndex = -1, bool inverted = false);
 
+    public static Instruction[] GenerateSearchInstructions(string fromText) =>
+        GenerateSearchInstructions(fromText, out var _);
     public static Instruction[] GenerateSearchInstructions(string fromText, out string failureText)
     {
         List<Instruction> instructions = new();
@@ -209,19 +207,37 @@ public static class PLSearch
     public static bool EvaluateInstructions(Instruction[] instructions, JsonObject target) =>
         EvaluateInstructions(instructions, target, out var _, false);
 
+    struct SearchState
+    {
+        public bool overallResult = true;
+        public bool operationResult = true;
+        public bool union = false;
+
+        public SearchState() { }
+    }
+
     public static bool EvaluateInstructions(Instruction[] instructions, JsonObject target, out string output, bool useOutput = true)
     {
         output = "";
+        if (instructions is null)
+            return true;
         int currentDepth = 0;
         int skipUntilIndex = 0;
-        bool currentState = true;
-        bool isOrMode = false;
-        Stack<bool> stateStack = new();
-        Stack<bool> isOrStack = new();
+        SearchState currentState = new();
+        Stack<SearchState> stateStack = new();
         foreach (var item in instructions.OrderBy(i => i.index))
         {
+            if (!currentState.union && item.operation != InstructionOperation.Union)
+            {
+                currentState.overallResult &= currentState.operationResult;
+            }
+
             bool skipThisOp = item.index < skipUntilIndex;
-            if (isOrMode == currentState && item.operation != InstructionOperation.Pop && item.operation != InstructionOperation.Union)
+            if (!currentState.overallResult && item.operation != InstructionOperation.Pop)
+            {
+                skipThisOp = true;
+            }
+            if (currentState.union && currentState.operationResult)
             {
                 skipThisOp = true;
             }
@@ -234,13 +250,11 @@ public static class PLSearch
                 if (!skipThisOp)
                 {
                     stateStack.Push(currentState);
-                    isOrStack.Push(isOrMode);
-                    currentState = true;
-                    isOrMode = false;
+                    currentState = new();
                 }
                 else
                 {
-                    skipUntilIndex = item.endIndex;
+                    skipUntilIndex = Mathf.Max(item.endIndex, skipUntilIndex);
                 }
                 output += toInsert + (skipThisOp ? " (Skipped)" : "") + "\n";
                 continue;
@@ -252,35 +266,41 @@ public static class PLSearch
 
                 if (!skipThisOp)
                 {
-                    bool resolvedState = currentState;
-                    toInsert += (item.inverted ? " NOT " : " ") + (resolvedState ? "PASS" : "FAIL");
+                    bool resolvedResult = currentState.overallResult;
+                    toInsert += (item.inverted ? " NOT " : " ") + (resolvedResult ? "PASS" : "FAIL");
                     if (item.inverted)
-                        resolvedState = !resolvedState;
+                        resolvedResult = !resolvedResult;
                     currentState = stateStack.Pop();
-                    isOrMode = isOrStack.Pop();
-                    if (isOrMode)
-                        currentState |= resolvedState;
+                    if (currentState.union)
+                    {
+                        currentState.union = false;
+                        currentState.operationResult |= resolvedResult;
+                    }
                     else
-                        currentState &= resolvedState;
+                        currentState.operationResult = resolvedResult;
                 }
 
                 output += Indent(currentDepth) + toInsert + (skipThisOp ? " (Skipped)" : "") + "\n";
                 continue;
             }
-            isOrMode = false;
+
 
             if (!useOutput && skipThisOp)
+            {
+                currentState.union = false;
                 continue;
+            }
 
             toInsert += item.inverted ? "NOT " : "";
-
+            bool currentResult = false;
             JsonObject metaObj;
             switch (item.operation)
             {
                 case InstructionOperation.Union:
                     if (!skipThisOp)
-                        isOrMode = true;
-                    toInsert += "OR";
+                        currentState.union = true;
+                    toInsert += " OR";
+                    currentResult = currentState.operationResult;
                     break;
                 case InstructionOperation.TextQuery:
                     {
@@ -292,7 +312,7 @@ public static class PLSearch
                         {
                             toInsert += "T ERROR";
                             if (!skipThisOp)
-                                currentState = false;
+                                currentResult = false;
                             break;
                         }
                         string[] checks = metaObj["checks"].AsArray().Select(n => n.ToString()).ToArray();
@@ -303,7 +323,7 @@ public static class PLSearch
                             {
                                 if ((string)sourceStringVal is string sourceString)
                                 {
-                                    comparisonTrue |= CheckStrings(sourceString, checks);
+                                    comparisonTrue |= MulticheckString(sourceString, checks);
                                 }
                                 if (comparisonTrue)
                                     break;
@@ -317,12 +337,12 @@ public static class PLSearch
                                 comparisonTrue = sourceBool;
                             }
                             else if(sourceVal.TryGetValue(out string sourceString))
-                                comparisonTrue = CheckStrings(sourceString, checks);
+                                comparisonTrue = MulticheckString(sourceString, checks);
                         }
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
@@ -337,7 +357,7 @@ public static class PLSearch
                         {
                             toInsert += "N ERROR";
                             if (!skipThisOp)
-                                currentState = false;
+                                currentResult = false;
                             break;
                         }
                         bool comparisonTrue = true;
@@ -352,7 +372,7 @@ public static class PLSearch
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
@@ -363,13 +383,13 @@ public static class PLSearch
                         bool comparisonTrue = false;
                         if (target["searchTags"] is JsonArray tagArray)
                         {
-                            string checkString = item.meta.ToString()[1..^1];
-                            comparisonTrue = tagArray.Any(t => t?.ToString().ToLower() == checkString.ToLower());
+                            string checkString = item.meta.ToString();
+                            comparisonTrue = tagArray.Any(t => CheckString(t?.ToString().ToLower(), checkString.ToLower()));
                         }
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
@@ -391,15 +411,23 @@ public static class PLSearch
                         if (item.inverted)
                             comparisonTrue = !comparisonTrue;
                         if (!skipThisOp)
-                            currentState = comparisonTrue;
+                            currentResult = comparisonTrue;
                         toInsert += comparisonTrue ? "PASS" : "FAIL";
                     }
                     break;
             }
+            if (currentState.union && item.operation != InstructionOperation.Union)
+            {
+                currentState.union = false;
+                currentResult |= currentState.operationResult;
+            }
+            if (!skipThisOp)
+                currentState.operationResult = currentResult;
             output += Indent(currentDepth) + toInsert + (skipThisOp ? " (Skipped)" : "") + "\n";
         }
-        output += "final result: " + currentState;
-        return currentState;
+        currentState.overallResult &= currentState.operationResult;
+        output += "final result: " + currentState.overallResult;
+        return currentState.overallResult;
     }
     static string Indent(int level)
     {
@@ -417,6 +445,8 @@ public static class PLSearch
             return floatValue;
         if (numberValue.TryGetValue(out int intValue))
             return intValue;
+        if (numberValue.TryGetValue(out bool boolValue))
+            return boolValue ? 1 : 0;
         return null;
     }
 
@@ -451,31 +481,23 @@ public static class PLSearch
         return null;
     }
 
-    static bool CheckStrings(string sourceString, string[] checks)
+    static bool MulticheckString(string sourceString, string[] checks) => checks.Any(c => CheckString(sourceString, c));
+    static bool CheckString(string sourceString, string check)
     {
-        foreach (var check in checks)
-        {
-            bool starts = check.StartsWith("..");
-            bool ends = check.EndsWith("..");
-            if (starts && ends)
-            {
-                if (sourceString.Contains(check[3..^3]))
-                    return true;
-            }
-            else if (starts)
-            {
-                if (sourceString.EndsWith(check[3..^1]))
-                    return true;
-            }
-            else if (ends)
-            {
-                if (sourceString.StartsWith(check[1..^3]))
-                    return true;
-            }
-            else if (sourceString == check[1..^1])
-                return true;
-        }
-        return false;
+        if (check.Length <= 2)
+            return false;
+        bool ends = check.StartsWith("\'");
+        bool starts = check.EndsWith("\'");
+        string content = check[1..^1];
+
+        if (ends && starts)
+            return sourceString.Contains(content);
+        else if (ends)
+            return sourceString.EndsWith(content);
+        else if (starts)
+            return sourceString.StartsWith(content);
+        else
+            return sourceString == content;
     }
 
     static void EvaluateRegexMatches(string sourceText, string expression, Action<Match> doPerMatch)

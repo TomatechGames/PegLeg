@@ -5,9 +5,8 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using static ProfileRequests;
 
-public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<ProfileItemHandle>
+public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<GameItem>
 {
     public static GameItemSelector Instance { get; private set; }
 
@@ -49,14 +48,15 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
     bool isSelecting;
     bool isCancelling;
-    List<ProfileItemHandle> itemHandles;
-    List<ProfileItemHandle> selectedHandles = new();
+    List<GameItem> items;
+    List<GameItem> selectedItems = new();
 
     public bool multiselectMode;
     public bool allowEmptySelection;
     public bool allowCancel;
     public string overrideSurvivorSquad;
-    public ProfileItemPredicate autoselectPredicate;
+    public Predicate<GameItem> selectablePredicate;
+    public Predicate<GameItem> autoselectPredicate;
 
     public string titleText;
     public string confirmButtonText;
@@ -82,6 +82,7 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         allowEmptySelection = false;
         allowCancel = true;
         overrideSurvivorSquad = null;
+        selectablePredicate = null;
         autoselectPredicate = null;
 
         titleText = "Select an Item";
@@ -96,8 +97,6 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
     public void SetRecycleDefaults()
     {
-        var instructions = PLSearch.GenerateSearchInstructions("template.RarityLv=..3 | (template.RarityLv=..4 !templateId=\"Worker\"..)", out var _);
-        ProfileItemPredicate autoRecycleFilter = kvp => PLSearch.EvaluateInstructions(instructions, kvp.Value);
         RestoreDefaults();
         titleText = "Recycle";
         confirmButtonText = "Confirm Recycle";
@@ -106,19 +105,28 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         selectedTintColor = Colors.Red;
         collectionMarkerTex = collectionIcon;
         autoselectButtonTex = recycleIcon;
-
-        autoselectPredicate = autoRecycleFilter;
+        selectablePredicate = item => !item.template.Unrecyclable && item.attributes?["favorite"]?.GetValue<bool>() != true;
+        var autoselectInstructions = PLSearch.GenerateSearchInstructions(AppConfig.Get("automation", "recycle_filter", "Common | Uncommon | Rare"));
+        autoselectPredicate = item => PLSearch.EvaluateInstructions(autoselectInstructions, item.RawData);
+        //autoselectPredicate = item => item.template.RarityLevel <= 3;
     }
 
-    public async Task<ProfileItemHandle[]> OpenSelector(ProfileItemPredicate filter)
+    public void SetDismantleDefaults()
     {
-        var filteredHandles = (await GetProfileItems(FnProfileTypes.AccountItems, filter))
-            .Select(kvp => ProfileItemHandle.CreateHandleUnsafe(new(LoginRequests.AccountID, FnProfileTypes.AccountItems, kvp.Key)));
-        return await OpenSelector(filteredHandles, null);
+        RestoreDefaults();
+        titleText = "Dismantle";
+        confirmButtonText = "Confirm Dismantle";
+        multiselectMode = true;
+        selectedMarkerTex = recycleIcon;
+        selectedTintColor = Colors.Red;
+        collectionMarkerTex = recycleIcon;
+        autoselectButtonTex = recycleIcon;
+        selectablePredicate = item => !item.template.Undismantlable;
+        autoselectPredicate = null;
     }
 
-    ProfileItemHandle emptyHandle = new();
-    public async Task<ProfileItemHandle[]> OpenSelector(IEnumerable<ProfileItemHandle> profileItems, IEnumerable<ProfileItemHandle> selectedItems = null)
+    GameItem emptyItem = new(null, 1, customData: new() { ["empty"] = true });
+    public async Task<GameItem[]> OpenSelector(IEnumerable<GameItem> profileItems, IEnumerable<GameItem> preSelectedItems = null)
     {
         EmitSignal(SignalName.TitleChanged, titleText);
         EmitSignal(SignalName.ConfirmButtonChanged, confirmButtonText);
@@ -127,24 +135,28 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
         multiselectButtons.Visible = multiselectMode;
         autoSelectButton.Visible = autoselectPredicate is not null;
+        selectablePredicate ??= item => true;
 
-        itemHandles = profileItems.ToList();
+        items = profileItems.ToList();
         if(allowEmptySelection && !multiselectMode)
-            itemHandles.Insert(0, emptyHandle);
+            items.Insert(0, emptyItem);
 
         if (multiselectMode)
         {
-            selectedHandles = selectedItems?.ToList() ??
+            selectedItems = 
+                preSelectedItems?
+                    .Where(item => selectablePredicate.Try(item))
+                    .ToList() ??
                 (autoselectPredicate is not null ?
-                    itemHandles
-                        .Where(handle => autoselectPredicate(handle.CreateKVPUnsafe()))
+                    items
+                        .Where(item => selectablePredicate.Try(item) && autoselectPredicate(item))
                         .ToList() :
                     new());
         }
         else
-            selectedHandles = new();
+            selectedItems = new();
 
-        confirmButton.Visible = selectedHandles?.Any() ?? false;
+        confirmButton.Visible = selectedItems?.Any() ?? false;
         skipButton.Visible = !confirmButton.Visible && allowEmptySelection;
 
         SetSort(0);
@@ -153,20 +165,19 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         isSelecting = true;
         isCancelling = false;
         base.SetWindowOpen(true);
-        await this.WaitForFrame();
+        await Helpers.WaitForFrame();
         container.UpdateList(true);
 
         //GD.Print($"opening selector with {itemHandles.Count} items");
         while (isSelecting)
-            await this.WaitForFrame();
+            await Helpers.WaitForFrame();
 
         base.SetWindowOpen(false);
-        //GD.Print($"closing with {selectedHandles.Count} selected items");
-        if(selectedHandles.Contains(emptyHandle))
-            selectedHandles.Remove(emptyHandle);
-        var toReturn = selectedHandles.ToArray();
-        selectedHandles.Clear();
-        itemHandles.Clear();
+
+        selectedItems.Remove(emptyItem);
+        var toReturn = selectedItems.ToArray();
+        selectedItems.Clear();
+        items.Clear();
         RestoreDefaults();
 
         return isCancelling ? null : toReturn;
@@ -176,14 +187,14 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     {
         if (!multiselectMode || autoselectPredicate is null)
             return;
-        selectedHandles = itemHandles.Where(handle => autoselectPredicate(handle.CreateKVPUnsafe())).Union(selectedHandles).ToList();
+        selectedItems = items.Where(item => selectablePredicate.Try(item) && autoselectPredicate(item)).Union(selectedItems).ToList();
         SortItems();
         container.UpdateList(true);
     }
 
     int currentSortingIndex = 0;
     bool sortingDirty = false;
-    delegate IOrderedEnumerable<ProfileItemHandle> SortingFunc(IOrderedEnumerable<ProfileItemHandle> handles);
+    delegate IOrderedEnumerable<GameItem> SortingFunc(IOrderedEnumerable<GameItem> items);
     SortingFunc[] sortingFunctions;
     string[] sortingFunctionNames = new string[]
     {
@@ -218,19 +229,19 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         EmitSignal(SignalName.SortTypeChanged, sortingFunctionNames[currentSortingIndex]);
     }
 
-    IOrderedEnumerable<ProfileItemHandle> SortByPower(IOrderedEnumerable<ProfileItemHandle> handles) => 
-        handles.ThenBy(handle => -handle.GetItemUnsafe().GetItemRating(overrideSurvivorSquad));
-    IOrderedEnumerable<ProfileItemHandle> SortByPowerAsc(IOrderedEnumerable<ProfileItemHandle> handles) =>
-        handles.ThenBy(handle => handle.GetItemUnsafe().GetItemRating(overrideSurvivorSquad));
-    IOrderedEnumerable<ProfileItemHandle> SortByName(IOrderedEnumerable<ProfileItemHandle> handles) => 
-        handles.ThenBy(handle => handle.GetItemUnsafe().GetTemplate()["DisplayName"].ToString());
+    IOrderedEnumerable<GameItem> SortByPower(IOrderedEnumerable<GameItem> items) => 
+        items.ThenBy(item => -item.CalculateRating(overrideSurvivorSquad));
+    IOrderedEnumerable<GameItem> SortByPowerAsc(IOrderedEnumerable<GameItem> items) =>
+        items.ThenBy(item => item.CalculateRating(overrideSurvivorSquad));
+    IOrderedEnumerable<GameItem> SortByName(IOrderedEnumerable<GameItem> items) => 
+        items.ThenBy(item => item.template.DisplayName);
 
     SortingFunc currentSortingFunction;
 
     void SortItems()
     {
-        var presortedItemHandles = itemHandles.OrderBy(handle => handle.isValid ? 1 : 0).ThenBy(handle => selectedHandles.Contains(handle) ? 0 : 1);
-        itemHandles = currentSortingFunction(presortedItemHandles).ToList();
+        var presortedItemHandles = items.OrderBy(item => item.profile is not null ? 1 : 0).ThenBy(item => selectedItems.Contains(item) ? 0 : 1);
+        items = currentSortingFunction(presortedItemHandles).ToList();
     }
 
     void ConfirmSelection()
@@ -242,47 +253,47 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     {
         if (!allowCancel)
             return;
-        selectedHandles.Clear();
+        selectedItems.Clear();
         isCancelling = true;
         isSelecting = false;
     }
 
     void ClearSelection()
     {
-        selectedHandles.Clear();
+        selectedItems.Clear();
         SortItems();
         if (multiselectMode)
             container.UpdateList(true);
     }
 
-    public bool IndexIsSelected(int index) => multiselectMode && selectedHandles.Contains(itemHandles[index]);
+    public bool ItemIsSelected(GameItem item) => multiselectMode && selectedItems.Contains(item);
 
     public void OnElementSelected(int index)
     {
-        if (isSelecting)
+        if (isSelecting && selectablePredicate.Try(items[index]))
         {
             if (multiselectMode)
             {
-                if(selectedHandles.Contains(itemHandles[index]))
-                    selectedHandles.Remove(itemHandles[index]);
+                if(selectedItems.Contains(items[index]))
+                    selectedItems.Remove(items[index]);
                 else
-                    selectedHandles.Add(itemHandles[index]);
+                    selectedItems.Add(items[index]);
                 sortingDirty = true;
-                bool empty = selectedHandles.Count == 0;
+                bool empty = selectedItems.Count == 0;
                 confirmButton.Visible = !empty;
                 skipButton.Visible = empty && allowEmptySelection;
             }
             else
             {
-                selectedHandles.Clear();
-                selectedHandles.Add(itemHandles[index]);
+                selectedItems.Clear();
+                selectedItems.Add(items[index]);
                 isSelecting = false;
             }
         }
     }
 
-    public ProfileItemHandle GetRecycleElement(int index) => 
-        ((itemHandles?.Count ?? -1) > 0 && index < itemHandles.Count && index >= 0) ? itemHandles[index] : null;
+    public GameItem GetRecycleElement(int index) => 
+        ((items?.Count ?? -1) > 0 && index < items.Count && index >= 0) ? items[index] : null;
 
-    public int GetRecycleElementCount() => itemHandles?.Count ?? 0;
+    public int GetRecycleElementCount() => items?.Count ?? 0;
 }

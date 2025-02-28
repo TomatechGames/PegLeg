@@ -27,8 +27,8 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
-[node name="Weapon Perk Entry" type="MarginContainer"]
-custom_minimum_size = Vector2(0, 50)
+[node name="Perk Entry" type="MarginContainer"]
+custom_minimum_size = Vector2(0, 75)
 script = ExtResource("2_t8u73")
 
 [node name="Panel" type="Panel" parent="."]
@@ -116,11 +116,11 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_constants/line_spacing = -2
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
-theme_override_constants/line_spacing = -2
-theme_override_font_sizes/font_size = 12
-text = "Perk details go here. if they get super long, the description can expand to account for it. the details can get up to 3 lines in length in the worst case scenario, and if it gets beyond that it will just fade into ellipsis"
+theme_override_font_sizes/font_size = 16
+text = "Perk details go here. if they get super long, the description can expand to account for it. the details can get up to 4 lines in length, and if it gets beyond that it will get cut off, and you'll be unable to read Ray's spicy fanfics shipping Azalea Clark with a Flinger Mist Monster in a dramatic forbidden love rom-com"
 vertical_alignment = 1
 autowrap_mode = 2
 text_overrun_behavior = 3

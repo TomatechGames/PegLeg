@@ -48,83 +48,68 @@ public partial class QuestViewer : Control
         "CardPack:cardpack_choice_all_sr",
     };
 
-    QuestData currentQuest;
+    QuestSlot currentQuest;
     async void UpdatePinnedState()
     {
-        if (currentQuest is null || !currentQuest.isUnlocked || currentQuest.isComplete)
+        var account = GameAccount.activeAccount;
+        if (
+            currentQuest is null || 
+            !currentQuest.isUnlocked || 
+            currentQuest.isComplete || 
+            currentQuest.questItem?.profile?.account != account
+            )
             return;
-        LoadingOverlay.AddLoadingKey("pinnedQuest");
+
+        using var _ = LoadingOverlay.CreateToken();
+
+        if (!await account.Authenticate())
+            return;
 
         if (pinButton.ButtonPressed)
-            await ProfileRequests.AddPinnedQuest(currentQuest.questItem.itemID.uuid);
+            await account.AddPinnedQuest(currentQuest.questItem);
         else
-            await ProfileRequests.RemovePinnedQuest(currentQuest.questItem.itemID.uuid);
+            await account.RemovePinnedQuest(currentQuest.questItem);
 
         pinButton.ButtonPressed = currentQuest.isPinned;
-        LoadingOverlay.RemoveLoadingKey("pinnedQuest");
     }
 
     async void RerollQuest()
     {
-        if (currentQuest is null || !currentQuest.isUnlocked)
+        var account = GameAccount.activeAccount;
+        if (currentQuest is null || 
+            !currentQuest.isUnlocked ||
+            currentQuest.questItem?.profile?.account != account
+            )
             return;
-        LoadingOverlay.AddLoadingKey("rerollQuest");
-        
-        var newQuest = await ProfileRequests.RerollQuest(currentQuest.questItem.itemID.uuid);
+
+        using var _ = LoadingOverlay.CreateToken();
+
+        if (!await account.Authenticate())
+            return;
+
+        var newQuest = await account.RerollQuest(currentQuest.questItem);
         currentQuest.LinkQuestItem(newQuest);
 
         SetupQuest(currentQuest);
-        rerollButton.Visible = ProfileRequests.CanRerollQuestUnsafe();
-
-        LoadingOverlay.RemoveLoadingKey("rerollQuest");
+        rerollButton.Visible = account.CanRerollQuest();
     }
 
-    public void SetupQuest(QuestData quest)
+    public void SetupQuest(QuestSlot quest)
     {
         currentQuest = quest;
-        EmitSignal(SignalName.NameChanged, quest.questTemplate["DisplayName"].ToString());
-        EmitSignal(SignalName.DescriptionChanged, quest.questTemplate["Description"].ToString());
-        EmitSignal(SignalName.IconChanged, quest.questTemplate.GetItemTexture());
+        EmitSignal(SignalName.NameChanged, quest.questTemplate.DisplayName);
+        EmitSignal(SignalName.DescriptionChanged, quest.questTemplate.Description);
+        EmitSignal(SignalName.IconChanged, quest.questTemplate.GetTexture());
         EmitSignal(SignalName.CompleteVisible, quest.isComplete);
 
-        rerollButton.Visible = quest.isRerollable && ProfileRequests.CanRerollQuestUnsafe();
+        rerollButton.Visible = quest.isRerollable;
         pinButton.Visible = quest.isUnlocked && !quest.isComplete;
         pinButton.ButtonPressed = quest.isPinned;
 
-
-        var allRewards = quest.questTemplate["Rewards"]
-            .AsArray()
-            .Where(r => !r["Hidden"].GetValue<bool>());
-
-        var rewards = allRewards
-            .Where(r => !r["Selectable"].GetValue<bool>())
-            .Select(r => BanjoAssets.TryGetTemplate(r["Item"].ToString())?.CreateInstanceOfItem(r["Quantity"].GetValue<int>()) ?? r.AsObject())
-            .Where(r => r["Item"] is null)
-            .ToList();
-
-        var dynamicRewards = allRewards
-            .Where(r => r["Selectable"].GetValue<bool>());
-
-        if (dynamicRewards.Any())
-        {
-            //fake a cardpack to show a choice reward
-            var cardpackID = cardPackFromRarity[dynamicRewards.Select(q=>BanjoAssets.TryGetTemplate(q["Item"].ToString()).GetItemRarity()).Max()];
-            JsonObject attributes = new()
-            {
-                ["options"] = new JsonArray(dynamicRewards.Select(r=>new JsonObject()
-                {
-                    ["itemType"] = r["Item"].ToString(),
-                    ["attributes"] = new JsonObject(),
-                    ["quantity"] = r["Quantity"].GetValue<int>()
-                }).ToArray())
-            };
-            var choiceReward = BanjoAssets.TryGetTemplate(cardpackID).CreateInstanceOfItem(1, attributes);
-            rewards.Insert(0, choiceReward);
-        }
-
+        var rewards = quest.questTemplate.GetVisibleQuestRewards();
 
         rewardParent.Visible = false;
-        for (int i = 0; i < rewards.Count; i++)
+        for (int i = 0; i < rewards.Length; i++)
         {
             if (i >= rewardEntries.Count)
             {
@@ -132,17 +117,17 @@ public partial class QuestViewer : Control
                 rewardParent.AddChild(newEntry);
                 rewardEntries.Add(newEntry);
             }
-            rewardEntries[i].SetItemData(rewards[i]);
-            rewardEntries[i].SetRewardNotification();
-            rewardEntries[i].SetInteractableSmart();
+            rewardEntries[i].SetItem(rewards[i]);
+            rewards[i].SetRewardNotification();
             rewardEntries[i].Visible = true;
         }
-        for (int i = rewards.Count; i < rewardEntries.Count; i++)
+
+        for (int i = rewards.Length; i < rewardEntries.Count; i++)
         {
             rewardEntries[i].Visible = false;
         }
         rewardParent.Visible = true;
-
+        
         var objectives = quest.questTemplate["Objectives"].AsArray();
         for (int i = 0; i < objectives.Count; i++)
         {
@@ -158,7 +143,7 @@ public partial class QuestViewer : Control
                 objectiveEntries[i].Visible = false;
                 continue;
             }
-            int currentProgress = quest.isUnlocked ? (quest.questItem.GetItemUnsafe()["attributes"]["completion_" + objective["BackendName"].ToString()]?.GetValue<int>() ?? 0) : 0;
+            int currentProgress = quest.isUnlocked ? (quest.questItem.attributes["completion_" + objective["BackendName"].ToString().ToLower()]?.GetValue<int>() ?? 0) : 0;
             objectiveEntries[i].SetupObjective(objective, currentProgress);
             objectiveEntries[i].Visible = true;
         }

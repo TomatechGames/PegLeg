@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Text.Json.Nodes;
 
-public partial class ConfigToggleHook : Node
+public partial class ConfigToggleHook : Control
 {
     [Signal]
     public delegate void ConfigValueChangedEventHandler(bool newValue);

@@ -1,0 +1,216 @@
+[gd_scene load_steps=16 format=3 uid="uid://boy6kxjjp475q"]
+
+[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_m5tyf"]
+[ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="2_fcxpe"]
+[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="3_yq7rn"]
+[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_wsmte"]
+[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="6_sg3kv"]
+[ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="7_rn8k6"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="8_ngfra"]
+[ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="10_6kjfm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_drqcc"]
+shader = ExtResource("3_yq7rn")
+shader_parameter/ControlSize = Vector2(320, 88)
+shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
+shader_parameter/Fit = null
+shader_parameter/UseCorners = true
+shader_parameter/UseGlobalCorners = null
+shader_parameter/ApplyCornersToFit = null
+shader_parameter/CornerRadius = 5.0
+shader_parameter/ClipOOB = null
+
+[sub_resource type="Gradient" id="Gradient_kwhrn"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.19, 0.19, 0.19, 0.501961)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_06poq"]
+gradient = SubResource("Gradient_kwhrn")
+
+[sub_resource type="Gradient" id="Gradient_kw1j2"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4yvdq"]
+gradient = SubResource("Gradient_kw1j2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ydxwl"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_syy7r"]
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+skew = Vector2(0.4, 0)
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+
+[node name="MissionEntryV5_0" type="MarginContainer" node_paths=PackedStringArray("missionRewardParent")]
+custom_minimum_size = Vector2(320, 50)
+offset_right = 320.0
+offset_bottom = 72.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_m5tyf")
+missionRewardParent = NodePath("HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer")
+defaultBackground = ExtResource("2_fcxpe")
+
+[node name="BGTexture" type="TextureRect" parent="."]
+modulate = Color(0.75, 0.75, 0.75, 1)
+material = SubResource("ShaderMaterial_drqcc")
+layout_mode = 2
+texture = SubResource("GradientTexture1D_06poq")
+expand_mode = 1
+script = ExtResource("5_wsmte")
+syncControlSize = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="IconContainer" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/margin_left = -10
+theme_override_constants/margin_top = -10
+theme_override_constants/margin_right = -10
+theme_override_constants/margin_bottom = -10
+
+[node name="IconBG" type="TextureRect" parent="HBoxContainer/IconContainer"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_4yvdq")
+expand_mode = 5
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer/IconContainer/IconBG"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_sg3kv")
+expand_mode = 1
+
+[node name="MissionRewards" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MissionRewards"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="HBoxContainer/MissionRewards/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 12
+text = "Highlights:"
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/MissionRewards/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("8_ngfra")
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HFlowContainer" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/h_separation = 8
+
+[node name="RewardEntryHorizontal" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("7_rn8k6")]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal2" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("7_rn8k6")]
+layout_mode = 2
+
+[node name="RewardEntryHorizontal3" parent="HBoxContainer/MissionRewards/VBoxContainer/MarginContainer/MarginContainer/HBoxContainer" instance=ExtResource("7_rn8k6")]
+layout_mode = 2
+
+[node name="PowerLevel" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PowerLevel"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 1
+offset_left = -1.0
+offset_top = 8.0
+offset_right = 49.0
+offset_bottom = 37.0
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -8
+
+[node name="Panel" type="Panel" parent="PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ydxwl")
+
+[node name="Panel2" type="Panel" parent="PowerLevel/MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_syy7r")
+
+[node name="HBoxContainer" type="MarginContainer" parent="PowerLevel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 6
+
+[node name="PowerLevelLabel" type="Label" parent="PowerLevel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_font_sizes/font_size = 24
+text = "999"
+horizontal_alignment = 1
+
+[node name="VenturesIndicator" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="TextureRect" type="TextureRect" parent="VenturesIndicator"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+tooltip_text = "Ventures"
+texture = ExtResource("10_6kjfm")
+expand_mode = 5
+
+[connection signal="BackgroundChanged" from="." to="BGTexture" method="set_texture"]
+[connection signal="IconChanged" from="." to="HBoxContainer/IconContainer/IconBG/Icon" method="set_texture"]
+[connection signal="PowerLevelChanged" from="." to="PowerLevel/MarginContainer/HBoxContainer/PowerLevelLabel" method="set_text"]
+[connection signal="TooltipChanged" from="." to="HBoxContainer/IconContainer/IconBG/Icon" method="set_tooltip_text"]
+[connection signal="VenturesIndicatorVisible" from="." to="VenturesIndicator" method="set_visible"]

@@ -26,7 +26,7 @@ public static class QuestGroupGenerator
             if (collection["autoPopulateQuestlines"]?.GetValue<bool>() ?? false)
             {
                 //generate questlines from banjo questline files
-                BanjoAssets.TryGetSource("MainQuestLines", out var mainQuests);
+                BanjoAssets.TryGetDataSource("MainQuestLines", out var mainQuests);
                 JsonObject groupGens = new();
                 JsonArray mainQuestLine = new();
 
@@ -36,7 +36,7 @@ public static class QuestGroupGenerator
 
                 groupGens["Campaign"] = new JsonObject() { ["questlines"] = new JsonArray() { mainQuestLine } };
 
-                BanjoAssets.TryGetSource("EventQuestLines", out var eventQuests);
+                BanjoAssets.TryGetDataSource("EventQuestLines", out var eventQuests);
                 foreach (var eventQuestLine in eventQuests)
                 {
                     JsonArray eventQuestLineArray = new();
@@ -59,25 +59,26 @@ public static class QuestGroupGenerator
                     foreach (var quest in quests)
                     {
                         JsonArray questline = new();
-                        string nextQuest = quest;
+                        var currentQuest = quest;
                         do
                         {
-                            questline.Add(nextQuest);
-                            if (BanjoAssets.TryGetTemplate(nextQuest) is JsonObject questTemplate)
-                            {
-                                nextQuest = questTemplate["Rewards"]?.AsArray().Select(r => r["Item"].ToString()).FirstOrDefault(i => i.StartsWith("Quest:"));
-                            }
-                            else
-                                nextQuest = null;
+                            questline.Add(currentQuest.TemplateId);
+
+                            var nextQuestId = currentQuest
+                                .GetHiddenQuestRewards()
+                                .Select(r => r.templateId)
+                                .FirstOrDefault(i => i.StartsWith("Quest:"));
+                            currentQuest = GameItemTemplate.Get(nextQuestId);
                         }
-                        while (nextQuest != null);
+                        while (currentQuest != null);
                         questlines.Add(questline);
                     }
+                    var stringified = questlines.ToString();
                     entry.Value["questlines"] = questlines;
                     continue;
                 }
 
-                entry.Value["quests"] = new JsonArray(quests.Where(q => !BanjoAssets.TryGetTemplate(q)["DisplayName"].ToString().StartsWith("(Hidden)")).Select(q=>(JsonNode)q).ToArray());
+                entry.Value["quests"] = new JsonArray(quests.Where(q => !q.DisplayName.StartsWith("(Hidden)")).Select(q => (JsonNode)q.TemplateId).ToArray());
                 //just lump all the quests into an array
             }
         }
@@ -98,56 +99,52 @@ public static class QuestGroupGenerator
         }
     }
 
-    static string[] GetQuestsFromObject(JsonNode questSource)
+    static GameItemTemplate[] GetQuestsFromObject(JsonNode questSource, GameItemTemplate[] filteredQuests = null)
     {
         if(questSource is JsonValue val)
         {
-            return new string[] { val.ToString() };
+            var quest = GameItemTemplate.Get(val.ToString());
+            return quest is null ? Array.Empty<GameItemTemplate>() : new GameItemTemplate[] { quest };
         }
 
-        string[] excludedQuests = Array.Empty<string>();
-        if (questSource["exclude"] is JsonNode excludeQuests)
-        {
-            excludedQuests = GetQuestsFromObject(excludeQuests);
-        }
+        if (questSource["prefilter"] is JsonNode prefilteredQuests)
+            filteredQuests = GetQuestsFromObject(prefilteredQuests, filteredQuests);
+
+        filteredQuests ??= GameItemTemplate.GetTemplatesFromSource("Quest");
 
         if (questSource["union"] is JsonArray unionArray)
         {
-            List<string> combinedUnion = new();
+            List<GameItemTemplate> combinedUnion = new();
             foreach (var item in unionArray)
             {
-                combinedUnion.AddRange(GetQuestsFromObject(item));
+                combinedUnion.AddRange(GetQuestsFromObject(item, filteredQuests));
             }
-            return combinedUnion.Except(excludedQuests).ToArray();
+            filteredQuests = combinedUnion.Distinct().ToArray();
         }
 
-        if (questSource["startsWith"] is JsonValue startsWith)
+        string category = questSource["category"]?.ToString().ToLower();
+        string startsWith = questSource["startsWith"]?.ToString().ToLower();
+        string endsWith = questSource["endsWith"]?.ToString().ToLower();
+        string contains = questSource["contains"]?.ToString().ToLower();
+
+        if(category is not null || startsWith is not null || endsWith is not null || contains is not null)
         {
-            string startsWithVal = startsWith.ToString();
-            return BanjoAssets.GetTemplatesFromSource("Quest", item => item["Name"].ToString().ToLower().StartsWith(startsWithVal))
-                    .Select(item=>item.GetIDFromTemplate())
-                    .Except(excludedQuests)
-                    .ToArray();
+            filteredQuests = filteredQuests.Where(item =>
+                    item is not null &&
+                    (category == null || item.Category?.ToLower() == category) &&
+                    item.Name?.ToLower() is string name &&
+                    (startsWith == null || name.StartsWith(startsWith)) &&
+                    (endsWith == null || name.EndsWith(endsWith)) &&
+                    (contains == null || name.Contains(contains))
+                ).ToArray();
         }
 
-        if (questSource["endsWith"] is JsonValue endsWith)
+        if (questSource["exclude"] is JsonNode excludeQuests)
         {
-            string endsWithVal = endsWith.ToString();
-            return BanjoAssets.GetTemplatesFromSource("Quest", item => item["Name"].ToString().ToLower().EndsWith(endsWithVal))
-                    .Select(item => item.GetIDFromTemplate())
-                    .Except(excludedQuests)
-                    .ToArray();
+            var excludedQuestItems = GetQuestsFromObject(excludeQuests, filteredQuests);
+            filteredQuests = filteredQuests.Except(excludedQuestItems).ToArray();
         }
 
-        if (questSource["category"] is JsonValue category)
-        {
-            string categoryVal = category.ToString();
-            return BanjoAssets.GetTemplatesFromSource("Quest", item => item["Category"].ToString().ToLower() == categoryVal.ToLower())
-                    .Select(item => item.GetIDFromTemplate())
-                    .Except(excludedQuests)
-                    .ToArray();
-        }
-
-        return Array.Empty<string>();
+        return filteredQuests;
     }
 }

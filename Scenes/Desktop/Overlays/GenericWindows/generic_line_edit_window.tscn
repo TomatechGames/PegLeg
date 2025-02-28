@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://outqvmv6p0pm"]
+[gd_scene load_steps=5 format=3 uid="uid://outqvmv6p0pm"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_m5vxe"]
 [ext_resource type="Script" path="res://Scripts/Overlays/GenericWindows/GenericLineEditWindow.cs" id="2_v5dtr"]
+[ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="3_qifvb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6l75"]
+bg_color = Color(0.301961, 0.301961, 0.301961, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="GenericLineEditWindow" node_paths=PackedStringArray("header", "content", "textBox", "cancelButton", "confirmButton", "warningLabel") instance=ExtResource("1_m5vxe")]
 script = ExtResource("2_v5dtr")
@@ -11,6 +19,24 @@ textBox = NodePath("Control/WindowContents/CenterContainer/PanelContainer/Margin
 cancelButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/CancelBtn")
 confirmButton = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/ConfirmBtn")
 warningLabel = NodePath("Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Warning")
+isUserClosable = true
+
+[node name="CloseBtn" parent="." index="1"]
+visible = false
+
+[node name="CloseBtn2" type="Button" parent="." index="2" groups=["ExcludeButtonSounds"]]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxFlat_k6l75")
+theme_override_styles/disabled = ExtResource("3_qifvb")
+theme_override_styles/hover = ExtResource("3_qifvb")
+theme_override_styles/pressed = ExtResource("3_qifvb")
+theme_override_styles/normal = ExtResource("3_qifvb")
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/WindowContents" index="0"]
 use_top_left = true
@@ -69,4 +95,7 @@ theme_type_variation = &"ActionButton"
 theme_override_font_sizes/font_size = 24
 text = "Confirm"
 
-[connection signal="pressed" from="BG" to="." method="Cancel"]
+[connection signal="pressed" from="CloseBtn2" to="." method="Cancel"]
+[connection signal="text_changed" from="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/LineEdit" to="." method="OnTextChanged"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/CancelBtn" to="." method="Cancel"]
+[connection signal="pressed" from="Control/WindowContents/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/Buttons/ConfirmBtn" to="." method="Confirm"]
