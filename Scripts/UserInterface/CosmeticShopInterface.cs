@@ -123,6 +123,11 @@ public partial class CosmeticShopInterface : Control
             if (IsVisibleInTree())
                 LoadShop(true).StartTask();
         }
+        if (key == "simple_cosmetic_tilesize")
+        {
+            if (AppConfig.Get<bool>("item_shop", "simple_cosmetics") && IsVisibleInTree())
+                LoadShop(true).StartTask();
+        }
         if (key == "navigation_visible")
         {
             if (!AppConfig.Get<bool>("item_shop", "simple_cosmetics"))
@@ -296,6 +301,7 @@ public partial class CosmeticShopInterface : Control
         navContainer.Visible = false;
         navToggle.Visible = false;
         int opCount = 0;
+        int tileSize = AppConfig.Get("item_shop", "simple_cosmetic_tilesize", 150);
         foreach (var category in cosmeticShop)
         {
             foreach (var section in category.Value.AsObject())
@@ -305,7 +311,7 @@ public partial class CosmeticShopInterface : Control
                     foreach (var entryData in page.AsObject())
                     {
                         var entry = shopEntryScene.Instantiate<CosmeticShopOfferEntry>();
-                        entry.CustomMinimumSize = new(150, 150);
+                        entry.CustomMinimumSize = new(tileSize, tileSize);
                         entry.PopulateEntry(entryData.Value.AsObject(), Vector2.One);
                         simpleShopParent.AddChild(entry);
                         RegisterOffer(entry);

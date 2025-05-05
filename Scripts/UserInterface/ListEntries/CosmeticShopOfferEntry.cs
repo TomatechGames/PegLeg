@@ -190,25 +190,23 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
     bool displayAssetLoadStarted;
     public void Interact()
     {
-        if (Input.IsKeyPressed(Key.Shift))
+        if (shopUrl is not null)
+            OS.ShellOpen(shopUrl);
+    }
+
+    public void ContextMenu()
+    {
+        if (imageUrl is not null)
         {
-            if (imageUrl is not null)
-            {
-                OS.ShellOpen(imageUrl);
-            }
-            else if (!displayAssetLoadStarted)
-            {
-                displayAssetLoadStarted = true;
-                resourceLoadStarted = false;
-                loadingCubes.Visible = true;
-                resourceTarget.Visible = false;
-                StartResourceLoadSequence();
-            }
+            OS.ShellOpen(imageUrl);
         }
-        else
+        else if (!displayAssetLoadStarted)
         {
-            if (shopUrl is not null)
-                OS.ShellOpen(shopUrl);
+            displayAssetLoadStarted = true;
+            resourceLoadStarted = false;
+            loadingCubes.Visible = true;
+            resourceTarget.Visible = false;
+            StartResourceLoadSequence();
         }
     }
 

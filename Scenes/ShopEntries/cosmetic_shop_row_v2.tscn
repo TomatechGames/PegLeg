@@ -12,7 +12,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7ojdw"]
 resource_local_to_scene = true
 shader = ExtResource("4_2ks2q")
-shader_parameter/ControlSize = Vector2(1330, 313)
+shader_parameter/ControlSize = Vector2(0, 150)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4

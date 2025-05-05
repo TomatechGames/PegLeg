@@ -18,6 +18,9 @@ public partial class ConfigRangeHook : Node
     string key;
 
     [Export]
+    bool asInt;
+
+    [Export]
     double defaultValue = 0;
 
     [Export]
@@ -53,7 +56,12 @@ public partial class ConfigRangeHook : Node
         if (section != this.section || key != this.key)
             return;
         valueIsChanging = true;
-        EmitSignal(SignalName.ConfigValueChanged, val.GetValue<double>());
+        if (val.TryGetValue(out int intVal))
+            EmitSignal(SignalName.ConfigValueChanged, intVal);
+        else if (val.TryGetValue(out double doubleVal))
+            EmitSignal(SignalName.ConfigValueChanged, doubleVal);
+        else
+            GD.PushWarning($"Could not get number from config {section}:{key}");
         valueIsChanging = false;
     }
 
@@ -62,7 +70,7 @@ public partial class ConfigRangeHook : Node
     {
         if (requireApply)
         {
-            AppConfig.Set(section, key, unappliedValue);
+            ApplyValueTyped(unappliedValue);
             EmitSignal(SignalName.AppliedChanged, true);
         }
     }
@@ -74,7 +82,7 @@ public partial class ConfigRangeHook : Node
         {
             if (!requireApply)
             {
-                AppConfig.Set(section, key, newValue);
+                ApplyValueTyped(newValue);
                 EmitSignal(SignalName.UnappliedLabelChanged, newValue.ToString()[..Mathf.Min(newValue.ToString().Length, 4)]);
                 EmitSignal(SignalName.AppliedChanged, true);
             }
@@ -85,5 +93,13 @@ public partial class ConfigRangeHook : Node
                 EmitSignal(SignalName.AppliedChanged, false);
             }
         }
+    }
+
+    void ApplyValueTyped(double newValue)
+    {
+        if(asInt)
+            AppConfig.Set(section, key, (int)newValue);
+        else
+            AppConfig.Set(section, key, newValue);
     }
 }

@@ -26,7 +26,7 @@ public partial class HomebasePowerLevel : Control
             currentProfile.OnItemUpdated -= OnProfileItemChanged;
             currentProfile.OnItemRemoved -= OnProfileItemChanged;
 
-            currentProfile.OnStatChanged -= OnProfileStatChanged;
+            currentProfile.OnStatsChanged -= OnProfileStatChanged;
 
             currentProfile = null;
         }
@@ -45,7 +45,7 @@ public partial class HomebasePowerLevel : Control
         currentProfile.OnItemUpdated += OnProfileItemChanged;
         currentProfile.OnItemRemoved += OnProfileItemChanged;
 
-        currentProfile.OnStatChanged += OnProfileStatChanged;
+        currentProfile.OnStatsChanged += OnProfileStatChanged;
 
         UpdateStatsVisuals(currentProfile.account.GetFORTStats(true));
     }
@@ -87,7 +87,7 @@ public partial class HomebasePowerLevel : Control
             currentProfile.OnItemUpdated -= OnProfileItemChanged;
             currentProfile.OnItemRemoved -= OnProfileItemChanged;
 
-            currentProfile.OnStatChanged -= OnProfileStatChanged;
+            currentProfile.OnStatsChanged -= OnProfileStatChanged;
 
             currentProfile = null;
         }

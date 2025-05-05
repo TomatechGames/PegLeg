@@ -168,5 +168,6 @@ expand_mode = 1
 layout_mode = 1
 outlinePadding = 0.0
 
+[connection signal="TooltipChanged" from="InventoryEntry" to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="RequestChange"]
 [connection signal="pressed" from="Control/InspectArea/TextureRect/Responsive Button Circle" to="InventoryEntry" method="Inspect"]

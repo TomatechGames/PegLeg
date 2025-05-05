@@ -166,24 +166,14 @@ public partial class SurvivorLoadoutInterface : Node
     {
         if (eggTimer > 0 || overrideAccount is not null)
             return;
-        if (!(await GenericConfirmationWindow.ShowConfirmation(
-                "Apply Loadout?", 
-                "Apply", 
-                contextText:"Survivors in this loadout will be slotted into their squads", 
-                warningText: "Currently slotted survivors will be unslotted"
-            ) ?? false))
-            return;
-        eggTimer = 3;
-
-        using var _ = LoadingOverlay.CreateToken();
 
         var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
-            return;
 
-        var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
-
-        var existingWorkers = accountItems.GetItems("Worker", item => item.attributes.ContainsKey("squad_id"));
+        var accountItems = account.GetProfile(FnProfileTypes.AccountItems);
+        var allWorkers = accountItems.GetItems("Worker");
+        var slottedWorkers = allWorkers.Where( item => item.attributes.ContainsKey("squad_id"));
+        var workerUUIDs = allWorkers.Select(item => item.uuid).ToList();
+        int missingWorkers = 0;
 
         JsonObject fullLoadout = account.GetLocalData(LoadoutKey)[loadoutName].AsObject();
         JsonObject flattenedLoadout = new()
@@ -202,6 +192,14 @@ public partial class SurvivorLoadoutInterface : Node
                 if (workerKey == "")
                     continue;
 
+                if (!workerUUIDs.Contains(workerKey))
+                {
+                    missingWorkers++;
+                    //todo: try to approximate a worker to fill in the blank?
+                    continue;
+                }
+
+
                 //if (
                 //    existingWorkers.ContainsKey(workerKey) &&
                 //    existingWorkers[workerKey]["attributes"]["squad_id"].ToString() == squad.Key &&
@@ -214,6 +212,20 @@ public partial class SurvivorLoadoutInterface : Node
                 flattenedLoadout["slotIndices"].AsArray().Add(i);
             }
         }
+
+        if (!(await GenericConfirmationWindow.ShowConfirmation(
+                "Apply Loadout?",
+                "Apply",
+                contextText: "Survivors in this loadout will be slotted into their squads",
+                warningText: missingWorkers > 0 ? $"Warning: {missingWorkers} survivor{(missingWorkers > 1 ? "s" : "")} in the loadout could not be found" : null
+            ) ?? false))
+            return;
+        eggTimer = 3;
+
+        using var _ = LoadingOverlay.CreateToken();
+
+        if (!await account.Authenticate())
+            return;
 
         await accountItems.PerformOperation("UnassignAllSquads", new JsonObject() { ["squadIds"] = new JsonArray(survivorSquadIds.Select(s => (JsonNode)s).ToArray()) });
         await accountItems.PerformOperation("AssignWorkerToSquadBatch", flattenedLoadout);

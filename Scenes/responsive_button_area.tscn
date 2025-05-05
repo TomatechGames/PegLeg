@@ -8,7 +8,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_133ye"]
 resource_local_to_scene = true
 shader = ExtResource("2_gilom")
-shader_parameter/ControlSize = Vector2(1290, 730)
+shader_parameter/ControlSize = Vector2(1360, 730)
 shader_parameter/TargetSize = Vector2(1200, 675)
 shader_parameter/LineSize = 3.0
 shader_parameter/ProgressFade = 0.02

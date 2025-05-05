@@ -35,7 +35,7 @@ public partial class GenericConfirmationWindow : ModalWindow
         errorResult ??= new();
         if (!errorResult.ContainsKey("errorMessage"))
             errorResult["errorMessage"] = "(No Message Provided)";
-        await instance.ShowConfirmationInst("Something Went Wrong", "\\_(*-*)_/", "", errorResult["errorMessage"].ToString(), "", false, 8);
+        await instance.ShowConfirmationInst("Uh oh! Something Goofed", "Continue", "", errorResult["errorMessage"].ToString(), errorResult["errorCode"].ToString(), false, 8);
     }
     public static async Task ShowError(string description, string header = "Error") =>
         await instance.ShowConfirmationInst(header, null, "Close", description, "", false, 8);

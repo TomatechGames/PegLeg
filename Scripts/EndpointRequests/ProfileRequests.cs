@@ -244,16 +244,6 @@ public class GameAccount
         return this;
     }
 
-    public void HandleProfileChanges(JsonArray multiUpdate)
-    {
-        foreach (var profileUpdate in multiUpdate)
-        {
-            string profileId = profileUpdate["profileId"].ToString();
-            if (profiles.ContainsKey(profileId))
-                profiles[profileId].ApplyProfileChanges(profileUpdate["profileChanges"].AsArray());
-        }
-    }
-
     string authToken;
     int authExpiresAt = -999;
     string refreshToken;
@@ -322,7 +312,8 @@ public class GameAccount
             ["expectedTotalPrice"] = (await offer.GetPersonalPrice(true, true)).quantity * purchaseQuantity,
             ["gameContext"] = "Pegleg",
         };
-        var result = await GetProfile(FnProfileTypes.Common).PerformOperation("PurchaseCatalogEntry", shopRequestBody.ToString());
+        var profile = GetProfile(FnProfileTypes.Common);
+        var result = await profile.PerformOperation("PurchaseCatalogEntry", shopRequestBody.ToString());
         offer.NotifyChanged();
         return result;
     }
@@ -821,7 +812,7 @@ public class GameProfile
 
     public void InvalidateProfile()
     {
-        hasProfile = false;
+        rvn = -1;
         foreach (var item in items.Values)
         {
             item.DisconnectFromProfile();
@@ -831,7 +822,8 @@ public class GameProfile
         statAttributes = null;
     }
 
-    public bool hasProfile { get; private set; }
+    int rvn = -1;
+    public bool hasProfile => rvn >= 0;
     public GameAccount account { get; private set; }
     public string profileId { get; private set; }
     public JsonObject statAttributes { get; private set; }
@@ -839,10 +831,12 @@ public class GameProfile
     Dictionary<string, GameItem> items = new();
     Dictionary<string, List<GameItem>> groupedItems = new();
 
-    public event Action OnStatChanged;
+    public event Action OnStatsChanged;
+    public event Action<string> OnStatChanged;
     public event Action<GameItem> OnItemAdded;
     public event Action<GameItem> OnItemUpdated;
     public event Action<GameItem> OnItemRemoved;
+    public event Action<string, GameItem> OnItemReassociated;
 
     IEnumerable<GameItem> GetItemSubset(string type)
     {
@@ -985,7 +979,7 @@ public class GameProfile
         using var request =
             new HttpRequestMessage(
                 HttpMethod.Post,
-                $"fortnite/api/game/v2/profile/{account.accountId}/{(account.isOwned ? "client" : "public")}/{operation}?profileId={profileId}&rvn=-1"
+                $"fortnite/api/game/v2/profile/{account.accountId}/{(account.isOwned ? "client" : "public")}/{operation}?profileId={profileId}&rvn={rvn}"
             )
             {
                 Content = jsonContent
@@ -1002,24 +996,67 @@ public class GameProfile
             return null;
         }
 
-        var resultStats = result["profileChanges"][0]["profile"]["stats"]["attributes"].AsObject();
-        var resultItems = result["profileChanges"][0]["profile"]["items"].AsObject();
-
-        if (hasProfile)
-            ApplyProfileChanges(GenerateChanges(resultItems, resultStats));
+        var changes = result["profileChanges"].AsArray();
+        if (changes.Count == 0) { }
+        else if (changes[0]["changeType"].ToString() == "fullProfileUpdate")
+        {
+            var resultItems = result["profileChanges"][0]["profile"]["items"].AsObject();
+            var resultStats = result["profileChanges"][0]["profile"]["stats"]["attributes"].AsObject();
+            if (hasProfile)
+                ApplyProfileChanges(GenerateChanges(resultItems, resultStats));
+            else
+            {
+                items = resultItems.Select(kvp => new GameItem(this, kvp.Key, kvp.Value.AsObject())).ToDictionary(item => item.uuid);
+                groupedItems = new(
+                    items.GroupBy(kvp => kvp.Value.templateId.Split(":")[0])
+                    .Select(grouping => KeyValuePair.Create(grouping.Key, grouping.Select(kvp => kvp.Value).ToList()))
+                );
+                statAttributes = resultStats;
+            }
+        }
         else
         {
-            items = resultItems.Select(kvp => new GameItem(this, kvp.Key, kvp.Value.AsObject())).ToDictionary(item => item.uuid);
-            groupedItems = new(
-                    items.GroupBy(kvp => kvp.Value.templateId.Split(":")[0])
-                    .Select(grouping => KeyValuePair.Create(grouping.Key, grouping.Select(kvp=>kvp.Value).ToList()))
-                );
-            hasProfile = true;
+            if (operation == "UpgradeItemBulk" || operation == "UpgradeItemRarity")
+            {
+                JsonNode additionChange = changes.FirstOrDefault(n => n["changeType"].ToString() == "itemAdded");
+                JsonNode removalChange = changes.FirstOrDefault(n => n["changeType"].ToString() == "itemRemoved");
+                if(additionChange is not null && removalChange is not null)
+                {
+                    var additionIndex = changes.IndexOf(additionChange);
+                    var removingId = removalChange["itemId"].ToString();
+                    List<JsonNode> irrelevantChanges = new();
+                    for (int i = additionIndex; i < changes.Count; i++)
+                    {
+                        var change = changes[i];
+                        if (change["itemId"].ToString()==removingId)
+                            irrelevantChanges.Add(change);
+                    }
+                    foreach (var change in irrelevantChanges)
+                    {
+                        changes.Remove(change);
+                    }
+                    additionChange["newItemId"] = additionChange["itemId"].ToString();
+                    additionChange["itemId"] = removingId;
+                    additionChange["changeType"] = "itemUpgraded";
+                }
+            }
+            ApplyProfileChanges(changes);
         }
-        statAttributes = resultStats;
+        rvn = result["profileRevision"].GetValue<int>();
 
         if (result.ContainsKey("multiUpdate"))
-            account.HandleProfileChanges(result["multiUpdate"].AsArray());
+        {
+            foreach (var profileUpdate in result["multiUpdate"].AsArray())
+            {
+                string profileId = profileUpdate["profileId"].ToString();
+                if (account.HasProfile(profileId))
+                {
+                    var profile = account.GetProfile(profileId);
+                    profile.ApplyProfileChanges(profileUpdate["profileChanges"].AsArray());
+                    profile.rvn = profileUpdate["profileRevision"].GetValue<int>();
+                }
+            }
+        }
 
         GD.Print($"operation complete ({operation} in {profileId} as {account.DisplayName})");
 
@@ -1071,12 +1108,17 @@ public class GameProfile
                 ["item"] = newItems[itemKey].Reserialise()
             });
         }
-        if (newStats.ToString() != statAttributes.ToString())
+        foreach (var statKVP in newStats)
         {
-            profileChanges.Add(new JsonObject()
+            if (!statAttributes.TryGetPropertyValue(statKVP.Key, out var statVal) || statKVP.Value.ToString() != statVal.ToString())
             {
-                ["changeType"] = "statChanged"
-            });
+                profileChanges.Add(new JsonObject()
+                {
+                    ["changeType"] = "statModified",
+                    ["name"] = statKVP.Key,
+                    ["value"] = statVal.Reserialise()
+                });
+            }
         }
 
         return profileChanges;
@@ -1125,9 +1167,14 @@ public class GameProfile
                     OnItemRemoved?.Invoke(targetItem);
                     targetItem.DisconnectFromProfile();
                     break;
-                case "statChanged":
-                    GD.Print($"STAT CHANGED: ? ({change})");
-                    OnStatChanged?.Invoke();
+                case "statModified":
+                    var statName = change["name"].ToString();
+                    var statVal = change["value"].Reserialise();
+                    var hadStat = statAttributes.TryGetPropertyValue(statName, out var oldStatVal);
+                    statAttributes[statName] = statVal;
+                    GD.Print($"STAT CHANGED: {statName}: {(hadStat ? $"\n{oldStatVal}\n=>\n" : "")}{statVal}");
+                    OnStatChanged?.Invoke(statName);
+                    OnStatsChanged?.Invoke();
                     break;
                 case "itemQuantityChanged":
                     targetItem = items[uuid];
@@ -1143,8 +1190,16 @@ public class GameProfile
                     targetItem.NotifyChanged();
                     OnItemUpdated?.Invoke(targetItem);
                     break;
+                case "itemUpgraded":
+                    //reassociates an item that was removed and readded as part of an upgrade
+                    targetItem = items[uuid];
+                    targetItem.Reassociate(change["newItemId"]?.ToString(), change["item"].AsObject());
+                    targetItem.NotifyChanged();
+                    OnItemUpdated?.Invoke(targetItem);
+                    OnItemReassociated?.Invoke(uuid, targetItem);
+                    break;
                 case "itemFullyChanged":
-                    //custom one for handling generated changelogs
+                    //autogenerated item changes
                     targetItem = items[uuid];
                     targetItem.SetRawData(change["item"].AsObject());
                     GD.Print($"CHANGED (full): {uuid} ({targetItem})");
@@ -1224,6 +1279,12 @@ public class GameItem
         SetRawData(rawData);
     }
 
+    public void Reassociate(string newUUID, JsonObject rawData)
+    {
+        uuid = newUUID;
+        SetRawData(rawData);
+    }
+
     public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)
     {
         _template = template;
@@ -1279,12 +1340,15 @@ public class GameItem
         templateData.Remove("searchTags");
         _rawData = new()
         {
+            ["uuid"] = uuid,
             ["templateId"] = templateId,
             ["attributes"] = attributes?.Reserialise(),
             ["quantity"] = quantity,
             ["template"] = templateData,
             ["searchTags"] = _searchTags?.Reserialise() ?? template?["searchTags"]?.Reserialise(),
         };
+        if (profile is null)
+            _rawData.Remove("uuid"); //doing this backwards to make uuid the first property of rawData
         if(customData is not null)
             _rawData["custom"] = customData.Reserialise();
         if(zcpEquivelent is not null)
@@ -1495,7 +1559,9 @@ public class GameItem
     {
         if (!BanjoAssets.TryGetDataSource("ItemRatings", out var ratings))
             return 0;
-        var tier = template?.Tier ?? 0;
+        if (template is null)
+            return 0;
+        var tier = template.Tier;
         if (template.Type == "Schematic" && !(template.Category == "Ingredient" || template.Category == "Ammo") && tier == 0)
             tier = 1;
         if (tier == 0)
