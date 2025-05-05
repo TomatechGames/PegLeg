@@ -174,7 +174,25 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
             //    item.GetSearchTags();
             //    item.GenerateRawData();
             //}
+            var profile = await displayedAccount.GetProfile(targetProfile).Query();
+            var loadoutHeroes = profile
+                .GetItems("CampaignHeroLoadout")
+                .SelectMany(loadout => 
+                    loadout.attributes["crew_members"]
+                    .AsObject()
+                    .Select(kvp=>kvp.Value.ToString())
+                )
+                .Distinct()
+                .ToList();
             GameItemSelector.Instance.SetRecycleDefaults();
+            GameItemSelector.Instance.selectablePredicate = item =>
+            {
+                if (!GameItemSelector.RecyclablePredicate(item))
+                    return false;
+                if (loadoutHeroes.Contains(item.uuid))
+                    return false;
+                return true;
+            };
             var toRecycle = await GameItemSelector.Instance.OpenSelector(filteredItems, null);
             if ((toRecycle?.Length ?? 0) > 0 && await displayedAccount.Authenticate())
             {

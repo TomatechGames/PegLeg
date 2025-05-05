@@ -1,22 +1,43 @@
-[gd_scene load_steps=7 format=3 uid="uid://ce4nh58o1rsd6"]
+[gd_scene load_steps=12 format=3 uid="uid://ce4nh58o1rsd6"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopRow.cs" id="1_dvx4w"]
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="2_t6xhm"]
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="4_2ks2q"]
 [ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="4_iintn"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_e0edl"]
+[ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="6_4n434"]
+[ext_resource type="Texture2D" uid="uid://dysryc385kjaa" path="res://Images/InterfaceIcons/LoadingIconV2/fortShopLoadingSheet.png" id="6_exow4"]
+[ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="7_q87bg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7ojdw"]
 resource_local_to_scene = true
 shader = ExtResource("4_2ks2q")
-shader_parameter/ControlSize = Vector2(1260, 313)
+shader_parameter/ControlSize = Vector2(1330, 313)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
-shader_parameter/Fit = true
+shader_parameter/Fit = false
 shader_parameter/Repeat = true
-shader_parameter/HorizontalMask = 0.1
+shader_parameter/HorizontalMask = 0.0
 shader_parameter/VerticalMask = 0.0
+shader_parameter/Frame = -1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c6vp3"]
+shader = ExtResource("6_4n434")
+shader_parameter/rotationSpeed = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_chcek"]
+resource_local_to_scene = true
+shader = ExtResource("4_2ks2q")
+shader_parameter/ControlSize = Vector2(170, 300)
+shader_parameter/SliceAmount = Vector2(18, 13)
+shader_parameter/FPS = 30.0
+shader_parameter/CellCount = -23
+shader_parameter/Fit = false
+shader_parameter/Repeat = true
+shader_parameter/HorizontalMask = 0.0
+shader_parameter/VerticalMask = 0.0
+shader_parameter/Frame = -1
 
 [node name="CosmeticShopRowV2" type="ScrollContainer" node_paths=PackedStringArray("entryParent", "loadingCubes", "contentNode")]
 clip_contents = false
@@ -30,10 +51,9 @@ scroll_vertical_custom_step = 0.0
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
 script = ExtResource("1_dvx4w")
-v2Mode = true
 cosmeticShopEntry = ExtResource("2_t6xhm")
 entryParent = NodePath("MarginContainer/HBoxContainer/HFlowContainer")
-loadingCubes = NodePath("MarginContainer/LoadingIcon5")
+loadingCubes = NodePath("MarginContainer/NewLoadingIcon")
 contentNode = NodePath("MarginContainer")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -55,12 +75,66 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 
 [node name="LoadingIcon5" type="TextureRect" parent="MarginContainer"]
+visible = false
 material = SubResource("ShaderMaterial_7ojdw")
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
 texture = ExtResource("4_iintn")
+expand_mode = 1
+script = ExtResource("5_e0edl")
+syncControlSize = true
+
+[node name="NewLoadingIcon" type="Control" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LoadingIcon7" type="TextureRect" parent="MarginContainer/NewLoadingIcon"]
+visible = false
+material = SubResource("ShaderMaterial_c6vp3")
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("7_q87bg")
+expand_mode = 1
+script = ExtResource("5_e0edl")
+syncControlSize = true
+
+[node name="LoadingIcon6" type="TextureRect" parent="MarginContainer/NewLoadingIcon"]
+visible = false
+material = SubResource("ShaderMaterial_chcek")
+custom_minimum_size = Vector2(170, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -150.0
+offset_right = 85.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("6_exow4")
 expand_mode = 1
 script = ExtResource("5_e0edl")
 syncControlSize = true

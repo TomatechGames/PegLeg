@@ -19,6 +19,10 @@ public partial class CosmeticShopInterface : Control
     Control pageParent;
     [Export]
     Control simpleShopParent;
+    [Export]
+    Control loadingAnim;
+    [Export]
+    Control shopContent;
     [ExportGroup("Scenes")]
     [Export]
     PackedScene shopHeaderScene;
@@ -58,7 +62,6 @@ public partial class CosmeticShopInterface : Control
             }
         };
 
-        RefreshTimerController.OnHourChanged += OnHourChanged;
         navigationPane.CellSelected += OnNavSelected;
         sacButton.Pressed += OpenSACPrompt;
 
@@ -81,9 +84,28 @@ public partial class CosmeticShopInterface : Control
             }
             ApplyFilters();
         };
-        AppConfig.OnConfigChanged += OnConfigChanged;
         navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true) && !AppConfig.Get("item_shop", "simple_cosmetics", false);
         requireAddedToday.ButtonPressed = AppConfig.Get("item_shop", "auto_filter_new", false);
+
+        AppConfig.OnConfigChanged += OnConfigChanged;
+        RefreshTimerController.OnHourChanged += OnHourChanged;
+        GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
+    }
+    private async void OnActiveAccountChanged() => await UpdateSAC();
+
+    private async Task UpdateSAC()
+    {
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return;
+
+        string currentSACCode = await account.GetSACCode(false);
+        if (await account.GetSACTime() > 1 && AppConfig.Get("automation", "creatorcode", false))
+        {
+            //GD.Print(currentSACCode);
+            await account.SetSACCode(currentSACCode);
+        }
+        sacButton.Text = await account.IsSACExpired() ? "None" : currentSACCode;
     }
 
     private void OnConfigChanged(string section, string key, JsonValue value)
@@ -116,7 +138,9 @@ public partial class CosmeticShopInterface : Control
 
     public override void _ExitTree()
     {
+        AppConfig.OnConfigChanged -= OnConfigChanged;
         RefreshTimerController.OnHourChanged -= OnHourChanged;
+        GameAccount.ActiveAccountChanged -= OnActiveAccountChanged;
     }
 
     private async void OnHourChanged()
@@ -216,54 +240,55 @@ public partial class CosmeticShopInterface : Control
         if (isLoadingShop || !(CatalogRequests.StorefrontRequiresUpdate() || force || activeOffers.Count == 0))
             return;
 
-        var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
-            return;
+        var sacTask = UpdateSAC();
 
-        string currentSACCode = await account.GetSACCode(false);
-        if (await account.GetSACTime() > 1 && AppConfig.Get("automation", "creatorcode", false))
+        try
         {
-            //GD.Print(currentSACCode);
-            await account.SetSACCode(currentSACCode);
+            isLoadingShop = true;
+            filterBlocker.Visible = true;
+            loadingAnim.Visible = true;
+            shopContent.Visible = false;
+
+            activeOffers.Clear();
+            onScreenOffers.Clear();
+            activePages.Clear();
+            navigationPane.Clear();
+
+            var cosmeticShop = await CatalogRequests.GetCosmeticShop();
+
+            foreach (var pageChild in pageParent.GetChildren())
+            {
+                pageChild.QueueFree();
+            }
+            foreach (var entryChild in simpleShopParent.GetChildren())
+            {
+                entryChild.QueueFree();
+            }
+            await Helpers.WaitForFrame();
+
+            PrepareFilters();
+
+            if (AppConfig.Get("item_shop", "simple_cosmetics", false))
+            {
+                await GenerateSimpleShop(cosmeticShop);
+            }
+            else
+            {
+                await GenerateComplexShop(cosmeticShop);
+            }
+
+            await Helpers.WaitForFrame();
+            CatalogRequests.CleanCosmeticResourceCache();
+
+            await sacTask;
         }
-        sacButton.Text = await account.IsSACExpired() ? "None" : currentSACCode;
-
-        isLoadingShop = true;
-        filterBlocker.Visible = true;
-
-        activeOffers.Clear();
-        onScreenOffers.Clear();
-        activePages.Clear();
-        navigationPane.Clear();
-
-        var cosmeticShop = await CatalogRequests.GetCosmeticShop();
-
-        foreach (var pageChild in pageParent.GetChildren())
+        finally
         {
-            pageChild.QueueFree();
+            shopContent.Visible = true;
+            loadingAnim.Visible = false;
+            isLoadingShop = false;
+            filterBlocker.Visible = false;
         }
-        foreach (var entryChild in simpleShopParent.GetChildren())
-        {
-            entryChild.QueueFree();
-        }
-        await Helpers.WaitForFrame();
-
-        PrepareFilters();
-
-        if (AppConfig.Get("item_shop", "simple_cosmetics", false))
-        {
-            await GenerateSimpleShop(cosmeticShop);
-        }
-        else
-        {
-            await GenerateComplexShop(cosmeticShop);
-        }
-
-        await Helpers.WaitForFrame();
-        CatalogRequests.CleanCosmeticResourceCache();
-
-        isLoadingShop = false;
-        filterBlocker.Visible = false;
     }
 
     async Task GenerateSimpleShop(JsonObject cosmeticShop)
@@ -367,12 +392,12 @@ public partial class CosmeticShopInterface : Control
 
     void PrepareFilters()
     {
-        newOrOldFilterValue = 2;
+        baseFilterValue = 2;
         for (int i = 0; i < newOrOldFilters.Length; i++)
         {
             if (newOrOldFilters[i].ButtonPressed)
             {
-                newOrOldFilterValue = i;
+                baseFilterValue = i;
                 break;
             }
         }
@@ -410,7 +435,7 @@ public partial class CosmeticShopInterface : Control
             }
         }
     }
-    int newOrOldFilterValue = 0;
+    int baseFilterValue = 0;
     bool[] typeMasks;
     static readonly string[] filterTypes = new string[]
     {
@@ -473,12 +498,12 @@ public partial class CosmeticShopInterface : Control
         if (!includeDiscountBundles.ButtonPressed && entry.isDiscountBundle)
             return false;
 
-        if (!(newOrOldFilterValue switch
+        if (!(baseFilterValue switch
         {
-            0 => entry.metadata.isAddedToday && entry.metadata.isRecentlyNew,
+            0 => entry.metadata.isRecentlyNew,
             1 => entry.metadata.isRecentlyNew,
-            3=> entry.metadata.isOld,
-            4 => entry.metadata.isVeryOld,
+            3 => entry.metadata.isOld,
+            4 => entry.metadata.isBestseller,
             _ => true
         }))
             return false;

@@ -28,6 +28,11 @@ public partial class DashboardLlamasController : Control
         ForceLoadShopLlamas();
     }
 
+    public override void _ExitTree()
+    {
+        RefreshTimerController.OnHourChanged -= ForceLoadShopLlamas;
+    }
+
     public void GoToLlamaTab() => LlamaInterface.SelectLlamaTab();
 
 
@@ -55,6 +60,8 @@ public partial class DashboardLlamasController : Control
             await llamaShopSemaphore.WaitAsync(ct);
             if (ct.IsCancellationRequested)
                 return;
+
+            await Helpers.WaitForFrame();
 
             var xrayStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.XRayLlamaCatalog, force ? null : RefreshTimeType.Hourly);
             var randomStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.RandomLlamaCatalog, force ? null : RefreshTimeType.Hourly);

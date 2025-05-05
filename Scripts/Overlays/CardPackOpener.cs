@@ -951,6 +951,8 @@ public partial class CardPackOpener : Control
             GameItemSelector.Instance.SetRecycleDefaults();
             GameItemSelector.Instance.allowCancel = false;
             GameItemSelector.Instance.allowEmptySelection = true;
+            GameItemSelector.Instance.unselectableMarkerTex = null;
+            GameItemSelector.Instance.unselectableTintColor = Colors.Transparent;
             var toRecycle = await GameItemSelector.Instance.OpenSelector(resultItems, null);
             if (toRecycle.Length > 0 && await account.Authenticate())
             {

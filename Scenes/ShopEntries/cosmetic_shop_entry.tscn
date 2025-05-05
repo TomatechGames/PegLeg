@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://khtmsxilpw3n"]
+[gd_scene load_steps=26 format=3 uid="uid://khtmsxilpw3n"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopOfferEntry.cs" id="1_a2plt"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="2_655vb"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://1ixqc8hojkjr" path="res://Images/InterfaceIcons/o5hq54xvrat91.jpg" id="7_2gaoe"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_yjpnu"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="9_7kwsg"]
+[ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="11_wpcy6"]
 [ext_resource type="Texture2D" uid="uid://bwn62my2lt8k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Calendar_128.png" id="14_n2okj"]
 [ext_resource type="Texture2D" uid="uid://bt2w7fddx2cn3" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_UpArrow_128.png" id="16_4iqq1"]
 
@@ -47,6 +48,7 @@ shader_parameter/Fit = true
 shader_parameter/Repeat = null
 shader_parameter/HorizontalMask = null
 shader_parameter/VerticalMask = null
+shader_parameter/Frame = -1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b2nlk"]
 content_margin_left = 3.0
@@ -95,6 +97,18 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ikqmt"]
+bg_color = Color(1, 0.470588, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfdvo"]
 content_margin_left = 5.0
@@ -245,6 +259,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_gmw55")
 [node name="MarginContainer" type="MarginContainer" parent="DetailsArea/MarginContainer/PriceBox"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DetailsArea/MarginContainer/PriceBox/MarginContainer"]
@@ -334,6 +349,19 @@ size_flags_horizontal = 8
 tooltip_text = "Time until the item leaves the shop"
 theme_override_styles/panel = SubResource("StyleBoxFlat_pt1cr")
 
+[node name="LeavingSoonAlert" type="MarginContainer" parent="Overlays/VBoxContainer/LeavingTimer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -3
+theme_override_constants/margin_bottom = -2
+
+[node name="Panel" type="Panel" parent="Overlays/VBoxContainer/LeavingTimer/LeavingSoonAlert"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ikqmt")
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Overlays/VBoxContainer/LeavingTimer"]
 layout_mode = 2
 
@@ -356,6 +384,19 @@ tooltip_text = "Days since the item was last in the shop
 (before it returned)"
 theme_override_styles/panel = SubResource("StyleBoxFlat_pt1cr")
 
+[node name="LastSeenAlert" type="MarginContainer" parent="Overlays/VBoxContainer/LastSeenPanel"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -3
+theme_override_constants/margin_bottom = -2
+
+[node name="Panel" type="Panel" parent="Overlays/VBoxContainer/LastSeenPanel/LastSeenAlert"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ikqmt")
+
 [node name="HBoxContainer" type="HBoxContainer" parent="Overlays/VBoxContainer/LastSeenPanel"]
 layout_mode = 2
 
@@ -377,6 +418,7 @@ theme_override_font_sizes/font_size = 12
 text = "500"
 
 [node name="Control" type="Control" parent="Overlays/VBoxContainer/LastSeenPanel/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
@@ -461,10 +503,46 @@ mouse_filter = 2
 texture = ExtResource("16_4iqq1")
 expand_mode = 1
 
+[node name="BestsellerStar" type="TextureRect" parent="Overlays"]
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(23, 23)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+tooltip_text = "Best Seller (according to Epic)"
+texture = ExtResource("11_wpcy6")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Overlays/BestsellerStar"]
+self_modulate = Color(1, 0.972, 0.58, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 8
+mouse_filter = 2
+texture = ExtResource("11_wpcy6")
+expand_mode = 1
+
 [connection signal="AlmostAYearVisibility" from="." to="Overlays/AlmostAYear" method="set_visible"]
+[connection signal="BestsellerVisibility" from="." to="Overlays/BestsellerStar" method="set_visible"]
 [connection signal="BonusTextChanged" from="." to="Overlays/HeadlinePanel/HBoxContainer/HeadlineLabel" method="set_text"]
 [connection signal="BonusTextVisibility" from="." to="Overlays/HeadlinePanel" method="set_visible"]
-[connection signal="LastSeenAlertVisibility" from="." to="Overlays/VBoxContainer/LastSeenPanel/HBoxContainer/Control" method="set_visible"]
+[connection signal="LastSeenAlertVisibility" from="." to="Overlays/VBoxContainer/LastSeenPanel/LastSeenAlert" method="set_visible"]
 [connection signal="LastSeenText" from="." to="Overlays/VBoxContainer/LastSeenPanel/HBoxContainer/LastSeenLabel" method="set_text"]
 [connection signal="LastSeenVisibility" from="." to="Overlays/VBoxContainer/LastSeenPanel" method="set_visible"]
 [connection signal="NameChanged" from="." to="DetailsArea/NameBox/VBoxContainer/NameLabel" method="set_text"]
@@ -475,6 +553,7 @@ expand_mode = 1
 [connection signal="OutlineChanged" from="." to="Outline" method="set_self_modulate"]
 [connection signal="OwnedVisibility" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/OwnedLabel" method="set_visible"]
 [connection signal="PriceAmount" from="." to="DetailsArea/MarginContainer/PriceBox/MarginContainer/HBoxContainer/FinalPrice" method="set_text"]
+[connection signal="ReminingTimeVisibility" from="." to="Overlays/VBoxContainer/LeavingTimer/LeavingSoonAlert" method="set_visible"]
 [connection signal="TooltipChanged" from="." to="Outline" method="set_tooltip_text"]
 [connection signal="TooltipChanged" from="." to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="TooltipChanged" from="." to="Button" method="set_tooltip_text"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cvc7hj4ng7c04"]
+[gd_scene load_steps=13 format=3 uid="uid://cvc7hj4ng7c04"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_bjivd"]
 [ext_resource type="Script" path="res://Scripts/Overlays/GameItemSelector.cs" id="2_msbn1"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ch7kqyndhfgvs" path="res://Scenes/GameItemEntry/inventory_entry_large.tscn" id="4_7jdcp"]
 [ext_resource type="Texture2D" uid="uid://ddjxkaoe8stlj" path="res://Images/InterfaceIcons/T-Icon-ST-CollectionBook-128.png" id="5_2qrsm"]
 [ext_resource type="Texture2D" uid="uid://dhakmuvj28f2w" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Paintbrush_128.png" id="6_bnyal"]
+[ext_resource type="Texture2D" uid="uid://ck2mb3fyp73sd" path="res://Images/InterfaceIcons/T-SlotIcon-NotRecyclable-64.png" id="6_cjboh"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_aw7nf"]
 [ext_resource type="Texture2D" uid="uid://l44adw334xao" path="res://Images/InterfaceIcons/T-SlotIcon-Recycle-128.png" id="7_j13lo"]
 [ext_resource type="Texture2D" uid="uid://do17fpp06a7op" path="res://Images/InterfaceIcons/T_Icon_Sort.png" id="9_yrbk2"]
@@ -17,6 +18,7 @@ script = ExtResource("2_msbn1")
 defaultSelectionMarker = ExtResource("3_4tm4g")
 recycleIcon = ExtResource("7_j13lo")
 collectionIcon = ExtResource("5_2qrsm")
+unselectableIcon = ExtResource("6_cjboh")
 autoSelectButton = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons/HBoxContainer/AutoSelect")
 container = NodePath("Control/MarginContainer/VBoxContainer/Items/ScrollContainer")
 multiselectButtons = NodePath("Control/MarginContainer/VBoxContainer/MultiselectButtons")

@@ -179,6 +179,9 @@ public class GameAccount
         var account = gameAccountCache[accountId];
         if (await account.Authenticate())
         {
+            var profile = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+            if (!profile.hasProfile)
+                return false;
             _activeAccount = account;
             ActiveAccountChangedEarly?.Invoke();
             ActiveAccountChanged?.Invoke();
@@ -1493,6 +1496,8 @@ public class GameItem
         if (!BanjoAssets.TryGetDataSource("ItemRatings", out var ratings))
             return 0;
         var tier = template?.Tier ?? 0;
+        if (template.Type == "Schematic" && !(template.Category == "Ingredient" || template.Category == "Ammo") && tier == 0)
+            tier = 1;
         if (tier == 0)
             return 0;
 
@@ -1501,7 +1506,7 @@ public class GameItem
         level = Mathf.Clamp(level, Mathf.Min(1, (tier * 10) - 10), (tier * 10) + bonusMax);
         string ratingCategory = template.Type == "Worker" ? (template.SubType is null ? "Survivor" : "LeadSurvivor") :"Default";
 
-        string ratingKey = template.GetCompactRarityAndTier();
+        string ratingKey = template.GetCompactRarityAndTier(tier);
         if (ratingCategory == "LeadSurvivor")
             ratingKey = ratingKey.Replace("UR_", "SR_");
 

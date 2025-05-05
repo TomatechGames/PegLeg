@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://d6pm7vs0s7ta"]
+[gd_scene load_steps=35 format=3 uid="uid://d6pm7vs0s7ta"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/CosmeticShopInterface.cs" id="1_cncuj"]
 [ext_resource type="PackedScene" uid="uid://3euwgkmgdey0" path="res://Scenes/ShopEntries/cosmetic_shop_header.tscn" id="2_vc6jo"]
@@ -7,11 +7,14 @@
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="5_0vdo0"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="6_5islc"]
 [ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_ge2gw"]
+[ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="6_hnewy"]
+[ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="7_2ymbo"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="7_k8nn6"]
 [ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="8_l3vt8"]
 [ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="8_vieoo"]
 [ext_resource type="StyleBox" uid="uid://biqx82867v22n" path="res://GodotThemes/Styleboxes/CheckButton/SelectedCheck.tres" id="9_jmcpo"]
 [ext_resource type="StyleBox" uid="uid://dr65gsxfjpkwp" path="res://GodotThemes/Styleboxes/CheckButton/HoveredCheck.tres" id="10_lwt61"]
+[ext_resource type="Texture2D" uid="uid://b1t4mvbsh42lk" path="res://Images/InterfaceIcons/LoadingIconV2/kyleBellSheet.png" id="10_w87l3"]
 [ext_resource type="StyleBox" uid="uid://b2ou1v5mjbih6" path="res://GodotThemes/Styleboxes/CheckButton/SelectedHoveredCheck.tres" id="11_se178"]
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="12_qhhym"]
 [ext_resource type="Texture2D" uid="uid://bfm8vt42cetpl" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Outfit.png" id="13_ccggu"]
@@ -28,13 +31,30 @@
 [ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="25_e8r7k"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="26_0o8hv"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i5l4d"]
+shader = ExtResource("6_hnewy")
+shader_parameter/rotationSpeed = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5vm8u"]
+resource_local_to_scene = true
+shader = ExtResource("25_e8r7k")
+shader_parameter/ControlSize = Vector2(200, 341)
+shader_parameter/SliceAmount = Vector2(28, 8)
+shader_parameter/FPS = 30.0
+shader_parameter/CellCount = 0
+shader_parameter/Fit = false
+shader_parameter/Repeat = true
+shader_parameter/HorizontalMask = 0.0
+shader_parameter/VerticalMask = 0.0
+shader_parameter/Frame = -1
+
 [sub_resource type="ButtonGroup" id="ButtonGroup_0v5s8"]
 resource_name = "CosmeticTimeFilter"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v73v7"]
 resource_local_to_scene = true
 shader = ExtResource("25_e8r7k")
-shader_parameter/ControlSize = Vector2(515, 72)
+shader_parameter/ControlSize = Vector2(551, 72)
 shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = -4
@@ -42,8 +62,9 @@ shader_parameter/Fit = true
 shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
+shader_parameter/Frame = -1
 
-[node name="Cosmetic Shop" type="VBoxContainer" node_paths=PackedStringArray("sacButton", "verticalScrollBox", "navContainer", "navigationPane", "pageParent", "simpleShopParent", "navToggle", "filterBlocker", "requireLeavingSoon", "requireAddedToday", "includeDiscountBundles", "newOrOldFilters", "typeFilters", "resetTypeFilters")]
+[node name="Cosmetic Shop" type="VBoxContainer" node_paths=PackedStringArray("sacButton", "verticalScrollBox", "navContainer", "navigationPane", "pageParent", "simpleShopParent", "loadingAnim", "shopContent", "navToggle", "filterBlocker", "requireLeavingSoon", "requireAddedToday", "includeDiscountBundles", "newOrOldFilters", "typeFilters", "resetTypeFilters")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -54,8 +75,10 @@ sacButton = NodePath("TimerAndSAC/MarginContainer/HBoxContainer/SACButton")
 verticalScrollBox = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer")
 navContainer = NodePath("HSplitContainer/MarginContainer")
 navigationPane = NodePath("HSplitContainer/MarginContainer/NavTree")
-pageParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/VBoxContainer")
-simpleShopParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/MarginContainer/HFlowContainer")
+pageParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/ShopContent/VBoxContainer")
+simpleShopParent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/ShopContent/MarginContainer/HFlowContainer")
+loadingAnim = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/NewLoadingIcon")
+shopContent = NodePath("HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/ShopContent")
 shopHeaderScene = ExtResource("2_vc6jo")
 shopRowScene = ExtResource("3_kowyy")
 shopEntryScene = ExtResource("4_nlhpd")
@@ -65,7 +88,7 @@ simpleOpsPerFrame = 20
 requireLeavingSoon = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/HBoxContainer/OnlyLeaving")
 requireAddedToday = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/HBoxContainer/OnlyAdded")
 includeDiscountBundles = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/HBoxContainer/IncludeDiscounts")
-newOrOldFilters = [NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/VeryNew"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/New"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/Any"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/Old"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/VeryOld")]
+newOrOldFilters = [NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/VeryNew"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/New"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/Any"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/Old"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer/Popular")]
 typeFilters = [NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Outfit"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Pickaxe"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Glider"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Emote"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Wrap"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Music"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Instrument"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Car"), NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Misc")]
 resetTypeFilters = NodePath("HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/Reset")
 
@@ -149,17 +172,16 @@ size_flags_vertical = 3
 theme_override_constants/margin_top = 30
 theme_override_constants/margin_right = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer"]
+[node name="ShopContent" type="MarginContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/ShopContent"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="MarginContainer2" type="MarginContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/ShopContent"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 10
@@ -167,10 +189,62 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="HFlowContainer" type="HFlowContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/MarginContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/ShopContent/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 alignment = 1
+
+[node name="NewLoadingIcon" type="Control" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="LoadingIcon7" type="TextureRect" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/NewLoadingIcon"]
+self_modulate = Color(0.690196, 1, 1, 1)
+material = SubResource("ShaderMaterial_i5l4d")
+custom_minimum_size = Vector2(700, 700)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("7_2ymbo")
+expand_mode = 1
+script = ExtResource("26_0o8hv")
+syncControlSize = true
+
+[node name="LoadingIcon6" type="TextureRect" parent="HSplitContainer/VBoxContainer/BigScrollContainer/MarginContainer/NewLoadingIcon"]
+material = SubResource("ShaderMaterial_5vm8u")
+custom_minimum_size = Vector2(200, 341)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -150.0
+offset_right = 85.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+mouse_filter = 2
+texture = ExtResource("10_w87l3")
+expand_mode = 1
+script = ExtResource("26_0o8hv")
+syncControlSize = true
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer"]
 z_index = 2
@@ -242,7 +316,7 @@ layout_mode = 2
 [node name="OnlyLeaving" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "Leaving Soon"
+tooltip_text = "Items that leave the shop in under 24hrs"
 theme_type_variation = &"EmptyCheckButton"
 text = " "
 
@@ -266,11 +340,12 @@ stretch_mode = 5
 [node name="OnlyAdded" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "Newly Added"
+tooltip_text = "Items that were added to the shop today"
 theme_type_variation = &"EmptyCheckButton"
 text = "  #"
 
 [node name="IncludeDiscounts" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/MiscFilters/HBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 tooltip_text = "Discounts"
@@ -316,6 +391,7 @@ text = "  V. New"
 
 [node name="New" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Items that were recently added to the shop for the first time"
 theme_type_variation = &"LeftCheckButton"
 button_group = SubResource("ButtonGroup_0v5s8")
 text = "  New"
@@ -329,16 +405,17 @@ text = "  Any"
 
 [node name="Old" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"RightCheckButton"
+tooltip_text = "Items that haven't been in the shop for 500+ days"
+theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_0v5s8")
 text = " Old"
 
-[node name="VeryOld" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer"]
-visible = false
+[node name="Popular" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TimeFilters/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Best Sellers (according to Epic)"
 theme_type_variation = &"RightCheckButton"
 button_group = SubResource("ButtonGroup_0v5s8")
-text = "  V. Old"
+text = " Popular"
 
 [node name="TypeFilters" type="PanelContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer"]
 custom_minimum_size = Vector2(0, 26)
@@ -352,7 +429,7 @@ layout_mode = 2
 [node name="Outfit" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "Outfits and Back Blings"
+tooltip_text = "Outfits, Back Blings, and Kicks"
 theme_type_variation = &"EmptyCheckButton"
 button_pressed = true
 
@@ -376,7 +453,7 @@ stretch_mode = 5
 [node name="Pickaxe" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "pickaxes"
+tooltip_text = "Pickaxes"
 theme_type_variation = &"EmptyCheckButton"
 button_pressed = true
 
@@ -542,7 +619,7 @@ stretch_mode = 5
 [node name="Misc" type="CheckButton" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer"]
 custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
-tooltip_text = "Miscellaneous"
+tooltip_text = "Miscellaneous (Lego)"
 theme_type_variation = &"EmptyCheckButton"
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/MarginContainer/FilterBar/HBoxContainer/TypeFilters/HBoxContainer/Misc"]

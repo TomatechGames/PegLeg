@@ -331,7 +331,8 @@ public class GameItemTemplate
     public bool CanBeLeveled => Tier > 0 && Type switch
     {
         "Hero" or "Worker" or "Weapon" or "Trap" => true,
-        "Defender" or "Schematic" => !Unrecyclable,
+        "Schematic" => !Unrecyclable || Category != "Trap",
+        "Defender" => !Unrecyclable,
         _ => false
     };
     public bool CanBeUnseen=> Type switch

@@ -10,6 +10,7 @@ uniform bool Fit;
 uniform bool Repeat;
 uniform float HorizontalMask;
 uniform float VerticalMask;
+uniform int Frame = -1;
 
 void fragment() {
 	float hmask = HorizontalMask>0.0 ? min(UV.x/HorizontalMask, -(UV.x/HorizontalMask)+(1.0/HorizontalMask)) : 1.0;
@@ -17,7 +18,7 @@ void fragment() {
 	float totalMask = min(hmask, vmask);
 	
 	vec2 adaptedUV = Fit ? adaptToAspect(ControlSize, vec2(0.5),1.0/TEXTURE_PIXEL_SIZE,UV, true) : UV;
-	vec2 slicedUV = flipbookSlice(adaptedUV, SliceAmount, float(CellCount), FPS*TIME,Repeat);
+	vec2 slicedUV = flipbookSlice(adaptedUV, SliceAmount, float(CellCount), Frame<0 ? FPS*TIME : float(Frame),Repeat);
 	COLOR = texture(TEXTURE, slicedUV);
 	//COLOR = vec4(0,0,0,1);
 	//COLOR.rg = slicedUV;

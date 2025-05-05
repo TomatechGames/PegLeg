@@ -44,6 +44,7 @@ shader_parameter/Fit = true
 shader_parameter/Repeat = true
 shader_parameter/HorizontalMask = 0.05
 shader_parameter/VerticalMask = null
+shader_parameter/Frame = -1
 
 [node name="Cosmetic Shop" type="VBoxContainer"]
 anchors_preset = 15

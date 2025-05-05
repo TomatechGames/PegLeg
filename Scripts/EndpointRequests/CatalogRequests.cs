@@ -59,10 +59,10 @@ static class CatalogRequests
         var layoutTask = GetCosmeticLayouts(true);
         var storefrontTask = EnsureStorefront(forceRefresh);
         var cosmeticDisplayData = await RequestCosmeticDisplayData();
+        var bestsellingCosmetics = await RequestCosmeticBestsellingData();
         await storefrontTask;
         await layoutTask;
-
-        return cosmeticCache = await ProcessCosmetics(cosmeticDisplayData);
+        return cosmeticCache = await ProcessCosmetics(cosmeticDisplayData, bestsellingCosmetics);
     }
 
     public static JsonObject GetCachedCosmeticOfferData(string offerId)
@@ -193,11 +193,12 @@ static class CatalogRequests
     //    };
     //}
 
-    static async Task<JsonObject> ProcessCosmetics(JsonObject cosmeticDisplayData)
+    static async Task<JsonObject> ProcessCosmetics(JsonObject cosmeticDisplayData, string[] bestsellingCosmetics = null)
     {
         var shopOfferList = storefrontCache[FnStorefrontTypes.WeeklyCosmeticShopCatalog]?.AsArray().ToList();
         if(shopOfferList is null)
             return null;
+        bestsellingCosmetics ??= Array.Empty<string>();
         //shopOfferList.AddRange(storefrontCache[FnStorefrontTypes.DailyCosmeticShopCatalog].AsArray());
         var shopOfferDict = shopOfferList.ToDictionary(n => n["offerId"].ToString());
 
@@ -208,6 +209,9 @@ static class CatalogRequests
             {
                 needsFallback = !cosmeticDisplayData.ContainsKey(offer.Key);
             }
+            bool isBestseller = bestsellingCosmetics.Contains(offer.Key);
+            if (isBestseller)
+                GD.Print("BESTSELLER: " + offer.Value["devName"]?.ToString());
 
             if (needsFallback)
             {
@@ -223,6 +227,7 @@ static class CatalogRequests
                     ["finalPrice"] = offer.Value["prices"]?.AsArray().FirstOrDefault()?["finalPrice"]?.GetValue<int>(),
                     ["webURL"] = offer.Value["meta"]?["webURL"]?.ToString(),
                     ["layoutId"] = offer.Value["meta"]?["LayoutId"]?.ToString(),
+                    ["isBestseller"] = isBestseller,
                     ["layout"] = new JsonObject()
                     {
                         ["id"] = offer.Value["meta"]?["AnalyticOfferGroupId"]?.ToString(),
@@ -288,6 +293,7 @@ static class CatalogRequests
             displayData["webURL"] = offer.Value["meta"]?["webURL"]?.ToString() ?? null;
             displayData["inDate"] = offer.Value["meta"]?["inDate"]?.ToString() ?? null;
             displayData["outDate"] = offer.Value["meta"]?["outDate"]?.ToString() ?? null;
+            displayData["isBestseller"] = isBestseller;
 
             if (offer.Value["dynamicBundleInfo"] is JsonObject dynBundleInfo)
                 displayData["dynamicBundleInfo"] = dynBundleInfo.Reserialise();
@@ -453,6 +459,19 @@ static class CatalogRequests
         return storefrontCache;
     }
 
+    public static async Task<string[]> RequestCosmeticBestsellingData()
+    {
+        GD.Print("retrieving cosmetic bestsellers from epic...");
+        var response = await Helpers.MakeRequestRaw(
+                FnWebAddresses.epicCDN,
+                new HttpRequestMessage(HttpMethod.Get, "/fn_bsdata/ebb74910-dd35-44b8-b826-d58dc16c6456.json")
+            );
+        if(!response.IsSuccessStatusCode)
+            return null;
+        var responseText = await response.Content.ReadAsStringAsync();
+        var responseJson = JsonNode.Parse(responseText);
+        return responseJson["bestsellers_list"]["offer_list"].AsArray().Select(x => x.ToString()).ToArray();
+    }
     public static async Task<JsonObject> RequestCosmeticDisplayData()
     {
         GD.Print("retrieving cosmetic visuals from fortnite-api...");

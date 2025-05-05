@@ -70,6 +70,12 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
         await GameMission.UpdateMissions();
     }
 
+    public override void _ExitTree()
+    {
+        GameMission.OnMissionsUpdated -= FilterMissions;
+        GameMission.OnMissionsInvalidated -= ClearMissions;
+    }
+
     public void TurnOffFilters()
     {
         TurnOffOtherFilters(null);

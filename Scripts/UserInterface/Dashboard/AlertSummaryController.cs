@@ -25,6 +25,12 @@ public partial class AlertSummaryController : Control
         await GameMission.UpdateMissions();
     }
 
+    public override void _ExitTree()
+    {
+        GameMission.OnMissionsUpdated -= CountRewards;
+        GameMission.OnMissionsInvalidated -= ClearRewards;
+    }
+
     void ClearRewards()
     {
         for (int i = 0; i < rewardRows.Length; i++)

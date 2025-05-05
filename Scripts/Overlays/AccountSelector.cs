@@ -105,12 +105,13 @@ public partial class AccountSelector : ModalWindow
 
     async void SelectAccount(string accountId)
     {
-        if (await GameAccount.SetActiveAccount(accountId))
+        bool loggedIn = false;
+
+        using (var _ = LoadingOverlay.CreateToken())
         {
-            using var _ = LoadingOverlay.CreateToken();
-            await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).Query();
-            SetWindowOpen(false);
+            loggedIn = await GameAccount.SetActiveAccount(accountId);
         }
+        SetWindowOpen(false);
     }
 
     async void RemoveAccount(string accountId)

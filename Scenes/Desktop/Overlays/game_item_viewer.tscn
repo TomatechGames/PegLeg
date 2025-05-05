@@ -223,7 +223,7 @@ shader_parameter/minVal = 25.0
 shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
-shader_parameter/time = 13.156
+shader_parameter/time = 1.578
 shader_parameter/TrianglePattern = ExtResource("22_jjr7p")
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
@@ -427,10 +427,11 @@ show_percentage = false
 custom_minimum_size = Vector2(500, 516)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_88uph")
-current_tab = 0
+current_tab = 3
 use_hidden_tabs_for_min_size = true
 
 [node name="Perks" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer" index="1" node_paths=PackedStringArray("realPerkArea", "optionalPerkArea", "interactionBlocker", "currentPerkEntries", "perkUpArea", "perkUpEntry", "reperkEntries", "perkApplyButton")]
+visible = false
 layout_mode = 2
 theme_type_variation = &"Panel5Pad"
 script = ExtResource("7_14t7q")
@@ -689,7 +690,6 @@ tick_count = 7
 ticks_on_borders = true
 
 [node name="Dev" type="PanelContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer" index="4"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"Panel5Pad"
@@ -700,7 +700,7 @@ layout_mode = 2
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_mq0my")
 current_tab = 0
 
-[node name="Data" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="1"]
+[node name="Data" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="0"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
@@ -733,7 +733,7 @@ indent_automatic_prefixes = Array[String](["{", "[", "("])
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 
-[node name="SearchTest" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="2"]
+[node name="SearchTest" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="1"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 5

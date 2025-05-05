@@ -38,6 +38,8 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
 
     [Signal]
     public delegate void ReminingTimeVisibilityEventHandler(bool visible);
+    [Signal]
+    public delegate void BestsellerVisibilityEventHandler(bool visible);
 
     [Signal]
     public delegate void LastSeenTextEventHandler(string amount);
@@ -112,6 +114,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         if (!outDate.HasValue)
             return;
             var remainingTime = (outDate.Value - DateTime.UtcNow);
+        EmitSignal(SignalName.ReminingTimeVisibility, remainingTime.TotalHours < 24);
         if (remainingTime.TotalDays > 2)
         {
             expiryTimerText.Text = Mathf.Floor(remainingTime.TotalDays) + " Days";
@@ -309,6 +312,8 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         else
             discountAmount = 0;
 
+        EmitSignal(SignalName.BestsellerVisibility, entryData["isBestseller"]?.GetValue<bool>() == true);
+
         imageDisplayAssetPath = entryData["fallbackDisplayAsset"]?.ToString();
 
         JsonObject[] allItems = entryData.MergeCosmeticItems()?.Select(n=>n.AsObject())?.ToArray() ?? Array.Empty<JsonObject>();
@@ -444,6 +449,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         public bool isLeavingSoon { get; private set; }
         public bool isOld { get; private set; }
         public bool isVeryOld { get; private set; }
+        public bool isBestseller { get; private set; }
         public DateTime firstAddedDate { get; private set; }
         public DateTime? lastAddedDate { get; private set; }
         //public DateTime isVeryOld { get; private set; }
@@ -452,6 +458,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         {
             DateTime inDate = DateTime.Parse(entryData["inDate"].ToString()).ToUniversalTime();
             DateTime outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
+            isBestseller = entryData?["isBestseller"]?.GetValue<bool>() == true;
 
             var shopHistory = firstItem?["shopHistory"]?.AsArray();
             var type = firstItem?["type"]?["backendValue"]?.ToString();
@@ -497,6 +504,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
             isRecentlyNew = itemMetadatas.Any(m => m.isRecentlyNew);
             isAddedToday = itemMetadatas.Any(m => m.isAddedToday);
             isLeavingSoon = itemMetadatas.Any(m => m.isLeavingSoon);
+            isBestseller = itemMetadatas.Any(m => m.isBestseller);
             isOld = itemMetadatas.Any(m => m.isOld);
             isVeryOld = itemMetadatas.Any(m => m.isVeryOld);
 

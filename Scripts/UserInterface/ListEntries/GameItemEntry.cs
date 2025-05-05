@@ -467,7 +467,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             recycleIndex = index;
             SetItem(itemProvider.GetRecycleElement(index));
             if (selector is not null)
-                EmitSignal(SignalName.InteractableChanged, selector.selectablePredicate(currentItem));
+                EmitSignal(SignalName.InteractableChanged, selector.selectablePredicate.Try(currentItem));
             UpdateSelectionVisuals();
         }
     }
@@ -489,7 +489,14 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             return;
 
         bool isSelected = selector.ItemIsSelected(currentItem);
-        selectionGraphics.ButtonPressed = isSelected;
+        bool isSelectable = selector.selectablePredicate.Try(currentItem);
+        selectionGraphics.ButtonPressed = isSelected || !isSelectable;
+        if (!isSelectable)
+        {
+            EmitSignal(SignalName.SelectionTintChanged, selector.unselectableTintColor);
+            EmitSignal(SignalName.SelectionMarkerChanged, selector.unselectableMarkerTex);
+            return;
+        }
         if (isSelected)
         {
             bool isCollectable = currentItem.isCollectedCache ?? false;

@@ -28,6 +28,8 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     [Export]
     Texture2D collectionIcon;
     [Export]
+    Texture2D unselectableIcon;
+    [Export]
     Control autoSelectButton;
     [Export]
     RecycleListContainer container;
@@ -62,8 +64,10 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     public string confirmButtonText;
     public string skipButtonText;
     public Texture2D autoselectButtonTex;
+    public Color unselectableTintColor;
     public Color selectedTintColor;
     public Color collectionTintColor;
+    public Texture2D unselectableMarkerTex;
     public Texture2D selectedMarkerTex;
     public Texture2D collectionMarkerTex;
 
@@ -89,10 +93,23 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         confirmButtonText = "Confirm";
         skipButtonText = "Continue";
         autoselectButtonTex = null;
+        unselectableTintColor = Color.FromHtml("#303030");
         selectedTintColor = Colors.Orange;
-        selectedMarkerTex = defaultSelectionMarker;
         collectionTintColor = Colors.Green;
+        unselectableMarkerTex = unselectableIcon;
+        selectedMarkerTex = defaultSelectionMarker;
         collectionMarkerTex = defaultSelectionMarker;
+    }
+
+    public static bool RecyclablePredicate(GameItem item) => 
+        !item.template.Unrecyclable && 
+        item.attributes?["favorite"]?.GetValue<bool>() != true &&
+        item.attributes?["squad_id"] is null;
+
+    public static Predicate<GameItem> GenerateAutorecyclePredicate()
+    {
+        var autoselectInstructions = PLSearch.GenerateSearchInstructions(AppConfig.Get("automation", "recycle_filter", "Common | Uncommon | Rare"));
+        return item => PLSearch.EvaluateInstructions(autoselectInstructions, item.RawData);
     }
 
     public void SetRecycleDefaults()
@@ -105,9 +122,8 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
         selectedTintColor = Colors.Red;
         collectionMarkerTex = collectionIcon;
         autoselectButtonTex = recycleIcon;
-        selectablePredicate = item => !item.template.Unrecyclable && item.attributes?["favorite"]?.GetValue<bool>() != true;
-        var autoselectInstructions = PLSearch.GenerateSearchInstructions(AppConfig.Get("automation", "recycle_filter", "Common | Uncommon | Rare"));
-        autoselectPredicate = item => PLSearch.EvaluateInstructions(autoselectInstructions, item.RawData);
+        selectablePredicate = RecyclablePredicate;
+        autoselectPredicate = GenerateAutorecyclePredicate();
         //autoselectPredicate = item => item.template.RarityLevel <= 3;
     }
 

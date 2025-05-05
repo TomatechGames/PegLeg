@@ -13,8 +13,15 @@ public partial class DashboardSuperchargerController : Control
 	public override void _Ready()
 	{
         GameAccount.ActiveAccountChanged += AccountChanged;
+        RefreshTimerController.OnDayChanged += AccountChanged;
         entry.ClearItem();
         AccountChanged();
+    }
+
+    public override void _ExitTree()
+    {
+        GameAccount.ActiveAccountChanged -= AccountChanged;
+        RefreshTimerController.OnDayChanged -= AccountChanged;
     }
 
     private async void AccountChanged()
@@ -24,7 +31,8 @@ public partial class DashboardSuperchargerController : Control
         checkmark.Visible = false;
         noSuperchargerMessage.Visible = false;
 
-        var profile = await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).Query();
+        await Helpers.WaitForTimer(0.1);
+        var profile = await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).Query(true);
         var possibleQuest = profile.GetFirstItem("Quest", q => q.templateId.StartsWith("Quest:weekly_elder"));
         GD.Print(possibleQuest?.template?.DisplayName ?? "NoSupercharger");
 

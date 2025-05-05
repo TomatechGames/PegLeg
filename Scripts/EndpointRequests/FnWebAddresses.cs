@@ -32,6 +32,11 @@ static class FnWebAddresses
     {
         BaseAddress = new Uri("https://user-search-service-prod.ol.epicgames.com")
     };
+
+    public static readonly HttpClient epicCDN = new()
+    {
+        BaseAddress = new Uri("https://cdn2.unrealengine.com")
+    };
 }
 
 static class ExternalWebAddresses

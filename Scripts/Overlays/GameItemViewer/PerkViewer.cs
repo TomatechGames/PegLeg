@@ -201,7 +201,7 @@ public partial class PerkViewer : Control
         var baseAlteration = activePerks[index] is not null ? GameItemTemplate.Get(activePerks[index]) : null;
         string[][] allPossibilities = perkPossibilities[index];
         bool isCore = (baseAlteration?.TemplateId ?? allPossibilities?[0][0])?.StartsWith("Alteration:aid_g_") ?? false;
-        string[] possibilities = allPossibilities[isCore ? 0 : baseAlteration?.RarityLevel ?? (Input.IsKeyPressed(Key.Shift)? 5 : 1) - 1];
+        string[] possibilities = allPossibilities[isCore ? 0 : baseAlteration?.RarityLevel-1 ?? (Input.IsKeyPressed(Key.Shift)? 4 : 0)];
 
         selectedPerk = null;
         if (baseAlteration?["RarityUpRecipe"] is null && possibilities.Length==0)
