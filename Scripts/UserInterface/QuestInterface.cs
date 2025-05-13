@@ -115,7 +115,7 @@ public partial class QuestInterface : Control
                     groupEntry.Pressed += () =>
                     {
                         questGroupViewer.Visible = true;
-                        questGroupViewer.SetQuestNodes(groupEntry.questSlotList, groupEntry.IsChain || group.Key == "Daily Endurance", !groupEntry.IsChain);
+                        questGroupViewer.SetQuestNodes(groupEntry);
                     };
                     groupEntry.NotificationVisible += _ =>
                     {

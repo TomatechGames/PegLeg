@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b0uxwtxndd6x3"]
+[gd_scene load_steps=26 format=3 uid="uid://b0uxwtxndd6x3"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_vtoeo"]
 [ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="2_dhih1"]
@@ -18,6 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://hskfanlp03l8" path="res://Images/InterfaceIcons/T-UI-SoldOut.png" id="13_dsrnj"]
 [ext_resource type="ButtonGroup" uid="uid://cm7rmga74vyve" path="res://Scenes/LlamaEntries/LlamaChoices.tres" id="14_l6u0k"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="15_3uj10"]
+[ext_resource type="Texture2D" uid="uid://dnqbqca02sqwq" path="res://Images/InterfaceIcons/T-Pattern-OrArrow-128.png" id="16_da4gs"]
+[ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="17_k06hi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4vgu5"]
 resource_local_to_scene = true
@@ -264,6 +266,44 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "1000"
 vertical_alignment = 1
+
+[node name="AltPrice" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Control" type="Control" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/AltPrice"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/AltPrice"]
+layout_mode = 2
+texture = ExtResource("16_da4gs")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/AltPrice/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 5
+text = "OR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/AltPrice"]
+layout_mode = 2
+texture = ExtResource("17_k06hi")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/LlamaCost/AltPrice"]
+layout_mode = 2
+text = "(No Daily Limit)"
 
 [node name="Control2" type="Control" parent="."]
 layout_mode = 2

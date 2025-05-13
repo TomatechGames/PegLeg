@@ -90,6 +90,21 @@ static class GameClient
         )).AsObject();
     }
 
+    public static async Task<JsonObject> LoginWithExchangeCode(string exchangeCode)
+    {
+        if (string.IsNullOrWhiteSpace(exchangeCode))
+            return null;
+        return (await Helpers.MakeRequest(
+            HttpMethod.Post,
+            FnWebAddresses.account,
+            "account/api/oauth/token",
+            $"grant_type=exchange_code&" +
+            $"exchange_code={exchangeCode}&" +
+            $"token_type=eg1",
+            clientHeader
+        )).AsObject();
+    }
+
     public static async Task<JsonObject> LoginWithDeviceAuth(JsonObject deviceDetails)
     {
         if (deviceDetails is null)

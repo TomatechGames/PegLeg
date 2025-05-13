@@ -45,11 +45,11 @@ public partial class ShopPurchaseAnimation : Control
         instance = this;
     }
 
-    public static void PlayAnimation(Texture2D itemTexture, int count) =>
-        instance?.PlayAnimationInst(itemTexture, count);
+    public static void PlayAnimation(Texture2D itemTexture, int count, Task holdUntil=null) =>
+        instance?.PlayAnimationInst(itemTexture, count, holdUntil);
 
     bool lockAnimation = false;
-    async void PlayAnimationInst(Texture2D itemTexture, int count)
+    async void PlayAnimationInst(Texture2D itemTexture, int count, Task holdUntil)
     {
         if (lockAnimation)
             return;
@@ -110,6 +110,14 @@ public partial class ShopPurchaseAnimation : Control
         textAppearTween.TweenProperty(finalText, "scale", Vector2.One, cartLeaveDuration);
 
         await Helpers.WaitForTimer(cartLeaveDuration + textStayDuration);
+
+        if(holdUntil is not null)
+        {
+            await Task.WhenAny(
+                holdUntil,
+                Helpers.WaitForTimer(10)
+            );
+        }
 
         var textLeaveTween = GetTree().CreateTween().SetParallel();
         textLeaveTween.TweenProperty(finalText, "scale", Vector2.Zero, textLeaveDuration).SetTrans(Tween.TransitionType.Back).SetEase(Tween.EaseType.In);

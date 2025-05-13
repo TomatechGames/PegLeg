@@ -23,7 +23,7 @@ public partial class ItemShopInterface : Control
             if (IsVisibleInTree())
             {
                 await LoadShop();
-                CurrencyHighlight.Instance.SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
+                //CurrencyHighlight.Instance?.SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
             }
         };
 

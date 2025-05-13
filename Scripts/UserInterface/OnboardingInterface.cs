@@ -10,7 +10,6 @@ public partial class OnboardingInterface : Control
     ShaderHook curtain;
     [Export]
     AudioStreamPlayer music;
-    //download fx
 
     [ExportGroup("Login Code")]
     [Export]
@@ -24,59 +23,15 @@ public partial class OnboardingInterface : Control
     [Export]
     Control accountSelectionPanel;
 
-    static bool firstLoad = true;
-
     public override async void _Ready()
     {
-
         retryLoginButton.Visible = false;
         continueButton.Disabled = true;
         continueButton.Text = "";
         curtain.SetShaderFloat(0, "RevealScale");
         curtain.Visible = true;
 
-        var accounts = GameAccount.OwnedAccounts;
-
-        if (firstLoad)
-        {
-            AppConfig.Clear("window");
-            //todo: download and import external assets during runtime using resource pack(s)
-            //ZipReader zr = new();
-            //zr.Open("user://pack.zip");
-            //bool isValid = !zr.GetFiles().Any(path => !path.StartsWith("External/"));
-            //ProjectSettings.LoadResourcePack("user://pack.zip");
-            bool hasBanjoAssets = await BanjoAssets.ReadAllSources();
-            var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
-            bool hasAccount = false;
-            if (lastUsedId is not null)
-            {
-                GD.Print("last: " + lastUsedId);
-                var lastUsedAccount = GameAccount.GetOrCreateAccount(lastUsedId);
-                hasAccount = await lastUsedAccount.SetAsActiveAccount();
-            }
-
-            //TODO: if more than one account has device details, show account selector
-            if (!hasAccount)
-            {
-                foreach (var a in accounts)
-                {
-                    if (!await a.SetAsActiveAccount())
-                        continue;
-                    hasAccount = true;
-                    break;
-                }
-            }
-
-            if (hasAccount)
-            {
-                LoadMainScene();
-                return;
-            }
-        }
-
-
         MusicController.StopMusic();
-
         music.VolumeDb = -80;
         var musicFadeout = GetTree().CreateTween().SetParallel();
         musicFadeout.TweenProperty(music, "volume_db", 0, 1)

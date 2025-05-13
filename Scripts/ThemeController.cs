@@ -1,12 +1,8 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text.Json;
 using System.Text.Json.Nodes;
-using static ThemeController;
 
 public partial class ThemeController : Node
 {
@@ -39,9 +35,15 @@ public partial class ThemeController : Node
         GenerateThemeData();
         SetActiveTheme(AppConfig.Get("theme", "current", ""));
         RefreshTimerController.OnDayChanged += CheckForNewSeason;
+        MusicController.ResumeMusic();
     }
 
-    static void CheckForNewSeason()
+    public override void _ExitTree()
+    {
+        RefreshTimerController.OnDayChanged -= CheckForNewSeason;
+    }
+
+    void CheckForNewSeason()
     {
         var newSeasonTheme = GetSeasonTheme();
         if (newSeasonTheme != seasonTheme)

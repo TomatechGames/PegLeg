@@ -58,7 +58,7 @@ public partial class CosmeticShopInterface : Control
             {
                 //load shop
                 await LoadShop();
-                CurrencyHighlight.Instance.SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
+                //CurrencyHighlight.Instance?.SetCurrencyTemplate(GameItemTemplate.Get("AccountResource:eventcurrency_scaling"));
             }
         };
 

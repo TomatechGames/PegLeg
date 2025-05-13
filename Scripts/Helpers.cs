@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Godot;
 using System.Threading;
 using System.Text.Json;
+using System.Runtime.InteropServices;
 
 static class Helpers
 {
@@ -251,10 +252,18 @@ static class Helpers
 
         int solidFigures = solidNumber.ToString().Length; //2=>2 1=>1
 
-        decimalNumber = Mathf.FloorToInt(decimalNumber/Mathf.Pow(10, Mathf.Max(0, solidFigures)));//2=>push twice
-        bool decimalExists = decimalNumber > 0 && solidFigures != 3;
+        bool decimalExists = decimalNumber > 0 && solidFigures < 3;
+        string decimalString = decimalNumber.ToString();
+        if (decimalExists)
+        {
+            while (decimalString.Length < 3)
+            {
+                decimalString = "0" + decimalString;
+            }
+            decimalString = decimalString[..(solidFigures == 2 ? 1 : 2)];
+        }
 
-        string combinedNumber = solidNumber + (decimalExists ? ("." + (decimalNumber < 10 ? "0" : "") + decimalNumber.ToString()) : "");
+        string combinedNumber = solidNumber + (decimalExists ? ("." + decimalString) : "");
         return combinedNumber + (milestoneLevel==0 ? "" : compactNumberMilestones[milestoneLevel-1]);
     }
 
@@ -355,6 +364,14 @@ static class Helpers
                 return i;
         }
         return weights.Length - 1;
+    }
+
+    [DllImport("user32.dll")]
+    static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    public static IntPtr WindowHandle => new(DisplayServer.WindowGetNativeHandle(DisplayServer.HandleType.WindowHandle));
+    public static void SetMainWindowVisible(bool visible = true)
+    {
+        ShowWindow(WindowHandle, visible ? 5 : 0);
     }
 
     //workaround for bug introduced in 4.3

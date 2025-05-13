@@ -1,94 +1,103 @@
 {
-    "collections":[
+    "collections": [
         {
             "name": "Questlines",
-            "autoPopulateQuestlines":true
+            "autoPopulateQuestlines": true
         },
         {
             "name": "Scheduled Quests",
-            "groupGens":
-            {
-                "Birthday Llamas":{
-                    "union":[
+            "groupGens": {
+                "Birthday Llamas": {
+                    "union": [
                         {
-                            "startsWith":"birthday_quest_"
+                            "startsWith": "birthday_quest_"
                         },
                         {
-                            "startsWith":"anniversaryquest_"
+                            "startsWith": "anniversaryquest_"
                         }
                     ]
                 },
-                "Daily Quests":{
-                    "startsWith":"daily_"
+                "Daily Quests": {
+                    "startsWith": "daily_"
                 },
-                "Weekly Quests":{
-                    "prefilter":
-                    {
-                        "contains":"weekly"
+                "Weekly Quests": {
+                    "prefilter": {
+                        "contains": "weekly"
                     },
-                    "union":[
+                    "union": [
                         {
-                            "startsWith":"weeklyquest_tiered"
+                            "startsWith": "weeklyquest_tiered"
                         },
                         {
-                            "startsWith":"weekly_elder"
+                            "startsWith": "weekly_elder"
                         },
                         {
-                            "startsWith":"stw_stormkinghard_weekly"
+                            "startsWith": "stw_stormkinghard_weekly"
                         }
                     ]
                 },
-                "Daily Frostnite":{
-                    "prefilter":
-                    {
-                        "startsWith":"s11_holdfastquest_d"
+                "Daily Frostnite": {
+                    "prefilter": {
+                        "startsWith": "s11_holdfastquest_d"
                     },
-                    "union":[
+                    "union": [
                         {
-                            "startsWith":"s11_holdfastquest_d1"
+                            "startsWith": "s11_holdfastquest_d1"
                         },
                         {
-                            "startsWith":"s11_holdfastquest_d2"
+                            "startsWith": "s11_holdfastquest_d2"
                         }
                     ]
                 },
-                "Daily Dungeons":{
-                    "union":[
+                "Daily Dungeons": {
+                    "union": [
                         {
-                            "category":"lte_starlight",
-                            "startsWith":"starlightquest_daily_complete"
+                            "category": "lte_starlight",
+                            "startsWith": "starlightquest_daily_complete"
                         },
                         {
-                            "category":"lte_starlight",
-                            "startsWith":"starlightquest_complete_dailies"
+                            "category": "lte_starlight",
+                            "startsWith": "starlightquest_complete_dailies"
                         }
                     ]
                 },
-                "Daily Wargames":{
-                    "union":[
+                "Daily Survive The Horde": {
+                    "sequence": true,
+                    "union": [
+                        "Quest:hordev3_quest_daily_a01",
+                        "Quest:hordev3_quest_daily_a02",
+                        "Quest:hordev3_quest_daily_a03"
+                    ]
+                },
+                "Weekly Survive The Horde": {
+                    "startsWith": "hordev3_quest_weekly"
+                },
+                "Daily Wargames": {
+                    "union": [
                         {
-                            "startsWith":"wargames_dailyquest"
+                            "startsWith": "wargames_dailyquest"
                         },
                         "Quest:wargames_completedailyquest"
                     ]
                 },
-                "Daily Endurance":{
-                    "prefilter":
-                    {
-                        "startsWith":"endurancedaily_"
+                "Daily Endurance": {
+                    "sequence": true,
+                    "showLocked": false,
+                    "prefilter": {
+                        "startsWith": "endurancedaily_"
                     },
-                    "union":[
+                    "union": [
                         {
-                            "startsWith":"endurancedaily_t01"
+                            "startsWith": "endurancedaily_t01"
                         },
                         {
-                            "startsWith":"endurancedaily_t02"
+                            "startsWith": "endurancedaily_t02"
                         },
                         {
-                            "startsWith":"endurancedaily_t03"
+                            "startsWith": "endurancedaily_t03"
                         },
                         {
-                            "startsWith":"endurancedaily_t04"
+                            "startsWith": "endurancedaily_t04"
                         }
                     ]
                 }
@@ -96,96 +105,125 @@
         },
         {
             "name": "Event",
-            "groupGens":
-            {
-                "Hit The Road":
-                {
-                    "startsWith":"maydayquest_2019"
+            "groupGens": {
+                "Hit The Road": {
+                    "startsWith": "maydayquest_2019"
                 },
-                "Daily Dungeons":{
-                    "prefilter":
-                    {
-                        "category":"lte_starlight"
-                    },
-                    "union":[
-                        {
-                            "startsWith":"starlightquest_daily_complete"
-                        },
-                        {
-                            "startsWith":"starlightquest_complete_dailies"
-                        }
-                    ]
-                },
-                "Dungeons":
-                {
-                    "category":"lte_starlight",
-                    "exclude":
-                    {
-                        "union":[
+                "Dungeons": {
+                    "category": "lte_starlight",
+                    "exclude": {
+                        "union": [
                             {
-                                "startsWith":"starlightquest_daily_complete"
+                                "startsWith": "starlightquest_daily_complete"
                             },
                             {
-                                "startsWith":"starlightquest_complete_dailies"
+                                "startsWith": "starlightquest_complete_dailies"
                             },
                             {
-                                "endsWith":"_hard"
+                                "endsWith": "_hard"
                             }
                         ]
                     }
                 },
-                "Elite Dungeons":
-                {
-                    "category":"lte_starlight",
-                    "endsWith":"_hard"
-                },
-                "Survive The Horde":
-                {
-                    "startsWith":"hordev3"
-                },
-                "Daily Frostnite":{
-                    "prefilter":
-                    {
-                        "startsWith":"s11_holdfastquest_d"
+                "Daily Dungeons": {
+                    "prefilter": {
+                        "category": "lte_starlight"
                     },
-                    "union":[
+                    "union": [
                         {
-                            "startsWith":"s11_holdfastquest_d1"
+                            "startsWith": "starlightquest_daily_complete"
                         },
                         {
-                            "startsWith":"s11_holdfastquest_d2"
+                            "startsWith": "starlightquest_complete_dailies"
                         }
                     ]
                 },
-                "Frostnite":
-                {
-                    "startsWith":"s11_holdfastquest",
-                    "exclude":{
-                        "union":[
+                "Elite Dungeons": {
+                    "category": "lte_starlight",
+                    "endsWith": "_hard"
+                },
+                "Survive The Horde": {
+                    "union": [
+                        "Quest:hordev3_quest_event_a01",
+                        "Quest:hordev3_quest_event_a02",
+                        "Quest:hordev3_quest_event_a03",
+                        "Quest:hordev3_quest_event_a04",
+                        "Quest:hordev3_quest_event_a06"
+                    ]
+                },
+                "Daily Survive The Horde": {
+                    "sequence": true,
+                    "union": [
+                        "Quest:hordev3_quest_daily_a01",
+                        "Quest:hordev3_quest_daily_a02",
+                        "Quest:hordev3_quest_daily_a03"
+                    ]
+                },
+                "Weekly Survive The Horde": {
+                    "startsWith": "hordev3_quest_weekly"
+                },
+                "Survive The Horde: Wave 15": {
+                    "chain": true,
+                    "union": [
+                        "Quest:hordev3_quest_event_a05"
+                    ]
+                },
+                "Survive The Horde: Modifiers": {
+                    "sequence": true,
+                    "union": [
+                        "Quest:hordev3_quest_event_a09",
+                        "Quest:hordev3_quest_event_a10",
+                        "Quest:hordev3_quest_event_a11"
+                    ]
+                },
+                "Survive The Horde: Challenges": {
+                    "sequence": true,
+                    "union": [
+                        "Quest:hordev3_quest_event_a12",
+                        "Quest:hordev3_quest_event_a13",
+                        "Quest:hordev3_quest_event_a14",
+                        "Quest:hordev3_quest_event_a15"
+                    ]
+                },
+                "Daily Frostnite": {
+                    "prefilter": {
+                        "startsWith": "s11_holdfastquest_d"
+                    },
+                    "union": [
+                        {
+                            "startsWith": "s11_holdfastquest_d1"
+                        },
+                        {
+                            "startsWith": "s11_holdfastquest_d2"
+                        }
+                    ]
+                },
+                "Frostnite": {
+                    "startsWith": "s11_holdfastquest",
+                    "exclude": {
+                        "union": [
                             {
-                                "endsWith":"elite"
+                                "endsWith": "elite"
                             },
                             {
-                                "startsWith":"s11_holdfastquest_seasonelite"
+                                "startsWith": "s11_holdfastquest_seasonelite"
                             },
                             {
-                                "startsWith":"s11_holdfastquest_d"
+                                "startsWith": "s11_holdfastquest_d"
                             }
                         ]
                     }
                 },
-                "Elite Frostnite":
-                {
-                    "prefilter":
-                    {
-                        "startsWith":"s11_holdfastquest"
+                "Elite Frostnite": {
+                    "prefilter": {
+                        "startsWith": "s11_holdfastquest"
                     },
-                    "union":[
+                    "union": [
                         {
-                            "endsWith":"elite"
+                            "endsWith": "elite"
                         },
                         {
-                            "startsWith":"s11_holdfastquest_seasonelite"
+                            "startsWith": "s11_holdfastquest_seasonelite"
                         }
                     ]
                 }
@@ -193,11 +231,9 @@
         },
         {
             "name": "Venture Challenge Quests",
-            "groupGens":
-            {
-                "Dennis\u0027 Destroy Quests":
-                {
-                    "chain":true,
+            "groupGens": {
+                "Dennis\u0027 Destroy Quests": {
+                    "chain": true,
                     "union": [
                         "Quest:adventure_seasonal_destroy_01",
                         "Quest:beginnings_seasonal_destroy_01",
@@ -206,10 +242,8 @@
                         "Quest:winter_seasonal_destroy_01"
                     ]
                 },
-                
-                "Director\u0027s Directive Quests":
-                {
-                    "chain":true,
+                "Director\u0027s Directive Quests": {
+                    "chain": true,
                     "union": [
                         "Quest:adventure_seasonal_mission_01",
                         "Quest:beginnings_seasonal_mission_01",
@@ -218,10 +252,8 @@
                         "Quest:winter_seasonal_mission_01"
                     ]
                 },
-                
-                "Clip\u0027s Weapons Training Quests":
-                {
-                    "chain":true,
+                "Clip\u0027s Weapons Training Quests": {
+                    "chain": true,
                     "union": [
                         "Quest:adventure_seasonal_weapon_01",
                         "Quest:beginnings_seasonal_weapon_01",
@@ -230,10 +262,8 @@
                         "Quest:winter_seasonal_weapon_01"
                     ]
                 },
-                
-                "Major\u0027s Eliminate Monsters Quests":
-                {
-                    "chain":true,
+                "Major\u0027s Eliminate Monsters Quests": {
+                    "chain": true,
                     "union": [
                         "Quest:adventure_seasonal_monster_01",
                         "Quest:beginnings_seasonal_monster_01",
@@ -242,10 +272,8 @@
                         "Quest:winter_seasonal_monster_01"
                     ]
                 },
-                
-                "Lars\u0027 Locating":
-                {
-                    "chain":true,
+                "Lars\u0027 Locating": {
+                    "chain": true,
                     "union": [
                         "Quest:adventure_seasonal_locating_01",
                         "Quest:beginnings_seasonal_locating_01",
@@ -258,35 +286,27 @@
         },
         {
             "name": "Cram Session",
-            "groupGens":
-            {
-                "Let\u0027s Explore":
-                {
-                    "chain":true,
+            "groupGens": {
+                "Let\u0027s Explore": {
+                    "chain": true,
                     "union": [
                         "Quest:autumnquest_explorezones_1"
                     ]
                 },
-                
-                "Treasure Hunt":
-                {
-                    "chain":true,
+                "Treasure Hunt": {
+                    "chain": true,
                     "union": [
                         "Quest:autumnquest_treasurechests_1"
                     ]
                 },
-                
-                "Safecracking":
-                {
-                    "chain":true,
+                "Safecracking": {
+                    "chain": true,
                     "union": [
                         "Quest:autumnquest_safes_1"
                     ]
                 },
-                
-                "The Air Itself is Filled with Husks":
-                {
-                    "chain":true,
+                "The Air Itself is Filled with Husks": {
+                    "chain": true,
                     "union": [
                         "Quest:autumnquest_killhusks_1"
                     ]
@@ -295,22 +315,22 @@
         },
         {
             "name": "Extras",
-            "groupGens":{
-                "Repeatable Quests":{
+            "groupGens": {
+                "Repeatable Quests": {
                     "union": [
                         "Quest:genericquest_completestormzones_repeatable",
                         "Quest:genericquest_killmistmonsters_repeatable",
                         "Quest:genericquest_completebetastorms_repeatable"
                     ]
                 },
-                "Side Quests":{
-                    "category":"SideQuests",
-                    "exclude":{
-                        "endsWith":"endless"
+                "Side Quests": {
+                    "category": "SideQuests",
+                    "exclude": {
+                        "endsWith": "endless"
                     }
                 },
-                "Challenges":{
-                    "category":"Challenges"
+                "Challenges": {
+                    "category": "Challenges"
                 }
             }
         }

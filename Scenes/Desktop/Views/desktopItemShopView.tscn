@@ -1,9 +1,23 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6ftxiyts6lrg"]
+[gd_scene load_steps=8 format=3 uid="uid://c6ftxiyts6lrg"]
 
 [ext_resource type="Script" path="res://Scripts/UserInterface/ItemShopInterface.cs" id="1_kwhsc"]
 [ext_resource type="PackedScene" uid="uid://wb5ukb74fot1" path="res://Scenes/ShopEntries/regular_shop_entry.tscn" id="2_g1chj"]
 [ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="3_l6e2c"]
+[ext_resource type="Script" path="res://Scripts/CurrencyHighlight.cs" id="4_fespf"]
 [ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_xaiqb"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="5_korv2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_igy33"]
+bg_color = Color(0.184314, 0.184314, 0.184314, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.3, 0.3, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
 [node name="Item Shop" type="VBoxContainer" node_paths=PackedStringArray("shopOfferEntryParent")]
 anchors_preset = 15
@@ -48,6 +62,44 @@ vertical_alignment = 1
 script = ExtResource("3_l6e2c")
 timerType = 2
 
+[node name="ActiveCurrency" type="MarginContainer" parent="Timer/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+script = ExtResource("4_fespf")
+fixedCurrencyType = "AccountResource:eventcurrency_scaling"
+compactifyAmount = true
+showSingleItemAmount = true
+
+[node name="Panel" type="Panel" parent="Timer/PanelContainer/MarginContainer/ActiveCurrency"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_igy33")
+
+[node name="MarginContainer" type="MarginContainer" parent="Timer/PanelContainer/MarginContainer/ActiveCurrency"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Timer/PanelContainer/MarginContainer/ActiveCurrency/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Timer/PanelContainer/MarginContainer/ActiveCurrency/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Icon" type="TextureRect" parent="Timer/PanelContainer/MarginContainer/ActiveCurrency/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("5_korv2")
+expand_mode = 3
+
+[node name="AmountText" type="Label" parent="Timer/PanelContainer/MarginContainer/ActiveCurrency/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
@@ -73,3 +125,7 @@ layout_mode = 2
 script = ExtResource("4_xaiqb")
 minCols = 2
 spacing = Vector2(10, 10)
+
+[connection signal="AmountChanged" from="Timer/PanelContainer/MarginContainer/ActiveCurrency" to="Timer/PanelContainer/MarginContainer/ActiveCurrency/MarginContainer/HBoxContainer/AmountText" method="set_text"]
+[connection signal="IconChanged" from="Timer/PanelContainer/MarginContainer/ActiveCurrency" to="Timer/PanelContainer/MarginContainer/ActiveCurrency/MarginContainer/HBoxContainer/MarginContainer/Icon" method="set_texture"]
+[connection signal="TooltipChanged" from="Timer/PanelContainer/MarginContainer/ActiveCurrency" to="Timer/PanelContainer/MarginContainer/ActiveCurrency" method="set_tooltip_text"]

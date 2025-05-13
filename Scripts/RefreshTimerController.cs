@@ -18,6 +18,7 @@ public partial class RefreshTimerController : Node
 
     public override void _Ready()
     {
+        instance = this;
         Timer perSecondTimer = new()
         {
             OneShot = false,
@@ -27,22 +28,21 @@ public partial class RefreshTimerController : Node
         AddChild(perSecondTimer);
         perSecondTimer.Timeout += UpdateTimers;
         lastTime = DateTime.UtcNow;
-        instance = this;
         AppConfig.OnConfigChanged += OnConfigChanged;
-        offset = AppConfig.Get("advanced", "developer", false) ? 0 : 5;
+        offset = AppConfig.Get("advanced", "offset", false) ? 0 : 5;
     }
 
     float offset = 5;
     private void OnConfigChanged(string arg1, string arg2, System.Text.Json.Nodes.JsonValue arg3)
     {
-        offset = AppConfig.Get("advanced", "developer", false) ? 0 : 5;
+        offset = AppConfig.Get("advanced", "offset", false) ? 0 : 5;
     }
 
     DateTime lastTime;
     private void UpdateTimers()
     {
         OnSecondChanged?.Invoke();
-        var currentTime = DateTime.UtcNow.AddSeconds(offset);
+        var currentTime = DateTime.UtcNow.AddSeconds(-offset);
         if (currentTime.Hour != lastTime.Hour)
             OnHourChanged?.Invoke();
         if (currentTime.Day != lastTime.Day)
@@ -61,11 +61,13 @@ public partial class RefreshTimerController : Node
     };
     static readonly int weeksInSeasonalYear = seasonLengths.Sum();
 
-    public static DateTime RightNow =>
-        DateTime.UtcNow
-            .AddDays(instance.daysToAddDebug)
-            .AddMonths(instance.monthsToAddDebug)
-            .AddYears(instance.yearsToAddDebug);
+    public static DateTime RightNow => 
+        instance is null ? 
+            DateTime.UtcNow : 
+            DateTime.UtcNow
+                .AddDays(instance.daysToAddDebug)
+                .AddMonths(instance.monthsToAddDebug)
+                .AddYears(instance.yearsToAddDebug);
 
     public static DateTime GetRefreshTime(RefreshTimeType refreshType)
     {

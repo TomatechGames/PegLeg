@@ -1,12 +1,17 @@
-[gd_scene load_steps=55 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=60 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
 [ext_resource type="Script" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_db3cl"]
+[ext_resource type="Script" path="res://Scripts/ContextMenu/GameItemContextMenu.cs" id="2_qb31u"]
 [ext_resource type="Script" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
 [ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
 [ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="4_xvc4b"]
-[ext_resource type="Script" path="res://Scripts/CurrencyHighlight.cs" id="9_23he5"]
+[ext_resource type="Script" path="res://Scripts/RefreshTimerController.cs" id="5_hp28w"]
+[ext_resource type="Script" path="res://Scripts/ThemeController.cs" id="6_hvr66"]
+[ext_resource type="Script" path="res://Scripts/UIElements/TooltipFixer.cs" id="7_i8x0x"]
+[ext_resource type="PackedScene" uid="uid://bsbgxpgoycn6r" path="res://Scenes/Desktop/desktopTooltip.tscn" id="8_2iux3"]
+[ext_resource type="Script" path="res://Scripts/TrayIcon.cs" id="10_t6a4k"]
 [ext_resource type="PackedScene" uid="uid://bqp7ax1fjc306" path="res://Scenes/Desktop/Views/desktopDashboardView.tscn" id="10_xfiw1"]
 [ext_resource type="PackedScene" uid="uid://udk47ipcpsbq" path="res://Scenes/Desktop/Views/desktopInventoryView.tscn" id="13_yfdoy"]
 [ext_resource type="PackedScene" uid="uid://cjge5ubc1hppf" path="res://Scenes/Desktop/Views/desktopBackpackView.tscn" id="15_dlrdq"]
@@ -30,12 +35,11 @@
 [ext_resource type="Texture2D" uid="uid://cjtv2aa84wwwr" path="res://Images/InterfaceIcons/T_Icon_Spray_Adjustments_Tab_128.png" id="28_p4icb"]
 [ext_resource type="PackedScene" uid="uid://cochrwi38s2xb" path="res://Scenes/Desktop/Views/desktopQuestGroupListView.tscn" id="28_rt2uq"]
 [ext_resource type="Texture2D" uid="uid://fu8u7pasyjfx" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Swap_128.png" id="29_ql5qm"]
-[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="29_vws3e"]
+[ext_resource type="Texture2D" uid="uid://cj7hjf5jc1l2t" path="res://Images/InterfaceIcons/FortPlayBtn.png" id="31_retv3"]
 [ext_resource type="PackedScene" uid="uid://c4lt6qwfc4cou" path="res://Scenes/Desktop/Overlays/loading_overlay.tscn" id="31_v6low"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="35_ix213"]
 [ext_resource type="PackedScene" uid="uid://bbslhgnstt07v" path="res://Scenes/Desktop/Notifications/desktop_notification_panel.tscn" id="35_qspmm"]
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="37_5b0rm"]
-[ext_resource type="Script" path="res://Scripts/TrayIcon.cs" id="38_s33ws"]
 [ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Desktop/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
 [ext_resource type="PackedScene" uid="uid://cji2iyaxon6uv" path="res://Scenes/Desktop/Overlays/login_popup.tscn" id="41_kf5nt"]
 [ext_resource type="Script" path="res://Scripts/HomebasePowerLevel.cs" id="44_3p6h5"]
@@ -44,7 +48,9 @@
 [ext_resource type="PackedScene" uid="uid://2okdom0nii2b" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_confirmation_window.tscn" id="46_fbpme"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="47_6bd6x"]
 [ext_resource type="Script" path="res://Scripts/CurtainOpener.cs" id="50_2a2nn"]
+[ext_resource type="Texture2D" uid="uid://b206b4woetnac" path="res://Images/InterfaceIcons/T-Stars-Full-M.png" id="51_bse6w"]
 [ext_resource type="Shader" path="res://Shaders/OnboardingCurtain.gdshader" id="51_jeshi"]
+[ext_resource type="Texture2D" uid="uid://cnsm2pu2yise4" path="res://Images/InterfaceIcons/T-Stars-Upgrade-M.png" id="52_kn6t0"]
 [ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="52_pam8h"]
 [ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="58_7yvd6"]
 [ext_resource type="PackedScene" uid="uid://dpd06j33s360w" path="res://Scenes/Desktop/Overlays/shop_purchase_animation.tscn" id="96_2bhmt"]
@@ -76,18 +82,6 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rloc5"]
-bg_color = Color(0.184314, 0.184314, 0.184314, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.3, 0.3, 0.3, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4jxvi"]
 shader = ExtResource("51_jeshi")
 shader_parameter/ControlSize = Vector2(1350, 720)
@@ -102,38 +96,172 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_3bqtb")
 
-[node name="TargetResolution" type="Node" parent="." node_paths=PackedStringArray("rootNode")]
+[node name="NonUI" type="Node" parent="."]
+
+[node name="TestNotif" type="Window" parent="NonUI"]
+transparent_bg = true
+position = Vector2i(10, 0)
+size = Vector2i(242, 74)
+visible = false
+wrap_controls = true
+borderless = true
+always_on_top = true
+transparent = true
+unfocusable = true
+
+[node name="PanelContainer" type="PanelContainer" parent="NonUI/TestNotif"]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_type_variation = &"Panel5Pad"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NonUI/TestNotif/PanelContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="NonUI/TestNotif/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+texture = ExtResource("37_5b0rm")
+expand_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NonUI/TestNotif/PanelContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NonUI/TestNotif/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "Notification"
+
+[node name="Label2" type="Label" parent="NonUI/TestNotif/PanelContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Notification content"
+
+[node name="Button" type="Button" parent="NonUI/TestNotif/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"TinyButton"
+text = "X"
+
+[node name="ContextMenus" type="Node" parent="NonUI"]
+
+[node name="GameItemContextMenu" type="Popup" parent="NonUI/ContextMenus"]
+transparent_bg = true
+position = Vector2i(1360, 0)
+size = Vector2i(200, 300)
+transparent = true
+
+[node name="PanelContainer" type="PanelContainer" parent="NonUI/ContextMenus/GameItemContextMenu"]
+offset_right = 6.0
+offset_bottom = 6.0
+theme_type_variation = &"Panel3PadB"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NonUI/ContextMenus/GameItemContextMenu/PanelContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="NonUI/ContextMenus/GameItemContextMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Test Btn"
+alignment = 0
+
+[node name="Button2" type="Button" parent="NonUI/ContextMenus/GameItemContextMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Test Btn 2"
+alignment = 0
+
+[node name="MenuButton" type="MenuButton" parent="NonUI/ContextMenus/GameItemContextMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Test"
+
+[node name="TargetResolution" type="Node" parent="NonUI" node_paths=PackedStringArray("rootNode")]
 script = ExtResource("2_34fsc")
-rootNode = NodePath("..")
+rootNode = NodePath("../..")
 TargetResolution = Vector2i(950, 720)
 
-[node name="AutoButtonSounds" type="Node" parent="."]
+[node name="AutoButtonSounds" type="Node" parent="NonUI"]
 script = ExtResource("2_db3cl")
 
-[node name="StatusIndicator" type="StatusIndicator" parent="."]
-tooltip = "Amogus"
+[node name="RefreshTimerController" type="Node" parent="NonUI"]
+script = ExtResource("5_hp28w")
+
+[node name="ThemeController" type="Node" parent="NonUI"]
+script = ExtResource("6_hvr66")
+
+[node name="TooltipFixer" type="Node" parent="NonUI" node_paths=PackedStringArray("tooltipControl")]
+script = ExtResource("7_i8x0x")
+tooltipControl = NodePath("Tooltip")
+
+[node name="Tooltip" parent="NonUI/TooltipFixer" instance=ExtResource("8_2iux3")]
+visible = false
+
+[node name="StatusIndicator" type="StatusIndicator" parent="NonUI" node_paths=PackedStringArray("tutorialWindow", "autoclose", "mainAppRoot")]
+tooltip = "PegLeg"
 icon = ExtResource("37_5b0rm")
 menu = NodePath("PopupMenu")
-visible = false
-script = ExtResource("38_s33ws")
+script = ExtResource("10_t6a4k")
+tutorialWindow = NodePath("TutorialWindow")
+autoclose = NodePath("TutorialWindow/Timer")
+mainAppRoot = NodePath("../../Content")
 
-[node name="PopupMenu" type="PopupMenu" parent="StatusIndicator"]
-size = Vector2i(100, 118)
-item_count = 5
-item_0/text = "first"
-item_1/text = "second"
-item_1/checkable = 1
-item_1/checked = true
-item_1/id = 1
-item_2/text = "third"
-item_2/checkable = 2
-item_2/id = 2
-item_3/text = "mogus"
-item_3/id = 3
-item_3/separator = true
-item_4/text = "bruh/test"
-item_4/checkable = 1
-item_4/id = 4
+[node name="PopupMenu" type="PopupMenu" parent="NonUI/StatusIndicator"]
+prefer_native_menu = true
+item_count = 1
+item_0/text = "Close"
+
+[node name="TutorialWindow" type="Window" parent="NonUI/StatusIndicator"]
+process_mode = 3
+transparent_bg = true
+size = Vector2i(270, 28)
+visible = false
+wrap_controls = true
+borderless = true
+always_on_top = true
+transparent = true
+unfocusable = true
+
+[node name="MarginContainer" type="MarginContainer" parent="NonUI/StatusIndicator/TutorialWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="NonUI/StatusIndicator/TutorialWindow/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"Panel3PadB"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NonUI/StatusIndicator/TutorialWindow/MarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NonUI/StatusIndicator/TutorialWindow/MarginContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+text = "PegLeg is running in the background"
+
+[node name="Button" type="Button" parent="NonUI/StatusIndicator/TutorialWindow/MarginContainer/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+tooltip_text = "Dismiss"
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="NonUI/StatusIndicator/TutorialWindow/MarginContainer/PanelContainer/HBoxContainer/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("20_k0gyk")
+expand_mode = 1
+
+[node name="Timer" type="Timer" parent="NonUI/StatusIndicator/TutorialWindow"]
+process_mode = 3
+wait_time = 5.0
+one_shot = true
 
 [node name="BGController" type="Control" parent="." node_paths=PackedStringArray("bgMain", "bgOverlay")]
 layout_mode = 1
@@ -177,7 +305,15 @@ texture = ExtResource("16_rir5i")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="MainTabs" type="TabContainer" parent="."]
+[node name="Content" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainTabs" type="TabContainer" parent="Content"]
 custom_minimum_size = Vector2(720, 0)
 layout_mode = 1
 anchors_preset = -1
@@ -192,26 +328,26 @@ tab_alignment = 1
 current_tab = 1
 script = ExtResource("16_hsemp")
 
-[node name="Dashboard" parent="MainTabs" instance=ExtResource("10_xfiw1")]
+[node name="Dashboard" parent="Content/MainTabs" instance=ExtResource("10_xfiw1")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Llamas" parent="MainTabs" instance=ExtResource("23_b4gaj")]
+[node name="Llamas" parent="Content/MainTabs" instance=ExtResource("23_b4gaj")]
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Missions" parent="MainTabs" instance=ExtResource("22_qlkcq")]
+[node name="Missions" parent="Content/MainTabs" instance=ExtResource("22_qlkcq")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Compendium" parent="MainTabs" instance=ExtResource("24_sj3vv")]
+[node name="Compendium" parent="Content/MainTabs" instance=ExtResource("24_sj3vv")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="Armory" type="TabContainer" parent="MainTabs"]
+[node name="Armory" type="TabContainer" parent="Content/MainTabs"]
 visible = false
 layout_mode = 2
 theme_type_variation = &"MenuTabContainer"
@@ -220,21 +356,21 @@ current_tab = 1
 script = ExtResource("16_hsemp")
 metadata/_tab_index = 4
 
-[node name="Inventory" parent="MainTabs/Armory" instance=ExtResource("13_yfdoy")]
+[node name="Inventory" parent="Content/MainTabs/Armory" instance=ExtResource("13_yfdoy")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Survivor Squads" parent="MainTabs/Armory" instance=ExtResource("25_ag48h")]
+[node name="Survivor Squads" parent="Content/MainTabs/Armory" instance=ExtResource("25_ag48h")]
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Backpack" parent="MainTabs/Armory" instance=ExtResource("15_dlrdq")]
+[node name="Backpack" parent="Content/MainTabs/Armory" instance=ExtResource("15_dlrdq")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Item Shop" type="TabContainer" parent="MainTabs"]
+[node name="Item Shop" type="TabContainer" parent="Content/MainTabs"]
 visible = false
 layout_mode = 2
 theme_type_variation = &"MenuTabContainer"
@@ -243,75 +379,75 @@ current_tab = 0
 script = ExtResource("16_hsemp")
 metadata/_tab_index = 5
 
-[node name="Weekly Shop" parent="MainTabs/Item Shop" instance=ExtResource("26_fltvm")]
+[node name="Weekly Shop" parent="Content/MainTabs/Item Shop" instance=ExtResource("26_fltvm")]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Event Shop" parent="MainTabs/Item Shop" instance=ExtResource("26_fltvm")]
+[node name="Event Shop" parent="Content/MainTabs/Item Shop" instance=ExtResource("26_fltvm")]
 visible = false
 layout_mode = 2
 useEventShop = true
 metadata/_tab_index = 1
 
-[node name="Label" parent="MainTabs/Item Shop/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+[node name="Label" parent="Content/MainTabs/Item Shop/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="0"]
 text = "Event Shop Resets: "
 
-[node name="Label2" parent="MainTabs/Item Shop/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+[node name="Label2" parent="Content/MainTabs/Item Shop/Event Shop/Timer/PanelContainer/MarginContainer/HBoxContainer" index="1"]
 timerType = 4
 
-[node name="Cosmetic Shop" parent="MainTabs/Item Shop" instance=ExtResource("27_5ey2a")]
+[node name="Cosmetic Shop" parent="Content/MainTabs/Item Shop" instance=ExtResource("27_5ey2a")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="Quests" parent="MainTabs" instance=ExtResource("28_rt2uq")]
+[node name="Quests" parent="Content/MainTabs" instance=ExtResource("28_rt2uq")]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 6
 
-[node name="Extra" type="MarginContainer" parent="MainTabs"]
+[node name="Extra" type="MarginContainer" parent="Content/MainTabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 7
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainTabs/Extra"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/MainTabs/Extra"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MainTabs/Extra/VBoxContainer"]
+[node name="Label" type="Label" parent="Content/MainTabs/Extra/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 64
 text = "Under Construction"
 horizontal_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MainTabs/Extra/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="Content/MainTabs/Extra/VBoxContainer"]
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("20_k0gyk")
 
-[node name="StatusBar" type="MarginContainer" parent="."]
+[node name="StatusBar" type="MarginContainer" parent="Content"]
 z_index = 5
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 26.0
+offset_bottom = 32.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 
-[node name="Left" type="HBoxContainer" parent="StatusBar"]
+[node name="Left" type="HBoxContainer" parent="Content/StatusBar"]
 layout_mode = 2
 size_flags_horizontal = 0
 mouse_filter = 0
 theme_override_constants/separation = 2
 
-[node name="AccountSelectorBtn" type="MarginContainer" parent="StatusBar/Left"]
+[node name="AccountSelectorBtn" type="MarginContainer" parent="Content/StatusBar/Left"]
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(48, 0)
 layout_mode = 2
@@ -319,11 +455,12 @@ script = ExtResource("27_a331l")
 defaultIcon = ExtResource("28_chpxd")
 useActiveAccount = true
 
-[node name="Button" type="Button" parent="StatusBar/Left/AccountSelectorBtn"]
+[node name="Button" type="Button" parent="Content/StatusBar/Left/AccountSelectorBtn"]
 layout_mode = 2
+tooltip_text = "Switch Account"
 theme_type_variation = &"AccountButton"
 
-[node name="MarginContainer" type="MarginContainer" parent="StatusBar/Left/AccountSelectorBtn"]
+[node name="MarginContainer" type="MarginContainer" parent="Content/StatusBar/Left/AccountSelectorBtn"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 3
@@ -331,7 +468,7 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Left/AccountSelectorBtn/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="Content/StatusBar/Left/AccountSelectorBtn/MarginContainer"]
 material = SubResource("ShaderMaterial_7h2tb")
 layout_mode = 2
 size_flags_horizontal = 0
@@ -339,20 +476,21 @@ mouse_filter = 2
 texture = ExtResource("26_2ue8b")
 expand_mode = 3
 
-[node name="TextureRect2" type="TextureRect" parent="StatusBar/Left/AccountSelectorBtn/MarginContainer"]
+[node name="TextureRect2" type="TextureRect" parent="Content/StatusBar/Left/AccountSelectorBtn/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 2
 texture = ExtResource("29_ql5qm")
 expand_mode = 3
 
-[node name="RefreshBtn" type="Button" parent="StatusBar/Left"]
+[node name="RefreshBtn" type="Button" parent="Content/StatusBar/Left"]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 size_flags_vertical = 4
+tooltip_text = "Refresh Account"
 theme_type_variation = &"LargeButton"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Left/RefreshBtn"]
+[node name="TextureRect" type="TextureRect" parent="Content/StatusBar/Left/RefreshBtn"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -367,28 +505,56 @@ texture = ExtResource("35_ix213")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PowerLevel" type="MarginContainer" parent="StatusBar/Left" node_paths=PackedStringArray("homebaseNumberLabel", "homebaseNumberProgressBar")]
+[node name="LaunchBtn" type="Button" parent="Content/StatusBar/Left"]
+visible = false
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Launch Fortnite"
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="Content/StatusBar/Left/LaunchBtn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("31_retv3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Right" type="HBoxContainer" parent="Content/StatusBar"]
+layout_mode = 2
+size_flags_horizontal = 8
+mouse_filter = 0
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="PowerLevel" type="MarginContainer" parent="Content/StatusBar/Right" node_paths=PackedStringArray("homebaseNumberLabel", "homebaseNumberProgressBar")]
 layout_mode = 2
 script = ExtResource("44_3p6h5")
 homebaseNumberLabel = NodePath("MarginContainer/HBoxContainer/PowerLevelNumber")
 homebaseNumberProgressBar = NodePath("MarginContainer/HBoxContainer/PowerLevelProgressBar")
 
-[node name="Panel" type="Panel" parent="StatusBar/Left/PowerLevel"]
+[node name="Panel" type="Panel" parent="Content/StatusBar/Right/PowerLevel"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_yef35")
 
-[node name="MarginContainer" type="MarginContainer" parent="StatusBar/Left/PowerLevel"]
+[node name="MarginContainer" type="MarginContainer" parent="Content/StatusBar/Right/PowerLevel"]
 layout_mode = 2
 theme_override_constants/margin_left = 1
 theme_override_constants/margin_top = 1
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="StatusBar/Left/PowerLevel/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/StatusBar/Right/PowerLevel/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="PowerLevelProgressBar" type="TextureProgressBar" parent="StatusBar/Left/PowerLevel/MarginContainer/HBoxContainer"]
+[node name="PowerLevelProgressBar" type="TextureProgressBar" parent="Content/StatusBar/Right/PowerLevel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 size_flags_vertical = 4
@@ -403,7 +569,7 @@ texture_progress = ExtResource("25_jxakv")
 tint_under = Color(0.145098, 0.145098, 0.145098, 1)
 tint_progress = Color(0, 0.535333, 0.73, 1)
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Left/PowerLevel/MarginContainer/HBoxContainer/PowerLevelProgressBar"]
+[node name="TextureRect" type="TextureRect" parent="Content/StatusBar/Right/PowerLevel/MarginContainer/HBoxContainer/PowerLevelProgressBar"]
 custom_minimum_size = Vector2(12, 12)
 layout_mode = 1
 anchors_preset = -1
@@ -420,7 +586,7 @@ grow_vertical = 2
 texture = ExtResource("3_wfagk")
 expand_mode = 1
 
-[node name="PowerLevelNumber" type="Label" parent="StatusBar/Left/PowerLevel/MarginContainer/HBoxContainer"]
+[node name="PowerLevelNumber" type="Label" parent="Content/StatusBar/Right/PowerLevel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
@@ -428,57 +594,14 @@ theme_override_font_sizes/font_size = 20
 text = "144"
 horizontal_alignment = 1
 
-[node name="Right" type="HBoxContainer" parent="StatusBar"]
-layout_mode = 2
-size_flags_horizontal = 8
-mouse_filter = 0
-theme_override_constants/separation = 2
-alignment = 2
-
-[node name="ActiveCurrency" type="MarginContainer" parent="StatusBar/Right"]
-layout_mode = 2
-script = ExtResource("9_23he5")
-compactifyAmount = true
-showSingleItemAmount = true
-
-[node name="Panel" type="Panel" parent="StatusBar/Right/ActiveCurrency"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_rloc5")
-
-[node name="MarginContainer" type="MarginContainer" parent="StatusBar/Right/ActiveCurrency"]
-layout_mode = 2
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_right = 7
-
-[node name="HBoxContainer" type="HBoxContainer" parent="StatusBar/Right/ActiveCurrency/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 0
-
-[node name="MarginContainer" type="MarginContainer" parent="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_top = 2
-theme_override_constants/margin_bottom = 2
-
-[node name="Icon" type="TextureRect" parent="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer/MarginContainer"]
-layout_mode = 2
-texture = ExtResource("29_vws3e")
-expand_mode = 3
-
-[node name="AmountText" type="Label" parent="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-text = "???"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="SettingsButton" type="Button" parent="StatusBar/Right"]
+[node name="SettingsButton" type="Button" parent="Content/StatusBar/Right"]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Settings"
 theme_type_variation = &"LargeButton"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/SettingsButton"]
+[node name="TextureRect" type="TextureRect" parent="Content/StatusBar/Right/SettingsButton"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -493,7 +616,7 @@ texture = ExtResource("28_p4icb")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MuteBtn" type="Button" parent="StatusBar/Right"]
+[node name="MuteBtn" type="Button" parent="Content/StatusBar/Right"]
 custom_minimum_size = Vector2(25, 25)
 layout_mode = 2
 size_flags_vertical = 4
@@ -502,7 +625,7 @@ theme_type_variation = &"LargeButton"
 script = ExtResource("58_7yvd6")
 targetBusName = "Master"
 
-[node name="TextureRect" type="TextureRect" parent="StatusBar/Right/MuteBtn"]
+[node name="TextureRect" type="TextureRect" parent="Content/StatusBar/Right/MuteBtn"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -517,16 +640,16 @@ texture = ExtResource("47_6bd6x")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ColorRect" type="ColorRect" parent="StatusBar"]
+[node name="ColorRect" type="ColorRect" parent="Content/StatusBar"]
 visible = false
 layout_mode = 2
 color = Color(1, 1, 1, 0.188235)
 
-[node name="DesktopNotificationPanel" parent="." instance=ExtResource("35_qspmm")]
+[node name="DesktopNotificationPanel" parent="Content" instance=ExtResource("35_qspmm")]
 layout_mode = 1
 anchors_preset = -1
 
-[node name="OverlayWindows" type="Control" parent="."]
+[node name="OverlayWindows" type="Control" parent="Content"]
 z_index = 6
 layout_mode = 1
 anchors_preset = 15
@@ -536,52 +659,52 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="AccountSwitcher" parent="OverlayWindows" instance=ExtResource("26_xb41w")]
+[node name="AccountSwitcher" parent="Content/OverlayWindows" instance=ExtResource("26_xb41w")]
 visible = false
 layout_mode = 1
 offset_left = 0.0
 offset_right = 0.0
 
-[node name="MissionViewer" parent="OverlayWindows" instance=ExtResource("26_fna7y")]
+[node name="MissionViewer" parent="Content/OverlayWindows" instance=ExtResource("26_fna7y")]
 visible = false
 layout_mode = 1
 offset_left = 0.0
 offset_right = 0.0
 
-[node name="CardPackOpenerWindow" parent="OverlayWindows" instance=ExtResource("41_alhak")]
+[node name="CardPackOpenerWindow" parent="Content/OverlayWindows" instance=ExtResource("41_alhak")]
 visible = false
 layout_mode = 1
 
-[node name="GameItemViewer" parent="OverlayWindows" instance=ExtResource("25_r7yrq")]
+[node name="GameItemViewer" parent="Content/OverlayWindows" instance=ExtResource("25_r7yrq")]
 visible = false
 layout_mode = 1
 anchors_preset = -1
 
-[node name="GameItemSelector" parent="OverlayWindows" instance=ExtResource("44_m211x")]
+[node name="GameItemSelector" parent="Content/OverlayWindows" instance=ExtResource("44_m211x")]
 visible = false
 layout_mode = 1
 
-[node name="SettingsWindow" parent="OverlayWindows" instance=ExtResource("99_hfy7e")]
+[node name="SettingsWindow" parent="Content/OverlayWindows" instance=ExtResource("99_hfy7e")]
 visible = false
 layout_mode = 1
 
-[node name="ShopPurchaseAnimation" parent="OverlayWindows" instance=ExtResource("96_2bhmt")]
+[node name="ShopPurchaseAnimation" parent="Content/OverlayWindows" instance=ExtResource("96_2bhmt")]
 visible = false
 layout_mode = 1
 
-[node name="LoginPopup" parent="OverlayWindows" instance=ExtResource("41_kf5nt")]
+[node name="LoginPopup" parent="Content/OverlayWindows" instance=ExtResource("41_kf5nt")]
 visible = false
 layout_mode = 1
 
-[node name="GenericLineEditWindow" parent="OverlayWindows" instance=ExtResource("45_vujc8")]
+[node name="GenericLineEditWindow" parent="Content/OverlayWindows" instance=ExtResource("45_vujc8")]
 visible = false
 layout_mode = 1
 
-[node name="GenericConfirmationWindow" parent="OverlayWindows" instance=ExtResource("46_fbpme")]
+[node name="GenericConfirmationWindow" parent="Content/OverlayWindows" instance=ExtResource("46_fbpme")]
 visible = false
 layout_mode = 1
 
-[node name="LoadingOverlay" parent="OverlayWindows" instance=ExtResource("31_v6low")]
+[node name="LoadingOverlay" parent="Content/OverlayWindows" instance=ExtResource("31_v6low")]
 visible = false
 layout_mode = 1
 startOpen = false
@@ -611,10 +734,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0, 1, 0, 1)
 
-[node name="Node" type="Node" parent="." node_paths=PackedStringArray("curtain")]
-script = ExtResource("50_2a2nn")
-curtain = NodePath("../Curtain")
-
 [node name="Curtain" type="ColorRect" parent="."]
 visible = false
 z_index = 50
@@ -631,15 +750,46 @@ script = ExtResource("52_pam8h")
 syncControlSize = true
 modTime = 8.0
 
-[connection signal="IconChanged" from="StatusBar/Left/AccountSelectorBtn" to="StatusBar/Left/AccountSelectorBtn/MarginContainer/TextureRect" method="set_texture"]
-[connection signal="TooltipChanged" from="StatusBar/Left/AccountSelectorBtn" to="StatusBar/Left/AccountSelectorBtn/Button" method="set_tooltip_text"]
-[connection signal="pressed" from="StatusBar/Left/AccountSelectorBtn/Button" to="OverlayWindows/AccountSwitcher" method="OpenWindow"]
-[connection signal="pressed" from="StatusBar/Left/RefreshBtn" to="OverlayWindows/AccountSwitcher" method="ReloadAccount"]
-[connection signal="AmountChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer/AmountText" method="set_text"]
-[connection signal="IconChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency/MarginContainer/HBoxContainer/MarginContainer/Icon" method="set_texture"]
-[connection signal="TooltipChanged" from="StatusBar/Right/ActiveCurrency" to="StatusBar/Right/ActiveCurrency" method="set_tooltip_text"]
-[connection signal="pressed" from="StatusBar/Right/SettingsButton" to="OverlayWindows/SettingsWindow" method="OpenWindow"]
-[connection signal="UpdateMuteIcon" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn/TextureRect" method="set_texture"]
-[connection signal="pressed" from="StatusBar/Right/MuteBtn" to="StatusBar/Right/MuteBtn" method="ToggleMute"]
+[node name="CurtainOpener" type="Node" parent="Curtain" node_paths=PackedStringArray("curtain")]
+script = ExtResource("50_2a2nn")
+curtain = NodePath("..")
 
-[editable path="MainTabs/Item Shop/Event Shop"]
+[node name="Button" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 538.0
+offset_top = 230.0
+offset_right = 608.0
+offset_bottom = 254.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CtxMenu"
+
+[node name="PopupMenu" type="PopupMenu" parent="Button"]
+transparent_bg = true
+size = Vector2i(20, 8)
+transparent = true
+hide_on_item_selection = false
+hide_on_checkable_item_selection = false
+allow_search = false
+script = ExtResource("2_qb31u")
+iconTexture = ExtResource("51_bse6w")
+uncheckedIcon = ExtResource("52_kn6t0")
+
+[connection signal="pressed" from="NonUI/TestNotif/PanelContainer/HBoxContainer/Button" to="NonUI/TestNotif" method="set_visible" binds= [false]]
+[connection signal="pressed" from="NonUI/StatusIndicator/TutorialWindow/MarginContainer/PanelContainer/HBoxContainer/Button" to="NonUI/StatusIndicator/TutorialWindow" method="set_visible" binds= [false]]
+[connection signal="IconChanged" from="Content/StatusBar/Left/AccountSelectorBtn" to="Content/StatusBar/Left/AccountSelectorBtn/MarginContainer/TextureRect" method="set_texture"]
+[connection signal="TooltipChanged" from="Content/StatusBar/Left/AccountSelectorBtn" to="Content/StatusBar/Left/AccountSelectorBtn/Button" method="set_tooltip_text"]
+[connection signal="pressed" from="Content/StatusBar/Left/AccountSelectorBtn/Button" to="Content/OverlayWindows/AccountSwitcher" method="OpenWindow"]
+[connection signal="pressed" from="Content/StatusBar/Left/RefreshBtn" to="Content/OverlayWindows/AccountSwitcher" method="ReloadAccount"]
+[connection signal="pressed" from="Content/StatusBar/Right/SettingsButton" to="Content/OverlayWindows/SettingsWindow" method="OpenWindow"]
+[connection signal="UpdateMuteIcon" from="Content/StatusBar/Right/MuteBtn" to="Content/StatusBar/Right/MuteBtn/TextureRect" method="set_texture"]
+[connection signal="pressed" from="Content/StatusBar/Right/MuteBtn" to="Content/StatusBar/Right/MuteBtn" method="ToggleMute"]
+[connection signal="pressed" from="Button" to="Button/PopupMenu" method="OpenMenu"]
+
+[editable path="Content/MainTabs/Item Shop/Event Shop"]

@@ -15,10 +15,13 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mkapk"]
 
-[node name="LoginPopup" node_paths=PackedStringArray("loginLabel", "confirmLoginButton") instance=ExtResource("1_3q6po")]
+[node name="LoginPopup" node_paths=PackedStringArray("loginLabel", "exchangeCodeBox", "confirmLoginButton") instance=ExtResource("1_3q6po")]
+offset_left = 0.0
+offset_right = 0.0
 script = ExtResource("2_byygk")
-loginLabel = NodePath("Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText")
-confirmLoginButton = NodePath("Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/HBoxContainer/CompleteLogin")
+loginLabel = NodePath("Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText")
+exchangeCodeBox = NodePath("Control/WindowContents/TabContainer/Exchange Code/VBoxContainer/LineEdit")
+confirmLoginButton = NodePath("Control/WindowContents/TabContainer/Activation Code/VBoxContainer/HBoxContainer/CompleteLogin")
 isUserClosable = true
 
 [node name="CloseBtn" parent="." index="1"]
@@ -38,52 +41,50 @@ theme_override_styles/hover = ExtResource("3_droq3")
 theme_override_styles/pressed = ExtResource("3_droq3")
 theme_override_styles/normal = ExtResource("3_droq3")
 
-[node name="LoginPanel" type="MarginContainer" parent="Control/WindowContents" index="0"]
-custom_minimum_size = Vector2(250, 0)
+[node name="TabContainer" type="TabContainer" parent="Control/WindowContents" index="0"]
+custom_minimum_size = Vector2(300, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -125.0
-offset_top = -79.0
-offset_right = 125.0
-offset_bottom = 79.0
+offset_left = -150.0
+offset_top = -97.0
+offset_right = 150.0
+offset_bottom = 97.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+theme_override_font_sizes/font_size = 12
+tab_alignment = 1
+current_tab = 0
 
-[node name="Panel" type="Panel" parent="Control/WindowContents/LoginPanel" index="0"]
-layout_mode = 2
-theme_type_variation = &"SecondaryPanel"
-
-[node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/LoginPanel" index="1"]
+[node name="Activation Code" type="MarginContainer" parent="Control/WindowContents/TabContainer" index="1"]
 layout_mode = 2
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
+metadata/_tab_index = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/LoginPanel/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/TabContainer/Activation Code" index="0"]
 custom_minimum_size = Vector2(0, 152)
 layout_mode = 2
 
-[node name="GreetingText" type="Label" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="0"]
+[node name="GreetingText" type="Label" parent="Control/WindowContents/TabContainer/Activation Code/VBoxContainer" index="0"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_constants/line_spacing = 0
 text = "To log in to your Epic Games account, click the link and enter in the code shown below."
 autowrap_mode = 3
 
-[node name="LinkButton2" type="LinkButton" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="1"]
+[node name="LinkButton2" type="LinkButton" parent="Control/WindowContents/TabContainer/Activation Code/VBoxContainer" index="1"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 12
 text = "https://www.epicgames.com/id/activate"
 uri = "https://www.epicgames.com/id/activate"
 
-[node name="LinkCodeText" type="LineEdit" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="2"]
+[node name="LinkCodeText" type="LineEdit" parent="Control/WindowContents/TabContainer/Activation Code/VBoxContainer" index="2"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -97,24 +98,24 @@ alignment = 1
 editable = false
 script = ExtResource("2_8s2bt")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer" index="3"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/WindowContents/TabContainer/Activation Code/VBoxContainer" index="3"]
 layout_mode = 2
 
-[node name="CompleteLogin" type="Button" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+[node name="CompleteLogin" type="Button" parent="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/HBoxContainer" index="0"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"ActionButton"
 theme_override_font_sizes/font_size = 24
 text = "Login"
 
-[node name="RetryLogn" type="Button" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/HBoxContainer" index="1"]
+[node name="RetryLogn" type="Button" parent="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/HBoxContainer" index="1"]
 visible = false
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 tooltip_text = "Retry Login"
 theme_type_variation = &"LargeButton"
 
-[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/HBoxContainer/RetryLogn" index="0"]
+[node name="TextureRect" type="TextureRect" parent="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/HBoxContainer/RetryLogn" index="0"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -128,11 +129,44 @@ grow_vertical = 2
 texture = ExtResource("5_lc2bf")
 expand_mode = 1
 
+[node name="Exchange Code" type="MarginContainer" parent="Control/WindowContents/TabContainer" index="2"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/TabContainer/Exchange Code" index="0"]
+custom_minimum_size = Vector2(0, 152)
+layout_mode = 2
+
+[node name="GreetingText" type="Label" parent="Control/WindowContents/TabContainer/Exchange Code/VBoxContainer" index="0"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_spacing = 0
+text = "If you can generate an Exchange Code for your account, paste it here to login quickly"
+autowrap_mode = 3
+
+[node name="LineEdit" type="LineEdit" parent="Control/WindowContents/TabContainer/Exchange Code/VBoxContainer" index="1"]
+layout_mode = 2
+placeholder_text = "Exchange Code"
+
+[node name="CompleteLogin" type="Button" parent="Control/WindowContents/TabContainer/Exchange Code/VBoxContainer" index="2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"ActionButton"
+theme_override_font_sizes/font_size = 24
+text = "Login"
+
 [connection signal="pressed" from="CloseBtn2" to="." method="Cancel"]
-[connection signal="LoginFailed" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="." method="OnFail"]
-[connection signal="LoginFailed" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" method="set_placeholder" binds= ["Failed"]]
-[connection signal="LoginFailed" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/HBoxContainer/RetryLogn" method="set_visible" binds= [true]]
-[connection signal="LoginStarted" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/HBoxContainer/RetryLogn" method="set_visible" binds= [false]]
-[connection signal="LoginSucceeded" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" method="set_placeholder" binds= ["Success!"]]
-[connection signal="LoginSuccess" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="." method="RecieveAccount"]
-[connection signal="UserCodeChanged" from="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" to="Control/WindowContents/LoginPanel/MarginContainer/VBoxContainer/LinkCodeText" method="set_text"]
+[connection signal="LoginFailed" from="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" to="." method="OnFail"]
+[connection signal="LoginFailed" from="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" to="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" method="set_placeholder" binds= ["Failed"]]
+[connection signal="LoginFailed" from="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" to="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/HBoxContainer/RetryLogn" method="set_visible" binds= [true]]
+[connection signal="LoginStarted" from="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" to="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/HBoxContainer/RetryLogn" method="set_visible" binds= [false]]
+[connection signal="LoginSucceeded" from="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" to="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" method="set_placeholder" binds= ["Success!"]]
+[connection signal="LoginSuccess" from="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" to="." method="RecieveAccount"]
+[connection signal="UserCodeChanged" from="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" to="Control/WindowContents/TabContainer/Activation Code/VBoxContainer/LinkCodeText" method="set_text"]
+[connection signal="pressed" from="Control/WindowContents/TabContainer/Exchange Code/VBoxContainer/CompleteLogin" to="." method="AttemptExchange"]

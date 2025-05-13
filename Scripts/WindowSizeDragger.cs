@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 public partial class WindowSizeDragger : Control
 {
@@ -9,6 +11,8 @@ public partial class WindowSizeDragger : Control
     Vector2I mouseStart;
     [Export]
     GrabberType grabberType;
+    [Export]
+    StatusIndicator statusIndicator;
 
     public static readonly Vector2I limitSize = new(1000, 500);
     const double minAspectRatio = 4.0/3;
@@ -20,6 +24,18 @@ public partial class WindowSizeDragger : Control
         Left = 1,
         Bottom = 2,
         Right = 3
+    }
+
+    public void Magic()
+    {
+        Helpers.SetMainWindowVisible(false);
+        statusIndicator.Visible = true;
+    }
+
+    public void Unmagic()
+    {
+        Helpers.SetMainWindowVisible(true);
+        statusIndicator.Visible = false;
     }
 
     public override void _GuiInput(InputEvent @event)

@@ -147,7 +147,7 @@ public partial class SurvivorSquadEntry : Control
     async void HandleChangeRequest(InventoryItemSlot slot, int slotIndex)
     {
         var profile = slot.currentProfile;
-        if (!(profile?.account.isOwned ?? false))
+        if (!(profile?.account.isOwned ?? false) || squadLocked)
             return;
 
         var filter = slot == leadSurvivorSlot ? leaderFilter : standardFilter;
@@ -189,9 +189,19 @@ public partial class SurvivorSquadEntry : Control
 
         if (body is not null && await profile?.account.Authenticate() && profile.profileId == FnProfileTypes.AccountItems)
         {
-            using var _ = LoadingOverlay.CreateToken();
-            await profile.PerformOperation("AssignWorkerToSquad", body.ToString());
-            profile.account.GetFORTStats(true);
+            try
+            {
+                squadLocked = true;
+                await profile.PerformOperation("AssignWorkerToSquad", body.ToString());
+                GD.Print(profile.lastOp);
+                profile.account.GetFORTStats(true);
+            }
+            finally
+            {
+                squadLocked = false;
+            }
         }
     }
+
+    bool squadLocked = false;
 }

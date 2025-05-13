@@ -19,12 +19,12 @@ public partial class UISounds : Node
 
     public static void PlaySound(string soundName)
     {
-        if(instance.audioDict.ContainsKey(soundName))
+        if(instance?.audioDict.ContainsKey(soundName) ?? false)
             instance.audioDict[soundName].Play();
     }
     public static void StopSound(string soundName)
     {
-        if (instance.audioDict.ContainsKey(soundName))
+        if (instance?.audioDict.ContainsKey(soundName) ?? false)
             instance.audioDict[soundName].Stop();
     }
 }

@@ -181,10 +181,10 @@ public partial class GameOfferEntry : Control
 
         if (pricePerPurchase.quantity > 0)
         {
-            var inInventory = await currentOffer.GetPriceAmountInInventory();
+            var inventoryItem = await currentOffer.GetPriceInventoryItem();
             if (ct.IsCancellationRequested)
                 return;
-            currentPriceInInventory = inInventory;
+            currentPriceInInventory = inventoryItem?.quantity ?? 0;
         }
 
         //async stuff complete, now update visuals

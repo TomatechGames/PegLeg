@@ -60,13 +60,16 @@ public partial class QuestGroupEntry : Control
     [Export]
     CheckButton highlightCheck;
 
-    bool isChain = false;
-    public bool IsChain => isChain;
     bool hasNotification = false;
     public bool HasNotification => hasNotification;
     bool hasAvailableQuests = false;
     public bool HasAvailableQuests => hasAvailableQuests;
+
     public List<QuestSlot> questSlotList { get; private set; } = new();
+    bool isSequence = false;
+    public bool IsSequence => isSequence;
+    bool? showLocked = false;
+    public bool ShowLocked => showLocked ?? isSequence;
 
     public async Task SetupQuestGroup(string name, JsonObject questGroup)
     {
@@ -79,9 +82,11 @@ public partial class QuestGroupEntry : Control
         if (!await account.Authenticate())
             return;
 
+        showLocked = questGroup["showLocked"]?.GetValue<bool>();
+
         if (questGroup["questlines"] is JsonArray questlines)
         {
-            isChain = true;
+            isSequence = true;
             foreach (var qline in questlines.Select(n=>n.AsArray()))
             {
                 bool skip = true;
@@ -120,7 +125,7 @@ public partial class QuestGroupEntry : Control
 
         if(questGroup["quests"] is JsonArray quests)
         {
-            isChain = false;
+            isSequence = questGroup["sequence"]?.GetValue<bool>() ?? false;
             for (int i = 0; i < quests.Count; i++)
             {
                 string currentQuestId = quests[i].ToString();
@@ -155,7 +160,7 @@ public partial class QuestGroupEntry : Control
     
     public void UpdateNotificationAndIcon(QuestSlot _)
     {
-        hasNotification = questSlotList.Any(questData => questData.isNew && (isChain || !questData.isComplete));
+        hasNotification = questSlotList.Any(questData => questData.isNew && (isSequence || !questData.isComplete));
         EmitSignal(SignalName.NotificationVisible, hasNotification);
         bool isPinned = questSlotList.Any(q => q.isPinned);
         bool isComplete = questSlotList.All(q => q.isComplete);

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 public partial class LlamaInterface : Control
 {
+    const string TicketUpgradeId = "4D64CBE3618D41FBB5CAD0E472F4610A";
+    const string TokenUpgradeId = "D2E08EFA731D437B85B7340EB51A5E1D";
+
     static LlamaInterface instance;
     public static void SelectLlamaTab() => instance.Visible = true;
 
@@ -62,6 +65,12 @@ public partial class LlamaInterface : Control
     Control purchaseButton;
 
     [Export]
+    GameOfferEntry altOfferEntry;
+
+    [Export]
+    Control altPurchaseButton;
+
+    [Export]
     Control openButton;
 
     [Export]
@@ -93,6 +102,7 @@ public partial class LlamaInterface : Control
 
     Dictionary<string, GameOffer> activeOffers = new();
     GameOffer currentOfferSelection;
+    GameOffer tokenUpgradeOffer;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -345,9 +355,15 @@ public partial class LlamaInterface : Control
                     return;
             }
 
+            //remove token-based Upgrade Llama, it will be merged into the ticket-based llama
+            tokenUpgradeOffer = filteredOffers.FirstOrDefault(o => o.OfferId == TokenUpgradeId);
+            filteredOffers.Remove(tokenUpgradeOffer);
+            await altOfferEntry.SetOffer(tokenUpgradeOffer);
+
             bool hasFreeLlamas = filteredOffers.Any(o => o.Price.quantity == 0);
             if(hasFreeLlamas && !hadFreeLlamas)
             {
+                //todo: separate global checks like this from the tab-specific UI
                 NotificationManager.PushNotification(freeLlamaNotif);
             }
             hadFreeLlamas = hasFreeLlamas;
@@ -365,6 +381,7 @@ public partial class LlamaInterface : Control
                 var thisEntry = llamaOfferEntries[catalogEntryIndex];
                 thisEntry.Visible = true;
                 thisEntry.SetOffer(offer).StartTask();
+                (thisEntry.GetNode("%AltPrice") as Control).Visible = offer.OfferId == TicketUpgradeId;
                 catalogEntryIndex++;
             }
 
@@ -398,11 +415,8 @@ public partial class LlamaInterface : Control
 
     static async Task<bool> LlamaOfferFilter(GameOffer offer)
     {
-        //get rid of weird mini llama and free llama
-        //if (offer["devName"].ToString() == "Mini Llama Manual Tutorial - high SharedDisplayPriority")
-        //    return false;
-        //if (offer["devName"].ToString() == "Always.UpgradePack.03")
-        //    return false;
+        if(offer.OfferId==TokenUpgradeId)
+            return true;
 
         var account = GameAccount.activeAccount;
 
@@ -429,6 +443,7 @@ public partial class LlamaInterface : Control
 
         openButton.Visible = false;
         purchaseButton.Visible = false;
+        altPurchaseButton.Visible = false;
         quantitySpinner.Visible = false;
 
         resultEntriesParent.Visible = false;
@@ -462,6 +477,18 @@ public partial class LlamaInterface : Control
         if (!await account.Authenticate() || ct.IsCancellationRequested)
             return;
 
+        //if this is ticket-based Upgrade Llama, also show token-based Upgrade Llama
+
+        if (offer.OfferId == TicketUpgradeId)
+        {
+            bool hasToken = (await tokenUpgradeOffer.GetPriceInInventory()) > 0;
+            if (ct.IsCancellationRequested)
+                return;
+            altPurchaseButton.Visible = hasToken;
+        }
+        else
+            altPurchaseButton.Visible = false;
+
         var purchaseLimit = await account.GetPurchaseLimit(offer);
         bool inStock = purchaseLimit > 0;
         if (ct.IsCancellationRequested)
@@ -469,10 +496,10 @@ public partial class LlamaInterface : Control
 
         if (offer.Price.quantity > 0)
         {
-            var inInventory = await offer.GetPriceAmountInInventory();
+            var inventoryCount = await offer.GetPriceInInventory();
             if (ct.IsCancellationRequested)
                 return;
-            purchaseLimit = Mathf.Min(purchaseLimit, inInventory / offer.Price.quantity);
+            purchaseLimit = Mathf.Min(purchaseLimit, inventoryCount / offer.Price.quantity);
         }
 
         var prerollData = await offer.GetXRayLlamaData(account);
@@ -484,7 +511,7 @@ public partial class LlamaInterface : Control
             return;
 
         currentOfferSelection = offer;
-        CurrencyHighlight.Instance.SetCurrencyTemplate(offer.Price.template);
+        //CurrencyHighlight.Instance.SetCurrencyTemplate(offer.Price.template);
 
         if (!inStock)
         {
@@ -584,13 +611,20 @@ public partial class LlamaInterface : Control
             return;
 
         GD.Print("attempting to purchase offer: "+ currentOfferSelection.OfferId);
-        bool isUpgrade = currentOfferSelection.itemGrants[0]?.template?.DisplayName == "Upgrade Llama";
         var itemsKnown = await currentOfferSelection.GetXRayLlamaData() is not null;
         await CardPackOpener.Instance.StartOpening(null, selectedLlamaPanel, currentOfferSelection, currentOfferEntry.currentPurchaseQuantity, itemsKnown);
-        if (isUpgrade)
-            ForceLoadShopLlamas();
-        else
-            SetLlamaOffer(currentOfferSelection);
+        SetLlamaOffer(currentOfferSelection);
+    }
+
+    public async void PurchaseTokenUpgradeLlama()
+    {
+        if (tokenUpgradeOffer is null)
+            return;
+
+        GD.Print("attempting to purchase offer: " + tokenUpgradeOffer.OfferId);
+        await CardPackOpener.Instance.StartOpening(null, selectedLlamaPanel, tokenUpgradeOffer, 1, true);
+        currentOfferSelection.NotifyChanged();
+        SetLlamaOffer(currentOfferSelection);
     }
 
     public async void OpenSelectedCardpack()

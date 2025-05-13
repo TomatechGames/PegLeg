@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 public partial class QuestNode : Control
 {
@@ -12,6 +13,8 @@ public partial class QuestNode : Control
     [Signal]
     public delegate void PinnedVisibleEventHandler(bool visible);
     [Signal]
+    public delegate void KeyItemVisibleEventHandler(bool visible);
+    [Signal]
     public delegate void ColorChangedEventHandler(Color color);
     [Signal]
     public delegate void PressedEventHandler();
@@ -21,9 +24,11 @@ public partial class QuestNode : Control
     [Export]
     CheckButton selectedToggle;
     QuestSlot questData;
+    bool displayAsLocked;
 
-    public void SetupQuestNode(QuestSlot newQuestData, ButtonGroup buttonGroup)
+    public void SetupQuestNode(QuestSlot newQuestData, ButtonGroup buttonGroup, bool displayAsLocked)
     {
+        this.displayAsLocked = displayAsLocked;
         selectedToggle.ButtonGroup = buttonGroup;
         if (questData is not null)
             questData.OnPropertiesUpdated -= RefreshQuestNode;
@@ -38,10 +43,19 @@ public partial class QuestNode : Control
         EmitSignal(SignalName.IconChanged, questData.questTemplate.GetTexture());
         EmitSignal(SignalName.NotificationVisible, questData.isNew);
         EmitSignal(SignalName.PinnedVisible, questData.isPinned);
+        EmitSignal(SignalName.KeyItemVisible, questData.questTemplate
+            .GetQuestRewards()
+            .Any(r =>
+                r.templateId.ToLower().StartsWith("hero:") ||
+                r.templateId.ToLower().StartsWith("schematic:")
+            )
+        );
 
         int colorIndex = 0;
         if (questData.isComplete)
             colorIndex = 2;
+        else if(displayAsLocked)
+            colorIndex = 0;
         else if (questData.isUnlocked)
             colorIndex = 1;
         EmitSignal(SignalName.ColorChanged, colorStages[colorIndex]);

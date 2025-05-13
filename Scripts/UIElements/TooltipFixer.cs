@@ -17,6 +17,11 @@ public partial class TooltipFixer : Node
         GetTree().NodeAdded += OnNodeAdded;
     }
 
+    public override void _ExitTree()
+    {
+        GetTree().NodeAdded -= OnNodeAdded;
+    }
+
     private void OnNodeAdded(Node node)
     {
         if (node is not PopupPanel pp)
@@ -39,12 +44,9 @@ public partial class TooltipFixer : Node
 
         pp.AddChild(tooltipControl);
         tooltipControl.SetTooltip(label.Text);
-        pp.TreeExiting += () => OnTooltipRemoving(pp);
-    }
-
-    private void OnTooltipRemoving(PopupPanel pp)
-    {
-        //GD.Print("goodbye tooltip");
-        pp.RemoveChild(tooltipControl);
+        pp.TreeExiting += () =>
+        {
+            pp.RemoveChild(tooltipControl);
+        };
     }
 }

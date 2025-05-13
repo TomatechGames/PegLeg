@@ -438,7 +438,7 @@ public class GameMission
             if (rewardItemList.ContainsKey(key))
             {
                 var targetItem = rewardItemList[key];
-                targetItem.SetQuantity(targetItem.quantity + item.quantity);
+                targetItem.SetLocalQuantity(targetItem.quantity + item.quantity);
             }
             else
             {

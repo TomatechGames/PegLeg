@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcllm2n3omok8"]
+
+[ext_resource type="Script" path="res://Scripts/Bootstrap.cs" id="1_6qsod"]
+[ext_resource type="PackedScene" uid="uid://ysh5ajklts1q" path="res://Scenes/Desktop/desktopOnboarding.tscn" id="2_frb0b"]
+[ext_resource type="PackedScene" uid="uid://u5ag0k8n6eqm" path="res://Scenes/Desktop/desktopInterface.tscn" id="3_js2t5"]
+
+[node name="BootScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6qsod")
+desktopOnboarding = ExtResource("2_frb0b")
+desktopInterface = ExtResource("3_js2t5")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)

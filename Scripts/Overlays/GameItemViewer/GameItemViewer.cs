@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 public partial class GameItemViewer : ModalWindow
 {
@@ -399,12 +400,20 @@ public partial class GameItemViewer : ModalWindow
         currentOfferEntry.SetTargetPurchaseQuantity((int)newValue);
     }
 
-    public async void PurchaseItem()
+    public void PurchaseItem()
     {
         if (currentOffer is null)
             return;
-        using var _ = LoadingOverlay.CreateToken();
+        var purchaseTask = PurchaseTask();
+        ShopPurchaseAnimation.PlayAnimation(
+            currentOffer.itemGrants[0].GetTexture(), 
+            currentOfferEntry.currentPurchaseQuantity,
+            purchaseTask
+        );
+    }
 
+    async Task PurchaseTask()
+    {
         var account = GameAccount.activeAccount;
         if (!await account.Authenticate())
             return;
@@ -422,8 +431,6 @@ public partial class GameItemViewer : ModalWindow
         var resultItemData = notifs.First(val => val["type"].ToString() == "CatalogPurchase")["lootResult"]["items"][0];
         GameItem resultItem = new(null, null, resultItemData.AsObject());
         //await CardPackOpener.Instance.StartOpeningShopResults(resultItems.Select(val=>val.AsObject()).ToArray());
-
-        ShopPurchaseAnimation.PlayAnimation(resultItem.GetTexture(), currentOfferEntry.currentPurchaseQuantity);
     }
 
 

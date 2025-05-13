@@ -106,6 +106,8 @@ vertical_scroll_mode = 0
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/QuestNodes/MarginContainer/HBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_bottom = 6
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/QuestNodes/MarginContainer/HBoxContainer/ScrollContainer/MarginContainer"]
 layout_mode = 2

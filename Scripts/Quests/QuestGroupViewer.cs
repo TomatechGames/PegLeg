@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Nodes;
 
 public partial class QuestGroupViewer : Control
 {
@@ -40,6 +41,7 @@ public partial class QuestGroupViewer : Control
     int maxNodesPerPage = 20;
 	int nodesPerPage;
 	List<QuestSlot> questDataList;
+    QuestSlot firstUnlocked;
 	int currentPage;
     int currentNodeIndex = 0;
     int currentQuestIndex = 0;
@@ -94,26 +96,18 @@ public partial class QuestGroupViewer : Control
     }
 
 
-    public void SetQuestNodes(List<QuestSlot> newQuestDataList, bool useArrows, bool onlyShowIncomplete)
-	{
-        //onlyShowIncomplete = false;
-        if (onlyShowIncomplete)
-        {
-            questDataList = newQuestDataList.Where(q=>q.isUnlocked && (!q.isComplete || useArrows)).ToList();
-            if (useArrows)
-            {
-                //sort endurances by wave
-                questDataList = questDataList.OrderBy(q => int.TryParse(q.questTemplate.DisplayName.Split(" ")[^1], out int wave) ? wave : 0).ToList();
-            }
-        }
-        else
-        {
-            questDataList = newQuestDataList;
-        }
-        this.useArrows = useArrows;
+    public void SetQuestNodes(QuestGroupEntry questGroup)
+    {
+        useArrows = questGroup.IsSequence;
+
+        questDataList = questGroup.questSlotList.Where(q => (q.isUnlocked || questGroup.ShowLocked) && (!q.isComplete || useArrows)).ToList();
+        if (questDataList[0].questTemplate.DisplayName.Contains("Endurance"))
+            questDataList = questDataList
+                .OrderBy(q => int.Parse(q.questTemplate.DisplayName.Split(" ")[^1]))
+                .ToList();
+        firstUnlocked = questDataList.FirstOrDefault(q => q.isUnlocked && !q.isComplete);
 
         nodesPerPage = maxNodesPerPage;
-        //GD.Print("COUNT "+ questDataList.Count);
         if (questDataList.Count > nodesPerPage)
 		{
             while ((questDataList.Count % nodesPerPage) < (nodesPerPage * 0.6f))
@@ -176,7 +170,7 @@ public partial class QuestGroupViewer : Control
             var thisQuest = questDataList[pageStartIndex + i];
             questNodeList[i].Visible = true;
             //apply quest to node
-            questNodeList[i].SetupQuestNode(thisQuest, unselectedButton.ButtonGroup);
+            questNodeList[i].SetupQuestNode(thisQuest, unselectedButton.ButtonGroup, firstUnlocked != thisQuest && useArrows);
             isQuestOnPage |= pageStartIndex + i == currentNodeIndex;
             if (pageStartIndex + i == currentQuestIndex)
             {

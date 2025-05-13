@@ -432,6 +432,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.InteractableChanged, interactableWhenEmpty);
         EmitSignal(SignalName.NotificationChanged, false);
         EmitSignal(SignalName.FavoriteChanged, false);
+        EmitSignal(SignalName.OverflowWarning, false);
     }
 
     public void Inspect()

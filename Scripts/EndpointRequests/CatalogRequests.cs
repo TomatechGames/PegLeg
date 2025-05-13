@@ -1149,13 +1149,22 @@ public class GameOffer
         return newPriceItem;
     }
 
-    public async Task<int> GetPriceAmountInInventory()
+    public async Task<int> GetPriceInInventory()
     {
         var account = GameAccount.activeAccount;
         if (!await account.Authenticate())
             return 0;
         var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
         return accountItems.GetFirstTemplateItem(basePrice.templateId)?.quantity ?? 0;
+    }
+
+    public async Task<GameItem> GetPriceInventoryItem()
+    {
+        var account = GameAccount.activeAccount;
+        if (!await account.Authenticate())
+            return null;
+        var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
+        return accountItems.GetFirstTemplateItem(basePrice.templateId);
     }
 
     public async Task<GameItem> GetPersonalPrice(bool forcePrice = false, bool forceCosmetics = false)

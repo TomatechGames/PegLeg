@@ -960,7 +960,6 @@ public partial class CardPackOpener : Control
                 {
                     ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
                 };
-                using var _ = LoadingOverlay.CreateToken();
                 await account.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content);
             }
         }

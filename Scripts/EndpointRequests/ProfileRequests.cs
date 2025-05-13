@@ -182,6 +182,7 @@ public class GameAccount
             var profile = await account.GetProfile(FnProfileTypes.AccountItems).Query();
             if (!profile.hasProfile)
                 return false;
+            await account.QueryAllProfiles();
             _activeAccount = account;
             ActiveAccountChangedEarly?.Invoke();
             ActiveAccountChanged?.Invoke();
@@ -242,6 +243,18 @@ public class GameAccount
     {
         await GetProfile(profileId).Query(force);
         return this;
+    }
+
+    public async Task QueryAllProfiles()
+    {
+        await Task.WhenAll(
+            GetProfile(FnProfileTypes.AccountItems).Query(),
+            GetProfile(FnProfileTypes.Common).Query(),
+            GetProfile(FnProfileTypes.PeopleCollection).Query(),
+            GetProfile(FnProfileTypes.SchematicCollection).Query(),
+            GetProfile(FnProfileTypes.Backpack).Query(),
+            GetProfile(FnProfileTypes.Storage).Query()
+        );
     }
 
     string authToken;
@@ -314,6 +327,7 @@ public class GameAccount
         };
         var profile = GetProfile(FnProfileTypes.Common);
         var result = await profile.PerformOperation("PurchaseCatalogEntry", shopRequestBody.ToString());
+        GD.Print("OPCOMPLETE");
         offer.NotifyChanged();
         return result;
     }
@@ -336,7 +350,6 @@ public class GameAccount
         loginFailure = false;
         OnAccountUpdated?.Invoke();
     }
-
 
     SemaphoreSlim iconSemaphore = new(1);
     public async void UpdateIcon()
@@ -1000,6 +1013,7 @@ public class GameProfile
         if (changes.Count == 0) { }
         else if (changes[0]["changeType"].ToString() == "fullProfileUpdate")
         {
+            GD.Print("FULLUPDATE: " + profileId);
             var resultItems = result["profileChanges"][0]["profile"]["items"].AsObject();
             var resultStats = result["profileChanges"][0]["profile"]["stats"]["attributes"].AsObject();
             if (hasProfile)
@@ -1057,6 +1071,7 @@ public class GameProfile
                 }
             }
         }
+        printChanges = false;
 
         GD.Print($"operation complete ({operation} in {profileId} as {account.DisplayName})");
 
@@ -1124,8 +1139,13 @@ public class GameProfile
         return profileChanges;
     }
 
+    public bool printChanges = false;
+
     public void ApplyProfileChanges(JsonArray profileChanges)
     {
+        List<GameItem> itemsToNotify = new();
+        List<GameItem> itemsToIgnore = new();
+        Dictionary<string, GameItem> reassociations = new();
         foreach (var change in profileChanges)
         {
             string changeType = change["changeType"].ToString();
@@ -1146,14 +1166,16 @@ public class GameProfile
                         groupedItems.TryAdd(targetItem.templateId.Split(":")[0], new());
                         groupedItems[targetItem.templateId.Split(":")[0]].Add(targetItem);
                     }
-                    GD.Print($"ADDED: {uuid} ({items[uuid]})");
+                    if (printChanges)
+                        GD.Print($"ADDED: {items[uuid]}");
                     OnItemAdded?.Invoke(targetItem);
                     break;
                 case "itemRemoved":
                     if (!items.ContainsKey(uuid))
                         continue;
                     targetItem = items[uuid];
-                    GD.Print($"REMOVING: {uuid} ({targetItem})");
+                    if (printChanges)
+                        GD.Print($"REMOVING: {targetItem}");
                     targetItem.NotifyRemoving();
                     lock (items)
                     {
@@ -1164,6 +1186,7 @@ public class GameProfile
                         if (groupedItems[targetItem.templateId.Split(":")[0]] is List<GameItem> list && list.Contains(targetItem))
                             list.Remove(targetItem);
                     }
+                    itemsToIgnore.Add(targetItem);
                     OnItemRemoved?.Invoke(targetItem);
                     targetItem.DisconnectFromProfile();
                     break;
@@ -1171,42 +1194,74 @@ public class GameProfile
                     var statName = change["name"].ToString();
                     var statVal = change["value"].Reserialise();
                     var hadStat = statAttributes.TryGetPropertyValue(statName, out var oldStatVal);
+
                     statAttributes[statName] = statVal;
-                    GD.Print($"STAT CHANGED: {statName}: {(hadStat ? $"\n{oldStatVal}\n=>\n" : "")}{statVal}");
+
+                    var statValText = statVal.ToString();
+                    if (statValText.Length > 500)
+                        statValText = "[500+]";
+
+                    string oldStatValText = null;
+                    if (hadStat)
+                    {
+                        oldStatValText = oldStatVal.ToString();
+                        if (oldStatValText.Length > 500)
+                            oldStatValText = "[500+]";
+                    }
+                    if (printChanges)
+                        GD.Print($"STAT CHANGED: {statName}: {(hadStat ? $"\n{oldStatValText}\n=>\n" : "")}{statValText}");
                     OnStatChanged?.Invoke(statName);
                     OnStatsChanged?.Invoke();
+
                     break;
                 case "itemQuantityChanged":
                     targetItem = items[uuid];
-                    targetItem.SetQuantity(change["quantity"].GetValue<int>());
-                    GD.Print($"CHANGED (quantity): {uuid} ({targetItem})");
-                    targetItem.NotifyChanged();
-                    OnItemUpdated?.Invoke(targetItem);
+                    var oldQuantity = targetItem.quantity;
+                    targetItem.SetLocalQuantity(change["quantity"].GetValue<int>());
+                    if (printChanges)
+                        GD.Print($"CHANGED (quantity): {uuid} ({oldQuantity} => {targetItem.quantity})");
+                    itemsToNotify.Add(targetItem);
                     break;
                 case "itemAttrChanged":
                     targetItem = items[uuid];
+                    var oldValue = targetItem.attributes[change["attributeName"].ToString()]?.ToString();
                     targetItem.attributes[change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
-                    GD.Print($"CHANGED (attribute): {uuid}[{change["attributeName"]}] ({targetItem})");
-                    targetItem.NotifyChanged();
-                    OnItemUpdated?.Invoke(targetItem);
+                    if (printChanges)
+                        GD.Print($"CHANGED (attribute): {uuid}[{change["attributeName"]}] \n{oldValue}\n=>\n{change["attributeValue"]}");
+                    itemsToNotify.Add(targetItem);
                     break;
                 case "itemUpgraded":
                     //reassociates an item that was removed and readded as part of an upgrade
                     targetItem = items[uuid];
                     targetItem.Reassociate(change["newItemId"]?.ToString(), change["item"].AsObject());
-                    targetItem.NotifyChanged();
-                    OnItemUpdated?.Invoke(targetItem);
-                    OnItemReassociated?.Invoke(uuid, targetItem);
+                    if (printChanges)
+                        GD.Print($"UPGRADED: {items[uuid]}");
+                    itemsToNotify.Add(targetItem);
+                    reassociations.Add(uuid, targetItem);
                     break;
                 case "itemFullyChanged":
                     //autogenerated item changes
                     targetItem = items[uuid];
                     targetItem.SetRawData(change["item"].AsObject());
-                    GD.Print($"CHANGED (full): {uuid} ({targetItem})");
-                    targetItem.NotifyChanged();
-                    OnItemUpdated?.Invoke(targetItem);
+                    if (printChanges)
+                        GD.Print($"CHANGED (full): {targetItem}");
+                    itemsToNotify.Add(targetItem);
                     break;
             }
+        }
+        itemsToNotify.RemoveAll(i => itemsToIgnore.Contains(i));
+        foreach (var item in itemsToNotify)
+        {
+            if (printChanges)
+                GD.Print($"Notifying : {item.uuid}");
+            item.NotifyChanged();
+            OnItemUpdated?.Invoke(item);
+        }
+        foreach (var kvp in reassociations)
+        {
+            if (printChanges)
+                GD.Print($"Reassociating : {kvp.Key} => {kvp.Value.uuid}");
+            OnItemReassociated?.Invoke(kvp.Key, kvp.Value);
         }
     }
 }
@@ -1313,12 +1368,7 @@ public class GameItem
     public JsonObject customData { get; private set; } = new();
 
     public int quantity { get; private set; }
-    public void SetQuantity(int newQuant)
-    {
-        if (profile != null)
-            return;
-        quantity = newQuant;
-    }
+    public void SetLocalQuantity(int newQuant) =>  quantity = newQuant;
 
     public int TotalQuantity
     {

@@ -1,12 +1,12 @@
 using Godot;
-using System;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 
 public partial class LoginPopup : ModalWindow
 {
     [Export]
     CodeLoginLabel loginLabel;
+    [Export]
+    LineEdit exchangeCodeBox;
     [Export]
     Button confirmLoginButton;
 
@@ -26,6 +26,7 @@ public partial class LoginPopup : ModalWindow
     GameAccount loggedInAccount;
     async Task<GameAccount> OpenLoginPopupInst()
     {
+        exchangeCodeBox.Text = string.Empty;
         if (isActive)
             return null;
         isActive = true;
@@ -71,5 +72,14 @@ public partial class LoginPopup : ModalWindow
         using var _ = LoadingOverlay.CreateToken();
         await loggedInAccount.SaveDeviceDetails();
         isActive = false;
+    }
+
+    public async void AttemptExchange()
+    {
+        var exchangeCodeResponse = await GameClient.LoginWithExchangeCode(exchangeCodeBox.Text);
+        if (exchangeCodeResponse?["accountId"] is null)
+            return;
+        GameAccount.LoginToAccount(exchangeCodeResponse);
+        SetWindowOpen(false);
     }
 }
