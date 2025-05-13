@@ -1,51 +1,51 @@
 [gd_scene load_steps=33 format=3 uid="uid://4hei03rcfvmu"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/LlamaInterface.cs" id="1_n8h1q"]
+[ext_resource type="Script" uid="uid://4x8mjwjel8g5" path="res://Scripts/UserInterface/LlamaInterface.cs" id="1_n8h1q"]
 [ext_resource type="PackedScene" uid="uid://b0uxwtxndd6x3" path="res://Scenes/LlamaEntries/llama_offer_entry.tscn" id="2_eeobp"]
 [ext_resource type="PackedScene" uid="uid://bgn5vgsvgrb1u" path="res://Scenes/LlamaEntries/llama_item_entry.tscn" id="3_h03df"]
 [ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_large.tscn" id="4_1u5ij"]
 [ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="5_1nhqt"]
-[ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="5_bcyag"]
+[ext_resource type="Script" uid="uid://bm5sma44lxciv" path="res://Scripts/RefreshTimerHook.cs" id="5_bcyag"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="6_2af65"]
 [ext_resource type="AudioStream" uid="uid://cueximnj2vdji" path="res://Audio/SFX/UI/Appear/Fort_UI_RewardEarned_02.ogg" id="6_dm3r4"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="6_lypfg"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_wlhx3"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CardPackEntry.cs" id="8_4nkxo"]
-[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="8_ffqoy"]
-[ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="9_ayge5"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="9_cn6d8"]
+[ext_resource type="Script" uid="uid://cgtewrbm8ev7a" path="res://Scripts/UserInterface/ListEntries/CardPackEntry.cs" id="8_4nkxo"]
+[ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="8_ffqoy"]
+[ext_resource type="Script" uid="uid://cdjdgbb3ere1f" path="res://Scripts/Config/ConfigToggleHook.cs" id="9_ayge5"]
+[ext_resource type="Script" uid="uid://dbf8rsvamv77x" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="9_cn6d8"]
 [ext_resource type="Texture2D" uid="uid://bg8tqds2ynv72" path="res://Images/TextureResources/GradientShadow.tres" id="9_hb2ve"]
 [ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/MissionZoneBackgrounds/STWShop.png" id="9_hhjpb"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="9_ifcvm"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="10_qedio"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="10_qedio"]
 [ext_resource type="Texture2D" uid="uid://bs2rkwdm3joj1" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Caution_128.png" id="10_ub6nl"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="11_avnw0"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="11_hwug4"]
-[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="12_h8kct"]
-[ext_resource type="Shader" path="res://Shaders/LlamaPinata.gdshader" id="12_ntpn1"]
+[ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="12_h8kct"]
+[ext_resource type="Shader" uid="uid://dmt1xhf6kra1d" path="res://Shaders/LlamaPinata.gdshader" id="12_ntpn1"]
 [ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="13_wd2ux"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="14_ynnau"]
 [ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="15_rwvm7"]
 [ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="18_8e8fw"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="19_h7xtb"]
-[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="22_jia5b"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="19_h7xtb"]
+[ext_resource type="Script" uid="uid://b2rq4djulgv6m" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="22_jia5b"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osi5s"]
 shader = ExtResource("8_ffqoy")
 shader_parameter/ControlSize = Vector2(788, 720)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/UseCorners = true
-shader_parameter/UseGlobalCorners = null
-shader_parameter/ApplyCornersToFit = null
+shader_parameter/UseGlobalCorners = false
+shader_parameter/ApplyCornersToFit = false
 shader_parameter/CornerRadius = 10.0
-shader_parameter/ClipOOB = null
+shader_parameter/ClipOOB = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kno20"]
 resource_local_to_scene = true
 shader = ExtResource("12_ntpn1")
-shader_parameter/useMask = true
 shader_parameter/packIcon = ExtResource("13_wd2ux")
+shader_parameter/useMask = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sxpl1"]
 bg_color = Color(0.184314, 0.184314, 0.184314, 1)

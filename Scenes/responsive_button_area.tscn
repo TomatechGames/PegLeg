@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://xvc01jygcwse"]
 
-[ext_resource type="Script" path="res://Scripts/ResponsiveButtonArea.cs" id="1_3bhad"]
-[ext_resource type="Shader" path="res://Shaders/ButtonOutlineShader.gdshader" id="2_gilom"]
+[ext_resource type="Script" uid="uid://birwiuiks1yhp" path="res://Scripts/ResponsiveButtonArea.cs" id="1_3bhad"]
+[ext_resource type="Shader" uid="uid://c1cu5jabwr16n" path="res://Shaders/ButtonOutlineShader.gdshader" id="2_gilom"]
 [ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="3_8ncov"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_f4dwi"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_f4dwi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_133ye"]
 resource_local_to_scene = true

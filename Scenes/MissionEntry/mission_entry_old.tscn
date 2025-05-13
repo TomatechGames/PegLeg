@@ -1,7 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnnq6e5whn44s"]
-
-[ext_resource type="Texture2D" uid="uid://b57flomv1w1kn" path="res://External/Icons/Mission/T-Icon-4Player-RepairTheShelter-128.png" id="1_m6ejr"]
-[ext_resource type="Texture2D" uid="uid://caujuwshpcwuk" path="res://External/Icons/MissionModifiers/T-Icon-Modifier-CritReduction-Major-128.png" id="2_bdxom"]
+[gd_scene load_steps=7 format=3 uid="uid://bnnq6e5whn44s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dkl1b"]
 content_margin_right = 30.0
@@ -14,6 +11,18 @@ border_color = Color(1, 1, 1, 1)
 border_blend = true
 corner_radius_top_right = 25
 corner_detail = 1
+
+[sub_resource type="Resource" id="Resource_jh00y"]
+metadata/__load_path__ = "res://External/Icons/Mission/T-Icon-4Player-RepairTheShelter-128.png"
+
+[sub_resource type="Resource" id="Resource_y2dgf"]
+metadata/__load_path__ = "res://External/Icons/MissionModifiers/T-Icon-Modifier-CritReduction-Major-128.png"
+
+[sub_resource type="Resource" id="Resource_fgbjp"]
+metadata/__load_path__ = "res://External/Icons/MissionModifiers/T-Icon-Modifier-CritReduction-Major-128.png"
+
+[sub_resource type="Resource" id="Resource_7ihrv"]
+metadata/__load_path__ = "res://External/Icons/MissionModifiers/T-Icon-Modifier-CritReduction-Major-128.png"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dahw"]
 bg_color = Color(0.45098, 0.109804, 0, 1)
@@ -55,7 +64,7 @@ theme_override_constants/separation = 2
 [node name="TextureRect" type="TextureRect" parent="DetailContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
-texture = ExtResource("1_m6ejr")
+texture = SubResource("Resource_jh00y")
 expand_mode = 3
 stretch_mode = 5
 
@@ -88,7 +97,7 @@ theme_override_constants/separation = 0
 [node name="TextureRect" type="TextureRect" parent="DetailContainer/VBoxContainer/HBoxContainer/HBoxContainer/HBoxContainer/LimitedRewards/HBoxContainer"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
-texture = ExtResource("2_bdxom")
+texture = SubResource("Resource_y2dgf")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="DetailContainer/VBoxContainer/HBoxContainer/HBoxContainer/HBoxContainer/LimitedRewards/HBoxContainer"]
@@ -124,7 +133,7 @@ theme_override_constants/separation = 0
 [node name="TextureRect" type="TextureRect" parent="DetailContainer/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer/RepeatableRewards/HBoxContainer"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
-texture = ExtResource("2_bdxom")
+texture = SubResource("Resource_fgbjp")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="DetailContainer/VBoxContainer/HBoxContainer/HBoxContainer2/HBoxContainer/RepeatableRewards/HBoxContainer"]
@@ -155,7 +164,7 @@ theme_override_constants/separation = 0
 [node name="TextureRect" type="TextureRect" parent="DetailContainer/VBoxContainer/VBoxContainer/HBoxContainer3/Modifiers"]
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
-texture = ExtResource("2_bdxom")
+texture = SubResource("Resource_7ihrv")
 expand_mode = 1
 
 [node name="ColorRect" type="ColorRect" parent="DetailContainer/VBoxContainer/VBoxContainer/HBoxContainer3"]

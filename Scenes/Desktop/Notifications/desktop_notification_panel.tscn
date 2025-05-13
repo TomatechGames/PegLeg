@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bbslhgnstt07v"]
 
-[ext_resource type="Script" path="res://Scripts/Notifications/NotificationManager.cs" id="1_ruri7"]
+[ext_resource type="Script" uid="uid://c3t43g37cuefo" path="res://Scripts/Notifications/NotificationManager.cs" id="1_ruri7"]
 [ext_resource type="PackedScene" uid="uid://dsboqdh06riu4" path="res://Scenes/Desktop/Notifications/desktop_notification_instance.tscn" id="1_vu76j"]
 
 [node name="DesktopNotificationPanel" type="MarginContainer" node_paths=PackedStringArray("notifParent", "queueLabel")]

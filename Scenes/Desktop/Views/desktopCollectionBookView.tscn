@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://q7ic84srvgy5"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/TempCompendiumInterface.cs" id="1_bi7hy"]
-[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="2_eixj7"]
+[ext_resource type="Script" uid="uid://dnl1lptfobd1w" path="res://Scripts/UserInterface/TempCompendiumInterface.cs" id="1_bi7hy"]
+[ext_resource type="Script" uid="uid://gxtxnc3gl5tx" path="res://Scripts/UIElements/RecycleListContainer.cs" id="2_eixj7"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="2_pegwh"]
 [ext_resource type="PackedScene" uid="uid://cei68i5c1u3d1" path="res://Scenes/GameItemEntry/reward_entry_compendium.tscn" id="4_k5lnx"]
-[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_v321d"]
+[ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="4_v321d"]
 
 [node name="Compendium" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox", "loadingIcon")]
 anchors_preset = 15

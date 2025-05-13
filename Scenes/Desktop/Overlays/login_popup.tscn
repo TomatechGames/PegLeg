@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://cji2iyaxon6uv"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_3q6po"]
-[ext_resource type="Script" path="res://Scripts/CodeLoginLabel.cs" id="2_8s2bt"]
-[ext_resource type="Script" path="res://Scripts/Overlays/LoginPopup.cs" id="2_byygk"]
+[ext_resource type="Script" uid="uid://bflrpf336hbmc" path="res://Scripts/CodeLoginLabel.cs" id="2_8s2bt"]
+[ext_resource type="Script" uid="uid://co6jq50tgpbqc" path="res://Scripts/Overlays/LoginPopup.cs" id="2_byygk"]
 [ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="3_droq3"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="5_lc2bf"]
 

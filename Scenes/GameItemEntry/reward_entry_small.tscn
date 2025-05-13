@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://fcp6vypncmbj"]
 
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="1_sj0kl"]
-[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_0faev"]
+[ext_resource type="Shader" uid="uid://cy6bew7uegfyu" path="res://Shaders/RewardGameItem.gdshader" id="2_0faev"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_6jdye"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_2hchk"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_2hchk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_julx1"]
 resource_local_to_scene = true

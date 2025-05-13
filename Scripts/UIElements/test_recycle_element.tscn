@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bcop5fmp7fh1d"]
 
-[ext_resource type="Script" path="res://Scripts/UIElements/TestRecyclableElement.cs" id="1_lcdaq"]
+[ext_resource type="Script" uid="uid://5sw2kfq6fsm2" path="res://Scripts/UIElements/TestRecyclableElement.cs" id="1_lcdaq"]
 
 [node name="TestRecycleElement" type="ColorRect"]
 custom_minimum_size = Vector2(128, 128)

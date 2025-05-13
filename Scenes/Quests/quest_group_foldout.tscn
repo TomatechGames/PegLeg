@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bu88x28im6m6h"]
 
-[ext_resource type="Script" path="res://Scripts/UIElements/Foldout.cs" id="1_v5k1k"]
+[ext_resource type="Script" uid="uid://dgtplah32ni4y" path="res://Scripts/UIElements/Foldout.cs" id="1_v5k1k"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="5_p0h70"]
 [ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="6_he7va"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="6_kt57a"]

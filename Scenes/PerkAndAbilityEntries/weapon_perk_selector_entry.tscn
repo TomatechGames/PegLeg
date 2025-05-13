@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="1_dh4tg"]
 [ext_resource type="StyleBox" uid="uid://c2skfgtbdx32l" path="res://GodotThemes/Styleboxes/Light/LightBox.tres" id="1_e65vr"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/PerkEntry.cs" id="2_t8u73"]
+[ext_resource type="Script" uid="uid://dsefwi3qe51cu" path="res://Scripts/UserInterface/ListEntries/PerkEntry.cs" id="2_t8u73"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="3_8d8tg"]
 [ext_resource type="Texture2D" uid="uid://b7xndv3hrkxn6" path="res://Images/InterfaceIcons/T-Icon-Lock-64.png" id="4_i1bcj"]
 

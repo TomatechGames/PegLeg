@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dsboqdh06riu4"]
 
-[ext_resource type="Script" path="res://Scripts/Notifications/AnimatedNotificationEntry.cs" id="1_8chc8"]
+[ext_resource type="Script" uid="uid://00u833h1f8l" path="res://Scripts/Notifications/AnimatedNotificationEntry.cs" id="1_8chc8"]
 [ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="2_s2q2f"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="3_0pu27"]
 [ext_resource type="AudioStream" uid="uid://qiwfnfwjfwb4" path="res://Audio/SFX/UI/Notification/mission_update_mid.ogg" id="5_hd5bk"]

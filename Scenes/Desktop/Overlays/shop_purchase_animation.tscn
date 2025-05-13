@@ -2,16 +2,16 @@
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_f51aj"]
 [ext_resource type="AudioStream" uid="uid://db1iimlt7vmi7" path="res://Audio/SFX/Shop/store_purchaseitem_athena_01.ogg" id="2_hcda8"]
-[ext_resource type="Script" path="res://Scripts/Overlays/ShopPurchaseAnimation.cs" id="2_jxg4g"]
+[ext_resource type="Script" uid="uid://skbbrcg3v4d4" path="res://Scripts/Overlays/ShopPurchaseAnimation.cs" id="2_jxg4g"]
 [ext_resource type="Texture2D" uid="uid://by27usoarfre0" path="res://Images/InterfaceIcons/PegLegShoppingCartInside.png" id="2_x56qt"]
 [ext_resource type="PackedScene" uid="uid://x00u75ii63ly" path="res://Scenes/GameItemEntry/shop_purchase_anim_item_element.tscn" id="3_h11w1"]
 [ext_resource type="Texture2D" uid="uid://dgyw7mbhfodhy" path="res://Images/InterfaceIcons/PegLegShoppingCart.png" id="4_0gyrh"]
-[ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="5_8k3hh"]
+[ext_resource type="Shader" uid="uid://dy7q5y2jo0yox" path="res://Shaders/GlowSpin.gdshader" id="5_8k3hh"]
 [ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="6_1aa5w"]
-[ext_resource type="Shader" path="res://Shaders/AdvancedLabel.gdshader" id="6_abafb"]
+[ext_resource type="Shader" uid="uid://d1sgo64plh75x" path="res://Shaders/AdvancedLabel.gdshader" id="6_abafb"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="6_g43va"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_gi68h"]
-[ext_resource type="Shader" path="res://Shaders/AdaptiveShadow.gdshader" id="7_qlxkn"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="7_gi68h"]
+[ext_resource type="Shader" uid="uid://d3ugejtc242bp" path="res://Shaders/AdaptiveShadow.gdshader" id="7_qlxkn"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_v25rf"]
 shader = ExtResource("5_8k3hh")
@@ -36,7 +36,7 @@ shader_parameter/outlineColor = Color(0.3, 0.3, 0, 1)
 shader_parameter/gradientMask = Vector3(1, 0, 0)
 shader_parameter/gradientFrom = Color(1, 1, 1, 1)
 shader_parameter/gradientTo = Color(1, 1, 0.588235, 1)
-shader_parameter/gradientHorizontal = null
+shader_parameter/gradientHorizontal = false
 
 [node name="ShopPurchaseAnimation" instance=ExtResource("1_f51aj")]
 offset_left = 0.0

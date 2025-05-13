@@ -1,21 +1,21 @@
 [gd_scene load_steps=60 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
-[ext_resource type="Script" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
-[ext_resource type="Script" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_db3cl"]
-[ext_resource type="Script" path="res://Scripts/ContextMenu/GameItemContextMenu.cs" id="2_qb31u"]
-[ext_resource type="Script" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
+[ext_resource type="Script" uid="uid://b6cj12kg8rwbh" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
+[ext_resource type="Script" uid="uid://dvt4k5o8may3h" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_db3cl"]
+[ext_resource type="Script" uid="uid://doe336j3bmbcf" path="res://Scripts/ContextMenu/GameItemContextMenu.cs" id="2_qb31u"]
+[ext_resource type="Script" uid="uid://c2hxn6v6r3mvf" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
 [ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
-[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="4_xvc4b"]
-[ext_resource type="Script" path="res://Scripts/RefreshTimerController.cs" id="5_hp28w"]
-[ext_resource type="Script" path="res://Scripts/ThemeController.cs" id="6_hvr66"]
-[ext_resource type="Script" path="res://Scripts/UIElements/TooltipFixer.cs" id="7_i8x0x"]
+[ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="4_xvc4b"]
+[ext_resource type="Script" uid="uid://b3iwjw1wn5hoe" path="res://Scripts/RefreshTimerController.cs" id="5_hp28w"]
+[ext_resource type="Script" uid="uid://dibhuhscalt6l" path="res://Scripts/ThemeController.cs" id="6_hvr66"]
+[ext_resource type="Script" uid="uid://cmqvrwj5exg33" path="res://Scripts/UIElements/TooltipFixer.cs" id="7_i8x0x"]
 [ext_resource type="PackedScene" uid="uid://bsbgxpgoycn6r" path="res://Scenes/Desktop/desktopTooltip.tscn" id="8_2iux3"]
-[ext_resource type="Script" path="res://Scripts/TrayIcon.cs" id="10_t6a4k"]
+[ext_resource type="Script" uid="uid://c24lmsr7knt32" path="res://Scripts/TrayIcon.cs" id="10_t6a4k"]
 [ext_resource type="PackedScene" uid="uid://bqp7ax1fjc306" path="res://Scenes/Desktop/Views/desktopDashboardView.tscn" id="10_xfiw1"]
 [ext_resource type="PackedScene" uid="uid://udk47ipcpsbq" path="res://Scenes/Desktop/Views/desktopInventoryView.tscn" id="13_yfdoy"]
 [ext_resource type="PackedScene" uid="uid://cjge5ubc1hppf" path="res://Scenes/Desktop/Views/desktopBackpackView.tscn" id="15_dlrdq"]
-[ext_resource type="Script" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
+[ext_resource type="Script" uid="uid://cu5f8smruq3v0" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="16_rir5i"]
 [ext_resource type="Texture2D" uid="uid://d1718pgqaawqn" path="res://Images/InterfaceIcons/T_Ui_Elastic_NoColor.png" id="20_k0gyk"]
 [ext_resource type="PackedScene" uid="uid://c78gt6b2m1utg" path="res://Scenes/Desktop/Views/desktopMissionView.tscn" id="22_qlkcq"]
@@ -27,10 +27,10 @@
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="26_2ue8b"]
 [ext_resource type="PackedScene" uid="uid://c6ftxiyts6lrg" path="res://Scenes/Desktop/Views/desktopItemShopView.tscn" id="26_fltvm"]
 [ext_resource type="PackedScene" uid="uid://53fn442ut5dy" path="res://Scenes/Desktop/Overlays/mission_viewer.tscn" id="26_fna7y"]
-[ext_resource type="Shader" path="res://Shaders/CircleBaseMask.gdshader" id="26_jn02y"]
+[ext_resource type="Shader" uid="uid://17ec5ugjn0qv" path="res://Shaders/CircleBaseMask.gdshader" id="26_jn02y"]
 [ext_resource type="PackedScene" uid="uid://b2k3opkacmxbr" path="res://Scenes/Desktop/Overlays/account_switcher.tscn" id="26_xb41w"]
 [ext_resource type="PackedScene" uid="uid://d6pm7vs0s7ta" path="res://Scenes/Desktop/Views/desktopCosmeticShopView.tscn" id="27_5ey2a"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameAccountEntry.cs" id="27_a331l"]
+[ext_resource type="Script" uid="uid://dvgcv52c2ve0w" path="res://Scripts/UserInterface/ListEntries/GameAccountEntry.cs" id="27_a331l"]
 [ext_resource type="Texture2D" uid="uid://cj7awxlqm1to2" path="res://Images/InterfaceIcons/T_UI_Icon_Sidebar_OnlinePlayers.png" id="28_chpxd"]
 [ext_resource type="Texture2D" uid="uid://cjtv2aa84wwwr" path="res://Images/InterfaceIcons/T_Icon_Spray_Adjustments_Tab_128.png" id="28_p4icb"]
 [ext_resource type="PackedScene" uid="uid://cochrwi38s2xb" path="res://Scenes/Desktop/Views/desktopQuestGroupListView.tscn" id="28_rt2uq"]
@@ -42,17 +42,17 @@
 [ext_resource type="Texture2D" uid="uid://ctiwn7uwikijd" path="res://Images/InterfaceIcons/PegLegIcon256.png" id="37_5b0rm"]
 [ext_resource type="PackedScene" uid="uid://b5elx1mhn5ahk" path="res://Scenes/Desktop/Overlays/card_pack_opener_window.tscn" id="41_alhak"]
 [ext_resource type="PackedScene" uid="uid://cji2iyaxon6uv" path="res://Scenes/Desktop/Overlays/login_popup.tscn" id="41_kf5nt"]
-[ext_resource type="Script" path="res://Scripts/HomebasePowerLevel.cs" id="44_3p6h5"]
+[ext_resource type="Script" uid="uid://cld6m7s42cv6q" path="res://Scripts/HomebasePowerLevel.cs" id="44_3p6h5"]
 [ext_resource type="PackedScene" uid="uid://cvc7hj4ng7c04" path="res://Scenes/Desktop/Overlays/game_item_selector.tscn" id="44_m211x"]
 [ext_resource type="PackedScene" uid="uid://outqvmv6p0pm" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_line_edit_window.tscn" id="45_vujc8"]
 [ext_resource type="PackedScene" uid="uid://2okdom0nii2b" path="res://Scenes/Desktop/Overlays/GenericWindows/generic_confirmation_window.tscn" id="46_fbpme"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="47_6bd6x"]
-[ext_resource type="Script" path="res://Scripts/CurtainOpener.cs" id="50_2a2nn"]
+[ext_resource type="Script" uid="uid://dbi4mg37e4bvq" path="res://Scripts/CurtainOpener.cs" id="50_2a2nn"]
 [ext_resource type="Texture2D" uid="uid://b206b4woetnac" path="res://Images/InterfaceIcons/T-Stars-Full-M.png" id="51_bse6w"]
-[ext_resource type="Shader" path="res://Shaders/OnboardingCurtain.gdshader" id="51_jeshi"]
+[ext_resource type="Shader" uid="uid://tr0f3tuiuk55" path="res://Shaders/OnboardingCurtain.gdshader" id="51_jeshi"]
 [ext_resource type="Texture2D" uid="uid://cnsm2pu2yise4" path="res://Images/InterfaceIcons/T-Stars-Upgrade-M.png" id="52_kn6t0"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="52_pam8h"]
-[ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="58_7yvd6"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="52_pam8h"]
+[ext_resource type="Script" uid="uid://dm71w4vxgja3" path="res://Scripts/Config/VolumeHook.cs" id="58_7yvd6"]
 [ext_resource type="PackedScene" uid="uid://dpd06j33s360w" path="res://Scenes/Desktop/Overlays/shop_purchase_animation.tscn" id="96_2bhmt"]
 [ext_resource type="PackedScene" uid="uid://dt403r6613tos" path="res://Scenes/Desktop/Overlays/settings_window.tscn" id="99_hfy7e"]
 
@@ -60,12 +60,12 @@
 shader = ExtResource("4_xvc4b")
 shader_parameter/ControlSize = Vector2(1280, 720)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/UseCorners = true
 shader_parameter/UseGlobalCorners = true
-shader_parameter/ApplyCornersToFit = null
+shader_parameter/ApplyCornersToFit = false
 shader_parameter/CornerRadius = 10.0
-shader_parameter/ClipOOB = null
+shader_parameter/ClipOOB = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7h2tb"]
 shader = ExtResource("26_jn02y")

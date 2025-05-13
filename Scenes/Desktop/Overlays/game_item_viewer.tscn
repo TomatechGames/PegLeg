@@ -1,6 +1,6 @@
 [gd_scene load_steps=56 format=3 uid="uid://buf6p8qyydofm"]
 
-[ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/GameItemViewer.cs" id="1_5fxot"]
+[ext_resource type="Script" uid="uid://vil6mmu5pyy3" path="res://Scripts/Overlays/GameItemViewer/GameItemViewer.cs" id="1_5fxot"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_croo3"]
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_iqrw2"]
 [ext_resource type="PackedScene" uid="uid://be5lic7x1too2" path="res://Scenes/PerkAndAbilityEntries/weapon_perk_selector_entry.tscn" id="2_t0h0p"]
@@ -8,25 +8,25 @@
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_fwu0d"]
 [ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_large.tscn" id="4_3eqpi"]
 [ext_resource type="PackedScene" uid="uid://dqjthg7kvcf2m" path="res://Scenes/power_level_indicator.tscn" id="6_kpnbe"]
-[ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/PerkViewer.cs" id="7_14t7q"]
+[ext_resource type="Script" uid="uid://dw6lwakpu0oka" path="res://Scripts/Overlays/GameItemViewer/PerkViewer.cs" id="7_14t7q"]
 [ext_resource type="StyleBox" uid="uid://c2skfgtbdx32l" path="res://GodotThemes/Styleboxes/Light/LightBox.tres" id="8_70ac8"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="10_c8yg2"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="10_c8yg2"]
 [ext_resource type="PackedScene" uid="uid://cb15vvccjgrdk" path="res://Scenes/PerkAndAbilityEntries/hero_ability_entry.tscn" id="11_bxa5o"]
 [ext_resource type="PackedScene" uid="uid://bgyk3guex13ch" path="res://Scenes/PerkAndAbilityEntries/hero_perk_entry.tscn" id="12_pygth"]
-[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="14_6bwx2"]
+[ext_resource type="Shader" uid="uid://cy6bew7uegfyu" path="res://Shaders/RewardGameItem.gdshader" id="14_6bwx2"]
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="15_8sk0j"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="15_pox86"]
 [ext_resource type="Texture2D" uid="uid://dnqbqca02sqwq" path="res://Images/InterfaceIcons/T-Pattern-OrArrow-128.png" id="16_3ck4t"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="17_5dqmp"]
 [ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="18_4mdgc"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="18_vptf0"]
-[ext_resource type="Script" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="19_gnbdk"]
-[ext_resource type="Script" path="res://Scripts/Overlays/GameItemViewer/GameItemUpgrader.cs" id="19_kk5po"]
+[ext_resource type="Script" uid="uid://dbf8rsvamv77x" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="18_vptf0"]
+[ext_resource type="Script" uid="uid://b2rq4djulgv6m" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="19_gnbdk"]
+[ext_resource type="Script" uid="uid://ddyudnu605xw2" path="res://Scripts/Overlays/GameItemViewer/GameItemUpgrader.cs" id="19_kk5po"]
 [ext_resource type="Texture2D" uid="uid://docjdjoems0ia" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Black-L.png" id="20_iom1u"]
 [ext_resource type="Texture2D" uid="uid://xcnetq4h582o" path="res://Images/TextureResources/BlankTexture.tres" id="20_nu85e"]
-[ext_resource type="Shader" path="res://Shaders/UpgradeBarShader.gdshader" id="21_t6pm5"]
+[ext_resource type="Shader" uid="uid://c7bkre6g0tn1b" path="res://Shaders/UpgradeBarShader.gdshader" id="21_t6pm5"]
 [ext_resource type="Texture2D" uid="uid://cubygayq8llga" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Red-L.png" id="21_t7ylf"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="22_bdxh4"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="22_bdxh4"]
 [ext_resource type="Texture2D" uid="uid://b7y8nqn6v3jrq" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Metal-Obsidian-L.png" id="22_dl36k"]
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="22_jjr7p"]
 [ext_resource type="Texture2D" uid="uid://d8v0v7pbda3c" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Metal-Brightcore-L.png" id="23_avs1q"]
@@ -212,6 +212,7 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b67fw"]
 shader = ExtResource("21_t6pm5")
+shader_parameter/TrianglePattern = ExtResource("22_jjr7p")
 shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/CornerRadius = 9.0
@@ -224,7 +225,6 @@ shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
 shader_parameter/time = 1.578
-shader_parameter/TrianglePattern = ExtResource("22_jjr7p")
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
 offsets = PackedFloat32Array(0.681199, 0.746594, 0.809264, 0.959044)

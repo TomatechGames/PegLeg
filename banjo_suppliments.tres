@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BanjoSuppliments" load_steps=72 format=3 uid="uid://b54qi542h2qhh"]
 
 [ext_resource type="Texture2D" uid="uid://dyjbukdhiuqef" path="res://Images/BanjoSuppliments/AmmoIcons/T-Icon-Shell-128.png" id="1_85x12"]
-[ext_resource type="Script" path="res://Scripts/CustomResources/BanjoSuppliments.cs" id="1_jb5ck"]
+[ext_resource type="Script" uid="uid://b6l0f6dtcedg" path="res://Scripts/CustomResources/BanjoSuppliments.cs" id="1_jb5ck"]
 [ext_resource type="Texture2D" uid="uid://co52wpbg36ix7" path="res://Images/BanjoSuppliments/AmmoIcons/T-Icon-Ammo-Light-128.png" id="2_5adae"]
 [ext_resource type="Texture2D" uid="uid://copvjm4v6mal8" path="res://Images/BanjoSuppliments/AmmoIcons/T-Icon-Ammo-Medium-128.png" id="3_kasej"]
 [ext_resource type="Texture2D" uid="uid://fbf16dc8wbhu" path="res://Images/BanjoSuppliments/AmmoIcons/T-Icon-Ammo-Heavy-128.png" id="4_6pafg"]
@@ -74,7 +74,7 @@
 
 [resource]
 script = ExtResource("1_jb5ck")
-ItemTypeAndSubtypeIcons = {
+ItemTypeAndSubtypeIcons = Dictionary[String, Texture2D]({
 "Assault": ExtResource("15_bfwst"),
 "Assault Defender": ExtResource("38_ldcsn"),
 "Axe": ExtResource("21_ingvn"),
@@ -111,16 +111,16 @@ ItemTypeAndSubtypeIcons = {
 "Trainer": ExtResource("34_x47xo"),
 "Trap": ExtResource("9_6bbkx"),
 "Wall": ExtResource("35_qlqgu")
-}
-AmmoIcons = {
+})
+AmmoIcons = Dictionary[String, Texture2D]({
 "Energy Cell": ExtResource("6_fm2f3"),
 "Explosive": ExtResource("5_k6hb1"),
 "Heavy Bullets": ExtResource("4_6pafg"),
 "Light Bullets": ExtResource("2_5adae"),
 "Medium Bullets": ExtResource("3_kasej"),
 "Shells 'n' Slugs": ExtResource("1_85x12")
-}
-SquadIcons = {
+})
+SquadIcons = Dictionary[String, Texture2D]({
 "Doctor": ExtResource("15_gjcd8"),
 "Engineer": ExtResource("21_cahnh"),
 "Explorer": ExtResource("19_88qyy"),
@@ -129,8 +129,8 @@ SquadIcons = {
 "Marksman": ExtResource("17_3a5ji"),
 "MartialArtist": ExtResource("18_fml83"),
 "Trainer": ExtResource("16_wye61")
-}
-SquadFortIcons = {
+})
+SquadFortIcons = Dictionary[String, Texture2D]({
 "Doctor": ExtResource("23_jn0cw"),
 "Engineer": ExtResource("25_vkikc"),
 "Explorer": ExtResource("24_jsxyy"),
@@ -139,8 +139,8 @@ SquadFortIcons = {
 "Marksman": ExtResource("24_56tcb"),
 "MartialArtist": ExtResource("24_56tcb"),
 "Trainer": ExtResource("23_jn0cw")
-}
-PersonalityIcons = {
+})
+PersonalityIcons = Dictionary[String, Texture2D]({
 "IsAdventurous": ExtResource("7_fb7a3"),
 "IsAnalytical": ExtResource("8_l8671"),
 "IsCompetitive": ExtResource("9_wbt7l"),
@@ -149,8 +149,8 @@ PersonalityIcons = {
 "IsDependable": ExtResource("12_s4fto"),
 "IsDreamer": ExtResource("13_tccle"),
 "IsPragmatic": ExtResource("14_5taq3")
-}
-SetBonusIcons = {
+})
+SetBonusIcons = Dictionary[String, Texture2D]({
 "IsAbilityDamageLow": ExtResource("19_nv50p"),
 "IsFortitudeLow": ExtResource("20_576gh"),
 "IsMaxHealthHigh": ExtResource("20_576gh"),
@@ -161,8 +161,8 @@ SetBonusIcons = {
 "IsShieldRegenLow": ExtResource("22_i57hf"),
 "IsTrapDamageLow": ExtResource("15_pkl1i"),
 "IsTrapDurabilityHigh": ExtResource("18_1dmhy")
-}
-SynergyToSquadId = {
+})
+SynergyToSquadId = Dictionary[String, String]({
 "Doctor": "squad_attribute_medicine_emtsquad",
 "Engineer": "squad_attribute_synthesis_corpsofengineering",
 "Explorer": "squad_attribute_scavenging_scoutingparty",
@@ -171,8 +171,8 @@ SynergyToSquadId = {
 "Marksman": "squad_attribute_arms_fireteamalpha",
 "MartialArtist": "squad_attribute_arms_closeassaultsquad",
 "Trainer": "squad_attribute_medicine_trainingteam"
-}
-SquadNames = {
+})
+SquadNames = Dictionary[String, String]({
 "Doctor": "EMT Squad",
 "Engineer": "Corps of Engineering",
 "Explorer": "Scouting Party",
@@ -181,4 +181,4 @@ SquadNames = {
 "Marksman": "Fire Team",
 "MartialArtist": "Close Assault Squad",
 "Trainer": "Training Team"
-}
+})

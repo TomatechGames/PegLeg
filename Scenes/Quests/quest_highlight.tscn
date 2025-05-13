@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://31ck1j8euqq7"]
 
-[ext_resource type="Script" path="res://Scripts/Quests/QuestHighlight.cs" id="1_hvd2p"]
+[ext_resource type="Script" uid="uid://c3h4smd3bmyqi" path="res://Scripts/Quests/QuestHighlight.cs" id="1_hvd2p"]
 [ext_resource type="Texture2D" uid="uid://c0n3kv5onb5c2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Hero-PromotionCurrency-L.png" id="1_pef3f"]
 [ext_resource type="Texture2D" uid="uid://dlbasrvn2ilmd" path="res://Images/TextureResources/progress-wheel.tres" id="2_7husn"]
 [ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="3_k5n5p"]

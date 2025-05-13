@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://cnerbcrevhc7w"]
 
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="1_3peps"]
-[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="1_23qqt"]
-[ext_resource type="Script" path="res://Scripts/ItemTierDisplay.cs" id="2_syipb"]
+[ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="1_23qqt"]
+[ext_resource type="Script" uid="uid://di06wvvqgj620" path="res://Scripts/ItemTierDisplay.cs" id="2_syipb"]
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="2_vb4bp"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="3_38f6u"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="3_38f6u"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="3_l5ld5"]
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="4_3grrh"]
 [ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="5_oebh3"]
@@ -17,10 +17,10 @@ shader_parameter/ControlSize = Vector2(544, 32)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = true
 shader_parameter/UseCorners = true
-shader_parameter/UseGlobalCorners = null
-shader_parameter/ApplyCornersToFit = null
+shader_parameter/UseGlobalCorners = false
+shader_parameter/ApplyCornersToFit = false
 shader_parameter/CornerRadius = 5.0
-shader_parameter/ClipOOB = null
+shader_parameter/ClipOOB = false
 
 [node name="SupportHero" type="MarginContainer"]
 

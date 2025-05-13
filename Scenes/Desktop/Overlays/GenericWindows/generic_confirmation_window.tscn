@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://2okdom0nii2b"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_8rk17"]
-[ext_resource type="Script" path="res://Scripts/Overlays/GenericWindows/GenericConfirmationWindow.cs" id="2_xtj6o"]
+[ext_resource type="Script" uid="uid://hbr5mgk8mqsh" path="res://Scripts/Overlays/GenericWindows/GenericConfirmationWindow.cs" id="2_xtj6o"]
 [ext_resource type="StyleBox" uid="uid://0tj4whr53nxd" path="res://GodotThemes/Styleboxes/WindowBGTransparant.tres" id="3_26egw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k6l75"]

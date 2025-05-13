@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://76mx3dxck070"]
 
-[ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="1_d3dh0"]
+[ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="1_d3dh0"]
 [ext_resource type="Texture2D" uid="uid://dlbasrvn2ilmd" path="res://Images/TextureResources/progress-wheel.tres" id="1_d4oea"]
 [ext_resource type="Texture2D" uid="uid://dhv0msu3x04at" path="res://Images/InterfaceIcons/LoadingIconV2/PegLegLoadingWheelRenderSmall.png" id="2_3631g"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="3_heheh"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="3_heheh"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_x2uyv"]
 shader = ExtResource("1_d3dh0")
@@ -12,9 +12,10 @@ shader_parameter/SliceAmount = Vector2(10, 10)
 shader_parameter/FPS = 30.0
 shader_parameter/CellCount = 0
 shader_parameter/Fit = true
-shader_parameter/Repeat = null
-shader_parameter/HorizontalMask = null
-shader_parameter/VerticalMask = null
+shader_parameter/Repeat = false
+shader_parameter/HorizontalMask = 0.0
+shader_parameter/VerticalMask = 0.0
+shader_parameter/Frame = -1
 
 [node name="LoadingIcon" type="TextureProgressBar"]
 custom_minimum_size = Vector2(300, 300)

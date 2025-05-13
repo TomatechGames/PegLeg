@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://4cmc4075yf4i"]
 
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="1_7nwdj"]
-[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_d7op8"]
+[ext_resource type="Shader" uid="uid://cy6bew7uegfyu" path="res://Shaders/RewardGameItem.gdshader" id="2_d7op8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_67ml0"]
 resource_local_to_scene = true

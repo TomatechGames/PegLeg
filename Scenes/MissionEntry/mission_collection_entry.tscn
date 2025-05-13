@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bekssnfes28vf"]
 
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="1_fam8x"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_qnyc5"]
+[ext_resource type="Script" uid="uid://xl6hodssfg7i" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_qnyc5"]
 [ext_resource type="PackedScene" uid="uid://dbrrcnce14w8h" path="res://Scenes/GameItemEntry/mission_collection_highlight_item.tscn" id="2_8t80l"]
 
 [node name="MissionCollectionEntry" type="MarginContainer" node_paths=PackedStringArray("highlightedRewardParent")]

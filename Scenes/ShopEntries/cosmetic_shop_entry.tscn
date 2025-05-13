@@ -1,19 +1,19 @@
 [gd_scene load_steps=27 format=3 uid="uid://khtmsxilpw3n"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopOfferEntry.cs" id="1_a2plt"]
+[ext_resource type="Script" uid="uid://b3dwgyqw1ptf1" path="res://Scripts/UserInterface/ListEntries/CosmeticShopOfferEntry.cs" id="1_a2plt"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="2_655vb"]
 [ext_resource type="Texture2D" uid="uid://cs86xfdq8mxiw" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Disconnected_128.png" id="2_ydd6l"]
 [ext_resource type="Texture2D" uid="uid://chrwn7nsdg50k" path="res://Images/InterfaceIcons/DefaultCosmeticGradient.tres" id="3_8yx3v"]
 [ext_resource type="Texture2D" uid="uid://bite5sw5cyx0l" path="res://Images/InterfaceIcons/T-Items-MTX.png" id="4_dvpr2"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_4aip3"]
 [ext_resource type="PackedScene" uid="uid://bnbph4c6t2sui" path="res://Scenes/cosmetic_loading_icon.tscn" id="5_5xuyv"]
-[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="6_x3vll"]
-[ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="6_yu1fs"]
+[ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="6_x3vll"]
+[ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="6_yu1fs"]
 [ext_resource type="Texture2D" uid="uid://1ixqc8hojkjr" path="res://Images/InterfaceIcons/o5hq54xvrat91.jpg" id="7_2gaoe"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_yjpnu"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="7_yjpnu"]
 [ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="9_7kwsg"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="11_wpcy6"]
-[ext_resource type="Script" path="res://Scripts/ContextMenu/ContextMenuHook.cs" id="12_am3j1"]
+[ext_resource type="Script" uid="uid://cti7ijxybv3iw" path="res://Scripts/ContextMenu/ContextMenuHook.cs" id="12_am3j1"]
 [ext_resource type="Texture2D" uid="uid://bwn62my2lt8k" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Calendar_128.png" id="14_n2okj"]
 [ext_resource type="Texture2D" uid="uid://bt2w7fddx2cn3" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_UpArrow_128.png" id="16_4iqq1"]
 
@@ -33,7 +33,7 @@ shader_parameter/ControlSize = Vector2(150, 150)
 shader_parameter/ShiftDirection = Vector2(0.5, 0)
 shader_parameter/Fit = true
 shader_parameter/UseCorners = true
-shader_parameter/UseGlobalCorners = null
+shader_parameter/UseGlobalCorners = false
 shader_parameter/ApplyCornersToFit = true
 shader_parameter/CornerRadius = 10.0
 shader_parameter/ClipOOB = true
@@ -46,9 +46,9 @@ shader_parameter/SliceAmount = Vector2(8, 8)
 shader_parameter/FPS = 24.0
 shader_parameter/CellCount = -4
 shader_parameter/Fit = true
-shader_parameter/Repeat = null
-shader_parameter/HorizontalMask = null
-shader_parameter/VerticalMask = null
+shader_parameter/Repeat = false
+shader_parameter/HorizontalMask = 0.0
+shader_parameter/VerticalMask = 0.0
 shader_parameter/Frame = -1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b2nlk"]

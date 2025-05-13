@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://vbwmvwysxdh2" path="res://Shaders/QuestArrows.tres" id="1_ei87d"]
 [ext_resource type="Texture2D" uid="uid://cwxenftivgutm" path="res://Images/InterfaceIcons/questArrows.png" id="2_jgvbw"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="2_ocrat"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="2_ocrat"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_034mf"]
 resource_local_to_scene = true

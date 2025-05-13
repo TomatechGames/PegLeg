@@ -1,21 +1,21 @@
 [gd_scene load_steps=20 format=3 uid="uid://udk47ipcpsbq"]
 
-[ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="1_cq0hx"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/InventoryInterface.cs" id="1_ix0kh"]
+[ext_resource type="Script" uid="uid://culat840voiin" path="res://Scripts/UIElements/VirtualTabBar.cs" id="1_cq0hx"]
+[ext_resource type="Script" uid="uid://71bid6ulu5rx" path="res://Scripts/UserInterface/InventoryInterface.cs" id="1_ix0kh"]
 [ext_resource type="StyleBox" uid="uid://cg5f2hwe5io65" path="res://GodotThemes/Styleboxes/CheckButton/CheckContainer.tres" id="2_ytjya"]
 [ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_jwnrv"]
 [ext_resource type="Texture2D" uid="uid://cir0axuy4xjte" path="res://Images/InterfaceIcons/T_OpenGlow.png" id="3_l2jv4"]
 [ext_resource type="Texture2D" uid="uid://frsfbmj2qyxu" path="res://Images/InterfaceIcons/T_Icon_FavoriteTab_64.png" id="4_incdt"]
-[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="4_q3ge8"]
+[ext_resource type="Script" uid="uid://gxtxnc3gl5tx" path="res://Scripts/UIElements/RecycleListContainer.cs" id="4_q3ge8"]
 [ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="5_e3p2l"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="5_g4jqb"]
 [ext_resource type="Texture2D" uid="uid://boywmwfvrbmwp" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Cogs_128.png" id="6_6h6v6"]
-[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="6_a3sqn"]
+[ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="6_a3sqn"]
 [ext_resource type="Texture2D" uid="uid://brswo336i1src" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01.png" id="8_5rj62"]
 [ext_resource type="Texture2D" uid="uid://bufu4bggy6lrs" path="res://Images/InterfaceIcons/T-Icon-Defenders_-CARD.png" id="9_my6h5"]
 [ext_resource type="Texture2D" uid="uid://dw4n1jlpyogxw" path="res://Images/InterfaceIcons/T-Icon-Nav-Squad-128.png" id="10_17ihq"]
 [ext_resource type="PackedScene" uid="uid://ch7kqyndhfgvs" path="res://Scenes/GameItemEntry/inventory_entry_large.tscn" id="13_qaoj0"]
-[ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="16_45lr4"]
+[ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="16_45lr4"]
 [ext_resource type="Texture2D" uid="uid://b068tdyuivkmu" path="res://Images/ContentCreators/ArcherDanceSheet4.png" id="17_uggwr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k64ed"]
@@ -23,11 +23,12 @@ shader = ExtResource("16_45lr4")
 shader_parameter/ControlSize = Vector2(100, 100)
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/FPS = 25.0
-shader_parameter/CellCount = null
-shader_parameter/Fit = null
-shader_parameter/Repeat = null
-shader_parameter/HorizontalMask = null
-shader_parameter/VerticalMask = null
+shader_parameter/CellCount = 0
+shader_parameter/Fit = false
+shader_parameter/Repeat = false
+shader_parameter/HorizontalMask = 0.0
+shader_parameter/VerticalMask = 0.0
+shader_parameter/Frame = -1
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_xh1u0"]
 resource_name = "InventoryTypeFilter"

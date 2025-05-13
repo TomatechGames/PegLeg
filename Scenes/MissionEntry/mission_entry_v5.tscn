@@ -1,9 +1,9 @@
 [gd_scene load_steps=16 format=3 uid="uid://dd5q64xdgxtxp"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_qqdn1"]
+[ext_resource type="Script" uid="uid://xl6hodssfg7i" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="1_qqdn1"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="2_0xdrf"]
 [ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="2_bhxmy"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_33f1f"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_33f1f"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_v6ev0"]
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="5_hktn8"]
 [ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="6_tr4nm"]
@@ -16,7 +16,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_drqcc"]
 shader = ExtResource("2_0xdrf")
 shader_parameter/ControlSize = Vector2(280, 125)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 5.0

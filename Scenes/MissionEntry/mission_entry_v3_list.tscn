@@ -1,11 +1,11 @@
 [gd_scene load_steps=16 format=3 uid="uid://cggedl5b1a4h"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_cv1mc"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="2_oopl8"]
+[ext_resource type="Script" uid="uid://xl6hodssfg7i" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="2_oopl8"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="3_srxa7"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_3tghm"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_fx7us"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_mv5nm"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="5_mv5nm"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="6_4k6gs"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="8_6tlrj"]
 [ext_resource type="PackedScene" uid="uid://cabjtbslcfikw" path="res://Scenes/GameItemEntry/old/mission_reward_entry_list.tscn" id="8_vhh2j"]
@@ -16,7 +16,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wbodm"]
 shader = ExtResource("3_srxa7")
 shader_parameter/ControlSize = Vector2(1050, 95)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 5.0

@@ -1,10 +1,10 @@
 [gd_scene load_steps=14 format=3 uid="uid://bsbgxpgoycn6r"]
 
-[ext_resource type="Script" path="res://Scripts/UIElements/CustomTooltip.cs" id="1_a0dpu"]
+[ext_resource type="Script" uid="uid://bopbvms3knj0g" path="res://Scripts/UIElements/CustomTooltip.cs" id="1_a0dpu"]
 [ext_resource type="Texture2D" uid="uid://bg8tqds2ynv72" path="res://Images/TextureResources/GradientShadow.tres" id="1_n7kv3"]
-[ext_resource type="Shader" path="res://Shaders/TooltipBanner.gdshader" id="3_5ou8i"]
+[ext_resource type="Shader" uid="uid://dce730t3jxekt" path="res://Shaders/TooltipBanner.gdshader" id="3_5ou8i"]
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="4_68qyt"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_cw7hj"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_cw7hj"]
 [ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="5_cnlgh"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="5_hwtg6"]
 [ext_resource type="Texture2D" uid="uid://jipvjhedh7jy" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Epic-L.png" id="6_w7lr4"]
@@ -15,13 +15,13 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_642tc"]
 shader = ExtResource("3_5ou8i")
+shader_parameter/TrianglePattern = ExtResource("4_68qyt")
 shader_parameter/ControlSize = Vector2(0, 32)
 shader_parameter/ShiftDirection = Vector2(0, 0.5)
 shader_parameter/CornerRadius = 4.0
 shader_parameter/ColorMode = true
 shader_parameter/Color = Color(0, 1, 1, 1)
 shader_parameter/time = 51.308
-shader_parameter/TrianglePattern = ExtResource("4_68qyt")
 
 [node name="Tooltip" type="MarginContainer" node_paths=PackedStringArray("titleContent", "titleBanner", "titleTextLabel", "titleQuantityLayout", "titleQuantityLabel", "descriptionContent", "descriptionLayers", "imageContent")]
 offset_top = 1.0

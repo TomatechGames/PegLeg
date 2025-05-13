@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://di7sji85prg2e"]
 
-[ext_resource type="Shader" path="res://Shaders/CardpackRenderer.gdshader" id="1_v5ddb"]
-[ext_resource type="Script" path="res://Scripts/CardPackTilter.cs" id="1_vygss"]
+[ext_resource type="Shader" uid="uid://c07n3w3xu2vac" path="res://Shaders/CardpackRenderer.gdshader" id="1_v5ddb"]
+[ext_resource type="Script" uid="uid://cshksq1s0k56l" path="res://Scripts/CardPackTilter.cs" id="1_vygss"]
 [ext_resource type="Texture2D" uid="uid://furde0e0enip" path="res://Images/Llamas/PinataGold.png" id="2_etlm7"]
 
 [sub_resource type="Gradient" id="Gradient_06ix8"]
@@ -24,7 +24,7 @@ shader_parameter/ControlSize = Vector2(300, 500)
 shader_parameter/Transformation = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
 shader_parameter/CornerRadius = 10.0
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/BGUVOffset = Vector2(0, 0)
 shader_parameter/BGUVScale = 0.8
 shader_parameter/BGTex = SubResource("NoiseTexture2D_xyf4o")

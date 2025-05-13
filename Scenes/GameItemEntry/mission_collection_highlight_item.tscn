@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://dbrrcnce14w8h"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_1qlyc"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_1qlyc"]
 [ext_resource type="Texture2D" uid="uid://docjdjoems0ia" path="res://Images/InterfaceIcons/T-Icon-S-Loot-Crystal-Black-L.png" id="1_5c4d1"]
-[ext_resource type="Shader" path="res://Shaders/RewardGameItem.gdshader" id="2_4k5sn"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="4_jrnxm"]
+[ext_resource type="Shader" uid="uid://cy6bew7uegfyu" path="res://Shaders/RewardGameItem.gdshader" id="2_4k5sn"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_jrnxm"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_htaww"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dk7yu"]

@@ -1,30 +1,30 @@
 [gd_scene load_steps=18 format=3 uid="uid://dt403r6613tos"]
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_p7b2a"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/Settings/MiscSettings.cs" id="2_dybhj"]
-[ext_resource type="Script" path="res://Scripts/Config/VolumeHook.cs" id="2_y75ef"]
+[ext_resource type="Script" uid="uid://objskpkxjfqt" path="res://Scripts/UserInterface/Settings/MiscSettings.cs" id="2_dybhj"]
+[ext_resource type="Script" uid="uid://dm71w4vxgja3" path="res://Scripts/Config/VolumeHook.cs" id="2_y75ef"]
 [ext_resource type="Texture2D" uid="uid://ctvcvfsr34w3e" path="res://Images/InterfaceIcons/T-Icon-Sound-Off-L.png" id="3_dewmg"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/Settings/ThemeSettings.cs" id="4_kkpd6"]
-[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="5_1lymk"]
+[ext_resource type="Script" uid="uid://bpj23p4ewlb5r" path="res://Scripts/UserInterface/Settings/ThemeSettings.cs" id="4_kkpd6"]
+[ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="5_1lymk"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="5_7ebkc"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="7_wim73"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="7_wim73"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="8_nh2gq"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="9_yv42k"]
-[ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="12_12lms"]
-[ext_resource type="Script" path="res://Scripts/Config/ConfigTextHook.cs" id="12_ld0ka"]
+[ext_resource type="Script" uid="uid://cdjdgbb3ere1f" path="res://Scripts/Config/ConfigToggleHook.cs" id="12_12lms"]
+[ext_resource type="Script" uid="uid://blavw6em7d2ij" path="res://Scripts/Config/ConfigTextHook.cs" id="12_ld0ka"]
 [ext_resource type="Texture2D" uid="uid://b5f6h8q50sc0x" path="res://Images/InterfaceIcons/T_UI_Checkmark.png" id="12_pwy1u"]
-[ext_resource type="Script" path="res://Scripts/Config/ConfigRangeHook.cs" id="12_v5jo8"]
+[ext_resource type="Script" uid="uid://bplh0uuyvlse8" path="res://Scripts/Config/ConfigRangeHook.cs" id="12_v5jo8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjqpy"]
 shader = ExtResource("5_1lymk")
 shader_parameter/ControlSize = Vector2(0, 60)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/UseCorners = true
-shader_parameter/UseGlobalCorners = null
-shader_parameter/ApplyCornersToFit = null
+shader_parameter/UseGlobalCorners = false
+shader_parameter/ApplyCornersToFit = false
 shader_parameter/CornerRadius = 10.0
-shader_parameter/ClipOOB = null
+shader_parameter/ClipOOB = false
 
 [sub_resource type="Gradient" id="Gradient_ew55o"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)

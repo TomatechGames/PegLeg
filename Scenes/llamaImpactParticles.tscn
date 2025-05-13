@@ -1,13 +1,12 @@
 [gd_scene load_steps=5 format=3 uid="uid://cs7kqufoy7ii3"]
 
 [sub_resource type="Curve" id="Curve_fjmi8"]
-max_value = 100.0
+_limits = [0.0, 100.0, 0.0, 1.0]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="Curve" id="Curve_uoomx"]
-min_value = 1.0
-max_value = 2.0
+_limits = [0.99, 2.0, 0.0, 1.0]
 _data = [Vector2(0.25, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 4.0, 0.0, 0, 0]
 point_count = 2
 

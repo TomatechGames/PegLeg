@@ -1,13 +1,13 @@
 [gd_scene load_steps=29 format=3 uid="uid://c78gt6b2m1utg"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
+[ext_resource type="Script" uid="uid://c6amov6qaydfm" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
 [ext_resource type="Texture2D" uid="uid://07k0gr21gs5e" path="res://Images/InterfaceIcons/T_UI_VKConnectionIndicator_Error_Icon.png" id="2_nynxn"]
-[ext_resource type="Script" path="res://Scripts/RefreshTimerHook.cs" id="2_rrtg2"]
+[ext_resource type="Script" uid="uid://bm5sma44lxciv" path="res://Scripts/RefreshTimerHook.cs" id="2_rrtg2"]
 [ext_resource type="AudioStream" uid="uid://dweoot2qw456d" path="res://Audio/SFX/UI/Notification/fort_UI_Important_Update.ogg" id="3_m7b6w"]
-[ext_resource type="Script" path="res://Scripts/UIElements/VirtualTabBar.cs" id="4_ebt37"]
+[ext_resource type="Script" uid="uid://culat840voiin" path="res://Scripts/UIElements/VirtualTabBar.cs" id="4_ebt37"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="5_6m3c7"]
-[ext_resource type="Script" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_p6lk0"]
+[ext_resource type="Script" uid="uid://cdjdgbb3ere1f" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_p6lk0"]
 [ext_resource type="Texture2D" uid="uid://gak2hv6itgoo" path="res://Images/InterfaceIcons/T-Icon-Survivor-Leader-CARD.png" id="7_lvf0s"]
 [ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="8_kmmrq"]
 [ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="9_oiae4"]
@@ -18,13 +18,13 @@
 [ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="14_fvpat"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="15_618bo"]
 [ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="15_g8mr2"]
-[ext_resource type="Script" path="res://Scripts/UIElements/RecycleListContainer.cs" id="16_egkbm"]
+[ext_resource type="Script" uid="uid://gxtxnc3gl5tx" path="res://Scripts/UIElements/RecycleListContainer.cs" id="16_egkbm"]
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="17_eyhau"]
 [ext_resource type="Texture2D" uid="uid://dwam1asop7ckw" path="res://Images/InterfaceIcons/PinataMiniRewardPack.png" id="17_n40x5"]
-[ext_resource type="Script" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="18_phyx5"]
+[ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="18_phyx5"]
 [ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="19_xbd21"]
 [ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="20_dnnsf"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="21_6608v"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="21_6608v"]
 [ext_resource type="PackedScene" uid="uid://cbntw4mx14x6o" path="res://MissionHex/mission_hex_grid.tscn" id="22_6i1lp"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_fb3nj"]
@@ -33,7 +33,7 @@ resource_name = "MissionZoneFilter"
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_fyl58"]
 shader = ExtResource("20_dnnsf")
 shader_parameter/ControlSize = Vector2(0, 0)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/shiftDirection = Vector2(0.5, 0.5)
 shader_parameter/UseCorners = true
 shader_parameter/CornerRadius = 30.0

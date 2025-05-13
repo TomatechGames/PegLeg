@@ -2,30 +2,30 @@
 
 [ext_resource type="PackedScene" uid="uid://dta7ntrychbp1" path="res://Scenes/Desktop/Overlays/basic_modal_window.tscn" id="1_8m0vl"]
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="2_shdc5"]
-[ext_resource type="Shader" path="res://Shaders/AdaptivePanel.gdshader" id="3_2njcm"]
-[ext_resource type="Script" path="res://Scripts/Overlays/MissionViewer.cs" id="3_nhmtr"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="3_tqai8"]
+[ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="3_2njcm"]
+[ext_resource type="Script" uid="uid://bjokblo1e3nty" path="res://Scripts/Overlays/MissionViewer.cs" id="3_nhmtr"]
+[ext_resource type="Script" uid="uid://xl6hodssfg7i" path="res://Scripts/UserInterface/ListEntries/MissionEntry.cs" id="3_tqai8"]
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="3_vntdm"]
 [ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="4_8tulo"]
 [ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="4_n2q53"]
 [ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="4_nfikh"]
 [ext_resource type="PackedScene" uid="uid://byv58kd1qnkw5" path="res://Scenes/GameItemEntry/reward_entry.tscn" id="6_cam1p"]
-[ext_resource type="Shader" path="res://Shaders/AdaptiveShadow.gdshader" id="7_q2g84"]
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="12_nfbfc"]
+[ext_resource type="Shader" uid="uid://d3ugejtc242bp" path="res://Shaders/AdaptiveShadow.gdshader" id="7_q2g84"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="12_nfbfc"]
 [ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_large.tscn" id="12_u3sfv"]
 [ext_resource type="PackedScene" uid="uid://dqjthg7kvcf2m" path="res://Scenes/power_level_indicator.tscn" id="13_ffxkp"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="26_klq7w"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="26_klq7w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8qkd3"]
 shader = ExtResource("3_2njcm")
 shader_parameter/ControlSize = Vector2(574, 128)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
-shader_parameter/Fit = null
+shader_parameter/Fit = false
 shader_parameter/UseCorners = true
-shader_parameter/UseGlobalCorners = null
-shader_parameter/ApplyCornersToFit = null
+shader_parameter/UseGlobalCorners = false
+shader_parameter/ApplyCornersToFit = false
 shader_parameter/CornerRadius = 5.0
-shader_parameter/ClipOOB = null
+shader_parameter/ClipOOB = false
 
 [sub_resource type="Gradient" id="Gradient_jjb5a"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)

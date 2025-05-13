@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bdpcqsytlgikh"]
 
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="1_bivth"]
-[ext_resource type="Shader" path="res://Shaders/ButtonOutlineShader.gdshader" id="2_fb0ou"]
+[ext_resource type="Shader" uid="uid://c1cu5jabwr16n" path="res://Shaders/ButtonOutlineShader.gdshader" id="2_fb0ou"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yp0ak"]
 resource_local_to_scene = true

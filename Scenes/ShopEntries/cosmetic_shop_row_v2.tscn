@@ -1,11 +1,11 @@
 [gd_scene load_steps=12 format=3 uid="uid://ce4nh58o1rsd6"]
 
-[ext_resource type="Script" path="res://Scripts/UserInterface/ListEntries/CosmeticShopRow.cs" id="1_dvx4w"]
+[ext_resource type="Script" uid="uid://0oda6tiwfc3m" path="res://Scripts/UserInterface/ListEntries/CosmeticShopRow.cs" id="1_dvx4w"]
 [ext_resource type="PackedScene" uid="uid://khtmsxilpw3n" path="res://Scenes/ShopEntries/cosmetic_shop_entry.tscn" id="2_t6xhm"]
-[ext_resource type="Shader" path="res://Shaders/FlipbookAnimation.gdshader" id="4_2ks2q"]
+[ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="4_2ks2q"]
 [ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="4_iintn"]
-[ext_resource type="Script" path="res://Scripts/ShaderHook.cs" id="5_e0edl"]
-[ext_resource type="Shader" path="res://Shaders/GlowSpin.gdshader" id="6_4n434"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="5_e0edl"]
+[ext_resource type="Shader" uid="uid://dy7q5y2jo0yox" path="res://Shaders/GlowSpin.gdshader" id="6_4n434"]
 [ext_resource type="Texture2D" uid="uid://dysryc385kjaa" path="res://Images/InterfaceIcons/LoadingIconV2/fortShopLoadingSheet.png" id="6_exow4"]
 [ext_resource type="Texture2D" uid="uid://bc8n5bh6cc05o" path="res://Images/InterfaceIcons/T_Flare_Streaks.png" id="7_q87bg"]
 

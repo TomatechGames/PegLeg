@@ -237,11 +237,11 @@ code = "shader_type canvas_item;
 render_mode blend_mix;
 
 uniform vec2 WarpScale = vec2(0.250000, -0.500000);
-uniform float WarpPower : hint_range(0, 6) = 2;
+uniform float WarpPower : hint_range(0.0, 6.0) = 2.0;
 uniform vec2 ScrollSpeed = vec2(32.000000, -16.000000);
 uniform sampler2D Pattern;
 uniform vec2 ColorMinMax = vec2(0.700000, 0.900000);
-uniform float Transparancy : hint_range(0, 1) = 1;
+uniform float Transparancy : hint_range(0.0, 1.0) = 1.0;
 
 
 

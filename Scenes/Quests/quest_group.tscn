@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://b7bfdlitheyn0"]
 
-[ext_resource type="Script" path="res://Scripts/Quests/QuestGroupEntry.cs" id="1_w3wew"]
+[ext_resource type="Script" uid="uid://cdvq6qv3t1bf6" path="res://Scripts/Quests/QuestGroupEntry.cs" id="1_w3wew"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="2_0w5ib"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="2_a7j3g"]
 [ext_resource type="Texture2D" uid="uid://lhe8ded54hsv" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Pin_128.png" id="2_dxose"]
