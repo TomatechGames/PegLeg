@@ -3,12 +3,19 @@ using System;
 
 public partial class RefreshTimerHook : Label
 {
-
-    [Export(PropertyHint.Enum, "Hour, Day, Week, BR Week, Event")]
+    [Export(PropertyHint.Enum, "Hour, Day, Week, BR Week, Event, Custom")]
     int timerType;
+    [Export(PropertyHint.Enum, "Timer, SigLong, SigShort")]
+    int formatType;
+    [Export]
+    int customWarningTime;
+    [Export]
+    int customCritTime;
 
     public override void _Ready()
     {
+        TooltipText = "";
+        Text = "";
         UpdateRefreshTime();
         criticalCountdownTime = timerType switch
         {
@@ -17,6 +24,7 @@ public partial class RefreshTimerHook : Label
             2 => 60,        // last hour of week
             3 => 60,        // last hour of week
             4 => 60 * 24,   // last day of event
+            5 => customCritTime,
             _ => 5,
         };
         warningCountdownTime = timerType switch
@@ -26,6 +34,7 @@ public partial class RefreshTimerHook : Label
             2 => 60 * 24,       // last 24 hours of week
             3 => 60 * 24,       // last 24 hours of week
             4 => 60 * 24 * 7,   // last week of event
+            5 => customWarningTime,
             _ => 60,
         };
         RefreshTimerController.OnSecondChanged += UpdateTimeText;
@@ -39,11 +48,23 @@ public partial class RefreshTimerHook : Label
         MouseFilter = MouseFilterEnum.Stop;
     }
 
+    public void SetCustomRefreshTime(DateTime customRefreshTime)
+    {
+        timerType = 5;
+        refreshTime = customRefreshTime;
+        TooltipText = refreshTime.ToString("d");
+        warningCountdownTime = customWarningTime;
+        criticalCountdownTime = customCritTime;
+        UpdateTimeText();
+    }
+
     DateTime refreshTime;
     int criticalCountdownTime = 1;
     int warningCountdownTime = 60;
     void UpdateRefreshTime()
     {
+        if (timerType == 5)
+            return;
         refreshTime = RefreshTimerController.GetRefreshTime(timerType switch
         {
             0 => RefreshTimeType.Hourly,
@@ -67,7 +88,12 @@ public partial class RefreshTimerHook : Label
             SelfModulate = Colors.Orange;
         else
             SelfModulate = Colors.White;
-        Text = remainingTime.FormatTime();
+        Text = remainingTime.FormatTime(formatType switch
+        {
+            2 => Helpers.TimeFormat.SigLong,
+            1 => Helpers.TimeFormat.SigShort,
+            _ => Helpers.TimeFormat.Full,
+        });
         if (DateTime.UtcNow.CompareTo(refreshTime) >= 0)
             UpdateRefreshTime();
     }

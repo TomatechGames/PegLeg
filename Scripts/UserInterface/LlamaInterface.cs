@@ -92,15 +92,15 @@ public partial class LlamaInterface : Control
     AudioStream freeLlamaSound;
 
 
-    List<GameOfferEntry> llamaOfferEntries = new();
+    List<GameOfferEntry> llamaOfferEntries = [];
     Queue<CardPackEntry> llamaItemEntries = new();
-    List<GameItemEntry> llamaResultEntries = new();
+    List<GameItemEntry> llamaResultEntries = [];
 
     GameProfile llamaItemProfile;
-    List<LlamaItemStack> llamaItemStacks = new();
+    List<LlamaItemStack> llamaItemStacks = [];
     LlamaItemStack currentCardpackSelection = null;
 
-    Dictionary<string, GameOffer> activeOffers = new();
+    Dictionary<string, GameOffer> activeOffers = [];
     GameOffer currentOfferSelection;
     GameOffer tokenUpgradeOffer;
 
@@ -146,7 +146,7 @@ public partial class LlamaInterface : Control
 
             isKnown = firstItem.attributes.ContainsKey("options");
 
-            items = new() { firstItem };
+            items = [firstItem];
             UpdateEntry();
         }
 
@@ -346,7 +346,7 @@ public partial class LlamaInterface : Control
 
             int catalogEntryIndex = 0;
             var allOffers = xrayStorefront.Offers.Union(randomStorefront.Offers);
-            List<GameOffer> filteredOffers = new();
+            List<GameOffer> filteredOffers = [];
             foreach (var offer in allOffers)
             {
                 if (await LlamaOfferFilter(offer))
@@ -647,7 +647,7 @@ public partial class LlamaInterface : Control
     static GameItem allTheLlamas;
     public async void BulkOpenAllCardpacks()
     {
-        List<GameItem> allCardpacks = new();
+        List<GameItem> allCardpacks = [];
         bool includesSelected = false;
         foreach (var group in llamaItemStacks)
         {

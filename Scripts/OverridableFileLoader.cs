@@ -33,7 +33,7 @@ public static class OverridableFileLoader
 
         foreach (var kvp in customObject)
         {
-            builtInObject[kvp.Key] = kvp.Value.Reserialise();
+            builtInObject[kvp.Key] = kvp.Value.SafeDeepClone();
         }
         return builtInObject;
     }

@@ -379,7 +379,7 @@ layout_mode = 2
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 12
-text = "2 days"
+text = "2d"
 
 [node name="LastSeenPanel" type="PanelContainer" parent="Overlays/VBoxContainer"]
 layout_mode = 2
@@ -419,7 +419,7 @@ layout_mode = 2
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 12
-text = "500"
+text = "500d"
 
 [node name="Control" type="Control" parent="Overlays/VBoxContainer/LastSeenPanel/HBoxContainer"]
 visible = false

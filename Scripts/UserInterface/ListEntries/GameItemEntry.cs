@@ -287,11 +287,11 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         if (type == "Ingredient" && inspectorOverride is null)
             tooltipAmount = item.TotalQuantity.ToString();
 
-        List<string> tooltipDescriptions = new()
-        {
+        List<string> tooltipDescriptions =
+        [
             description ?? "",
             //"Item Id: " + item.templateId,
-        };
+        ];
         if (item.GetSearchTags() is JsonArray tagArray && tagArray.Count > 0)
             tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except(new string[] { name }).ToArray().Join(", "));
 
@@ -409,7 +409,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.Pressed);
     }
 
-    public void ClearItem() => ClearItem(BanjoAssets.defaultIcon);
+    public void ClearItem() => ClearItem(PegLegResourceManager.defaultIcon);
     public virtual void ClearItem(Texture2D clearIcon)
     {
         if (currentItem is not null)

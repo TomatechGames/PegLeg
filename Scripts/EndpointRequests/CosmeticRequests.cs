@@ -14,7 +14,7 @@ static class CosmeticRequests
     const string imageCacheFolderPath = "user://cosmetic_images/";
     const string templateCacheFolderPath = "user://cosmetic_templates/";
 
-    static readonly Dictionary<string, WeakRef> activeResourceCache = new();
+    static readonly Dictionary<string, WeakRef> activeResourceCache = [];
 
     public static bool HasLocalCosmeticImage()
     {
@@ -63,7 +63,7 @@ static class CosmeticRequests
                     if(mainMat is not null)
                     {
                         imagePath = mainMat["images"]?["OfferImage"]?.ToString();
-                        colors = mainMat["colors"]?.AsObject().Reserialise();
+                        colors = mainMat["colors"]?.AsObject().SafeDeepClone();
                     }
                 }
                 else if (offer["newDisplayAsset"]?["renderImages"] is JsonArray renderImages)
@@ -111,7 +111,7 @@ static class CosmeticRequests
                             extraData: new()
                             {
                                 ["displayType"] = item["type"]["displayValue"].ToString(),
-                                ["shopHistory"] = item["shopHistory"].Reserialise()
+                                ["shopHistory"] = item["shopHistory"].SafeDeepClone()
                             }
                         );
                 });

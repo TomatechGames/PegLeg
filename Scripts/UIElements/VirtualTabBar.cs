@@ -9,7 +9,7 @@ public partial class VirtualTabBar : Control
     [Export]
 	Control checkButtonParent;
 
-    List<CheckButton> buttons = new();
+    List<CheckButton> buttons = [];
 
     int currentTab = -1;
     public int CurrentTab

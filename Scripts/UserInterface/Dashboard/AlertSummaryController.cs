@@ -49,7 +49,7 @@ public partial class AlertSummaryController : Control
         rewardCTS.CancelAndRegenerate(out var ct);
 
         ClearRewards();
-		Dictionary<string, ZoneTotals> totals = new();
+		Dictionary<string, ZoneTotals> totals = [];
 
         await Task.Run(() =>
         {

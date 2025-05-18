@@ -38,7 +38,7 @@ public partial class BooleanAll : Node, BooleanStateProvider
         }
     }
 
-    protected List<BooleanStateProvider> trackedStates = new();
+    protected List<BooleanStateProvider> trackedStates = [];
     protected bool? resolvedState = null;
 	public bool State => invert != (resolvedState ?? valueWhenEmpty);
 	protected virtual void UpdateState()

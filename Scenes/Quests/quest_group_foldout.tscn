@@ -1,9 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://bu88x28im6m6h"]
+[gd_scene load_steps=8 format=3 uid="uid://bu88x28im6m6h"]
 
 [ext_resource type="Script" uid="uid://dgtplah32ni4y" path="res://Scripts/UIElements/Foldout.cs" id="1_v5k1k"]
+[ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="5_667xw"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="5_p0h70"]
-[ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="6_he7va"]
+[ext_resource type="Script" uid="uid://bm5sma44lxciv" path="res://Scripts/RefreshTimerHook.cs" id="6_14ede"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="6_kt57a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_14ede"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 3.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0.752941)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_je7v3"]
+bg_color = Color(1, 0.470588, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="QuestGroupFoldout" type="MarginContainer" node_paths=PackedStringArray("elementContainer", "foldoutInteractionPanel", "foldoutTarget", "foldoutChildParent", "rotationTarget", "notification")]
 custom_minimum_size = Vector2(300, 0)
@@ -16,7 +40,7 @@ foldoutInteractionPanel = NodePath("PanelContainer")
 foldoutTarget = NodePath("FoldoutVisibleBox")
 foldoutChildParent = NodePath("FoldoutVisibleBox/Control/MarginContainer/VBoxContainer")
 rotationTarget = NodePath("PanelContainer/MainButton/HBoxContainer/TextureRect/TextureRect2")
-notification = NodePath("PanelContainer/NotificationArea")
+notification = NodePath("PanelContainer/Overlays/Notification")
 openRotation = 90.0
 extraSpace = 11.0
 foldoutTime = 0.2
@@ -69,14 +93,13 @@ theme_override_constants/margin_bottom = 8
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MainButton"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MainButton/HBoxContainer"]
+[node name="TextureRect" type="Control" parent="PanelContainer/MainButton/HBoxContainer"]
 self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(26, 0)
 layout_mode = 2
-texture = ExtResource("6_he7va")
-expand_mode = 3
 
 [node name="TextureRect2" type="TextureRect" parent="PanelContainer/MainButton/HBoxContainer/TextureRect"]
-custom_minimum_size = Vector2(0, 32)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -85,7 +108,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(16, 16)
 texture = ExtResource("5_p0h70")
-expand_mode = 3
+expand_mode = 1
 
 [node name="Label" type="Label" parent="PanelContainer/MainButton/HBoxContainer"]
 layout_mode = 2
@@ -94,12 +117,75 @@ theme_override_font_sizes/font_size = 24
 text = "Multiple Quest Groups"
 text_overrun_behavior = 3
 
-[node name="NotificationArea" type="Control" parent="PanelContainer"]
+[node name="TimerLayout" type="Control" parent="PanelContainer/MainButton/HBoxContainer"]
+unique_name_in_owner = true
 visible = false
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Button" parent="PanelContainer" instance=ExtResource("6_kt57a")]
+layout_mode = 2
+
+[node name="Overlays" type="Control" parent="PanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="NotificationLabel" type="Label" parent="PanelContainer/NotificationArea"]
+[node name="TimerContainer" type="MarginContainer" parent="PanelContainer/Overlays"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/Overlays/TimerContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Time until the item leaves the shop"
+theme_override_styles/panel = SubResource("StyleBoxFlat_14ede")
+
+[node name="LeavingSoonAlert" type="MarginContainer" parent="PanelContainer/Overlays/TimerContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -3
+theme_override_constants/margin_bottom = -2
+
+[node name="Panel" type="Panel" parent="PanelContainer/Overlays/TimerContainer/PanelContainer/LeavingSoonAlert"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_je7v3")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/Overlays/TimerContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/Overlays/TimerContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_667xw")
+expand_mode = 3
+
+[node name="TimerLabel" type="Label" parent="PanelContainer/Overlays/TimerContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+text = "99h"
+script = ExtResource("6_14ede")
+timerType = 5
+formatType = 2
+
+[node name="Notification" type="Label" parent="PanelContainer/Overlays"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -117,9 +203,6 @@ text = " ! "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Responsive Button Area" parent="PanelContainer" instance=ExtResource("6_kt57a")]
-layout_mode = 2
-
 [connection signal="NameChanged" from="." to="PanelContainer/MainButton/HBoxContainer/Label" method="set_text"]
-[connection signal="NotificationVisible" from="." to="PanelContainer/NotificationArea" method="set_visible"]
-[connection signal="pressed" from="PanelContainer/Responsive Button Area" to="." method="ToggleFoldoutState"]
+[connection signal="NotificationVisible" from="." to="PanelContainer/Overlays" method="set_visible"]
+[connection signal="pressed" from="PanelContainer/Button" to="." method="ToggleFoldoutState"]

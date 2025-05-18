@@ -30,8 +30,8 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
 
 
     bool generated = false;
-	List<GameItem> compendiumEntries = new();
-	List<GameItem> filteredEntries = new();
+	List<GameItem> compendiumEntries = [];
+	List<GameItem> filteredEntries = [];
 	public GameItem GetRecycleElement(int index) => filteredEntries?[index];
 
 	public int GetRecycleElementCount() => filteredEntries?.Count ?? 0;
@@ -49,7 +49,7 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
         ConcurrentDictionary<string, GameItemTemplate> uniqueTemplates = new();
         foreach (var source in includedSources)
         {
-            if (BanjoAssets.TryGetItemSource(source, out var sourceObject))
+            if (PegLegResourceManager.TryGetItemSource(source, out var sourceObject))
             {
 				//GD.Print("aa");
                 Parallel.ForEach(sourceObject, sourceKVP =>
@@ -81,7 +81,7 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
 				.Select(item => item.CreateInstance())
 				.ToList();
         });
-        compendiumEntries = orderedItems ?? new();
+        compendiumEntries = orderedItems ?? [];
         //compendiumTemplates.ForEach(i => i.GenerateSearchTags());
         FilterItems("");
         searchBox.Editable = true;

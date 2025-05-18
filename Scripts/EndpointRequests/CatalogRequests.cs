@@ -132,7 +132,7 @@ static class CatalogRequests
             );
         if (rawLayoutData["errorMessage"] is not null)
             return cachedCosmeticLayouts;
-        JsonObject layoutResult = new();
+        JsonObject layoutResult = [];
         await Task.Run(() =>
         {
             foreach (var section in rawLayoutData["shopData"]?["sections"]?.AsArray())
@@ -144,7 +144,7 @@ static class CatalogRequests
                     {
                         ["displayName"] = section["displayName"].ToString(),
                         ["category"] = section["category"]?.ToString(),
-                        ["background"] = section["metadata"]["background"]?.Reserialise(),
+                        ["background"] = section["metadata"]["background"]?.SafeDeepClone(),
                         ["rank"] = section["metadata"]["stackRanks"][0]["stackRankValue"].GetValue<int>(),
                         ["pages"] = new JsonObject()
                     };
@@ -252,7 +252,7 @@ static class CatalogRequests
 
                 if (offer.Value["dynamicBundleInfo"] is JsonObject bundleInfo)
                 {
-                    fallbackDisplayData["dynamicBundleInfo"] = bundleInfo.Reserialise();
+                    fallbackDisplayData["dynamicBundleInfo"] = bundleInfo.SafeDeepClone();
 
                     int totalPrice = bundleInfo["bundleItems"].AsArray().Select(n => n["regularPrice"].GetValue<int>()).Sum();
                     fallbackDisplayData["regularPrice"] = totalPrice;
@@ -296,7 +296,7 @@ static class CatalogRequests
             displayData["isBestseller"] = isBestseller;
 
             if (offer.Value["dynamicBundleInfo"] is JsonObject dynBundleInfo)
-                displayData["dynamicBundleInfo"] = dynBundleInfo.Reserialise();
+                displayData["dynamicBundleInfo"] = dynBundleInfo.SafeDeepClone();
 
             //sometimes these are just missing
             displayData["layoutId"] ??= offer.Value["meta"]?["LayoutId"].ToString() ?? "?";
@@ -310,7 +310,7 @@ static class CatalogRequests
             }
 
             if ((offer.Value["prices"]?.AsArray().Count ?? 0) > 0)
-                displayData["prices"] = offer.Value["prices"].Reserialise();
+                displayData["prices"] = offer.Value["prices"].SafeDeepClone();
 
             if (!(displayData["layout"]["category"]?.ToString() is string cat && !string.IsNullOrWhiteSpace(cat)))
                 displayData["layout"]["category"] = "Uncategorised";
@@ -350,7 +350,7 @@ static class CatalogRequests
         });
 
         var partiallyOrganisedCosmetics = cosmeticDisplayData
-            .Select(n => KeyValuePair.Create(n.Key, n.Value.Reserialise()))
+            .Select(n => KeyValuePair.Create(n.Key, n.Value.SafeDeepClone()))
             .OrderBy(n => -n.Value["sortPriority"]?.GetValue<int>() ?? 0)// sort by offer index (descending)
             .GroupBy(n => n.Value["layoutId"]?.ToString() ?? "Unknown")// group into pages
             .OrderBy(p => PagePriorityFromLayoutID(p.Key))// sort by page index (descending)
@@ -508,7 +508,7 @@ static class CatalogRequests
         };
         foreach (var item in filteredStorefronts)
         {
-            jsonFilteredStorefronts.Add(item["name"].ToString(), item["catalogEntries"].Reserialise());
+            jsonFilteredStorefronts.Add(item["name"].ToString(), item["catalogEntries"].SafeDeepClone());
         }
         return jsonFilteredStorefronts;
     }
@@ -518,8 +518,8 @@ static class CatalogRequests
     const string fnCentralPrefix = "https://fortnitecentral.genxgames.gg/api/v1/export?path=";
     const string imageCacheFolderPath = "user://cosmetic_images/";
     const string metaCacheFolderPath = "user://cosmetic_meta/";
-    static readonly Dictionary<string, WeakRef> activeResourceCache = new();
-    static readonly Dictionary<string, JsonObject> activeMetaCache = new();
+    static readonly Dictionary<string, WeakRef> activeResourceCache = [];
+    static readonly Dictionary<string, JsonObject> activeMetaCache = [];
 
     public static ImageTexture GetLocalCosmeticResource(string serverPath)
     {
@@ -697,7 +697,7 @@ static class CatalogRequests
             GD.Print(resultObject);
             if (resultObject is not null && resultObject?["result"]?.ToString()?.StartsWith("Too many requests") != true && resultObject["errored"]?.GetValue<bool>() != true)
             {
-                metaObject = resultObject["jsonOutput"]?[0]?["Properties"]?.AsObject()?.Reserialise();
+                metaObject = resultObject["jsonOutput"]?[0]?["Properties"]?.AsObject()?.SafeDeepClone();
             }
             GD.Print(metaObject);
         }
@@ -858,7 +858,7 @@ public class GameStorefront
     };
 
     static Dictionary<string, JsonObject> storefrontCache;
-    static Dictionary<string, GameStorefront> storefronts = new();
+    static Dictionary<string, GameStorefront> storefronts = [];
     public static bool RequiresUpdate(RefreshTimeType? refreshType)
     {
         return storefronts is null || refreshType is null || DateTime.UtcNow.CompareTo(expirationDates[refreshType.Value]) >= 0;
@@ -888,7 +888,7 @@ public class GameStorefront
         }
         storefrontCache = catalog["storefronts"].AsArray().Select(n => n.AsObject()).ToDictionary(n => n["name"].ToString());
 
-        List<string> toRemove = new();
+        List<string> toRemove = [];
         foreach (var kvp in storefronts)
         {
             if(!storefrontCache.ContainsKey(kvp.Key))
@@ -1100,7 +1100,7 @@ public class GameOffer
     {
         this.rawData = rawData;
         itemGrants = rawData["itemGrants"].AsArray().Select(n => new GameItem(null, null, n.AsObject())).ToArray();
-        metadata = rawData["meta"]?.AsObject() ?? new();
+        metadata = rawData["meta"]?.AsObject() ?? [];
 
         if (rawData["dynamicBundleInfo"] is JsonObject dynamicBundleInfo)
         {

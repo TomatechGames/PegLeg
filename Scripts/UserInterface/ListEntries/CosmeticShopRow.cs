@@ -41,7 +41,7 @@ public partial class CosmeticShopRow : Control
         loadingCubes.Visible = true;
         entryParent.Visible = false;
     }
-    List<CosmeticShopOfferEntry> activeEntries = new();
+    List<CosmeticShopOfferEntry> activeEntries = [];
     public async Task PopulatePage(CosmeticShopInterface parent)
     {
         if (PageData is null)

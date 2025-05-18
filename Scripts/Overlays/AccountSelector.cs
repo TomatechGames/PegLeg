@@ -17,7 +17,7 @@ public partial class AccountSelector : ModalWindow
     Control accountEntryParent;
     [Export]
     PackedScene accountEntryScene;
-    List<GameAccountEntry> pooledAccounts = new();
+    List<GameAccountEntry> pooledAccounts = [];
     [Export(PropertyHint.File)]
     string onboardingScene;
 

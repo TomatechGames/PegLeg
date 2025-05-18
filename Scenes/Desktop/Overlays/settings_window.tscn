@@ -17,7 +17,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjqpy"]
 shader = ExtResource("5_1lymk")
-shader_parameter/ControlSize = Vector2(0, 60)
+shader_parameter/ControlSize = Vector2(322, 60)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = false
 shader_parameter/UseCorners = true
@@ -71,7 +71,6 @@ theme_override_constants/margin_bottom = 5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer" index="0"]
 layout_mode = 2
-scroll_vertical = 100
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer" index="0"]
 layout_mode = 2
@@ -410,6 +409,7 @@ layout_mode = 2
 selected = 0
 item_count = 4
 popup/item_0/text = "Default (Current Seasonal Zone)"
+popup/item_0/id = 0
 popup/item_1/text = "Themes"
 popup/item_1/id = 1
 popup/item_1/separator = true
@@ -675,15 +675,14 @@ section = "missions"
 key = "show_background"
 defaultValue = true
 
-[node name="DelayQuestRefresh" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="11"]
-visible = false
+[node name="FastAnims" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="11"]
 layout_direction = 3
 layout_mode = 2
-text = "Delay quest refresh"
+text = "Fast purchase animation"
 alignment = 2
 script = ExtResource("12_12lms")
-section = "quests"
-key = "delay_refresh"
+section = "misc"
+key = "fast_animations"
 
 [node name="UIScale" type="HBoxContainer" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Misc/VBoxContainer" index="12"]
 layout_mode = 2
@@ -801,7 +800,17 @@ script = ExtResource("12_12lms")
 section = "advanced"
 key = "developer"
 
-[node name="BeastMode" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="4"]
+[node name="Offset" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="4"]
+layout_direction = 3
+layout_mode = 2
+text = "Offset refresh countdown"
+alignment = 2
+script = ExtResource("12_12lms")
+section = "advanced"
+key = "offset"
+defaultValue = true
+
+[node name="BeastMode" type="CheckBox" parent="Control/WindowContents/CenterContainer/MarginContainer/MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/Advanced/VBoxContainer" index="5"]
 layout_direction = 3
 layout_mode = 2
 text = "Beast Mode"

@@ -9,7 +9,7 @@ public partial class LoadingOverlay : ModalWindow
     public delegate void ProgressChangedEventHandler(float totalProgress);
 
     static LoadingOverlay instance;
-    static Dictionary<Guid, LoadingOverlayToken> loadingTokens = new();
+    static Dictionary<Guid, LoadingOverlayToken> loadingTokens = [];
     [Export]
     RichTextLabel progressLabel;
 

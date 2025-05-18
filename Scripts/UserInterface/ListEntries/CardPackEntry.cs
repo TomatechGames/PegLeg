@@ -132,7 +132,7 @@ public partial class CardPackEntry : GameItemEntry
         base.ClearItem(clearTexture);
         EmitSignal(SignalName.NameChanged, "Select a Llama");
         EmitSignal(SignalName.IconChanged, GameItem.llamaTierIcons[0]);
-        EmitSignal(SignalName.SubtypeIconChanged, BanjoAssets.defaultIcon);
+        EmitSignal(SignalName.SubtypeIconChanged, PegLegResourceManager.defaultIcon);
     }
 
     public override void EmitPressedSignal()

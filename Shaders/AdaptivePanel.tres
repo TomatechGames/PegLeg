@@ -188,7 +188,7 @@ varying vec4 var_modulate;
 uniform bool Fit;
 uniform vec2 shiftDirection = vec2(0.500000, 0.500000);
 uniform bool UseCorners = true;
-uniform float CornerRadius = 10;
+uniform float CornerRadius = 10.0;
 
 
 // GlobalExpression:0

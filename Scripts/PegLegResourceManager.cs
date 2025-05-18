@@ -1,125 +1,378 @@
 ﻿using Godot;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
-public static class BanjoAssets
+public class PegLegResourceManager
 {
-    public const string banjoFolderPath = "res://External/Banjo";
+    public const string packageFolderPath = "user://Resources/";
+    public const string resourcePath = "res://PegLegResources/";
+    public const string fallbackResourcePath = "res://FallbackResources/";
+    public const string overrideResourcePath = "user://CustomResources/";
 
     public static readonly Texture2D defaultIcon = ResourceLoader.Load<Texture2D>("res://Images/InterfaceIcons/T-Icon-Unknown-128.png");
     public static readonly BanjoSuppliments supplimentaryData = ResourceLoader.Load<BanjoSuppliments>("res://banjo_suppliments.tres");
 
-    static readonly ConcurrentDictionary<string, WeakRef> iconCache = new();
-    static readonly ConcurrentDictionary<string, JsonObject> dataSources = new();
-    static readonly ConcurrentDictionary<string, JsonObject> itemSources = new();
-
-    public static async Task<bool> ReadAllSources()
+    static FrozenDictionary<string, JsonObject> dataSources;
+    public static FrozenDictionary<string, JsonObject> itemSources { get; private set; }
+    
+    //TODO: platform specific substitutions (Win64/Linux)
+    static RegEx versionRegex;
+    static RegEx VersionRegex
     {
-        string dataPath = Helpers.ProperlyGlobalisePath(banjoFolderPath);
-        if (!DirAccess.DirExistsAbsolute(dataPath))
-            return false;
-        if (!DirAccess.DirExistsAbsolute(dataPath + "/NamedItems"))
-            return false;
-
-        using (DirAccess banjoDataDir = DirAccess.Open(dataPath))
+        get
         {
-            var dataFiles = banjoDataDir.GetFiles();
-            //GD.Print("Data: "string.Join(", ", dataFiles));
-            Parallel.ForEach(dataFiles, file =>
-            {
-                file = file.Split("/")[^1][..^5];
-                if (TryLoadJsonFile(file, out var json))
-                    dataSources[file] = json;
-            });
+            if(versionRegex is not null)
+                return versionRegex;
+            versionRegex = new();
+            versionRegex.Compile("^(?:PegLegResources\\-)?v(\\d+)\\.(\\d+)\\.(\\d+)([a-z]?[a-z0-9]*)(?:\\-Win64(?:.pck)?)?$");
+            return versionRegex;
         }
+    }
 
-        using (DirAccess banjoItemDir = DirAccess.Open(dataPath + "/NamedItems"))
+    static (int, int, int) GetVersion(string versionText)
+    {
+        if (VersionRegex.Search(versionText) is not RegExMatch standardMatch)
+            return (0, 0, 0);
+        var groups = standardMatch.Strings;
+        int major = int.Parse(groups[1]);
+        int minor = int.Parse(groups[2]);
+        int patch = int.Parse(groups[3]);
+        if (major.ToString() != groups[1])
         {
-            var itemFiles = banjoItemDir.GetFiles();
-            //GD.Print("Items: "string.Join(", ", itemFiles));
-            Parallel.ForEach(itemFiles, file =>
+            GD.Print($"Incorect number format in Major version number ({major} != {groups[1]})");
+            return (0, 0, 0);
+        }
+        if (minor.ToString() != groups[2])
+        {
+            GD.Print($"Incorect number format in Minor version number ({minor} != {groups[2]})");
+            return (0, 0, 0);
+        }
+        if (patch.ToString() != groups[3])
+        {
+            GD.Print($"Incorect number format in Patch version number ({patch} != {groups[3]})");
+            return (0, 0, 0);
+        }
+        return (major, minor, patch);
+    }
+
+    static void TryImportPackage(int major, int minor, int patch)
+    {
+        var packageFilename = $"PegLegResources-v{major}.{minor}.{patch}-Win64.pck";
+        if (!FileAccess.FileExists(packageFolderPath + packageFilename))
+            return;
+        ProjectSettings.LoadResourcePack(packageFolderPath + packageFilename, false);
+    }
+
+    public static async Task ImportResources(string versionNumber)
+    {
+        var (majorTarget, minorTarget, patchTarget) = GetVersion(versionNumber);
+
+        TryImportPackage(majorTarget, minorTarget, patchTarget);
+        if (patchTarget != 0)
+            TryImportPackage(majorTarget, minorTarget, 0);
+        if (patchTarget != 0 && minorTarget != 0)
+            TryImportPackage(majorTarget, 0, 0);
+        await Task.WhenAll(
+            LoadDataSources(),
+            LoadNamedItems()
+        );
+    }
+
+    //temporary until proper resource versioning system is ready
+    public static async Task TempImportResources()
+    {
+        var tempPckPath = Helpers.GlobalisePath("res://PegLegResources.pck");
+        if (!FileAccess.FileExists(tempPckPath))
+            return;
+        ProjectSettings.LoadResourcePack(tempPckPath, false);
+        await Task.WhenAll(
+            LoadDataSources(),
+            LoadNamedItems()
+        );
+    }
+
+    static readonly string[] dataSourceNames = 
+    [
+        "AlterationLoadouts",
+        "HeroStats",
+        "ItemLevelsToXP",
+        "ItemRatings",
+        "MainQuestLines",
+        "VenturesSeasons",
+        "DifficultyInfo",
+        "EventQuestLines",
+        "ExpeditionCriteria",
+    ];
+    static async Task LoadDataSources()
+    {
+        ConcurrentDictionary<string, JsonObject> dataSourcesCC = [];
+        var tasks = dataSourceNames.Select(name => Task.Run(() =>
+        {
+            dataSourcesCC.TryAdd(name, LoadResourceObj($"GameAssets/{name}.json"));
+        }));
+        await Task.WhenAll(tasks);
+        dataSources = dataSourcesCC.ToFrozenDictionary();
+    }
+
+    //todo: automate named item types by reading an index file generated by the exporter or the packager
+    static readonly string[] itemTypeNames =
+    [
+        "Ability",
+        "Accolades",
+        "AccountResource",
+        "Alteration",
+        "Ammo",
+        "CampaignHeroLoadout",
+        "ConsumableAccountItem",
+        "Defender",
+        "Expedition",
+        "Gadget",
+        "GameplayModifier",
+        "Hero",
+        "HomebaseNode",
+        "Ingredient",
+        "MissionGen",
+        "Quest",
+        "Schematic",
+        "TeamPerk",
+        "Token",
+        "Trap",
+        "Weapon",
+        "Worker",
+        "WorkerPortrait",
+        "WorldItem",
+        "ZoneTheme",
+    ];
+    static async Task LoadNamedItems()
+    {
+        ConcurrentDictionary<string, GameItemTemplate> namedItemsCC = [];
+        var tasks = itemTypeNames.Select(name => Task.Run(() =>
+        {
+            var itemData = LoadResourceObj($"GameAssets/NamedItems/{name}.json").DetachAll();
+            Parallel.ForEach(itemData, kvp =>
             {
-                file = file.Split("/")[^1][..^5];
-                if (TryLoadJsonFile("NamedItems/" + file, out var json))
+                namedItemsCC.TryAdd(kvp.Key, new(kvp.Value.AsObject()));
+            });
+        }));
+        await Task.WhenAll(tasks);
+        GameItemTemplate.SetImportedTemplates(namedItemsCC.ToFrozenDictionary());
+    }
+
+    public static bool ResourceExists(string resource, bool allowOverrides = true)
+    {
+        return true;
+    }
+
+    public static FileAccess LoadResourceFile(string resource, bool allowOverrides = true)
+    {
+        if (allowOverrides && FileAccess.FileExists(overrideResourcePath + resource))
+        {
+            return FileAccess.Open(overrideResourcePath + resource, FileAccess.ModeFlags.Read);
+        }
+        if (FileAccess.FileExists(resourcePath + resource))
+        {
+            return FileAccess.Open(resourcePath + resource, FileAccess.ModeFlags.Read);
+        }
+        return FileAccess.Open(fallbackResourcePath + resource, FileAccess.ModeFlags.Read);
+    }
+
+    public static T[] LoadResourceArray<T>(string resource, bool allowOverrides = true)
+    {
+        string standardPath = FileAccess.FileExists(resourcePath + resource) ? (resourcePath + resource) : (fallbackResourcePath + resource);
+        List<T> list = null;
+        using (var standardFile = FileAccess.Open(standardPath, FileAccess.ModeFlags.Read))
+        {
+            try
+            {
+                list = [.. JsonSerializer.Deserialize<T[]>(standardFile.GetAsText())];
+            }
+            catch { }
+        }
+        list ??= [];
+        if (allowOverrides && FileAccess.FileExists(overrideResourcePath + resource))
+        {
+            using var overrideFile = FileAccess.Open(overrideResourcePath + resource, FileAccess.ModeFlags.Read);
+            try
+            {
+                list.AddRange(JsonSerializer.Deserialize<T[]>(overrideFile.GetAsText()));
+            }
+            catch { }
+        }
+        return [.. list];
+    }
+
+    public static Dictionary<string, T> LoadResourceDict<T>(string resource, bool allowOverrides = true)
+    {
+        string standardPath = FileAccess.FileExists(resourcePath + resource) ? (resourcePath + resource) : (fallbackResourcePath + resource);
+        Dictionary<string, T> dict = null;
+        using (var standardFile = FileAccess.Open(standardPath, FileAccess.ModeFlags.Read))
+        {
+            try
+            {
+                dict = JsonSerializer.Deserialize<Dictionary<string, T>>(standardFile.GetAsText());
+            }
+            catch { }
+        }
+        dict ??= [];
+        if (allowOverrides && FileAccess.FileExists(overrideResourcePath + resource))
+        {
+            using var overrideFile = FileAccess.Open(overrideResourcePath + resource, FileAccess.ModeFlags.Read);
+            try
+            {
+                var overrides = JsonSerializer.Deserialize<Dictionary<string, T>>(overrideFile.GetAsText());
+                dict = dict
+                    .Where(kvp => !overrides.ContainsKey(kvp.Key))
+                    .Union(overrides)
+                    .ToDictionary();
+            }
+            catch { }
+        }
+        return dict;
+    }
+
+    public static JsonArray LoadResourceArray(string resource, bool allowOverrides = true)
+    {
+        string standardPath = FileAccess.FileExists(resourcePath + resource) ? (resourcePath + resource) : (fallbackResourcePath + resource);
+        JsonArray array = [];
+        using (var standardFile = FileAccess.Open(standardPath, FileAccess.ModeFlags.Read))
+        {
+            try
+            {
+                array = JsonNode.Parse(standardFile.GetAsText()).AsArray();
+            }
+            catch { }
+        }
+        array ??= [];
+        if (allowOverrides && FileAccess.FileExists(overrideResourcePath + resource))
+        {
+            using var overrideFile = FileAccess.Open(overrideResourcePath + resource, FileAccess.ModeFlags.Read);
+            try
+            {
+                var toAdd = JsonNode.Parse(overrideFile.GetAsText()).AsArray().DetachAll();
+                foreach (var node in toAdd)
                 {
-                    itemSources[file] = json;
-                    foreach (var item in json)
-                    {
-                        GameItemTemplate.TryAdd(item.Key, item.Value.AsObject());
-                    }
+                    array.Add(node);
                 }
-            });
+            }
+            catch { }
         }
-
-        return true;
+        return array;
     }
 
-    public static bool TryGetDataSource(string dataType, out JsonObject source)
+    public static JsonObject LoadResourceObj(string resource, bool allowOverrides = true)
     {
-        bool exists = dataSources.ContainsKey(dataType);
-        if (!exists && TryLoadJsonFile(dataType, out var json))
+        string standardPath = FileAccess.FileExists(resourcePath + resource) ? (resourcePath + resource) : (fallbackResourcePath + resource);
+        JsonObject jObj = null;
+        using (var standardFile = FileAccess.Open(standardPath, FileAccess.ModeFlags.Read))
         {
-            dataSources[dataType] = source = json;
-            return true;
+            try
+            {
+                jObj = JsonNode.Parse(standardFile.GetAsText()).AsObject();
+            }
+            catch { }
         }
-        source = exists ? dataSources[dataType] : null;
-        return exists;
-    }
-
-    public static bool TryGetItemSource(string itemType, out JsonObject source)
-    {
-        bool exists = itemSources.ContainsKey(itemType);
-        if (!exists && TryLoadJsonFile("NamedItems/" + itemType, out var json))
+        jObj ??= [];
+        if (allowOverrides && FileAccess.FileExists(overrideResourcePath + resource))
         {
-            itemSources[itemType] = source = json;
-            return true;
+            using var overrideFile = FileAccess.Open(overrideResourcePath + resource, FileAccess.ModeFlags.Read);
+            try
+            {
+                var overrides = JsonNode.Parse(overrideFile.GetAsText()).AsObject();
+                foreach (var kvp in overrides.ToArray())
+                {
+                    jObj[kvp.Key] = overrides.DetachNode(kvp.Key);
+                }
+            }
+            catch { }
         }
-        source = exists ? itemSources[itemType] : null;
-        return exists;
+        return jObj;
     }
 
-    public static Texture2D GetReservedTexture(string texturePath)
+    public static T LoadResourceAsset<T>(string resource, bool allowOverrides = true) where T : Resource
     {
-        if (texturePath is null)
+        if (allowOverrides && FileAccess.FileExists(overrideResourcePath + resource))
+        {
+            //todo: handle importing external resources via weakrefs
             return null;
-        if (iconCache.ContainsKey(texturePath) && iconCache[texturePath].GetRef().Obj is Texture2D cachedTexture)
-            return cachedTexture;
-
-        string filePath = $"{banjoFolderPath}/{texturePath}";
-        if(!FileAccess.FileExists(filePath))
-        {
-            //GD.PushWarning($"Missing Image file: {Helpers.ProperlyGlobalisePath(fullPath)}");
-            return null;
         }
-        Texture2D loadedTexture = ImageTexture.CreateFromImage(Image.LoadFromFile(filePath));
-        //Texture2D loadedTexture = ResourceLoader.Load<Texture2D>(fullPath);
-        iconCache[texturePath] = GodotObject.WeakRef(loadedTexture);
-
-        return loadedTexture;
+        if (ResourceLoader.Exists(resourcePath + resource))
+        {
+            return ResourceLoader.Load<T>(resourcePath + resource);
+        }
+        return ResourceLoader.Load<T>(fallbackResourcePath + resource);
     }
 
-    static bool TryLoadJsonFile(string fileName, out JsonObject json)
-    {
-        json = null;
-        string filePath = $"{banjoFolderPath}/{fileName}.json";
-        if (!FileAccess.FileExists(filePath))
-            return false;
-        using FileAccess fileAccessor = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
-        json = JsonNode.Parse(fileAccessor.GetAsText(), new() { PropertyNameCaseInsensitive = true }).AsObject();
-        //GD.Print(fileName + " file loaded");
-        return true;
-    }
+    public static JsonObject AlterationLoadouts => dataSources?["AlterationLoadouts"];
+    public static JsonObject HeroStats => dataSources?["HeroStats"];
+    public static JsonObject ItemLevelsToXP => dataSources?["ItemLevelsToXP"];
+    public static JsonObject ItemRatings => dataSources?["ItemRatings"];
+    public static JsonObject MainQuestLines => dataSources?["MainQuestLines"];
+    public static JsonObject VenturesSeasons => dataSources?["VenturesSeasons"];
+    public static JsonObject DifficultyInfo => dataSources?["DifficultyInfo"];
+    public static JsonObject EventQuestLines => dataSources?["EventQuestLines"];
+    public static JsonObject ExpeditionCriteria => dataSources?["ExpeditionCriteria"];
 
-    public static JsonObject LookupData(string source, string name)
-    {
-        if (TryGetDataSource(source, out var lookupTarget))
-            return lookupTarget[name]?.AsObject();
-        return null;
-    }
+    //public static bool TryGetDataSource(string dataType, out JsonObject source)
+    //{
+    //    bool exists = dataSources.ContainsKey(dataType);
+    //    if (!exists && TryLoadJsonFile(dataType, out var json))
+    //    {
+    //        dataSources[dataType] = source = json;
+    //        return true;
+    //    }
+    //    source = exists ? dataSources[dataType] : null;
+    //    return exists;
+    //}
+
+    //public static bool TryGetItemSource(string itemType, out JsonObject source)
+    //{
+    //    bool exists = itemSources.ContainsKey(itemType);
+    //    if (!exists && TryLoadJsonFile("NamedItems/" + itemType, out var json))
+    //    {
+    //        itemSources[itemType] = source = json;
+    //        return true;
+    //    }
+    //    source = exists ? itemSources[itemType] : null;
+    //    return exists;
+    //}
+
+    //public static Texture2D GetReservedTexture(string texturePath)
+    //{
+    //    if (texturePath is null)
+    //        return null;
+    //    if (iconCache.ContainsKey(texturePath) && iconCache[texturePath].GetRef().Obj is Texture2D cachedTexture)
+    //        return cachedTexture;
+
+    //    string filePath = $"{banjoFolderPath}/{texturePath}";
+    //    if(!FileAccess.FileExists(filePath))
+    //    {
+    //        //GD.PushWarning($"Missing Image file: {Helpers.ProperlyGlobalisePath(fullPath)}");
+    //        return null;
+    //    }
+    //    Texture2D loadedTexture = ImageTexture.CreateFromImage(Image.LoadFromFile(filePath));
+    //    //Texture2D loadedTexture = ResourceLoader.Load<Texture2D>(fullPath);
+    //    iconCache[texturePath] = GodotObject.WeakRef(loadedTexture);
+
+    //    return loadedTexture;
+    //}
+
+    //static bool TryLoadJsonFile(string fileName, out JsonObject json)
+    //{
+    //    json = null;
+    //    string filePath = $"{banjoFolderPath}/{fileName}.json";
+    //    if (!FileAccess.FileExists(filePath))
+    //        return false;
+    //    using FileAccess fileAccessor = FileAccess.Open(filePath, FileAccess.ModeFlags.Read);
+    //    json = JsonNode.Parse(fileAccessor.GetAsText(), new() { PropertyNameCaseInsensitive = true }).AsObject();
+    //    //GD.Print(fileName + " file loaded");
+    //    return true;
+    //}
 }
 
 public static class HeroStats
@@ -198,24 +451,15 @@ public class GameItemTemplate
 
     #region Static Methods
 
-    static ConcurrentDictionary<string, ConcurrentDictionary<string, GameItemTemplate>> templateDict = new();
+    static FrozenDictionary<string, GameItemTemplate> importedTemplates = null;
+    public static void SetImportedTemplates(FrozenDictionary<string, GameItemTemplate> newImportedTemplates) =>
+        importedTemplates = newImportedTemplates;
 
-    public static void TryAdd(string id, JsonObject template)
-    {
-        if (template["Type"]?.ToString() is not string templateType)
-        {
-            GD.Print("NoType: "+template.ToJsonString());
-            return;
-        }
-        templateDict.TryAdd(templateType, new());
-        if(templateDict[templateType].ContainsKey(id))
-            return;
-        templateDict[templateType].TryAdd(id, new(template));
-    }
+    static ConcurrentDictionary<string, GameItemTemplate> customTemplates = [];
 
-    public static GameItemTemplate Get(string templateId, JsonObject source = null)
+    public static GameItemTemplate Get(string templateId)
     {
-        if (templateId is null)
+        if (templateId is null || templateId.Count(c => c == ':') != 1)
             return null;
 
         if (templateId.StartsWith("STWAccoladeReward"))
@@ -224,67 +468,59 @@ public class GameItemTemplate
         if (templateId == "AccountResource:currency_mtxswap")
             templateId = "AccountResource:currency_hybrid_mtx_xrayllama";
 
-        if (!templateId.Contains(':'))
-            return null;
+        if (customTemplates.TryGetValue(templateId, out var custom))
+            return custom;
 
-        var splitItemId = templateId.Split(':');
-        splitItemId[1] = splitItemId[1].ToLower();
+        if (importedTemplates.TryGetValue(templateId, out var imported))
+            return imported;
 
-        if (templateDict.TryGetValue(splitItemId[0], out var templateSource) && templateSource.TryGetValue(splitItemId[1], out var template))
-            return template;
-
-        templateId = splitItemId[0] + ":" + splitItemId[1].ToLower();
-        if (source is null && !BanjoAssets.TryGetItemSource(splitItemId[0], out source))
-            return null;
-
-        GameItemTemplate newTemplate = source[templateId] is JsonObject templateObj ? new(templateObj) : null;
-
-        bool exists = false;
-        if (newTemplate is not null)
-        {
-            templateDict.TryAdd(splitItemId[0], new());
-            exists = !templateDict[splitItemId[0]].TryAdd(splitItemId[1], newTemplate);
-        }
-
-        return exists ? templateDict[splitItemId[0]][splitItemId[1]] : newTemplate;
+        return null;
     }
 
     public static GameItemTemplate GetOrCreate(string templateId, Func<GameItemTemplate> constructor)
     {
+        if (templateId is null || templateId.Count(c => c == ':') != 1)
+            return null;
+
         if (Get(templateId) is GameItemTemplate foundTemplate)
             return foundTemplate;
 
-        var splitItemId = templateId.Split(':');
-
-        if (!templateId.Contains(':'))
-            return null;
-
         GameItemTemplate newTemplate = constructor();
 
-        bool exists = false;
         if (newTemplate is not null)
-        {
-            templateDict.TryAdd(splitItemId[0], new());
-            exists = !templateDict[splitItemId[0]].TryAdd(splitItemId[1], newTemplate);
-        }
+            lock (customTemplates)
+            {
+                bool exists = customTemplates.TryAdd(newTemplate.TemplateId, newTemplate);
+                return exists ? customTemplates[newTemplate.TemplateId] : newTemplate;
+            }
 
-        return exists ? templateDict[splitItemId[0]][splitItemId[1]] : newTemplate;
+        return null;
     }
 
-    public static GameItemTemplate[] GetTemplatesFromSource(string namedDataSource, Func<GameItemTemplate, bool> filter = null)
+    //probably pretty performance heavy, use sparingly
+    public static GameItemTemplate[] GetTemplatesOfType(string templateType, Func<GameItemTemplate, bool> filter = null)
     {
-        if (!BanjoAssets.TryGetItemSource(namedDataSource, out var source))
-            return null;
-        filter ??= item => true;
-        return source.Select(kvp => Get(kvp.Key, source)).Where(val => filter(val)).ToArray();
+        return importedTemplates
+            .Where(kvp =>
+                kvp.Key.StartsWith(templateType + ":") &&
+                (filter is null || filter(kvp.Value)
+            ))
+            .Union(customTemplates
+                .Where(kvp =>
+                    kvp.Key.StartsWith(templateType + ":") &&
+                    (filter is null || filter(kvp.Value)
+                ))
+            )
+            .Select(kvp => kvp.Value)
+            .ToArray();
     }
 
     public static Texture2D GetSubtypeTexture(string key, Texture2D fallbackIcon = null)
     {
         key ??= "";
-        var dict = BanjoAssets.supplimentaryData.ItemTypeAndSubtypeIcons;
-        if (dict.ContainsKey(key))
-            return dict[key];
+        var dict = PegLegResourceManager.supplimentaryData.ItemTypeAndSubtypeIcons;
+        if (dict.TryGetValue(key, out Texture2D value))
+            return value;
         return fallbackIcon;
     }
 
@@ -298,7 +534,7 @@ public class GameItemTemplate
 
     public GameItemTemplate(string templateId = "Custom:item", string displayName = "Custom Item", string description = null, string iconPath = null, JsonObject extraData = null)
     {
-        extraData ??= new();
+        extraData ??= [];
         var splitTemplateId = templateId.Split(":");
         extraData["Type"] = splitTemplateId[0];
         extraData["Name"] = splitTemplateId[1];
@@ -322,7 +558,7 @@ public class GameItemTemplate
             lowername == "currency_xrayllama"
         );
 
-    public string Type => rawData["Type"].ToString();
+    public string Type => rawData?["Type"].ToString();
     public bool IsCollectable => Type switch
     {
         "Hero" or "Worker" or "Defender" or "Schematic" => true,
@@ -370,45 +606,49 @@ public class GameItemTemplate
 
     public JsonArray AlterationSlots => rawData?["AlterationSlots"]?.AsArray();
 
-    public Texture2D GetTexture(FnItemTextureType textureType = FnItemTextureType.Preview) => GetTexture(textureType, BanjoAssets.defaultIcon);
+    public Texture2D GetTexture(FnItemTextureType textureType = FnItemTextureType.Preview) => GetTexture(textureType, PegLegResourceManager.defaultIcon);
     public Texture2D GetTexture(Texture2D fallbackIcon) => GetTexture(FnItemTextureType.Preview, fallbackIcon);
 
     public Texture2D GetTexture(FnItemTextureType textureType, Texture2D fallbackIcon)
     {
-        if ((Type == "TeamPerk" || Type == "Ability") && textureType == FnItemTextureType.Preview)
+        if 
+        (
+            (
+                Type == "TeamPerk" || 
+                Type == "Ability"
+            ) && 
+            textureType == FnItemTextureType.Preview
+        )
             textureType = FnItemTextureType.Icon;
 
-        if (Type == "Worker" && (rawData["ImagePaths"]?["SmallPreview"]?.ToString().Contains("GenericWorker") ?? false))
+        if
+        (
+            Type == "Worker" &&
+            (
+                rawData["ImagePaths"]?
+                ["SmallPreview"]?
+                .ToString()
+                .Contains("GenericWorker") ?? false
+            )
+        )
             return GetSubtypeTexture(SubType ?? "Survivor", fallbackIcon);
 
-        if (Type == "CardPack")
-        {
-            if (textureType == FnItemTextureType.Preview && DisplayName.Contains("Legendary") && DisplayName.Contains("Llama") && !Name.StartsWith("ZCP_"))
-                return goldLlama;
-        }
+        if 
+        (
+            Type == "CardPack" && 
+            textureType == FnItemTextureType.Preview && 
+            DisplayName.Contains("Legendary") && 
+            DisplayName.Contains("Llama") && 
+            !Name.StartsWith("ZCP_")
+        )
+            return goldLlama;
 
-        if (TryGetTexturePath(textureType, out var texturePath))
-        {
-            var tex = BanjoAssets.GetReservedTexture(texturePath);
-            if (tex is null)
-            {
-                //GD.PushWarning($"Null texture in: {TemplateId}");
-                return fallbackIcon;
-            }
-            return tex;
-        }
-        else
+        if (!TryGetTexturePath(out var texturePath, textureType))
             return fallbackIcon;
+        return PegLegResourceManager.LoadResourceAsset<Texture2D>(texturePath) ?? fallbackIcon;
     }
 
-    public bool TryGetTexturePath(out string foundPath)
-    {
-        bool result = TryGetTexturePath(FnItemTextureType.Preview, out var previewPath);
-        foundPath = previewPath;
-        return result;
-    }
-
-    public bool TryGetTexturePath(FnItemTextureType textureType, out string foundPath)
+    public bool TryGetTexturePath(out string foundPath, FnItemTextureType textureType = FnItemTextureType.Preview)
     {
         foundPath = null;
         JsonObject imagePaths = rawData["ImagePaths"]?.AsObject();
@@ -416,14 +656,7 @@ public class GameItemTemplate
             return false;
 
         if (textureType == FnItemTextureType.Preview)
-        {
             foundPath = (imagePaths["LargePreview"] ?? imagePaths["SmallPreview"])?.ToString();
-            if (!FileAccess.FileExists(BanjoAssets.banjoFolderPath + "/" + foundPath))
-            {
-                //GD.Print($"Large Image not found: {BanjoAssets.banjoFolderPath + "/" + foundPath} ({rawData["Name"]})");
-                foundPath = imagePaths["SmallPreview"]?.ToString();
-            }
-        }
         else
             foundPath = imagePaths[textureType.ToString()]?.ToString();
 
@@ -477,9 +710,9 @@ public class GameItemTemplate
 
         if (
             rawData["RangedWeaponStats"]?["AmmoType"]?.ToString() is string ammoType && 
-            BanjoAssets.supplimentaryData.AmmoIcons.ContainsKey(ammoType)
+            PegLegResourceManager.supplimentaryData.AmmoIcons.ContainsKey(ammoType)
             )
-            return BanjoAssets.supplimentaryData.AmmoIcons[ammoType];
+            return PegLegResourceManager.supplimentaryData.AmmoIcons[ammoType];
 
         return fallbackIcon;
     }
@@ -576,17 +809,17 @@ public class GameItemTemplate
     public JsonArray GenerateSearchTags(bool assumeUncommon = true)
     {
         if(rawData["searchTags"] is JsonArray existingSearchTags)
-            return existingSearchTags.Reserialise();
+            return existingSearchTags.SafeDeepClone();
 
-        List<string> tags = new()
-        {
+        List<string> tags =
+        [
             DisplayName,
             Rarity ?? (assumeUncommon ? "Uncommon" : null),
             Type,
             SubType,
             Category,
             Personality?[2..]
-        };
+        ];
 
         if(GetHeroAbilities() is GameItemTemplate[] abilities)
         {
@@ -609,12 +842,12 @@ public class GameItemTemplate
             rawData["RarityLv"] = RarityLevel;
             rawData["searchTags"] = searchTags;
         }
-        return searchTags.Reserialise();
+        return searchTags.SafeDeepClone();
     }
 
     public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)
     {
-        customData ??= new();
+        customData ??= [];
         customData["generated_by_pegleg"] = true;
         return new(this, quantity, attributes, inspectorOverride, customData);
     }
@@ -633,7 +866,7 @@ public enum FnItemTextureType
 
 class DataTable
 {
-    readonly Dictionary<string, DataTableCurve> curves = new();
+    readonly Dictionary<string, DataTableCurve> curves = [];
 
     public DataTable(string filepath)
     {
@@ -654,8 +887,8 @@ class DataTable
 
 class DataTableCurve
 {
-    readonly List<float> times = new();
-    readonly List<float> values = new();
+    readonly List<float> times = [];
+    readonly List<float> values = [];
     readonly float minTime = 0;
     readonly float maxTime = 0;
 

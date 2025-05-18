@@ -37,9 +37,9 @@ public partial class SurvivorSquadEntry : Control
     public override void _Ready()
     {
         //GD.Print($"{synergy} ({BanjoAssets.supplimentaryData.SquadNames.ContainsKey(synergy)})");
-        squadNameLabel.Text = BanjoAssets.supplimentaryData.SquadNames[synergy];
-        squadIcon.Texture = BanjoAssets.supplimentaryData.SquadIcons[synergy];
-        fortPointsIcon.Texture = BanjoAssets.supplimentaryData.SquadFortIcons[synergy];
+        squadNameLabel.Text = PegLegResourceManager.supplimentaryData.SquadNames[synergy];
+        squadIcon.Texture = PegLegResourceManager.supplimentaryData.SquadIcons[synergy];
+        fortPointsIcon.Texture = PegLegResourceManager.supplimentaryData.SquadFortIcons[synergy];
 
         leadSurvivorSlot.OnItemChangeRequested += slot => HandleChangeRequest(slot, 0);
         leadSurvivorSlot.OnSlotItemChanged += _ =>
@@ -51,7 +51,7 @@ public partial class SurvivorSquadEntry : Control
         leadSurvivorSlot.SetSlotData(
                 FnProfileTypes.AccountItems,
                 "Worker",
-                BanjoAssets.supplimentaryData.SynergyToSquadId[synergy],
+                PegLegResourceManager.supplimentaryData.SynergyToSquadId[synergy],
                 0,
                 "HomebaseNode:questreward_" + slotRequirements[0].ToLower()
             );
@@ -66,7 +66,7 @@ public partial class SurvivorSquadEntry : Control
             survivorSlots[i].SetSlotData(
                     FnProfileTypes.AccountItems,
                     "Worker",
-                    BanjoAssets.supplimentaryData.SynergyToSquadId[synergy],
+                    PegLegResourceManager.supplimentaryData.SynergyToSquadId[synergy],
                     slotIndex,
                     "HomebaseNode:questreward_" + slotRequirements[slotIndex].ToLower()
                 );
@@ -137,11 +137,11 @@ public partial class SurvivorSquadEntry : Control
     }
 
     static readonly Predicate<GameItem> standardFilter = item =>
-        item.attributes?["squad_id"] is null &&
+        (item.attributes?["squad_id"]?.ToString() ?? "") == "" &&
         item.template.SubType is null;
 
     static readonly Predicate<GameItem> leaderFilter = item =>
-        item.attributes?["squad_id"] is null &&
+        (item.attributes?["squad_id"]?.ToString() ?? "") == "" &&
         item.template.SubType is not null;
 
     async void HandleChangeRequest(InventoryItemSlot slot, int slotIndex)
@@ -152,7 +152,7 @@ public partial class SurvivorSquadEntry : Control
 
         var filter = slot == leadSurvivorSlot ? leaderFilter : standardFilter;
         var fromItem = slot.slottedItem;
-        var squadID = BanjoAssets.supplimentaryData.SynergyToSquadId[synergy];
+        var squadID = PegLegResourceManager.supplimentaryData.SynergyToSquadId[synergy];
 
         GameItemSelector.Instance.RestoreDefaults();
         GameItemSelector.Instance.titleText = "Select a Survivor";

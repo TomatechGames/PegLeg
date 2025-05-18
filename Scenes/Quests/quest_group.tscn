@@ -1,13 +1,40 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7bfdlitheyn0"]
+[gd_scene load_steps=10 format=3 uid="uid://b7bfdlitheyn0"]
 
 [ext_resource type="Script" uid="uid://cdvq6qv3t1bf6" path="res://Scripts/Quests/QuestGroupEntry.cs" id="1_w3wew"]
 [ext_resource type="Texture2D" uid="uid://oswq7qnr3vbd" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Play_128.png" id="2_0w5ib"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="2_a7j3g"]
 [ext_resource type="Texture2D" uid="uid://lhe8ded54hsv" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Pin_128.png" id="2_dxose"]
 [ext_resource type="Texture2D" uid="uid://d3nrq0yhsf1kc" path="res://Images/InterfaceIcons/T-Icon-DifInc-L.png" id="3_om4n4"]
+[ext_resource type="Texture2D" uid="uid://b2eay80hawr6j" path="res://Images/InterfaceIcons/T-Icon-Replay-Timeline-L.png" id="6_to8er"]
+[ext_resource type="Script" uid="uid://bm5sma44lxciv" path="res://Scripts/RefreshTimerHook.cs" id="7_51r2e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rmdbm"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 3.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0.752941)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wgesd"]
+bg_color = Color(1, 0.470588, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="QuestGroup" type="MarginContainer" node_paths=PackedStringArray("highlightCheck")]
 custom_minimum_size = Vector2(160, 0)
+offset_right = 200.0
+offset_bottom = 42.0
 theme_type_variation = &"PanelContainerButton"
 script = ExtResource("1_w3wew")
 pinnedTex = ExtResource("2_dxose")
@@ -54,15 +81,98 @@ theme_override_font_sizes/font_size = 24
 text = "Quest Group"
 text_overrun_behavior = 3
 
-[node name="TextureRect2" type="TextureRect" parent="MainButton/HBoxContainer"]
+[node name="TimerLayout" type="Control" parent="MainButton/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
-expand_mode = 3
 
-[node name="NotificationArea" type="Control" parent="."]
+[node name="Responsive Button Area" parent="." instance=ExtResource("2_a7j3g")]
+layout_mode = 2
+
+[node name="Overlays" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="NotificationLabel" type="Label" parent="NotificationArea"]
+[node name="TimerContainer" type="MarginContainer" parent="Overlays"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -47.0
+offset_top = -22.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="Overlays/TimerContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Time until the item leaves the shop"
+theme_override_styles/panel = SubResource("StyleBoxFlat_rmdbm")
+
+[node name="LeavingSoonAlert" type="MarginContainer" parent="Overlays/TimerContainer/PanelContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = -2
+theme_override_constants/margin_top = -2
+theme_override_constants/margin_right = -3
+theme_override_constants/margin_bottom = -2
+
+[node name="Panel" type="Panel" parent="Overlays/TimerContainer/PanelContainer/LeavingSoonAlert"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wgesd")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Overlays/TimerContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Overlays/TimerContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_to8er")
+expand_mode = 3
+
+[node name="TimerLabel" type="Label" parent="Overlays/TimerContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+text = "99h"
+script = ExtResource("7_51r2e")
+timerType = 5
+formatType = 2
+
+[node name="PinnedIcon" type="TextureRect" parent="Overlays"]
+visible = false
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_dxose")
+expand_mode = 1
+
+[node name="CompleteIcon" type="TextureRect" parent="Overlays"]
+visible = false
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = -1
+offset_left = 20.0
+offset_top = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_om4n4")
+expand_mode = 1
+
+[node name="NotificationLabel" type="Label" parent="Overlays"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -80,11 +190,8 @@ text = " ! "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Responsive Button Area" parent="." instance=ExtResource("2_a7j3g")]
-layout_mode = 2
-
-[connection signal="IconChanged" from="." to="MainButton/HBoxContainer/TextureRect2" method="set_texture"]
+[connection signal="IconChanged" from="." to="Overlays/PinnedIcon" method="set_texture"]
 [connection signal="NameChanged" from="." to="MainButton/HBoxContainer/Label" method="set_text"]
-[connection signal="NotificationVisible" from="." to="NotificationArea" method="set_visible"]
+[connection signal="NotificationVisible" from="." to="Overlays/NotificationLabel" method="set_visible"]
 [connection signal="toggled" from="HighlightCheckButton" to="HighlightCheckButton/TextureRect" method="set_visible"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="Press"]

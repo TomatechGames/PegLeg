@@ -154,6 +154,8 @@ public partial class GameOfferEntry : Control
         EmitSignal(SignalName.IsErrored, false);
 
         int stockLimit = await account.GetPurchaseLimit(currentOffer);
+        if (!account.MatchesItemRequirements(currentOffer)) //todo: proper item requirement check
+            stockLimit = 0;
         if (ct.IsCancellationRequested)
             return;
         currentStockLimit = stockLimit;

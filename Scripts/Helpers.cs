@@ -27,19 +27,58 @@ static class Helpers
         label.Visible = !string.IsNullOrWhiteSpace(label.Text);
     }
 
-    public static T Reserialise<T>(this T toReserialise) where T : JsonNode
+    public static T SafeDeepClone<T>(this T toReserialise) where T : JsonNode
     {
         if(toReserialise is null)
             return null;
         lock (toReserialise)
         {
-            return (T)JsonNode.Parse(toReserialise.ToJsonString());
+            return (T)toReserialise.DeepClone();
         }
     }
 
-    public static string ProperlyGlobalisePath(string godotPath)
+    public static JsonNode DetachNode(this JsonNode targetParent, string name) => targetParent.AsObject().DetachNode(name);
+    public static JsonNode DetachNode(this JsonObject targetParent, string name)
     {
-        if (godotPath.StartsWith("res://") && OS.HasFeature("template"))
+        if (targetParent is null || name is null || !targetParent.ContainsKey(name))
+            return null;
+        var targetNode = targetParent[name];
+        targetParent.Remove(name);
+        return targetNode;
+    }
+
+    public static JsonNode DetachNode(this JsonNode targetParent, int idx) => targetParent.AsArray().DetachNode(idx);
+    public static JsonNode DetachNode(this JsonArray targetParent, int idx)
+    {
+        if (targetParent is null || targetParent.Count == 0 || targetParent.Count <= idx)
+            return null;
+        var targetNode = targetParent[idx];
+        targetParent.Remove(targetNode);
+        return targetNode;
+    }
+    public static DateTime AsTime(this JsonNode value) => 
+        value.Deserialize<DateTime>();
+
+    public static IEnumerable<JsonNode> DetachAll(this JsonArray targetParent)
+    {
+        if (targetParent is null)
+            return null;
+        var values = targetParent.GetValues<JsonNode>();
+        targetParent.Clear();
+        return values;
+    }
+    public static IEnumerable<KeyValuePair<string, JsonNode>> DetachAll(this JsonObject targetParent)
+    {
+        if (targetParent is null)
+            return null;
+        var values = targetParent.AsEnumerable();
+        targetParent.Clear();
+        return values;
+    }
+
+    public static string GlobalisePath(string godotPath)
+    {
+        if (godotPath.StartsWith("res://") && !OS.HasFeature("editor"))
             return OS.GetExecutablePath().Split("/")[..^1].Join("/") + "/" + ProjectSettings.GlobalizePath(godotPath);
         else
             return ProjectSettings.GlobalizePath(godotPath);
@@ -64,7 +103,7 @@ static class Helpers
 
     public static KeyValuePair<string, JsonNode> CreateKVP(this JsonObject from, string keyTerm)
     {
-        return KeyValuePair.Create<string, JsonNode>(from[keyTerm]?.ToString() ?? from.ToString(), from.Reserialise());
+        return KeyValuePair.Create<string, JsonNode>(from[keyTerm]?.ToString() ?? from.ToString(), from.SafeDeepClone());
     }
 
     public static int GetCosmeticItemCounts(this JsonObject from)
@@ -98,7 +137,7 @@ static class Helpers
     }
     public static JsonArray MergeCosmeticItems(this JsonObject from)
     {
-        List<JsonNode> resultNodes = new();
+        List<JsonNode> resultNodes = [];
         if (from["brItems"] is JsonArray brItemArray)
             resultNodes.AddRange(brItemArray);
         if (from["tracks"] is JsonArray trackArray)
@@ -111,17 +150,17 @@ static class Helpers
             resultNodes.AddRange(legoArray);
         if (from["fallbackItems"] is JsonArray fallbackItems)
             resultNodes.AddRange(fallbackItems);
-        return resultNodes.Count == 0 ? null : new(resultNodes.Select(n => n.Reserialise()).ToArray());
+        return resultNodes.Count == 0 ? null : new(resultNodes.Select(n => n.SafeDeepClone()).ToArray());
     }
 
     //why merge into a json array when you can just have a regular array
     public static JsonObject[] GetAllCosmetics(this JsonObject from)
     {
-        var brItems = from["brItems"]?.AsArray() ?? new();
-        var tracks = from["tracks"]?.AsArray() ?? new();
-        var instruments = from["instruments"]?.AsArray() ?? new();
-        var cars = from["cars"]?.AsArray() ?? new();
-        var legoKits = from["legoKits"]?.AsArray() ?? new();
+        var brItems = from["brItems"]?.AsArray() ?? [];
+        var tracks = from["tracks"]?.AsArray() ?? [];
+        var instruments = from["instruments"]?.AsArray() ?? [];
+        var cars = from["cars"]?.AsArray() ?? [];
+        var legoKits = from["legoKits"]?.AsArray() ?? [];
         return brItems.Union(tracks).Union(instruments).Union(cars).Union(legoKits).Select(n=>n.AsObject()).ToArray();
     }
 
@@ -269,23 +308,53 @@ static class Helpers
 
     public static string FormatTimeSeconds(this int timeInSeconds) =>
         TimeSpan.FromSeconds(timeInSeconds).FormatTime();
-    public static string FormatTime(this TimeSpan time)
-    {
-        string text = time.Seconds.ToString();
-        if (time.TotalMinutes >= 1)
-        {
-            text = time.Minutes + ":" + (time.Seconds < 10 ? "0" : "") + text;
-            if (time.TotalHours >= 1)
-            {
-                text = time.Hours + ":" + (time.Minutes < 10 ? "0" : "") + text;
 
-                if (time.TotalDays >= 1)
+    public enum TimeFormat
+    {
+        Full,
+        SigLong,
+        SigShort,
+    }
+
+    public static string FormatTime(this TimeSpan time, TimeFormat timeFormat = TimeFormat.Full)
+    {
+        if (timeFormat == TimeFormat.Full)
+        {
+            string text = time.Seconds.ToString();
+            if (time.TotalMinutes >= 1)
+            {
+                text = time.Minutes + ":" + (time.Seconds < 10 ? "0" : "") + text;
+                if (time.TotalHours >= 1)
                 {
-                    text = time.Days + ":" + (time.Hours < 10 ? "0" : "") + text;
+                    text = time.Hours + ":" + (time.Minutes < 10 ? "0" : "") + text;
+
+                    if (time.TotalDays >= 1)
+                    {
+                        text = time.Days + ":" + (time.Hours < 10 ? "0" : "") + text;
+                    }
                 }
             }
+            return text;
         }
-        return text;
+
+        bool longTime = timeFormat == TimeFormat.SigLong;
+        if (time.TotalDays > 2)
+        {
+            return Mathf.Floor(time.TotalDays) + (longTime ? " days" : "d");
+        }
+        else if (time.TotalHours > 10)
+        {
+            return Mathf.Floor(time.TotalHours) + (longTime ? " hours" : "h");
+        }
+        else if (time.TotalHours > 1.1)
+        {
+            string timerText = Mathf.FloorToInt(time.TotalHours * 10).ToString();
+            return $"{timerText[..^1]}.{timerText[^1]}{(longTime ? " hours" : "h")}";
+        }
+        else
+        {
+            return Mathf.Floor(time.TotalMinutes) + (longTime ? " mins" : "m");
+        }
     }
 
     public static async void StartTask(this Task task) => await task;
@@ -294,22 +363,22 @@ static class Helpers
     {
         if (node is JsonObject nodeObj)
             return nodeObj;
-        return new() { [objectKey] = node.Reserialise()};
+        return new() { [objectKey] = node.SafeDeepClone()};
     }
 
     public static JsonArray AsFlexibleArray(this JsonNode node)
     {
         if (node is JsonArray nodeArr)
             return nodeArr;
-        return new() { node.Reserialise() };
+        return [node.SafeDeepClone()];
     }
     public static JsonArray Slice(this JsonArray array, System.Range range)
     {
         (int startIdx, int length) = range.GetOffsetAndLength(array.Count);
-        JsonArray result = new();
+        JsonArray result = [];
         for (int i = startIdx; i < startIdx + length; i++)
         {
-            result.Add(array[i].Reserialise());
+            result.Add(array[i].SafeDeepClone());
         }
         return result;
     }

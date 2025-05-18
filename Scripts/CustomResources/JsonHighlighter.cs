@@ -6,11 +6,11 @@ using System;
 public partial class JsonHighlighter : SyntaxHighlighter
 {
     static readonly Color[] depthCols = new Color[] { Colors.Yellow, Colors.Purple, Colors.Blue };
-    Dictionary<int, int> startingDepths = new();
+    Dictionary<int, int> startingDepths = [];
     public override Dictionary _GetLineSyntaxHighlighting(int line)
     {
         var lineText = GetTextEdit().GetLine(line);
-        Dictionary<int, Color> lineColors = new();
+        Dictionary<int, Color> lineColors = [];
         Color topColor = Colors.White;
         int currentDepth = 0;
         if (line > 0 && startingDepths.ContainsKey(line - 1))

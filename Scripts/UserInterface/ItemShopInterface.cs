@@ -46,8 +46,8 @@ public partial class ItemShopInterface : Control
             await LoadShop();
     }
 
-    List<GameOfferEntry> inactiveEntries = new();
-    Dictionary<string, GameOfferEntry> activeEntries = new();
+    List<GameOfferEntry> inactiveEntries = [];
+    Dictionary<string, GameOfferEntry> activeEntries = [];
     GameStorefront linkedStorefront = null;
     static SemaphoreSlim itemShopSemaphore = new(1);
     public async Task LoadShop(bool force = false)

@@ -30,7 +30,7 @@ public partial class RewardNotifications : Node
         }
     }
 
-	List<Request> itemQueue = new();
+	List<Request> itemQueue = [];
     Queue<Request> completedItems = new();
 
     Thread notifThread;

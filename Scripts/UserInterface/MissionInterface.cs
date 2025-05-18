@@ -95,7 +95,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     [Export]
 	TextureProgressBar loadingIcon;
 
-    List<GameMission> filteredMissions = new();
+    List<GameMission> filteredMissions = [];
     public GameMission GetRecycleElement(int index) => index >= 0 && index < filteredMissions.Count ? filteredMissions[index] : null;
     public int GetRecycleElementCount() => filteredMissions.Count;
 
@@ -227,7 +227,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
             itemSearchInstructions = Array.Empty<PLSearch.Instruction>();
         }
 
-        List<string> extraItemFilterList = new();
+        List<string> extraItemFilterList = [];
         for (int i = 0; i < itemFilters.Length; i++)
         {
             if (itemFilterButtons.Length > i && itemFilterButtons[i].ButtonPressed)
@@ -295,7 +295,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
         needsFilter = false;
         filteredMissions = GameMission.currentMissions?
             .Where(MissionFilter)
-            .ToList() ?? new();
+            .ToList() ?? [];
         missionList.UpdateList(true);
     }
 }

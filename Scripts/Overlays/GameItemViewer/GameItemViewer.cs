@@ -132,7 +132,7 @@ public partial class GameItemViewer : ModalWindow
                 var thisChoice = optionsArr[i];
                 var templateId = thisChoice["itemType"].ToString().Replace("Weapon:w", "Schematic:s");
                 var template = GameItemTemplate.Get(templateId);
-                var choiceItem = template.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
+                var choiceItem = template.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().SafeDeepClone());
                 itemChoiceEntries[i].SetItem(choiceItem);
                 choiceItem.SetRewardNotification(null, true);
                 choices[i] = choiceItem;

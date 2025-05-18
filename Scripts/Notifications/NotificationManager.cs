@@ -18,7 +18,7 @@ public partial class NotificationManager : Control
 	NotificationEntry[] notificationInstances;
 
     static Queue<NotificationData> notificationQueue = new();
-    static List<NotificationData> notificationHistory = new();
+    static List<NotificationData> notificationHistory = [];
 
     static NotificationManager instance;
 
@@ -41,7 +41,7 @@ public partial class NotificationManager : Control
 			.Select(n => n is Control c ? c : null)
 			.Where(c => c is not null)
 			.ToArray();
-		List<NotificationEntry> pool = new();
+		List<NotificationEntry> pool = [];
         for (int i = 0; i < possibleNotifInstances.Length; i++)
         {
             possibleNotifInstances[i].Visible = false;

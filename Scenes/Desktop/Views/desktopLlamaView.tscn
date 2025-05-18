@@ -32,7 +32,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osi5s"]
 shader = ExtResource("8_ffqoy")
-shader_parameter/ControlSize = Vector2(788, 720)
+shader_parameter/ControlSize = Vector2(0, 0)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = false
 shader_parameter/UseCorners = true
@@ -328,6 +328,8 @@ script = ExtResource("10_qedio")
 
 [node name="OfferEntry" type="Control" parent="Llama Contents/MarginContainer" node_paths=PackedStringArray("grantedItemEntry", "priceEntry", "priceInInventoryEntry")]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
 script = ExtResource("9_cn6d8")
 grantedItemEntry = NodePath("../CardPackEntry")
@@ -338,6 +340,8 @@ showSingleStockAmount = true
 
 [node name="AltOfferEntry" type="Control" parent="Llama Contents/MarginContainer" node_paths=PackedStringArray("priceInInventoryEntry")]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
 script = ExtResource("9_cn6d8")
 priceInInventoryEntry = NodePath("../CardPackEntry/VBoxContainer/AltPurchaseButton/Control/HBoxContainer/AltInInventory")

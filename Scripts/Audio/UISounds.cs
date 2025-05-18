@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public partial class UISounds : Node
 {
     static UISounds instance;
-    Dictionary<string, AudioStreamPlayer> audioDict = new();
+    Dictionary<string, AudioStreamPlayer> audioDict = [];
 
     public override void _Ready()
     {

@@ -19,8 +19,8 @@ public partial class QuestInterface : Control
     [Export]
     Control loadingIcon;
 
-    List<Foldout> questGroupCollections = new();
-    List<QuestGroupEntry> questGroups = new();
+    List<Foldout> questGroupCollections = [];
+    List<QuestGroupEntry> questGroups = [];
 
     public override void _Ready()
 	{
@@ -98,7 +98,7 @@ public partial class QuestInterface : Control
                 //create foldout
                 var foldout = foldoutScene.Instantiate<Foldout>();
                 foldout.SetFoldoutName(collection["name"].ToString());
-                List<QuestGroupEntry> groupsInFoldout = new();
+                List<QuestGroupEntry> groupsInFoldout = [];
                 foreach (var group in collection["groupGens"].AsObject())
                 {
                     var groupEntry = questGroupScene.Instantiate<QuestGroupEntry>();

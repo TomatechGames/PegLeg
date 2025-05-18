@@ -277,13 +277,13 @@ public class GameMission
     static List<GameMission> GenerateMissions(JsonNode rootNode)
     {
         //Theaters
-        List<string> allowedTheaterIDs = new()
-        {
+        List<string> allowedTheaterIDs =
+        [
             "33A2311D4AE64B361CCE27BC9F313C8B",
             "D477605B4FA48648107B649CE97FCF27",
             "E6ECBD064B153234656CB4BDE6743870",
             "D9A801C5444D1C74D1B7DAB5C7C12C5B"
-        };
+        ];
 
         //ventures theater
         var venturesTheater = rootNode["theaters"]
@@ -292,12 +292,10 @@ public class GameMission
         if (venturesTheater is not null)
             allowedTheaterIDs.Add(venturesTheater["uniqueId"].ToString());
 
-        BanjoAssets.TryGetDataSource("ZoneTheme", out var zoneThemeLookup);
-
         JsonArray allMissions = rootNode["missions"].AsArray();
         JsonArray allMissionAlerts = rootNode["missionAlerts"].AsArray();
 
-        List<GameMission> missionList = new();
+        List<GameMission> missionList = [];
 
         //int counter = 0;
         foreach (var theaterID in allowedTheaterIDs)
@@ -417,7 +415,7 @@ public class GameMission
         this.missionData = missionData;
         this.alertData = alertData;
         this.tileData = tileData;
-        difficultyInfo = BanjoAssets.LookupData("DifficultyInfo", missionData["missionDifficultyInfo"]["rowName"].ToString());
+        difficultyInfo = PegLegResourceManager.DifficultyInfo?[missionData["missionDifficultyInfo"]["rowName"].ToString()]?.AsObject();
 
         missionGenerator = GameItemTemplate.Get($"MissionGen:{missionData["missionGenerator"].ToString().Split(".")[1]}").CreateInstance();
         zoneTheme = GameItemTemplate.Get($"ZoneTheme:{tileData["zoneTheme"].ToString().Split(".")[1]}").CreateInstance();
@@ -425,7 +423,7 @@ public class GameMission
         missionGenerator.GetTexture(FnItemTextureType.Icon);
         var _ = backgroundTexture;
 
-        Dictionary<string, GameItem> rewardItemList = new();
+        Dictionary<string, GameItem> rewardItemList = [];
         foreach (var itemData in missionData["missionRewards"]["items"].AsArray())
         {
             GameItem item = new(null, null, itemData.AsObject());
@@ -449,7 +447,7 @@ public class GameMission
 
         if (alertData is not null)
         {
-            List<GameItem> alertModifierList = new();
+            List<GameItem> alertModifierList = [];
             if (alertData["missionAlertModifiers"]?["items"]?.AsArray() is JsonArray modifierData)
             {
                 foreach (var itemData in modifierData)
@@ -463,7 +461,7 @@ public class GameMission
             }
             alertModifiers = alertModifierList.ToArray();
 
-            List<GameItem> alertRewardItemList = new();
+            List<GameItem> alertRewardItemList = [];
             if (alertData["missionAlertRewards"]?["items"]?.AsArray() is JsonArray rewardData)
             {
                 foreach (var itemData in rewardData)
@@ -480,7 +478,7 @@ public class GameMission
         alertModifiers ??= Array.Empty<GameItem>();
         alertRewardItems ??= Array.Empty<GameItem>();
 
-        JsonArray searchTags = new();
+        JsonArray searchTags = [];
         if (IsFourPlayer)
             searchTags.Add("Group");
         if(alertModifiers.Length>0)

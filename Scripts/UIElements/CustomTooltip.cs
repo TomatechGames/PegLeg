@@ -38,17 +38,13 @@ public partial class CustomTooltip : Control
 
         if (description is not null)
 		{
-            JsonArray descriptionArray = new();
-            foreach (var item in description)
-            {
-                descriptionArray.Add(item);
-            }
+            JsonArray descriptionArray = [.. description];
 			content["description"] = descriptionArray;
         }
         JsonObject banner = null;
         if(bannerCol is not null)
         {
-            banner ??= new();
+            banner ??= [];
             banner["color"] = bannerCol;
         }
         if (banner is not null)

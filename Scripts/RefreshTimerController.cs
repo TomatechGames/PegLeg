@@ -19,23 +19,45 @@ public partial class RefreshTimerController : Node
     public override void _Ready()
     {
         instance = this;
+
         Timer perSecondTimer = new()
         {
             OneShot = false,
             WaitTime = 1,
-            Autostart = true
+            Autostart = true,
+            IgnoreTimeScale = true
         };
         AddChild(perSecondTimer);
         perSecondTimer.Timeout += UpdateTimers;
+
+        Timer fifteenMinTimer = new()
+        {
+            OneShot = false,
+            IgnoreTimeScale = true
+        };
+        AddChild(fifteenMinTimer);
+        fifteenMinTimer.Timeout += UpdateCalender;
+        var secondsSinceHour = (DateTime.Now.Minute*60) + DateTime.Now.Second;
+        fifteenMinTimer.Start((secondsSinceHour % (60 * 15))+(60*7));
+        fifteenMinTimer.WaitTime = 60 * 15;
+
         lastTime = DateTime.UtcNow;
         AppConfig.OnConfigChanged += OnConfigChanged;
-        offset = AppConfig.Get("advanced", "offset", false) ? 0 : 5;
+        offset = AppConfig.Get("advanced", "offset", true) ? 0 : 2;
     }
 
-    float offset = 5;
+    float offset = 2;
     private void OnConfigChanged(string arg1, string arg2, System.Text.Json.Nodes.JsonValue arg3)
     {
-        offset = AppConfig.Get("advanced", "offset", false) ? 0 : 5;
+        offset = AppConfig.Get("advanced", "offset", true) ? 0 : 2;
+    }
+
+    private async void UpdateCalender()
+    {
+        var account = GameAccount.activeAccount;
+        if (account is null || !await account.Authenticate())
+            return;
+        await account.CheckCalender();
     }
 
     DateTime lastTime;

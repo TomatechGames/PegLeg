@@ -56,7 +56,7 @@ public partial class ShopPurchaseAnimation : Control
         lockAnimation = true;
         //too many items will cause issues
         count = Mathf.Min(count, 40);
-        bool fastAnimations = AppConfig.Get("misc", "fastAnimations", false);
+        bool fastAnimations = AppConfig.Get("misc", "fast_animations", false);
         GD.Print(fastAnimations);
         modalWindow.SetWindowOpen(true);
         cartRotationNode.Modulate = Colors.White;
@@ -66,7 +66,7 @@ public partial class ShopPurchaseAnimation : Control
         cartScaleNode.Scale = Vector2.Zero;
         finalText.Scale = Vector2.Zero;
 
-        List<TextureRect> animatableItems = new();
+        List<TextureRect> animatableItems = [];
         for (int i = itemParent.GetChildCount(); i < count; i++)
         {
             itemParent.AddChild(cartItem.Instantiate());
@@ -115,7 +115,7 @@ public partial class ShopPurchaseAnimation : Control
         {
             await Task.WhenAny(
                 holdUntil,
-                Helpers.WaitForTimer(10)
+                Helpers.WaitForTimer(fastAnimations ? 3 : 10)
             );
         }
 

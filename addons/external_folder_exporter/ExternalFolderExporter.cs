@@ -6,11 +6,11 @@ using System.IO;
 [Tool]
 public partial class ExternalFolderExporter : EditorExportPlugin
 {
-    static List<string> excludeFiles = new()
-    {
+    static List<string> excludeFiles =
+    [
         ".gdignore",
         "Backup",
-    };
+    ];
 
     public override string _GetName() => "ExternalExporter";
 

@@ -111,27 +111,12 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
     DateTime? outDate;
     private void UpdateOutTimer()
     {
+        //TODO: move to TimerLabel
         if (!outDate.HasValue)
             return;
             var remainingTime = (outDate.Value - DateTime.UtcNow);
         EmitSignal(SignalName.ReminingTimeVisibility, remainingTime.TotalHours < 24);
-        if (remainingTime.TotalDays > 2)
-        {
-            expiryTimerText.Text = Mathf.Floor(remainingTime.TotalDays) + " Days";
-        }
-        else if (remainingTime.TotalHours > 10)
-        {
-            expiryTimerText.Text = Mathf.Floor(remainingTime.TotalHours) + " Hours";
-        }
-        else if (remainingTime.TotalHours > 1.1)
-        {
-            string timerText = Mathf.FloorToInt(remainingTime.TotalHours * 10).ToString();
-            expiryTimerText.Text = $"{timerText[..^1]}.{timerText[^1]} Hours";
-        }
-        else
-        {
-            expiryTimerText.Text = Mathf.Floor(remainingTime.TotalMinutes) + " Mins";
-        }
+        expiryTimerText.Text = remainingTime.FormatTime(Helpers.TimeFormat.SigShort);
     }
 
     public void StartResourceLoadTimer() =>
@@ -292,7 +277,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
     bool resourceFit = false;
 
     public string offerId { get; private set; }
-    public List<string> itemTypes { get; private set; } = new();
+    public List<string> itemTypes { get; private set; } = [];
     int cellWidth = 0;
     public void PopulateEntry(JsonObject entryData, Vector2 cellSize)
     {
@@ -341,7 +326,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
             PopulateAsItem(entryData, allItems);
         }
 
-        outDate = DateTime.Parse(entryData["outDate"].ToString()).ToUniversalTime();
+        outDate = entryData["outDate"].AsTime().ToUniversalTime();
         var resourceRender = entryData["newDisplayAsset"]?["renderImages"]?.AsArray()?.FirstOrDefault()?.AsObject();
         var resourceMat = entryData["newDisplayAsset"]?["materialInstances"]?.AsArray()?.FirstOrDefault()?.AsObject();
 
@@ -357,14 +342,14 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         bgGradientDefaultColors ??= bgGradient.Colors;
         if (entryData["colors"] is JsonObject colors)
         {
-            List<Color> bgColorList = new();
+            List<Color> bgColorList = [];
             for (int i = 1; i <= 3; i++)
             {
                 if (colors["color"+i] is JsonValue colorVal)
                     bgColorList.Add(Color.FromHtml(colorVal.ToString()));
             }
             bgGradient.Colors = bgColorList.ToArray();
-            List<float> bgOffsetList = new();
+            List<float> bgOffsetList = [];
 
             for (int i = 0; i < bgColorList.Count; i++)
             {
@@ -591,7 +576,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
     void SetMetaVisuals()
     {
         EmitSignal(SignalName.LastSeenVisibility, metadata.lastSeenDaysAgo > 1);
-        EmitSignal(SignalName.LastSeenText, $"{metadata.lastSeenDaysAgo}");
+        EmitSignal(SignalName.LastSeenText, $"{metadata.lastSeenDaysAgo}d");
         EmitSignal(SignalName.LastSeenAlertVisibility, metadata.isOld);
         EmitSignal(SignalName.AlmostAYearVisibility, metadata.isVeryOld);
 

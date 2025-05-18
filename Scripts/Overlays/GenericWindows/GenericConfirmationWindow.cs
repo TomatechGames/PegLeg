@@ -32,7 +32,7 @@ public partial class GenericConfirmationWindow : ModalWindow
 
     public static async Task ShowErrorForWebResult(JsonObject errorResult)
     {
-        errorResult ??= new();
+        errorResult ??= [];
         if (!errorResult.ContainsKey("errorMessage"))
             errorResult["errorMessage"] = "(No Message Provided)";
         await instance.ShowConfirmationInst("Uh oh! Something Goofed", "Continue", "", errorResult["errorMessage"].ToString(), errorResult["errorCode"].ToString(), false, 8);

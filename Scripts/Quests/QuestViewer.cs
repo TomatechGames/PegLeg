@@ -19,7 +19,7 @@ public partial class QuestViewer : Control
     Control objectiveParent;
     [Export]
     PackedScene objectiveScene;
-    List<QuestObjective> objectiveEntries = new();
+    List<QuestObjective> objectiveEntries = [];
 
     [Export]
     CheckButton pinButton;
@@ -30,7 +30,7 @@ public partial class QuestViewer : Control
     Control rewardParent;
     [Export]
     PackedScene rewardScene;
-    List<GameItemEntry> rewardEntries = new();
+    List<GameItemEntry> rewardEntries = [];
 
     public override void _Ready()
     {

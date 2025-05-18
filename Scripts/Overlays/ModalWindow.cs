@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public partial class ModalWindow : Control
 {
-    protected static List<ModalWindow> windowStack = new();
+    protected static List<ModalWindow> windowStack = [];
 
     [Signal]
     public delegate void WindowOpenedEventHandler();

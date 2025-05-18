@@ -69,7 +69,7 @@ public static class AppConfig
         using var configFile = FileAccess.Open(configPath, FileAccess.ModeFlags.Read);
         if (configFile is not null)
             configData = JsonNode.Parse(configFile.GetAsText())?.AsObject();
-        configData ??= new();
+        configData ??= [];
     }
 
     public readonly struct AdaptiveJsonValue

@@ -27,7 +27,7 @@ public partial class Bootstrap : Node
         //zr.Open("user://pack.zip");
         //bool isValid = !zr.GetFiles().Any(path => !path.StartsWith("External/"));
         //ProjectSettings.LoadResourcePack("user://pack.zip");
-        bool hasBanjoAssets = await BanjoAssets.ReadAllSources();
+        bool hasBanjoAssets = await PegLegResourceManager.ReadAllSources();
         var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
         bool hasAccount = false;
         if (lastUsedId is not null)

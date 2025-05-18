@@ -183,6 +183,7 @@ public class GameAccount
             if (!profile.hasProfile)
                 return false;
             await account.QueryAllProfiles();
+            await account.CheckCalender();
             _activeAccount = account;
             ActiveAccountChangedEarly?.Invoke();
             ActiveAccountChanged?.Invoke();
@@ -233,7 +234,7 @@ public class GameAccount
     public string DisplayName => GetLocalData("DisplayName")?.ToString() ?? $"<{accountId}>";
     public Texture2D ProfileIcon => GetLocalData("IconPath")?.ToString() is string iconPath ? CatalogRequests.GetLocalCosmeticResource(iconPath) : null;
 
-    Dictionary<string, GameProfile> profiles = new();
+    Dictionary<string, GameProfile> profiles = [];
 
     public GameProfile this[string profileId] => GetProfile(profileId);
     public GameProfile GetProfile(string profileId) => profiles.ContainsKey(profileId ?? "") ? profiles[profileId ?? ""] : profiles[profileId ?? ""] = new(this, profileId ?? "");
@@ -245,16 +246,37 @@ public class GameAccount
         return this;
     }
 
-    public async Task QueryAllProfiles()
+    public async Task QueryAllProfiles(bool force = false)
     {
-        await Task.WhenAll(
-            GetProfile(FnProfileTypes.AccountItems).Query(),
-            GetProfile(FnProfileTypes.Common).Query(),
-            GetProfile(FnProfileTypes.PeopleCollection).Query(),
-            GetProfile(FnProfileTypes.SchematicCollection).Query(),
-            GetProfile(FnProfileTypes.Backpack).Query(),
-            GetProfile(FnProfileTypes.Storage).Query()
-        );
+        await profileOperationSemaphore.WaitAsync();
+        try
+        {
+            if (!isOwned)
+            {
+                if (activeAccount is null)
+                    return;
+                await Task.WhenAll(
+                    GetProfile(FnProfileTypes.AccountItems).QueryUnsafe(force),
+                    GetProfile(FnProfileTypes.Common).QueryUnsafe(force)
+                );
+            }
+            else
+            {
+                await Task.WhenAll(
+                    GetProfile(FnProfileTypes.AccountItems).QueryUnsafe(force),
+                    GetProfile(FnProfileTypes.Common).QueryUnsafe(force),
+                    GetProfile(FnProfileTypes.PeopleCollection).QueryUnsafe(force),
+                    GetProfile(FnProfileTypes.SchematicCollection).QueryUnsafe(force),
+                    GetProfile(FnProfileTypes.Backpack).QueryUnsafe(force),
+                    GetProfile(FnProfileTypes.Storage).QueryUnsafe(force)
+                );
+            }
+                
+        }
+        finally
+        {
+            profileOperationSemaphore.Release();
+        }
     }
 
     string authToken;
@@ -327,7 +349,6 @@ public class GameAccount
         };
         var profile = GetProfile(FnProfileTypes.Common);
         var result = await profile.PerformOperation("PurchaseCatalogEntry", shopRequestBody.ToString());
-        GD.Print("OPCOMPLETE");
         offer.NotifyChanged();
         return result;
     }
@@ -460,14 +481,14 @@ public class GameAccount
         if (!isValid || !DirAccess.DirExistsAbsolute(accountDataPath))
         {
             GD.Print("invalid or no folder");
-            localData = new();
+            localData = [];
             return;
         }
         using FileAccess localDataFile = FileAccess.Open($"{accountDataPath}/{accountId}", FileAccess.ModeFlags.Read);
         if (localDataFile is null)
         {
             GD.Print("no file");
-            localData = new();
+            localData = [];
             return;
         }
         var localDataString = localDataFile.GetAsText();
@@ -481,7 +502,7 @@ public class GameAccount
         {
             GD.Print("Warning: Failed to load local data, data may be overwritten");
         }
-        localData = new();
+        localData = [];
     }
 
     public JsonNode GetLocalData(string key)
@@ -496,7 +517,7 @@ public class GameAccount
     {
         if (localData is null)
             LoadLocalData();
-        localData[key] = value.Reserialise();
+        localData[key] = value.SafeDeepClone();
 
         if (!isValid || !localData.ContainsKey("DeviceDetails"))
             return;
@@ -629,6 +650,7 @@ public class GameAccount
             totalLimit = Mathf.Min(totalLimit, offer.EventLimit - purchaseAmount);
         }
 
+        //TODO: export and check the items internal purchase limit instead of hardcoding it
         if (offer.itemGrants[0].templateId == "Token:accountinventorybonus")
         {
             var accountItemData = await GetProfile(FnProfileTypes.AccountItems).Query();
@@ -679,17 +701,18 @@ public class GameAccount
         return true;
     }
 
-    public async Task<bool> MatchesItemRequirements(GameOffer offer)
-    {
-        if (offer.ItemDenyList.Count > 0)
-        {
-            var athenaItems = await GetProfile(FnProfileTypes.CosmeticInventory).Query();
-            if (offer.ItemDenyList.Any(check => (athenaItems.GetItem(check.Key)?.quantity ?? 0) >= check.Value))
-                return false;
-        }
-
-        return true;
-    }
+    public bool MatchesItemRequirements(GameOffer offer) =>
+        offer.ItemDenyList.Count == 0 ||
+        !offer
+        .ItemDenyList
+        .Any(check =>
+            profiles
+            .Select(p =>
+                p.Value
+                .GetItem(check.Key)?
+                .quantity ?? 0
+            ).Sum() >= check.Value
+        );
 
     public async Task<string> GetSACCode(bool addExpiredText = true)
     {
@@ -775,7 +798,7 @@ public class GameAccount
 
     async void SendLocalPinnedQuests(GameProfile accountItems)
     {
-        localPinnedQuests ??= new();
+        localPinnedQuests ??= [];
         JsonObject content = new()
         {
             ["pinnedQuestIds"] = new JsonArray(localPinnedQuests.Select(q => (JsonValue)q.uuid).ToArray())
@@ -785,13 +808,13 @@ public class GameAccount
 
     public bool HasPinnedQuest(string uuid)
     {
-        localPinnedQuests ??= new();
+        localPinnedQuests ??= [];
         return localPinnedQuests.Exists(q=>q.uuid==uuid);
     }
 
     public bool HasPinnedQuest(GameItem item)
     {
-        localPinnedQuests ??= new();
+        localPinnedQuests ??= [];
         return localPinnedQuests.Contains(item);
     }
 
@@ -841,8 +864,8 @@ public class GameProfile
     public string profileId { get; private set; }
     public JsonObject statAttributes { get; private set; }
 
-    Dictionary<string, GameItem> items = new();
-    Dictionary<string, List<GameItem>> groupedItems = new();
+    Dictionary<string, GameItem> items = [];
+    Dictionary<string, List<GameItem>> groupedItems = [];
 
     public event Action OnStatsChanged;
     public event Action<string> OnStatChanged;
@@ -869,6 +892,7 @@ public class GameProfile
             return typedItems.ToArray();
         return typedItems.Where(predicate.ToFunc()).ToArray();
     }
+
     public GameItem[] GetTemplateItems(string templateId = null, Predicate<GameItem> predicate = null)
     {
         string type = templateId.Split(":")[0];
@@ -895,7 +919,7 @@ public class GameProfile
             OnItemUpdated?.Invoke(item);
     }
 
-    public async Task<GameProfile> Query(bool force=false)
+    public async Task<GameProfile> Query(bool force = false)
     {
         var queryAccount = account.isOwned ? account : GameAccount.activeAccount;
         if (queryAccount is null)
@@ -914,6 +938,16 @@ public class GameProfile
         {
             queryAccount.profileOperationSemaphore.Release();
         }
+    }
+
+    //should only be used after manually entering the profileOperationSemaphore (and validating account existance), such as in GameAccount.QueryAllProfiles()
+    public async Task<GameProfile> QueryUnsafe(bool force = false)
+    {
+        if (!hasProfile || force)
+        {
+            await PerformOperationUnsafe("QueryProfile");
+        }
+        return this;
     }
 
     public async Task<JsonArray> PerformOperation(string operation, JsonNode content)=>
@@ -1038,7 +1072,7 @@ public class GameProfile
                 {
                     var additionIndex = changes.IndexOf(additionChange);
                     var removingId = removalChange["itemId"].ToString();
-                    List<JsonNode> irrelevantChanges = new();
+                    List<JsonNode> irrelevantChanges = [];
                     for (int i = additionIndex; i < changes.Count; i++)
                     {
                         var change = changes[i];
@@ -1077,7 +1111,7 @@ public class GameProfile
 
         if (result.ContainsKey("notifications"))
             return result["notifications"].AsArray();
-        return new();
+        return [];
     }
 
     JsonArray GenerateChanges(JsonObject newItems, JsonObject newStats = null)
@@ -1089,7 +1123,7 @@ public class GameProfile
         var removedKeys = oldKeys.Except(newKeys);
         var possiblyChangedKeys = oldKeys.Intersect(newKeys);
 
-        JsonArray profileChanges = new();
+        JsonArray profileChanges = [];
 
         foreach (var itemKey in removedKeys)
         {
@@ -1110,7 +1144,7 @@ public class GameProfile
                 {
                     ["changeType"] = "itemFullyChanged",
                     ["itemId"] = itemKey,
-                    ["item"] = newItems[itemKey].Reserialise()
+                    ["item"] = newItems[itemKey].SafeDeepClone()
                 });
             }
         }
@@ -1120,7 +1154,7 @@ public class GameProfile
             {
                 ["changeType"] = "itemAdded",
                 ["itemId"] = itemKey,
-                ["item"] = newItems[itemKey].Reserialise()
+                ["item"] = newItems[itemKey].SafeDeepClone()
             });
         }
         foreach (var statKVP in newStats)
@@ -1131,7 +1165,7 @@ public class GameProfile
                 {
                     ["changeType"] = "statModified",
                     ["name"] = statKVP.Key,
-                    ["value"] = statVal.Reserialise()
+                    ["value"] = statVal.SafeDeepClone()
                 });
             }
         }
@@ -1143,9 +1177,9 @@ public class GameProfile
 
     public void ApplyProfileChanges(JsonArray profileChanges)
     {
-        List<GameItem> itemsToNotify = new();
-        List<GameItem> itemsToIgnore = new();
-        Dictionary<string, GameItem> reassociations = new();
+        List<GameItem> itemsToNotify = [];
+        List<GameItem> itemsToIgnore = [];
+        Dictionary<string, GameItem> reassociations = [];
         foreach (var change in profileChanges)
         {
             string changeType = change["changeType"].ToString();
@@ -1163,7 +1197,7 @@ public class GameProfile
                     }
                     lock (groupedItems)
                     {
-                        groupedItems.TryAdd(targetItem.templateId.Split(":")[0], new());
+                        groupedItems.TryAdd(targetItem.templateId.Split(":")[0], []);
                         groupedItems[targetItem.templateId.Split(":")[0]].Add(targetItem);
                     }
                     if (printChanges)
@@ -1192,7 +1226,7 @@ public class GameProfile
                     break;
                 case "statModified":
                     var statName = change["name"].ToString();
-                    var statVal = change["value"].Reserialise();
+                    var statVal = change["value"].SafeDeepClone();
                     var hadStat = statAttributes.TryGetPropertyValue(statName, out var oldStatVal);
 
                     statAttributes[statName] = statVal;
@@ -1225,7 +1259,7 @@ public class GameProfile
                 case "itemAttrChanged":
                     targetItem = items[uuid];
                     var oldValue = targetItem.attributes[change["attributeName"].ToString()]?.ToString();
-                    targetItem.attributes[change["attributeName"].ToString()] = change["attributeValue"].Reserialise();
+                    targetItem.attributes[change["attributeName"].ToString()] = change["attributeValue"].SafeDeepClone();
                     if (printChanges)
                         GD.Print($"CHANGED (attribute): {uuid}[{change["attributeName"]}] \n{oldValue}\n=>\n{change["attributeValue"]}");
                     itemsToNotify.Add(targetItem);
@@ -1347,7 +1381,7 @@ public class GameItem
         upgradeBasis = template;
         this.quantity = quantity;
         this.attributes = attributes;
-        this.customData = customData ?? new();
+        this.customData = customData ?? [];
         this.inspectorOverride = inspectorOverride;
         zcpEquivelent = FindZcpEquivelent(templateId);
         isSeenLocal = true;
@@ -1365,7 +1399,7 @@ public class GameItem
     public GameItemTemplate template => _template ??= GameItemTemplate.Get(templateId);
 
     public JsonObject attributes { get; private set; }
-    public JsonObject customData { get; private set; } = new();
+    public JsonObject customData { get; private set; } = [];
 
     public int quantity { get; private set; }
     public void SetLocalQuantity(int newQuant) =>  quantity = newQuant;
@@ -1384,25 +1418,25 @@ public class GameItem
     public JsonObject RawData => _rawData ?? GenerateRawData();
     public JsonObject GenerateRawData()
     {
-        var templateData = template?.rawData.Reserialise();
-        templateData ??= new();
+        var templateData = template?.rawData.SafeDeepClone();
+        templateData ??= [];
         templateData["searchTags"] = null;
         templateData.Remove("searchTags");
         _rawData = new()
         {
             ["uuid"] = uuid,
             ["templateId"] = templateId,
-            ["attributes"] = attributes?.Reserialise(),
+            ["attributes"] = attributes?.SafeDeepClone(),
             ["quantity"] = quantity,
             ["template"] = templateData,
-            ["searchTags"] = _searchTags?.Reserialise() ?? template?["searchTags"]?.Reserialise(),
+            ["searchTags"] = _searchTags?.SafeDeepClone() ?? template?["searchTags"]?.SafeDeepClone(),
         };
         if (profile is null)
             _rawData.Remove("uuid"); //doing this backwards to make uuid the first property of rawData
         if(customData is not null)
-            _rawData["custom"] = customData.Reserialise();
+            _rawData["custom"] = customData.SafeDeepClone();
         if(zcpEquivelent is not null)
-            _rawData["bundleItem"] = zcpEquivelent.template.rawData.Reserialise();
+            _rawData["bundleItem"] = zcpEquivelent.template.rawData.SafeDeepClone();
         return _rawData;
     }
     public JsonArray Alterations => (attributes?["alterations"] ?? attributes?["alterationDefinitions"])?.AsArray();
@@ -1445,7 +1479,7 @@ public class GameItem
     public JsonObject SimpleRawData => new()
     {
         ["templateId"] = templateId,
-        ["attributes"] = attributes?.Reserialise(),
+        ["attributes"] = attributes?.SafeDeepClone(),
         ["quantity"] = quantity,
     };
 
@@ -1461,7 +1495,7 @@ public class GameItem
         quantity = rawData["quantity"].GetValue<int>();
         attributes = rawData["attributes"]?.AsObject();
         isSeenLocal = null;
-        customData = new();
+        customData = [];
         ResetCachedData();
     }
 
@@ -1578,7 +1612,7 @@ public class GameItem
 
     public float GetHeroStat(string stat, int givenLevel = 0, int givenTier = 0)
     {
-        if (!BanjoAssets.TryGetDataSource("HeroStats", out var stats))
+        if (PegLegResourceManager.HeroStats is not JsonObject stats)
             return 0;
 
         if (givenLevel <= 0)
@@ -1607,7 +1641,7 @@ public class GameItem
 
     public int CalculateRating(string survivorSquad = null)
     {
-        if (!BanjoAssets.TryGetDataSource("ItemRatings", out var ratings))
+        if (PegLegResourceManager.ItemRatings is not JsonObject ratings)
             return 0;
         if (template is null)
             return 0;
@@ -1619,6 +1653,8 @@ public class GameItem
 
         var level = attributes?["level"]?.GetValue<int>() ?? 0;
         var bonusMax = attributes?["max_level_bonus"]?.GetValue<int>() ?? 0;
+        if (!template.CanBeLeveled && tier == 5) //crafted weapons and traps dont have max_level_bonus attribute
+            bonusMax = 10;
         level = Mathf.Clamp(level, Mathf.Min(1, (tier * 10) - 10), (tier * 10) + bonusMax);
         string ratingCategory = template.Type == "Worker" ? (template.SubType is null ? "Survivor" : "LeadSurvivor") :"Default";
 
@@ -1644,7 +1680,7 @@ public class GameItem
         if (template.SubType is string leadType)
         {
             //check for lead synergy match
-            var matchedSquadID = BanjoAssets.supplimentaryData.SynergyToSquadId.TryGetValue(leadType.Replace(" ", ""), out var match) ? match : null;
+            var matchedSquadID = PegLegResourceManager.supplimentaryData.SynergyToSquadId.TryGetValue(leadType.Replace(" ", ""), out var match) ? match : null;
             if (matchedSquadID == survivorSquad)
                 rating *= 2;
         }
@@ -1679,9 +1715,9 @@ public class GameItem
         return rating;
     }
 
-    Dictionary<FnItemTextureType, string> textures = new();
+    Dictionary<FnItemTextureType, string> textures = [];
 
-    public Texture2D GetTexture(FnItemTextureType textureType = FnItemTextureType.Preview) => GetTexture(textureType, BanjoAssets.defaultIcon);
+    public Texture2D GetTexture(FnItemTextureType textureType = FnItemTextureType.Preview) => GetTexture(textureType, PegLegResourceManager.defaultIcon);
     public Texture2D GetTexture(Texture2D fallbackIcon) => GetTexture(FnItemTextureType.Preview, fallbackIcon);
 
     const string llamaDefaultPreviewImage = "PinataStandardPack";
@@ -1695,7 +1731,7 @@ public class GameItem
     public Texture2D GetTexture(FnItemTextureType textureType, Texture2D fallbackIcon)
     {
         if (textures.ContainsKey(textureType))
-            return BanjoAssets.GetReservedTexture(textures[textureType]);
+            return PegLegResourceManager.GetReservedTexture(textures[textureType]);
 
         if (textureType == FnItemTextureType.Personality)
             return GetPersonalityTexture(fallbackIcon);
@@ -1742,8 +1778,8 @@ public class GameItem
 
         var personalityId = template.Personality ?? attributes?["personality"]?.ToString()?.Split(".")?[^1];
 
-        if (personalityId is not null && BanjoAssets.supplimentaryData.PersonalityIcons.ContainsKey(personalityId))
-            return BanjoAssets.supplimentaryData.PersonalityIcons[personalityId];
+        if (personalityId is not null && PegLegResourceManager.supplimentaryData.PersonalityIcons.ContainsKey(personalityId))
+            return PegLegResourceManager.supplimentaryData.PersonalityIcons[personalityId];
 
         return fallbackIcon;
     }
@@ -1756,13 +1792,13 @@ public class GameItem
         if (template.SubType is string subType)
         {
             subType = subType.Replace("Martial Artist", "MartialArtist");
-            if (BanjoAssets.supplimentaryData.SquadIcons.ContainsKey(subType))
-                return BanjoAssets.supplimentaryData.SquadIcons[subType];
+            if (PegLegResourceManager.supplimentaryData.SquadIcons.ContainsKey(subType))
+                return PegLegResourceManager.supplimentaryData.SquadIcons[subType];
         }
         else if(attributes?["set_bonus"]?.ToString()?.Split(".")?[^1] is string setBonus)
         {
-            if (BanjoAssets.supplimentaryData.SetBonusIcons.ContainsKey(setBonus))
-                return BanjoAssets.supplimentaryData.SetBonusIcons[setBonus];
+            if (PegLegResourceManager.supplimentaryData.SetBonusIcons.ContainsKey(setBonus))
+                return PegLegResourceManager.supplimentaryData.SetBonusIcons[setBonus];
         }
 
         return fallbackIcon;
@@ -1801,7 +1837,7 @@ public class GameItem
         ResetCachedData();
     }
 
-    public GameItem Clone(int? quantity = null, JsonObject customData = null, bool useInspectorOverride = true) => new(template, quantity ?? this.quantity, attributes.Reserialise(), useInspectorOverride ? (profile is null ? inspectorOverride ?? this : this) : null, customData ?? this.customData.Reserialise());
+    public GameItem Clone(int? quantity = null, JsonObject customData = null, bool useInspectorOverride = true) => new(template, quantity ?? this.quantity, attributes.SafeDeepClone(), useInspectorOverride ? (profile is null ? inspectorOverride ?? this : this) : null, customData ?? this.customData.SafeDeepClone());
 
     public void NotifyChanged()
     {

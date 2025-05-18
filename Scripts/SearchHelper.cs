@@ -59,7 +59,7 @@ public static class PLSearch
         GenerateSearchInstructions(fromText, out var _);
     public static Instruction[] GenerateSearchInstructions(string fromText, out string failureText)
     {
-        List<Instruction> instructions = new();
+        List<Instruction> instructions = [];
         failureText = "";
 
         var match = Regex.Match(fromText, bracketExpression, regexOptions);

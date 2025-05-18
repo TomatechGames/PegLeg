@@ -51,7 +51,7 @@ public partial class PerkEntry : Control
                     int rarity = alteration.RarityLevel;
                     if (alterationId.StartsWith("Alteration:aid_g_"))
                         rarity = 6;
-                    EmitSignal(SignalName.RarityIconChanged, BanjoAssets.GetReservedTexture(rarityToImage[rarity - 1]));
+                    EmitSignal(SignalName.RarityIconChanged, PegLegResourceManager.GetReservedTexture(rarityToImage[rarity - 1]));
                     EmitSignal(SignalName.RarityIconVisibilityChanged, true);
                 }
                 else
@@ -75,7 +75,7 @@ public partial class PerkEntry : Control
             {
                 EmitSignal(SignalName.NameChanged, "Unknown Perk (Probably Legacy)");
                 EmitSignal(SignalName.RarityIconVisibilityChanged, true);
-                EmitSignal(SignalName.RarityIconChanged, BanjoAssets.defaultIcon);
+                EmitSignal(SignalName.RarityIconChanged, PegLegResourceManager.defaultIcon);
                 EmitSignal(SignalName.ElementIconVisibilityChanged, false);
             }
 
@@ -84,7 +84,7 @@ public partial class PerkEntry : Control
         {
             EmitSignal(SignalName.NameChanged, "Preview perk possibilities");
             EmitSignal(SignalName.RarityIconVisibilityChanged, true);
-            EmitSignal(SignalName.RarityIconChanged, BanjoAssets.defaultIcon);
+            EmitSignal(SignalName.RarityIconChanged, PegLegResourceManager.defaultIcon);
             EmitSignal(SignalName.ElementIconVisibilityChanged, false);
         }
     }

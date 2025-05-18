@@ -208,6 +208,7 @@ mainAppRoot = NodePath("../../Content")
 prefer_native_menu = true
 item_count = 1
 item_0/text = "Close"
+item_0/id = 0
 
 [node name="TutorialWindow" type="Window" parent="NonUI/StatusIndicator"]
 process_mode = 3
@@ -325,7 +326,7 @@ grow_vertical = 2
 size_flags_vertical = 3
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
-current_tab = 1
+current_tab = 6
 script = ExtResource("16_hsemp")
 
 [node name="Dashboard" parent="Content/MainTabs" instance=ExtResource("10_xfiw1")]
@@ -334,6 +335,7 @@ layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="Llamas" parent="Content/MainTabs" instance=ExtResource("23_b4gaj")]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -401,7 +403,6 @@ layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="Quests" parent="Content/MainTabs" instance=ExtResource("28_rt2uq")]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 6
 
@@ -771,9 +772,7 @@ grow_vertical = 2
 text = "CtxMenu"
 
 [node name="PopupMenu" type="PopupMenu" parent="Button"]
-transparent_bg = true
 size = Vector2i(20, 8)
-transparent = true
 hide_on_item_selection = false
 hide_on_checkable_item_selection = false
 allow_search = false

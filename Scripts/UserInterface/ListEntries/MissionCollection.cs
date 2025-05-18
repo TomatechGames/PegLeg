@@ -21,7 +21,7 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
     [Export]
     bool sortByZoneCat;
 
-    List<GameMission> filteredMissions = new();
+    List<GameMission> filteredMissions = [];
 
     public GameMission GetRecycleElement(int index) => (index >= 0 && index < filteredMissions.Count) ? filteredMissions[index] : null;
     public int GetRecycleElementCount() => filteredMissions.Count;

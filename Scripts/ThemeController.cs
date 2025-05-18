@@ -98,9 +98,9 @@ public partial class ThemeController : Node
     {
         if (themeDataSet is not null)
             return;
-        themeDataSet = new();
+        themeDataSet = [];
 
-        string absoluteCustomThemePath = Helpers.ProperlyGlobalisePath(customThemePath);
+        string absoluteCustomThemePath = Helpers.GlobalisePath(customThemePath);
         if (DirAccess.DirExistsAbsolute(absoluteCustomThemePath))
         {
             using DirAccess customThemes = DirAccess.Open(absoluteCustomThemePath);
@@ -114,7 +114,7 @@ public partial class ThemeController : Node
             }
         }
 
-        string absoluteBuiltInThemePath = Helpers.ProperlyGlobalisePath(builtInThemePath);
+        string absoluteBuiltInThemePath = Helpers.GlobalisePath(builtInThemePath);
         if (!DirAccess.DirExistsAbsolute(absoluteCustomThemePath))
             DirAccess.MakeDirAbsolute(absoluteCustomThemePath);
         using DirAccess builtInThemes = DirAccess.Open(absoluteBuiltInThemePath);

@@ -19,7 +19,7 @@ public partial class RecycleListContainer : ScrollContainer
     IRecyclableEntry basis;
     Vector2 basisSize;
     Queue<IRecyclableEntry> pooledEntries = new();
-    Dictionary<int, IRecyclableEntry> activeEntries = new();
+    Dictionary<int, IRecyclableEntry> activeEntries = [];
     IRecyclableElementProvider linkedProvider;
 
     public override async void _Ready()

@@ -28,7 +28,7 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
 
     CheckButton[] allFilters;
 
-    List<MissionRewardPair> rewards = new();
+    List<MissionRewardPair> rewards = [];
 
 
     public MissionRewardPair GetRecycleElement(int index) => index>=0 && index<rewards.Count ? rewards[index] : default;
@@ -185,7 +185,7 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
             };
         }
 
-        List<MissionRewardPair> filteredRewards = new();
+        List<MissionRewardPair> filteredRewards = [];
 
         await Task.Run(() =>
         {

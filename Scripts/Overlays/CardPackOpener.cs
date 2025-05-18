@@ -124,8 +124,8 @@ public partial class CardPackOpener : Control
     bool waitForFirstHit = false;
 
 
-    public List<GameItem> queuedChoices = new();
-    public List<GameItem> queuedItems = new();
+    public List<GameItem> queuedChoices = [];
+    public List<GameItem> queuedItems = [];
     int TotalQueueLength => queuedChoices.Count + (choicesOnly ? 0 : queuedItems.Count);
 
     public override void _Ready()
@@ -254,7 +254,7 @@ public partial class CardPackOpener : Control
                 .Where(val => val?["itemGuid"] is not null && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
                 .Select(val => GameItemTemplate.Get(val["itemType"].ToString())?.CreateInstance(
                     (int)val["quantity"],
-                    val["attributes"]?.Reserialise().AsObject(),
+                    val["attributes"]?.SafeDeepClone().AsObject(),
                     account.GetProfile(val["itemProfile"].ToString()).GetItem(val["itemGuid"].ToString())
                     ))
                 .ToArray();
@@ -269,7 +269,7 @@ public partial class CardPackOpener : Control
         extraCardPacks = extraCardPacks.Union(cardPacks).ToArray();
 
         //step 1: separate the choice cardpacks from the regular ones
-        List<GameItem> openableCardPacks = new();
+        List<GameItem> openableCardPacks = [];
         foreach (var item in extraCardPacks)
         {
             if (!item.attributes.ContainsKey("options"))
@@ -297,7 +297,7 @@ public partial class CardPackOpener : Control
                 .Where(val => val?["itemGuid"] is not null && !(val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
                 .Select(val => GameItemTemplate.Get(val["itemType"].ToString())?.CreateInstance(
                     (int)val["quantity"],
-                    val["attributes"]?.Reserialise().AsObject(),
+                    val["attributes"]?.SafeDeepClone().AsObject(),
                     account.GetProfile(val["itemProfile"].ToString()).GetItem(val["itemGuid"].ToString())
                     ))
                 .ToArray();
@@ -788,7 +788,7 @@ public partial class CardPackOpener : Control
         {
             var thisChoice = currentChoices[i];
             var choiceTemplate = GameItemTemplate.Get(thisChoice["itemType"].ToString());
-            var choiceItem = choiceTemplate.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().Reserialise());
+            var choiceItem = choiceTemplate.CreateInstance(thisChoice["quantity"].GetValue<int>(), thisChoice["attributes"]?.AsObject().SafeDeepClone());
             choiceCards[i].SetItem(choiceItem);
             choiceCards[i].GetChild<Control>(0).SelfModulate = Colors.White;
             choiceCards[i].SetInteractable(true);
@@ -824,7 +824,7 @@ public partial class CardPackOpener : Control
         var currentChoices = queuedChoices[nextChoiceIndex - 1].attributes["options"].AsArray();
         var resultChoice = currentChoices[index];
         var itemTemplate = GameItemTemplate.Get(resultChoice["itemType"].ToString());
-        var itemInstance = itemTemplate.CreateInstance((int?)resultChoice["quantity"] ?? 1, resultChoice["attributes"]?.AsObject().Reserialise() ?? null);
+        var itemInstance = itemTemplate.CreateInstance((int?)resultChoice["quantity"] ?? 1, resultChoice["attributes"]?.AsObject().SafeDeepClone() ?? null);
 
         var resultChild = choiceCards[index].GetChild<Control>(0);
         resultChild.SelfModulate = Colors.Transparent;

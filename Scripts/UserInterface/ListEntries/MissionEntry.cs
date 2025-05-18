@@ -131,11 +131,11 @@ public partial class MissionEntry : Control, IRecyclableEntry
         bool hasEventFlag = !string.IsNullOrWhiteSpace(eventFlag);
 
         //TODO: if a mission has a quest requirement, mission entries should have the option of listing it
-        List<string> tooltipDescriptions = new()
-        {
+        List<string> tooltipDescriptions =
+        [
             currentMission.Description ?? "",
             //"Item Id: " + item.templateId,
-        };
+        ];
         if (mission.SearchTags is JsonArray tagArray && tagArray.Count > 0)
             tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except(new string[] { currentMission.DisplayName }).ToArray().Join(", "));
 

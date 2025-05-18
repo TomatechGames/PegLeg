@@ -65,7 +65,7 @@ public partial class QuestGroupEntry : Control
     bool hasAvailableQuests = false;
     public bool HasAvailableQuests => hasAvailableQuests;
 
-    public List<QuestSlot> questSlotList { get; private set; } = new();
+    public List<QuestSlot> questSlotList { get; private set; } = [];
     bool isSequence = false;
     public bool IsSequence => isSequence;
     bool? showLocked = false;

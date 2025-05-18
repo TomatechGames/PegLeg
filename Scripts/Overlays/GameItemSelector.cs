@@ -51,7 +51,7 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     bool isSelecting;
     bool isCancelling;
     List<GameItem> items;
-    List<GameItem> selectedItems = new();
+    List<GameItem> selectedItems = [];
 
     public bool multiselectMode;
     public bool allowEmptySelection;
@@ -167,10 +167,10 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
                     items
                         .Where(item => selectablePredicate.Try(item) && autoselectPredicate(item))
                         .ToList() :
-                    new());
+                    []);
         }
         else
-            selectedItems = new();
+            selectedItems = [];
 
         confirmButton.Visible = selectedItems?.Any() ?? false;
         skipButton.Visible = !confirmButton.Visible && allowEmptySelection;

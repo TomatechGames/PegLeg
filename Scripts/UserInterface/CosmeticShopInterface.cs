@@ -235,9 +235,9 @@ public partial class CosmeticShopInterface : Control
     public void RegisterOffer(CosmeticShopOfferEntry newOffer) => activeOffers.Add(newOffer);
 
     bool isLoadingShop = false;
-    List<CosmeticShopOfferEntry> activeOffers = new();
-    List<CosmeticShopOfferEntry> onScreenOffers = new();
-    List<PageGrouping> activePages = new();
+    List<CosmeticShopOfferEntry> activeOffers = [];
+    List<CosmeticShopOfferEntry> onScreenOffers = [];
+    List<PageGrouping> activePages = [];
     record PageGrouping(Control pageHeader, List<CosmeticShopRow> pageRows);
 
     public async Task LoadShop(bool force = false)
@@ -334,7 +334,7 @@ public partial class CosmeticShopInterface : Control
         navContainer.Visible = AppConfig.Get("item_shop", "navigation_visible", true);
         navToggle.Visible = true;
         var navRoot = navigationPane.CreateItem();
-        List<CosmeticShopRow> rowsToPopulate = new();
+        List<CosmeticShopRow> rowsToPopulate = [];
         foreach (var category in cosmeticShop)
         {
             var navCat = navRoot;
@@ -362,7 +362,7 @@ public partial class CosmeticShopInterface : Control
                 }
                 //navSec.AddButton(1, navButtonTexture);
                 navSection.SetMetadata(0, header);
-                List<CosmeticShopRow> pageRows = new();
+                List<CosmeticShopRow> pageRows = [];
                 //spawn shop pages
                 foreach (var page in section.Value.AsArray())
                 {
@@ -550,7 +550,7 @@ public class CosmeticShopOfferData
     string resourceUrl = null;
 
     public string offerId { get; private set; }
-    public List<string> itemTypes { get; private set; } = new();
+    public List<string> itemTypes { get; private set; } = [];
     public string displayName { get; private set; }
     public string displayType { get; private set; }
     public string tooltip { get; private set; }

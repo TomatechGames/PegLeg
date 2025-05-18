@@ -117,7 +117,7 @@ public partial class SurvivorLoadoutInterface : Node
         }
 
         var account = GameAccount.activeAccount;
-        var loadouts = account.GetLocalData(LoadoutKey)?.AsObject() ?? new();
+        var loadouts = account.GetLocalData(LoadoutKey)?.AsObject() ?? [];
 
         loadoutName ??= await GenericLineEditWindow.ShowLineEdit("Enter Survivor Loadout Name", validator: val =>
         {
@@ -137,7 +137,7 @@ public partial class SurvivorLoadoutInterface : Node
 
         var groupedWorkers = allWorkers.GroupBy(item => item.attributes["squad_id"].ToString());
 
-        JsonObject squadsMappings = new();
+        JsonObject squadsMappings = [];
         foreach (var workers in groupedWorkers)
         {
             var squadArray = new JsonArray();
@@ -152,7 +152,7 @@ public partial class SurvivorLoadoutInterface : Node
             squadsMappings[workers.Key] = squadArray;
         }
 
-        loadouts ??= new JsonObject();
+        loadouts ??= [];
         loadouts[loadoutName] = squadsMappings;
 
         account.SetLocalData(LoadoutKey, loadouts);
@@ -320,7 +320,7 @@ public partial class SurvivorLoadoutInterface : Node
         loadoutSelector.Clear();
         loadoutSelector.AddItem("[Create New Loadout]");
         loadoutSelector.AddSeparator("Loadouts");
-        var loadouts = GameAccount.activeAccount.GetLocalData("SurvivorLoadouts")?.AsObject() ?? new();
+        var loadouts = GameAccount.activeAccount.GetLocalData("SurvivorLoadouts")?.AsObject() ?? [];
         foreach (var kvp in loadouts)
         {
             loadoutSelector.AddItem(kvp.Key);
