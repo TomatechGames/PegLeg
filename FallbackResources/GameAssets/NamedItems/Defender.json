@@ -1,0 +1,4433 @@
+{
+  "Defender:did_defendermelee_basic_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_VR_T04",
+    "DisplayName": "Epic Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defendermelee_basic_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_VR_T01",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defendersniper_basic_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_R_T03",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defenderpistol_basic_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_R_T02",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_VR_T04",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_R_T02",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defendersniper_basic_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_f_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_F_SR_T02",
+    "DisplayName": "Val",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defendermelee_basic_f_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_F_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee-Val-Survivor.T-Defenders-Defender-Melee-Val-Survivor",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-Val-Survivor-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_R_T02",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defendershotgun_basic_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_uc_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_UC_T03",
+    "DisplayName": "Uncommon Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_UC_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_c_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_C_T01",
+    "DisplayName": "Common Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 250,
+        "AccountResource:reagent_c_t01": 2
+      },
+      "Result": "Defender:did_defenderassault_basic_c_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_C_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_VR_T04",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_SR_T04",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_VR_T03",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defenderassault_basic_m_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_R_T03",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defendersniper_basic_m_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_R_T03",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defenderassault_basic_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_SR_T05",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_founders_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Founders_VR_T01",
+    "DisplayName": "Idris",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defenderpistol_founders_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Founders_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-M.T-Defenders-Defenders-Founders-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-M-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_R_T02",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_VR_T03",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defendershotgun_basic_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_SR_T04",
+    "DisplayName": "Legendary Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defendermelee_basic_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_SR_T05",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_uc_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_UC_T01",
+    "DisplayName": "Uncommon Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 500,
+        "AccountResource:reagent_c_t01": 3
+      },
+      "Result": "Defender:did_defendersniper_basic_uc_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_UC_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_SR_T02",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defendersniper_basic_m_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_VR_T02",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defendersniper_basic_m_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_SR_T02",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defenderassault_basic_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderassault_founders_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Founders_VR_T04",
+    "DisplayName": "Jill",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defenderassault_founders_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Founders_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-F.T-Defenders-Defenders-Founders-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_SR_T05",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_R_T02",
+    "DisplayName": "Rare Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defendermelee_basic_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_R_T01",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defenderassault_basic_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_R_T04",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_VR_T04",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defendersniper_basic_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_VR_T01",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defendershotgun_basic_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_VR_T05",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_f_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_F_SR_T05",
+    "DisplayName": "Val",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_F_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee-Val-Survivor.T-Defenders-Defender-Melee-Val-Survivor",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-Val-Survivor-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_SR_T02",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_VR_T02",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defenderassault_basic_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_VR_T02",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_uc_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_UC_T01",
+    "DisplayName": "Uncommon Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 500,
+        "AccountResource:reagent_c_t01": 3
+      },
+      "Result": "Defender:did_defenderpistol_basic_uc_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_UC_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_uc_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_UC_T02",
+    "DisplayName": "Uncommon Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 25,
+        "AccountResource:reagent_c_t02": 2
+      },
+      "Result": "Defender:did_defenderassault_basic_uc_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_UC_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_SR_T02",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_SR_T01",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defendersniper_basic_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_c_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_C_T02",
+    "DisplayName": "Common Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_C_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_VR_T01",
+    "DisplayName": "Epic Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defendermelee_basic_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_c_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_C_T01",
+    "DisplayName": "Common Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 250,
+        "AccountResource:reagent_c_t01": 2
+      },
+      "Result": "Defender:did_defenderpistol_basic_c_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_C_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_uc_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_UC_T02",
+    "DisplayName": "Uncommon Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 25,
+        "AccountResource:reagent_c_t02": 2
+      },
+      "Result": "Defender:did_defendermelee_basic_uc_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_UC_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_VR_T02",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_uc_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_UC_T03",
+    "DisplayName": "Uncommon Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_UC_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_SR_T03",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defendersniper_basic_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_R_T01",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defendersniper_basic_m_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_VR_T02",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defendersniper_basic_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_R_T02",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defenderassault_basic_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_SR_T01",
+    "DisplayName": "Legendary Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defendermelee_basic_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_c_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_C_T01",
+    "DisplayName": "Common Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 250,
+        "AccountResource:reagent_c_t01": 2
+      },
+      "Result": "Defender:did_defendershotgun_basic_c_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_C_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_VR_T05",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_SR_T03",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_R_T03",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defendershotgun_basic_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_uc_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_UC_T02",
+    "DisplayName": "Uncommon Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 25,
+        "AccountResource:reagent_c_t02": 2
+      },
+      "Result": "Defender:did_defendersniper_basic_uc_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_UC_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_SR_T01",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defenderassault_basic_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_VR_T05",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_SR_T03",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defendersniper_basic_m_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_SR_T05",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_VR_T03",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defendersniper_basic_m_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_SR_T04",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defenderassault_basic_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderassault_founders_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Founders_VR_T05",
+    "DisplayName": "Jill",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Founders_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-F.T-Defenders-Defenders-Founders-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_SR_T04",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defendersniper_basic_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_SR_T02",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defenderassault_basic_m_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_SR_T05",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_VR_T04",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defenderpistol_basic_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_c_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_C_T02",
+    "DisplayName": "Common Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_C_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_R_T01",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defendershotgun_basic_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_VR_T05",
+    "DisplayName": "Epic Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_R_T02",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defenderpistol_basic_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_SR_T01",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defendersniper_basic_m_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_SR_T05",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_VR_T01",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defendersniper_basic_m_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_R_T01",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defenderassault_basic_m_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_VR_T03",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_R_T03",
+    "DisplayName": "Rare Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defendermelee_basic_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_f_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_F_SR_T03",
+    "DisplayName": "Val",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defendermelee_basic_f_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_F_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee-Val-Survivor.T-Defenders-Defender-Melee-Val-Survivor",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-Val-Survivor-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_R_T04",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_VR_T01",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defenderassault_basic_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_VR_T04",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defenderassault_basic_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_VR_T02",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defenderpistol_basic_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_uc_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_UC_T01",
+    "DisplayName": "Uncommon Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 500,
+        "AccountResource:reagent_c_t01": 3
+      },
+      "Result": "Defender:did_defenderassault_basic_uc_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_UC_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_VR_T02",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defenderassault_basic_m_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_founders_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Founders_VR_T05",
+    "DisplayName": "Idris",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Founders_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-M.T-Defenders-Defenders-Founders-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-M-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_VR_T01",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_SR_T04",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defendershotgun_basic_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_SR_T01",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_VR_T05",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_SR_T03",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defenderpistol_basic_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_R_T03",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defenderassault_basic_m_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderassault_founders_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Founders_VR_T01",
+    "DisplayName": "Jill",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defenderassault_founders_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Founders_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-F.T-Defenders-Defenders-Founders-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-F-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_VR_T03",
+    "DisplayName": "Epic Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defendermelee_basic_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_R_T01",
+    "DisplayName": "Rare Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defendermelee_basic_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_SR_T05",
+    "DisplayName": "Legendary Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_R_T04",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_R_T03",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_uc_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_UC_T01",
+    "DisplayName": "Uncommon Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 500,
+        "AccountResource:reagent_c_t01": 3
+      },
+      "Result": "Defender:did_defendermelee_basic_uc_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_UC_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_SR_T05",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_VR_T03",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_uc_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_UC_T02",
+    "DisplayName": "Uncommon Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 25,
+        "AccountResource:reagent_c_t02": 2
+      },
+      "Result": "Defender:did_defenderpistol_basic_uc_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_UC_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_sr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_SR_T05",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_SR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_SR_T03",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_SR_T01",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defenderpistol_basic_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_VR_T05",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_founders_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Founders_VR_T03",
+    "DisplayName": "Jill",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defenderassault_founders_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Founders_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-F.T-Defenders-Defenders-Founders-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_SR_T02",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defendersniper_basic_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_R_T04",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_SR_T02",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defendershotgun_basic_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_SR_T03",
+    "DisplayName": "Legendary Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defendermelee_basic_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_SR_T01",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_R_T01",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_SR_T03",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defenderassault_basic_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_VR_T05",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_c_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_C_T02",
+    "DisplayName": "Common Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_C_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_VR_T03",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defendersniper_basic_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_uc_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_UC_T02",
+    "DisplayName": "Uncommon Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 25,
+        "AccountResource:reagent_c_t02": 2
+      },
+      "Result": "Defender:did_defendershotgun_basic_uc_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_UC_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_c_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_C_T01",
+    "DisplayName": "Common Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 250,
+        "AccountResource:reagent_c_t01": 2
+      },
+      "Result": "Defender:did_defendersniper_basic_c_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_C_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_VR_T02",
+    "DisplayName": "Epic Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defendermelee_basic_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_VR_T05",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_R_T01",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defenderpistol_basic_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_R_T03",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_f_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_F_SR_T04",
+    "DisplayName": "Val",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defendermelee_basic_f_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_F_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee-Val-Survivor.T-Defenders-Defender-Melee-Val-Survivor",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-Val-Survivor-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_c_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_C_T02",
+    "DisplayName": "Common Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_C_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_VR_T01",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_R_T01",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defendersniper_basic_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_c_t00": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_C_T00",
+    "DisplayName": "Rifleman Trainee",
+    "SubType": "Assault Defender",
+    "Description": "A defender (sort of) trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Common",
+    "Tier": 1,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_C_T00.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_f_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_F_SR_T01",
+    "DisplayName": "Val",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defendermelee_basic_f_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_F_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee-Val-Survivor.T-Defenders-Defender-Melee-Val-Survivor",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-Val-Survivor-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_VR_T03",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defenderassault_basic_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_c_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_C_T02",
+    "DisplayName": "Common Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_C_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_VR_T03",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defenderpistol_basic_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_uc_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_UC_T03",
+    "DisplayName": "Uncommon Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_UC_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault.T-Defenders-Defender-Assault",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_SR_T03",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defendershotgun_basic_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_SR_T02",
+    "DisplayName": "Legendary Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defendermelee_basic_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_founders_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Founders_VR_T02",
+    "DisplayName": "Idris",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defenderpistol_founders_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Founders_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-M.T-Defenders-Defenders-Founders-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-M-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_SR_T04",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defenderpistol_basic_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_VR_T04",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defendershotgun_basic_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_f_r_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_F_R_T01",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 750,
+        "AccountResource:reagent_c_t01": 5,
+        "AccountResource:reagent_people": 25
+      },
+      "Result": "Defender:did_defenderpistol_basic_f_r_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_F_R_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol2.T-Defenders-Defender-Pistol2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol2-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_uc_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_UC_T03",
+    "DisplayName": "Uncommon Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_UC_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_r_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_R_T03",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3000,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 150,
+        "AccountResource:reagent_c_t02": 7,
+        "AccountResource:reagent_c_t03": 3
+      },
+      "Result": "Defender:did_defendersniper_basic_r_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_R_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_VR_T01",
+    "DisplayName": "Epic Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defenderpistol_basic_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_c_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_C_T01",
+    "DisplayName": "Common Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Common",
+    "Rarity": "Common",
+    "RecycleRecipe": {
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 250,
+        "AccountResource:reagent_c_t01": 2
+      },
+      "Result": "Defender:did_defendermelee_basic_c_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_C_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_R_T04",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_vr_t05": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_VR_T05",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 5,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_VR_T05.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper.T-Defenders-Defender-Sniper",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_SR_T01",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defenderassault_basic_m_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_sr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_SR_T02",
+    "DisplayName": "Legendary Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 3125,
+        "AccountResource:reagent_c_t01": 20,
+        "AccountResource:reagent_people": 200,
+        "AccountResource:reagent_c_t02": 5
+      },
+      "Result": "Defender:did_defenderpistol_basic_sr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_SR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_uc_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_UC_T03",
+    "DisplayName": "Uncommon Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_UC_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_R_T02",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defenderassault_basic_m_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_sr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_SR_T01",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1250,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75
+      },
+      "Result": "Defender:did_defendershotgun_basic_sr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_SR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_r_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_R_T02",
+    "DisplayName": "Rare Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1875,
+        "AccountResource:reagent_c_t01": 10,
+        "AccountResource:reagent_people": 75,
+        "AccountResource:reagent_c_t02": 3
+      },
+      "Result": "Defender:did_defendersniper_basic_m_r_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_R_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_SR_T04",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defenderassault_basic_m_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_VR_T02",
+    "DisplayName": "Epic Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defendershotgun_basic_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_f_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_F_SR_T04",
+    "DisplayName": "Legendary Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defendershotgun_basic_f_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_F_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun2-F.T-Defenders-Defender-Shotgun2-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun2-F-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_sr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_SR_T04",
+    "DisplayName": "Legendary Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 6875,
+        "AccountResource:reagent_c_t01": 40,
+        "AccountResource:reagent_people": 450,
+        "AccountResource:reagent_c_t02": 16,
+        "AccountResource:reagent_c_t03": 11,
+        "AccountResource:reagent_c_t04": 5
+      },
+      "Result": "Defender:did_defendersniper_basic_m_sr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_SR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defendersniper_basic_m_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderSniper_Basic_M_VR_T04",
+    "DisplayName": "Epic Sniper Defender",
+    "SubType": "Sniper Defender",
+    "Description": "A defender trained to fight with sniper rifles. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defendersniper_basic_m_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderSniper_Basic_M_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Sniper2-M.T-Defenders-Defender-Sniper2-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Sniper2-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_R_T04",
+    "DisplayName": "Rare Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderassault_founders_vr_t02": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Founders_VR_T02",
+    "DisplayName": "Jill",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 2,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 2500,
+        "AccountResource:reagent_c_t01": 15,
+        "AccountResource:reagent_people": 125,
+        "AccountResource:reagent_c_t02": 4
+      },
+      "Result": "Defender:did_defenderassault_founders_vr_t03"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Founders_VR_T02.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-F.T-Defenders-Defenders-Founders-F",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-F-L.png"
+    }
+  },
+  "Defender:did_defendermelee_basic_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderMelee_Basic_R_T04",
+    "DisplayName": "Rare Melee Defender",
+    "SubType": "Melee Defender",
+    "Description": "A defender trained to fight with melee weapons. Defender Training: Consumes 33% less weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderMelee_Basic_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Melee.T-Defenders-Defender-Melee",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Melee-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_sr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_SR_T03",
+    "DisplayName": "Legendary Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_SuperRare",
+    "Rarity": "Legendary",
+    "RecycleRecipe": {
+      "Amount": 225,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5000,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 325,
+        "AccountResource:reagent_c_t02": 11,
+        "AccountResource:reagent_c_t03": 5
+      },
+      "Result": "Defender:did_defenderassault_basic_m_sr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_SR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_R_T04",
+    "DisplayName": "Rare Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_vr_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_VR_T01",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 1000,
+        "AccountResource:reagent_c_t01": 7,
+        "AccountResource:reagent_people": 50
+      },
+      "Result": "Defender:did_defenderassault_basic_m_vr_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_VR_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_founders_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Founders_VR_T04",
+    "DisplayName": "Idris",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defenderpistol_founders_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Founders_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-M.T-Defenders-Defenders-Founders-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-M-L.png"
+    }
+  },
+  "Defender:did_defendershotgun_basic_uc_t01": {
+    "Type": "Defender",
+    "Name": "DID_DefenderShotgun_Basic_UC_T01",
+    "DisplayName": "Uncommon Shotgun Defender",
+    "SubType": "Shotgun Defender",
+    "Description": "A defender trained to fight with shotguns. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Uncommon",
+    "Rarity": "Uncommon",
+    "RecycleRecipe": {
+      "Amount": 5,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 1,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 500,
+        "AccountResource:reagent_c_t01": 3
+      },
+      "Result": "Defender:did_defendershotgun_basic_uc_t02"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderShotgun_Basic_UC_T01.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Shotgun.T-Defenders-Defender-Shotgun",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Shotgun-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_founders_vr_t03": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Founders_VR_T03",
+    "DisplayName": "Idris",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "IsPermanent": true,
+    "Rarity": "Epic",
+    "Tier": 3,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 4000,
+        "AccountResource:reagent_c_t01": 22,
+        "AccountResource:reagent_people": 225,
+        "AccountResource:reagent_c_t02": 9,
+        "AccountResource:reagent_c_t03": 4
+      },
+      "Result": "Defender:did_defenderpistol_founders_vr_t04"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Founders_VR_T03.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defenders-Founders-M.T-Defenders-Defenders-Founders-M",
+      "LargePreview": "ExportedImages\\T-Defenders-Defenders-Founders-M-L.png"
+    }
+  },
+  "Defender:did_defenderassault_basic_m_vr_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderAssault_Basic_M_VR_T04",
+    "DisplayName": "Epic Assault Defender",
+    "SubType": "Assault Defender",
+    "Description": "A defender trained to fight with assault weapons. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_VeryRare",
+    "Rarity": "Epic",
+    "RecycleRecipe": {
+      "Amount": 100,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "TierUpRecipe": {
+      "Cost": {
+        "AccountResource:heroxp": 5500,
+        "AccountResource:reagent_c_t01": 30,
+        "AccountResource:reagent_people": 300,
+        "AccountResource:reagent_c_t02": 13,
+        "AccountResource:reagent_c_t03": 9,
+        "AccountResource:reagent_c_t04": 4
+      },
+      "Result": "Defender:did_defenderassault_basic_m_vr_t05"
+    },
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderAssault_Basic_M_VR_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Assault2.T-Defenders-Defender-Assault2",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Assault2-L.png"
+    }
+  },
+  "Defender:did_defenderpistol_basic_r_t04": {
+    "Type": "Defender",
+    "Name": "DID_DefenderPistol_Basic_R_T04",
+    "DisplayName": "Rare Pistol Defender",
+    "SubType": "Pistol Defender",
+    "Description": "A defender trained to fight with pistols. Defender Training: Consumes 33% less ammunition and weapon durability.",
+    "LevelToXPRow": "Defender_Rare",
+    "Rarity": "Rare",
+    "RecycleRecipe": {
+      "Amount": 25,
+      "Cost": {},
+      "Result": "AccountResource:reagent_people"
+    },
+    "Tier": 4,
+    "AssetPath": "FortniteGame/Plugins/GameFeatures/SaveTheWorld/Content/Items/Defenders/DID_DefenderPistol_Basic_R_T04.uasset",
+    "ImagePaths": {
+      "SmallPreview": "/SaveTheWorld/UI/Icons/Defenders/T-Defenders-Defender-Pistol.T-Defenders-Defender-Pistol",
+      "LargePreview": "ExportedImages\\T-Defenders-Defender-Pistol-L.png"
+    }
+  }
+}

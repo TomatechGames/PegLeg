@@ -238,6 +238,8 @@ public class GameMission
         missionReset = DateTime.Now;
         OnMissionsInvalidated?.Invoke();
 
+        int retriesRemaining = 3;
+
         while (true)
         {
             missionData ??= await Helpers.MakeRequest(
@@ -254,7 +256,21 @@ public class GameMission
             var expiryDate = missionData["missionAlerts"][0]["nextRefresh"].ToString()[..^1]; //the Z messes with daylight savings time
             missionReset = DateTime.Parse(expiryDate, CultureInfo.InvariantCulture);
 
-            var generatedMissions = GenerateMissions(missionData);
+            List<GameMission> generatedMissions;
+            try
+            {
+                generatedMissions = GenerateMissions(missionData);
+            }
+            catch
+            {
+                missionData = null;
+                if (retriesRemaining > 0)
+                {
+                    retriesRemaining--;
+                    continue;
+                }
+                return;
+            }
 
             //edge case where missions expire after being requested but before being converted to MissionEntries
             if (await MissionsNeedUpdate(true))
@@ -263,12 +279,14 @@ public class GameMission
                 continue;
             }
 
-            currentMissions = generatedMissions
+            currentMissions = 
+            [.. generatedMissions
+                .Where(m => m is not null)
                 .OrderBy(m => m.TheaterIdx)
                 .ThenBy(m => m.PowerLevel)
                 .ThenBy(m => m.IsFourPlayer)
-                .ThenBy(m => m.missionGenerator.template?.DisplayName ?? "AAAAA")
-                .ToArray();
+                .ThenBy(m => m.missionGenerator?.template?.DisplayName ?? "AAAAA")
+            ];
             OnMissionsUpdated?.Invoke();
             return;
         }
@@ -328,10 +346,8 @@ public class GameMission
             var missionTiles = theater["tiles"].AsArray();
             //List<JsonObject> missionsToDetach = new();
 
-            Parallel.ForEach(theaterMissions, missionObj =>
+            void ProcessMission(JsonNode missionObj)
             {
-                //missionsToDetach.Add(missionObj.AsObject());
-
                 string missionGen = missionObj["missionGenerator"].ToString();
 
                 int tileIndex = missionObj["tileIndex"].GetValue<int>();
@@ -349,7 +365,7 @@ public class GameMission
                 if (
                     missionGen.Contains("_TheOutpost_") ||
                     tileData["requirements"]["activeQuestDefinitions"].AsArray().Count > 0 //||
-                                                                                           //tileData["requirements"]["eventFlag"].ToString() != ""
+                    //tileData["requirements"]["eventFlag"].ToString() != ""
                     )
                     return;
 
@@ -357,7 +373,18 @@ public class GameMission
                 missionObj["theaterName"] = theaterName;
 
                 missionList.Add(new(missionObj.AsObject(), alertObj, tileData));
-            });
+            }
+
+            Parallel.ForEach(theaterMissions, ProcessMission);
+            //foreach (var missionObj in theaterMissions)
+            //{
+            //    ProcessMission(missionObj);
+            //}
+
+            //foreach (var mission in missionList)
+            //{
+            //    mission.PreloadResources();
+            //}
 
             //detach from original json
             theaterMissions.Clear();
@@ -417,25 +444,23 @@ public class GameMission
         this.tileData = tileData;
         difficultyInfo = PegLegResourceManager.DifficultyInfo?[missionData["missionDifficultyInfo"]["rowName"].ToString()]?.AsObject();
 
-        missionGenerator = GameItemTemplate.Get($"MissionGen:{missionData["missionGenerator"].ToString().Split(".")[1]}").CreateInstance();
-        zoneTheme = GameItemTemplate.Get($"ZoneTheme:{tileData["zoneTheme"].ToString().Split(".")[1]}").CreateInstance();
+        missionGenerator = GameItemTemplate.Get($"MissionGen:{missionData["missionGenerator"].ToString().Split(".")[1]}")?.CreateInstance();
+        zoneTheme = GameItemTemplate.Get($"ZoneTheme:{tileData["zoneTheme"].ToString().Split(".")[1]}")?.CreateInstance();
 
-        missionGenerator.GetTexture(FnItemTextureType.Icon);
-        var _ = backgroundTexture;
+        if (missionGenerator is null || zoneTheme is null)
+            return;
 
         Dictionary<string, GameItem> rewardItemList = [];
-        foreach (var itemData in missionData["missionRewards"]["items"].AsArray())
+        foreach (var itemData in missionData["missionRewards"]["items"].AsArray().DetachAll())
         {
             GameItem item = new(null, null, itemData.AsObject());
-            item.GetTexture();
             item.GetSearchTags();
             var match = Regex.Match(item.template.Name.ToLower(), "zcp_.*t\\d{1,2}");
             string key = match.Success ?
                 match.Groups[0].Value :
                 item.template.Name.ToLower();
-            if (rewardItemList.ContainsKey(key))
+            if (rewardItemList.TryGetValue(key, out GameItem targetItem))
             {
-                var targetItem = rewardItemList[key];
                 targetItem.SetLocalQuantity(targetItem.quantity + item.quantity);
             }
             else
@@ -443,7 +468,7 @@ public class GameMission
                 rewardItemList.Add(key, item);
             }
         }
-        rewardItems = rewardItemList.Values.ToArray();
+        rewardItems = [.. rewardItemList.Values];
 
         if (alertData is not null)
         {
@@ -454,12 +479,11 @@ public class GameMission
                 {
                     GameItem modifier = new(null, null, itemData.AsObject());
                     modifier.SetSeenLocal();
-                    modifier.GetTexture();
                     modifier.GetSearchTags();
                     alertModifierList.Add(modifier);
                 }
             }
-            alertModifiers = alertModifierList.ToArray();
+            alertModifiers = [.. alertModifierList];
 
             List<GameItem> alertRewardItemList = [];
             if (alertData["missionAlertRewards"]?["items"]?.AsArray() is JsonArray rewardData)
@@ -468,15 +492,14 @@ public class GameMission
                 {
                     GameItem item = new(null, null, itemData.AsObject());
                     var __ = item.template;
-                    item.GetTexture();
                     item.GetSearchTags();
                     alertRewardItemList.Add(item);
                 }
             }
-            alertRewardItems = alertRewardItemList.ToArray();
+            alertRewardItems = [.. alertRewardItemList];
         }
-        alertModifiers ??= Array.Empty<GameItem>();
-        alertRewardItems ??= Array.Empty<GameItem>();
+        alertModifiers ??= [];
+        alertRewardItems ??= [];
 
         JsonArray searchTags = [];
         if (IsFourPlayer)
@@ -499,6 +522,16 @@ public class GameMission
         searchTags.Add(Location);
         searchTags.Add(TheaterName);
         missionData["searchTags"] = searchTags;
+    }
+
+    public void PreloadResources()
+    {
+        missionGenerator.GetTexture(FnItemTextureType.Icon);
+        var _ = backgroundTexture;
+        foreach (var item in allItems)
+        {
+            item.GetTexture();
+        }
     }
 
     public async Task SetMissionPlayableTag(GameAccount byAccount = null)

@@ -1,0 +1,43 @@
+{
+  "mainQuests":{
+    "displayName": "Questlines",
+    "autoPopulateQuestlines": true
+  },
+  "scheduledQuests":{
+    "displayName": "Scheduled Quests",
+    "content":"scheduledQuests.json"
+  },
+  "eventQuests":{
+    "displayName": "Event",
+    "eventFlags":[
+      "EventFlag.Mayday",
+      "EventFlag.Starlight",
+      "EventFlag.HordeV3",
+      "EventFlag.Season11.Frostnite"
+    ],
+    "content":"eventQuests.json"
+  },
+  "ventureQuests":{
+    "displayName": "Venture Challenge Quests",
+    "eventFlags":[
+      "EventFlag.Phoenix.NewBeginnings",
+      "EventFlag.Phoenix.RoadTrip",
+      "EventFlag.Phoenix.Adventure",
+      "EventFlag.Phoenix.Fortnitemares",
+      "EventFlag.Phoenix.Winterfest"
+    ],
+    "content":"ventureQuests.json"
+  },
+  "cramSession":{
+    "displayName": "Cram Session",
+    "eventFlags":[
+      "QuestCategory.STW.Event.CramSession"
+    ],
+    "content":"cramSession.json"
+  },
+  "extraQuests":{
+    "displayName": "Extra Quests",
+    "name": "Extras",
+    "content":"extraQuests.json"
+  }
+}

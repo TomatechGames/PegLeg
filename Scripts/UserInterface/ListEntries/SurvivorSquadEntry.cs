@@ -95,7 +95,7 @@ public partial class SurvivorSquadEntry : Control
         Visible = false;
         fortPointsLabel.Text = "+???";
 
-        accountChangeCts.CancelAndRegenerate(out var ct);
+        accountChangeCts = accountChangeCts.CancelAndRegenerate(out var ct);
 
         var account = overrideAccount ?? GameAccount.activeAccount;
         var newProfile = await account.GetProfile(FnProfileTypes.AccountItems).Query();

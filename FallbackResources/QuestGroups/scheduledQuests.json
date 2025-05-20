@@ -1,0 +1,148 @@
+{
+  "birthday": {
+    "displayName": "Birthday Llamas",
+    "predicate": {
+      "union": [
+        {
+          "startsWith": "birthday_quest_"
+        },
+        {
+          "startsWith": "anniversaryquest_"
+        }
+      ]
+    }
+  },
+  "daily": {
+    "displayName": "Daily Quests",
+    "timer": "Daily",
+    "predicate": {
+      "startsWith": "daily_"
+    }
+  },
+  "weekly": {
+    "displayName": "Weekly Quests",
+    "timer": "Weekly",
+    "predicate": {
+      "prefilter": {
+        "contains": "weekly"
+      },
+      "union": [
+        {
+          "startsWith": "weeklyquest_tiered"
+        },
+        {
+          "startsWith": "weekly_elder"
+        },
+        {
+          "startsWith": "stw_stormkinghard_weekly"
+        }
+      ]
+    }
+  },
+  "htr_daily": {
+    "displayName": "Hit The Road",
+    "timer": "Weekly",
+    "eventFlag": "EventFlag.Mayday",
+    "predicate": "Quest:MaydayQuest_2019_Daily_Complete"
+  },
+  "htr_weekly": {
+    "displayName": "Hit The Road",
+    "timer": "Weekly",
+    "eventFlag": "EventFlag.Mayday",
+    "predicate": {
+      "startsWith": "maydayquest_2019_complete"
+    }
+  },
+  "frostnite_daily": {
+    "displayName": "Daily Frostnite",
+    "timer": "Daily",
+    "eventFlag": "EventFlag.Season11.Frostnite",
+    "predicate": {
+      "prefilter": {
+        "startsWith": "s11_holdfastquest_d"
+      },
+      "union": [
+        {
+          "startsWith": "s11_holdfastquest_d1"
+        },
+        {
+          "startsWith": "s11_holdfastquest_d2"
+        }
+      ]
+    }
+  },
+  "dungeon_daily": {
+    "displayName": "Daily Dungeons",
+    "timer": "Daily",
+    "eventFlag": "EventFlag.Starlight",
+    "predicate": {
+      "union": [
+        {
+          "category": "lte_starlight",
+          "startsWith": "starlightquest_daily_complete"
+        },
+        {
+          "category": "lte_starlight",
+          "startsWith": "starlightquest_complete_dailies"
+        }
+      ]
+    }
+  },
+  "sth_daily": {
+    "displayName": "Daily Survive The Horde",
+    "timer": "Daily",
+    "eventFlag": "EventFlag.HordeV3",
+    "sequence": true,
+    "predicate": {
+      "union": [
+        "Quest:hordev3_quest_daily_a01",
+        "Quest:hordev3_quest_daily_a02",
+        "Quest:hordev3_quest_daily_a03"
+      ]
+    }
+  },
+  "sth_weekly": {
+    "displayName": "Weekly Survive The Horde",
+    "timer": "Weekly",
+    "eventFlag": "EventFlag.HordeV3",
+    "predicate": {
+      "startsWith": "hordev3_quest_weekly"
+    }
+  },
+  "wargames": {
+    "displayName": "Daily Wargames",
+    "predicate": {
+      "union": [
+        {
+          "startsWith": "wargames_dailyquest"
+        },
+        "Quest:wargames_completedailyquest"
+      ]
+    }
+  },
+  "endurance": {
+    "displayName": "Daily Endurance",
+    "timer": "Daily",
+    "sequence": true,
+    "showLocked": false,
+    "predicate": {
+      "prefilter": {
+        "startsWith": "endurancedaily_"
+      },
+      "union": [
+        {
+          "startsWith": "endurancedaily_t01"
+        },
+        {
+          "startsWith": "endurancedaily_t02"
+        },
+        {
+          "startsWith": "endurancedaily_t03"
+        },
+        {
+          "startsWith": "endurancedaily_t04"
+        }
+      ]
+    }
+  }
+}

@@ -10,9 +10,27 @@ using Godot;
 using System.Threading;
 using System.Text.Json;
 using System.Runtime.InteropServices;
+using static AppTheme;
+using System.Text.Json.Serialization;
 
 static class Helpers
 {
+    public static T[] FlexDeserialise<T>(this JsonElement ele, Func<JsonElement, T> innerCtor, int depth = 1) =>
+        ele.ValueKind switch
+        {
+            JsonValueKind.Array when depth > 0 => ele.Deserialize<JsonElement[]>().SelectMany(e => e.FlexDeserialise<T>(innerCtor, depth - 1)).ToArray(),
+            JsonValueKind.Object => [ele.Deserialize<T>()],
+            JsonValueKind.Undefined => [],
+            _ => [innerCtor(ele).FakeDeserialise()]
+        };
+
+    static T FakeDeserialise<T>(this T construct)
+    {
+        if (construct is IJsonOnDeserialized jsonConstruct)
+            jsonConstruct.OnDeserialized();
+        return construct;
+    }
+
     public static void Unpress(this ButtonGroup group)
     {
         bool allowUnpress = group.AllowUnpress;
@@ -21,6 +39,17 @@ static class Helpers
             button.ButtonPressed = false;
         group.AllowUnpress = allowUnpress;
     }
+
+    public static int ConvertRarityString(this string rarity)=> rarity switch
+    {
+        "Common" => 1,
+        "Uncommon" => 2,
+        "Rare" => 3,
+        "Epic" => 4,
+        "Legendary" => 5,
+        "Mythic" => 6,
+        _ => 2
+    };
 
     public static void SetVisibleIfHasContent(this Label label)
     {
@@ -59,19 +88,19 @@ static class Helpers
     public static DateTime AsTime(this JsonNode value) => 
         value.Deserialize<DateTime>();
 
-    public static IEnumerable<JsonNode> DetachAll(this JsonArray targetParent)
+    public static JsonNode[] DetachAll(this JsonArray targetParent)
     {
         if (targetParent is null)
             return null;
-        var values = targetParent.GetValues<JsonNode>();
+        var values = targetParent.ToArray();
         targetParent.Clear();
         return values;
     }
-    public static IEnumerable<KeyValuePair<string, JsonNode>> DetachAll(this JsonObject targetParent)
+    public static KeyValuePair<string, JsonNode>[] DetachAll(this JsonObject targetParent)
     {
         if (targetParent is null)
             return null;
-        var values = targetParent.AsEnumerable();
+        var values = targetParent.ToArray();
         targetParent.Clear();
         return values;
     }
@@ -84,11 +113,12 @@ static class Helpers
             return ProjectSettings.GlobalizePath(godotPath);
     }
 
-    public static void CancelAndRegenerate(this CancellationTokenSource original, out CancellationToken ct)
+    public static CancellationTokenSource CancelAndRegenerate(this CancellationTokenSource original, out CancellationToken ct)
     {
         original?.Cancel();
         original = new();
         ct = original.Token;
+        return original;
     }
 
     static SceneTree MainLoopSceneTree => (SceneTree)Engine.GetMainLoop();
@@ -207,7 +237,7 @@ static class Helpers
         {
             resultNode = JsonNode.Parse(resultText);
         }
-        catch (JsonException _)
+        catch (JsonException)
         {
             GD.Print("result was not json: " + resultText);
             resultNode =new JsonObject()
@@ -410,7 +440,7 @@ static class Helpers
         }
     }
 
-    public static int RandomIndexFromWeights(float[] weights, int preventRepeat = -1)
+    public static int RandomIndexFromWeights(this float[] weights, int preventRepeat = -1)
     {
         //remove negative weights
         weights = weights.Select(w => w >= 0 ? w : 0).ToArray();
@@ -433,6 +463,19 @@ static class Helpers
                 return i;
         }
         return weights.Length - 1;
+    }
+
+    public static T PickFromWeights<T>(this T[] source, Func<T, float> weightPicker, T prev = null, float[] weights = null) where T : class
+    {
+        if ((source?.Length ?? 0) == 0)
+            return null;
+        weights ??= [.. source.Select(weightPicker)];
+        if (weights.Length < source.Length)
+            weights = [.. weights.Union(source[weights.Length..].Select(weightPicker))];
+        if (weights.Length > source.Length)
+            weights = weights[..source.Length];
+        int lastIdx = Array.IndexOf(source, prev);
+        return source[weights.RandomIndexFromWeights(lastIdx)];
     }
 
     [DllImport("user32.dll")]

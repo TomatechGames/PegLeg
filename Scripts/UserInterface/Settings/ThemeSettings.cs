@@ -12,22 +12,31 @@ public partial class ThemeSettings : Node
 
     public override void _Ready()
     {
-		var themeList = ThemeController.GetThemeList();
+		var themeList = ThemeController.ThemeKeys;
         themeOptions.Clear();
         themeOptions.AddItem("Default (Current Seasonal Zone)");
         themeOptions.SetItemMetadata(0, "");
         themeOptions.AddSeparator("Themes");
+
+        themeOptions.AddItem("Blank");
+        themeOptions.SetItemMetadata(2, "builtin_blank");
+
+        int curIdx = 3;
         for (int i = 0; i < themeList.Length; i++)
         {
-            themeOptions.AddItem(themeList[i]);
-            themeOptions.SetItemMetadata(i+2, themeList[i]);
+            if (!ThemeController.HasTheme(themeList[i]) || themeList[i] == "builtin_blank")
+                continue;
+            themeOptions.AddItem(ThemeController.GetTheme(themeList[i]).displayName);
+            themeOptions.SetItemMetadata(curIdx, themeList[i]);
+            curIdx++;
         }
+
         themeOptions.ItemSelected += PreviewTheme;
     }
 
     public void UpdateActiveTheme()
     {
-        var themeName = ThemeController.currentThemeName;
+        var themeName = ThemeController.selectedThemeName;
         if (themeName == "")
         {
             themeOptions.Selected = 0;
@@ -35,7 +44,7 @@ public partial class ThemeSettings : Node
         }
         else
         {
-            int index = ThemeController.GetThemeList().ToList().IndexOf(themeName)+2;
+            int index = Array.IndexOf(ThemeController.ThemeKeys, themeName) +2;
             themeOptions.Selected = index;
             PreviewTheme(index);
         }
@@ -44,7 +53,7 @@ public partial class ThemeSettings : Node
     private void PreviewTheme(long index)
     {
         var themeName = (string)themeOptions.GetItemMetadata((int)index);
-        backgroundPreview.Texture = ThemeController.GetTheme(themeName).LoadSampleBackground();
+        backgroundPreview.Texture = ThemeController.GetTheme(themeName).PickBackground().File;
     }
 
     public void ApplyTheme()

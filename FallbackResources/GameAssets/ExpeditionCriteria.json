@@ -1,0 +1,87 @@
+{
+  "NoCriteria": {
+    "ModValue": 0.0,
+    "RequiredRarity": null,
+    "RequiredTag": "None"
+  },
+  "RequiresCommando": {
+    "ModValue": 1.5,
+    "RequiredRarity": null,
+    "RequiredTag": "Homebase.Class.IsCommando"
+  },
+  "RequiresConstructor": {
+    "ModValue": 1.5,
+    "RequiredRarity": null,
+    "RequiredTag": "Homebase.Class.IsConstructor"
+  },
+  "RequiresEpicCommando": {
+    "ModValue": 1.75,
+    "RequiredRarity": "Epic",
+    "RequiredTag": "Homebase.Class.IsCommando"
+  },
+  "RequiresEpicConstructor": {
+    "ModValue": 1.75,
+    "RequiredRarity": "Epic",
+    "RequiredTag": "Homebase.Class.IsConstructor"
+  },
+  "RequiresEpicNinja": {
+    "ModValue": 1.75,
+    "RequiredRarity": "Epic",
+    "RequiredTag": "Homebase.Class.IsNinja"
+  },
+  "RequiresEpicOutlander": {
+    "ModValue": 1.75,
+    "RequiredRarity": "Epic",
+    "RequiredTag": "Homebase.Class.IsOutlander"
+  },
+  "RequiresLegendaryCommando": {
+    "ModValue": 2.0,
+    "RequiredRarity": "Legendary",
+    "RequiredTag": "Homebase.Class.IsCommando"
+  },
+  "RequiresLegendaryConstructor": {
+    "ModValue": 2.0,
+    "RequiredRarity": "Legendary",
+    "RequiredTag": "Homebase.Class.IsConstructor"
+  },
+  "RequiresLegendaryNinja": {
+    "ModValue": 2.0,
+    "RequiredRarity": "Legendary",
+    "RequiredTag": "Homebase.Class.IsNinja"
+  },
+  "RequiresLegendaryOutlander": {
+    "ModValue": 2.0,
+    "RequiredRarity": "Legendary",
+    "RequiredTag": "Homebase.Class.IsOutlander"
+  },
+  "RequiresNinja": {
+    "ModValue": 1.5,
+    "RequiredRarity": null,
+    "RequiredTag": "Homebase.Class.IsNinja"
+  },
+  "RequiresOutlander": {
+    "ModValue": 1.5,
+    "RequiredRarity": null,
+    "RequiredTag": "Homebase.Class.IsOutlander"
+  },
+  "RequiresRareCommando": {
+    "ModValue": 1.625,
+    "RequiredRarity": "Rare",
+    "RequiredTag": "Homebase.Class.IsCommando"
+  },
+  "RequiresRareConstructor": {
+    "ModValue": 1.625,
+    "RequiredRarity": "Rare",
+    "RequiredTag": "Homebase.Class.IsConstructor"
+  },
+  "RequiresRareNinja": {
+    "ModValue": 1.625,
+    "RequiredRarity": "Rare",
+    "RequiredTag": "Homebase.Class.IsNinja"
+  },
+  "RequiresRareOutlander": {
+    "ModValue": 1.625,
+    "RequiredRarity": "Rare",
+    "RequiredTag": "Homebase.Class.IsOutlander"
+  }
+}

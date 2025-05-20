@@ -121,7 +121,7 @@ public partial class GameItemViewer : ModalWindow
         upgrader.SetItem(currentItem);
 
         //if choice cardpack, display choices instead
-        if (currentItem.template.Type == "CardPack" && (currentItem.attributes?.ContainsKey("options") ?? false))
+        if (currentItem.template?.Type == "CardPack" && (currentItem.attributes?.ContainsKey("options") ?? false))
         {
             itemChoiceParent.Visible = true;
             var optionsArr = currentItem.attributes["options"].AsArray();
@@ -172,7 +172,8 @@ public partial class GameItemViewer : ModalWindow
         purchaseSpinner.Visible = totalLimit > 1;
         purchaseSpinner.Value = 1;
         SpinnerChanged(1);
-        currentOfferEntry.Visible = true;
+        if (currentItem?.template is not null)
+            currentOfferEntry.Visible = true;
     }
 
     GameItem displayedItem = null;
@@ -191,7 +192,7 @@ public partial class GameItemViewer : ModalWindow
         heroDetailsPanel.Reparent(inactiveTabParent);
         devTextContainer.Reparent(inactiveTabParent);
 
-        var type = item.template.Type;
+        var type = item.template?.Type;
         if (type == "Hero")
         {
             //parse hero stuff
@@ -226,16 +227,20 @@ public partial class GameItemViewer : ModalWindow
                 perkDetailsPanel.SetItem(item);
             }
 
+            var statsSource = type == "Schematic" ? GameItemTemplate.Get(item.template["CraftingResult"].ToString()) : item.template;
+
             JsonObject statsJson = null;
-            if (item.template["RangedWeaponStats"] is JsonObject rangedWeaponStats)
+
+            if (statsSource["RangedWeaponStats"] is JsonObject rangedWeaponStats)
             {
                 statsTree.HideFolding = false;
                 statsJson = rangedWeaponStats;
             }
-            else if (item.template["MeleeWeaponStats"] is JsonObject meleeWeaponStats)
+            else if (statsSource["MeleeWeaponStats"] is JsonObject meleeWeaponStats)
                 statsJson = meleeWeaponStats;
-            else if (item.template["TrapStats"] is JsonObject trapStats)
+            else if (statsSource["TrapStats"] is JsonObject trapStats)
                 statsJson = trapStats;
+
             if (statsJson is not null)
             {
                 statsTreeContainer.Reparent(activeTabParent);

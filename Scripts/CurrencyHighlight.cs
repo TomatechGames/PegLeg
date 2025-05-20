@@ -36,7 +36,7 @@ public partial class CurrencyHighlight : GameItemEntry
     {
         currentTemplate = currencyTemplate;
         var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
+        if (!await account.Authenticate() || currencyTemplate is null)
         {
             ClearItem();
             Visible = false;

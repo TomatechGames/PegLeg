@@ -25,16 +25,16 @@ public partial class MusicController : Node
     {
         instance = this;
         musicA.Finished += PlayMusic;
-        ThemeController.OnThemeUpdated += OnThemeUpdated;
+        ThemeController.OnThemeChanged += OnThemeUpdated;
         OnThemeUpdated();
     }
 
     bool hasPlayedIntro = false;
     bool isStopping = true;
     bool isStopped = true;
-    ThemeController.MusicPlaylist currentPlaylist;
-    int currentTrack = -1;
-    int currentLayer = -1;
+    AppTheme.MusicPlaylist currentPlaylist;
+    AppTheme.MusicTrack currentTrack;
+    AppTheme.MusicFile currentLayer;
 
     Tween currentTransition;
 
@@ -51,12 +51,7 @@ public partial class MusicController : Node
 
     void ChangePlaylist()
     {
-        int playlistIndex = ThemeController.activeTheme?.PickPlaylist() ?? -1;
-        if (playlistIndex != -1)
-        {
-            //GD.Print($"playlist {playlistIndex + 1} out of {ThemeController.activeTheme.music.Length}");
-            currentPlaylist = ThemeController.activeTheme.music[playlistIndex];
-        }
+        currentPlaylist = ThemeController.activeTheme?.PickPlaylist();
     }
     
     void PlayMusic() => PlayMusic(0);
@@ -68,30 +63,29 @@ public partial class MusicController : Node
         bool switchTracks = GD.Randf() <= currentPlaylist.trackSwitchChance;
         bool switchLayers = GD.Randf() <= currentPlaylist.layerSwitchChance && !isStopping;
 
-        if (!(switchTracks || switchLayers || currentTrack == -1))
+        if (!(switchTracks || switchLayers || currentTrack is null))
         {
             musicA.Play();
             return;
         }
 
-        if (switchTracks || currentTrack == -1)
-            currentTrack = currentPlaylist.PickTrack(currentLayer);
+        if (switchTracks || currentTrack is null)
+            currentTrack = currentPlaylist.PickTrack(currentTrack);
 
-        int prevLayer = currentLayer;
-        if (switchLayers || currentLayer == -1)
+        var prevLayer = currentLayer;
+        if (switchLayers || currentLayer is null)
         {
-            currentLayer = currentPlaylist.PickLayer(currentTrack, currentLayer);
+            currentLayer = currentTrack.PickLayer(currentLayer);
         }
         if (prevLayer == currentLayer)
             switchLayers = false;
 
-        var track = currentPlaylist.tracks[currentTrack];
-        if (switchLayers && resumeTime == 0 && prevLayer != -1)
+        if (switchLayers && resumeTime == 0 && prevLayer is not null)
         {
             //GD.Print($"track {currentTrack + 1} out of {currentPlaylist.tracks.Length}");
             //GD.Print($"layer {currentLayer + 1} out of {currentPlaylist.layerCount} (from {prevLayer + 1})");
-            var fromStream = track.layers[prevLayer].fileData;
-            var toStream = track.layers[currentLayer].fileData;
+            var fromStream = prevLayer.File;
+            var toStream = currentLayer.File;
 
             musicA.VolumeDb = -80;
             musicB.VolumeDb = 0;
@@ -117,15 +111,15 @@ public partial class MusicController : Node
         else
         {
             //GD.Print($"track {currentTrack+1} out of {currentPlaylist.tracks.Length}");
-            if(prevLayer==-1)
-                GD.Print($"layer {currentLayer + 1} out of {currentPlaylist.layerCount}");
-            var toStream = track.layers[currentLayer].fileData;
+            if(prevLayer is null)
+                GD.Print($"layer {currentTrack.IndexOf(currentLayer) + 1} out of {currentTrack.Layers.Length}");
+            var toStream = currentLayer.File;
 
-            if (!hasPlayedIntro && currentPlaylist.GetIntro() is AudioStreamWav introStream)
+            if (!hasPlayedIntro && currentPlaylist.PickIntro()?.File is AudioStream introStream)
             {
                 //GD.Print($"using intro");
                 toStream = introStream;
-                currentTrack = -1;
+                currentTrack = null;
             }
             hasPlayedIntro = true;
 
@@ -169,8 +163,8 @@ public partial class MusicController : Node
         if (playIntro)
             instance.hasPlayedIntro = false;
         instance.ChangePlaylist();
-        instance.currentLayer = -1;
-        instance.currentTrack = -1;
+        instance.currentLayer = null;
+        instance.currentTrack = null;
         instance.isStopping = false;
         instance.isStopped = false;
         instance.PlayMusic(time);

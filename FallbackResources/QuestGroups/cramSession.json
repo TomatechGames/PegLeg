@@ -1,0 +1,22 @@
+{
+  "explore": {
+    "displayName": "Let\u0027s Explore",
+    "chain": true,
+    "predicate": "Quest:autumnquest_explorezones_1"
+  },
+  "treasure": {
+    "displayName": "Treasure Hunt",
+    "chain": true,
+    "predicate": "Quest:autumnquest_treasurechests_1"
+  },
+  "safes": {
+    "displayName": "Safecracking",
+    "chain": true,
+    "predicate": "Quest:autumnquest_safes_1"
+  },
+  "husks": {
+    "displayName": "The Air Itself is Filled with Husks",
+    "chain": true,
+    "predicate": "Quest:autumnquest_killhusks_1"
+  }
+}

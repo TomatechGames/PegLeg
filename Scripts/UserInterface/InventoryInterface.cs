@@ -206,34 +206,34 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
         }
     }
 
-    public async void BulkDismantle()
-    {
-        //implement item amount selection in recycling
-        return;
+    //public async void BulkDismantle()
+    //{
+    //    //implement item amount selection in recycling
+    //    return;
 
-        if (targetProfile != FnProfileTypes.Backpack || displayedAccount is null || !await displayedAccount.Authenticate())
-            return;
+    //    if (targetProfile != FnProfileTypes.Backpack || displayedAccount is null || !await displayedAccount.Authenticate())
+    //        return;
 
-        if (filteredItems.Any())
-        {
-            //foreach (var item in filteredItems)
-            //{
-            //    item.GetSearchTags();
-            //    item.GenerateRawData();
-            //}
-            GameItemSelector.Instance.SetDismantleDefaults();
-            var toRecycle = await GameItemSelector.Instance.OpenSelector(filteredItems, null);
-            if ((toRecycle?.Length ?? 0) > 0 && await displayedAccount.Authenticate())
-            {
-                JsonObject content = new()
-                {
-                    ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
-                };
-                using var _ = LoadingOverlay.CreateToken();
-                await displayedAccount.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content);
-            }
-        }
-    }
+    //    if (filteredItems.Any())
+    //    {
+    //        //foreach (var item in filteredItems)
+    //        //{
+    //        //    item.GetSearchTags();
+    //        //    item.GenerateRawData();
+    //        //}
+    //        GameItemSelector.Instance.SetDismantleDefaults();
+    //        var toRecycle = await GameItemSelector.Instance.OpenSelector(filteredItems, null);
+    //        if ((toRecycle?.Length ?? 0) > 0 && await displayedAccount.Authenticate())
+    //        {
+    //            JsonObject content = new()
+    //            {
+    //                ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
+    //            };
+    //            using var _ = LoadingOverlay.CreateToken();
+    //            await displayedAccount.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content);
+    //        }
+    //    }
+    //}
 
     void ApplyFilters(string _) => ApplyFilters();
     void ApplyFilters()

@@ -1,6 +1,8 @@
 using Godot;
 using System;
+using System.Collections.Frozen;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -32,14 +34,8 @@ public partial class PerkViewer : Control
     [Export]
     Button perkApplyButton;
 
-    static JsonObject reperkCosts;
-
     public override void _Ready()
     {
-        //todo: export this via BanjoBotAssets
-        using var reperkCostFile = FileAccess.Open("res://External/reperkCosts.json", FileAccess.ModeFlags.Read);
-        reperkCosts = JsonNode.Parse(reperkCostFile.GetAsText()).AsObject();
-
         for (int i = 0; i < currentPerkEntries.Length; i++)
         {
             currentPerkEntries[i].Pressed += (index, id, locked) => OpenPerkChanger(index, locked);
@@ -50,7 +46,6 @@ public partial class PerkViewer : Control
         {
             reperkEntries[i].Pressed += (index, id, locked) => SelectReplacementPerk(id, index);
         }
-
     }
 
     GameItem currentItem;
@@ -71,25 +66,27 @@ public partial class PerkViewer : Control
         }
     }
 
+    struct ResolvedAlterationSlot
+    {
+        public string[] options;
+        public string[] OptionsForLevel(int level) => [.. options.Select(o => o.EndsWith("_t01") ? $"{o[..^4]}_t0{level}" : o)];
+        public int requiredLevel;
+        public string requiredRarity;
+        public int RequiredRarityLevel => requiredRarity.ConvertRarityString();
+    }
 
     bool isSchematic = true;
     bool isDefender = true;
-    string[] activePerks;
-    string[][][] perkPossibilities;
+    ResolvedAlterationSlot[] perkSlots = [];
+    string[] activePerks = [];
     int unlockedPerks = 0;
     int visiblePerks = 0;
 
     void UpdateItem() => UpdateItem(true);
     void UpdateItem(bool animateToReset)
     {
-        var maxedTemplate = currentItem.template;
-        if (currentItem.profile is null)
-        {
-            while (maxedTemplate.TryGetNextRarity() is GameItemTemplate upgradedTemplate)
-            {
-                maxedTemplate = upgradedTemplate;
-            }
-        }
+        if (currentItem.template is null)
+            return;
 
         isSchematic = currentItem.template.Type == "Schematic";
         isDefender = currentItem.template.Type == "Defender";
@@ -118,40 +115,37 @@ public partial class PerkViewer : Control
         if (isSchematic)
         {
             //set interactable and assign possibilities (if possibilities greater than one and not max level)
-            perkPossibilities = maxedTemplate.AlterationSlots?
-                .Select(
-                    slot => slot["Alterations"]
-                    .AsArray()
-                    .Select(rarity=> rarity
+            var exclusions = currentItem.template.AlterationExclusions.ToFrozenSet();
+            perkSlots = [..currentItem.template.AlterationSlots?
+                .Select(slot => new ResolvedAlterationSlot()
+                {
+                    options = [..slot["RawAlterations"]
                         .AsArray()
-                        .Select(
-                            alt=>alt
-                            .ToString()
-                        )
-                        .ToArray()
-                    )
-                    .ToArray()
-                )
-                .ToArray();
+                        .Where(a => !exclusions.Overlaps(a["ExclusionNames"].Deserialize<string[]>()))
+                        .Select(a => a["AID"].ToString())
+                    ],
+                    requiredLevel = slot["RequiredLevel"].GetValue<int>(),
+                    requiredRarity = slot["RequiredRarity"].ToString(),
+                })
+            ];
             unlockedPerks = 0;
-            activePerks ??= new string[perkPossibilities?.Length ?? 0];
+            activePerks ??= new string[perkSlots?.Length ?? 0];
             int itemLevel = currentItem.attributes?["level"]?.GetValue<int>() ?? 0;
-            GD.Print(itemLevel);
-            for (int i = 0; i < (perkPossibilities?.Length ?? 0); i++)
+            int itemRarity = currentItem.template.RarityLevel;
+            for (int i = 0; i < (perkSlots?.Length ?? 0); i++)
             {
-                int requiredLevel = maxedTemplate["AlterationSlots"][i]["RequiredLevel"].GetValue<int>();
-                if (requiredLevel <= itemLevel)
+                if (perkSlots[i].requiredLevel <= itemLevel && perkSlots[i].RequiredRarityLevel <= itemRarity)
                     unlockedPerks = i + 1;
             }
         }
         else
-            perkPossibilities = null;
+            perkSlots = [];
         RefreshActivePerks();
     }
 
     void RefreshActivePerks()
     {
-        activePerks ??= Array.Empty<string>();
+        activePerks ??= [];
         for (int i = 0; i < activePerks.Length; i++)
         {
             if (i + 1 > visiblePerks)
@@ -168,14 +162,17 @@ public partial class PerkViewer : Control
                 continue;
             }
 
-            if (i >= (perkPossibilities?.Length ?? 0))
+            if (i >= perkSlots.Length)
             {
                 currentPerkEntries[i].SetInteractable(false);
                 currentPerkEntries[i].SetLocked(isSchematic || isDefender);
                 continue;
             }
-            currentPerkEntries[i].SetInteractable(perkPossibilities[i][0].Length > 1 || PerkIsUpgradeable(activePerks[i]));
+            currentPerkEntries[i].SetInteractable(perkSlots[i].options.Length > 1 || PerkIsUpgradeable(activePerks[i]));
             currentPerkEntries[i].SetLocked(currentItem.profile is not null && i + 1 > unlockedPerks);
+
+            currentPerkEntries[i].SetLockLevel(perkSlots[i].requiredLevel);
+            currentPerkEntries[i].SetLockRarity(perkSlots[i].RequiredRarityLevel);
         }
         for (int i = activePerks.Length; i < currentPerkEntries.Length; i++)
         {
@@ -199,9 +196,7 @@ public partial class PerkViewer : Control
     {
         //GD.Print("opening perk changer for index: " + index);
         var baseAlteration = activePerks[index] is not null ? GameItemTemplate.Get(activePerks[index]) : null;
-        string[][] allPossibilities = perkPossibilities[index];
-        bool isCore = (baseAlteration?.TemplateId ?? allPossibilities?[0][0])?.StartsWith("Alteration:aid_g_") ?? false;
-        string[] possibilities = allPossibilities[isCore ? 0 : baseAlteration?.RarityLevel-1 ?? (Input.IsKeyPressed(Key.Shift)? 4 : 0)];
+        string[] possibilities = perkSlots[index].OptionsForLevel(baseAlteration?.RarityLevel ?? (Input.IsKeyPressed(Key.Shift) ? 5 : 1));
 
         selectedPerk = null;
         if (baseAlteration?["RarityUpRecipe"] is null && possibilities.Length==0)
@@ -296,7 +291,7 @@ public partial class PerkViewer : Control
         {
 
         }
-        costs ??= reperkCosts["generic"].AsObject();
+        costs ??= [];
         bool allCostsMet = false;
         for (int i = 0; i < costs.Count; i++)
         {
@@ -311,6 +306,7 @@ public partial class PerkViewer : Control
             //reperkCostEntries[i].SetItem(existingItem ?? costItem.CreateInstance(0));
             //reperkCostEntries[i].Visible = true;
         }
+        GD.Print(allCostsMet);
         //for (int i = costs.Count; i < reperkCostEntries.Length; i++)
         //{
         //    reperkCostEntries[i].Visible = false;

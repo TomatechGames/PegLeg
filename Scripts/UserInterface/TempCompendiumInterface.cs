@@ -15,11 +15,11 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
 	[Export]
 	Control loadingIcon;
 
-	static readonly string[] includedSources = new string[]
-	{
-		"Hero",
+    static readonly string[] includedSources =
+    [
+        "Hero",
 		"Schematic"
-	};
+	];
 	public override void _Ready()
 	{
 		VisibilityChanged += GenerateCompendiumEntries;
@@ -36,6 +36,20 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
 
 	public int GetRecycleElementCount() => filteredEntries?.Count ?? 0;
 
+	void ProcessTemplate(GameItemTemplate template, ref ConcurrentDictionary<string, GameItemTemplate> uniqueTemplates)
+    {
+        if (template.Tier != 1)
+            return;
+
+        template.GenerateSearchTags();
+
+        uniqueTemplates.AddOrUpdate(
+            template.DisplayName,
+            template,
+            (k, v) => v.RarityLevel < template.RarityLevel ? template : v
+        );
+    }
+
     async void GenerateCompendiumEntries()
 	{
 		if (generated)
@@ -47,37 +61,31 @@ public partial class TempCompendiumInterface : Control, IRecyclableElementProvid
 
         //TODO: run asynchronously
         ConcurrentDictionary<string, GameItemTemplate> uniqueTemplates = new();
-        foreach (var source in includedSources)
-        {
-            if (PegLegResourceManager.TryGetItemSource(source, out var sourceObject))
-            {
-				//GD.Print("aa");
-                Parallel.ForEach(sourceObject, sourceKVP =>
-                {
-                    var template = GameItemTemplate.Get(sourceKVP.Key);
-                    if (template.Tier != 1)
-                        return;
-
-                    template.GenerateSearchTags();
-					template.GetTexture();
-
-                    uniqueTemplates.AddOrUpdate(
-                            template.DisplayName,
-                            template,
-                            (k, v) => v.RarityLevel < template.RarityLevel ? template : v
-                        );
-                });
-            }
-        }
         List<GameItem> orderedItems = null;
 		await Task.Run(() =>
         {
-			orderedItems = uniqueTemplates.Values
+            foreach (var source in includedSources)
+            {
+                if (GameItemTemplate.GetTemplatesOfType(source) is GameItemTemplate[] templates)
+                {
+                    //is regular or paralell better here?
+                    Parallel.ForEach(templates, t => ProcessTemplate(t, ref uniqueTemplates));
+
+                    //foreach (var t in templates)
+                    //{
+                    //	ProcessTemplate(t, ref uniqueTemplates);
+                    //}
+                }
+            }
+
+            orderedItems = uniqueTemplates.Values
 				.OrderBy(item => item.Type == "Hero" ? 0 : 1)
 				.ThenBy(item => -item.RarityLevel)
-				.ThenBy(item => item.Category)
-				.ThenBy(item => item.SubType)
-				.ThenBy(item => item.DisplayName.StartsWith("The ") ? item.DisplayName[4..] : item.DisplayName)
+				.ThenBy(item => $"""
+						{item.Category} 
+						{item.SubType}
+						{(item.DisplayName.StartsWith("The ") ? item.DisplayName[4..] : item.DisplayName)}
+						""")
 				.Select(item => item.CreateInstance())
 				.ToList();
         });

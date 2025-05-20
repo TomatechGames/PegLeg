@@ -48,7 +48,7 @@ public partial class DashboardLlamasController : Control
         if (!IsVisibleInTree() || !llamasDirty)
             return;
         llamasDirty = false;
-        llamaShopCTS.CancelAndRegenerate(out var ct);
+        llamaShopCTS = llamaShopCTS.CancelAndRegenerate(out var ct);
 
         loadingIcon.Visible = true;
         errorIcon.Visible = false;
@@ -68,7 +68,7 @@ public partial class DashboardLlamasController : Control
             if (ct.IsCancellationRequested)
                 return;
 
-            var offers = xrayStorefront.Offers.Union(randomStorefront.Offers).Where(o => o.IsXRayLlama && o.BasePrice.quantity != 1 && o.OfferId != "B9B0CE758A5049F898773C1A47A69ED4").ToArray();
+            var offers = xrayStorefront.Offers.Union(randomStorefront.Offers).Where(o => o.IsXRayLlama && (o.DailyLimit > 0 || o.EventLimit > 0) && o.OfferId != "B9B0CE758A5049F898773C1A47A69ED4").ToArray();
 
             for (int i = 0; i < llamaEntries.Length; i++)
             {

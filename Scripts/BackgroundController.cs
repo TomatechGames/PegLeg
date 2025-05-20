@@ -14,8 +14,8 @@ public partial class BackgroundController : Node
 
     public override void _Ready()
     {
-        ThemeController.OnThemeUpdated += OnThemeUpdated;
-        currentBG = ((Texture2D)ThemeController.activeTheme?.GetBackground()) ?? defaultBGTex;
+        ThemeController.OnThemeChanged += OnThemeUpdated;
+        currentBG = ThemeController.activeTheme?.PickBackground()?.File ?? defaultBGTex;
         bgMain.Texture = currentBG;
         bgOverlay.Modulate = Colors.Transparent;
     }
@@ -26,7 +26,7 @@ public partial class BackgroundController : Node
     private void OnThemeUpdated()
     {
         bgOverlay.Texture = currentBG;
-        currentBG = ((Texture2D)ThemeController.activeTheme?.GetBackground()) ?? defaultBGTex;
+        currentBG = ThemeController.activeTheme?.PickBackground()?.File ?? defaultBGTex;
         bgMain.Texture = currentBG;
         bgOverlay.Modulate = Colors.White;
 
@@ -38,6 +38,6 @@ public partial class BackgroundController : Node
 
     public override void _ExitTree()
     {
-        ThemeController.OnThemeUpdated -= OnThemeUpdated;
+        ThemeController.OnThemeChanged -= OnThemeUpdated;
     }
 }

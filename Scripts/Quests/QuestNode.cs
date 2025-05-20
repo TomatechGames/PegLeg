@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Frozen;
 using System.Linq;
 
 public partial class QuestNode : Control
@@ -26,6 +27,15 @@ public partial class QuestNode : Control
     QuestSlot questData;
     bool displayAsLocked;
 
+    static readonly FrozenSet<string> keyItemTemplates = new string[]
+    {
+        "AccountResource:reagent_alteration_gameplay_generic",
+        "AccountResource:reagent_promotion_survivors",
+        "AccountResource:reagent_promotion_heroes",
+        "AccountResource:reagent_promotion_weapons",
+        "AccountResource:reagent_promotion_traps",
+    }.ToFrozenSet(StringComparer.InvariantCultureIgnoreCase);
+
     public void SetupQuestNode(QuestSlot newQuestData, ButtonGroup buttonGroup, bool displayAsLocked)
     {
         this.displayAsLocked = displayAsLocked;
@@ -46,8 +56,9 @@ public partial class QuestNode : Control
         EmitSignal(SignalName.KeyItemVisible, questData.questTemplate
             .GetQuestRewards()
             .Any(r =>
-                r.templateId.ToLower().StartsWith("hero:") ||
-                r.templateId.ToLower().StartsWith("schematic:")
+                r.templateId.StartsWith("hero:", StringComparison.InvariantCultureIgnoreCase) ||
+                r.templateId.StartsWith("schematic:", StringComparison.InvariantCultureIgnoreCase) ||
+                keyItemTemplates.Contains(r.templateId)
             )
         );
 

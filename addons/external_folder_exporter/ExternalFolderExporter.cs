@@ -14,10 +14,15 @@ public partial class ExternalFolderExporter : EditorExportPlugin
 
     public override string _GetName() => "ExternalExporter";
 
+    //this class will soon be completely unneccecary
     public override void _ExportBegin(string[] features, bool isDebug, string path, uint flags)
     {
         string exportFolderPath = "res://"+path.Split("/")[..^1].Join("/");
-        CopyFolder("res://External", exportFolderPath + "/External");
+        GD.Print($"Exporting resources to \"{exportFolderPath + "/PegLegResources.pck"}\"");
+        var err = DirAccess.CopyAbsolute("res://PegLegResources.pck", exportFolderPath + "/PegLegResources.pck");
+        if (err != Error.Ok)
+            GD.Print(err);
+        //CopyFolder("res://External", exportFolderPath + "/External");
     }
 
     static void CopyFolder(string fromPath, string toPath)

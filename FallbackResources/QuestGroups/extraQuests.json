@@ -1,0 +1,27 @@
+{
+  "repeatable": {
+    "displayName": "Repeatable Quests",
+    "predicate": {
+      "union": [
+        "Quest:genericquest_completestormzones_repeatable",
+        "Quest:genericquest_killmistmonsters_repeatable",
+        "Quest:genericquest_completebetastorms_repeatable"
+      ]
+    }
+  },
+  "sideQuests": {
+    "displayName": "Side Quests",
+    "predicate": {
+      "category": "SideQuests",
+      "exclude": {
+        "endsWith": "endless"
+      }
+    }
+  },
+  "challenges": {
+    "displayName": "Challenges",
+    "predicate": {
+      "category": "Challenges"
+    }
+  }
+}

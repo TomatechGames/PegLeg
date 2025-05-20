@@ -62,7 +62,7 @@ static class CatalogRequests
         var bestsellingCosmetics = await RequestCosmeticBestsellingData();
         await storefrontTask;
         await layoutTask;
-        return cosmeticCache = await ProcessCosmetics(cosmeticDisplayData, bestsellingCosmetics);
+        return cosmeticCache = ProcessCosmetics(cosmeticDisplayData, bestsellingCosmetics);
     }
 
     public static JsonObject GetCachedCosmeticOfferData(string offerId)
@@ -193,7 +193,7 @@ static class CatalogRequests
     //    };
     //}
 
-    static async Task<JsonObject> ProcessCosmetics(JsonObject cosmeticDisplayData, string[] bestsellingCosmetics = null)
+    static JsonObject ProcessCosmetics(JsonObject cosmeticDisplayData, string[] bestsellingCosmetics = null)
     {
         var shopOfferList = storefrontCache[FnStorefrontTypes.WeeklyCosmeticShopCatalog]?.AsArray().ToList();
         if(shopOfferList is null)
@@ -202,7 +202,7 @@ static class CatalogRequests
         //shopOfferList.AddRange(storefrontCache[FnStorefrontTypes.DailyCosmeticShopCatalog].AsArray());
         var shopOfferDict = shopOfferList.ToDictionary(n => n["offerId"].ToString());
 
-        await Parallel.ForEachAsync(shopOfferDict, async (offer, _) =>
+        Parallel.ForEach(shopOfferDict, offer =>
         {
             bool needsFallback = false;
             lock (cosmeticDisplayData)
@@ -1134,14 +1134,14 @@ public class GameOffer
         personalPrice = null;
     }
 
-    public async Task GetCosmeticData()
-    {
+    //public async Task GetCosmeticData()
+    //{
 
-    }
+    //}
 
     GameItem GetRegularPrice()
     {
-        int price = basePrice.quantity;
+        int price = basePrice?.quantity ?? 0;
         price -= discountAmount;
         price = Mathf.Max(price, discountMin);
         var newPriceItem = basePrice?.template?.CreateInstance(price);
@@ -1155,7 +1155,7 @@ public class GameOffer
         if (!await account.Authenticate())
             return 0;
         var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
-        return accountItems.GetFirstTemplateItem(basePrice.templateId)?.quantity ?? 0;
+        return accountItems.GetFirstTemplateItem(basePrice?.templateId)?.quantity ?? 0;
     }
 
     public async Task<GameItem> GetPriceInventoryItem()
@@ -1164,7 +1164,7 @@ public class GameOffer
         if (!await account.Authenticate())
             return null;
         var accountItems = await account.GetProfile(FnProfileTypes.AccountItems).Query();
-        return accountItems.GetFirstTemplateItem(basePrice.templateId);
+        return accountItems.GetFirstTemplateItem(basePrice?.templateId);
     }
 
     public async Task<GameItem> GetPersonalPrice(bool forcePrice = false, bool forceCosmetics = false)
@@ -1172,7 +1172,7 @@ public class GameOffer
         if (!forcePrice && personalPrice is not null)
             return personalPrice;
 
-        int price = basePrice.quantity;
+        int price = basePrice?.quantity ?? 0;
         price -= discountAmount;
 
         //if dynamic bundle, generate discount based on owned items

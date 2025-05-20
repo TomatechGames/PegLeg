@@ -76,13 +76,10 @@ expand_mode = 3
 [node name="LockIconPos" type="Control" parent="MarginContainer/HBoxContainer/RarityIcon"]
 visible = false
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -20.0
+offset_left = 5.0
 offset_top = 5.0
-offset_right = -5.0
-offset_bottom = 20.0
+offset_right = 30.0
+offset_bottom = 30.0
 grow_horizontal = 0
 
 [node name="LockIconBG" type="TextureRect" parent="MarginContainer/HBoxContainer/RarityIcon/LockIconPos"]
@@ -111,6 +108,18 @@ tooltip_text = "Evolve Hero to 2 Stars to unlock Commander Perk"
 texture = ExtResource("4_i1bcj")
 expand_mode = 1
 
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/RarityIcon/LockIconPos"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 2.0
+grow_vertical = 2
+theme_override_constants/outline_size = 5
+text = "Lv 50"
+
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -132,7 +141,8 @@ usePressSound = false
 [connection signal="ElementIconChanged" from="." to="MarginContainer/HBoxContainer/RarityIcon/ElementBG/ElementIcon" method="set_texture"]
 [connection signal="ElementIconVisibilityChanged" from="." to="MarginContainer/HBoxContainer/RarityIcon/ElementBG" method="set_visible"]
 [connection signal="InteractableChanged" from="." to="Responsive Button Area" method="set_visible"]
-[connection signal="LockTextChanged" from="." to="MarginContainer/HBoxContainer/RarityIcon/LockIconPos/LockIcon2" method="set_tooltip_text"]
+[connection signal="LockColorChanged" from="." to="MarginContainer/HBoxContainer/RarityIcon/LockIconPos/LockIcon2" method="set_self_modulate"]
+[connection signal="LockTextChanged" from="." to="MarginContainer/HBoxContainer/RarityIcon/LockIconPos/Label" method="set_text"]
 [connection signal="LockVisibilityChanged" from="." to="MarginContainer/HBoxContainer/RarityIcon/LockIconPos" method="set_visible"]
 [connection signal="NameChanged" from="." to="MarginContainer/HBoxContainer/Label" method="set_text"]
 [connection signal="RarityIconChanged" from="." to="MarginContainer/HBoxContainer/RarityIcon" method="set_texture"]

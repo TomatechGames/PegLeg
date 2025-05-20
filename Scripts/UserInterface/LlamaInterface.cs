@@ -254,7 +254,7 @@ public partial class LlamaInterface : Control
     CancellationTokenSource accountChangeCTS;
     private async void OnAccountChanged()
     {
-        accountChangeCTS.CancelAndRegenerate(out var ct);
+        accountChangeCTS = accountChangeCTS.CancelAndRegenerate(out var ct);
 
         ForceLoadShopLlamas();
 
@@ -315,7 +315,7 @@ public partial class LlamaInterface : Control
         if (!IsVisibleInTree() || (!llamasDirty && activeOffers.Count > 0))
             return;
         llamasDirty = false;
-        llamaShopCTS.CancelAndRegenerate(out var ct);
+        llamaShopCTS = llamaShopCTS.CancelAndRegenerate(out var ct);
 
         offerListLoadingIcon.Visible = true;
         llamaScrollArea.Visible = false;
@@ -360,7 +360,7 @@ public partial class LlamaInterface : Control
             filteredOffers.Remove(tokenUpgradeOffer);
             await altOfferEntry.SetOffer(tokenUpgradeOffer);
 
-            bool hasFreeLlamas = filteredOffers.Any(o => o.Price.quantity == 0);
+            bool hasFreeLlamas = filteredOffers.Any(o => o.Price?.quantity == 0);
             if(hasFreeLlamas && !hadFreeLlamas)
             {
                 //todo: separate global checks like this from the tab-specific UI
@@ -423,8 +423,8 @@ public partial class LlamaInterface : Control
         if (!await account.MatchesFulfillmentRequirements(offer))
             return false;
 
-        string priceTemplateId = offer.Price.templateId;
-        int price = offer.Price.quantity;
+        string priceTemplateId = offer.Price?.templateId;
+        int price = offer.Price?.quantity ?? 0;
         if (price == 1)
             return (await account.GetProfile(FnProfileTypes.AccountItems).Query())
                 .GetTemplateItems(priceTemplateId)
@@ -470,7 +470,7 @@ public partial class LlamaInterface : Control
     {
         ClearSelection();
 
-        offerCts.CancelAndRegenerate(out var ct);
+        offerCts = offerCts.CancelAndRegenerate(out var ct);
 
         //show loading icon
         var account = GameAccount.activeAccount;
@@ -494,7 +494,7 @@ public partial class LlamaInterface : Control
         if (ct.IsCancellationRequested)
             return;
 
-        if (offer.Price.quantity > 0)
+        if (offer.Price?.quantity > 0)
         {
             var inventoryCount = await offer.GetPriceInInventory();
             if (ct.IsCancellationRequested)
@@ -522,9 +522,9 @@ public partial class LlamaInterface : Control
             var resultItems = prerollData?.attributes?["items"].AsArray().Select(node => new GameItem(null, null, node.AsObject())).ToArray() ?? null;
             if (resultItems != null)
                 purchaseLimit = 1;
+            purchaseButton.Visible = offer.Price is not null;
             quantitySpinner.MaxValue = Mathf.Max(purchaseLimit, 1);
-            quantitySpinner.Visible = purchaseLimit > 1;
-            purchaseButton.Visible = true;
+            quantitySpinner.Visible = purchaseButton.Visible && purchaseLimit > 1;
             SetSelectedLlamaResults(resultItems);
         }
     }
@@ -571,9 +571,9 @@ public partial class LlamaInterface : Control
         if (items is not null)
         {
             var sortedItems = items
-                .OrderBy(item => -item.template.RarityLevel)
-                .ThenBy(item => item.template.Type)
-                .ThenBy(item => item.template.DisplayName)
+                .OrderBy(item => -item.template?.RarityLevel)
+                .ThenBy(item => item.template?.Type)
+                .ThenBy(item => item.template?.DisplayName)
                 .ToArray();
             //fill out item list
             surpriseResultPanel.Visible = false;

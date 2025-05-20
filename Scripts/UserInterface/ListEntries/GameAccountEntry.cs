@@ -87,6 +87,14 @@ public partial class GameAccountEntry : Control
             return;
         EmitSignal(SignalName.Pressed, currentAccount.accountId);
     }
+
+    public async void Exchange()
+    {
+        if (currentAccount is null)
+            return;
+        GD.Print(await currentAccount.GenerateExchangeCode());
+    }
+
     public void Delete()
     {
         if (currentAccount is null)

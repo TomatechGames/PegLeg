@@ -19,6 +19,7 @@ public partial class QuestInterface : Control
     [Export]
     Control loadingIcon;
 
+    QuestGroupCollectionData[] questGroupCollectionData;
     List<Foldout> questGroupCollections = [];
     List<QuestGroupEntry> questGroups = [];
 
@@ -29,6 +30,13 @@ public partial class QuestInterface : Control
             if (IsVisibleInTree())
                 LoadQuests();
         };
+        questGroupCollectionData = 
+        [.. 
+            PegLegResourceManager.LoadResourceDict<QuestGroupCollectionData>("QuestGroups/questGroupIndex.json")
+            .Values
+            .OrderBy(col=> col.priority)
+        ];
+        GD.Print("questCollections: " + questGroupCollectionData.Length);
         RefreshTimerController.OnDayChanged += ReloadQuests;
         GameAccount.ActiveAccountChanged += ReloadQuests;
         ReloadQuests();
@@ -47,7 +55,6 @@ public partial class QuestInterface : Control
         questsDirty = true;
         if (IsVisibleInTree())
             LoadQuests();
-
     }
 
     public override void _ExitTree()
@@ -77,11 +84,11 @@ public partial class QuestInterface : Control
 
         if (!await GameAccount.activeAccount.Authenticate())
             return;
+        await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).Query();
 
         questGroupViewer.Visible = false;
         questListLayout.Visible = false;
         loadingIcon.Visible = true;
-        var generatedQuestGroups = QuestGroupGenerator.GetQuestGroups();
 
         while (questsDirty)
         {
@@ -93,19 +100,19 @@ public partial class QuestInterface : Control
             questGroupCollections.Clear();
 
             ButtonGroup questButtonGroup = new();
-            foreach (var collection in generatedQuestGroups)
+            foreach (var collection in questGroupCollectionData)
             {
                 //create foldout
                 var foldout = foldoutScene.Instantiate<Foldout>();
-                foldout.SetFoldoutName(collection["name"].ToString());
+                foldout.SetFoldoutName(collection.displayName);
                 List<QuestGroupEntry> groupsInFoldout = [];
-                foreach (var group in collection["groupGens"].AsObject())
+                foreach (var group in collection.QuestGroups)
                 {
                     var groupEntry = questGroupScene.Instantiate<QuestGroupEntry>();
-                    await groupEntry.SetupQuestGroup(group.Key, group.Value.AsObject());
-                    if (!groupEntry.HasAvailableQuests)
+                    groupEntry.SetupQuestGroup(group);
+                    if (!groupEntry.HasQuests)
                     {
-                        groupEntry.QueueFree();
+                        //groupEntry.QueueFree();
                         continue;
                     }
                     groupsInFoldout.Add(groupEntry);

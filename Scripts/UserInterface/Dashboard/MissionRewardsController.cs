@@ -193,7 +193,7 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
             {
                 if (missionPredicate is not null && !missionPredicate(mission))
                     continue;
-                foreach (var item in mission.allItems)
+                foreach (var item in mission.allItems ?? [])
                 {
                     if (
                         item.template.DisplayName == "Gold" || 

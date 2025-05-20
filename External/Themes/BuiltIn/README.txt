@@ -1,1 +1,0 @@
-this folder is for Pegleg's built-in themes. To add custom themes or override the builtin themes, use the External/Themes/Custom folder

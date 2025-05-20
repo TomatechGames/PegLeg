@@ -227,7 +227,7 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         ClearCosmeticOfferData();
         currentOfferData = offerData;
         currentOfferData.OnResourceLoaded += ApplyOfferResource;
-        currentOfferData.OnOwnershipLoaded += ApplyOfferOwnership;
+        //currentOfferData.OnOwnershipLoaded += ApplyOfferOwnership;
 
         outDate = offerData.outDate;
         UpdateOutTimer();
@@ -241,8 +241,8 @@ public partial class CosmeticShopOfferEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.OldPriceAmount, (offerData.price-offerData.discountAmount).ToString());
         EmitSignal(SignalName.OldPriceVisibility, offerData.isDiscountBundle);
         EmitSignal(SignalName.OwnedVisibility, false);
-        if (offerData.ownershipLoadComplete)
-            ApplyOfferOwnership();
+        //if (offerData.ownershipLoadComplete)
+        //    ApplyOfferOwnership();
 
         loadingCubes.Visible = true;
         resourceTarget.Visible = false;

@@ -1,0 +1,67 @@
+{
+  "destroy": {
+    "displayName": "Dennis\u0027 Destroy Quests",
+    "chain": true,
+    "predicate": {
+      "union": [
+        "Quest:adventure_seasonal_destroy_01",
+        "Quest:beginnings_seasonal_destroy_01",
+        "Quest:phoenix_seasonal_destroy_summer_01",
+        "Quest:fall_seasonal_destroy_01",
+        "Quest:winter_seasonal_destroy_01"
+      ]
+    }
+  },
+  "mission": {
+    "displayName": "Director\u0027s Directive Quests",
+    "chain": true,
+    "predicate": {
+      "union": [
+        "Quest:adventure_seasonal_mission_01",
+        "Quest:beginnings_seasonal_mission_01",
+        "Quest:phoenixseasonal_mission_01",
+        "Quest:fall_seasonal_mission_01",
+        "Quest:winter_seasonal_mission_01"
+      ]
+    }
+  },
+  "weapon": {
+    "displayName": "Clip\u0027s Weapons Training Quests",
+    "chain": true,
+    "predicate": {
+      "union": [
+        "Quest:adventure_seasonal_weapon_01",
+        "Quest:beginnings_seasonal_weapon_01",
+        "Quest:phoenixseasonal_weapon_01",
+        "Quest:fall_seasonal_weapon_01",
+        "Quest:winter_seasonal_weapon_01"
+      ]
+    }
+  },
+  "monster": {
+    "displayName": "Major\u0027s Eliminate Monsters Quests",
+    "chain": true,
+    "predicate": {
+      "union": [
+        "Quest:adventure_seasonal_monster_01",
+        "Quest:beginnings_seasonal_monster_01",
+        "Quest:phoenixseasonal_monster_01",
+        "Quest:fall_seasonal_monster_01",
+        "Quest:winter_seasonal_monster_01"
+      ]
+    }
+  },
+  "locating": {
+    "displayName": "Lars\u0027 Locating",
+    "chain": true,
+    "predicate": {
+      "union": [
+        "Quest:adventure_seasonal_locating_01",
+        "Quest:beginnings_seasonal_locating_01",
+        "Quest:phoenix_seasonal_locating_01",
+        "Quest:fall_seasonal_locating_01",
+        "Quest:winter_seasonal_locating_01"
+      ]
+    }
+  }
+}

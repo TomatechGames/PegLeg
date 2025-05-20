@@ -12,6 +12,10 @@ public partial class TrayIcon : StatusIndicator
     Timer autoclose;
     [Export]
     Control mainAppRoot;
+    [Export]
+    Texture2D editorIcon;
+    [Export]
+    Texture2D testBuildIcon;
 
     public override void _Ready()
     {
@@ -23,6 +27,13 @@ public partial class TrayIcon : StatusIndicator
         autoclose.Timeout += () => tutorialWindow.Visible = false;
         menu.Clear();
         menu.AddItem("Close PegLeg", 404);
+        if (OS.HasFeature("test"))
+            Icon = testBuildIcon;
+        if (OS.HasFeature("editor"))
+        {
+            Visible = false;
+            Icon = editorIcon;
+        }
     }
 
     public void HandleMenu(long id)
@@ -59,6 +70,7 @@ public partial class TrayIcon : StatusIndicator
                 tutorialWindow.Show();
                 hasShownTutorial = true;
             }
+            Visible = true;
         }
         
     }
@@ -86,6 +98,8 @@ public partial class TrayIcon : StatusIndicator
                 else
                     window.Mode = Window.ModeEnum.Windowed;
             }
+            if (OS.HasFeature("editor"))
+                Visible = false;
         }
         window.GrabFocus();
     }

@@ -701,9 +701,9 @@ public class CosmeticShopOfferData
 
     //not worth implementing here, cosmetics will be moving into GameOffer soon
     //just wanted to comment this out to prevent compiler warnings about a synchronous async method
-    bool ownershipLoadStarted;
-    public bool ownershipLoadComplete { get; private set; }
-    public event Action OnOwnershipLoaded;
+    //bool ownershipLoadStarted;
+    //public bool ownershipLoadComplete { get; private set; }
+    //public event Action OnOwnershipLoaded;
     //public async void LoadOwnership()
     //{
     //    if (ownershipLoadStarted)

@@ -31,13 +31,25 @@ public partial class CardPackEntry : GameItemEntry
 
     protected override void UpdateItem(GameItem item)
     {
-        if (item is null)
+        if (!IsInstanceValid(this) || !IsInsideTree())
             return;
+        if (item is null)
+        {
+            ClearItem();
+            return;
+        }
 
-        if (item.template.Type != "CardPack")
+        if (item.template?.Type != "CardPack")
         {
             GD.Print("not a cardpack");
             base.UpdateItem(item);
+            var basisColor = item.template?.RarityColor ?? missingRarityColor;
+            SetColours([
+                basisColor,
+                basisColor*1.05f,
+                basisColor*1.1f,
+                basisColor*1.15f,
+            ]);
             return;
         }
 
@@ -62,7 +74,7 @@ public partial class CardPackEntry : GameItemEntry
         if (debug)
             GD.Print("cardPackTier: " + llamaTier);
         string llamaPinataName =
-            (item.template.TryGetTexturePath(FnItemTextureType.Preview, out var imagePath) ? imagePath : null)
+            (item.template.TryGetTexturePath(out var imagePath) ? imagePath : null)
             ?.ToString().Split("\\")[^1];
         if (llamaPinataName?.StartsWith(defaultPreviewImage) ?? false)
         {
@@ -83,13 +95,12 @@ public partial class CardPackEntry : GameItemEntry
         llamaColorData ??= OverridableFileLoader.LoadJsonFile("llamaColors.json");
         JsonArray colorData = llamaColorData?.FirstOrDefault(kvp => llamaPinataName?.StartsWith(kvp.Key) ?? false).Value?.AsArray();
 
-        currentLlamaColors = new Color[]
-        {
+        SetColours([
             rarityColor ?? Color.FromString(colorData?[0]?.ToString() ?? "", new("#0073ffff")),
             Color.FromString(colorData?[1]?.ToString() ?? "", new("#e600c3e3")),
             Color.FromString(colorData?[2]?.ToString() ?? "", new("#aa00ffd4")),
             Color.FromString(colorData?[3]?.ToString() ?? "", new("#00eaff8f"))
-        };
+        ]);
 
 
         EmitSignal(
@@ -97,24 +108,10 @@ public partial class CardPackEntry : GameItemEntry
             CustomTooltip.GenerateSimpleTooltip(
                 name,
                 amountText,
-                new string[] { description },
+                [description],
                 currentLlamaColors[0].ToHtml()
             )
         );
-
-        currentLlamaGradient ??= new()
-        {
-            Offsets = new float[] { 0, 0.25f, 0.5f, 0.75f },
-            InterpolationMode = Gradient.InterpolationModeEnum.Constant,
-        };
-        currentLlamaGradient.Colors = currentLlamaColors;
-
-        EmitSignal(SignalName.RarityChanged, currentLlamaColors[0]);
-        EmitSignal(SignalName.Color1Changed, currentLlamaColors[1]);
-        EmitSignal(SignalName.Color2Changed, currentLlamaColors[2]);
-        EmitSignal(SignalName.Color3Changed, currentLlamaColors[3]);
-        EmitSignal(SignalName.GradientChanged, currentLlamaGradient);
-
 
         //var packIcon = item.GetTexture(FnItemTextureType.PackImage);
         //if (!llamaPinataName.Contains("Pinata") || (name?.Contains("Mini") ?? false))
@@ -125,6 +122,23 @@ public partial class CardPackEntry : GameItemEntry
 
         EmitSignal(SignalName.IconChanged, item.GetTexture());
         EmitSignal(SignalName.SubtypeIconChanged, item.GetTexture(FnItemTextureType.PackImage));
+    }
+
+    void SetColours(Color[] colors)
+    {
+        currentLlamaColors = colors;
+        currentLlamaGradient ??= new()
+        {
+            Offsets = [0, 0.25f, 0.5f, 0.75f],
+            InterpolationMode = Gradient.InterpolationModeEnum.Constant,
+        };
+        currentLlamaGradient.Colors = currentLlamaColors;
+
+        EmitSignal(SignalName.RarityChanged, currentLlamaColors[0]);
+        EmitSignal(SignalName.Color1Changed, currentLlamaColors[1]);
+        EmitSignal(SignalName.Color2Changed, currentLlamaColors[2]);
+        EmitSignal(SignalName.Color3Changed, currentLlamaColors[3]);
+        EmitSignal(SignalName.GradientChanged, currentLlamaGradient);
     }
 
     public override void ClearItem(Texture2D clearTexture)

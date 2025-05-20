@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=67 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" uid="uid://b6cj12kg8rwbh" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
@@ -6,13 +6,14 @@
 [ext_resource type="Script" uid="uid://doe336j3bmbcf" path="res://Scripts/ContextMenu/GameItemContextMenu.cs" id="2_qb31u"]
 [ext_resource type="Script" uid="uid://c2hxn6v6r3mvf" path="res://Scripts/BackgroundController.cs" id="3_sy4n4"]
 [ext_resource type="Texture2D" uid="uid://up5i4jhi7v1v" path="res://Images/InterfaceIcons/Rating-Icon_48.png" id="3_wfagk"]
-[ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="4_xvc4b"]
 [ext_resource type="Script" uid="uid://b3iwjw1wn5hoe" path="res://Scripts/RefreshTimerController.cs" id="5_hp28w"]
 [ext_resource type="Script" uid="uid://dibhuhscalt6l" path="res://Scripts/ThemeController.cs" id="6_hvr66"]
 [ext_resource type="Script" uid="uid://cmqvrwj5exg33" path="res://Scripts/UIElements/TooltipFixer.cs" id="7_i8x0x"]
 [ext_resource type="PackedScene" uid="uid://bsbgxpgoycn6r" path="res://Scenes/Desktop/desktopTooltip.tscn" id="8_2iux3"]
+[ext_resource type="Texture2D" uid="uid://bl88wu2p8c4o6" path="res://Images/InterfaceIcons/PegLegIconEditor.png" id="10_m85w4"]
 [ext_resource type="Script" uid="uid://c24lmsr7knt32" path="res://Scripts/TrayIcon.cs" id="10_t6a4k"]
 [ext_resource type="PackedScene" uid="uid://bqp7ax1fjc306" path="res://Scenes/Desktop/Views/desktopDashboardView.tscn" id="10_xfiw1"]
+[ext_resource type="Texture2D" uid="uid://bcb4xp8puusy5" path="res://Images/InterfaceIcons/PegLegIconTestBuild.png" id="11_m0p55"]
 [ext_resource type="PackedScene" uid="uid://udk47ipcpsbq" path="res://Scenes/Desktop/Views/desktopInventoryView.tscn" id="13_yfdoy"]
 [ext_resource type="PackedScene" uid="uid://cjge5ubc1hppf" path="res://Scenes/Desktop/Views/desktopBackpackView.tscn" id="15_dlrdq"]
 [ext_resource type="Script" uid="uid://cu5f8smruq3v0" path="res://Scripts/UIElements/ProcessSwitchingTabContainer.cs" id="16_hsemp"]
@@ -52,20 +53,10 @@
 [ext_resource type="Shader" uid="uid://tr0f3tuiuk55" path="res://Shaders/OnboardingCurtain.gdshader" id="51_jeshi"]
 [ext_resource type="Texture2D" uid="uid://cnsm2pu2yise4" path="res://Images/InterfaceIcons/T-Stars-Upgrade-M.png" id="52_kn6t0"]
 [ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="52_pam8h"]
+[ext_resource type="Texture2D" uid="uid://dhv0msu3x04at" path="res://Images/InterfaceIcons/LoadingIconV2/PegLegLoadingWheelRenderSmall.png" id="57_lrsor"]
 [ext_resource type="Script" uid="uid://dm71w4vxgja3" path="res://Scripts/Config/VolumeHook.cs" id="58_7yvd6"]
 [ext_resource type="PackedScene" uid="uid://dpd06j33s360w" path="res://Scenes/Desktop/Overlays/shop_purchase_animation.tscn" id="96_2bhmt"]
 [ext_resource type="PackedScene" uid="uid://dt403r6613tos" path="res://Scenes/Desktop/Overlays/settings_window.tscn" id="99_hfy7e"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wyb1b"]
-shader = ExtResource("4_xvc4b")
-shader_parameter/ControlSize = Vector2(1280, 720)
-shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
-shader_parameter/Fit = false
-shader_parameter/UseCorners = true
-shader_parameter/UseGlobalCorners = true
-shader_parameter/ApplyCornersToFit = false
-shader_parameter/CornerRadius = 10.0
-shader_parameter/ClipOOB = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7h2tb"]
 shader = ExtResource("26_jn02y")
@@ -86,6 +77,47 @@ corner_radius_bottom_left = 12
 shader = ExtResource("51_jeshi")
 shader_parameter/ControlSize = Vector2(1350, 720)
 shader_parameter/RevealScale = 0.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_poio5"]
+particles_animation = true
+particles_anim_h_frames = 10
+particles_anim_v_frames = 10
+particles_anim_loop = true
+
+[sub_resource type="Gradient" id="Gradient_cd5d5"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.666, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.752941, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_8g5mb"]
+gradient = SubResource("Gradient_cd5d5")
+
+[sub_resource type="Curve" id="Curve_kr8xl"]
+_data = [Vector2(0, 0), 0.0, 34.2685, 0, 0, Vector2(0.153257, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.3674, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_6pg76"]
+curve = SubResource("Curve_kr8xl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s7yuu"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -100, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 2, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 20.0
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+angle_min = -124.7
+angle_max = 1.07288e-05
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+scale_min = 0.2
+scale_max = 0.2
+scale_curve = SubResource("CurveTexture_6pg76")
+color_ramp = SubResource("GradientTexture1D_8g5mb")
+anim_speed_min = 0.4
+anim_speed_max = 0.4
 
 [node name="Root" type="Control"]
 layout_mode = 3
@@ -203,6 +235,8 @@ script = ExtResource("10_t6a4k")
 tutorialWindow = NodePath("TutorialWindow")
 autoclose = NodePath("TutorialWindow/Timer")
 mainAppRoot = NodePath("../../Content")
+editorIcon = ExtResource("10_m85w4")
+testBuildIcon = ExtResource("11_m0p55")
 
 [node name="PopupMenu" type="PopupMenu" parent="NonUI/StatusIndicator"]
 prefer_native_menu = true
@@ -279,7 +313,6 @@ bgOverlay = NodePath("BGFade")
 [node name="BG" type="TextureRect" parent="BGController"]
 self_modulate = Color(0.5, 0.5, 0.5, 1)
 z_index = -10
-material = SubResource("ShaderMaterial_wyb1b")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -326,7 +359,7 @@ grow_vertical = 2
 size_flags_vertical = 3
 theme_type_variation = &"MenuTabContainer"
 tab_alignment = 1
-current_tab = 6
+current_tab = 7
 script = ExtResource("16_hsemp")
 
 [node name="Dashboard" parent="Content/MainTabs" instance=ExtResource("10_xfiw1")]
@@ -403,11 +436,11 @@ layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="Quests" parent="Content/MainTabs" instance=ExtResource("28_rt2uq")]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 6
 
 [node name="Extra" type="MarginContainer" parent="Content/MainTabs"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 7
 
@@ -779,6 +812,24 @@ allow_search = false
 script = ExtResource("2_qb31u")
 iconTexture = ExtResource("51_bse6w")
 uncheckedIcon = ExtResource("52_kn6t0")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Control"]
+material = SubResource("CanvasItemMaterial_poio5")
+emitting = false
+amount = 10
+texture = ExtResource("57_lrsor")
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_s7yuu")
 
 [connection signal="pressed" from="NonUI/TestNotif/PanelContainer/HBoxContainer/Button" to="NonUI/TestNotif" method="set_visible" binds= [false]]
 [connection signal="pressed" from="NonUI/StatusIndicator/TutorialWindow/MarginContainer/PanelContainer/HBoxContainer/Button" to="NonUI/StatusIndicator/TutorialWindow" method="set_visible" binds= [false]]

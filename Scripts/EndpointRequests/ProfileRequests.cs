@@ -23,7 +23,8 @@ public enum OrderRange
 public readonly struct FORTStats
 {
     //todo: export this via BanjoBotAssets
-    static DataTableCurve homebaseRatingCurve = new("res://External/DataTables/HomebaseRatingMapping.json", "UIMonsterRating");
+    static DataTableCurve homebaseRatingCurve;
+    static DataTableCurve HomebaseRatingCurve => homebaseRatingCurve ??= new("HomebaseRatingMapping.json", "UIMonsterRating");
 
     public readonly float fortitude;
     public readonly float offense;
@@ -37,7 +38,7 @@ public readonly struct FORTStats
         this.technology = technology;
     }
 
-    public float PowerLevel => homebaseRatingCurve.Sample(4 * (fortitude + offense + resistance + technology));
+    public float PowerLevel => HomebaseRatingCurve.Sample(4 * (fortitude + offense + resistance + technology));
 }
 
 static class FnProfileTypes
@@ -334,6 +335,18 @@ public class GameAccount
 
     public void ForceExpireToken() => authExpiresAt = 0;
 
+    public async Task<string> GenerateExchangeCode()
+    {
+        var result = await Helpers.MakeRequest(
+            HttpMethod.Get,
+            FnWebAddresses.account,
+            "account/api/oauth/exchange",
+            $"consumingClientId=launcherAppClient2",
+            accountAuthHeader
+        );
+        return result["code"].ToString();
+    }
+
     public SemaphoreSlim profileOperationSemaphore { get; private set; } = new(1);
 
     public async Task<JsonArray> PurchaseOffer(GameOffer offer, int purchaseQuantity = 1)
@@ -396,13 +409,13 @@ public class GameAccount
                 return;
 
             var skinData = await Helpers.MakeRequest(
-                    HttpMethod.Get,
-                    ExternalWebAddresses.fnApi,
-                    $"/v2/cosmetics/br/{skinId}",
-                    "{}",
-                    null,
-                    addCosmeticHeader: true
-                );
+                HttpMethod.Get,
+                ExternalWebAddresses.fnApi,
+                $"/v2/cosmetics/br/{skinId}",
+                "{}",
+                null,
+                addCosmeticHeader: true
+            );
 
             string skinIconServerPath =
                 skinData["data"]?["images"]?["icon"]?.ToString() ??
@@ -669,7 +682,7 @@ public class GameAccount
     public async Task<int> GetAffordableLimit(GameOffer offer, bool cosmetic = false)
     {
         var pricePerPurchase = cosmetic ? await offer.GetPersonalPrice() : offer.Price;
-        if (pricePerPurchase.quantity == 0)
+        if ((pricePerPurchase?.quantity ?? 0) == 0)
             return 999;
         if (cosmetic)
         {
@@ -677,7 +690,7 @@ public class GameAccount
             return Mathf.FloorToInt((float)vbucks / pricePerPurchase.quantity);
         }
         var inInventory = (await GetProfile(FnProfileTypes.AccountItems).Query()).GetFirstTemplateItem(pricePerPurchase.templateId);
-        return Mathf.FloorToInt((float)inInventory.quantity / pricePerPurchase.quantity);
+        return Mathf.FloorToInt((float)(inInventory?.quantity ?? 0) / pricePerPurchase.quantity);
     }
 
     public async Task<bool> MatchesFulfillmentRequirements(GameOffer offer)
@@ -907,10 +920,12 @@ public class GameProfile
             return typedItems.FirstOrDefault();
         return typedItems.FirstOrDefault(predicate.ToFunc());
     }
-    public GameItem GetFirstTemplateItem(string templateId = null, Predicate<GameItem> predicate = null)
+    public GameItem GetFirstTemplateItem(string templateId, Predicate<GameItem> predicate = null)
     {
-        string type = templateId.Split(":")[0];
-        return GetFirstItem(type, item => item.templateId == templateId && predicate.Try(item));
+        if (templateId is null)
+            return null;
+        string type = templateId?.Split(":")[0];
+        return GetFirstItem(type, item => item?.templateId == templateId && predicate.Try(item));
     }
 
     public void SendItemUpdate(GameItem item)
@@ -1374,10 +1389,10 @@ public class GameItem
         SetRawData(rawData);
     }
 
-    public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)
+    public GameItem(GameItemTemplate template, int quantity, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null, string templateId = null)
     {
         _template = template;
-        templateId = template?.TemplateId;
+        this.templateId = template?.TemplateId ?? templateId;
         upgradeBasis = template;
         this.quantity = quantity;
         this.attributes = attributes;
@@ -1508,7 +1523,7 @@ public class GameItem
     }
     public bool IsFavourited => attributes?["favorite"]?.GetValue<bool>() ?? false;
     bool? isSeenLocal = null;
-    public bool IsSeen => isSeenLocal ?? (attributes?["item_seen"]?.GetValue<bool>() ?? false || !template.CanBeUnseen);
+    public bool IsSeen => isSeenLocal ?? (attributes?["item_seen"]?.GetValue<bool>() ?? false || template?.CanBeUnseen == false);
     public GameItem SetSeenLocal(bool? newVal = true)
     {
         if (isSeenLocal == newVal)
@@ -1559,11 +1574,11 @@ public class GameItem
     public bool? isCollectedCache { get; private set; }
     public async Task<bool?> SetCollected(GameAccount account = null)
     {
+        if (template?.IsCollectable != true)
+            return null;
+
         account ??= profile?.account ?? GameAccount.activeAccount;
         await account.GetProfile(template.CollectionProfile).Query();
-
-        if (!template.IsCollectable)
-            return null;
 
         var collectionBook = account.GetProfile(template.CollectionProfile);
         if (template.Type == "Worker")
@@ -1730,8 +1745,8 @@ public class GameItem
 
     public Texture2D GetTexture(FnItemTextureType textureType, Texture2D fallbackIcon)
     {
-        if (textures.ContainsKey(textureType))
-            return PegLegResourceManager.GetReservedTexture(textures[textureType]);
+        if (textures.TryGetValue(textureType, out string value))
+            return PegLegResourceManager.LoadResourceAsset<Texture2D>("GameAssets/"+value);
 
         if (textureType == FnItemTextureType.Personality)
             return GetPersonalityTexture(fallbackIcon);
@@ -1741,13 +1756,13 @@ public class GameItem
 
         if (textureType == FnItemTextureType.Preview && GameItemTemplate.Get(attributes?["portrait"]?.ToString()) is GameItemTemplate portraitTemplate)
         {
-            if (portraitTemplate.TryGetTexturePath(FnItemTextureType.Preview, out var texturePath))
+            if (portraitTemplate.TryGetTexturePath(out var texturePath))
             {
                 textures[textureType] = texturePath;
                 return portraitTemplate.GetTexture(fallbackIcon);
             }
         }
-        if(template.Type == "CardPack" && !template.Name.StartsWith("ZCP_"))
+        if (template?.Type == "CardPack" && template?.Name.StartsWith("ZCP_") == false)
         {
             if (attributes?.ContainsKey("options") ?? false)
             {
@@ -1761,7 +1776,7 @@ public class GameItem
             else if (textureType == FnItemTextureType.Preview && customData?["llamaTier"]?.GetValue<int>() is int llamaTier)
             {
                 string llamaPinataName =
-                    (template.TryGetTexturePath(FnItemTextureType.Preview, out var imagePath) ? imagePath : null)
+                    (template.TryGetTexturePath(out var imagePath) ? imagePath : null)
                     ?.ToString().Split("\\")[^1];
                 if (llamaPinataName?.StartsWith(llamaDefaultPreviewImage) ?? false)
                     return llamaTierIcons[llamaTier];
@@ -1837,7 +1852,8 @@ public class GameItem
         ResetCachedData();
     }
 
-    public GameItem Clone(int? quantity = null, JsonObject customData = null, bool useInspectorOverride = true) => new(template, quantity ?? this.quantity, attributes.SafeDeepClone(), useInspectorOverride ? (profile is null ? inspectorOverride ?? this : this) : null, customData ?? this.customData.SafeDeepClone());
+    public GameItem Clone(int? quantity = null, JsonObject customData = null, bool useInspectorOverride = true) => 
+        new(template, quantity ?? this.quantity, attributes.SafeDeepClone(), useInspectorOverride ? (profile is null ? inspectorOverride ?? this : this) : null, customData ?? this.customData.SafeDeepClone(), templateId);
 
     public void NotifyChanged()
     {

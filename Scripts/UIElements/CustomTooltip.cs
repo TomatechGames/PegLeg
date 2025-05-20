@@ -72,7 +72,7 @@ public partial class CustomTooltip : Control
 		if (contentObject["title"]?.AsFlexibleObject("label") is JsonObject titleData)
 		{
 			titleContent.Visible = true;
-			titleTextLabel.Text = titleData["label"].ToString();
+			titleTextLabel.Text = titleData["label"]?.ToString();
 			if (titleData["quantity"]?.ToString() is string quantityLabel)
 			{
 				titleQuantityLayout.Visible = true;

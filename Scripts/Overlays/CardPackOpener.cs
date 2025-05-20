@@ -90,13 +90,13 @@ public partial class CardPackOpener : Control
     [Export]
     VBoxContainer smallCardParent;
     [Export]
-    GameItemEntry[] smallCards = Array.Empty<GameItemEntry>();
+    GameItemEntry[] smallCards = [];
 
     [ExportGroup("Choices")]
     [Export]
     CanvasGroup choiceCanvas;
     [Export]
-    GameItemEntry[] choiceCards = Array.Empty<GameItemEntry>();
+    GameItemEntry[] choiceCards = [];
     [Export]
     ShaderHook choiceResultCard;
     [Export]
@@ -113,7 +113,7 @@ public partial class CardPackOpener : Control
     bool llamaBurstComplate;
     int llamaHits;
     Control fromPanel;
-    GameItem defaultLlamaItem = GameItemTemplate.Get("CardPack:cardpack_bronze").CreateInstance();
+    GameItem defaultLlamaItem = GameItemTemplate.Get("CardPack:cardpack_bronze")?.CreateInstance();
     Control[] impactParticleContainers;
     CpuParticles2D[] impactParticles;
     int llamaTier = 0;
@@ -228,7 +228,7 @@ public partial class CardPackOpener : Control
             await Helpers.WaitForFrame();
         }
 
-        cardPacks ??= Array.Empty<GameItem>();
+        cardPacks ??= [];
 
         GameItem[] extraItems = null;
         GameItem[] extraCardPacks = null;
@@ -264,8 +264,8 @@ public partial class CardPackOpener : Control
                 .Select(val => account.GetProfile(val["itemProfile"].ToString()).GetItem(val["itemGuid"].ToString()))
                 .ToArray();
         }
-        extraItems ??= Array.Empty<GameItem>();
-        extraCardPacks ??= Array.Empty<GameItem>();
+        extraItems ??= [];
+        extraCardPacks ??= [];
         extraCardPacks = extraCardPacks.Union(cardPacks).ToArray();
 
         //step 1: separate the choice cardpacks from the regular ones
@@ -336,10 +336,10 @@ public partial class CardPackOpener : Control
         if (sortByRarity)
         {
             var orderedChoices = queuedChoices.OrderBy(item => item.template.RarityLevel);
-            queuedChoices = orderedChoices.ToList();
+            queuedChoices = [.. orderedChoices];
 
             var orderedItems = queuedItems.OrderBy(item => item.template.RarityLevel);
-            queuedItems = orderedItems.ToList();
+            queuedItems = [.. orderedItems];
         }
 
         //step 4: display results based on user settings
@@ -407,8 +407,8 @@ public partial class CardPackOpener : Control
     }
 
     //wibbly wobbly music theory
-    static float[] impactProgression = new float[]
-    {
+    static readonly float[] impactProgression =
+    [
         0.00f/8,
         1.00f/8,
         2.00f/8,
@@ -416,7 +416,7 @@ public partial class CardPackOpener : Control
         4.00f/8,
         5.66f/8,
         7.00f/8,
-    };
+    ];
 
     void PlayImpactSound()
     {

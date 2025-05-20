@@ -283,7 +283,7 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
                 return false;
         }
 
-        return mission.allItems.Any(item => MatchItemOrEquivelent(item, currentItemInstructions, extraItemFilters));
+        return mission.allItems?.Any(item => MatchItemOrEquivelent(item, currentItemInstructions, extraItemFilters)) ?? false;
     }
 
     bool needsFilter = false;

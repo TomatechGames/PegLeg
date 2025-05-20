@@ -14,6 +14,8 @@ public partial class PerkEntry : Control
     [Signal]
     public delegate void LockTextChangedEventHandler(string newValue);
     [Signal]
+    public delegate void LockColorChangedEventHandler(Color newValue);
+    [Signal]
     public delegate void ElementIconChangedEventHandler(Texture2D rarityIcon);
     [Signal]
     public delegate void ElementIconVisibilityChangedEventHandler(bool newValue);
@@ -22,15 +24,15 @@ public partial class PerkEntry : Control
     [Signal]
     public delegate void PressedEventHandler(int index, string alterationId, bool replaceable);
 
-    static readonly string[] rarityToImage = new string[]
-    {
-        "ExportedImages/T-Items-WeaponPerkUp-Generic-L.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Uncommon-L.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Rare-L.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Epic-L.png",
-        "ExportedImages/T-Items-WeaponPerkUp-Legendary-L.png",
-        "ExportedImages/T-Items-WeaponRePerk-Resource-L.png"
-    };
+    static readonly string[] rarityTemplates =
+    [
+        "AccountResource:reagent_alteration_generic",
+        "AccountResource:reagent_alteration_upgrade_uc",
+        "AccountResource:reagent_alteration_upgrade_r",
+        "AccountResource:reagent_alteration_upgrade_vr",
+        "AccountResource:reagent_alteration_upgrade_sr",
+        "AccountResource:reagent_alteration_gameplay_generic"
+    ];
 
     string linkedAlteration;
     int linkedIndex;
@@ -51,7 +53,7 @@ public partial class PerkEntry : Control
                     int rarity = alteration.RarityLevel;
                     if (alterationId.StartsWith("Alteration:aid_g_"))
                         rarity = 6;
-                    EmitSignal(SignalName.RarityIconChanged, PegLegResourceManager.GetReservedTexture(rarityToImage[rarity - 1]));
+                    EmitSignal(SignalName.RarityIconChanged, GameItemTemplate.Get(rarityTemplates[rarity-1]).GetTexture());
                     EmitSignal(SignalName.RarityIconVisibilityChanged, true);
                 }
                 else
@@ -100,9 +102,14 @@ public partial class PerkEntry : Control
         EmitSignal(SignalName.LockVisibilityChanged, newValue);
     }
 
-    public void SetLockText(string text)
+    public void SetLockLevel(int level)
     {
-        EmitSignal(SignalName.LockTextChanged, text);
+        EmitSignal(SignalName.LockTextChanged, "Lv " + level);
+    }
+
+    public void SetLockRarity(int rarity)
+    {
+        EmitSignal(SignalName.LockColorChanged, GameItemTemplate.rarityColours[rarity]);
     }
 
     public void Press()

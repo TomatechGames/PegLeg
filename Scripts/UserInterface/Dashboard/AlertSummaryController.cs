@@ -55,7 +55,7 @@ public partial class AlertSummaryController : Control
         {
             foreach (var mission in missions)
             {
-                foreach (var item in mission.alertRewardItems)
+                foreach (var item in mission.alertRewardItems ?? [])
                 {
                     var tid = item.templateId;
                     if (!targetTemplateIds.Contains(tid))

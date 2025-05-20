@@ -104,7 +104,7 @@ public partial class InventoryItemSlot : Node
             return;
 
         profileUpdateCts?.Cancel();
-        setFromAccountCts.CancelAndRegenerate(out var ct);
+        setFromAccountCts = setFromAccountCts.CancelAndRegenerate(out var ct);
 
         var account = overrideAccount ?? GameAccount.activeAccount;
         var newProfile = await account.GetProfile(profileType).Query();
@@ -149,7 +149,7 @@ public partial class InventoryItemSlot : Node
         if (currentProfile is null)
             return;
 
-        profileUpdateCts.CancelAndRegenerate(out var ct);
+        profileUpdateCts = profileUpdateCts.CancelAndRegenerate(out var ct);
 
         await currentProfile.Query();
         if (!currentProfile.hasProfile || ct.IsCancellationRequested)

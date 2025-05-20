@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 public partial class Bootstrap : Node
@@ -14,6 +15,20 @@ public partial class Bootstrap : Node
     [Export]
     PackedScene desktopInterface;
 
+    static void DeleteContents(string path)
+    {
+        foreach (var dir in DirAccess.GetDirectoriesAt(path))
+        {
+            var fullPath = Path.Combine(path, dir);
+            DeleteContents(fullPath);
+        }
+        foreach (var file in DirAccess.GetFilesAt(path))
+        {
+            var fullPath = Path.Combine(path, file);
+            DirAccess.RemoveAbsolute(fullPath);
+        }
+        DirAccess.RemoveAbsolute(path);
+    }
 
     public override async void _Ready()
     {
@@ -22,12 +37,17 @@ public partial class Bootstrap : Node
         Helpers.SetMainWindowVisible(false);
 
         AppConfig.Clear("window");
+        var oldExternalFolder = Helpers.GlobalisePath("res://External");
+        GD.Print("External: " + oldExternalFolder);
+        if (!Engine.IsEditorHint() && DirAccess.DirExistsAbsolute(oldExternalFolder))
+            DeleteContents(oldExternalFolder);
+
         //todo: download and import external assets during runtime using resource pack(s)
-        //ZipReader zr = new();
-        //zr.Open("user://pack.zip");
-        //bool isValid = !zr.GetFiles().Any(path => !path.StartsWith("External/"));
-        //ProjectSettings.LoadResourcePack("user://pack.zip");
-        bool hasBanjoAssets = await PegLegResourceManager.ReadAllSources();
+
+        //bool hasBanjoAssets = await PegLegResourceManager.ReadAllSources();
+        await PegLegResourceManager.TempImportResources();
+
+
         var lastUsedId = AppConfig.Get<string>("account", "lastUsed");
         bool hasAccount = false;
         if (lastUsedId is not null)

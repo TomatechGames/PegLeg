@@ -98,13 +98,12 @@ public partial class QuestGroupViewer : Control
 
     public void SetQuestNodes(QuestGroupEntry questGroup)
     {
-        useArrows = questGroup.IsSequence;
+        var groupData = questGroup.questGroupData;
+        useArrows = groupData.Sequence;
 
-        questDataList = questGroup.questSlotList.Where(q => (q.isUnlocked || questGroup.ShowLocked) && (!q.isComplete || useArrows)).ToList();
-        if (questDataList[0].questTemplate.DisplayName.Contains("Endurance"))
-            questDataList = questDataList
-                .OrderBy(q => int.Parse(q.questTemplate.DisplayName.Split(" ")[^1]))
-                .ToList();
+        questDataList = questGroup.questSlotList.Where(q => (q.isUnlocked || groupData.ShowLocked) && (!q.isComplete || groupData.ShowComplete)).ToList();
+        if (questDataList.FirstOrDefault()?.questTemplate.DisplayName.Contains("Endurance") ?? false)
+            questDataList = [.. questDataList.OrderBy(q => int.Parse(q.questTemplate.DisplayName.Split(" ")[^1]))];
         firstUnlocked = questDataList.FirstOrDefault(q => q.isUnlocked && !q.isComplete);
 
         nodesPerPage = maxNodesPerPage;

@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Security.Principal;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 
@@ -62,105 +64,79 @@ public partial class QuestGroupEntry : Control
 
     bool hasNotification = false;
     public bool HasNotification => hasNotification;
-    bool hasAvailableQuests = false;
-    public bool HasAvailableQuests => hasAvailableQuests;
+    public bool HasQuests => questSlotList.Any(q => q.isUnlocked && (questGroupData.ShowComplete || !q.isComplete));
 
     public List<QuestSlot> questSlotList { get; private set; } = [];
-    bool isSequence = false;
-    public bool IsSequence => isSequence;
-    bool? showLocked = false;
-    public bool ShowLocked => showLocked ?? isSequence;
+    public QuestGroupData questGroupData { get; private set; }
 
-    public async Task SetupQuestGroup(string name, JsonObject questGroup)
+    public void SetupQuestGroup(QuestGroupData questGroup)
     {
-        EmitSignal(SignalName.NameChanged, name);
+        EmitSignal(SignalName.NameChanged, questGroup.displayName);
+        questGroupData = questGroup;
         questSlotList.Clear();
-        hasAvailableQuests = false;
-        Visible = false;
 
-        var account = GameAccount.activeAccount;
-        if (!await account.Authenticate())
-            return;
+        var profile = GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems);
 
-        showLocked = questGroup["showLocked"]?.GetValue<bool>();
-
-        if (questGroup["questlines"] is JsonArray questlines)
+        if (questGroup.chain)
         {
-            isSequence = true;
-            foreach (var qline in questlines.Select(n=>n.AsArray()))
+            //find first quest that exists in inventory
+            QuestSlot lastSlot = null;
+            foreach (var qline in questGroup.Questlines)
             {
-                bool skip = true;
-                for (int i = 0; i < qline.Count; i++)
+                GameItem questItem = profile.GetFirstTemplateItem(qline.FirstOrDefault()?.TemplateId);
+                if (questItem is null)
+                    continue;
+                foreach (var quest in qline)
                 {
-                    string currentQuestId = qline[i].ToString();
+                    questItem ??= profile.GetFirstTemplateItem(quest.TemplateId);
 
-                    GameItem questItem = 
-                        (await account.GetProfile(FnProfileTypes.AccountItems).Query())
-                        .GetFirstTemplateItem(currentQuestId);
-
-                    if (i == 0 && questItem is null)
-                        break;
-
-                    skip = false;
-
-                    GameItemTemplate questTemplate = questItem?.template ?? GameItemTemplate.Get(currentQuestId);
-
-                    QuestSlot newData = new(questTemplate);
+                    QuestSlot newData = new(quest);
                     newData.LinkQuestItem(questItem);
                     newData.OnPropertiesUpdated += UpdateNotificationAndIcon;
                     questSlotList.Add(newData);
 
-                    if(i==qline.Count-1 && newData.isComplete)
-                        EmitSignal(SignalName.IconChanged, completeTex);
+                    lastSlot = newData;
+                    questItem = null;
                 }
-                if (skip)
-                    continue;
-                hasAvailableQuests = questSlotList.Count > 0;
-
-                UpdateNotificationAndIcon(null);
-                Visible = true;
-                return;
+                break;
             }
-        }
 
-        if(questGroup["quests"] is JsonArray quests)
-        {
-            isSequence = questGroup["sequence"]?.GetValue<bool>() ?? false;
-            for (int i = 0; i < quests.Count; i++)
-            {
-                string currentQuestId = quests[i].ToString();
-
-                GameItem questItem =
-                        (await account.GetProfile(FnProfileTypes.AccountItems).Query())
-                        .GetFirstTemplateItem(currentQuestId);
-
-                GameItemTemplate questTemplate = questItem?.template ?? GameItemTemplate.Get(currentQuestId);
-
-                QuestSlot newData = new(questTemplate);
-                newData.LinkQuestItem(questItem);
-                newData.OnPropertiesUpdated += UpdateNotificationAndIcon;
-                questSlotList.Add(newData);
-            }
-            hasAvailableQuests = questSlotList.Exists(q => q.isUnlocked);
-
-            //makes the endurance daily group show which region the edurance is in
-            if(
-                questSlotList.FirstOrDefault(q => q.isUnlocked)?.questTemplate["DisplayName"].ToString() is string firstQuestName && 
-                firstQuestName.EndsWith("Wave 5")
-              )
-                EmitSignal(SignalName.NameChanged, firstQuestName[..^7]);
+            if (lastSlot?.isComplete ?? false)
+                EmitSignal(SignalName.IconChanged, completeTex);
 
             UpdateNotificationAndIcon(null);
-            Visible = true;
             return;
         }
 
-        //GD.PushWarning($"Error when handling Quest Group \"{name}\"");
+        foreach (var quest in questGroup.Quests)
+        {
+            GameItem questItem = profile.GetFirstTemplateItem(quest?.TemplateId);
+
+            QuestSlot newData = new(quest);
+            newData.LinkQuestItem(questItem);
+            newData.OnPropertiesUpdated += UpdateNotificationAndIcon;
+            questSlotList.Add(newData);
+        }
+
+        var enduranceQuest = questSlotList.FirstOrDefault(q => q.isUnlocked && (q.questTemplate?.DisplayName?.EndsWith("Wave 5") ?? false));
+        if (enduranceQuest is not null)
+            EmitSignal(SignalName.NameChanged, enduranceQuest.questTemplate.DisplayName[..^7]);
+
+        var weeklySthQuest = questSlotList.FirstOrDefault(q => 
+            q.isUnlocked && 
+            q.questTemplate is GameItemTemplate qTemp &&
+            qTemp.Category == "LTE_HordeV3" &&
+            qTemp.DisplayName.EndsWith(" (Weekly)")
+        );
+        if (weeklySthQuest is not null)
+            EmitSignal(SignalName.NameChanged, "Weekly STH: " + weeklySthQuest.questTemplate.DisplayName[..^9]);
+
+        UpdateNotificationAndIcon(null);
     }
     
     public void UpdateNotificationAndIcon(QuestSlot _)
     {
-        hasNotification = questSlotList.Any(questData => questData.isNew && (isSequence || !questData.isComplete));
+        hasNotification = questSlotList.Any(questData => questData.isNew && (questGroupData.ShowComplete || !questData.isComplete));
         EmitSignal(SignalName.NotificationVisible, hasNotification);
         bool isPinned = questSlotList.Any(q => q.isPinned);
         bool isComplete = questSlotList.All(q => q.isComplete);

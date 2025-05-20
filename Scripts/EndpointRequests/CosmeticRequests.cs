@@ -20,17 +20,17 @@ static class CosmeticRequests
     {
         return false;
     }
-    public static async Task<Texture2D> GetCosmeticImage(string imagePath)
-    {
-        return null;
-    }
+    //public static async Task<Texture2D> GetCosmeticImage(string imagePath)
+    //{
+    //    return null;
+    //}
 
-    public static async Task<GameItemTemplate> GetCosmeticTemplate(string templateId)
-    {
-        if (GameItemTemplate.Get(templateId) is GameItemTemplate cachedTemplate)
-            return cachedTemplate;
-        return null;
-    }
+    //public static async Task<GameItemTemplate> GetCosmeticTemplate(string templateId)
+    //{
+    //    if (GameItemTemplate.Get(templateId) is GameItemTemplate cachedTemplate)
+    //        return cachedTemplate;
+    //    return null;
+    //}
 
     public static async Task LoadShopAssets()
     {
@@ -119,22 +119,23 @@ static class CosmeticRequests
         }
     }
 
-    static async Task<JsonObject> GetJamTrackData()
-    {
-        return null;
-    }
-    static async Task<JsonObject> GetShopSectionData()
-    {
-        return null;
-    }
+    //static async Task<JsonObject> GetJamTrackData()
+    //{
+    //    return null;
+    //}
 
-    public static async Task<GameItemTemplate> GetDisplayAssetTemplate(this GameOffer offer)
-    {
-        return null;
-    }
+    //static async Task<JsonObject> GetShopSectionData()
+    //{
+    //    return null;
+    //}
 
-    public static async Task<Texture2D> GetOfferImage(this GameItemTemplate displayAsset)
-    {
-        return null;
-    }
+    //public static async Task<GameItemTemplate> GetDisplayAssetTemplate(this GameOffer offer)
+    //{
+    //    return null;
+    //}
+
+    //public static async Task<Texture2D> GetOfferImage(this GameItemTemplate displayAsset)
+    //{
+    //    return null;
+    //}
 }

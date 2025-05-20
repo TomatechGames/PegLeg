@@ -1,38 +1,42 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 public partial class ThemeController : Node
 {
+    //todo: move to calender estimate
 	static readonly DateTime referenceStartDate = new(2024, 1, 25);
-	static readonly int[] seasonLengths = new int[]
-	{
-		10,
+    static readonly int[] seasonLengths =
+    [
+        10,
 		11,
 		11,
 		11,
 		9
-	};
+	];
     static readonly int weeksInSeasonalYear = seasonLengths.Sum();
-	static readonly string[] seasonThemes = new string[]
-	{
-        "Flannel Falls",
-        "Scurvy Shoals",
-        "Blasted Badlands",
-        "Hexsylvania",
-        "Frozen Fjords",
-    };
+
+    const string blankTheme = "builtin_blank";
+    static readonly string[] seasonThemes =
+    [
+        "builtin_autumn",
+        "builtin_pirate",
+        "builtin_desert",
+        "builtin_spooky",
+        "builtin_winter",
+    ];
 
     static string seasonTheme;
-    const string builtInThemePath = "res://External/Themes/BuiltIn";
-    const string customThemePath = "res://External/Themes/Custom";
 
     public override void _Ready()
 	{
         seasonTheme = GetSeasonTheme();
-        GenerateThemeData();
+        ImportThemes();
         SetActiveTheme(AppConfig.Get("theme", "current", ""));
         RefreshTimerController.OnDayChanged += CheckForNewSeason;
         MusicController.ResumeMusic();
@@ -49,7 +53,7 @@ public partial class ThemeController : Node
         if (newSeasonTheme != seasonTheme)
         {
             seasonTheme = newSeasonTheme;
-            if (currentThemeName == "")
+            if (selectedThemeName == "")
                 SetActiveTheme(AppConfig.Get("theme", "current", ""));
         }
     }
@@ -71,287 +75,176 @@ public partial class ThemeController : Node
         return seasonThemes[seasonIndex];
     }
 
-    public static string currentThemeName { get; private set; }
+    public static string selectedThemeName { get; private set; }
     public static string activeThemeName { get; private set; }
-    public static ThemeData activeTheme { get; private set; }
+    public static AppTheme activeTheme { get; private set; }
 
-    public static event Action OnThemeUpdated;
+    public static event Action OnThemeChanged;
 
-    public static void SetActiveTheme(string newTheme)
+    public static void SetActiveTheme(string themeId)
     {
-        newTheme = themeDataSet.ContainsKey(newTheme) ? newTheme : "";
-        AppConfig.Set("theme", "current", newTheme);
-        currentThemeName = newTheme;
-        activeThemeName = themeDataSet.ContainsKey(currentThemeName) ? currentThemeName : seasonTheme;
-        if (activeTheme != themeDataSet[activeThemeName])
-        {
-            activeTheme?.Unload();
-            activeTheme = themeDataSet[activeThemeName];
-            activeTheme.Load();
-        }
-        OnThemeUpdated?.Invoke();
+        //themeId = appThemes.ContainsKey(themeId) ? themeId : "";
+        AppConfig.Set("theme", "current", themeId);
+        selectedThemeName = themeId;
+        activeThemeName = GetWorkingThemeKey(selectedThemeName);
+        activeTheme = appThemes[activeThemeName];
+        OnThemeChanged?.Invoke();
     }
 
-    static Dictionary<string, ThemeData> themeDataSet;
-
-    static void GenerateThemeData()
+    static Dictionary<string, AppTheme> appThemes;
+    public static string[] ThemeKeys => appThemes?.Keys?.ToArray() ?? [];
+    static void ImportThemes()
     {
-        if (themeDataSet is not null)
+        if (appThemes is not null)
             return;
-        themeDataSet = [];
+        appThemes = [];
 
-        string absoluteCustomThemePath = Helpers.GlobalisePath(customThemePath);
-        if (DirAccess.DirExistsAbsolute(absoluteCustomThemePath))
+        var themeList = PegLegResourceManager.LoadThemeList();
+        if (!themeList.Contains(blankTheme))
+            appThemes.Add(blankTheme, new() { displayName = "Blank" });
+        foreach ( var themeId in themeList )
         {
-            using DirAccess customThemes = DirAccess.Open(absoluteCustomThemePath);
-            foreach (var themeDir in customThemes.GetDirectories())
+            if (PegLegResourceManager.LoadResourceObj<AppTheme>($"Themes/{themeId}/theme.json") is AppTheme theme)
             {
-                var themeFullDir = customThemes.GetCurrentDir() + "/" + themeDir;
-                if (!FileAccess.FileExists(themeFullDir + "/theme.json"))
-                    continue;
-                using var themeFile = FileAccess.Open(themeFullDir + "/theme.json", FileAccess.ModeFlags.Read);
-                themeDataSet.Add(themeDir, new(JsonNode.Parse(themeFile.GetAsText()), themeDir));
+                appThemes.Add(themeId, theme);
+                theme.SetRoot($"Themes/{themeId}/");
             }
         }
-
-        string absoluteBuiltInThemePath = Helpers.GlobalisePath(builtInThemePath);
-        if (!DirAccess.DirExistsAbsolute(absoluteCustomThemePath))
-            DirAccess.MakeDirAbsolute(absoluteCustomThemePath);
-        using DirAccess builtInThemes = DirAccess.Open(absoluteBuiltInThemePath);
-        foreach (var themeName in builtInThemes.GetDirectories())
-        {
-            if (themeDataSet.ContainsKey(themeName))
-                continue;
-            var themeFullDir = builtInThemes.GetCurrentDir() + "/" + themeName;
-            if (!FileAccess.FileExists(themeFullDir + "/theme.json"))
-                continue;
-            using var themeFile = FileAccess.Open(themeFullDir + "/theme.json", FileAccess.ModeFlags.Read);
-            themeDataSet.Add(themeName, new(JsonNode.Parse(themeFile.GetAsText()), themeName));
-        }
     }
 
-    public static string[] GetThemeList()
+    public static AppTheme GetTheme(string key) => appThemes[GetWorkingThemeKey(key)];
+    public static bool HasTheme(string key) => appThemes.ContainsKey(key);
+    static string GetWorkingThemeKey(string key)=> 
+        appThemes.ContainsKey(key) ?
+            key :
+            (
+                appThemes.ContainsKey(seasonTheme) ?
+                    seasonTheme :
+                    blankTheme
+            );
+}
+
+public class AppTheme : IJsonOnDeserialized
+{
+    [JsonRequired]
+    public string displayName { get; init; }
+    [JsonInclude]
+    JsonElement backgrounds { get; init; }
+    [JsonInclude]
+    JsonElement music { get; init; }
+
+    TextureFile[] backgroundFiles;
+    public TextureFile[] Backgrounds => backgroundFiles ??= [];
+    MusicPlaylist[] musicPlaylists;
+    public MusicPlaylist[] Music => musicPlaylists ??= [];
+
+    public void OnDeserialized()
     {
-        GenerateThemeData();
-        return themeDataSet.Select(kvp => kvp.Key).ToArray();
+        backgroundFiles = TextureFile.FromJson(backgrounds);
+        musicPlaylists = MusicPlaylist.FromJson(music);
     }
 
-    public static ThemeData GetTheme(string key) => 
-        themeDataSet.ContainsKey(key) ? themeDataSet[key] : themeDataSet[seasonTheme];
-
-    public class ThemeData
+    public void SetRoot(string themePath)
     {
-        public string themeName { get; init; }
-        public Background[] backgrounds { get; init; }
-        public MusicPlaylist[] music { get; init; }
-        public ThemeData(JsonNode basis, string themeName)
-        {
-            this.themeName = themeName;
-            backgrounds = basis[nameof(backgrounds)].AsFlexibleArray()
-                .Select(n => new Background(n, themeName))
-                .ToArray();
-            music = basis[nameof(music)].AsFlexibleArray().Select(n => new MusicPlaylist(n, themeName)).ToArray();
-        }
-
-        public void Load()
-        {
-            Array.ForEach(backgrounds, b => b.LoadFile());
-            Array.ForEach(music, m => m.Load());
-        }
-
-        public void Unload()
-        {
-            Array.ForEach(backgrounds, b => b.UnloadFile());
-            Array.ForEach(music, m => m.Unload());
-        }
-
-        public ImageTexture GetBackground() =>
-            backgrounds[PickBackground()].fileData;
-
-        public int PickBackground() =>
-            Helpers.RandomIndexFromWeights(backgrounds.Select(b=>b.RealWeight).ToArray());
-
-        public ImageTexture LoadSampleBackground() =>
-            backgrounds[GD.RandRange(0, backgrounds.Length - 1)].LoadFileTemparary();
-
-        public int PickPlaylist() =>
-            Helpers.RandomIndexFromWeights(music.Select(m => m.playlistWeight).ToArray());
-
-        public AudioStreamWav LoadSampleMusic() =>
-            music[GD.RandRange(0, music.Length - 1)].LoadSample();
+        Array.ForEach(backgroundFiles, b => b.SetRoot(themePath));
+        Array.ForEach(musicPlaylists, m => m.SetRoot(themePath));
     }
 
-    public class MusicPlaylist
+    public TextureFile PickBackground(TextureFile prev = null, float[] weights = null) =>
+        backgroundFiles.PickFromWeights(p => p.Weight, prev, weights);
+
+    public MusicPlaylist PickPlaylist(MusicPlaylist prev = null, float[] weights = null) =>
+        musicPlaylists.PickFromWeights(p => p.weight, prev, weights);
+
+    public class TextureFile : ThemeFile<Texture2D>
     {
-        public MusicTrack[] tracks { get; init; }
-        public MusicLayer[] intros { get; init; }
-        public int layerCount { get; init; }
-        public float playlistWeight { get; init; } = 1;
+        public static TextureFile[] FromJson(JsonElement ele) =>
+            ele.FlexDeserialise<TextureFile>(e => new() { path = e.ToString() });
+    }
+
+    public class MusicPlaylist : IJsonOnDeserialized
+    {
+        public static MusicPlaylist[] FromJson(JsonElement ele) => 
+            ele.FlexDeserialise<MusicPlaylist>(e => new() { tracks = e });
+        [JsonInclude]
+        JsonElement intros { get; init; }
+        MusicFile[] introFiles;
+        public MusicFile[] Intros => introFiles ?? [];
+        [JsonRequired]
+        [JsonInclude]
+        JsonElement tracks { get; init; }
+        MusicTrack[] musicTracks;
+        public MusicTrack[] Tracks => musicTracks ?? [];
+        public float weight { get; init; } = 1;
         public float layerSwitchChance { get; init; } = 0.15f;
         public float trackSwitchChance { get; init; } = 0.5f;
         public float trackSwitchCooldown { get; init; } = 50;
 
-        public MusicPlaylist(JsonNode playlistNode, string themeName)
+        public void OnDeserialized()
         {
-            JsonObject playlistObj = playlistNode.AsFlexibleObject(nameof(tracks));
-
-            tracks = playlistObj[nameof(tracks)].AsFlexibleArray().Select(n => new MusicTrack(n, themeName)).ToArray();
-            layerCount = tracks.Select(t => t.layers.Length).Max();
-
-            playlistWeight = playlistObj[nameof(playlistWeight)]?.GetValue<float>() ?? playlistWeight;
-            layerSwitchChance = playlistObj[nameof(layerSwitchChance)]?.GetValue<float>() ?? layerSwitchChance;
-            trackSwitchChance = playlistObj[nameof(trackSwitchChance)]?.GetValue<float>() ?? trackSwitchChance;
-            trackSwitchCooldown = playlistObj[nameof(trackSwitchCooldown)]?.GetValue<float>() ?? trackSwitchCooldown;
-            intros = playlistObj[nameof(intros)]?.AsFlexibleArray().Select(n => new MusicLayer(n, themeName)).ToArray();
+            musicTracks = MusicTrack.FromJson(tracks);
+            introFiles = MusicFile.FromJson(intros);
         }
 
-        public void Load()
+        public void SetRoot(string themePath)
         {
-            Array.ForEach(tracks, t => t.Load());
-            if(intros is not null)
-                Array.ForEach(intros, t => t.LoadFile());
+            Array.ForEach(musicTracks, t => t.SetRoot(themePath));
+            if (introFiles is not null)
+                Array.ForEach(introFiles, t => t.SetRoot(themePath));
         }
 
-        public void Unload()
-        {
-            Array.ForEach(tracks, t => t.Unload());
-            if (intros is not null)
-                Array.ForEach(intros, t => t.UnloadFile());
-        }
+        public MusicFile PickIntro(MusicFile prev = null, float[] weights = null) =>
+            introFiles.PickFromWeights(p => p.Weight, prev, weights);
 
-        public AudioStreamWav GetIntro() =>
-            intros is null ? null : intros[PickIntro()].fileData;
-
-        int PickIntro() =>
-            Helpers.RandomIndexFromWeights(intros.Select(i=>i.RealWeight).ToArray());
-
-        public int PickTrack(int withLayer, int fromTrack = -1) =>
-            Helpers.RandomIndexFromWeights(tracks.Select(t => t.trackWeight * (withLayer == -1 || t.layers[withLayer].RealWeight > 0 ? 1 : 0)).ToArray(), fromTrack);
-
-        public int PickLayer(int inTrack, int fromLayer = -1)
-        {
-            var usableWeights = new float[layerCount];
-
-            for (int i = 0; i < tracks[inTrack].layers.Length; i++)
-            {
-                usableWeights[i] = tracks[inTrack].layers[i].RealWeight;
-            }
-            for (int i = tracks[inTrack].layers.Length; i < layerCount; i++)
-            {
-                usableWeights[i] = 0;
-            }
-
-            return Helpers.RandomIndexFromWeights(usableWeights, fromLayer);
-        }
-
-        public AudioStreamWav LoadSample() =>
-            tracks[GD.RandRange(0, tracks.Length - 1)].PickSample();
+        public MusicTrack PickTrack(MusicTrack prev = null, float[] weights = null) =>
+            musicTracks.PickFromWeights(p => p.weight, prev, weights);
     }
 
-    public class MusicTrack
+    public class MusicTrack : IJsonOnDeserialized
     {
-        public MusicLayer[] layers { get; init; }
-        public float trackWeight { get; init; } = 1;
+        public static MusicTrack[] FromJson(JsonElement ele) =>
+            ele.FlexDeserialise<MusicTrack>(e => new() { layers = e });
 
-        public MusicTrack(JsonNode trackNode, string themeName)
-        {
-            JsonObject trackObj = trackNode.AsFlexibleObject(nameof(layers));
-            layers = trackObj[nameof(layers)].AsFlexibleArray()
-                .Select(n => new MusicLayer(n, themeName))
-                .ToArray();
-            trackWeight = trackObj[nameof(trackWeight)]?.GetValue<float>() ?? trackWeight;
-        }
-
-        public void Load() =>
-            Array.ForEach(layers, l => l.LoadFile());
-
-        public void Unload() =>
-            Array.ForEach(layers, l => l.UnloadFile());
-
-        public AudioStreamWav PickSample() =>
-            layers[GD.RandRange(0, layers.Length - 1)].LoadFileTemparary();
-    }
-
-    public class MusicLayer : ThemeFile<AudioStreamWav>
-    {
-        public int mixRate { get; init; } = 96000;
-        public MusicLayer(JsonNode fileNode, string themeName) : base(fileNode, themeName)
-        {
-            mixRate = fileNode is JsonObject fileObj && fileObj[nameof(mixRate)] is JsonValue mixRateVal && mixRateVal.TryGetValue(out int newMixRate) ? newMixRate : 96000;
-        }
-
-        protected override AudioStreamWav LoadFileFromPath(string fullPath)
-        {
-            using var layerFile = FileAccess.Open(fullPath, FileAccess.ModeFlags.Read);
-            var layerStream = new AudioStreamWav()
-            {
-                Data = layerFile.GetBuffer((long)layerFile.GetLength()),
-                Format = AudioStreamWav.FormatEnum.Format16Bits,
-                MixRate = mixRate,
-            };
-            return layerStream;
-        }
-    }
-
-    public class Background : ThemeFile<ImageTexture>
-    {
-        public Background(JsonNode fileNode, string themeName) : base(fileNode, themeName) { }
-
-        protected override ImageTexture LoadFileFromPath(string fullPath)
-        {
-            Image resourceImage = new();
-            if (resourceImage.Load(fullPath) != Error.Ok)
-                return null;
-            var imageTex = ImageTexture.CreateFromImage(resourceImage);
-            return imageTex;
-        }
-    }
-
-    public abstract class ThemeFile<T> where T : class
-    {
-        public string sourceTheme { get; init; }
-        public string path { get; init; }
+        [JsonRequired]
+        [JsonInclude]
+        JsonElement layers { get; init; }
+        MusicFile[] layerFiles;
+        public MusicFile[] Layers => layerFiles ?? [];
         public float weight { get; init; } = 1;
-        public T fileData { get; private set; }
 
-        public ThemeFile(JsonNode fileNode, string themeName)
+        public void OnDeserialized()
         {
-            //GD.Print(fileNode);
-            var fileObj = fileNode.AsFlexibleObject("path");
-            //GD.Print(fileObj);
-            path = fileObj["path"].ToString();
-            if (path.Contains(":"))
-            {
-                var splitPath = path.Split(':');
-                sourceTheme = splitPath[0];
-                path = splitPath[1..].Join(":");
-            }
-            else
-                sourceTheme = themeName;
-            weight = fileObj["weight"]?.GetValue<float>() ?? weight;
+            layerFiles = MusicFile.FromJson(layers);
         }
 
-        public float RealWeight => fileData is null ? 0 : weight;
+        public void SetRoot(string themePath) =>
+            Array.ForEach(layerFiles, l => l.SetRoot(themePath));
 
-        public T LoadFileTemparary()
-        {
-            string possiblePath = customThemePath + "/" + sourceTheme + "/" + path;
-            if (!FileAccess.FileExists(possiblePath))
-                possiblePath = builtInThemePath + "/" + sourceTheme + "/" + path;
-            if (!FileAccess.FileExists(possiblePath))
-                return null;
-            return LoadFileFromPath(possiblePath);
-        }
-        protected abstract T LoadFileFromPath(string path);
+        public MusicFile PickLayer(MusicFile prev = null, float[] weights = null) =>
+            layerFiles.PickFromWeights(p => p.Weight, prev, weights);
 
-        public void LoadFile()
-        {
-            fileData ??= LoadFileTemparary();
-        }
+        public int IndexOf(MusicFile file) => Array.IndexOf(layerFiles, file);
+    }
 
-        public void UnloadFile()
-        {
-            fileData = null;
-        }
+    public class MusicFile : ThemeFile<AudioStream>
+    {
+        public static MusicFile[] FromJson(JsonElement ele) =>
+            ele.FlexDeserialise<MusicFile>(e => new() { path = e.ToString() });
+    }
+
+    public abstract class ThemeFile<T> where T : Resource
+    {
+        string themeRoot;
+        [JsonRequired]
+        public string path { get; init; }
+        public float weight { private get; init; } = 1;
+        T file;
+
+        public void SetRoot(string themeRoot) => this.themeRoot = themeRoot;
+
+        [JsonIgnore]
+        public float Weight => File is null ? 0 : weight;
+        [JsonIgnore]
+        public T File => file ??= PegLegResourceManager.LoadResourceAsset<T>(themeRoot + path);
     }
 }

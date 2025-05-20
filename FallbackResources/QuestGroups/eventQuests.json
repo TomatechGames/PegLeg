@@ -1,0 +1,205 @@
+{
+  "htr": {
+    "displayName": "Hit The Road",
+    "eventFlag": "EventFlag.Mayday",
+    "predicate": {
+      "category": "ltr_mayday2019",
+      "exclude": [
+        "Quest:MaydayQuest_2019_CollectCasettes_Repeatable",
+        "Quest:MaydayQuest_2019_Daily_Complete",
+        {
+          "startsWith": "maydayquest_2019_complete"
+        }
+      ]
+    }
+  },
+  "htr_daily": {
+    "displayName": "Hit The Road",
+    "timer": "Weekly",
+    "eventFlag": "EventFlag.Mayday",
+    "predicate": "Quest:MaydayQuest_2019_Daily_Complete"
+  },
+  "htr_weekly": {
+    "displayName": "Hit The Road",
+    "timer": "Weekly",
+    "eventFlag": "EventFlag.Mayday",
+    "predicate": {
+      "startsWith": "maydayquest_2019_complete"
+    }
+  },
+  "htr_repeatable": {
+    "displayName": "Hit The Road",
+    "timer": "Weekly",
+    "eventFlag": "EventFlag.Mayday",
+    "predicate": "Quest:MaydayQuest_2019_CollectCasettes_Repeatable"
+  },
+  "dungeon": {
+    "displayName": "Dungeons",
+    "eventFlag": "EventFlag.Starlight",
+    "predicate": {
+      "category": "lte_starlight",
+      "exclude": {
+        "union": [
+          {
+            "startsWith": "starlightquest_daily_complete"
+          },
+          {
+            "startsWith": "starlightquest_complete_dailies"
+          },
+          {
+            "endsWith": "_hard"
+          }
+        ]
+      }
+    }
+  },
+  "dungeon_daily": {
+    "displayName": "Daily Dungeons",
+    "timer": "Daily",
+    "eventFlag": "EventFlag.Starlight",
+    "predicate": {
+      "prefilter": {
+        "category": "lte_starlight"
+      },
+      "union": [
+        {
+          "startsWith": "starlightquest_daily_complete"
+        },
+        {
+          "startsWith": "starlightquest_complete_dailies"
+        }
+      ]
+    }
+  },
+  "dungeon_elite": {
+    "displayName": "Elite Dungeons",
+    "eventFlag": "EventFlag.Starlight",
+    "predicate": {
+      "category": "lte_starlight",
+      "endsWith": "_hard"
+    }
+  },
+  "sth": {
+    "displayName": "Survive The Horde",
+    "eventFlag": "EventFlag.HordeV3",
+    "predicate": {
+      "union": [
+        "Quest:hordev3_quest_event_a01",
+        "Quest:hordev3_quest_event_a02",
+        "Quest:hordev3_quest_event_a03",
+        "Quest:hordev3_quest_event_a04",
+        "Quest:hordev3_quest_event_a06"
+      ]
+    }
+  },
+  "sth_daily": {
+    "displayName": "Daily Survive The Horde",
+    "timer": "Daily",
+    "eventFlag": "EventFlag.HordeV3",
+    "sequence": true,
+    "predicate": {
+      "union": [
+        "Quest:hordev3_quest_daily_a01",
+        "Quest:hordev3_quest_daily_a02",
+        "Quest:hordev3_quest_daily_a03"
+      ]
+    }
+  },
+  "sth_weekly": {
+    "displayName": "Weekly Survive The Horde",
+    "timer": "Weekly",
+    "predicate": {
+      "eventFlag": "EventFlag.HordeV3",
+      "startsWith": "hordev3_quest_weekly"
+    }
+  },
+  "sth_15": {
+    "displayName": "Survive The Horde: Wave 15",
+    "eventFlag": "EventFlag.HordeV3",
+    "predicate": {
+      "chain": true,
+      "union": [
+        "Quest:hordev3_quest_event_a05"
+      ]
+    }
+  },
+  "sth_modifier": {
+    "displayName": "Survive The Horde: Modifiers",
+    "eventFlag": "EventFlag.HordeV3",
+    "sequence": true,
+    "predicate": {
+      "union": [
+        "Quest:hordev3_quest_event_a09",
+        "Quest:hordev3_quest_event_a10",
+        "Quest:hordev3_quest_event_a11"
+      ]
+    }
+  },
+  "sth_challenge": {
+    "displayName": "Survive The Horde: Challenges",
+    "eventFlag": "EventFlag.HordeV3",
+    "sequence": true,
+    "predicate": {
+      "union": [
+        "Quest:hordev3_quest_event_a12",
+        "Quest:hordev3_quest_event_a13",
+        "Quest:hordev3_quest_event_a14",
+        "Quest:hordev3_quest_event_a15"
+      ]
+    }
+  },
+  "frostnite": {
+    "displayName": "Frostnite",
+    "eventFlag": "EventFlag.Season11.Frostnite",
+    "predicate": {
+      "startsWith": "s11_holdfastquest",
+      "exclude": {
+        "union": [
+          {
+            "endsWith": "elite"
+          },
+          {
+            "startsWith": "s11_holdfastquest_seasonelite"
+          },
+          {
+            "startsWith": "s11_holdfastquest_d"
+          }
+        ]
+      }
+    }
+  },
+  "frostnite_daily": {
+    "displayName": "Daily Frostnite",
+    "eventFlag": "EventFlag.Season11.Frostnite",
+    "predicate": {
+      "prefilter": {
+        "startsWith": "s11_holdfastquest_d"
+      },
+      "union": [
+        {
+          "startsWith": "s11_holdfastquest_d1"
+        },
+        {
+          "startsWith": "s11_holdfastquest_d2"
+        }
+      ]
+    }
+  },
+  "forstnite_elite": {
+    "displayName": "Elite Frostnite",
+    "eventFlag": "EventFlag.Season11.Frostnite",
+    "predicate": {
+      "prefilter": {
+        "startsWith": "s11_holdfastquest"
+      },
+      "union": [
+        {
+          "endsWith": "elite"
+        },
+        {
+          "startsWith": "s11_holdfastquest_seasonelite"
+        }
+      ]
+    }
+  }
+}

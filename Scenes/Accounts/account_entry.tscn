@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b6i4qroblgrhs"]
+[gd_scene load_steps=10 format=3 uid="uid://b6i4qroblgrhs"]
 
 [ext_resource type="Shader" uid="uid://17ec5ugjn0qv" path="res://Shaders/CircleBaseMask.gdshader" id="1_6n3co"]
 [ext_resource type="Script" uid="uid://dvgcv52c2ve0w" path="res://Scripts/UserInterface/ListEntries/GameAccountEntry.cs" id="1_flh3e"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://djcvidllqfmt5" path="res://Images/InterfaceIcons/T_UI_LevelManagement_Trashcan_Icon.png" id="4_l8hq6"]
 [ext_resource type="Texture2D" uid="uid://dvaxtvga1xl7j" path="res://Images/InterfaceIcons/T-Icon-Warning-32.png" id="4_py8uw"]
 [ext_resource type="Script" uid="uid://b0kobrw53uq3d" path="res://Scripts/UIElements/Signal Logic/InvertBoolean.cs" id="5_5y5dk"]
+[ext_resource type="Texture2D" uid="uid://cj7hjf5jc1l2t" path="res://Images/InterfaceIcons/FortPlayBtn.png" id="8_624ui"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pkso0"]
 shader = ExtResource("1_6n3co")
@@ -85,6 +86,26 @@ grow_vertical = 2
 texture = ExtResource("4_l8hq6")
 expand_mode = 1
 
+[node name="ExchangeBtn" type="Button" parent="."]
+visible = false
+custom_minimum_size = Vector2(27, 0)
+layout_mode = 2
+theme_type_variation = &"LargeButton"
+
+[node name="TextureRect" type="TextureRect" parent="ExchangeBtn"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_624ui")
+expand_mode = 1
+
 [connection signal="AuthenticatedChanged" from="." to="MarginContainer/MarginContainer/HBoxContainer/AuthAlert/InvertHasAuth" method="EmitInverted"]
 [connection signal="IconChanged" from="." to="MarginContainer/MarginContainer/HBoxContainer/Icon" method="set_texture"]
 [connection signal="NameChanged" from="." to="MarginContainer/MarginContainer/HBoxContainer/Label" method="set_text"]
@@ -93,3 +114,4 @@ expand_mode = 1
 [connection signal="InvertedValue" from="MarginContainer/MarginContainer/HBoxContainer/AuthAlert/InvertHasAuth" to="MarginContainer/Button" method="set_disabled"]
 [connection signal="InvertedValue" from="MarginContainer/MarginContainer/HBoxContainer/AuthAlert/InvertHasAuth" to="MarginContainer/MarginContainer/HBoxContainer/AuthAlert" method="set_visible"]
 [connection signal="pressed" from="DeleteButton" to="." method="Delete"]
+[connection signal="pressed" from="ExchangeBtn" to="." method="Exchange"]

@@ -121,6 +121,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool showSingleItemAmount = false;
     [Export]
+    public bool showZeroItemAmount = false;
+    [Export]
     public bool autoLinkToRecycleSelection = false;
     [Export]
     public bool autoSelectOnPress = true;
@@ -130,6 +132,9 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public bool hideMythicLeadSquad = false;
     [Export]
     protected CheckButton selectionGraphics;
+
+    protected static Texture2D missingIcon = ResourceLoader.Load<Texture2D>("res://Images/InterfaceIcons/T_UI_VKConnectionIndicator_Error_Icon.png");
+    protected static Color missingRarityColor = new(Colors.DarkRed * 0.2f, 1);
 
     bool ForceInteractability => forceInteractability;
 
@@ -219,11 +224,11 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
         if (addXToAmount)
             amountText = "x" + amountText;
-        if (amount <= (showSingleItemAmount ? 0 : 1))
+        if (amount <= (showSingleItemAmount ? (showZeroItemAmount ? -1 : 0) : 1))
             amountText = "";
         bool amountNeeded = amountText != "";
 
-        string name = item.template?.DisplayName;
+        string name = item.template?.DisplayName ?? item.templateId?.Split(":")[1];
         string description = item.template?.Description;
         string type = item.template?.Type;
         Texture2D mainIcon = item.GetTexture();
@@ -255,7 +260,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         float rating = selector?.overrideSurvivorSquad is string squadOverride ? item.CalculateRating(squadOverride) : item.Rating;
         string ratingText = rating == 0 ? "" : rating.ToString();
 
-        int tier = item.template.Tier;
+        int tier = item.template?.Tier ?? 0;
         float levelProgress = 0;
         int level = item.attributes?["level"]?.GetValue<int>() ?? 1;
         int bonusMaxLevel = item.attributes?["max_level_bonus"]?.GetValue<int>() ?? 0;
@@ -280,8 +285,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
         EmitSignal(SignalName.NameChanged, name);
         EmitSignal(SignalName.DescriptionChanged, description);
-        EmitSignal(SignalName.TypeChanged, type);
-        EmitSignal(SignalName.RarityChanged, item.template.RarityColor);
+        EmitSignal(SignalName.TypeChanged, type ?? item.templateId?.Split(":")[0]);
+        EmitSignal(SignalName.RarityChanged, item.template?.RarityColor ?? missingRarityColor);
 
         var tooltipAmount = amountNeeded ? ((addXToAmount ? "x" : "") + amount) : null;
         if (type == "Ingredient" && inspectorOverride is null)
@@ -293,24 +298,27 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             //"Item Id: " + item.templateId,
         ];
         if (item.GetSearchTags() is JsonArray tagArray && tagArray.Count > 0)
-            tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except(new string[] { name }).ToArray().Join(", "));
+            tooltipDescriptions.Add("Search Tags: " + tagArray.Select(t => t?.ToString()).Except([name]).ToArray().Join(", "));
+
+        if (item.template is null)
+            tooltipDescriptions[0] = "Err: Missing Template";
 
         EmitSignal(
             SignalName.TooltipChanged,
             CustomTooltip.GenerateSimpleTooltip(
                 name,
                 tooltipAmount,
-                tooltipDescriptions.ToArray(),
-                item.template?.RarityColor.ToHtml()
-                )
-            );
+                [.. tooltipDescriptions],
+                (item.template?.RarityColor ?? missingRarityColor).ToHtml()
+            )
+        );
 
         var subtypeIcon = item.template?.GetSubtypeTexture();
 
         if (type == "CardPack" && item.GetTexture(FnItemTextureType.PackImage, null) is Texture2D packIcon)
             subtypeIcon = packIcon;
 
-        EmitSignal(SignalName.IconChanged, mainIcon);
+        EmitSignal(SignalName.IconChanged, mainIcon ?? missingIcon);
         EmitSignal(SignalName.IconFit, !(type == "Hero" || type == "Survivor" || type == "Defender"));
         EmitSignal(SignalName.SubtypeIconChanged, subtypeIcon);
         EmitSignal(SignalName.AmmoIconChanged, item.template?.GetAmmoTexture());
@@ -331,12 +339,12 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.RatingVisibility, rating != 0);
 
         EmitSignal(SignalName.IsCollectable, !(item.isCollectedCache ?? true));
-        EmitSignal(SignalName.CanBeLeveledChanged, item.template.CanBeLeveled && item.template?.Type != "Weapon" && item.template?.Type != "Trap");
+        EmitSignal(SignalName.CanBeLeveledChanged, item.template?.CanBeLeveled == true && item.template?.Type != "Weapon" && item.template?.Type != "Trap");
         EmitSignal(SignalName.LevelChanged, level);
         EmitSignal(SignalName.LevelMaxChanged, maxLevel);
         EmitSignal(SignalName.LevelProgressChanged, levelProgress);
 
-        SetInteractable(autoInteractableTypes.Contains(currentItem.template.Type.ToLower()));
+        SetInteractable(autoInteractableTypes.Contains(currentItem.template?.Type.ToLower()));
 
         //if survivor, set personality icons
 
@@ -354,7 +362,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         EmitSignal(SignalName.OverflowWarning, item.attributes?[""] is not null);
         EmitSignal(SignalName.NotificationChanged, !item.IsSeen);
         EmitSignal(SignalName.FavoriteChanged, item.IsFavourited);
-        EmitSignal(SignalName.MaxTierChanged, Mathf.Min(item.template.RarityLevel+ 1, 5));
+        EmitSignal(SignalName.MaxTierChanged, Mathf.Min((item.template?.RarityLevel ?? 0) + 1, 5));
         EmitSignal(SignalName.TierChanged, tier);
         EmitSignal(SignalName.SuperchargeChanged, bonusMaxLevel / 2);
     }
@@ -369,8 +377,6 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public Vector2 GetBasisSize() => CustomMinimumSize;
 
-
-
     static readonly string[] autoInteractableTypes = new string[]
     {
         "schematic",
@@ -380,7 +386,6 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         "defender",
         "cardpack"
     };
-
 
     bool interactableState;
     public void SetInteractable() => SetInteractable(interactableState);

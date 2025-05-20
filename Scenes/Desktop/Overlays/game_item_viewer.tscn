@@ -224,7 +224,7 @@ shader_parameter/minVal = 25.0
 shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
-shader_parameter/time = 1.578
+shader_parameter/time = 11.729
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
 offsets = PackedFloat32Array(0.681199, 0.746594, 0.809264, 0.959044)
@@ -700,7 +700,7 @@ layout_mode = 2
 theme_override_styles/tab_selected = SubResource("StyleBoxFlat_mq0my")
 current_tab = 0
 
-[node name="Data" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="0"]
+[node name="Data" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="1"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
@@ -733,7 +733,7 @@ indent_automatic_prefixes = Array[String](["{", "[", "("])
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
 
-[node name="SearchTest" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="1"]
+[node name="SearchTest" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/TabContainer/Dev/TabContainer" index="2"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 5
@@ -1189,7 +1189,6 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="PurchasePanel" type="MarginContainer" parent="Control/WindowContents/CenterContainer/window" index="3" node_paths=PackedStringArray("priceEntry", "priceInInventoryEntry")]
-visible = false
 custom_minimum_size = Vector2(400, 75)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -1243,6 +1242,8 @@ vertical_alignment = 1
 layout_mode = 2
 alignment = 1
 script = ExtResource("10_c8yg2")
+showSingleItemAmount = true
+showZeroItemAmount = true
 
 [node name="Icon" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/PurchasePanel/InStockContent/PurchaseButtonContainer/HBoxContainer/PurchaseButton/VBoxContainer/TotalPrice" index="0"]
 layout_mode = 2
