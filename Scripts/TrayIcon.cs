@@ -17,8 +17,10 @@ public partial class TrayIcon : StatusIndicator
     [Export]
     Texture2D testBuildIcon;
 
+    static TrayIcon inst;
     public override void _Ready()
     {
+        inst = this;
         menu = GetNode<PopupMenu>(Menu);
         menu.IdPressed += HandleMenu;
         GetWindow().CloseRequested += Minimise;
@@ -75,6 +77,16 @@ public partial class TrayIcon : StatusIndicator
         
     }
 
+    public static void UnminimiseDeferred()
+    {
+        if (!inst.IsInsideTree())
+        {
+            inst = null;
+            return;
+        }
+        inst.CallDeferred(nameof(inst.Unminimise));
+    }
+
     static Vector2I maximisedOffset = new(0, 23);
     public void Unminimise()
     {
@@ -97,6 +109,13 @@ public partial class TrayIcon : StatusIndicator
                     window.Mode = Window.ModeEnum.Maximized;
                 else
                     window.Mode = Window.ModeEnum.Windowed;
+            }
+            var mousePos = DisplayServer.MouseGetPosition();
+            var mouseScreen = DisplayServer.GetScreenFromRect(new(mousePos, new(1, 1)));
+            if (window.CurrentScreen != mouseScreen)
+            {
+                window.CurrentScreen = mouseScreen;
+                window.MoveToCenter();
             }
             if (OS.HasFeature("editor"))
                 Visible = false;

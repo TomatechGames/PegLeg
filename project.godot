@@ -24,6 +24,7 @@ boot_splash/use_filter=false
 boot_splash/image="res://Images/InterfaceIcons/PegLegChest256.png"
 config/icon="res://Images/InterfaceIcons/PegLegIcon256.png"
 config/use_custom_user_dir.release=true
+config/custom_user_dir_name.test="Tomatech Games/PegLeg/Beta"
 
 [autoload]
 

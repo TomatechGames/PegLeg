@@ -76,6 +76,7 @@ expand_mode = 3
 [node name="LockIconPos" type="Control" parent="MarginContainer/HBoxContainer/RarityIcon"]
 visible = false
 layout_mode = 1
+anchors_preset = 0
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 30.0

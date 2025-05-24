@@ -56,6 +56,10 @@ static class FnProfileTypes
 public class GameAccount
 {
     const string accountDataPath = "user://accounts";
+    const string betaAccountDataPath = "../../accounts";
+    static string absoluteBetaAccountDataPath;
+    static string AbsoluteBetaAccountDataPath => absoluteBetaAccountDataPath ??=
+        System.IO.Path.GetFullPath(System.IO.Path.Combine(ProjectSettings.GlobalizePath(accountDataPath), betaAccountDataPath));
     static readonly AesContext deviceDetailEncryptor = new();
 
     static string GetDeviceDetailsKey()
@@ -124,10 +128,59 @@ public class GameAccount
 
     static GameAccount[] LoadStoredAccounts()
     {
-        if(!DirAccess.DirExistsAbsolute(accountDataPath))
-            return Array.Empty<GameAccount>();
-        using var accountDir = DirAccess.Open(accountDataPath);
-        return accountDir.GetFiles().Where(f => !f.Contains('.')).Select(f => new GameAccount(f)).ToArray();
+        if (!OS.HasFeature("test"))
+        {
+            if (!DirAccess.DirExistsAbsolute(accountDataPath))
+                return [];
+
+            using var accountDir = DirAccess.Open(accountDataPath);
+            return accountDir.GetFiles().Where(f => !f.Contains('.')).Select(f => new GameAccount(f)).ToArray();
+        }
+
+        Dictionary<string, ulong> regularAccountDates = [];
+        if (DirAccess.DirExistsAbsolute(accountDataPath))
+        {
+            using var mainAccountDir = DirAccess.Open(accountDataPath);
+            regularAccountDates = mainAccountDir
+                .GetFiles()
+                .Where(f => !f.Contains('.') && f is not null)
+                .Select(f => KeyValuePair.Create(
+                    f, 
+                    FileAccess.GetModifiedTime(accountDataPath+"/"+f)
+                ))
+                .ToDictionary();
+        }
+        Dictionary<string, ulong> betaAccountDates = [];
+
+        if (DirAccess.DirExistsAbsolute(AbsoluteBetaAccountDataPath))
+        {
+            using var betaAccountDir = DirAccess.Open(AbsoluteBetaAccountDataPath);
+            if(DirAccess.GetOpenError() is Error err && err != Error.Ok)
+            {
+                GD.Print(err);
+            }
+            betaAccountDates = betaAccountDir
+                .GetFiles()
+                .Where(f => !f.Contains('.') && f is not null)
+                .Select(f => KeyValuePair.Create(
+                    f,
+                    FileAccess.GetModifiedTime(AbsoluteBetaAccountDataPath + "/" + f)
+                ))
+                .ToDictionary();
+        }
+
+        foreach(var key in regularAccountDates.Keys.Intersect(betaAccountDates.Keys).ToArray())
+        {
+            if (regularAccountDates[key] < betaAccountDates[key])
+            {
+                regularAccountDates.Remove(key);
+            }
+            else
+            {
+                betaAccountDates.Remove(key);
+            }
+        }
+        return regularAccountDates.Keys.Select(k => new GameAccount(k)).Union(betaAccountDates.Keys.Select(k => new GameAccount(k, true))).ToArray();
     }
 
     static readonly Dictionary<string, GameAccount> gameAccountCache = LoadStoredAccounts().ToDictionary(a => a.accountId);
@@ -217,13 +270,15 @@ public class GameAccount
         account.SetAuthentication(accountAuthResponse);
     }
 
-    public GameAccount(string accountId)
+    public GameAccount(string accountId, bool? isBeta=null)
     {
         this.accountId = accountId;
+        this.isBeta = isBeta ?? OS.HasFeature("test");
     }
 
     public Action OnAccountUpdated;
 
+    bool isBeta;
     public string accountId { get; private set; }
     bool isValid => !string.IsNullOrWhiteSpace(accountId);
 
@@ -491,13 +546,14 @@ public class GameAccount
     JsonObject localData;
     void LoadLocalData()
     {
-        if (!isValid || !DirAccess.DirExistsAbsolute(accountDataPath))
+        var targetPath = isBeta ? AbsoluteBetaAccountDataPath : accountDataPath;
+        if (!isValid || !DirAccess.DirExistsAbsolute(targetPath))
         {
             GD.Print("invalid or no folder");
             localData = [];
             return;
         }
-        using FileAccess localDataFile = FileAccess.Open($"{accountDataPath}/{accountId}", FileAccess.ModeFlags.Read);
+        using FileAccess localDataFile = FileAccess.Open($"{targetPath}/{accountId}", FileAccess.ModeFlags.Read);
         if (localDataFile is null)
         {
             GD.Print("no file");
