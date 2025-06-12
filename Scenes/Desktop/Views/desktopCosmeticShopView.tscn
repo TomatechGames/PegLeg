@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://b2rq4djulgv6m" path="res://Scripts/UIElements/Signal Logic/BooleanPair.cs" id="8_vieoo"]
 [ext_resource type="StyleBox" uid="uid://biqx82867v22n" path="res://GodotThemes/Styleboxes/CheckButton/SelectedCheck.tres" id="9_jmcpo"]
 [ext_resource type="StyleBox" uid="uid://dr65gsxfjpkwp" path="res://GodotThemes/Styleboxes/CheckButton/HoveredCheck.tres" id="10_lwt61"]
-[ext_resource type="Texture2D" uid="uid://b1t4mvbsh42lk" path="res://Images/InterfaceIcons/LoadingIconV2/kyleBellSheet.png" id="10_w87l3"]
+[ext_resource type="Texture2D" uid="uid://b1t4mvbsh42lk" path="res://Images/Flipbook/LoadingIconV2/kyleBellSheet.png" id="10_w87l3"]
 [ext_resource type="StyleBox" uid="uid://b2ou1v5mjbih6" path="res://GodotThemes/Styleboxes/CheckButton/SelectedHoveredCheck.tres" id="11_se178"]
 [ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="12_qhhym"]
 [ext_resource type="Texture2D" uid="uid://bfm8vt42cetpl" path="res://Images/InterfaceIcons/LockerIcons/T_UI_Empty_Outfit.png" id="13_ccggu"]
@@ -27,7 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://duxxsyrww1ycc" path="res://Images/InterfaceIcons/LockerIcons/T_Icon_Body.png" id="20_k8lp0"]
 [ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="21_ly4on"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="23_icgpb"]
-[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="25_7g2j3"]
+[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/Flipbook/LoadingIconV2/CubeLine-sheet.png" id="25_7g2j3"]
 [ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="25_e8r7k"]
 [ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="26_0o8hv"]
 
@@ -84,7 +84,7 @@ shopRowScene = ExtResource("3_kowyy")
 shopEntryScene = ExtResource("4_nlhpd")
 navToggle = NodePath("HSplitContainer/VBoxContainer/MarginContainer/Button")
 filterBlocker = NodePath("HSplitContainer/VBoxContainer/MarginContainer/MarginContainer/MouseBlocker/FilterBar/FilterBlocker")
-simpleOpsPerFrame = 20
+simpleOpsPerFrame = 2
 requireLeavingSoon = NodePath("HSplitContainer/VBoxContainer/MarginContainer/MarginContainer/MouseBlocker/FilterBar/HBoxContainer/MiscFilters/HBoxContainer/OnlyLeaving")
 requireAddedToday = NodePath("HSplitContainer/VBoxContainer/MarginContainer/MarginContainer/MouseBlocker/FilterBar/HBoxContainer/MiscFilters/HBoxContainer/OnlyAdded")
 includeDiscountBundles = NodePath("HSplitContainer/VBoxContainer/MarginContainer/MarginContainer/MouseBlocker/FilterBar/HBoxContainer/MiscFilters/HBoxContainer/IncludeDiscounts")

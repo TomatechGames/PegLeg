@@ -27,7 +27,7 @@ shader_parameter/CornerRadius = 100.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_u3030"]
 shader = ExtResource("6_abafb")
-shader_parameter/ControlSize = Vector2(283, 75)
+shader_parameter/ControlSize = Vector2(284, 72)
 shader_parameter/PixelsPerLine = 200.0
 shader_parameter/debug = false
 shader_parameter/fillColor = Color(1, 1, 1, 1)
@@ -41,6 +41,9 @@ shader_parameter/gradientHorizontal = false
 [node name="ShopPurchaseAnimation" instance=ExtResource("1_f51aj")]
 offset_left = 0.0
 offset_right = 0.0
+
+[node name="Background" parent="." index="0"]
+visible = false
 
 [node name="CloseBtn" parent="." index="1"]
 visible = false
@@ -77,7 +80,7 @@ layout_mode = 2
 [node name="Glow" type="TextureRect" parent="Control/WindowContents/CenterContainer/Control" index="0"]
 self_modulate = Color(1, 0.7, 0, 1)
 material = SubResource("ShaderMaterial_v25rf")
-custom_minimum_size = Vector2(512, 512)
+custom_minimum_size = Vector2(1024, 1024)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5

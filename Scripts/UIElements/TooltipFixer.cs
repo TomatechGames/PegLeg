@@ -26,7 +26,6 @@ public partial class TooltipFixer : Node
     {
         if (node is not PopupPanel pp)
             return;
-        pp.TransparentBg = true;
         pp.Transparent = true;
         pp.PopupWindow = false;
 
@@ -48,5 +47,21 @@ public partial class TooltipFixer : Node
         {
             pp.RemoveChild(tooltipControl);
         };
+
+        ResetCSF(pp);
+    }
+
+    private async void ResetCSF(PopupPanel pp)
+    {
+        tooltipControl.Visible = false;
+        await Helpers.WaitForFrame();
+        try
+        {
+            pp.ContentScaleFactor = 1f;
+            pp.Size = Vector2I.Zero;
+            //tooltip offset is applied here
+            tooltipControl.Visible = true;
+        }
+        catch (ObjectDisposedException) { }
     }
 }

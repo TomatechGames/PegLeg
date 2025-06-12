@@ -10,8 +10,8 @@ using Godot;
 using System.Threading;
 using System.Text.Json;
 using System.Runtime.InteropServices;
-using static AppTheme;
 using System.Text.Json.Serialization;
+using System.Net.NetworkInformation;
 
 static class Helpers
 {
@@ -229,8 +229,6 @@ static class Helpers
     {
         using var result = await MakeRequestRaw(endpoint, request);
         var resultText = result is not null ? await result.Content.ReadAsStringAsync() : null;
-        if (resultText is null)
-            return null;
 
         JsonNode resultNode = null;
         try
@@ -240,11 +238,14 @@ static class Helpers
         catch (JsonException)
         {
             GD.Print("result was not json: " + resultText);
-            resultNode =new JsonObject()
+            resultNode = new JsonObject()
             {
                 ["success"] = result.IsSuccessStatusCode,
-                ["response"]= resultText,
+                ["code"] = (int)result.StatusCode,
+                ["response"] = resultText,
             };
+            if (result.Content == OfflineContent)
+                resultNode["offline"] = true;
         }
 
         if (result.IsSuccessStatusCode)
@@ -260,6 +261,7 @@ static class Helpers
         return resultNode;
     }
 
+    public static readonly StringContent OfflineContent = new("Offline");
     public static async Task<HttpResponseMessage> MakeRequestRaw(System.Net.Http.HttpClient endpoint, HttpRequestMessage request)
     {
         //GD.Print("Debug: "+request.ToString());
@@ -271,6 +273,11 @@ static class Helpers
         }
         catch (HttpRequestException ex)
         {
+            if (await IsOffline())
+            {
+                GD.Print($"Offline ({response})");
+                return new() { Content = OfflineContent, StatusCode = System.Net.HttpStatusCode.NotFound };
+            }
             try
             {
                 var resultText = response is not null ? await response.Content.ReadAsStringAsync() : null;
@@ -289,11 +296,18 @@ static class Helpers
             {
                 GD.PushError("Exception in web request: "+e.Message);
             }
-            GD.Print("\nException Caught!");
+            GD.Print($"\nException Caught! ({ex.HttpRequestError})");
             GD.Print($"Message :{ex.Message} ");
             GD.Print($"Response :{(response is not null ? (await response.Content.ReadAsStringAsync()) : "null response")} ");
         }
         return response;
+    }
+
+    //assumes google is online
+    public static async Task<bool> IsOffline()
+    {
+        var reply = await new Ping().SendPingAsync("8.8.8.8", 500);
+        return reply.Status != IPStatus.Success;
     }
 
 
@@ -368,18 +382,23 @@ static class Helpers
         }
 
         bool longTime = timeFormat == TimeFormat.SigLong;
-        if (time.TotalDays > 2)
+        if (time.TotalDays > 10)
         {
-            return Mathf.Floor(time.TotalDays) + (longTime ? " days" : "d");
+            return Mathf.Floor(time.TotalDays) + (longTime ? " days" : "D");
+        }
+        else if (time.TotalDays > 2)
+        {
+            string timerText = Mathf.FloorToInt(time.TotalDays * 10).ToString();
+            return $"{timerText[..^1]}.{timerText[^1]}{(longTime ? " days" : "D")}";
         }
         else if (time.TotalHours > 10)
         {
-            return Mathf.Floor(time.TotalHours) + (longTime ? " hours" : "h");
+            return Mathf.Floor(time.TotalHours) + (longTime ? " hours" : "H");
         }
         else if (time.TotalHours > 1.1)
         {
             string timerText = Mathf.FloorToInt(time.TotalHours * 10).ToString();
-            return $"{timerText[..^1]}.{timerText[^1]}{(longTime ? " hours" : "h")}";
+            return $"{timerText[..^1]}.{timerText[^1]}{(longTime ? " hours" : "H")}";
         }
         else
         {

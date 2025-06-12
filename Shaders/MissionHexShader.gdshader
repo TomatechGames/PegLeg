@@ -1,15 +1,12 @@
 shader_type canvas_item;
 #include "Includes/AdaptToAspect.gdshaderinc"
-uniform sampler2D bgImage;
-uniform sampler2D iconImage;
+uniform sampler2D hexImage;
 
 void fragment() {
-	vec2 texRes=vec2(textureSize(bgImage,0));
-	vec2 adaptedUV = adaptToAspect(vec2(1.0), vec2(0.5),texRes,UV,false);
-
-	COLOR.rgb=texture(bgImage, adaptedUV).rgb*0.8;
-	vec4 iconVal=texture(iconImage, vec2(-0.25)+(UV*1.5));
-	COLOR.rgb = mix(COLOR.rgb, iconVal.rgb, iconVal.a);
+	vec2 adaptedUV = adaptToAspect(vec2(1.0), vec2(0.5),1.0/TEXTURE_PIXEL_SIZE,UV,false);
+	COLOR=texture(TEXTURE, adaptedUV);
+	COLOR.rgb*0.8;
+	COLOR.a= texture(hexImage, UV).r;
 }
 
 //void light() {

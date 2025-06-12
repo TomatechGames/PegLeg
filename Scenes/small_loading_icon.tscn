@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://2iou6v2uijh8"]
+
+[ext_resource type="Texture2D" uid="uid://dlbasrvn2ilmd" path="res://Images/TextureResources/progress-wheel.tres" id="1_uwjcg"]
+[ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="2_4qqas"]
+[ext_resource type="Texture2D" uid="uid://qfp8atpjqj8m" path="res://Images/Flipbook/LoadingIconV2/BlugloLoadSheet.png" id="3_uwjcg"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_bnc75"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4qqas"]
+shader = ExtResource("2_4qqas")
+shader_parameter/ControlSize = Vector2(64, 64)
+shader_parameter/SliceAmount = Vector2(6, 5)
+shader_parameter/FPS = 20.0
+shader_parameter/CellCount = 0
+shader_parameter/Fit = true
+shader_parameter/Repeat = false
+shader_parameter/HorizontalMask = 0.0
+shader_parameter/VerticalMask = 0.0
+shader_parameter/Frame = -1
+shader_parameter/scriptTime = false
+shader_parameter/time = 0.0
+shader_parameter/UseShadow = true
+shader_parameter/shadowBrightness = 0.0
+shader_parameter/shadowOpacity = 1.0
+
+[node name="SmallLoadingIcon" type="TextureProgressBar"]
+custom_minimum_size = Vector2(80, 80)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = ExtResource("1_uwjcg")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_4qqas")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_uwjcg")
+expand_mode = 1
+script = ExtResource("4_bnc75")

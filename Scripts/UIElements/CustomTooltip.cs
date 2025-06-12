@@ -6,7 +6,8 @@ using System.Text.Json.Nodes;
 
 public partial class CustomTooltip : Control
 {
-	[Export]
+    [ExportGroup("Title")]
+    [Export]
 	Control titleContent;
 	[Export]
 	ShaderHook titleBanner;
@@ -16,16 +17,24 @@ public partial class CustomTooltip : Control
     Control titleQuantityLayout;
     [Export]
 	Label titleQuantityLabel;
+    [ExportGroup("Description")]
     [Export]
     Control descriptionContent;
 	[Export]
 	float descriptionMaxWidth = 500;
 	[Export]
 	Label[] descriptionLayers;
+    [ExportGroup("Offer")]
     [Export]
-    Control imageContent;
+    Control offerContent;
+    [Export]
+    GameItemEntry offerCostEntry;
+    [Export]
+    GameItemEntry offerInventoryEntry;
+    [Export]
+    Label offerStockLabel;
 
-	public static string GenerateSimpleTooltip(string title, string quantity = null, string[] description = null, string bannerCol=null)
+    public static string GenerateSimpleTooltip(string title, string quantity = null, string[] description = null, string bannerCol=null, string offerId=null)
     {
         JsonObject content = new()
         {
@@ -50,10 +59,13 @@ public partial class CustomTooltip : Control
         if (banner is not null)
             content["title"]["banner"] = banner;
 
+        if (offerId is not null)
+            content["offer"] = offerId;
+
         return content.ToString();
 	}
 
-    public void SetTooltip(string content)
+    public async void SetTooltip(string content)
 	{
 		JsonObject contentObject;
 
@@ -133,7 +145,35 @@ public partial class CustomTooltip : Control
 		else
 			descriptionContent.Visible = false;
 
-		//todo: implement system for tooltips to specify images
-		imageContent.Visible = false;
+        offerContent.Visible = false;
+        if (contentObject["offer"] is JsonObject offerObj)
+        {
+            offerContent.Visible = true;
+            offerStockLabel.Text = (offerObj["stock"]?.GetValue<int>().ToString()) ?? "Inf";
+            var template = GameItemTemplate.Get(offerObj["costType"].ToString());
+            offerCostEntry.SetItem(template.CreateInstance(offerObj["costAmount"].GetValue<int>()));
+            if (GameAccount.activeAccount is GameAccount acc && acc.isAuthed)
+            {
+                offerInventoryEntry.Visible = true;
+                var profileId = offerObj["costProfile"]?.ToString() ?? FnProfileTypes.AccountItems;
+                var profile = await acc.GetProfile(profileId).Query();
+                offerInventoryEntry.SetItem(profile.GetFirstTemplateItem(template.TemplateId));
+            }
+            else
+                offerInventoryEntry.Visible = false;
+        }
+        else if (contentObject["offer"] is JsonValue val && val.GetValueKind() == System.Text.Json.JsonValueKind.String)
+        {
+            var acc = GameAccount.activeAccount;
+            if (await acc.Authenticate())
+            {
+                var offerId = val.ToString();
+                var offer = GameStorefront.GetExistingOffer(offerId);
+                offerCostEntry.SetItem(offer.Price);
+                offerInventoryEntry.SetItem(await offer.GetPriceInventoryItem());
+                offerStockLabel.Text = (await acc.GetPurchaseLimit(offer)).ToString();
+                offerContent.Visible = true;
+            }
+        }
     }
 }

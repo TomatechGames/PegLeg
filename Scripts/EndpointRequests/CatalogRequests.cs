@@ -686,7 +686,7 @@ static class CatalogRequests
         if (pathOrTemplateID.Contains('.'))
         {
             //treat as path (probably display asset)
-            GD.Print(pathOrTemplateID.Split('.')[0]);
+            GD.Print("Meta: "+pathOrTemplateID.Split('.')[0]);
             JsonNode resultObject = await Helpers.MakeRequest(
                 HttpMethod.Get,
                 ExternalWebAddresses.fnCentral,
@@ -937,6 +937,13 @@ public class GameStorefront
         if(!await UpdateCatalog(refreshType))
             return Array.Empty<GameStorefront>();
         return storefrontKeys.Select(sfKey => GetOrCreateStorefront(sfKey)).Where(sf => sf is not null).ToArray();
+    }
+
+    public static GameOffer GetExistingOffer(string offerId)
+    {
+        return storefronts.Values
+            .Select(s => s.offers.TryGetValue(offerId, out var offer) ? offer : null)
+            .FirstOrDefault(o => o is not null);
     }
 
     #endregion

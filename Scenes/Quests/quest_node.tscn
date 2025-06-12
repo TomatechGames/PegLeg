@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cm6qlfwgk148o"]
+[gd_scene load_steps=18 format=3 uid="uid://cm6qlfwgk148o"]
 
 [ext_resource type="Texture2D" uid="uid://bbqb2ns66gsfp" path="res://Images/InterfaceIcons/T_QuestNode_Generic.png" id="1_e6ctj"]
 [ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="2_3mdch"]
@@ -7,6 +7,11 @@
 [ext_resource type="Texture2D" uid="uid://clv3y6rj87ibu" path="res://Images/TextureResources/GradientCircleOutline.tres" id="4_6n47o"]
 [ext_resource type="Texture2D" uid="uid://lhe8ded54hsv" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Pin_128.png" id="4_a24oo"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="6_ax8dp"]
+[ext_resource type="Texture2D" uid="uid://kn2yc41jby7o" path="res://Images/InterfaceIcons/SuperchargerIcon.png" id="8_7wyke"]
+[ext_resource type="Texture2D" uid="uid://xq53smuy7ecu" path="res://Images/InterfaceIcons/CoreReperkIconAlt.png" id="8_fk868"]
+[ext_resource type="Texture2D" uid="uid://c2xw0pe7rfdry" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Heroes-128.png" id="8_guso7"]
+[ext_resource type="Texture2D" uid="uid://cmieap1kecm64" path="res://Images/InterfaceIcons/TicketIcon.png" id="10_7wyke"]
+[ext_resource type="Texture2D" uid="uid://fo5dt3fnvrt0" path="res://Images/InterfaceIcons/SchematicIcon128.png" id="11_7wyke"]
 
 [sub_resource type="Gradient" id="Gradient_e8vct"]
 colors = PackedColorArray(0, 0, 0, 0.392157, 0, 0, 0, 0)
@@ -29,13 +34,26 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 metadata/_snap_enabled = true
 
-[node name="QuestNode" type="TextureRect" node_paths=PackedStringArray("selectedToggle")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1c6qk"]
+content_margin_left = 8.0
+content_margin_top = 3.0
+content_margin_right = 8.0
+content_margin_bottom = 3.0
+bg_color = Color(0.158472, 0.158472, 0.158472, 1)
+corner_radius_top_left = 19
+corner_radius_top_right = 19
+corner_radius_bottom_right = 19
+corner_radius_bottom_left = 19
+
+[node name="QuestNode" type="TextureRect" node_paths=PackedStringArray("flagParent", "flags", "selectedToggle")]
 self_modulate = Color(0.141176, 0.164706, 0.247059, 1)
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 128)
 texture = ExtResource("1_e6ctj")
 expand_mode = 3
 script = ExtResource("2_g20t6")
 colorStages = PackedColorArray(0.141176, 0.164706, 0.247059, 1, 0.901961, 0.901961, 0, 1, 0.270588, 0.678431, 0.27451, 1)
+flagParent = NodePath("PanelContainer")
+flags = [NodePath("PanelContainer/HBoxContainer/Pin"), NodePath("PanelContainer/HBoxContainer/Reperk"), NodePath("PanelContainer/HBoxContainer/Supercharger"), NodePath("PanelContainer/HBoxContainer/Ticket"), NodePath("PanelContainer/HBoxContainer/Schematic"), NodePath("PanelContainer/HBoxContainer/Hero")]
 selectedToggle = NodePath("Overlays/SelectedToggle")
 
 [node name="BG" type="TextureRect" parent="."]
@@ -114,6 +132,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PinBG" type="TextureRect" parent="Overlays"]
+visible = false
 self_modulate = Color(0.12549, 0.313726, 0.498039, 1)
 layout_mode = 1
 anchors_preset = -1
@@ -163,9 +182,69 @@ offset_bottom = -8.0
 outlinePadding = 0.0
 hoverTime = 0.05
 
+[node name="PanelContainer" type="PanelContainer" parent="."]
+z_index = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1c6qk")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+mouse_filter = 0
+theme_override_constants/separation = 1
+
+[node name="Pin" type="TextureRect" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Pinned"
+texture = ExtResource("4_a24oo")
+expand_mode = 1
+
+[node name="Reperk" type="TextureRect" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Core Reperk"
+texture = ExtResource("8_fk868")
+expand_mode = 1
+
+[node name="Supercharger" type="TextureRect" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Supercharger"
+texture = ExtResource("8_7wyke")
+expand_mode = 1
+
+[node name="Ticket" type="TextureRect" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Weapon/Hero Voucher"
+texture = ExtResource("10_7wyke")
+expand_mode = 1
+
+[node name="Schematic" type="TextureRect" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Schematic"
+texture = ExtResource("11_7wyke")
+expand_mode = 1
+
+[node name="Hero" type="TextureRect" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+tooltip_text = "Hero"
+texture = ExtResource("8_guso7")
+expand_mode = 1
+
 [connection signal="ColorChanged" from="." to="." method="set_self_modulate"]
 [connection signal="IconChanged" from="." to="TextureRect" method="set_texture"]
-[connection signal="KeyItemVisible" from="." to="Overlays/KeyIcon" method="set_visible"]
+[connection signal="KeyItemVisible" from="." to="PanelContainer" method="set_visible"]
 [connection signal="NameChanged" from="." to="Responsive Button Circle" method="set_tooltip_text"]
 [connection signal="NotificationVisible" from="." to="Overlays/NotificationLabel" method="set_visible"]
 [connection signal="PinnedVisible" from="." to="Overlays/PinBG" method="set_visible"]

@@ -26,15 +26,15 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
     public GameMission GetRecycleElement(int index) => (index >= 0 && index < filteredMissions.Count) ? filteredMissions[index] : null;
     public int GetRecycleElementCount() => filteredMissions.Count;
 
-    PLSearch.Instruction[] missionSearchInstructions = Array.Empty<PLSearch.Instruction>();
-    PLSearch.Instruction[] itemSearchInstructions = Array.Empty<PLSearch.Instruction>();
+    PLSearch.Instruction[] missionSearchInstructions = [];
+    PLSearch.Instruction[] itemSearchInstructions = [];
 
     public override async void _Ready()
     {
         missionList.SetProvider(this);
-        GameMission.OnMissionsUpdated += FilterMissions;
+        GameMission.OnMissionsUpdated += SetMissionsDirty;
         GameMission.OnMissionsInvalidated += ClearMissions;
-        VisibilityChanged += TryFilterMissions;
+        VisibilityChanged += FilterMissions;
         EmitSignal(SignalName.NameChanged, testName);
         UpdateFilters();
         if (!await GameAccount.activeAccount.Authenticate())
@@ -45,7 +45,7 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
 
     public override void _ExitTree()
     {
-        GameMission.OnMissionsUpdated -= FilterMissions;
+        GameMission.OnMissionsUpdated -= SetMissionsDirty;
         GameMission.OnMissionsInvalidated -= ClearMissions;
     }
 
@@ -73,13 +73,13 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
         if (searchText.Contains("///"))
         {
             string[] splitSearchText = searchText.Split("///");
-            missionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0]) ?? Array.Empty<PLSearch.Instruction>();
-            itemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join()) ?? Array.Empty<PLSearch.Instruction>();
+            missionSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[0]) ?? [];
+            itemSearchInstructions = PLSearch.GenerateSearchInstructions(splitSearchText[1..].Join()) ?? [];
         }
         else
         {
-            missionSearchInstructions = PLSearch.GenerateSearchInstructions(searchText) ?? Array.Empty<PLSearch.Instruction>();
-            itemSearchInstructions = Array.Empty<PLSearch.Instruction>();
+            missionSearchInstructions = PLSearch.GenerateSearchInstructions(searchText) ?? [];
+            itemSearchInstructions = [];
         }
         OnHighlightedItemFilterChanged?.Invoke();
     }
@@ -100,25 +100,22 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
         missionList.Visible = false;
     }
 
-    void TryFilterMissions()
+    public void SetMissionsDirty()
     {
-        if (needsUpdate)
-            FilterMissions();
+        missionsDirty = true;
+        FilterMissions();
     }
 
-    bool needsUpdate = false;
+    bool missionsDirty = false;
 
     public void FilterMissions()
     {
         loadingIcon.Visible = false;
         missionList.Visible = true;
 
-        if (!IsVisibleInTree())
-        {
-            needsUpdate = true;
+        if (!missionsDirty || !IsVisibleInTree())
             return;
-        }
-        needsUpdate = false;
+        missionsDirty = false;
 
         var sortedMissions =
             GameMission.currentMissions?
@@ -153,7 +150,7 @@ public partial class MissionCollection : Control, IMissionHighlightProvider, IRe
                 );
         }
 
-        filteredMissions = sortedMissions.ToList();
+        filteredMissions = [.. sortedMissions];
 
         missionList.UpdateList(true);
     }

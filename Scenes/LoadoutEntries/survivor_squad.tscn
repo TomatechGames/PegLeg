@@ -65,6 +65,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/Slots"]
 layout_mode = 2
@@ -74,42 +75,49 @@ custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="InventorySlot3" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="InventorySlot4" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="InventorySlot5" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="InventorySlot6" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="InventorySlot7" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="InventorySlot8" parent="MarginContainer/VBoxContainer/Slots" instance=ExtResource("2_0x38l")]
 custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 8
 showInspector = true
+isSurvivorSlot = true
 
 [node name="Perks" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

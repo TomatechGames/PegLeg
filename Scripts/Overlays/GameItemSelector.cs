@@ -212,12 +212,12 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     bool sortingDirty = false;
     delegate IOrderedEnumerable<GameItem> SortingFunc(IOrderedEnumerable<GameItem> items);
     SortingFunc[] sortingFunctions;
-    string[] sortingFunctionNames = new string[]
-    {
+    string[] sortingFunctionNames =
+    [
         "By Power",
         "By Power (rev)",
         "By Name"
-    };
+    ];
     void CycleSort()
     {
         if (!sortingDirty)
@@ -234,21 +234,21 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
 
     void SetSort(int newIndex)
     {
-        sortingFunctions ??= new SortingFunc[]
-        {
+        sortingFunctions ??=
+        [
             SortByPower,
             SortByPowerAsc,
             SortByName
-        };
+        ];
         currentSortingIndex = newIndex % Mathf.Max(sortingFunctions.Length, sortingFunctionNames.Length);
         currentSortingFunction = sortingFunctions[currentSortingIndex];
         EmitSignal(SignalName.SortTypeChanged, sortingFunctionNames[currentSortingIndex]);
     }
 
     IOrderedEnumerable<GameItem> SortByPower(IOrderedEnumerable<GameItem> items) => 
-        items.ThenBy(item => -item.CalculateRating(overrideSurvivorSquad));
+        items.ThenBy(item => -item.CalculateSurvivorRating(overrideSurvivorSquad is not null, overrideSurvivorSquad));
     IOrderedEnumerable<GameItem> SortByPowerAsc(IOrderedEnumerable<GameItem> items) =>
-        items.ThenBy(item => item.CalculateRating(overrideSurvivorSquad));
+        items.ThenBy(item => item.CalculateSurvivorRating(overrideSurvivorSquad is not null, overrideSurvivorSquad));
     IOrderedEnumerable<GameItem> SortByName(IOrderedEnumerable<GameItem> items) => 
         items.ThenBy(item => item.template.DisplayName);
 
@@ -257,7 +257,7 @@ public partial class GameItemSelector : ModalWindow, IRecyclableElementProvider<
     void SortItems()
     {
         var presortedItemHandles = items.OrderBy(item => item.profile is not null ? 1 : 0).ThenBy(item => selectedItems.Contains(item) ? 0 : 1);
-        items = currentSortingFunction(presortedItemHandles).ToList();
+        items = [.. currentSortingFunction(presortedItemHandles)];
     }
 
     void ConfirmSelection()

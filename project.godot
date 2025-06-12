@@ -17,7 +17,7 @@ run/main_scene="res://Scenes/boot_scene.tscn"
 config/custom_user_dir_name="Tomatech Games/PegLeg"
 config/features=PackedStringArray("4.4", "C#")
 run/low_processor_mode_sleep_usec=8000
-boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/show_image=false
 boot_splash/fullsize=false
 boot_splash/use_filter=false
@@ -25,6 +25,9 @@ boot_splash/image="res://Images/InterfaceIcons/PegLegChest256.png"
 config/icon="res://Images/InterfaceIcons/PegLegIcon256.png"
 config/use_custom_user_dir.release=true
 config/custom_user_dir_name.test="Tomatech Games/PegLeg/Beta"
+config/icon.editor="uid://bl88wu2p8c4o6"
+config/icon.test="uid://bcb4xp8puusy5"
+boot_splash/bg_color.editor=Color(0.141176, 0.141176, 0.141176, 1)
 
 [autoload]
 
@@ -47,6 +50,8 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/per_pixel_transparency/allowed=true
 mouse_cursor/tooltip_position_offset=Vector2(5, 5)
+window/size/window_width_override.editor=0
+window/size/window_height_override.editor=0
 
 [dotnet]
 
@@ -63,6 +68,7 @@ folder_colors={
 "res://GodotThemes/": "pink",
 "res://Scenes/": "green",
 "res://Scripts/": "purple",
+"res://Sh_Materials/": "teal",
 "res://Shaders/": "blue"
 }
 
@@ -74,6 +80,7 @@ ExcludeButtonSounds="Excludes all button events from being bound to sound effect
 
 [gui]
 
+fonts/dynamic_fonts/use_oversampling=false
 theme/custom="res://GodotThemes/BasicTheme.tres"
 timers/tooltip_delay_sec.release=0.5
 
@@ -138,7 +145,10 @@ textures/webp_compression/compression_method=0
 environment/ssao/quality=0
 environment/ssil/quality=0
 anti_aliasing/screen_space_roughness_limiter/enabled=false
+environment/glow/upscale_mode=0
+environment/volumetric_fog/use_filter=0
 environment/defaults/default_clear_color=Color(0.117647, 0.14902, 0.203922, 1)
+viewport/transparent_background=true
 
 [shader_globals]
 

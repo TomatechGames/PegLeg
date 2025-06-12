@@ -217,6 +217,8 @@ text = "x999"
 layout_mode = 2
 outlinePadding = 0.0
 
+[node name="CtxHook" type="Node" parent="Responsive Button Area"]
+
 [connection signal="IsLimitedStockChanged" from="." to="Outline/StockPanel" method="set_visible"]
 [connection signal="NameChanged" from="." to="DetailsArea/NameBox/VBoxContainer/NameLabel" method="set_text"]
 [connection signal="StockChanged" from="." to="Outline/StockPanel/Stock" method="set_text"]
@@ -224,6 +226,7 @@ outlinePadding = 0.0
 [connection signal="RarityChanged" from="DetailsArea" to="RarityGradient" method="set_self_modulate"]
 [connection signal="RarityChanged" from="DetailsArea" to="Outline" method="set_self_modulate"]
 [connection signal="RarityChanged" from="DetailsArea" to="Control/AspectTexture/Triangles" method="SetShaderColor" binds= ["TriangleTint"]]
+[connection signal="TooltipChanged" from="DetailsArea" to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="TypeChanged" from="DetailsArea" to="DetailsArea/NameBox/VBoxContainer/TypeLabel" method="set_text"]
 [connection signal="AmountChanged" from="DetailsArea/PriceBox" to="DetailsArea/PriceBox/MarginContainer/HBoxContainer/PriceAmount" method="set_text"]
 [connection signal="IconChanged" from="DetailsArea/PriceBox" to="DetailsArea/PriceBox/MarginContainer/HBoxContainer/CurrencyIcon" method="set_texture"]

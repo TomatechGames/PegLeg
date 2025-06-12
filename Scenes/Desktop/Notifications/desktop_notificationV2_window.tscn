@@ -1,0 +1,73 @@
+[gd_scene load_steps=3 format=3 uid="uid://t4w5qw4ysj2m"]
+
+[ext_resource type="Script" uid="uid://c3t43g37cuefo" path="res://Scripts/Notifications/NotificationManager.cs" id="1_arhbq"]
+[ext_resource type="PackedScene" uid="uid://y27ypgna5cwl" path="res://Scenes/Desktop/Notifications/desktop_notificationV2_panel.tscn" id="1_nc03t"]
+
+[node name="DesktopNotificationV2Window" type="MarginContainer" node_paths=PackedStringArray("notificationInstances")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_arhbq")
+notificationInstances = [NodePath("Shape/DesktopNotificationV2PanelFG"), NodePath("Shape/DesktopNotificationV2Panel"), NodePath("Shape/DesktopNotificationV2PanelBG1"), NodePath("Shape/DesktopNotificationV2PanelBG2")]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 2
+color = Color(1, 1, 1, 0.203922)
+
+[node name="Shape" type="Control" parent="."]
+custom_minimum_size = Vector2(400, 135)
+layout_mode = 2
+
+[node name="DesktopNotificationV2PanelBG2" parent="Shape" node_paths=PackedStringArray("buttons") instance=ExtResource("1_nc03t")]
+layout_mode = 1
+offset_top = 25.0
+offset_bottom = 25.0
+forceIgnoreMouse = true
+buttons = []
+
+[node name="DesktopNotificationV2PanelBG1" parent="Shape" node_paths=PackedStringArray("buttons") instance=ExtResource("1_nc03t")]
+layout_mode = 1
+offset_top = 25.0
+offset_bottom = 25.0
+forceIgnoreMouse = true
+buttons = []
+
+[node name="DesktopNotificationV2Panel" parent="Shape" node_paths=PackedStringArray("buttons") instance=ExtResource("1_nc03t")]
+layout_mode = 1
+offset_top = 25.0
+offset_bottom = 25.0
+buttons = []
+
+[node name="DesktopNotificationV2PanelFG" parent="Shape" node_paths=PackedStringArray("buttons") instance=ExtResource("1_nc03t")]
+layout_mode = 1
+offset_top = 25.0
+offset_bottom = 25.0
+mouse_filter = 2
+forceIgnoreMouse = true
+buttons = []
+
+[node name="Blocker" type="Control" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Button" type="Button" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Up"
+
+[node name="Button2" type="Button" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Down"
+
+[connection signal="pressed" from="Button" to="." method="ShiftTarget" binds= [1]]
+[connection signal="pressed" from="Button2" to="." method="ShiftTarget" binds= [-1]]

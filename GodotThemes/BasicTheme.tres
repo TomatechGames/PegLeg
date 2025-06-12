@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=92 format=3 uid="uid://cd7qoq3gay1op"]
+[gd_resource type="Theme" load_steps=96 format=3 uid="uid://cd7qoq3gay1op"]
 
 [ext_resource type="FontVariation" uid="uid://buoopfdou8nvh" path="res://fixedBurbank.tres" id="1_36sps"]
 [ext_resource type="StyleBox" uid="uid://cuvmk7mkkb3yl" path="res://GodotThemes/Styleboxes/ActionButton/ActionButtonDisabled.tres" id="1_bx6da"]
@@ -65,6 +65,10 @@
 [ext_resource type="StyleBox" uid="uid://d22l2yv8pnd4d" path="res://GodotThemes/Styleboxes/CtxMenu/CtxHover.tres" id="47_uw262"]
 [ext_resource type="StyleBox" uid="uid://bjtp6ebk5e5us" path="res://GodotThemes/Styleboxes/CtxMenu/CtxSeparator.tres" id="48_wtnca"]
 [ext_resource type="StyleBox" uid="uid://bm13hs7dupnlt" path="res://GodotThemes/Styleboxes/CtxMenu/CtxPanel.tres" id="49_bl78h"]
+[ext_resource type="StyleBox" uid="uid://3mt35p3f5bdh" path="res://GodotThemes/Styleboxes/SlantedActionButton/SlantedActionButtonDisabled.tres" id="55_fv3cx"]
+[ext_resource type="StyleBox" uid="uid://c18ojmjh5phgq" path="res://GodotThemes/Styleboxes/SlantedActionButton/SlantedActionButtonHover.tres" id="56_cvq5y"]
+[ext_resource type="StyleBox" uid="uid://cy458nq6pr3yv" path="res://GodotThemes/Styleboxes/SlantedActionButton/SlantedActionButtonPress.tres" id="57_n31y2"]
+[ext_resource type="StyleBox" uid="uid://fvqorbyvjnda" path="res://GodotThemes/Styleboxes/SlantedActionButton/SlantedActionButton.tres" id="58_en2qi"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6kcuu"]
 
@@ -82,7 +86,7 @@
 color = Color(0.498039, 0.498039, 0.498039, 1)
 thickness = 2
 
-[sub_resource type="Image" id="Image_1sf15"]
+[sub_resource type="Image" id="Image_fv3cx"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 133, 254, 254, 254, 209, 254, 254, 254, 244, 254, 254, 254, 244, 254, 254, 254, 209, 254, 254, 254, 132, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 87, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 84, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 23, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 21, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 133, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 130, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 207, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 243, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 244, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 242, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 209, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 206, 255, 255, 255, 0, 255, 255, 255, 0, 254, 254, 254, 132, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 129, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 254, 254, 254, 243, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 84, 254, 254, 254, 242, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 255, 254, 254, 254, 241, 255, 255, 255, 81, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 21, 254, 254, 254, 130, 254, 254, 254, 207, 254, 254, 254, 243, 254, 254, 254, 242, 254, 254, 254, 206, 254, 254, 254, 129, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -92,7 +96,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_ld0ou"]
-image = SubResource("Image_1sf15")
+image = SubResource("Image_fv3cx")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pxcoq"]
 bg_color = Color(1, 1, 1, 1)
@@ -209,7 +213,7 @@ AccountButton/styles/normal = ExtResource("3_504ob")
 AccountButton/styles/pressed = ExtResource("4_qiv0w")
 ActionButton/base_type = &"Button"
 ActionButton/colors/font_color = Color(0, 0, 0.25098, 1)
-ActionButton/colors/font_disabled_color = Color(0, 0, 0.25098, 0.501961)
+ActionButton/colors/font_disabled_color = Color(0, 0, 0.25098, 1)
 ActionButton/colors/font_focus_color = Color(0, 0, 0.25098, 1)
 ActionButton/colors/font_hover_color = Color(0, 0, 0.25098, 1)
 ActionButton/colors/font_hover_pressed_color = Color(0, 0, 0.25098, 1)
@@ -272,6 +276,7 @@ ItemList/styles/panel = ExtResource("7_iaw26")
 Label/colors/font_shadow_color = Color(0, 0, 0, 0.501961)
 Label/constants/shadow_offset_x = 2
 Label/constants/shadow_offset_y = 2
+Label/constants/shadow_outline_size = 4
 LargeButton/base_type = &"Button"
 LargeButton/styles/disabled = ExtResource("16_ifrdn")
 LargeButton/styles/hover = ExtResource("17_ugm6l")
@@ -305,6 +310,10 @@ MiddleCheckButton/styles/hover = ExtResource("19_wutoq")
 MiddleCheckButton/styles/hover_pressed = ExtResource("20_7ag33")
 MiddleCheckButton/styles/normal = ExtResource("21_nw0wt")
 MiddleCheckButton/styles/pressed = ExtResource("22_4y3kj")
+Outline10/base_type = &"Label"
+Outline10/constants/outline_size = 10
+Outline6/base_type = &"Label"
+Outline6/constants/outline_size = 6
 Panel/styles/panel = ExtResource("26_0d32j")
 Panel3Pad/base_type = &"PanelContainer"
 Panel3Pad/styles/panel = ExtResource("37_85mfp")
@@ -334,6 +343,18 @@ RightCheckButton/styles/normal = ExtResource("26_3ma2l")
 RightCheckButton/styles/pressed = ExtResource("27_l0gjp")
 SecondaryPanel/base_type = &"Panel"
 SecondaryPanel/styles/panel = ExtResource("11_gd6lt")
+SlantedActionButton/base_type = &"Button"
+SlantedActionButton/colors/font_color = Color(0, 0, 0.25098, 1)
+SlantedActionButton/colors/font_disabled_color = Color(0, 0, 0.25098, 1)
+SlantedActionButton/colors/font_focus_color = Color(0, 0, 0.25098, 1)
+SlantedActionButton/colors/font_hover_color = Color(0, 0, 0.25098, 1)
+SlantedActionButton/colors/font_hover_pressed_color = Color(0, 0, 0.25098, 1)
+SlantedActionButton/colors/font_pressed_color = Color(0, 0, 0.25098, 1)
+SlantedActionButton/styles/disabled = ExtResource("55_fv3cx")
+SlantedActionButton/styles/hover = ExtResource("56_cvq5y")
+SlantedActionButton/styles/hover_pressed = ExtResource("57_n31y2")
+SlantedActionButton/styles/normal = ExtResource("58_en2qi")
+SlantedActionButton/styles/pressed = ExtResource("57_n31y2")
 TabBar/styles/tab_disabled = ExtResource("36_mm1pl")
 TabBar/styles/tab_focus = SubResource("StyleBoxEmpty_pnv3j")
 TabBar/styles/tab_hovered = ExtResource("37_w5dqx")

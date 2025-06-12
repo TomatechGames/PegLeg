@@ -36,7 +36,7 @@ public partial class CosmeticShopInterface : Control
     [Export]
     Control filterBlocker;
     [Export]
-    int simpleOpsPerFrame = 30;
+    int simpleOpsPerFrame = 10;
     [Export]
     CheckButton requireLeavingSoon;
     [Export]
@@ -302,30 +302,40 @@ public partial class CosmeticShopInterface : Control
         navToggle.Visible = false;
         int opCount = 0;
         int tileSize = AppConfig.Get("item_shop", "simple_cosmetic_tilesize", 150);
-        foreach (var category in cosmeticShop)
+        var shopProcess = simpleShopParent.ProcessMode;
+        try
         {
-            foreach (var section in category.Value.AsObject())
+            simpleShopParent.ProcessMode = ProcessModeEnum.Disabled;
+
+            foreach (var category in cosmeticShop)
             {
-                foreach (var page in section.Value.AsArray())
+                foreach (var section in category.Value.AsObject())
                 {
-                    foreach (var entryData in page.AsObject())
+                    foreach (var page in section.Value.AsArray())
                     {
-                        var entry = shopEntryScene.Instantiate<CosmeticShopOfferEntry>();
-                        entry.CustomMinimumSize = new(tileSize, tileSize);
-                        entry.PopulateEntry(entryData.Value.AsObject(), Vector2.One);
-                        simpleShopParent.AddChild(entry);
-                        RegisterOffer(entry);
-                        entry.Visible = IsValidEntry(entry);
-                        if (opCount > simpleOpsPerFrame)
+                        foreach (var entryData in page.AsObject())
                         {
-                            UpdateShopOfferResourceLoading();
-                            await Helpers.WaitForFrame();
-                            opCount = 0;
+                            var entry = shopEntryScene.Instantiate<CosmeticShopOfferEntry>();
+                            entry.CustomMinimumSize = new(tileSize, tileSize);
+                            entry.PopulateEntry(entryData.Value.AsObject(), Vector2.One);
+                            simpleShopParent.AddChild(entry);
+                            RegisterOffer(entry);
+                            entry.Visible = IsValidEntry(entry);
+                            if (opCount > simpleOpsPerFrame)
+                            {
+                                UpdateShopOfferResourceLoading();
+                                await Helpers.WaitForFrame();
+                                opCount = 0;
+                            }
+                            opCount++;
                         }
-                        opCount++;
                     }
                 }
             }
+        }
+        finally
+        {
+            simpleShopParent.ProcessMode = shopProcess;
         }
     }
 

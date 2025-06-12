@@ -30,9 +30,9 @@ public partial class QuestGroupViewer : Control
     [Export]
     Control rightButtonParent;
     [Export(PropertyHint.ArrayType)]
-	QuestNode[] questNodes = Array.Empty<QuestNode>();
+    QuestNode[] questNodes = [];
     [Export(PropertyHint.ArrayType)]
-    ShaderHook[] questArrows = Array.Empty<ShaderHook>();
+    ShaderHook[] questArrows = [];
 
     List<QuestNode> questNodeList;
     List<ShaderHook> questArrowList;

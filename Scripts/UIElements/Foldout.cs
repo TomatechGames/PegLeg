@@ -20,8 +20,6 @@ public partial class Foldout : Control
     [Export]
 	Control rotationTarget;
     [Export]
-	Control notification;
-    [Export]
 	float openRotation;
     [Export]
     float closedRotation;

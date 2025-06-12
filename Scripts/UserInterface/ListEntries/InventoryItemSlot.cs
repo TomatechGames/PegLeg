@@ -9,6 +9,8 @@ public partial class InventoryItemSlot : Node
     bool showInspector = false;
     [Export]
     bool autoUpdateAccount = true;
+    [Export]
+    bool isSurvivorSlot;
 
     [ExportGroup("Nodes")]
     [Export]
@@ -62,6 +64,8 @@ public partial class InventoryItemSlot : Node
             predicateFilter = CreateSquadPredicate(defaultSquadName, defaultSquadIndex);
         if (string.IsNullOrWhiteSpace(slotRequirement))
             slotRequirement = null;
+        if(isSurvivorSlot)
+            entry.useSquadForRating = true;
         SetLocked(true);
         GameAccount.ActiveAccountChanged += OnActiveAccountChanged;
         OnActiveAccountChanged();

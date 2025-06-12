@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 public partial class DashboardSuperchargerController : Control
 {
@@ -10,11 +11,15 @@ public partial class DashboardSuperchargerController : Control
     Control noSuperchargerMessage;
     [Export]
     Control checkmark;
-	public override void _Ready()
+    [Export]
+    Control loading;
+
+    public override void _Ready()
 	{
         GameAccount.ActiveAccountChanged += AccountChanged;
         RefreshTimerController.OnDayChanged += AccountChanged;
         entry.ClearItem();
+        loading.Visible = true;
         AccountChanged();
     }
 
@@ -29,6 +34,7 @@ public partial class DashboardSuperchargerController : Control
         entry.ClearItem();
         entry.Visible = false;
         checkmark.Visible = false;
+        loading.Visible = true;
         noSuperchargerMessage.Visible = false;
 
         await Helpers.WaitForTimer(0.1);
@@ -36,6 +42,7 @@ public partial class DashboardSuperchargerController : Control
         var possibleQuest = profile.GetFirstItem("Quest", q => q.templateId.StartsWith("Quest:weekly_elder"));
         GD.Print(possibleQuest?.template?.DisplayName ?? "NoSupercharger");
 
+        loading.Visible = false;
         checkmark.Visible = possibleQuest?.QuestComplete ?? false;
         entry.Visible = possibleQuest is not null;
         noSuperchargerMessage.Visible = possibleQuest is null;

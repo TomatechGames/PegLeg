@@ -50,6 +50,8 @@ shader_parameter/Repeat = false
 shader_parameter/HorizontalMask = 0.0
 shader_parameter/VerticalMask = 0.0
 shader_parameter/Frame = -1
+shader_parameter/scriptTime = false
+shader_parameter/time = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b2nlk"]
 content_margin_left = 3.0
@@ -563,5 +565,5 @@ expand_mode = 1
 [connection signal="TooltipChanged" from="." to="Button" method="set_tooltip_text"]
 [connection signal="TypeChanged" from="." to="DetailsArea/NameBox/VBoxContainer/TypeLabel" method="set_text"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="Interact"]
-[connection signal="ContextMenuTriggered" from="Responsive Button Area/Node" to="." method="ContextMenu"]
+[connection signal="ContextMenuTriggered" from="Responsive Button Area/Node" to="." method="ContextMenu" unbinds=1]
 [connection signal="pressed" from="Button" to="." method="OpenImageInBrowser"]

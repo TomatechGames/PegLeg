@@ -12,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://bf1j0dpvu0fo0" path="res://Audio/SFX/LlamaSounds/Greet/MiniVoice/MiniLlamaGreetingVoice.tres" id="12_an5i4"]
 [ext_resource type="Shader" uid="uid://b40dkqdfhp8ce" path="res://Shaders/AdaptivePanel.gdshader" id="12_plv7k"]
 [ext_resource type="AudioStream" uid="uid://b4h4wy2udm64f" path="res://Audio/SFX/LlamaSounds/Impact/ImpactVoice/LlamaImpactVoice.tres" id="13_gf4i8"]
-[ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/MissionZoneBackgrounds/STWShop.png" id="13_ps080"]
+[ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/Wallpapers/STWShop.png" id="13_ps080"]
 [ext_resource type="AudioStream" uid="uid://qe86vjs1x5xq" path="res://Audio/SFX/LlamaSounds/Greet/UI_Frontend_Llama_PopUp_Silver.ogg" id="13_vqexb"]
 [ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="14_8eotn"]
 [ext_resource type="AudioStream" uid="uid://o0r1uu6u5fby" path="res://Audio/SFX/LlamaSounds/Impact/MiniImpactVoice/MiniLlamaImpactVoice.tres" id="14_v6cqy"]
@@ -25,9 +25,9 @@
 [ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="16_x2r4a"]
 [ext_resource type="AudioStream" uid="uid://divk7fb2gdm8x" path="res://Audio/SFX/LlamaSounds/Greet/StandardPinataGreetingFX.tres" id="17_eaptb"]
 [ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="17_knkpm"]
-[ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/InterfaceIcons/ChoiceCardV2/LabelUV-sheet.png" id="18_5uyrt"]
+[ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/Flipbook/ChoiceCardV2/LabelUV-sheet.png" id="18_5uyrt"]
 [ext_resource type="AudioStream" uid="uid://badp2x0yvoic8" path="res://Audio/SFX/LlamaSounds/Hover/PinataHoverFX.tres" id="19_0w7mr"]
-[ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/InterfaceIcons/ChoiceCardV2/Base-sheet.png" id="19_fhj62"]
+[ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/Flipbook/ChoiceCardV2/Base-sheet.png" id="19_fhj62"]
 [ext_resource type="Shader" uid="uid://dmt1xhf6kra1d" path="res://Shaders/LlamaPinata.gdshader" id="25_8mpme"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="25_gyuod"]
 [ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="26_1f0i3"]
@@ -87,7 +87,7 @@ shader = ExtResource("16_x2r4a")
 shader_parameter/SliceAmount = Vector2(4, 4)
 shader_parameter/UseManual = false
 shader_parameter/ManualControl = 0
-shader_parameter/time = 23610.8
+shader_parameter/time = 7412.54
 shader_parameter/StartTime = 0.0
 shader_parameter/Started = true
 shader_parameter/RarityColour = Color(0.915194, 0.464606, 0, 1)
@@ -153,7 +153,7 @@ shader_parameter/useMask = false
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iness"]
 shader = ExtResource("52_c8cd4")
 
-[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "pullButton", "skipAllButton", "glowFlare", "greetingEffects", "greetingVoices", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
+[node name="CardPackOpenerWindow" type="Control" node_paths=PackedStringArray("displayPanel", "music", "stacheButton", "pullButton", "skipAllButton", "glowFlare", "greetingEffects", "greetingVoices", "hoverEffect", "impactEffect", "impactVoice", "miniImpactVoice", "burstEffect", "burstVoice", "miniBurstVoice", "impactParticleParent", "llamaGlow", "standardLlamaButton", "confettiParticles", "llamaEntry", "fullLlama", "standardLlamaPartParent", "smallLlamaPartParent", "topCard", "prevCard", "mainCardsParent", "smallCardsOffset", "smallCardParent", "smallCards", "choiceCanvas", "choiceCards", "choiceResultCard", "choiceResultFGParent", "choiceResultBGParent", "skipChoiceButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -166,6 +166,7 @@ pullTime = 0.5
 sortByRarity = true
 displayPanel = NodePath("Panel")
 music = NodePath("Audio/Music")
+stacheButton = NodePath("Panel/StacheButton")
 pullButton = NodePath("Panel/PullButton")
 skipAllButton = NodePath("Panel/SkipAllButton")
 defaultBackgroundColor = Color(0.101961, 0.419608, 1, 1)
@@ -811,8 +812,22 @@ theme_type_variation = &"LargeButton"
 theme_override_font_sizes/font_size = 24
 text = "Skip All"
 
+[node name="StacheButton" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(85, 35)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"LargeButton"
+theme_override_font_sizes/font_size = 24
+text = "Save For Later"
+
 [node name="SkipChoiceButton" type="Button" parent="Panel"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -824,6 +839,16 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 24
 text = " Skip Choice "
+
+[node name="Label" type="Label" parent="Panel/SkipChoiceButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Right-Click to inspect choices"
 
 [node name="Button" type="Button" parent="Panel"]
 visible = false
@@ -848,5 +873,6 @@ text = "Debug Close"
 [connection signal="button_down" from="Panel/PullButton" to="." method="StartPullCard"]
 [connection signal="button_up" from="Panel/PullButton" to="." method="EndPullCard"]
 [connection signal="button_down" from="Panel/SkipAllButton" to="." method="EndImmediate"]
+[connection signal="button_down" from="Panel/StacheButton" to="." method="StacheLlama"]
 [connection signal="pressed" from="Panel/SkipChoiceButton" to="." method="SkipChoice"]
 [connection signal="pressed" from="Panel/Button" to="." method="CloseMenu"]

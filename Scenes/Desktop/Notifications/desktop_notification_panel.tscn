@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bbslhgnstt07v"]
+[gd_scene format=3 uid="uid://bbslhgnstt07v"]
 
-[ext_resource type="Script" uid="uid://c3t43g37cuefo" path="res://Scripts/Notifications/NotificationManager.cs" id="1_ruri7"]
-[ext_resource type="PackedScene" uid="uid://dsboqdh06riu4" path="res://Scenes/Desktop/Notifications/desktop_notification_instance.tscn" id="1_vu76j"]
-
-[node name="DesktopNotificationPanel" type="MarginContainer" node_paths=PackedStringArray("notifParent", "queueLabel")]
+[node name="DesktopNotificationPanel" type="MarginContainer"]
 z_index = 2
 anchors_preset = 3
 anchor_left = 1.0
@@ -14,11 +11,6 @@ offset_top = -50.0
 offset_bottom = -50.0
 grow_horizontal = 0
 grow_vertical = 0
-script = ExtResource("1_ruri7")
-notificationScene = ExtResource("1_vu76j")
-notifParent = NodePath("VBoxContainer")
-queueLabel = NodePath("Control/Extra")
-notificationPoolAmount = 5
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2

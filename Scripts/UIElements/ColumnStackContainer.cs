@@ -36,7 +36,7 @@ public partial class ColumnStackContainer : Container
     {
         if (columnMinWidth <= 0)
             return 1;
-        var fitColumns = Mathf.FloorToInt(Size.X / columnMinWidth);
+        var fitColumns = Mathf.FloorToInt((Size.X + spacing.X) / (columnMinWidth + spacing.X));
         if (limitFittedColumnsToChildCount)
             fitColumns = Mathf.Min(fitColumns, GetChildren().Cast<Control>().Where(c => c.Visible).Count());
         if (maxColumns > 0)

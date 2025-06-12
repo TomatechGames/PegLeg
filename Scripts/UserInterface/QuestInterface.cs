@@ -85,6 +85,7 @@ public partial class QuestInterface : Control
         if (!await GameAccount.activeAccount.Authenticate())
             return;
         await GameAccount.activeAccount.GetProfile(FnProfileTypes.AccountItems).Query();
+        await GameAccount.activeAccount.CheckCalender();
 
         questGroupViewer.Visible = false;
         questListLayout.Visible = false;
@@ -130,6 +131,18 @@ public partial class QuestInterface : Control
                     };
                     foldout.AddFoldoutChild(groupEntry);
                 }
+
+                var timer = foldout.GetNode<RefreshTimerHook>("%RefreshTimerContainer");
+                var activeFlag = collection.eventFlags.FirstOrDefault(CalenderRequests.EventFlagActive);
+                if (timer is not null && activeFlag is not null)
+                {
+                    timer.SetCustomRefreshTime(
+                        CalenderRequests.EventEnd(activeFlag),
+                        CalenderRequests.EventStart(activeFlag)
+                    );
+                    timer.Visible = true;
+                }
+
                 foldout.SetNotification(groupsInFoldout.Any(g => g.HasNotification));
                 foldoutParent.AddChild(foldout);
                 questGroupCollections.Add(foldout);

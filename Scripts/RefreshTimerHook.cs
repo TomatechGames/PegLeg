@@ -1,21 +1,52 @@
 using Godot;
 using System;
 
-public partial class RefreshTimerHook : Label
+public partial class RefreshTimerHook : Control
 {
-    [Export(PropertyHint.Enum, "Hour, Day, Week, BR Week, Event, Custom")]
+    [Export]
+    Label target;
+    [Export]
+    Control tooltipTarget;
+    [Export(PropertyHint.Enum, "Hour, Day, Week, BR Week, Season, Custom")]
     int timerType;
-    [Export(PropertyHint.Enum, "Timer, SigLong, SigShort")]
+    [Export(PropertyHint.Enum, "Timer, SigShort, SigLong")]
     int formatType;
     [Export]
     int customWarningTime;
     [Export]
     int customCritTime;
+    [Export]
+    ProgressBar progressBar;
+
+    string CustomText
+    {
+        set
+        {
+            if(target is not null)
+            {
+                target.Text = value;
+                return;
+            }
+            Set("text", value);
+        }
+    }
+    string CustomTooltipText
+    {
+        set
+        {
+            if (tooltipTarget is not null)
+            {
+                tooltipTarget.TooltipText = value;
+                return;
+            }
+            Set("tooltip_text", value);
+        }
+    }
 
     public override void _Ready()
     {
-        TooltipText = "";
-        Text = "";
+        CustomTooltipText = "";
+        CustomText = "";
         UpdateRefreshTime();
         criticalCountdownTime = timerType switch
         {
@@ -45,27 +76,39 @@ public partial class RefreshTimerHook : Label
             if (IsVisibleInTree())
                 UpdateTimeText();
         };
-        MouseFilter = MouseFilterEnum.Stop;
+        if (target is null)
+            MouseFilter = MouseFilterEnum.Stop;
     }
 
-    public void SetCustomRefreshTime(DateTime customRefreshTime)
+    public void SetTimerType(int timerType)
+    {
+        this.timerType = timerType;
+        UpdateTimeText();
+    }
+
+    public void SetCustomRefreshTime(DateTime customRefreshTime, DateTime customLastRefreshTime)
     {
         timerType = 5;
         refreshTime = customRefreshTime;
-        TooltipText = refreshTime.ToString("d");
+        lastRefreshTime = customLastRefreshTime;
+        CustomTooltipText = refreshTime.ToString("g");
         warningCountdownTime = customWarningTime;
         criticalCountdownTime = customCritTime;
         UpdateTimeText();
     }
 
     DateTime refreshTime;
+    DateTime lastRefreshTime;
     int criticalCountdownTime = 1;
     int warningCountdownTime = 60;
     void UpdateRefreshTime()
     {
         if (timerType == 5)
+        {
+            CustomTooltipText = refreshTime.ToString("g");
             return;
-        refreshTime = RefreshTimerController.GetRefreshTime(timerType switch
+        }
+        var type = timerType switch
         {
             0 => RefreshTimeType.Hourly,
             1 => RefreshTimeType.Daily,
@@ -73,8 +116,10 @@ public partial class RefreshTimerHook : Label
             3 => RefreshTimeType.BRWeekly,
             4 => RefreshTimeType.Event,
             _ => RefreshTimeType.Daily,
-        });
-        TooltipText = refreshTime.ToString("d");
+        };
+        refreshTime = RefreshTimerController.GetRefreshTime(type);
+        lastRefreshTime = RefreshTimerController.GetLastRefreshTime(type);
+        CustomTooltipText = refreshTime.ToString("g");
     }
 
     void UpdateTimeText()
@@ -88,12 +133,18 @@ public partial class RefreshTimerHook : Label
             SelfModulate = Colors.Orange;
         else
             SelfModulate = Colors.White;
-        Text = remainingTime.FormatTime(formatType switch
+        CustomText = remainingTime.FormatTime(formatType switch
         {
             2 => Helpers.TimeFormat.SigLong,
             1 => Helpers.TimeFormat.SigShort,
             _ => Helpers.TimeFormat.Full,
         });
+        if(progressBar is not null)
+        {
+            var duration = (refreshTime - lastRefreshTime).TotalDays;
+            var progress = (RefreshTimerController.RightNow - lastRefreshTime).TotalDays;
+            progressBar.Value = progress / duration;
+        }
         if (DateTime.UtcNow.CompareTo(refreshTime) >= 0)
             UpdateRefreshTime();
     }

@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ysh5ajklts1q" path="res://Scenes/Desktop/desktopOnboarding.tscn" id="2_frb0b"]
 [ext_resource type="PackedScene" uid="uid://u5ag0k8n6eqm" path="res://Scenes/Desktop/desktopInterface.tscn" id="3_js2t5"]
 
-[node name="BootScene" type="Control"]
+[node name="BootScene" type="Control" node_paths=PackedStringArray("curtain")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +12,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6qsod")
+curtain = NodePath("ColorRect")
 desktopOnboarding = ExtResource("2_frb0b")
 desktopInterface = ExtResource("3_js2t5")
 

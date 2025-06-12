@@ -1,0 +1,117 @@
+[gd_scene load_steps=8 format=3 uid="uid://dbi5mie2icc78"]
+
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_euef7"]
+[ext_resource type="Shader" uid="uid://cy6bew7uegfyu" path="res://Shaders/RewardGameItem.gdshader" id="2_aqcmj"]
+[ext_resource type="Texture2D" uid="uid://de4vkpc5d58on" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Legendary-L.png" id="2_qtkvr"]
+[ext_resource type="PackedScene" uid="uid://dqjthg7kvcf2m" path="res://Scenes/power_level_indicator.tscn" id="2_wrin4"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_eyte7"]
+[ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="5_1ar1s"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_euef7"]
+shader = ExtResource("2_aqcmj")
+shader_parameter/ControlSize = Vector2(0, 0)
+shader_parameter/CornerRadius = 3.0
+shader_parameter/Fit = true
+
+[node name="NotificationHighlightItem" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+offset_right = 32.0
+offset_bottom = 32.0
+mouse_filter = 2
+script = ExtResource("1_euef7")
+preventInteractability = true
+preventDevInteractability = true
+autoLinkToViewer = false
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "OOOOOOOOOOOOOOO: "
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="MarginContainer"]
+self_modulate = Color(1, 0.666667, 0, 1)
+material = SubResource("ShaderMaterial_euef7")
+layout_mode = 2
+size_flags_horizontal = 0
+tooltip_text = "Helloing"
+texture = ExtResource("2_qtkvr")
+expand_mode = 3
+script = ExtResource("4_eyte7")
+syncControlSize = true
+
+[node name="Label" type="Label" parent="MarginContainer/Icon"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -29.0
+offset_top = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_type_variation = &"Outline10"
+theme_override_font_sizes/font_size = 10
+text = "x5"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="NotificationLabel" type="Label" parent="MarginContainer/Icon"]
+visible = false
+layout_mode = 0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 12.0
+offset_bottom = 25.0
+rotation = -0.1309
+theme_override_colors/font_outline_color = Color(1, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 16
+text = " ! "
+
+[node name="Responsive Button Area" parent="MarginContainer/Icon" instance=ExtResource("5_1ar1s")]
+visible = false
+layout_mode = 1
+outlinePadding = 3.0
+
+[node name="PowerLevelIndicator" parent="MarginContainer" instance=ExtResource("2_wrin4")]
+custom_minimum_size = Vector2(0, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="MarginContainer" parent="MarginContainer/PowerLevelIndicator" index="0"]
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = -2
+theme_override_constants/margin_bottom = -2
+
+[node name="HBoxContainer" parent="MarginContainer/PowerLevelIndicator" index="2"]
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_top = -1
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 1
+
+[node name="PowerLevelLabel" parent="MarginContainer/PowerLevelIndicator/HBoxContainer" index="0"]
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 8
+text = "1"
+
+[connection signal="AmountChanged" from="." to="MarginContainer/Icon/Label" method="set_text"]
+[connection signal="AmountVisibility" from="." to="MarginContainer/Icon/Label" method="set_visible"]
+[connection signal="IconChanged" from="." to="MarginContainer/Icon" method="set_texture"]
+[connection signal="InteractableChanged" from="." to="MarginContainer/Icon/Responsive Button Area" method="set_visible"]
+[connection signal="NotificationChanged" from="." to="MarginContainer/Icon/NotificationLabel" method="set_visible"]
+[connection signal="RarityChanged" from="." to="MarginContainer/Icon" method="set_self_modulate"]
+[connection signal="TooltipChanged" from="." to="MarginContainer/Icon" method="set_tooltip_text"]
+[connection signal="TooltipChanged" from="." to="MarginContainer/Icon/Responsive Button Area" method="set_tooltip_text"]
+[connection signal="pressed" from="MarginContainer/Icon/Responsive Button Area" to="." method="Inspect"]
+
+[editable path="MarginContainer/PowerLevelIndicator"]

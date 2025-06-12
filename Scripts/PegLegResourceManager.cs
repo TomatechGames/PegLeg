@@ -879,7 +879,7 @@ public class GameItemTemplate
     public JsonArray GenerateSearchTags(bool assumeUncommon = true)
     {
         if(rawData["searchTags"] is JsonArray existingSearchTags)
-            return existingSearchTags.SafeDeepClone();
+            return existingSearchTags;
 
         List<string> tags =
         [
@@ -912,7 +912,7 @@ public class GameItemTemplate
             rawData["RarityLv"] = RarityLevel;
             rawData["searchTags"] = searchTags;
         }
-        return searchTags.SafeDeepClone();
+        return searchTags;
     }
 
     public GameItem CreateInstance(int quantity = 1, JsonObject attributes = null, GameItem inspectorOverride = null, JsonObject customData = null)

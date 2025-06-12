@@ -14,6 +14,8 @@ public partial class QuestViewer : Control
     public delegate void DescriptionChangedEventHandler(string description);
     [Signal]
     public delegate void CompleteVisibleEventHandler(bool visible);
+    [Signal]
+    public delegate void QuestUpdatedEventHandler();
 
     [Export]
     Control objectiveParent;

@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://dvt4k5o8may3h" path="res://Scripts/Audio/AutoButtonSounds.cs" id="2_0vif4"]
 [ext_resource type="StyleBox" uid="uid://vtwl7umgtbgo" path="res://GodotThemes/Styleboxes/Heavy/HeavyBox.tres" id="2_c5h7f"]
 [ext_resource type="StyleBox" uid="uid://cn0ighyuaru27" path="res://GodotThemes/Styleboxes/CheckButton/CheckSeparator.tres" id="2_d8lrk"]
-[ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/MissionZoneBackgrounds/STWShop.png" id="2_x510n"]
+[ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/Wallpapers/STWShop.png" id="2_x510n"]
 [ext_resource type="StyleBox" uid="uid://cvljwgex83ynh" path="res://GodotThemes/Styleboxes/CheckButton/UnselectedCheck.tres" id="3_hui55"]
 [ext_resource type="AudioStream" uid="uid://dya2vufoh3dch" path="res://Audio/Music/Fort_Building_Outpost_Main_Loop_Fixed.ogg" id="4_xqkmk"]
 [ext_resource type="Script" uid="uid://cld8bvva5hkbq" path="res://Scripts/UserInterface/OnboardingInterface.cs" id="5_p8lju"]

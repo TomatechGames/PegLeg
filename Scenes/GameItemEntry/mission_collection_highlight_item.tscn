@@ -42,13 +42,14 @@ grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 8
 size_flags_vertical = 8
-theme_override_constants/outline_size = 5
+theme_type_variation = &"Outline10"
 theme_override_font_sizes/font_size = 12
 text = "2.56k"
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="NotificationLabel" type="Label" parent="Icon"]
+layout_mode = 0
 offset_left = -4.0
 offset_top = -4.0
 offset_right = 12.0

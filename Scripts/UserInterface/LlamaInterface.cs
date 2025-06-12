@@ -13,15 +13,6 @@ public partial class LlamaInterface : Control
     static LlamaInterface instance;
     public static void SelectLlamaTab() => instance.Visible = true;
 
-    static NotificationData _freeLlamaNotif;
-    static NotificationData freeLlamaNotif => _freeLlamaNotif ??= new()
-    {
-        header = "Free Llamas",
-        icon = instance?.freeLlamaNotifIcon,
-        sound = instance?.freeLlamaSound,
-        color = Color.FromHtml("#bf00ff"),
-    };
-
     [ExportGroup("Scenes")]
     [Export]
     PackedScene catalogLlamaEntryScene;
@@ -84,12 +75,6 @@ public partial class LlamaInterface : Control
 
     [Export]
     Control soldOutResultPanel;
-
-    [ExportGroup("Notifications")]
-    [Export]
-    Texture2D freeLlamaNotifIcon;
-    [Export]
-    AudioStream freeLlamaSound;
 
 
     List<GameOfferEntry> llamaOfferEntries = [];
@@ -304,7 +289,6 @@ public partial class LlamaInterface : Control
 
     CancellationTokenSource llamaShopCTS;
     SemaphoreSlim llamaShopSemaphore = new(1);
-    bool hadFreeLlamas = false;
     async void LoadShopLlamas() => await LoadShopLlamasAsync();
     async void ForceLoadShopLlamas() => await LoadShopLlamasAsync(true);
     bool llamasDirty = false;
@@ -360,14 +344,6 @@ public partial class LlamaInterface : Control
             filteredOffers.Remove(tokenUpgradeOffer);
             await altOfferEntry.SetOffer(tokenUpgradeOffer);
 
-            bool hasFreeLlamas = filteredOffers.Any(o => o.Price?.quantity == 0);
-            if(hasFreeLlamas && !hadFreeLlamas)
-            {
-                //todo: separate global checks like this from the tab-specific UI
-                NotificationManager.PushNotification(freeLlamaNotif);
-            }
-            hadFreeLlamas = hasFreeLlamas;
-
             foreach (var offer in filteredOffers)
             {
                 if (llamaOfferEntries.Count <= catalogEntryIndex)
@@ -405,12 +381,6 @@ public partial class LlamaInterface : Control
                 offerListErrorIcon.Visible = !success;
             }
         }
-    }
-
-    public async void FakeFreeLlamas()
-    {
-        await Helpers.WaitForTimer(1);
-        NotificationManager.PushNotification(freeLlamaNotif);
     }
 
     static async Task<bool> LlamaOfferFilter(GameOffer offer)

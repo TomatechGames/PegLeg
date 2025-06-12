@@ -117,6 +117,9 @@ public partial class GameItemViewer : ModalWindow
         currentOfferEntry.ClearOffer();
         currentOffer = null;
 
+        if (newItem.profile?.account.isOwned == true)
+            newItem.MarkItemSeen();
+
         upgrader.Visible = currentItem.attributes?["level"] is not null;
         upgrader.SetItem(currentItem);
 

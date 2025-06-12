@@ -31,6 +31,10 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
     public override void _Ready()
     {
         creatorImages = creatorImageParent.GetChildren().Select(c => (Control)c).ToArray();
+        foreach (var item in creatorImages)
+        {
+            item.Visible = false;
+        }
         GameAccount.ActiveAccountChanged += UpdateAccount;
         itemList.SetProvider(this);
         searchBox.TextChanged += ApplyFilters;
@@ -112,7 +116,7 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
         ApplySorting();
     }
 
-    GameItem[] allItems;
+    GameItem[] allItems = [];
     GameItem[] filteredItems;
     GameItem[] currentItems;
     string currentTypeFilter = "";
@@ -136,7 +140,7 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
         }
         needsUpdate = false;
 
-        allItems = Array.Empty<GameItem>();
+        GetProfileItems(null);
         ApplyFilters();
         displayedAccount = GameAccount.activeAccount;
         if (!string.IsNullOrEmpty(targetUser?.Text) && allowDevMode)
@@ -150,16 +154,28 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
             image.Visible = displayedAccount.accountId == image.Name;
         }
 
-        var itemProfile = await displayedAccount.GetProfile(targetProfile).Query();
-        allItems = itemProfile
-            .GetItems()
+        GetProfileItems(await displayedAccount.GetProfile(targetProfile).Query());
+        ApplyFilters();
+    }
+
+    void GetProfileItems(GameProfile itemProfile, bool ensureSearchTags = true)
+    {
+        if (itemProfile?.hasProfile != true)
+        {
+            allItems = [];
+            return;
+        }
+        allItems = itemProfile.GetItems();
+        if (!AppConfig.Get("advanced", "developer", false))
+            allItems = allItems
             .Where(i => i.template is not null)
             .ToArray();
-        foreach (var item in allItems)
+        if (!ensureSearchTags)
+            return;
+        for (int i = 0; i < allItems.Length; i++)
         {
-            item.GetSearchTags();
+            allItems[i].GetSearchTags();
         }
-        ApplyFilters();
     }
 
     public async void BulkRecycle()
@@ -167,43 +183,55 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
         if (targetProfile != FnProfileTypes.AccountItems || displayedAccount is null || !await displayedAccount.Authenticate())
             return;
 
-        if (filteredItems.Any())
+        if (filteredItems.Length == 0)
+            return;
+
+        //foreach (var item in filteredItems)
+        //{
+        //    item.GetSearchTags();
+        //    item.GenerateRawData();
+        //}
+        var profile = await displayedAccount.GetProfile(targetProfile).Query();
+        var loadoutHeroes = profile
+            .GetItems("CampaignHeroLoadout")
+            .SelectMany(loadout =>
+                loadout.attributes["crew_members"]
+                .AsObject()
+                .Select(kvp => kvp.Value.ToString())
+            )
+            .Distinct()
+            .ToList();
+        GameItemSelector.Instance.SetRecycleDefaults();
+        GameItemSelector.Instance.selectablePredicate = item =>
         {
-            //foreach (var item in filteredItems)
-            //{
-            //    item.GetSearchTags();
-            //    item.GenerateRawData();
-            //}
-            var profile = await displayedAccount.GetProfile(targetProfile).Query();
-            var loadoutHeroes = profile
-                .GetItems("CampaignHeroLoadout")
-                .SelectMany(loadout => 
-                    loadout.attributes["crew_members"]
-                    .AsObject()
-                    .Select(kvp=>kvp.Value.ToString())
-                )
-                .Distinct()
-                .ToList();
-            GameItemSelector.Instance.SetRecycleDefaults();
-            GameItemSelector.Instance.selectablePredicate = item =>
+            if (!GameItemSelector.RecyclablePredicate(item))
+                return false;
+            if (loadoutHeroes.Contains(item.uuid))
+                return false;
+            return true;
+        };
+        var toRecycle = await GameItemSelector.Instance.OpenSelector(filteredItems, null);
+        if ((toRecycle?.Length ?? 0) > 0 && await displayedAccount.Authenticate())
+        {
+            JsonObject content = new()
             {
-                if (!GameItemSelector.RecyclablePredicate(item))
-                    return false;
-                if (loadoutHeroes.Contains(item.uuid))
-                    return false;
-                return true;
+                ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
             };
-            var toRecycle = await GameItemSelector.Instance.OpenSelector(filteredItems, null);
-            if ((toRecycle?.Length ?? 0) > 0 && await displayedAccount.Authenticate())
-            {
-                JsonObject content = new()
-                {
-                    ["targetItemIds"] = new JsonArray(toRecycle.Select(item => (JsonNode)item.uuid).ToArray())
-                };
-                using var _ = LoadingOverlay.CreateToken();
-                await displayedAccount.GetProfile(FnProfileTypes.AccountItems).PerformOperation("RecycleItemBatch", content);
-            }
+            using var _ = LoadingOverlay.CreateToken();
+            await profile.PerformOperation("RecycleItemBatch", content);
+            GetProfileItems(profile);
         }
+    }
+
+    public void BulkMarkSeen()
+    {
+        if (targetProfile != FnProfileTypes.AccountItems || displayedAccount is null)
+            return;
+        if (filteredItems.Length == 0)
+            return;
+        var profile = displayedAccount.GetProfile(targetProfile);
+        var unseenItems = filteredItems.Where(i => !i.IsSeen).ToArray();
+        profile.MarkItemsSeen(unseenItems);
     }
 
     //public async void BulkDismantle()
@@ -250,11 +278,11 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
 
         filteredItems = allItems
             .Where(item =>
-                    (!filterNew || !item.IsSeen) &&
-                    (!filterFavorite || item.IsFavourited) &&
-                    (possibleTypes?.Contains(item.template.Type) ?? true) &&
-                    PLSearch.EvaluateInstructions(instructions, item.RawData) 
-                )
+                (!filterNew || !item.IsSeen) &&
+                (!filterFavorite || item.IsFavourited) &&
+                (possibleTypes?.Contains(item.template?.Type) ?? true) &&
+                PLSearch.EvaluateInstructions(instructions, item.RawData) 
+            )
             .ToArray();
         ApplySorting();
     }
@@ -262,24 +290,25 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
     public void ApplySorting()
     {
         var resultItems = filteredItems
-            .OrderBy(i => !i.template.CanBeLeveled)
-            .ThenBy(i => i.template.Type);
+            .OrderBy(i => i.template is null)
+            .ThenBy(i => !i.template?.CanBeLeveled)
+            .ThenBy(i => i.template?.Type);
 
         if (sortByName)
-            resultItems = resultItems.ThenBy(i => i.template.SortingDisplayName);
+            resultItems = resultItems.ThenBy(i => i.template?.SortingDisplayName);
 
         resultItems = resultItems
             //.ThenBy(i => i.template.Category)
             .ThenBy(i => -i.Rating)
-            .ThenBy(i => -i.template.RarityLevel)
-            .ThenBy(i => i.template.Type == "Ingredient" ? -i.TotalQuantity : 1)
+            .ThenBy(i => -i.template?.RarityLevel)
+            .ThenBy(i => i.template?.Type == "Ingredient" ? -i.TotalQuantity : 1)
             .ThenBy(i => -i.quantity);
 
         if (!sortByName)
-            resultItems = resultItems.ThenBy(i => i.template.SortingDisplayName);
+            resultItems = resultItems.ThenBy(i => i.template?.SortingDisplayName);
 
 
-        currentItems = resultItems.ToArray();
+        currentItems = [.. resultItems];
         itemList.UpdateList(true);
     }
 

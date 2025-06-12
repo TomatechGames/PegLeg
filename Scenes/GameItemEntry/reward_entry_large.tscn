@@ -24,6 +24,7 @@ custom_minimum_size = Vector2(32, 0)
 custom_minimum_size = Vector2(32, 0)
 
 [node name="AmountLabel" parent="Overlays/AmountContainer" index="4"]
+theme_override_constants/outline_size = 10
 theme_override_font_sizes/font_size = 30
 
 [node name="InteractableContainer" parent="Overlays" index="3"]

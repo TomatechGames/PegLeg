@@ -72,10 +72,9 @@ public partial class GameAccountEntry : Control
         string tooltipText = CustomTooltip.GenerateSimpleTooltip(
                 $" {currentAccount.DisplayName}   ",
                 null,
-                new string[]
-                {
+                [
                     currentAccount.isAuthed ? "Logged In" : (currentAccount.isOwned ? $"Login Failure:\n\"{currentAccount.loginFailureMessage}\"" : "External")
-                },
+                ],
                 Colors.Blue.ToHtml()
             );
         EmitSignal(SignalName.TooltipChanged, tooltipText);

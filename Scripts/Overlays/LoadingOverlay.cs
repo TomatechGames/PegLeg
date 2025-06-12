@@ -9,7 +9,7 @@ public partial class LoadingOverlay : ModalWindow
     public delegate void ProgressChangedEventHandler(float totalProgress);
 
     static LoadingOverlay instance;
-    static Dictionary<Guid, LoadingOverlayToken> loadingTokens = [];
+    static Dictionary<Guid, TaskToken> loadingTokens = [];
     [Export]
     RichTextLabel progressLabel;
 
@@ -46,28 +46,30 @@ public partial class LoadingOverlay : ModalWindow
             progressLabel.Text = string.Join("\n", loadingTokens.Where(t => !t.Value.disposed).Select(t => t.Value.ProgressText));
     }
 
-    public static LoadingOverlayToken CreateToken(string taskName = null, float initialProgress = 0, float maxProgress = 1) =>
-        new(taskName, initialProgress, maxProgress);
+    public static TaskToken CreateToken(string taskName = null, float initialProgress = 0, float maxProgress = 1) =>
+        TaskToken.Create(taskName, initialProgress, maxProgress);
 
-    public struct LoadingOverlayToken : IDisposable
+    public struct TaskToken() : IDisposable
     {
         Guid guid = Guid.NewGuid();
-        public bool disposed { get; private set;} = false;
+        public bool disposed { get; private set;}
         public string taskName { get; private set; }
         public float progress { get; private set; }
         public float maxProgress { get; private set; }
 
         public string ProgressText => taskName + (maxProgress > 0 ? $"({progress}/{maxProgress})" : "");
 
-        public LoadingOverlayToken(string taskName = null, float initialProgress = 0, float maxProgress = 1)
+        public static TaskToken Create(string taskName = null, float initialProgress = 0, float maxProgress = 1)
         {
-            this.taskName = taskName;
-            progress = initialProgress;
-            this.maxProgress = Mathf.Max(maxProgress, 0);
-
-            //GD.PushWarning($"adding token \"{taskName}\" ({guid})");
-            loadingTokens.Add(guid, this);
+            TaskToken token = new()
+            {
+                taskName = taskName,
+                progress = initialProgress,
+                maxProgress = Mathf.Max(0, maxProgress)
+            };
+            loadingTokens.Add(token.guid, token);
             UpdateLoadingState();
+            return token;
         }
 
         public void SetLoadingProgress(float newProgress)=>

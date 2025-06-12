@@ -10,17 +10,18 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
     #region Statics
     static MissionInterface instance;
 
-    static NotificationData _unexpectedResetNotif;
+    static NotificationData? _unexpectedResetNotif;
     static NotificationData unexpectedResetNotif => _unexpectedResetNotif ??= new()
     {
         header = "Unexpected Reset Detected",
         icon = instance?.unexpectedResetNotifIcon,
         sound = instance?.unexpectedResetSound,
-        color = Color.FromHtml("#ff5555"),
+        itemColor = Color.FromHtml("#ff5555"),
+        urgent = true,
     };
 
-    static readonly string[] theaterFilters = new string[]
-    {
+    static readonly string[] theaterFilters =
+    [
         "spct",
         "spctv",
         "s",
@@ -28,41 +29,38 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
         "c",
         "t",
         "v",
-    };
+    ];
 
-    static readonly string[][] itemFilters = new string[][]
-    {
-        new string[]
-        {
+    static readonly string[][] itemFilters =
+    [
+        [
             "Worker:*",
-        },
-        new string[]
-        {
+        ],
+        [
             "Schematic:*",
-        },
-        new string[]
-        {
+        ],
+        [
             "Hero:*",
             "Defender:*",
-        },
-        new string[] {
+        ],
+        [
             "AccountResource:reagent_c_t01",
             "AccountResource:reagent_c_t02",
             "AccountResource:reagent_c_t03",
             "AccountResource:reagent_c_t04",
-        },
-        new string[] {
+        ],
+        [
             "AccountResource:reagent_alteration_generic",
             "AccountResource:reagent_alteration_upgrade_uc",
             "AccountResource:reagent_alteration_upgrade_r",
             "AccountResource:reagent_alteration_upgrade_vr",
             "AccountResource:reagent_alteration_upgrade_sr",
-        },
-        new string[] {
+        ],
+        [
             "AccountResource:currency_mtxswap",
             "AccountResource:voucher_cardpack_bronze",
-        },
-    };
+        ],
+    ];
     #endregion
 
     public static void SearchInMissions(string searchText, bool showMissionTab = false)
@@ -170,16 +168,17 @@ public partial class MissionInterface : Control, IRecyclableElementProvider<Game
             if (await GameMission.MissionsNeedUpdate() && GameMission.currentMissions is not null)
             {
                 GD.Print("Unexpected reset detected");
-                NotificationManager.PushNotification(unexpectedResetNotif);
+                NotificationManager.Push([unexpectedResetNotif]);
                 await GameMission.UpdateMissions();
             }
         }
     }
 
-    public async void FakeUnexpectedReset()
+    public void FakeUnexpectedReset()
     {
-        await Helpers.WaitForTimer(1);
-        NotificationManager.PushNotification(unexpectedResetNotif);
+        NotificationManager.Push([unexpectedResetNotif]);
+        //NotificationManager.PushNotification(unexpectedResetNotif);
+        //NotificationManager.PushNotification(unexpectedResetNotif);
     }
 
     void OnMissionsInvalidated()

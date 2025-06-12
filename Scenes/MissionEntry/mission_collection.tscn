@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://dj7i2q6htu5st" path="res://Images/InterfaceIcons/T_UI_IconLibrary_Pencil_128.png" id="1_p305g"]
 [ext_resource type="Texture2D" uid="uid://dl05qp6bcrs5c" path="res://Images/InterfaceIcons/T_UI_Icon_Search.png" id="2_ma4gr"]
 [ext_resource type="PackedScene" uid="uid://bekssnfes28vf" path="res://Scenes/MissionEntry/mission_collection_entry.tscn" id="3_2dnay"]
+[ext_resource type="PackedScene" uid="uid://2iou6v2uijh8" path="res://Scenes/small_loading_icon.tscn" id="4_xict5"]
 [ext_resource type="Script" uid="uid://gxtxnc3gl5tx" path="res://Scripts/UIElements/RecycleListContainer.cs" id="6_b35vf"]
-[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="7_y7651"]
 
 [node name="MissionCollection" type="PanelContainer" node_paths=PackedStringArray("missionList", "loadingIcon")]
 custom_minimum_size = Vector2(255, 150)
@@ -16,7 +16,7 @@ script = ExtResource("1_4v5fq")
 testName = "Name"
 testSearch = "///worker leg !lead"
 missionList = NodePath("VBoxContainer/Body/ScrollContainer")
-loadingIcon = NodePath("VBoxContainer/Body/LoadingIcon")
+loadingIcon = NodePath("VBoxContainer/Body/SmallLoadingIcon")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -78,11 +78,8 @@ expand_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LoadingIcon" parent="VBoxContainer/Body" instance=ExtResource("7_y7651")]
-custom_minimum_size = Vector2(100, 100)
+[node name="SmallLoadingIcon" parent="VBoxContainer/Body" instance=ExtResource("4_xict5")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Body" node_paths=PackedStringArray("offsetControl", "paddingControl", "elementParent")]
 layout_mode = 2

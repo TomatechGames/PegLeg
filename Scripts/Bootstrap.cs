@@ -14,6 +14,8 @@ public partial class Bootstrap : Node
     bool pauseAtBoot;
     [Export]
     Vector2I windowSize = new(1350, 720);
+    [Export]
+    Control curtain;
 	[ExportGroup("Scenes")]
 	[Export]
 	PackedScene desktopOnboarding;
@@ -40,7 +42,6 @@ public partial class Bootstrap : Node
         var window = GetWindow();
         window.Position = new(-100, -100);
         Helpers.SetMainWindowVisible(false);
-
 
         if (FileAccess.FileExists(processLockPath))
         {
@@ -132,11 +133,13 @@ public partial class Bootstrap : Node
                 GD.Print("boot complete");
                 return;
             }
-
+            curtain.Visible = true;
+            await Helpers.WaitForFrame();
             Helpers.SetMainWindowVisible(true);
             window.Size = windowSize;
             window.MoveToCenter();
             window.Transparent = false;
+            window.TransparentBg = true;
             window.Borderless = false;
             window.Unfocusable = false;
             await Helpers.WaitForFrame();

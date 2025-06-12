@@ -64,11 +64,11 @@ public partial class DashboardLlamasController : Control
             await Helpers.WaitForFrame();
 
             var xrayStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.XRayLlamaCatalog, force ? null : RefreshTimeType.Hourly);
-            var randomStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.RandomLlamaCatalog, force ? null : RefreshTimeType.Hourly);
+            //var randomStorefront = await GameStorefront.GetStorefront(FnStorefrontTypes.RandomLlamaCatalog, force ? null : RefreshTimeType.Hourly);
             if (ct.IsCancellationRequested)
                 return;
 
-            var offers = xrayStorefront.Offers.Union(randomStorefront.Offers).Where(o => o.IsXRayLlama && (o.DailyLimit > 0 || o.EventLimit > 0) && o.OfferId != "B9B0CE758A5049F898773C1A47A69ED4").ToArray();
+            var offers = xrayStorefront.Offers.Where(o => (o.DailyLimit > 0 || o.EventLimit > 0) && o.OfferId != "B9B0CE758A5049F898773C1A47A69ED4").ToArray();
 
             for (int i = 0; i < llamaEntries.Length; i++)
             {

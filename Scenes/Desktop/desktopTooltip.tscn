@@ -1,29 +1,37 @@
-[gd_scene load_steps=14 format=3 uid="uid://bsbgxpgoycn6r"]
+[gd_scene load_steps=11 format=3 uid="uid://bsbgxpgoycn6r"]
 
 [ext_resource type="Script" uid="uid://bopbvms3knj0g" path="res://Scripts/UIElements/CustomTooltip.cs" id="1_a0dpu"]
 [ext_resource type="Texture2D" uid="uid://bg8tqds2ynv72" path="res://Images/TextureResources/GradientShadow.tres" id="1_n7kv3"]
 [ext_resource type="Shader" uid="uid://dce730t3jxekt" path="res://Shaders/TooltipBanner.gdshader" id="3_5ou8i"]
 [ext_resource type="Texture2D" uid="uid://bjis588c3qnar" path="res://Images/InterfaceIcons/T_Pattern_Triangles.png" id="4_68qyt"]
 [ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_cw7hj"]
-[ext_resource type="Texture2D" uid="uid://d3ivhm85bwic4" path="res://Images/InterfaceIcons/Icon-Gadget-SupplyDrop-128.png" id="5_cnlgh"]
-[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/MissionZoneBackgrounds/FORT_Load_Missions_Outpost.png" id="5_hwtg6"]
-[ext_resource type="Texture2D" uid="uid://jipvjhedh7jy" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Epic-L.png" id="6_w7lr4"]
-[ext_resource type="Texture2D" uid="uid://de4vkpc5d58on" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Legendary-L.png" id="7_8e7xb"]
-[ext_resource type="Texture2D" uid="uid://ctrmy8tujn6on" path="res://Images/InterfaceIcons/T-Items-MTX-L.png" id="8_u7fy7"]
-[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="9_i36ub"]
-[ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="10_ylmo2"]
+[ext_resource type="Texture2D" uid="uid://cafi24mcdg78p" path="res://Images/Wallpapers/FORT_Load_Missions_Outpost.png" id="5_hwtg6"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="13_b5rng"]
+[ext_resource type="Texture2D" uid="uid://bkj1uu2syehgg" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Item-GoldBars.png" id="14_b5rng"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_642tc"]
 shader = ExtResource("3_5ou8i")
 shader_parameter/TrianglePattern = ExtResource("4_68qyt")
-shader_parameter/ControlSize = Vector2(0, 32)
+shader_parameter/ControlSize = Vector2(304, 32)
 shader_parameter/ShiftDirection = Vector2(0, 0.5)
 shader_parameter/CornerRadius = 4.0
 shader_parameter/ColorMode = true
 shader_parameter/Color = Color(0, 1, 1, 1)
-shader_parameter/time = 51.308
+shader_parameter/time = 49.356
 
-[node name="Tooltip" type="MarginContainer" node_paths=PackedStringArray("titleContent", "titleBanner", "titleTextLabel", "titleQuantityLayout", "titleQuantityLabel", "descriptionContent", "descriptionLayers", "imageContent")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhx3n"]
+bg_color = Color(0.184314, 0.184314, 0.184314, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.3, 0.3, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="Tooltip" type="MarginContainer" node_paths=PackedStringArray("titleContent", "titleBanner", "titleTextLabel", "titleQuantityLayout", "titleQuantityLabel", "descriptionContent", "descriptionLayers", "offerContent", "offerCostEntry", "offerInventoryEntry", "offerStockLabel")]
 offset_top = 1.0
 offset_right = 246.0
 offset_bottom = 80.0
@@ -36,7 +44,10 @@ titleQuantityLabel = NodePath("Content/MarginContainer/VBoxContainer/TitleConten
 descriptionContent = NodePath("Content/MarginContainer/VBoxContainer/DescriptionContent")
 descriptionMaxWidth = 300.0
 descriptionLayers = [NodePath("Content/MarginContainer/VBoxContainer/DescriptionContent/Body Text"), NodePath("Content/MarginContainer/VBoxContainer/DescriptionContent/Body Text2")]
-imageContent = NodePath("Content/MarginContainer/VBoxContainer/ImageContent")
+offerContent = NodePath("Content/MarginContainer/VBoxContainer/OfferContent")
+offerCostEntry = NodePath("Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price")
+offerInventoryEntry = NodePath("Content/MarginContainer/VBoxContainer/OfferContent/In Inventory")
+offerStockLabel = NodePath("Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/HBoxContainer/Label2")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 layout_mode = 2
@@ -48,9 +59,9 @@ patch_margin_bottom = 12
 
 [node name="Content" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 3
+theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 2
-theme_override_constants/margin_right = 6
+theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 7
 
 [node name="Panel" type="Panel" parent="Content"]
@@ -159,46 +170,121 @@ theme_override_constants/line_spacing = -1
 text = "Search Tags: First, Second, Third, Fourth"
 autowrap_mode = 3
 
-[node name="ImageContent" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer"]
+[node name="OfferContent" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
-[node name="TextureRect" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
-custom_minimum_size = Vector2(0, 32)
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent"]
 layout_mode = 2
-texture = ExtResource("5_cnlgh")
+theme_override_constants/separation = 0
+
+[node name="Price" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer"]
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+script = ExtResource("13_b5rng")
+compactifyAmount = true
+showSingleItemAmount = true
+
+[node name="Panel" type="Panel" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price"]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lhx3n")
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+text = " You have: "
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Icon" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("14_b5rng")
 expand_mode = 3
 
-[node name="TextureRect2" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
-custom_minimum_size = Vector2(0, 32)
+[node name="AmountText" type="Label" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price/MarginContainer/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("6_w7lr4")
+theme_override_font_sizes/font_size = 20
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "In Stock: "
+
+[node name="Label2" type="Label" parent="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "XX"
+
+[node name="Control" type="Control" parent="Content/MarginContainer/VBoxContainer/OfferContent"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="In Inventory" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent"]
+custom_minimum_size = Vector2(0, 27)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 12
+script = ExtResource("13_b5rng")
+compactifyAmount = true
+showSingleItemAmount = true
+
+[node name="Panel" type="Panel" parent="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lhx3n")
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = " You have: "
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Icon" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("14_b5rng")
 expand_mode = 3
 
-[node name="TextureRect3" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
-custom_minimum_size = Vector2(0, 32)
+[node name="AmountText" type="Label" parent="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory/MarginContainer/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("7_8e7xb")
-expand_mode = 3
+theme_override_font_sizes/font_size = 20
+text = "???"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="TextureRect4" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-texture = ExtResource("8_u7fy7")
-expand_mode = 3
-
-[node name="TextureRect5" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-texture = ExtResource("9_i36ub")
-expand_mode = 3
-
-[node name="TextureRect6" type="TextureRect" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-texture = ExtResource("10_ylmo2")
-expand_mode = 3
-
-[node name="Label" type="Label" parent="Content/MarginContainer/VBoxContainer/ImageContent"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "+2"
+[connection signal="AmountChanged" from="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price" to="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price/MarginContainer/HBoxContainer/AmountText" method="set_text"]
+[connection signal="TooltipChanged" from="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price" to="Content/MarginContainer/VBoxContainer/OfferContent/VBoxContainer/Price" method="set_tooltip_text"]
+[connection signal="AmountChanged" from="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory" to="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory/MarginContainer/HBoxContainer/AmountText" method="set_text"]
+[connection signal="TooltipChanged" from="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory" to="Content/MarginContainer/VBoxContainer/OfferContent/In Inventory" method="set_tooltip_text"]

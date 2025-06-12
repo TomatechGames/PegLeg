@@ -1,3 +1,4 @@
+using Godot;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +30,8 @@ public struct QuestGroupCollectionData
             if (autoPopulateQuestlines)
             {
                 var mainQuestLines = PegLegResourceManager.LoadResourceDict<string[][]>("GameAssets/MainQuestLines.json")
-                    .SelectMany(kvp=>kvp.Value.Reverse())
+                    .Reverse()
+                    .SelectMany(kvp=>kvp.Value)
                     .SelectMany(arr=>arr);
                 var eventQuestLines = PegLegResourceManager.LoadResourceDict<EventQuestLine>("GameAssets/EventQuestLines.json");
                 //generate groups from questlines
@@ -82,7 +84,7 @@ public struct QuestGroupData
     public readonly bool ShowComplete => showComplete ?? Sequence;
     [JsonInclude]
     [JsonConverter(typeof(JsonStringEnumConverter<TimerMode>))]
-    public TimerMode timer { get; private set; } = TimerMode.Default;
+    public TimerMode timer { get; private set; } = TimerMode.None;
     [JsonInclude]
     public string eventFlag { get; private set; } = null;
     [JsonRequired]
@@ -108,10 +110,10 @@ public struct QuestGroupData
             if (chain)
             {
                 List<GameItemTemplate[]> qlines = [];
-                foreach (var quest in rootQuests)
+                for (int i = 0; i < rootQuests.Length; i++)
                 {
                     List<GameItemTemplate> qline = [];
-                    var currentQuest = quest;
+                    var currentQuest = rootQuests[i];
                     do
                     {
                         qline.Add(currentQuest);
@@ -138,13 +140,15 @@ public struct QuestGroupData
         //ctor for exported questlines
         this.displayName = displayName;
         this.eventFlag = eventFlag;
+        timer = TimerMode.Event;
         questlines = [quests];
         sequence = true;
     }
 
     public enum TimerMode
     {
-        Default,
+        None,
+        Event,
         Daily,
         Weekly,
     }
@@ -170,7 +174,7 @@ public struct QuestGroupData
         [JsonInclude]
         JsonElement? exclude { get; set; }
 
-        public GameItemTemplate[] EvaluateComplex(GameItemTemplate[] filteredQuests = null)
+        public readonly GameItemTemplate[] EvaluateComplex(GameItemTemplate[] filteredQuests = null)
         {
             if (prefilter is not null)
                 filteredQuests = Evaluate(prefilter.Value, filteredQuests);
@@ -191,13 +195,14 @@ public struct QuestGroupData
             return filteredQuests;
         }
 
-        bool FilterQuest(GameItemTemplate item) =>
+        const System.StringComparison comparer = System.StringComparison.InvariantCultureIgnoreCase;
+        readonly bool FilterQuest(GameItemTemplate item) =>
             item is not null &&
-            (category == null || item.Category?.ToLower() == category) &&
+            (category == null || string.Equals(item.Category, category, comparer)) &&
             item.Name?.ToLower() is string name &&
-            (startsWith == null || name.StartsWith(startsWith)) &&
-            (endsWith == null || name.EndsWith(endsWith)) &&
-            (contains == null || name.Contains(contains));
+            (startsWith == null || name.StartsWith(startsWith, comparer)) &&
+            (endsWith == null || name.EndsWith(endsWith, comparer)) &&
+            (contains == null || name.Contains(contains, comparer));
 
         public static GameItemTemplate[] Evaluate(JsonElement predicate, GameItemTemplate[] fromQuests = null) =>
             predicate.ValueKind switch

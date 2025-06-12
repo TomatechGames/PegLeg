@@ -26,7 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="26_1itqm"]
 [ext_resource type="Script" uid="uid://gxtxnc3gl5tx" path="res://Scripts/UIElements/RecycleListContainer.cs" id="27_fbt4m"]
 [ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="27_kfbdo"]
-[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/InterfaceIcons/LoadingIconV2/CubeLine-sheet.png" id="28_usr0x"]
+[ext_resource type="Texture2D" uid="uid://dp1ncsnqo4mjg" path="res://Images/Flipbook/LoadingIconV2/CubeLine-sheet.png" id="28_usr0x"]
 [ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="29_1js0p"]
 [ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="29_udjjn"]
 

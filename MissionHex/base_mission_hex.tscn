@@ -1,16 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://oueeewsccq5v"]
+[gd_scene load_steps=2 format=3 uid="uid://oueeewsccq5v"]
 
 [ext_resource type="Texture2D" uid="uid://dvw6w2w7waco1" path="res://Images/InterfaceIcons/HexMask.png" id="1_43gki"]
-[ext_resource type="Shader" uid="uid://baapryvbf7xmd" path="res://Shaders/MissionHexShader.gdshader" id="1_csmdp"]
-[ext_resource type="Texture2D" uid="uid://uip5g34801wx" path="res://Images/MissionZoneBackgrounds/Fortnite_-_Unknown_Location.png" id="2_v4lnv"]
-[ext_resource type="Texture2D" uid="uid://byufr1xhmmhxp" path="res://Images/InterfaceIcons/T-Icon-Unknown-128.png" id="3_ag08a"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pfw1q"]
-resource_local_to_scene = true
-shader = ExtResource("1_csmdp")
-shader_parameter/bgImage = ExtResource("2_v4lnv")
-shader_parameter/iconImage = ExtResource("3_ag08a")
 
 [node name="MissionHex" type="Sprite2D"]
-material = SubResource("ShaderMaterial_pfw1q")
 texture = ExtResource("1_43gki")

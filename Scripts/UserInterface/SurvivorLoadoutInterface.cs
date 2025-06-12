@@ -108,11 +108,11 @@ public partial class SurvivorLoadoutInterface : Node
             return;
         if(loadoutName is not null)
         {
-            if (!(await GenericConfirmationWindow.ShowConfirmation(
+            if (await GenericConfirmationWindow.ShowConfirmation(
                     "Overwrite Loadout?", 
                     "Overwrite", 
                     contextText: "The contents of the selected loadout will be overwritten"
-                ) ?? false))
+            ) != true)
                 return;
         }
 
@@ -263,12 +263,12 @@ public partial class SurvivorLoadoutInterface : Node
 
     private async void OnLoadoutDelete()
     {
-        if (!(await GenericConfirmationWindow.ShowConfirmation(
+        if (await GenericConfirmationWindow.ShowConfirmation(
                 "Delete Loadout?", 
                 "Delete", 
                 contextText: "The selected loadout will be deleted",
                 warningText: "This action cannot be undone"
-           ) ?? false))
+        ) != true)
             return;
 
         var account = GameAccount.activeAccount;
@@ -297,11 +297,11 @@ public partial class SurvivorLoadoutInterface : Node
 
     private async void OnSquadClear()
     {
-        if (!(await GenericConfirmationWindow.ShowConfirmation(
+        if (await GenericConfirmationWindow.ShowConfirmation(
                 "Clear Squad?", 
                 "Clear", 
                 contextText: "All slotted survivors in all squads will be unslotted"
-            ) ?? false))
+        ) != true)
             return;
         using var _ = LoadingOverlay.CreateToken();
         

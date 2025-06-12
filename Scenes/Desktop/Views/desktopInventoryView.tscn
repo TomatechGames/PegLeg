@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://udk47ipcpsbq"]
+[gd_scene load_steps=23 format=3 uid="uid://udk47ipcpsbq"]
 
 [ext_resource type="Script" uid="uid://culat840voiin" path="res://Scripts/UIElements/VirtualTabBar.cs" id="1_cq0hx"]
 [ext_resource type="Script" uid="uid://71bid6ulu5rx" path="res://Scripts/UserInterface/InventoryInterface.cs" id="1_ix0kh"]
@@ -7,15 +7,17 @@
 [ext_resource type="Texture2D" uid="uid://cir0axuy4xjte" path="res://Images/InterfaceIcons/T_OpenGlow.png" id="3_l2jv4"]
 [ext_resource type="Texture2D" uid="uid://frsfbmj2qyxu" path="res://Images/InterfaceIcons/T_Icon_FavoriteTab_64.png" id="4_incdt"]
 [ext_resource type="Script" uid="uid://gxtxnc3gl5tx" path="res://Scripts/UIElements/RecycleListContainer.cs" id="4_q3ge8"]
-[ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="5_e3p2l"]
 [ext_resource type="Texture2D" uid="uid://1l04r0a5boqq" path="res://Images/InterfaceIcons/Stars-Full-128.png" id="5_g4jqb"]
 [ext_resource type="Texture2D" uid="uid://boywmwfvrbmwp" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Cogs_128.png" id="6_6h6v6"]
 [ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="6_a3sqn"]
-[ext_resource type="Texture2D" uid="uid://brswo336i1src" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01.png" id="8_5rj62"]
 [ext_resource type="Texture2D" uid="uid://bufu4bggy6lrs" path="res://Images/InterfaceIcons/T-Icon-Defenders_-CARD.png" id="9_my6h5"]
 [ext_resource type="Texture2D" uid="uid://dw4n1jlpyogxw" path="res://Images/InterfaceIcons/T-Icon-Nav-Squad-128.png" id="10_17ihq"]
+[ext_resource type="Texture2D" uid="uid://fo5dt3fnvrt0" path="res://Images/InterfaceIcons/SchematicIcon128.png" id="11_k86hi"]
+[ext_resource type="Texture2D" uid="uid://c2xw0pe7rfdry" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Heroes-128.png" id="12_3wbpm"]
 [ext_resource type="PackedScene" uid="uid://ch7kqyndhfgvs" path="res://Scenes/GameItemEntry/inventory_entry_large.tscn" id="13_qaoj0"]
+[ext_resource type="Shader" uid="uid://b1l14dgcp134i" path="res://Shaders/FortSDF.gdshader" id="15_l485q"]
 [ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="16_45lr4"]
+[ext_resource type="Texture2D" uid="uid://cebpugdhhg4s4" path="res://Images/SDF/T_UI_Icon_UIKit_ClearBadges_SDF.png" id="16_opvrx"]
 [ext_resource type="Texture2D" uid="uid://b068tdyuivkmu" path="res://Images/ContentCreators/ArcherDanceSheet4.png" id="17_uggwr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k64ed"]
@@ -29,9 +31,22 @@ shader_parameter/Repeat = false
 shader_parameter/HorizontalMask = 0.0
 shader_parameter/VerticalMask = 0.0
 shader_parameter/Frame = -1
+shader_parameter/scriptTime = false
+shader_parameter/time = 0.0
+shader_parameter/UseShadow = false
+shader_parameter/shadowBrightness = 0.0
+shader_parameter/shadowOpacity = 1.0
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_xh1u0"]
 resource_name = "InventoryTypeFilter"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rf818"]
+shader = ExtResource("15_l485q")
+shader_parameter/blendAmount = 1.0
+shader_parameter/threshold = 0.5
+shader_parameter/smoothness = 0.25
+shader_parameter/msdf = false
+shader_parameter/skipSDF = false
 
 [node name="Inventory" type="MarginContainer" node_paths=PackedStringArray("itemList", "searchBox", "targetUser", "devAllButton", "tabBar", "creatorImageParent")]
 anchors_preset = 15
@@ -84,7 +99,7 @@ placeholder_text = "Search items"
 layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(175, 0)
+custom_minimum_size = Vector2(160, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 
@@ -138,6 +153,7 @@ theme_override_constants/margin_bottom = 2
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/NewFilter/MarginContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
+tooltip_text = "Filter Unseen"
 theme_type_variation = &"EmptyCheckButton"
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/NewFilter/MarginContainer/CheckButton"]
@@ -179,6 +195,7 @@ theme_override_constants/margin_bottom = 2
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/FavouriteFilter/MarginContainer"]
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
+tooltip_text = "Filter Favourites"
 theme_type_variation = &"EmptyCheckButton"
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/FavouriteFilter/MarginContainer/CheckButton"]
@@ -220,7 +237,7 @@ layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All"]
 layout_mode = 2
-tooltip_text = "Main Regions"
+tooltip_text = "All Items"
 theme_type_variation = &"LeftCheckButton"
 button_pressed = true
 button_group = SubResource("ButtonGroup_xh1u0")
@@ -243,6 +260,7 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("5_g4jqb")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/All/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -253,7 +271,7 @@ layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All"]
 layout_mode = 2
-tooltip_text = "Main Regions"
+tooltip_text = "All Items (+ Hidden Items)"
 theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
@@ -275,6 +293,7 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("6_6h6v6")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Dev All/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -285,7 +304,7 @@ layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1"]
 layout_mode = 2
-tooltip_text = "Main Regions"
+tooltip_text = "Schematics"
 theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
@@ -305,8 +324,9 @@ mouse_filter = 2
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("5_e3p2l")
+texture = ExtResource("11_k86hi")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab1/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -317,7 +337,7 @@ layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2"]
 layout_mode = 2
-tooltip_text = "Main Regions"
+tooltip_text = "Heroes"
 theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
@@ -337,8 +357,9 @@ mouse_filter = 2
 custom_minimum_size = Vector2(22, 0)
 layout_mode = 2
 mouse_filter = 2
-texture = ExtResource("8_5rj62")
+texture = ExtResource("12_3wbpm")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab2/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -349,7 +370,7 @@ layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3"]
 layout_mode = 2
-tooltip_text = "Main Regions"
+tooltip_text = "Defenders"
 theme_type_variation = &"MiddleCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
@@ -371,6 +392,7 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("9_my6h5")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab3/MarginContainer/HBoxContainer"]
 layout_mode = 2
@@ -381,7 +403,7 @@ layout_mode = 2
 
 [node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4"]
 layout_mode = 2
-tooltip_text = "Main Regions"
+tooltip_text = "Survivors"
 theme_type_variation = &"RightCheckButton"
 button_group = SubResource("ButtonGroup_xh1u0")
 
@@ -403,28 +425,60 @@ layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("10_17ihq")
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/HBoxContainer/TypeFilters/MarginContainer/HBoxContainer/Tab4/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "Survivors"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
+[node name="NameSort" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer2/HBoxContainer/NameSort"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("2_ytjya")
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/NameSort"]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer/MarginContainer"]
+[node name="CheckButton" type="CheckButton" parent="VBoxContainer/HBoxContainer2/HBoxContainer/NameSort/MarginContainer"]
 layout_mode = 2
 text = "Sort By Name"
+
+[node name="MarkAllSeen" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarkAllSeen"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_ytjya")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarkAllSeen"]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="CheckButton" type="Button" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarkAllSeen/MarginContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+tooltip_text = "Mark all as seen"
+theme_type_variation = &"EmptyCheckButton"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/HBoxContainer/MarkAllSeen/MarginContainer/CheckButton"]
+material = SubResource("ShaderMaterial_rf818")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_opvrx")
+expand_mode = 1
 
 [node name="Button" type="Button" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
@@ -473,5 +527,6 @@ layout_mode = 2
 
 [connection signal="toggled" from="VBoxContainer/HBoxContainer2/HBoxContainer/NewFilter/MarginContainer/CheckButton" to="." method="SetNewFilter"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer2/HBoxContainer/FavouriteFilter/MarginContainer/CheckButton" to="." method="SetFavoriteFilter"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer2/HBoxContainer/MarginContainer/MarginContainer/CheckButton" to="." method="SetSortMode"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer2/HBoxContainer/NameSort/MarginContainer/CheckButton" to="." method="SetSortMode"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/HBoxContainer/MarkAllSeen/MarginContainer/CheckButton" to="." method="BulkMarkSeen"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/Button" to="." method="BulkRecycle"]

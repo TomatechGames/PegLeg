@@ -261,15 +261,20 @@ public class GameMission
             {
                 generatedMissions = GenerateMissions(missionData);
             }
-            catch
+            catch(Exception e)
             {
+                GD.PushWarning(e);
                 missionData = null;
                 if (retriesRemaining > 0)
                 {
+                    GD.Print("retrying missions");
                     retriesRemaining--;
                     continue;
                 }
-                return;
+                else
+                {
+                    throw;
+                }
             }
 
             //edge case where missions expire after being requested but before being converted to MissionEntries
@@ -341,6 +346,8 @@ public class GameMission
                 .FirstOrDefault(t => t["theaterId"].ToString() == theaterID)
                 ["availableMissionAlerts"]
                 .AsArray()
+                .Reverse()
+                .DistinctBy(n => n["tileIndex"].GetValue<int>())
                 .ToDictionary(n => n["tileIndex"].GetValue<int>());
 
             var missionTiles = theater["tiles"].AsArray();

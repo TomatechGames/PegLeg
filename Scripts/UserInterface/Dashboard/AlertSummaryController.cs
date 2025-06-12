@@ -21,6 +21,7 @@ public partial class AlertSummaryController : Control
 		rewardRows = rewardRowParent.GetChildren().Select(c => new AlertRewardRow(c as Control)).ToArray();
         GameMission.OnMissionsUpdated += CountRewards;
         GameMission.OnMissionsInvalidated += ClearRewards;
+        VisibilityChanged += CountRewards;
         ClearRewards();
         await GameMission.UpdateMissions();
     }
@@ -40,15 +41,25 @@ public partial class AlertSummaryController : Control
         loadingIcon.Visible = true;
     }
 
-    CancellationTokenSource rewardCTS = new();
+    bool missionsDirty;
+    CancellationTokenSource rewardCTS;
     async void CountRewards()
     {
+        ClearRewards();
         var missions = GameMission.currentMissions;
         if (missions is null)
+        {
+            loadingIcon.Visible = false;
             return;
-        rewardCTS.CancelAndRegenerate(out var ct);
+        }
 
-        ClearRewards();
+        missionsDirty = true;
+        if (!IsVisibleInTree())
+            return;
+        missionsDirty = false;
+
+        rewardCTS = rewardCTS.CancelAndRegenerate(out var ct);
+
 		Dictionary<string, ZoneTotals> totals = [];
 
         await Task.Run(() =>

@@ -224,7 +224,7 @@ shader_parameter/minVal = 25.0
 shader_parameter/currentVal = 45.0
 shader_parameter/limitVal = 48.0
 shader_parameter/totalVal = 50.0
-shader_parameter/time = 21.702
+shader_parameter/time = 54.024
 
 [sub_resource type="Gradient" id="Gradient_usvpd"]
 offsets = PackedFloat32Array(0.681199, 0.746594, 0.809264, 0.959044)
@@ -301,6 +301,7 @@ size_flags_vertical = 3
 theme_type_variation = &"Panel5Pad"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails" index="0"]
+clip_contents = true
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 
@@ -314,6 +315,7 @@ size_flags_vertical = 4
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 preventInteractability = true
+preventDevInteractability = true
 
 [node name="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/VBoxContainer/MarginContainer/RewardEntry" index="0"]
 material = SubResource("ShaderMaterial_1fkd4")

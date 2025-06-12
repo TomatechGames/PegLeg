@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dljot1ntapg7q"]
+[gd_scene load_steps=12 format=3 uid="uid://dljot1ntapg7q"]
 
 [ext_resource type="Texture2D" uid="uid://3atkm5dd5sh1" path="res://Images/AspectRatios/2x3Aspect.png" id="1_gryht"]
 [ext_resource type="Script" uid="uid://dwe8uvqinb63r" path="res://Scripts/UserInterface/ListEntries/InventoryItemSlot.cs" id="1_t20bs"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://e4cwrq7lup48" path="res://Images/InterfaceIcons/T-SlotIcon-Add-64-White.png" id="3_424rb"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="4_poxbv"]
 [ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="7_aq3yn"]
+[ext_resource type="Script" uid="uid://cti7ijxybv3iw" path="res://Scripts/ContextMenu/ContextMenuHook.cs" id="7_s27a0"]
 [ext_resource type="Texture2D" uid="uid://csbd78stcd271" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Magnifier_128.png" id="8_1c0uy"]
 [ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="9_xjln0"]
 
@@ -24,7 +25,7 @@ offset_bottom = 150.0
 size_flags_vertical = 4
 script = ExtResource("1_t20bs")
 entry = NodePath("InventoryEntry")
-inspectArea = NodePath("Control/InspectArea")
+inspectArea = NodePath("Control/FakeInspector")
 open = NodePath("OpenEntry")
 locked = NodePath("LockedEntry")
 buttonControl = NodePath("Responsive Button Area")
@@ -80,6 +81,7 @@ stretch_mode = 5
 [node name="InventoryEntry" parent="." instance=ExtResource("3_2k13d")]
 layout_mode = 2
 preventInteractability = true
+preventDevInteractability = true
 autoLinkToRecycleSelection = false
 
 [node name="ClickBlocker" type="Control" parent="."]
@@ -89,11 +91,15 @@ layout_mode = 2
 layout_mode = 2
 outlinePadding = 0.0
 
+[node name="Node" type="Node" parent="Responsive Button Area"]
+script = ExtResource("7_s27a0")
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 2
 mouse_filter = 2
 
 [node name="InspectArea" type="Control" parent="Control"]
+visible = false
 custom_minimum_size = Vector2(29, 28)
 layout_mode = 1
 anchors_preset = 1
@@ -168,6 +174,13 @@ expand_mode = 1
 layout_mode = 1
 outlinePadding = 0.0
 
+[node name="FakeInspector" type="Control" parent="Control"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
 [connection signal="TooltipChanged" from="InventoryEntry" to="Responsive Button Area" method="set_tooltip_text"]
 [connection signal="pressed" from="Responsive Button Area" to="." method="RequestChange"]
+[connection signal="ContextMenuTriggered" from="Responsive Button Area/Node" to="." method="Inspect" unbinds=1]
 [connection signal="pressed" from="Control/InspectArea/TextureRect/Responsive Button Circle" to="InventoryEntry" method="Inspect"]

@@ -24,18 +24,17 @@ public class QuestSlot
         questItem = newQuestItem;
         if (questItem is null)
             return;
-        OnPropertiesUpdated?.Invoke(this);
-        questItem.OnChanged += ProfileItemChanged;
         questTemplate = questItem.template;
+        ProfileItemChanged();
+        questItem.OnChanged += ProfileItemChanged;
     }
-
-    void ProfileItemChanged() => OnPropertiesUpdated?.Invoke(this);
 
     public string questId => questItem?.templateId ?? questTemplate.TemplateId;
     public GameItemTemplate questTemplate { get; private set; }
     public GameItem questItem { get; private set; }
 
-    public event Action<QuestSlot> OnPropertiesUpdated;
+    void ProfileItemChanged() => OnPropertiesUpdated?.Invoke();
+    public event Action OnPropertiesUpdated;
 
     public bool isUnlocked => questItem?.profile is not null;
     public bool isNew => !(questItem?.IsSeen ?? true);
@@ -49,18 +48,22 @@ public partial class QuestGroupEntry : Control
     [Signal]
     public delegate void NameChangedEventHandler(string name);
     [Signal]
-    public delegate void IconChangedEventHandler(Texture2D icon);
-    [Signal]
     public delegate void NotificationVisibleEventHandler(bool visible);
     [Signal]
     public delegate void PressedEventHandler();
 
     [Export]
-    Texture2D pinnedTex;
+    Control pinnedIcon;
     [Export]
-    Texture2D completeTex;
+    Control completeIcon;
+    [Export]
+    Control notification;
     [Export]
     CheckButton highlightCheck;
+    [Export]
+    RefreshTimerHook eventTimer;
+    [Export]
+    ProgressBar sequenceProgress;
 
     bool hasNotification = false;
     public bool HasNotification => hasNotification;
@@ -71,7 +74,7 @@ public partial class QuestGroupEntry : Control
 
     public void SetupQuestGroup(QuestGroupData questGroup)
     {
-        EmitSignal(SignalName.NameChanged, questGroup.displayName);
+        EmitSignalNameChanged(questGroup.displayName);
         questGroupData = questGroup;
         questSlotList.Clear();
 
@@ -101,10 +104,9 @@ public partial class QuestGroupEntry : Control
                 break;
             }
 
-            if (lastSlot?.isComplete ?? false)
-                EmitSignal(SignalName.IconChanged, completeTex);
-
-            UpdateNotificationAndIcon(null);
+            UpdateSequenceProgress();
+            UpdateEventTimer();
+            UpdateNotificationAndIcon();
             return;
         }
 
@@ -131,22 +133,64 @@ public partial class QuestGroupEntry : Control
         if (weeklySthQuest is not null)
             EmitSignal(SignalName.NameChanged, "Weekly STH: " + weeklySthQuest.questTemplate.DisplayName[..^9]);
 
-        UpdateNotificationAndIcon(null);
+        UpdateSequenceProgress();
+        UpdateEventTimer();
+        UpdateNotificationAndIcon();
+    }
+
+    public void UpdateSequenceProgress()
+    {
+        if (!questGroupData.ShowLocked || !questGroupData.ShowComplete)
+        {
+            sequenceProgress.Visible = false;
+            return;
+        }
+        sequenceProgress.Visible = true;
+        sequenceProgress.MaxValue = questSlotList.Count;
+        sequenceProgress.Value = questSlotList.Count(q => q.isComplete);
+        sequenceProgress.SelfModulate = 
+            sequenceProgress.MaxValue == sequenceProgress.Value ?
+            Colors.Green : Colors.Yellow;
+    }
+
+    public void UpdateEventTimer()
+    {
+        eventTimer.Visible = true;
+        switch (questGroupData.timer)
+        {
+            case QuestGroupData.TimerMode.Weekly:
+                eventTimer.SetTimerType(2);
+                return;
+            case QuestGroupData.TimerMode.Daily:
+                eventTimer.SetTimerType(1);
+                return;
+            case QuestGroupData.TimerMode.None:
+                eventTimer.Visible = false;
+                return;
+        }
+        if (CalenderRequests.EventFlagActive(questGroupData.eventFlag))
+        {
+            var endDate = CalenderRequests.EventEnd(questGroupData.eventFlag);
+            //Hunt The Titan ends in 2027
+            if ((endDate - DateTime.UtcNow).TotalDays < 100)
+            {
+                eventTimer.SetCustomRefreshTime(
+                    endDate, 
+                    CalenderRequests.EventStart(questGroupData.eventFlag)
+                );
+                return;
+            }
+        }
+        eventTimer.Visible = false;
     }
     
-    public void UpdateNotificationAndIcon(QuestSlot _)
+    public void UpdateNotificationAndIcon()
     {
-        hasNotification = questSlotList.Any(questData => questData.isNew && (questGroupData.ShowComplete || !questData.isComplete));
-        EmitSignal(SignalName.NotificationVisible, hasNotification);
-        bool isPinned = questSlotList.Any(q => q.isPinned);
-        bool isComplete = questSlotList.All(q => q.isComplete);
-
-        if (isComplete)
-            EmitSignal(SignalName.IconChanged, completeTex);
-        else if (isPinned)
-            EmitSignal(SignalName.IconChanged, pinnedTex);
-        else
-            EmitSignal(SignalName.IconChanged, (Texture2D)null);
+        var notif = questSlotList.Any(questData => questData.isNew && (questGroupData.ShowComplete || !questData.isComplete));
+        notification.Visible = notif;
+        EmitSignalNotificationVisible(notif);
+        pinnedIcon.Visible = questSlotList.Any(q => (!questGroupData.ShowLocked || q.isUnlocked) && q.isPinned);
+        completeIcon.Visible = questSlotList.All(q => (!questGroupData.ShowLocked || q.isUnlocked) && q.isComplete);
     }
 
     public void LinkButtonGroup(ButtonGroup buttonGroup)
@@ -157,7 +201,7 @@ public partial class QuestGroupEntry : Control
     public void Press()
     {
         highlightCheck.ButtonPressed = true;
-        EmitSignal(SignalName.Pressed);
+        EmitSignalPressed();
     }
 
     public override void _ExitTree()

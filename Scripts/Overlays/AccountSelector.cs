@@ -130,8 +130,7 @@ public partial class AccountSelector : ModalWindow
                 null,
                 hasAuth ? "This account will be signed out and it's persistant login token will be forgotten" : "This account will be removed from PegLeg",
                 hasAuth ? "" : "PegLeg couldn't log into this account to sign out. Once you remove this account you should probably Sign Out Everywhere from epicgames.com/account/password"
-            ) != true
-        )
+        ) != true)
             return;
 
         {

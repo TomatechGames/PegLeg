@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://4cmc4075yf4i" path="res://Scenes/GameItemEntry/reward_entry_large.tscn" id="4_1u5ij"]
 [ext_resource type="Texture2D" uid="uid://c4ixuk0fofeej" path="res://Images/InterfaceIcons/PinataStandardPack-Upgrade.png" id="5_1nhqt"]
 [ext_resource type="Script" uid="uid://bm5sma44lxciv" path="res://Scripts/RefreshTimerHook.cs" id="5_bcyag"]
-[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="6_2af65"]
 [ext_resource type="AudioStream" uid="uid://cueximnj2vdji" path="res://Audio/SFX/UI/Appear/Fort_UI_RewardEarned_02.ogg" id="6_dm3r4"]
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="6_lypfg"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="7_wlhx3"]
@@ -15,7 +14,7 @@
 [ext_resource type="Script" uid="uid://cdjdgbb3ere1f" path="res://Scripts/Config/ConfigToggleHook.cs" id="9_ayge5"]
 [ext_resource type="Script" uid="uid://dbf8rsvamv77x" path="res://Scripts/UserInterface/ListEntries/GameOfferEntry.cs" id="9_cn6d8"]
 [ext_resource type="Texture2D" uid="uid://bg8tqds2ynv72" path="res://Images/TextureResources/GradientShadow.tres" id="9_hb2ve"]
-[ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/MissionZoneBackgrounds/STWShop.png" id="9_hhjpb"]
+[ext_resource type="Texture2D" uid="uid://cwxakaprkjova" path="res://Images/Wallpapers/STWShop.png" id="9_hhjpb"]
 [ext_resource type="Texture2D" uid="uid://dufn5f0er7tu7" path="res://Images/Llamas/PinataStandardPack.png" id="9_ifcvm"]
 [ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="10_qedio"]
 [ext_resource type="Texture2D" uid="uid://bs2rkwdm3joj1" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Caution_128.png" id="10_ub6nl"]
@@ -23,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="11_hwug4"]
 [ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="12_h8kct"]
 [ext_resource type="Shader" uid="uid://dmt1xhf6kra1d" path="res://Shaders/LlamaPinata.gdshader" id="12_ntpn1"]
+[ext_resource type="PackedScene" uid="uid://2iou6v2uijh8" path="res://Scenes/small_loading_icon.tscn" id="13_mtq86"]
 [ext_resource type="Texture2D" uid="uid://bhgnqhybnnlvq" path="res://Images/InterfaceIcons/T_CardPack_Weapon_IconMask.png" id="13_wd2ux"]
 [ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="14_ynnau"]
 [ext_resource type="Theme" uid="uid://bc1c4l6rjxof5" path="res://GodotThemes/LineEditLargeTheme.tres" id="15_rwvm7"]
@@ -32,7 +32,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_osi5s"]
 shader = ExtResource("8_ffqoy")
-shader_parameter/ControlSize = Vector2(0, 0)
+shader_parameter/ControlSize = Vector2(788, 720)
 shader_parameter/ShiftDirection = Vector2(0.5, 0.5)
 shader_parameter/Fit = false
 shader_parameter/UseCorners = true
@@ -70,7 +70,7 @@ script = ExtResource("1_n8h1q")
 catalogLlamaEntryScene = ExtResource("2_eeobp")
 cardpackLlamaEntryScene = ExtResource("3_h03df")
 itemEntryScene = ExtResource("4_1u5ij")
-offerListLoadingIcon = NodePath("MarginContainer/LoadingIcon")
+offerListLoadingIcon = NodePath("MarginContainer/SmallLoadingIcon")
 offerListErrorIcon = NodePath("MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/Error")
 llamaScrollArea = NodePath("MarginContainer/ScrollContainer")
 llamaOfferParent = NodePath("MarginContainer/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer/LlamaOffers")
@@ -284,11 +284,8 @@ layout_mode = 2
 useHold = true
 holdTime = 5.0
 
-[node name="LoadingIcon" parent="MarginContainer" instance=ExtResource("6_2af65")]
-visible = false
+[node name="SmallLoadingIcon" parent="MarginContainer" instance=ExtResource("13_mtq86")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
 [node name="Llama Contents" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(430, 0)

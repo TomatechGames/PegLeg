@@ -129,8 +129,8 @@ public partial class SurvivorSquadEntry : Control
 
     void UpdateFortStat()
     {
-        int summedValue = leadSurvivorSlot.slottedItem?.Rating ?? 0;
-        summedValue += survivorSlots.Select(slot => slot.slottedItem?.Rating ?? 0).Sum();
+        int summedValue = leadSurvivorSlot.slottedItem?.CalculateSurvivorRating(true) ?? 0;
+        summedValue += survivorSlots.Select(slot => slot.slottedItem?.CalculateSurvivorRating(true) ?? 0).Sum();
 
         if (IsInstanceValid(fortPointsLabel))
             fortPointsLabel.Text = $"+{summedValue}";

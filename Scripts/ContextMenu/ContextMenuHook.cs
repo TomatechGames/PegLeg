@@ -4,11 +4,17 @@ using System;
 public partial class ContextMenuHook : Node
 {
     [Signal]
-    public delegate void ContextMenuTriggeredEventHandler();
+    public delegate void ContextMenuTriggeredEventHandler(ContextMenuHook test);
     [Export]
 	public GameItemEntry itemContext;
     [Export]
     public GameOfferEntry offerContext;
+    [Export]
+    public Control attachTo;
+    [Export]
+    public bool attachHorizontally;
+    [Export]
+    public string[] contextComponents;
 
     bool hover;
 
@@ -50,7 +56,7 @@ public partial class ContextMenuHook : Node
             if (halfTriggered && rClickJustReleased)
             {
                 halfTriggered = false;
-                EmitSignal(SignalName.ContextMenuTriggered);
+                EmitSignalContextMenuTriggered(this);
             }
         }
     }

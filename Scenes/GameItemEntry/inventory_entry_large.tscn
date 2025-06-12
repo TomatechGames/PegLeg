@@ -16,3 +16,13 @@ offset_bottom = 117.0
 
 [node name="RarityTriangles" parent="ItemContent/EdgePadding/GameItem/MarginContainer/IconWindow/MarginContainer/AspectTexture" index="1"]
 material = SubResource("ShaderMaterial_lodde")
+
+[node name="Button" parent="OverflowWarningPopup" index="0"]
+custom_minimum_size = Vector2(0, 24)
+
+[node name="TextureRect" parent="OverflowWarningPopup/Button/MarginContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(20, 20)
+
+[node name="Label" parent="OverflowWarningPopup/Button/MarginContainer/HBoxContainer" index="1"]
+custom_minimum_size = Vector2(0, 15)
+theme_override_font_sizes/font_size = 12

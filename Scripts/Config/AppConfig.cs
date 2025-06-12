@@ -4,7 +4,8 @@ using System.Text.Json.Nodes;
 
 public static class AppConfig
 {
-    public static event Action<string, string, JsonValue> OnConfigChanged;
+    public delegate void ConfigChangeHandler(string section, string key, JsonValue value);
+    public static event ConfigChangeHandler OnConfigChanged;
 
     //static ConfigFile configFile;
     const string configPath = "user://appConfig.json";

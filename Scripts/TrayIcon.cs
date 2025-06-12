@@ -3,13 +3,21 @@ using System;
 
 public partial class TrayIcon : StatusIndicator
 {
+
+    static NotificationData? _tutorialNotif;
+    static NotificationData tutorialNotif => _tutorialNotif ??= new()
+    {
+        header = "PegLeg minimised to Tray",
+        body = "Click the Tray Icon or reopen PegLeg to resume.\nNotifications will still be delivered when minimised.\nRight-click the tray icon to fully close PegLeg.",
+        icon = inst?.Icon,
+        urgent = true,
+        firstAction = "Don't Show Again",
+        itemColor = Color.FromHtml("#ffcc00"),
+    };
+
     bool minimised = false;
     bool hasShownTutorial = false;
     PopupMenu menu;
-    [Export]
-    Window tutorialWindow;
-    [Export]
-    Timer autoclose;
     [Export]
     Control mainAppRoot;
     [Export]
@@ -26,7 +34,6 @@ public partial class TrayIcon : StatusIndicator
         GetWindow().CloseRequested += Minimise;
         GetTree().AutoAcceptQuit = false;
         Pressed += (_, __) => Unminimise();
-        autoclose.Timeout += () => tutorialWindow.Visible = false;
         menu.Clear();
         menu.AddItem("Close PegLeg", 404);
         if (OS.HasFeature("test"))
@@ -55,7 +62,6 @@ public partial class TrayIcon : StatusIndicator
         {
             minimised = true;
             Helpers.SetMainWindowVisible(false);
-            autoclose.Start();
             if (mainAppRoot is not null)
             {
                 mainAppRoot.Visible = false;
@@ -63,13 +69,7 @@ public partial class TrayIcon : StatusIndicator
             }
             if (!hasShownTutorial)
             {
-                var rect = GetRect();
-                var target = rect.Position;
-                target.X -= tutorialWindow.Size.X * 0.5f;
-                target.X += rect.Size.X * 0.5f;
-                target.Y -= tutorialWindow.Size.Y + 3;
-                tutorialWindow.Position = (Vector2I)target;
-                tutorialWindow.Show();
+                NotificationManager.Push([tutorialNotif]);
                 hasShownTutorial = true;
             }
             Visible = true;

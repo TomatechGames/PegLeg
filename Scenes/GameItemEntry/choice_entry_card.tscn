@@ -1,13 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://tso3qs0wxppc"]
+[gd_scene load_steps=14 format=3 uid="uid://tso3qs0wxppc"]
 
 [ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="1_j3td7"]
 [ext_resource type="Shader" uid="uid://dabk0fuxvn2ch" path="res://Shaders/ChoiceCard.tres" id="2_op652"]
 [ext_resource type="Texture2D" uid="uid://bu7y4624c7w51" path="res://Images/InterfaceIcons/o5hq54xvrat91.png" id="3_5abd1"]
 [ext_resource type="Texture2D" uid="uid://c8gc2giakfb0e" path="res://Images/InterfaceIcons/Fortnite-Item-Pattern-512.png" id="4_e2vqj"]
-[ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/InterfaceIcons/ChoiceCardV2/LabelUV-sheet.png" id="5_do3oc"]
-[ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/InterfaceIcons/ChoiceCardV2/Base-sheet.png" id="6_m1h2m"]
+[ext_resource type="Texture2D" uid="uid://ds6dqlkqc47j5" path="res://Images/Flipbook/ChoiceCardV2/LabelUV-sheet.png" id="5_do3oc"]
+[ext_resource type="Texture2D" uid="uid://datfcfaym8so5" path="res://Images/Flipbook/ChoiceCardV2/Base-sheet.png" id="6_m1h2m"]
 [ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="7_65gaw"]
 [ext_resource type="PackedScene" uid="uid://xvc01jygcwse" path="res://Scenes/responsive_button_area.tscn" id="8_hciuj"]
+[ext_resource type="Script" uid="uid://cti7ijxybv3iw" path="res://Scripts/ContextMenu/ContextMenuHook.cs" id="9_r1kfb"]
 [ext_resource type="Texture2D" uid="uid://k8jqshvbqkl4" path="res://Images/TextureResources/GradientCircle.tres" id="9_tm7mh"]
 [ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="10_pu46j"]
 [ext_resource type="Texture2D" uid="uid://csbd78stcd271" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Magnifier_128.png" id="11_oobe8"]
@@ -73,7 +74,11 @@ anchor_top = 0.092
 anchor_right = 0.845
 anchor_bottom = 0.911
 
+[node name="CtxMenu" type="Node" parent="Control/Responsive Button Area"]
+script = ExtResource("9_r1kfb")
+
 [node name="InspectArea" type="Control" parent="Control"]
+visible = false
 layout_mode = 1
 anchor_left = 0.6
 anchor_top = 0.15
@@ -155,4 +160,5 @@ outlinePadding = 0.0
 [connection signal="NameChanged" from="." to="Control/Label" method="set_text"]
 [connection signal="RarityChanged" from="." to="ChoiceCardTexture" method="SetShaderColor" binds= ["RarityColour"]]
 [connection signal="pressed" from="Control/Responsive Button Area" to="." method="EmitPressedSignal"]
+[connection signal="ContextMenuTriggered" from="Control/Responsive Button Area/CtxMenu" to="." method="Inspect" unbinds=1]
 [connection signal="pressed" from="Control/InspectArea/TextureRect/Responsive Button Circle" to="." method="Inspect"]

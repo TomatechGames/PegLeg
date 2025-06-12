@@ -95,11 +95,15 @@ public partial class ShaderHook : Control
     public void SetShaderBool(bool val, string property)=>
         ShaderMat.SetShaderParameter(property, val);
 
-    public void SetShaderFloat(float val, string property)=>
+    public int GetShaderInt(string property) =>
+        (int)ShaderMat.GetShaderParameter(property);
+    public void SetShaderInt(int val, string property) =>
         ShaderMat.SetShaderParameter(property, val);
 
     public float GetShaderFloat(string property) =>
         (float)ShaderMat.GetShaderParameter(property);
+    public void SetShaderFloat(float val, string property)=>
+        ShaderMat.SetShaderParameter(property, val);
 
     public void SetShaderColor(Color val, string property)=>
         ShaderMat.SetShaderParameter(property, val);

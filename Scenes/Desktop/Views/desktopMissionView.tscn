@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c78gt6b2m1utg"]
+[gd_scene load_steps=25 format=3 uid="uid://c78gt6b2m1utg"]
 
 [ext_resource type="Script" uid="uid://c6amov6qaydfm" path="res://Scripts/UserInterface/MissionInterface.cs" id="1_474w2"]
 [ext_resource type="Texture2D" uid="uid://bugl5pyr0s7op" path="res://Images/InterfaceIcons/FNIconLib/T_UI_IconLibrary_Reset_128.png" id="2_88mxw"]
@@ -9,8 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://c1evt872olbra" path="res://Images/InterfaceIcons/Icon-Mission-Critical-XL.png" id="5_6m3c7"]
 [ext_resource type="Script" uid="uid://cdjdgbb3ere1f" path="res://Scripts/Config/ConfigToggleHook.cs" id="6_p6lk0"]
 [ext_resource type="Texture2D" uid="uid://gak2hv6itgoo" path="res://Images/InterfaceIcons/T-Icon-Survivor-Leader-CARD.png" id="7_lvf0s"]
-[ext_resource type="Texture2D" uid="uid://cpuj75vjuwhei" path="res://Images/InterfaceIcons/T-Icon-Schematic-CARD.png" id="8_kmmrq"]
-[ext_resource type="Texture2D" uid="uid://cs2v3mt4il1o2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Soldier-HID-Commando-GunTough-R-T01-L.png" id="9_oiae4"]
+[ext_resource type="Texture2D" uid="uid://fo5dt3fnvrt0" path="res://Images/InterfaceIcons/SchematicIcon128.png" id="7_nyegd"]
+[ext_resource type="Texture2D" uid="uid://c2xw0pe7rfdry" path="res://Images/BanjoSuppliments/TypeIcons/T-Icon-Heroes-128.png" id="8_0gdkn"]
 [ext_resource type="Texture2D" uid="uid://dn8kyw5a3ibc4" path="res://Images/InterfaceIcons/T-Items-Reagent-C-T02-L.png" id="10_5ywbn"]
 [ext_resource type="Texture2D" uid="uid://gfhrrk7epybx" path="res://Images/InterfaceIcons/T-Items-Reagent-C-T01-L.png" id="11_3yuk1"]
 [ext_resource type="Texture2D" uid="uid://de4vkpc5d58on" path="res://Images/InterfaceIcons/T-Items-WeaponPerkup-Legendary-L.png" id="12_jljfs"]
@@ -22,21 +22,10 @@
 [ext_resource type="PackedScene" uid="uid://dd5q64xdgxtxp" path="res://Scenes/MissionEntry/mission_entry_v5.tscn" id="17_eyhau"]
 [ext_resource type="Texture2D" uid="uid://dwam1asop7ckw" path="res://Images/InterfaceIcons/PinataMiniRewardPack.png" id="17_n40x5"]
 [ext_resource type="Script" uid="uid://ni2kue85s6jc" path="res://Scripts/UIElements/DynamicGridContainer.cs" id="18_phyx5"]
-[ext_resource type="PackedScene" uid="uid://76mx3dxck070" path="res://Scenes/loading_icon.tscn" id="19_xbd21"]
-[ext_resource type="Shader" uid="uid://dwr30ie6yoste" path="res://Shaders/AdaptivePanel.tres" id="20_dnnsf"]
-[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="21_6608v"]
-[ext_resource type="PackedScene" uid="uid://cbntw4mx14x6o" path="res://MissionHex/mission_hex_grid.tscn" id="22_6i1lp"]
+[ext_resource type="PackedScene" uid="uid://2iou6v2uijh8" path="res://Scenes/small_loading_icon.tscn" id="26_nyegd"]
 
 [sub_resource type="ButtonGroup" id="ButtonGroup_fb3nj"]
 resource_name = "MissionZoneFilter"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fyl58"]
-shader = ExtResource("20_dnnsf")
-shader_parameter/ControlSize = Vector2(0, 0)
-shader_parameter/Fit = false
-shader_parameter/shiftDirection = Vector2(0.5, 0.5)
-shader_parameter/UseCorners = true
-shader_parameter/CornerRadius = 30.0
 
 [node name="Missions" type="MarginContainer" node_paths=PackedStringArray("zoneFilterTabBar", "searchBar", "missionList", "loadingIcon")]
 self_modulate = Color(1, 1, 1, 0)
@@ -51,7 +40,7 @@ unexpectedResetSound = ExtResource("3_m7b6w")
 zoneFilterTabBar = NodePath("VBoxContainer/HBoxContainer/ZoneFilters")
 searchBar = NodePath("VBoxContainer/HBoxContainer/SearchBox")
 missionList = NodePath("VBoxContainer/Control/ScrollContainer")
-loadingIcon = NodePath("VBoxContainer/Control/LoadingIcon")
+loadingIcon = NodePath("VBoxContainer/Control/SmallLoadingIcon")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -124,10 +113,12 @@ layout_mode = 2
 selected = 0
 item_count = 2
 popup/item_0/text = "Grid View"
+popup/item_0/id = 0
 popup/item_1/text = "List View"
 popup/item_1/id = 1
 
 [node name="ItemFilters" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"CheckGroupContainer"
 
@@ -171,7 +162,7 @@ offset_right = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("8_kmmrq")
+texture = ExtResource("7_nyegd")
 expand_mode = 1
 stretch_mode = 5
 
@@ -192,7 +183,7 @@ offset_right = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("9_oiae4")
+texture = ExtResource("8_0gdkn")
 expand_mode = 1
 stretch_mode = 5
 
@@ -469,35 +460,8 @@ spacing = Vector2(10, 10)
 [node name="Padding" type="Control" parent="VBoxContainer/Control/ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="MissionHexViewer" type="MarginContainer" parent="VBoxContainer/Control"]
-visible = false
+[node name="SmallLoadingIcon" parent="VBoxContainer/Control" instance=ExtResource("26_nyegd")]
 layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="VBoxContainer/Control/MissionHexViewer"]
-material = SubResource("ShaderMaterial_fyl58")
-layout_mode = 2
-stretch = true
-script = ExtResource("21_6608v")
-syncControlSize = true
-
-[node name="SubViewport" type="SubViewport" parent="VBoxContainer/Control/MissionHexViewer/SubViewportContainer"]
-disable_3d = true
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(2, 2)
-render_target_update_mode = 0
-
-[node name="MissionHexGrid" parent="VBoxContainer/Control/MissionHexViewer/SubViewportContainer/SubViewport" instance=ExtResource("22_6i1lp")]
-
-[node name="LoadingIcon" parent="VBoxContainer/Control" instance=ExtResource("19_xbd21")]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/ForceRefresh" to="." method="ForceReloadMissions"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/TestNotif" to="." method="FakeUnexpectedReset"]

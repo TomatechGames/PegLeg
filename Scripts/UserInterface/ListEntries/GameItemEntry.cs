@@ -113,7 +113,11 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     [Export]
     public bool preventInteractability;
     [Export]
+    public bool preventDevInteractability;
+    [Export]
     public bool forceInteractability;
+    [Export]
+    public bool allowInspectWhenUninteractable = true;
     [Export]
     public bool interactableWhenEmpty;
     [Export]
@@ -128,6 +132,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
     public bool autoSelectOnPress = true;
     [Export]
     public bool unlinkOnInvalidHandle = true;
+    [Export]
+    public bool useSquadForRating;
     [Export]
     public bool hideMythicLeadSquad = false;
     [Export]
@@ -208,8 +214,8 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
         if (item.template is null)
         {
-            GD.Print("uh oh");
-            GD.Print(item);
+            //GD.Print("uh oh");
+            //GD.Print(item);
         }
 
         int amount = item.quantity;
@@ -257,7 +263,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         if (type == "Worker")
             type = "Survivor";
 
-        float rating = selector?.overrideSurvivorSquad is string squadOverride ? item.CalculateRating(squadOverride) : item.Rating;
+        float rating = item.CalculateSurvivorRating(useSquadForRating || selector?.overrideSurvivorSquad is not null, selector?.overrideSurvivorSquad);
         string ratingText = rating == 0 ? "" : rating.ToString();
 
         int tier = item.template?.Tier ?? 0;
@@ -359,7 +365,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
         //if (!(data.rarity < 7 && data.rarity >= 0))
         //    rarity = 0;
 
-        EmitSignal(SignalName.OverflowWarning, item.attributes?[""] is not null);
+        EmitSignal(SignalName.OverflowWarning, item.attributes?["inventory_overflow_date"]?.GetValueKind()==System.Text.Json.JsonValueKind.String);
         EmitSignal(SignalName.NotificationChanged, !item.IsSeen);
         EmitSignal(SignalName.FavoriteChanged, item.IsFavourited);
         EmitSignal(SignalName.MaxTierChanged, Mathf.Min((item.template?.RarityLevel ?? 0) + 1, 5));
@@ -377,35 +383,37 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public Vector2 GetBasisSize() => CustomMinimumSize;
 
-    static readonly string[] autoInteractableTypes = new string[]
-    {
+    static readonly string[] autoInteractableTypes =
+    [
         "schematic",
         "weapon",
         "trap",
         "hero",
         "defender",
         "cardpack"
-    };
+    ];
 
     bool interactableState;
     public void SetInteractable() => SetInteractable(interactableState);
     public void SetInteractable(bool interactable)
     {
         interactableState = interactable;
-        EmitSignal(SignalName.InteractableChanged,
-            ForceInteractability ||
-            AppConfig.Get("advanced", "developer", false) ||
-            (
-                interactableState &&
-                (
-                    interactableWhenEmpty ||
-                    currentItem is not null
-                ) &&
-                !preventInteractability
-            )
-        );
+        EmitSignal(SignalName.InteractableChanged, IsInteractable);
     }
-    
+
+    bool IsInteractable =>
+        ForceInteractability ||
+        (AppConfig.Get("advanced", "developer", false) && !preventDevInteractability) ||
+        (
+            interactableState &&
+            (
+                interactableWhenEmpty ||
+                currentItem is not null
+            ) &&
+            !preventInteractability
+        );
+
+
 
     public virtual void EmitPressedSignal()
     {
@@ -423,7 +431,7 @@ public partial class GameItemEntry : Control, IRecyclableEntry
             currentItem.OnRemoved -= RemoveItem;
             currentItem = null;
         }
-        inspectorOverride = default;
+        inspectorOverride = null;
         EmitSignal(SignalName.ItemDoesExist, false);
         EmitSignal(SignalName.ItemDoesNotExist, true);
         EmitSignal(SignalName.NameChanged, "");
@@ -442,6 +450,10 @@ public partial class GameItemEntry : Control, IRecyclableEntry
 
     public void Inspect()
     {
+        if (!allowInspectWhenUninteractable && !IsInteractable)
+            return;
+        if (currentItem is null)
+            return;
         if (inspectorOverride is not null)
             GameItemViewer.Instance.ShowItem(inspectorOverride);
         else

@@ -6,7 +6,7 @@ vec2 flipbookSlice(vec2 uv, vec2 sliceAmount, float cellCount, float currentInde
 	float sliceIndex = floor(mod(currentIndex, sliceCount));
 	//sliceIndex = 15.0;
 	vec2 sliceOffset = vec2(mod(sliceIndex, sliceAmount.x),floor(sliceIndex/sliceAmount.x));
-	
+
 	vec2 slicedUV = (sliceOffset/sliceAmount) + (uv/sliceAmount);
 	vec2 slicedUnit = mod(slicedUV,1.0/sliceAmount);
 	vec2 slicedGrid = floor(slicedUV*sliceAmount);

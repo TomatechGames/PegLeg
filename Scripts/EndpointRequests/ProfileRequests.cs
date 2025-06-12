@@ -376,13 +376,31 @@ public class GameAccount
             SetAuthentication(deviceAuth);
             return true;
         }
-        string failMsg = deviceAuth?["errorMessage"].ToString();
+        bool offline = deviceAuth?["offline"] is JsonValue val && val.GetValueKind() == System.Text.Json.JsonValueKind.True;
+        string failMsg = offline ? "Offline" : deviceAuth?["errorMessage"].ToString();
         GD.Print(failMsg);
         if (!loginFailure)
         {
             loginFailure = true;
             loginFailureMessage = failMsg;
             OnAccountUpdated?.Invoke();
+
+            if (offline)
+            {
+                //dont send login failure notif when offline
+                return false;
+            }
+
+            NotificationManager.Push([new()
+            {
+                header = "Login Failure",
+                icon = ProfileIcon,
+                itemColor = Color.FromHtml("#aa0000"),
+                body=$"""
+                Could not Login to {DisplayName}, please Login again from the Account Selector
+                Err: {loginFailureMessage}
+                """
+            }]);
         }
 
         return false;
@@ -460,7 +478,8 @@ public class GameAccount
                 );
 
             string skinId = avatarData[0]?["avatarId"]?.ToString() is string avId ? avId.Split(":")[^1] : null;
-            if (skinId is null)
+            GD.Print($"skinID: {skinId}");
+            if (string.IsNullOrWhiteSpace(skinId))
                 return;
 
             var skinData = await Helpers.MakeRequest(
@@ -472,9 +491,14 @@ public class GameAccount
                 addCosmeticHeader: true
             );
 
-            string skinIconServerPath =
-                skinData["data"]?["images"]?["icon"]?.ToString() ??
-                skinData["data"]?["images"]?["smallIcon"]?.ToString();
+            string skinIconServerPath = null;
+            try
+            {
+                skinIconServerPath =
+                    skinData["data"]?["images"]?["icon"]?.ToString() ??
+                    skinData["data"]?["images"]?["smallIcon"]?.ToString();
+            }
+            catch { }
             if (skinIconServerPath is null)
                 return;
 
@@ -625,7 +649,7 @@ public class GameAccount
         {
             var matchingWorkers = equippedWorkerItems
                 .Where(item => item.attributes["squad_id"].ToString() == squadId);
-            return matchingWorkers.Select(item => item.Rating).Sum();
+            return matchingWorkers.Select(item => item.CalculateSurvivorRating()).Sum();
         }
 
         //+ profileStats["fortitude"].GetValue<int>()
@@ -786,7 +810,7 @@ public class GameAccount
     public async Task<string> GetSACCode(bool addExpiredText = true)
     {
         var commonData = await GetProfile(FnProfileTypes.Common).Query();
-        var lastSetTime = DateTime.Parse(commonData.statAttributes["mtx_affiliate_set_time"].ToString(), null, DateTimeStyles.RoundtripKind);
+        var lastSetTime = DateTime.TryParse(commonData.statAttributes["mtx_affiliate_set_time"]?.ToString(), null, DateTimeStyles.RoundtripKind, out var dt) ? dt : DateTime.UtcNow.AddDays(-15);
         bool isExpired = (DateTime.UtcNow - lastSetTime).Days > 13;
         return commonData.statAttributes["mtx_affiliate"] + (isExpired && addExpiredText ? " (Expired)" : "");
     }
@@ -987,7 +1011,10 @@ public class GameProfile
     public void SendItemUpdate(GameItem item)
     {
         if (item.profile == this)
+        {
             OnItemUpdated?.Invoke(item);
+            item.NotifyChanged();
+        }
     }
 
     public async Task<GameProfile> Query(bool force = false)
@@ -1038,6 +1065,26 @@ public class GameProfile
         {
             opAccount.profileOperationSemaphore.Release();
         }
+    }
+
+    public void MarkItemsSeen(GameItem[] items)
+    {
+        var filteredItems = items.Where(i => i.profile == this && i.template is not null).ToArray();
+        if (
+            filteredItems.Length == 0 ||
+            !(
+                profileId == FnProfileTypes.AccountItems ||
+                profileId == FnProfileTypes.Common ||
+                profileId == FnProfileTypes.CosmeticInventory
+            )
+        )
+            return;
+        for (int i = 0; i < filteredItems.Length; i++)
+        {
+            filteredItems[i].SetSeenLocal(true);
+        }
+        string content = @$"{{""itemIds"": [{string.Join(", ", filteredItems.Select(i => @$"""{i.uuid}"""))}]}}";
+        PerformOperation("MarkItemSeen", content).StartTask();
     }
 
     public JsonObject lastOp { get; private set; }
@@ -1114,7 +1161,13 @@ public class GameProfile
             return null;
         }
 
-        var changes = result["profileChanges"].AsArray();
+        var changes = result["profileChanges"]?.AsArray();
+
+        if (changes is null)
+        {
+            GD.Print($"unknown profile op result: {result}");
+            return null;
+        }
         if (changes.Count == 0) { }
         else if (changes[0]["changeType"].ToString() == "fullProfileUpdate")
         {
@@ -1500,7 +1553,7 @@ public class GameItem
             ["attributes"] = attributes?.SafeDeepClone(),
             ["quantity"] = quantity,
             ["template"] = templateData,
-            ["searchTags"] = _searchTags?.SafeDeepClone() ?? template?["searchTags"]?.SafeDeepClone(),
+            ["searchTags"] = GetSearchTags()?.SafeDeepClone(),
         };
         if (profile is null)
             _rawData.Remove("uuid"); //doing this backwards to make uuid the first property of rawData
@@ -1535,9 +1588,11 @@ public class GameItem
             _searchTags.Add("Bundle");
             return _searchTags;
         }
-        _searchTags = template?.GenerateSearchTags(assumeUncommon);
+        _searchTags = template?.GenerateSearchTags(assumeUncommon)?.SafeDeepClone();
         if (_searchTags is null)
-            return null;
+            return [.. templateId.Split(":")];
+        if (attributes?["inventory_overflow_date"] is not null)
+            _searchTags.Add("Overflow");
         if (attributes?["personality"]?.ToString() is string rawPersonality)
             _searchTags.Add(ParseSurvivorAttribute(rawPersonality));
         if (attributes?["set_bonus"]?.ToString() is string rawSetBonus)
@@ -1579,7 +1634,7 @@ public class GameItem
     }
     public bool IsFavourited => attributes?["favorite"]?.GetValue<bool>() ?? false;
     bool? isSeenLocal = null;
-    public bool IsSeen => isSeenLocal ?? (attributes?["item_seen"]?.GetValue<bool>() ?? false || template?.CanBeUnseen == false);
+    public bool IsSeen => isSeenLocal ?? (attributes?["item_seen"]?.GetValue<bool>() ?? false || template?.CanBeUnseen != true);
     public GameItem SetSeenLocal(bool? newVal = true)
     {
         if (isSeenLocal == newVal)
@@ -1594,7 +1649,7 @@ public class GameItem
 
     public GameItem MarkItemSeen()
     {
-        if (attributes?["item_seen"] is not null)
+        if (attributes?["item_seen"] is not null || template?.CanBeUnseen != true)
             return this;
         SetSeenLocal();
         string content = @$"{{""itemIds"": [""{uuid}""]}}";
@@ -1710,7 +1765,7 @@ public class GameItem
     public int Rating => _rating ??= CalculateRating();
     public int UpdateRating() => (_rating = CalculateRating()) ?? 0;
 
-    public int CalculateRating(string survivorSquad = null)
+    public int CalculateRating()
     {
         if (PegLegResourceManager.ItemRatings is not JsonObject ratings)
             return 0;
@@ -1727,7 +1782,7 @@ public class GameItem
         if (!template.CanBeLeveled && tier == 5) //crafted weapons and traps dont have max_level_bonus attribute
             bonusMax = 10;
         level = Mathf.Clamp(level, Mathf.Min(1, (tier * 10) - 10), (tier * 10) + bonusMax);
-        string ratingCategory = template.Type == "Worker" ? (template.SubType is null ? "Survivor" : "LeadSurvivor") :"Default";
+        string ratingCategory = template.Type == "Worker" ? (template.SubType is null ? "Survivor" : "LeadSurvivor") : "Default";
 
         string ratingKey = template.GetCompactRarityAndTier(tier);
         if (ratingCategory == "LeadSurvivor")
@@ -1742,10 +1797,14 @@ public class GameItem
         int subLevel = level - ratingSet["FirstLevel"].GetValue<int>();
         if (subLevel < 0)
             return 0;
-        int rating = (int)ratingSet["Ratings"][subLevel].GetValue<float>();
+        return (int)ratingSet["Ratings"][subLevel].GetValue<float>();
+    }
 
+    public int CalculateSurvivorRating(bool useSquad = true, string survivorSquad = null)
+    {
+        var rating = Rating;
         survivorSquad ??= attributes?["squad_id"]?.ToString();
-        if (template.Type != "Worker" && survivorSquad is null)
+        if (!useSquad || rating == 0 || (template.Type != "Worker" && survivorSquad is null))
             return rating;
 
         if (template.SubType is string leadType)

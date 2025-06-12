@@ -1,0 +1,488 @@
+[gd_scene load_steps=20 format=3 uid="uid://y27ypgna5cwl"]
+
+[ext_resource type="Script" uid="uid://b4xwylpnpul65" path="res://Scripts/Notifications/NotificationInstance.cs" id="1_hhscf"]
+[ext_resource type="Texture2D" uid="uid://4gudg1raxie8" path="res://Images/AspectRatios/1x1Aspect.png" id="1_trrjj"]
+[ext_resource type="Shader" uid="uid://bmpdy7gneitqr" path="res://Shaders/StaticNotifIcon.gdshader" id="3_0wru6"]
+[ext_resource type="Texture2D" uid="uid://dmki0jynk48ik" path="res://Images/InterfaceIcons/T-SlotIcon-Remove-64.png" id="3_mrql6"]
+[ext_resource type="Script" uid="uid://cf1wi6mkqvf8" path="res://Scripts/ShaderHook.cs" id="4_4fw6k"]
+[ext_resource type="Shader" uid="uid://bwjb0dpm2clix" path="res://Shaders/FlipbookAnimation.gdshader" id="5_td8no"]
+[ext_resource type="Texture2D" uid="uid://d4bvtl0uat3g3" path="res://Images/Flipbook/VendingItemSheet.png" id="7_uvlqm"]
+[ext_resource type="PackedScene" uid="uid://dbi5mie2icc78" path="res://Scenes/GameItemEntry/notification_highlight_item.tscn" id="8_0wru6"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="8_5edey"]
+[ext_resource type="Texture2D" uid="uid://b4bvadxmolhkq" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Weapons-SK-SCAR-L.png" id="8_uvlqm"]
+[ext_resource type="Texture2D" uid="uid://b4oryyn8qqeln" path="res://Images/InterfaceIcons/T-Icon-Backpack-128.png" id="9_0wru6"]
+[ext_resource type="Texture2D" uid="uid://da88fnanf35ju" path="res://Images/InterfaceIcons/T-Items-Currency-X-RayLlama.png" id="9_l1o1y"]
+
+[sub_resource type="Curve" id="Curve_0wru6"]
+bake_resolution = 60
+_data = [Vector2(0, 0), 0.0, 1.97739, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8abpp"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+skew = Vector2(1, 0)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mrql6"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+corner_radius_top_left = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trrjj"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0wru6"]
+bg_color = Color(0.184314, 0.184314, 0.184314, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.3, 0.3, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_td8no"]
+resource_local_to_scene = true
+shader = ExtResource("3_0wru6")
+shader_parameter/ControlSize = Vector2(126, 126)
+shader_parameter/CornerRadius = 5.0
+shader_parameter/solidThreshold = 30.0
+shader_parameter/transformProgress = 1.0
+shader_parameter/extraTransform = false
+shader_parameter/useSolid = false
+shader_parameter/Fit = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a8owq"]
+resource_local_to_scene = true
+shader = ExtResource("5_td8no")
+shader_parameter/ControlSize = Vector2(90, 90)
+shader_parameter/SliceAmount = Vector2(6, 5)
+shader_parameter/FPS = 25.0
+shader_parameter/CellCount = 0
+shader_parameter/Fit = false
+shader_parameter/Repeat = false
+shader_parameter/HorizontalMask = 0.0
+shader_parameter/VerticalMask = 0.0
+shader_parameter/Frame = 29
+shader_parameter/scriptTime = false
+shader_parameter/time = 0.0
+
+[node name="DesktopNotificationV2Panel" type="Control" node_paths=PackedStringArray("canvasGroup", "interactionBlocker", "buttons", "headerLabel", "bodyLabel", "itemIcon", "flipbookIcon", "firstBtn", "secondBtn", "superBtn", "sfxPlayer")]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+script = ExtResource("1_hhscf")
+itemAnimCurve = SubResource("Curve_0wru6")
+canvasGroup = NodePath("CanvasGroup")
+interactionBlocker = NodePath("CanvasGroup/MarginContainer/InteractionBlocker")
+buttons = [NodePath("CanvasGroup/MarginContainer/Content/Overlay/Button"), NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer/FirstAction"), NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer/SecondAction"), NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer/PrimaryAction")]
+headerLabel = NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/Header")
+bodyLabel = NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Body")
+itemIcon = NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/TextureRect/ItemIcon")
+flipbookIcon = NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/TextureRect/FlipbookIcon")
+firstBtn = NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer/FirstAction")
+secondBtn = NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer/SecondAction")
+superBtn = NodePath("CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer/PrimaryAction")
+sfxPlayer = NodePath("AudioStreamPlayer")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+position = Vector2(0, 50)
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasGroup"]
+custom_minimum_size = Vector2(400, 100)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -42.5
+offset_right = 175.0
+offset_bottom = 42.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BG" type="Control" parent="CanvasGroup/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CanvasGroup/MarginContainer/BG"]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_bottom = -7.0
+grow_vertical = 2
+mouse_filter = 2
+stretch_mode = 1
+alignment_horizontal = 0
+
+[node name="Control" type="Control" parent="CanvasGroup/MarginContainer/BG/AspectRatioContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="CanvasGroup/MarginContainer/BG/AspectRatioContainer/Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.5
+anchor_bottom = 1.0
+offset_right = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8abpp")
+
+[node name="Panel2" type="Panel" parent="CanvasGroup/MarginContainer/BG"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mrql6")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasGroup/MarginContainer/BG"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="TextureRect" type="TextureRect" parent="CanvasGroup/MarginContainer/BG/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_trrjj")
+expand_mode = 3
+
+[node name="Panel3" type="Panel" parent="CanvasGroup/MarginContainer/BG/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_trrjj")
+
+[node name="Content" type="TextureButton" parent="CanvasGroup/MarginContainer" groups=["ExcludeButtonSounds"]]
+layout_mode = 2
+mouse_filter = 1
+button_mask = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasGroup/MarginContainer/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer"]
+layout_direction = 3
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_right = 15
+
+[node name="Header" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "Item Shops Have Updated!"
+text_overrun_behavior = 3
+
+[node name="Body" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/line_spacing = 1
+theme_override_font_sizes/font_size = 12
+text = "V-Bucks: 30,  Legendary Survivors: 2, Upgrade Llamas: 3"
+autowrap_mode = 3
+text_overrun_behavior = 3
+
+[node name="ItemRow1" type="HBoxContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 2
+
+[node name="Label" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1"]
+visible = false
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Weekly Shop:"
+
+[node name="NotificationHighlightItem" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem2" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem3" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem4" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem5" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem6" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem7" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem8" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow1"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "+99"
+
+[node name="ItemRow2" type="HBoxContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Label" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2"]
+visible = false
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Event Shop:"
+
+[node name="NotificationHighlightItem9" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem10" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem11" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem12" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem13" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem14" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem15" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="NotificationHighlightItem16" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2" instance=ExtResource("8_0wru6")]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/ItemRow2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "+99"
+
+[node name="Buttons" type="HBoxContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 0
+
+[node name="InInventory" type="MarginContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+script = ExtResource("8_5edey")
+compactifyAmount = true
+showSingleItemAmount = true
+
+[node name="Panel" type="Panel" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0wru6")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory"]
+layout_mode = 2
+theme_override_constants/margin_left = 3
+theme_override_constants/margin_right = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 1
+theme_override_constants/margin_bottom = 1
+
+[node name="Icon" type="TextureRect" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer/MarginContainer2"]
+layout_mode = 2
+texture = ExtResource("9_0wru6")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = ": "
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="Icon" type="TextureRect" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("9_l1o1y")
+expand_mode = 3
+
+[node name="AmountText" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "2.56k"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = " / 500"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="FirstAction" type="Button" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "First"
+
+[node name="SecondAction" type="Button" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Second"
+
+[node name="PrimaryAction" type="Button" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"SlantedActionButton"
+theme_override_font_sizes/font_size = 12
+text = "Primary"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_trrjj")
+expand_mode = 3
+
+[node name="ItemIcon" type="TextureRect" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/TextureRect"]
+self_modulate = Color(1, 0.533333, 0, 1)
+material = SubResource("ShaderMaterial_td8no")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.2
+anchor_top = -0.2
+anchor_right = 1.2
+anchor_bottom = 1.2
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_uvlqm")
+expand_mode = 1
+script = ExtResource("4_4fw6k")
+syncControlSize = true
+
+[node name="FlipbookIcon" type="TextureRect" parent="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/TextureRect"]
+visible = false
+material = SubResource("ShaderMaterial_a8owq")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_uvlqm")
+expand_mode = 1
+script = ExtResource("4_4fw6k")
+
+[node name="Overlay" type="Control" parent="CanvasGroup/MarginContainer/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="CanvasGroup/MarginContainer/Content/Overlay" groups=["ExcludePressSounds"]]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_top = 3.0
+offset_right = -3.0
+grow_horizontal = 0
+size_flags_vertical = 0
+theme_type_variation = &"TinyButton"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasGroup/MarginContainer/Content/Overlay/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_mrql6")
+expand_mode = 1
+
+[node name="InteractionBlocker" type="Control" parent="CanvasGroup/MarginContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+max_polyphony = 10
+bus = &"Notifications"
+
+[connection signal="pressed" from="CanvasGroup/MarginContainer/Content" to="." method="Dismiss"]
+[connection signal="AmountChanged" from="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory" to="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer/AmountText" method="set_text"]
+[connection signal="IconChanged" from="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory" to="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory/MarginContainer/HBoxContainer/MarginContainer/Icon" method="set_texture"]
+[connection signal="TooltipChanged" from="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory" to="CanvasGroup/MarginContainer/Content/MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/Buttons/InInventory" method="set_tooltip_text"]
+[connection signal="pressed" from="CanvasGroup/MarginContainer/Content/Overlay/Button" to="." method="Dismiss"]

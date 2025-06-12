@@ -22,6 +22,8 @@ public partial class CardPackOpener : Control
     [Export]
     AudioStreamPlayer music;
     [Export]
+    Control stacheButton;
+    [Export]
     Control pullButton;
     [Export]
     Control skipAllButton;
@@ -122,6 +124,7 @@ public partial class CardPackOpener : Control
     bool isPulling;
     bool isFast;
     bool waitForFirstHit = false;
+    bool shouldStacheLlamas;
 
 
     public List<GameItem> queuedChoices = [];
@@ -173,6 +176,8 @@ public partial class CardPackOpener : Control
         isOpen = true;
         //await this.WaitForFrame();
 
+        stacheButton.Visible = llamaOffer?.IsXRayLlama == false;
+        shouldStacheLlamas = false;
         llamaHits = 0;
         if (llamaItem is not null)
             llamaItem = llamaItem.Clone();
@@ -192,6 +197,7 @@ public partial class CardPackOpener : Control
             GD.Print($"Item Tier: {llamaTier}");
         }
         llamaEntry.SetItem(llamaItem);
+        isSmall = llamaItem.templateId == "CardPack:cardpack_basic";
         waitForFirstHit = true;
         //bgFade.TweenProperty(backgroundImage, "self_modulate", Colors.White, 0.25f);
         displayPanel.Visible = true;
@@ -226,6 +232,12 @@ public partial class CardPackOpener : Control
         while (waitForFirstHit)
         {
             await Helpers.WaitForFrame();
+        }
+        stacheButton.Visible = false;
+        LoadingOverlay.TaskToken stacheLoadingToken = default;
+        if (shouldStacheLlamas)
+        {
+            stacheLoadingToken = LoadingOverlay.CreateToken();
         }
 
         cardPacks ??= [];
@@ -263,6 +275,13 @@ public partial class CardPackOpener : Control
                 .Where(val => val.AsObject().ContainsKey("itemGuid") && (val["itemType"]?.ToString().StartsWith("CardPack") ?? false))
                 .Select(val => account.GetProfile(val["itemProfile"].ToString()).GetItem(val["itemGuid"].ToString()))
                 .ToArray();
+        }
+
+        if (shouldStacheLlamas)
+        {
+            stacheLoadingToken.Dispose();
+            CloseMenu();
+            return;
         }
         extraItems ??= [];
         extraCardPacks ??= [];
@@ -444,6 +463,14 @@ public partial class CardPackOpener : Control
     {
         var llamaScaleTween = GetTree().CreateTween().SetParallel().SetTrans(Tween.TransitionType.Cubic);
         llamaScaleTween.TweenProperty(fullLlama, "scale", Vector2.One * (value ? 1 : 0.9f), 0.25f);
+    }
+
+    void StacheLlama()
+    {
+        if (!stacheButton.Visible)
+            return;
+        shouldStacheLlamas = true;
+        waitForFirstHit = false;
     }
 
     void HitLlama()

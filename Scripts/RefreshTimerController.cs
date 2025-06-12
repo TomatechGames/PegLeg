@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Text.Json.Nodes;
 
 public partial class RefreshTimerController : Node
 {
@@ -47,9 +48,10 @@ public partial class RefreshTimerController : Node
     }
 
     float offset = 2;
-    private void OnConfigChanged(string arg1, string arg2, System.Text.Json.Nodes.JsonValue arg3)
+    private void OnConfigChanged(string section, string key, JsonValue value)
     {
-        offset = AppConfig.Get("advanced", "offset", true) ? 0 : 2;
+        if (section == "advanced" && key == "offset")
+            offset = value.TryGetValue(out bool val) && val ? 0 : 2;
     }
 
     private async void UpdateCalender()
@@ -73,23 +75,24 @@ public partial class RefreshTimerController : Node
     }
 
     static readonly DateTime referenceStartDate = new(2024, 1, 25);
-    static readonly int[] seasonLengths = new int[]
-    {
+    static readonly int[] seasonLengths =
+    [
         10,
         11,
         11,
         11,
         9
-    };
+    ];
     static readonly int weeksInSeasonalYear = seasonLengths.Sum();
 
-    public static DateTime RightNow => 
-        instance is null ? 
-            DateTime.UtcNow : 
+    public static DateTime RightNow =>
+        instance is null ?
+            DateTime.UtcNow :
             DateTime.UtcNow
                 .AddDays(instance.daysToAddDebug)
                 .AddMonths(instance.monthsToAddDebug)
-                .AddYears(instance.yearsToAddDebug);
+                .AddYears(instance.yearsToAddDebug)
+                .AddSeconds(-instance.offset);
 
     public static DateTime GetRefreshTime(RefreshTimeType refreshType)
     {
@@ -111,7 +114,7 @@ public partial class RefreshTimerController : Node
                 return today.AddDays(daysUntilTuesday + 1).AddHours(14);
         }
         int dayCount = (today - referenceStartDate).Days;
-        dayCount = dayCount % (weeksInSeasonalYear * 7);
+        dayCount %= (weeksInSeasonalYear * 7);
         int daysRemaining = 0;
         int startDayOffset = 0;
         for (int i = 0; i < seasonLengths.Length; i++)
@@ -125,6 +128,41 @@ public partial class RefreshTimerController : Node
             startDayOffset += seasonLengths[i] * 7;
         }
         var result = today.AddDays(daysRemaining);
+        return result;
+    }
+
+    public static DateTime GetLastRefreshTime(RefreshTimeType refreshType)
+    {
+        var rightNow = RightNow;
+        var today = rightNow.Date;
+        switch (refreshType)
+        {
+            case RefreshTimeType.Hourly:
+                return today.AddHours(rightNow.Hour);
+            case RefreshTimeType.Daily:
+                return today;
+            case RefreshTimeType.Weekly:
+                int utcDayOfWeek = (int)rightNow.DayOfWeek;
+                int daysUntilThursday = ((10 - utcDayOfWeek)) % 7;
+                return today.AddDays(daysUntilThursday - 6);
+            case RefreshTimeType.BRWeekly:
+                int utcDayOfWeekBR = (int)rightNow.AddHours(14).DayOfWeek;
+                int daysUntilTuesday = ((10 - utcDayOfWeekBR)) % 7;
+                return today.AddDays(daysUntilTuesday - 6).AddHours(14);
+        }
+        int dayCount = (today - referenceStartDate).Days;
+        dayCount %= (weeksInSeasonalYear * 7);
+        int startDayOffset = 0;
+        for (int i = 0; i < seasonLengths.Length; i++)
+        {
+            int reducedDayCount = dayCount - startDayOffset;
+            if (reducedDayCount < seasonLengths[i] * 7)
+            {
+                break;
+            }
+            startDayOffset += seasonLengths[i] * 7;
+        }
+        var result = today.AddDays(startDayOffset);
         return result;
     }
 }

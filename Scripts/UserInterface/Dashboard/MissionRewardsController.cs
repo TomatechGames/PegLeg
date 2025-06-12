@@ -44,18 +44,9 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
 	{
         missionList.SetProvider(this);
         allFilters = rarityFilters.Union(zoneFilters).Union(typeFilters).Where(f => f is not null).ToArray();
-        foreach (var filter in allFilters)
-        {
-            var current = filter;
-            current.Toggled += newVal =>
-            {
-                if (lockFilter)
-                    return;
-                if (!Input.IsKeyPressed(Key.Shift) && newVal)
-                    TurnOffOtherFilters(current);
-                FilterMissions();
-            };
-        }
+        SetupFilters(rarityFilters);
+        SetupFilters(zoneFilters);
+        SetupFilters(typeFilters);
         if (sortByPower is not null)
             sortByPower.Toggled += _ => FilterMissions();
         foreach (var filter in repeatabilityFilters)
@@ -70,6 +61,32 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
         await GameMission.UpdateMissions();
     }
 
+    void SetupFilters(CheckButton[] filters)
+    {
+        foreach (var filter in filters)
+        {
+            var current = filter;
+            current.Toggled += newVal =>
+            {
+                if (lockFilter)
+                    return;
+                if (Input.IsKeyPressed(Key.Alt))
+                {
+                    GD.Print("Cur : " + current.Name);
+                    foreach (var item in filters)
+                    {
+                        GD.Print(item.Name + ": " + item.ButtonPressed);
+                    }
+                }
+                if (Input.IsKeyPressed(Key.Alt) && newVal)
+                    TurnOnSelectedFilters(filters, current);
+                else if (!Input.IsKeyPressed(Key.Shift) && newVal)
+                    TurnOffSelectedFilters(filters, current);
+                FilterMissions();
+            };
+        }
+    }
+
     public override void _ExitTree()
     {
         GameMission.OnMissionsUpdated -= FilterMissions;
@@ -78,8 +95,11 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
 
     public void TurnOffFilters()
     {
-        TurnOffOtherFilters(null);
         lockFilter = true;
+        foreach (var filter in allFilters)
+        {
+            filter.ButtonPressed = false;
+        }
         foreach (var filter in repeatabilityFilters)
         {
             filter.ButtonPressed = false;
@@ -90,14 +110,21 @@ public partial class MissionRewardsController : Control, IRecyclableElementProvi
 
     bool lockFilter = false;
 
-    void TurnOffOtherFilters(CheckButton exceptThis)
+    void TurnOffSelectedFilters(IEnumerable<CheckButton> onlyThese, CheckButton exceptThis = null)
     {
         lockFilter = true;
-        foreach (var filter in allFilters)
+        foreach (var filter in onlyThese)
         {
-            if (filter == exceptThis)
-                continue;
-            filter.ButtonPressed = false;
+            filter.ButtonPressed = filter == exceptThis;
+        }
+        lockFilter = false;
+    }
+    void TurnOnSelectedFilters(IEnumerable<CheckButton> onlyThese, CheckButton exceptThis = null)
+    {
+        lockFilter = true;
+        foreach (var filter in onlyThese)
+        {
+            filter.ButtonPressed = filter != exceptThis;
         }
         lockFilter = false;
     }

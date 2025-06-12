@@ -28,7 +28,7 @@ public static class CalenderRequests
         [JsonIgnore]
         public Dictionary<string, EventTimeRange> KnownEvents => knownEvents ??=
             states.Length > 1 ?
-            states.Last().ActiveEvents.Union(states.First().ActiveEvents).ToDictionary() :
+            states.Last().ActiveEvents.Union(states.First().ActiveEvents).DistinctBy(kvp=>kvp.Key).ToDictionary() :
             states.First().ActiveEvents;
 
         public int GetCurrentIndex(bool update = false)
@@ -90,6 +90,7 @@ public static class CalenderRequests
     public static async Task CheckCalender(this GameAccount account)
     {
         bool? notify = null;
+        bool hadCalender = hasCalender;
 
         if (!hasCalender && FileAccess.FileExists(calenderCachePath))
         {
@@ -99,14 +100,19 @@ public static class CalenderRequests
             hasCalender = true;
         }
 
+        GD.Print($"cal: {currentCalender.cacheExpire}   now: {DateTime.UtcNow}   request:{currentCalender.cacheExpire < DateTime.UtcNow}");
         if (currentCalender.cacheExpire < DateTime.UtcNow)
-            notify ??= await RequestCalender(account);
+        {
+            var shouldNotify = await RequestCalender(account);
+            notify ??= shouldNotify;
+        }
 
         notify ??= currentCalender.latestCalenderIndex != currentCalender.GetCurrentIndex(true);
 
         if (notify == true)
         {
-            GD.Print("Calender Update!");
+            if (hadCalender)
+                GD.Print("Calender Update!");
             OnCalenderUpdate?.Invoke();
         }
     }
@@ -124,7 +130,10 @@ public static class CalenderRequests
         var newData = calResponse?.AsObject();
 
         if (!newData.ContainsKey("channels"))
+        {
+            GD.Print("no channels: " + newData);
             return null;
+        }
 
         var clientEvents = newData["channels"]["client-events"];
         var oldState = currentCalender.GetLatestState();
@@ -155,13 +164,13 @@ public static class CalenderRequests
     public static bool HasCalender => hasCalender;
 
     public static bool EventFlagActive(string flag) => 
-        hasCalender && currentCalender.GetLatestState().ActiveEvents.ContainsKey(flag);
+        hasCalender && flag is not null && currentCalender.GetLatestState().ActiveEvents.ContainsKey(flag);
 
     public static DateTime EventStart(string flag) =>
-        currentCalender.KnownEvents.TryGetValue(flag, out var time) ? time.activeSince : default; //todo: estimate times of missing events
+        flag is not null && currentCalender.KnownEvents.TryGetValue(flag, out var time) ? time.activeSince : default; //todo: estimate times of missing events
 
     public static DateTime EventEnd(string flag) =>
-        currentCalender.KnownEvents.TryGetValue(flag, out var time) ? time.activeUntil : default; //todo: estimate times of missing events
+        flag is not null && currentCalender.KnownEvents.TryGetValue(flag, out var time) ? time.activeUntil : default; //todo: estimate times of missing events
 
     public static int BRSeasonNumber => 1;
     public static string BRSeasonEventFlag => $"EventFlag.Event_S{BRSeasonNumber}_UISeasonEnd";

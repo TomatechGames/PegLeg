@@ -17,7 +17,7 @@ void fragment() {
 
 	float gradient = 1.0-distance(vec2(0.5, 1.25), fitUV*vec2(1,1.5));
 	vec4 fitTex = texture(TEXTURE, fitUV);
-	COLOR = mix(mix(vec4(0), modulate, gradient), fitTex, fitTex.a);
+	COLOR = mix(mix(vec4(0), modulate, clamp(gradient,0.0,1.0)), fitTex, fitTex.a);
 	if(controlSpace.y>(ControlSize.y-CornerRadius))
 	{
 		COLOR = mix(COLOR, modulate, modulate.a);
