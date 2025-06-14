@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://u5ag0k8n6eqm"]
+[gd_scene load_steps=72 format=3 uid="uid://u5ag0k8n6eqm"]
 
 [ext_resource type="Theme" uid="uid://cd7qoq3gay1op" path="res://GodotThemes/BasicTheme.tres" id="1_3bqtb"]
 [ext_resource type="Script" uid="uid://b6cj12kg8rwbh" path="res://Scripts/TargetResolutionSetter.cs" id="2_34fsc"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://c24lmsr7knt32" path="res://Scripts/TrayIcon.cs" id="10_t6a4k"]
 [ext_resource type="PackedScene" uid="uid://bqp7ax1fjc306" path="res://Scenes/Desktop/Views/desktopDashboardView.tscn" id="10_xfiw1"]
 [ext_resource type="Texture2D" uid="uid://bcb4xp8puusy5" path="res://Images/InterfaceIcons/PegLegIconTestBuild.png" id="11_m0p55"]
+[ext_resource type="PackedScene" uid="uid://t4w5qw4ysj2m" path="res://Scenes/Desktop/Notifications/desktop_notificationV2_window.tscn" id="13_6pg76"]
 [ext_resource type="PackedScene" uid="uid://udk47ipcpsbq" path="res://Scenes/Desktop/Views/desktopInventoryView.tscn" id="13_yfdoy"]
 [ext_resource type="Script" uid="uid://jce56trwawgy" path="res://Scripts/Notifications/NotificationDispatcher.cs" id="14_8g5mb"]
 [ext_resource type="PackedScene" uid="uid://cjge5ubc1hppf" path="res://Scenes/Desktop/Views/desktopBackpackView.tscn" id="15_dlrdq"]
@@ -228,6 +229,7 @@ one_shot = true
 auto_translate_mode = 1
 transparent_bg = true
 use_hdr_2d = true
+position = Vector2i(-415, 0)
 size = Vector2i(400, 135)
 mouse_passthrough_polygon = PackedVector2Array(0, 0, 0, 0)
 exclusive = true
@@ -236,6 +238,8 @@ always_on_top = true
 transparent = true
 unfocusable = true
 theme = ExtResource("1_3bqtb")
+
+[node name="DesktopNotificationV2Window" parent="NonUI/NotifWindow" instance=ExtResource("13_6pg76")]
 
 [node name="NotifDispatcher" type="Node" parent="NonUI"]
 script = ExtResource("14_8g5mb")

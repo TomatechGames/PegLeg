@@ -144,7 +144,12 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
         ApplyFilters();
         displayedAccount = GameAccount.activeAccount;
         if (!string.IsNullOrEmpty(targetUser?.Text) && allowDevMode)
-            displayedAccount = (await GameAccount.SearchForAccount(targetUser?.Text)) ?? displayedAccount;
+        {
+            if (targetUser.Text.Length==32)
+                displayedAccount = GameAccount.GetOrCreateAccount(targetUser.Text);
+            else
+                displayedAccount = (await GameAccount.SearchForAccount(targetUser?.Text)) ?? displayedAccount;
+        }
         GD.Print("Inventory: "+displayedAccount?.accountId);
         if (targetProfile != FnProfileTypes.AccountItems && !await displayedAccount.Authenticate())
             return;

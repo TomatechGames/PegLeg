@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://c3t43g37cuefo" path="res://Scripts/Notifications/NotificationManager.cs" id="1_arhbq"]
 [ext_resource type="PackedScene" uid="uid://y27ypgna5cwl" path="res://Scenes/Desktop/Notifications/desktop_notificationV2_panel.tscn" id="1_nc03t"]
 
-[node name="DesktopNotificationV2Window" type="MarginContainer" node_paths=PackedStringArray("notificationInstances")]
+[node name="DesktopNotificationV2Window" type="MarginContainer" node_paths=PackedStringArray("notificationInstances", "mouseBlocker")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -13,6 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_arhbq")
 notificationInstances = [NodePath("Shape/DesktopNotificationV2PanelFG"), NodePath("Shape/DesktopNotificationV2Panel"), NodePath("Shape/DesktopNotificationV2PanelBG1"), NodePath("Shape/DesktopNotificationV2PanelBG2")]
+mouseBlocker = NodePath("Blocker")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false

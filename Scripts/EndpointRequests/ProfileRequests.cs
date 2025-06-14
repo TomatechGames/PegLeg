@@ -207,12 +207,12 @@ public class GameAccount
         if(!await activeAccount.Authenticate())
             return null;
         var searchResult = await Helpers.MakeRequest(
-                HttpMethod.Get,
-                FnWebAddresses.userSearch,
-                $"/api/v1/search/{activeAccount.accountId}?platform=epic&prefix={username}",
-                "{}",
-                activeAccount.AuthHeader
-            );
+            HttpMethod.Get,
+            FnWebAddresses.userSearch,
+            $"/api/v1/search/{activeAccount.accountId}?platform=epic&prefix={username}",
+            "{}",
+            activeAccount.AuthHeader
+        );
         if (searchResult is not JsonArray accountArray || accountArray.Count == 0)
             return null;
         var resultAccount = GetOrCreateAccount(accountArray[0]["accountId"].ToString());
