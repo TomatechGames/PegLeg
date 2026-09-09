@@ -321,9 +321,22 @@ public partial class GameItemEntry : Control, IRecyclableEntry, IListEntry<GameI
 			displayItem = GameItemTemplate.Get("AccountResource:currency_hybrid_mtx_xrayllama").CreateInstance(amount);
 		if (displayItem.templateId== "Currency:mtxpurchased")
 			displayItem = GameItemTemplate.Get("Token:receivemtxcurrency").CreateInstance(amount);
-		//substitute generic event tickets for current event tickets
+		if (displayItem.templateId == "AccountResource:campaign_event_currency")
+		{
+			var eventTID = RefreshTimerController.GetSeasonIndex() switch
+			{
+				0 => "AccountResource:eventcurrency_lunar",
+				1 => "AccountResource:eventcurrency_adventure",
+				2 => "AccountResource:eventcurrency_roadtrip",
+				3 => "AccountResource:eventcurrency_candy",
+				4 => "AccountResource:eventcurrency_snowballs",
+				_ => null
+			};
+			if (GameItemTemplate.Get(eventTID) is { } eventTemplate)
+				displayItem = eventTemplate.CreateInstance(amount);
+		}
 
-		inspectorOverride = displayItem.inspectorOverride;
+			inspectorOverride = displayItem.inspectorOverride;
 		if (inspectorOverride is not null && inspectorOverride.template is not null)
 			displayItem = inspectorOverride;
 

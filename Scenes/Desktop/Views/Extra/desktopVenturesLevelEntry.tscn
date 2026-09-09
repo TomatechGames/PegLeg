@@ -1,0 +1,205 @@
+[gd_scene format=3 uid="uid://3p45e57puggq"]
+
+[ext_resource type="Script" uid="uid://cdnkxmrtclhu4" path="res://Scripts/UserInterface/ListEntries/VenturesLevelEntry.cs" id="1_hy8by"]
+[ext_resource type="Texture2D" uid="uid://bbqb2ns66gsfp" path="res://Images/InterfaceIcons/T_QuestNode_Generic.png" id="1_q0oup"]
+[ext_resource type="Texture2D" uid="uid://c0n3kv5onb5c2" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Items-Hero-PromotionCurrency-L.png" id="2_hy8by"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="4_hie5e"]
+[ext_resource type="Texture2D" uid="uid://bi5xbptwfjs5l" path="res://Images/InterfaceIcons/T-Icon-SeasonalReward-L.png" id="5_tnu8f"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_51cgl"]
+bg_color = Color(0.14117648, 0.16470589, 0.24705882, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bp4h1"]
+bg_color = Color(0.9882353, 1, 0.16078432, 1)
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q0oup"]
+content_margin_left = 3.0
+content_margin_right = 3.0
+content_margin_bottom = 1.0
+bg_color = Color(0.453125, 0.496094, 0.644531, 1)
+skew = Vector2(0.4, 0)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="DesktopVenturesLevelEntry" type="MarginContainer" unique_id=1603426451 node_paths=PackedStringArray("xpLabel", "itemEntry", "missionUnlockMarker", "missionUnlockLabel", "ventureLevelLabel", "bgNode", "progressContainer", "progress", "prevProgressContainer", "prevProgress")]
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_hy8by")
+xpLabel = NodePath("HBoxContainer/VBoxContainer/Label")
+itemEntry = NodePath("HBoxContainer/VBoxContainer/MarginContainer/TextureRect/TextureRect")
+missionUnlockMarker = NodePath("HBoxContainer/VBoxContainer/MarginContainer/PanelContainer")
+missionUnlockLabel = NodePath("HBoxContainer/VBoxContainer/MarginContainer/PanelContainer/Label")
+ventureLevelLabel = NodePath("HBoxContainer/VBoxContainer/Label2")
+bgNode = NodePath("HBoxContainer/VBoxContainer/MarginContainer/TextureRect")
+progressContainer = NodePath("HBoxContainer/NextProgressScale/NextProgressContainer")
+progress = NodePath("HBoxContainer/NextProgressScale/NextProgressContainer/NextProgress")
+prevProgressContainer = NodePath("HBoxContainer/PrevProgressScale/PrevProgressContainer")
+prevProgress = NodePath("HBoxContainer/PrevProgressScale/PrevProgressContainer/PrevProgress")
+offColor = Color(0.14117648, 0.16470589, 0.24705882, 1)
+onColor = Color(0.29803923, 0.6901961, 0.3019608, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=815987056]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PrevProgressScale" type="Control" parent="HBoxContainer" unique_id=1334467379]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PrevProgressContainer" type="MarginContainer" parent="HBoxContainer/PrevProgressScale" unique_id=1141501275]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = -16
+theme_override_constants/margin_right = -16
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/PrevProgressScale/PrevProgressContainer" unique_id=1895876243]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.2236, 0.52, 0.22853997, 1)
+
+[node name="PrevProgress" type="ProgressBar" parent="HBoxContainer/PrevProgressScale/PrevProgressContainer" unique_id=449452607]
+visible = false
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_51cgl")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bp4h1")
+max_value = 1.0
+value = 0.5
+show_percentage = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=394993735]
+z_index = 1
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = -4
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=53993263]
+layout_mode = 2
+mouse_filter = 0
+theme_override_font_sizes/font_size = 12
+text = "1.91m XP"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer" unique_id=1745303869]
+layout_mode = 2
+theme_override_constants/margin_bottom = 4
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/MarginContainer" unique_id=1251881799]
+self_modulate = Color(0.29803923, 0.6901961, 0.3019608, 1)
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+texture = ExtResource("1_q0oup")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/MarginContainer/TextureRect" unique_id=1650251549]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_hy8by")
+expand_mode = 1
+script = ExtResource("4_hie5e")
+defaultClearIconToNull = true
+
+[node name="Fallback" type="TextureRect" parent="HBoxContainer/VBoxContainer/MarginContainer/TextureRect" unique_id=214147600]
+visible = false
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_tnu8f")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MarginContainer/TextureRect" unique_id=549832512]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -10.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "1.2k"
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/VBoxContainer/MarginContainer" unique_id=1767246015]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_q0oup")
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=869362805]
+layout_mode = 2
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/shadow_outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = "PL 140 Missions"
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=2105681169]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Lv 21"
+horizontal_alignment = 1
+
+[node name="NextProgressScale" type="Control" parent="HBoxContainer" unique_id=1105456790]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NextProgressContainer" type="MarginContainer" parent="HBoxContainer/NextProgressScale" unique_id=833819933]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 2.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = -16
+theme_override_constants/margin_right = -16
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/NextProgressScale/NextProgressContainer" unique_id=1354082283]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.2236, 0.52, 0.22853997, 1)
+
+[node name="NextProgress" type="ProgressBar" parent="HBoxContainer/NextProgressScale/NextProgressContainer" unique_id=918325400]
+visible = false
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_51cgl")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bp4h1")
+max_value = 1.0
+value = 0.5
+show_percentage = false
+
+[connection signal="AmountChanged" from="HBoxContainer/VBoxContainer/MarginContainer/TextureRect/TextureRect" to="HBoxContainer/VBoxContainer/MarginContainer/TextureRect/Label" method="set_text"]
+[connection signal="IconChanged" from="HBoxContainer/VBoxContainer/MarginContainer/TextureRect/TextureRect" to="HBoxContainer/VBoxContainer/MarginContainer/TextureRect/TextureRect" method="set_texture"]
+[connection signal="ItemDoesNotExist" from="HBoxContainer/VBoxContainer/MarginContainer/TextureRect/TextureRect" to="HBoxContainer/VBoxContainer/MarginContainer/TextureRect/Fallback" method="set_visible"]
+[connection signal="TooltipChanged" from="HBoxContainer/VBoxContainer/MarginContainer/TextureRect/TextureRect" to="HBoxContainer/VBoxContainer" method="set_tooltip_text"]

@@ -58,7 +58,8 @@ public partial class DashboardItemShop : Control
 			.FirstOrDefault(g => g.Count() > 1)?
 			.OrderByDescending(o => o.itemGrants[0].quantity)
 			.FirstOrDefault() ??
-			offers.FirstOrDefault(o => o.itemGrants.FirstOrDefault()?.templateId == "AccountResource:reagent_alteration_upgrade_sr");
+			offers.FirstOrDefault(o => o.itemGrants.FirstOrDefault()?.templateId == "AccountResource:reagent_alteration_upgrade_sr") ??
+			offers.FirstOrDefault(o => o.itemGrants.FirstOrDefault()?.templateId == "AccountResource:reagent_alteration_upgrade_vr");
 		var topSchematic = offers
 			.Where(o => o.itemGrants.FirstOrDefault()?.templateId.StartsWith("Schematic") == true)
 			.OrderByDescending(o => o.SortPriority)

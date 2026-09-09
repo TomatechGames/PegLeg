@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://cii4sa6ptxntg"]
+
+[ext_resource type="Texture2D" uid="uid://bbqb2ns66gsfp" path="res://Images/InterfaceIcons/T_QuestNode_Generic.png" id="1_jy7dn"]
+[ext_resource type="Shader" uid="uid://s05exwnu1w8b" path="res://Shaders/ShadowImage.gdshader" id="2_4i0yl"]
+[ext_resource type="Texture2D" uid="uid://baml037l0hwl6" path="res://Images/InterfaceIcons/BanjoPlaceholders/T_UI_ICON_S22_SR_SupplyDropMin.png" id="3_t8uhf"]
+[ext_resource type="Script" uid="uid://dfa7e1y4fpvp2" path="res://Scripts/UserInterface/ListEntries/GameItemEntry.cs" id="4_vhqx8"]
+[ext_resource type="PackedScene" uid="uid://bdpcqsytlgikh" path="res://Scenes/responsive_button_circle.tscn" id="5_8joen"]
+[ext_resource type="Script" uid="uid://cti7ijxybv3iw" path="res://Scripts/ContextMenu/ContextMenuHook.cs" id="6_0u20i"]
+[ext_resource type="Resource" uid="uid://b6e1a0kvfsvyu" path="res://Scripts/ContextMenu/ComponentLists/QuestItemCtxList.tres" id="7_ika4u"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5c0m2"]
+shader = ExtResource("2_4i0yl")
+shader_parameter/inset = 0.0
+shader_parameter/shade = 0.0
+shader_parameter/shadeAlpha = 0.6000000285
+shader_parameter/base = 0.0
+shader_parameter/scalar = 2.0
+shader_parameter/power = 2.0
+
+[sub_resource type="Gradient" id="Gradient_k2hp4"]
+offsets = PackedFloat32Array(0.84070796, 0.86946905, 0.970075, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cue63"]
+gradient = SubResource("Gradient_k2hp4")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="VenturesQuestEntry" type="TextureRect" unique_id=2030345741]
+self_modulate = Color(0.901961, 0.901961, 0, 1)
+custom_minimum_size = Vector2(0, 80)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_jy7dn")
+expand_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1619150699]
+material = SubResource("ShaderMaterial_5c0m2")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.2
+anchor_right = 0.8
+anchor_bottom = 0.8
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_t8uhf")
+expand_mode = 1
+script = ExtResource("4_vhqx8")
+
+[node name="Overlays" type="Control" parent="." unique_id=1761254720]
+layout_mode = 1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Overlays" unique_id=1832192307]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = -1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+max_value = 1.0
+step = 0.0
+value = 0.7
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture2D_cue63")
+tint_progress = Color(0.005600393, 0.15378249, 1, 1)
+
+[node name="SelectedToggle" type="CheckButton" parent="Overlays" unique_id=1769517962]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 31.0001
+offset_top = -25.0
+offset_right = 71.0001
+offset_bottom = -2.99996
+mouse_filter = 2
+
+[node name="Responsive Button Circle" parent="." unique_id=1650152004 instance=ExtResource("5_8joen")]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+outlinePadding = 0.0
+hoverTime = 0.05
+
+[node name="Ctx" type="Node" parent="Responsive Button Circle" unique_id=1005847262 node_paths=PackedStringArray("itemSource")]
+script = ExtResource("6_0u20i")
+itemSource = NodePath("../../TextureRect")
+componentList = ExtResource("7_ika4u")
+
+[connection signal="IconChanged" from="TextureRect" to="TextureRect" method="set_texture"]
+[connection signal="TooltipChanged" from="TextureRect" to="Responsive Button Circle" method="set_tooltip_text"]
+[connection signal="pressed" from="Responsive Button Circle" to="." method="Press"]

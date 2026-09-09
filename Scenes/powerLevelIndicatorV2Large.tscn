@@ -15,6 +15,9 @@ corner_radius_top_left = 8
 [node name="Panel" parent="MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(770299496) index="0" unique_id=1402179337]
 theme_override_styles/panel = SubResource("StyleBoxFlat_rp1qa")
 
+[node name="MarginContainer" parent="MarginContainer/HBoxContainer" parent_id_path=PackedInt32Array(770299496) index="1" unique_id=1892792438]
+theme_override_constants/margin_right = 5
+
 [node name="MarginContainer" parent="MarginContainer" parent_id_path=PackedInt32Array(902980696) index="1" unique_id=151085451]
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 3

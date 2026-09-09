@@ -320,9 +320,10 @@ public partial class CardPackOpener : Control
 				JsonArray resultItemData = [];
 				foreach (var cardpackId in cardpacksToOpen)
 				{
-					var resultNotification = (await account.GetProfile(FnProfileTypes.AccountItems).PerformOperation("OpenCardPack", new JsonObject() { ["cardPackItemId"] = cardpackId })).FirstOrDefault();
+					var resultNotification = (await account.GetProfile(FnProfileTypes.AccountItems).PerformOperation("OpenCardPack", new JsonObject() { ["cardPackItemId"] = cardpackId.ToString() }))
+						.FirstOrDefault(n => n["type"].ToString() == "cardPackResult");
 					//record in Llamalytics
-					resultItemData = [.. resultNotification["lootGranted"]["items"].AsArray().SafeDeepClone()];
+					resultItemData = resultNotification["lootGranted"]["items"].AsArray().SafeDeepClone();
 				}
 
 				var resultItems = resultItemData

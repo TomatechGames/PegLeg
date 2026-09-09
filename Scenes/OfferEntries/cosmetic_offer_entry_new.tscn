@@ -73,7 +73,7 @@ shader_parameter/CosmeticZoom = 1.0
 shader_parameter/CornerRadius = 10.0
 shader_parameter/JamRadius = 3.0
 shader_parameter/JamTexture = ExtResource("6_odjx0")
-shader_parameter/time = 2.137
+shader_parameter/time = 3.201
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7v50w"]
 resource_local_to_scene = true
@@ -86,7 +86,7 @@ shader_parameter/CosmeticZoom = 1.0
 shader_parameter/CornerRadius = 10.0
 shader_parameter/JamRadius = 3.0
 shader_parameter/JamTexture = ExtResource("6_odjx0")
-shader_parameter/time = 2.137
+shader_parameter/time = 3.201
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_odjx0"]
 resource_local_to_scene = true
@@ -366,6 +366,7 @@ theme_override_constants/margin_bottom = -5
 layout_mode = 2
 
 [node name="PriceContent" type="HBoxContainer" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned" unique_id=831002838]
+visible = false
 custom_minimum_size = Vector2(0, 17)
 layout_mode = 2
 size_flags_vertical = 4
@@ -425,11 +426,49 @@ theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 10
 text = "-10,000"
 
-[node name="FreeLabel" type="Label" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned" unique_id=747274228]
-visible = false
+[node name="FreeContent" type="HBoxContainer" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned" unique_id=1626327332]
+layout_mode = 2
+
+[node name="FreeLabel" type="Label" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent" unique_id=747274228]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.91870326, 0, 1)
 text = "FREE"
+
+[node name="OriginalPrice" type="HBoxContainer" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent" unique_id=263259455]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CurrencyIcon" type="TextureRect" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent/OriginalPrice" unique_id=1220598056]
+self_modulate = Color(0.75, 0.75, 0.75, 1)
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_vertical = 4
+offset_transform_enabled = true
+offset_transform_position = Vector2(0, 1)
+texture = ExtResource("10_v5uno")
+expand_mode = 3
+
+[node name="OriginalPriceFromFree" type="Label" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent/OriginalPrice" unique_id=2002102837]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0.458824, 0.458824, 0.458824, 1)
+theme_override_constants/line_spacing = 0
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 10
+text = "15,000"
+vertical_alignment = 2
+
+[node name="ColorRect" type="ColorRect" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent/OriginalPrice/OriginalPriceFromFree" unique_id=2081414884]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.351
+anchor_right = 1.0
+anchor_bottom = 0.439
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.122173
+color = Color(0, 0, 0, 0.501961)
 
 [node name="InvertFree" type="Node" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned" unique_id=1165627714]
 script = ExtResource("9_d0qwf")
@@ -717,12 +756,14 @@ layout_mode = 2
 
 [connection signal="AlmostAYearVisibility" from="." to="VBoxContainer/Overlays/AlmostAYear" method="set_visible"]
 [connection signal="BasePriceAmount" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/PriceContent/DiscountContent/HBoxContainer/OriginalPrice" method="set_text"]
+[connection signal="BasePriceAmount" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent/OriginalPrice/OriginalPriceFromFree" method="set_text"]
 [connection signal="BonusTextChanged" from="." to="DetailsArea/MarginContainer/VBoxContainer/HeadlinePanel/MarginContainer/HeadlineLabel" method="set_text"]
 [connection signal="BonusTextVisibility" from="." to="DetailsArea/MarginContainer/VBoxContainer/HeadlinePanel" method="set_visible"]
 [connection signal="DiscountAmount" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/PriceContent/DiscountContent/HBoxContainer/Discount" method="set_text"]
 [connection signal="DiscountVisibility" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/PriceContent/DiscountContent" method="set_visible"]
-[connection signal="FreeVisibility" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeLabel" method="set_visible"]
+[connection signal="DiscountVisibility" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent/OriginalPrice" method="set_visible"]
 [connection signal="FreeVisibility" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/InvertFree" method="EmitInverted"]
+[connection signal="FreeVisibility" from="." to="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent" method="set_visible"]
 [connection signal="LastSeenAlertVisibility" from="." to="VBoxContainer/Overlays/HBoxContainer/LastSeenPanel/LastSeenAlert" method="set_visible"]
 [connection signal="LastSeenText" from="." to="VBoxContainer/Overlays/HBoxContainer/LastSeenPanel/HBoxContainer/LastSeenLabel" method="set_text"]
 [connection signal="LastSeenTooltip" from="." to="VBoxContainer/Overlays/HBoxContainer/LastSeenPanel" method="set_tooltip_text"]

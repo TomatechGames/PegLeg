@@ -30,7 +30,7 @@ shader_parameter/CosmeticZoom = 1.0
 shader_parameter/CornerRadius = 10.0
 shader_parameter/JamRadius = 3.0
 shader_parameter/JamTexture = ExtResource("5_7wh5u")
-shader_parameter/time = 0.29
+shader_parameter/time = 3.684
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lma21"]
 resource_local_to_scene = true
@@ -43,7 +43,7 @@ shader_parameter/CosmeticZoom = 1.0
 shader_parameter/CornerRadius = 10.0
 shader_parameter/JamRadius = 3.0
 shader_parameter/JamTexture = ExtResource("5_7wh5u")
-shader_parameter/time = 0.29
+shader_parameter/time = 3.684
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gkyau"]
 resource_local_to_scene = true
@@ -146,7 +146,7 @@ mouse_filter = 2
 [node name="HBoxContainer" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/PriceContent/DiscountContent" index="0" unique_id=2066364876]
 visible = false
 
-[node name="FreeLabel" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned" parent_id_path=PackedInt32Array(2085425483) index="1" unique_id=747274228]
+[node name="FreeLabel" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea/Unowned/FreeContent" parent_id_path=PackedInt32Array(1626327332) index="0" unique_id=747274228]
 theme_override_font_sizes/font_size = 12
 
 [node name="OwnedLabel" parent="DetailsArea/MarginContainer/VBoxContainer/PriceArea" index="1" unique_id=964994074]

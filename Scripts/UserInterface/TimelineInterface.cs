@@ -18,7 +18,7 @@ public partial class TimelineInterface : Node
 
 	public override void _Ready()
 	{
-		Timeline.LoadTimeline();
+		Timeline.LazyLoadTimeline();
 		GenerateTimelineMarkers();
 		RefreshTimerController.OnDayChanged += GenerateTimelineMarkers;
 	}

@@ -26,7 +26,10 @@ public static class WebHelpers
 		{
 			if (plClient is not null)
 				return plClient;
-			plClient = new();
+			plClient = new()
+			{
+				Timeout = TimeSpan.FromSeconds(60),
+			};
 			plClient.DefaultRequestHeaders.Add("User-Agent", $"PegLeg/PegLeg-{AppConfig.PegLegVersion}");
 			return plClient;
 		}
@@ -270,6 +273,11 @@ public static class WebHelpers
 			}
 			GD.Print("TODO: Investigate this");
 			throw;
+		}
+		catch (TaskCanceledException ex)
+		{
+			GD.Print("Request Timed Out");
+			return new HttpResponseMessage() { StatusCode = HttpStatusCode.GatewayTimeout };
 		}
 	}
 

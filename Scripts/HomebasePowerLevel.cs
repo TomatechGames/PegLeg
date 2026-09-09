@@ -120,7 +120,7 @@ public partial class HomebasePowerLevel : Control
 		tintTween.TweenProperty(this, "AnimatedPowerLevel", newPowerLevel, 0.75).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Cubic);
 	}
 
-	float latestPowerLevel = 0;
+	float latestPowerLevel = 1;
 	float AnimatedPowerLevel
 	{
 		get => latestPowerLevel;
@@ -142,7 +142,7 @@ public partial class HomebasePowerLevel : Control
 			homebaseNumberProgressBar.SelfModulate = Colors.White;
 		}
 
-		latestPowerLevel = 0;
+		latestPowerLevel = 1;
 		homebaseNumberLabel.Text = "???";
 		homebaseNumberProgressBar.Value = 0;
 		TooltipText = "No Account";
@@ -220,10 +220,18 @@ public partial class HomebasePowerLevel : Control
 		if (unclaimedAlert)
 		{
 			var notifs = await profile.PerformOperation("ClaimMissionAlertRewards");
-			if (notifs.FirstOrDefault() is JsonObject alertRewards)
+			var alertRewards = notifs.FirstOrDefault(n => n["type"]?.ToString() == "missionAlertComplete");
+			if (alertRewards is not null)
 			{
 				var rewardData = alertRewards["lootGranted"]["items"].Deserialize<GameItem.ItemReward[]>();
 				rewards.AddRange(rewardData.Select(r => r.FindOrCreateReward(currentAccount)));
+			}
+			var ventureLevelUps = notifs.Where(n => n["type"]?.ToString() == "phoenixLevelUp").ToArray();
+			foreach (var levelUp in ventureLevelUps)
+			{
+				var rewardData = levelUp["loot"]["lootGranted"]["items"].Deserialize<GameItem.ItemReward[]>();
+				rewards.AddRange(rewardData.Select(r => r.FindOrCreateReward(currentAccount)));
+				//todo: show ventures level-up rewards separately (or maybe not at all?)
 			}
 			progress++;
 			loadingToken.SetLoadingProgress(progress, total);

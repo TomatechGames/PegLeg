@@ -143,6 +143,11 @@ public partial class NewRecycleListContainer : Container, IListHandler
 			if (!listDirty && relativePos == prevRelativePos)
 				return;
 		}
+		//using var _ = PerfTimer.Start($"NewRecyclePerf:{Name}", debug ? 5 : 5000);
+		if (debug && Input.IsKeyPressed(Key.P))
+		{
+			GD.Print("pause");
+		}
 		prevRelativePos = relativePos;
 		force |= listDirty;
 		listDirty = false;
@@ -196,13 +201,13 @@ public partial class NewRecycleListContainer : Container, IListHandler
 		int[] currentIndexes = [.. entriesToUse.Select(e => e.index).Order()];
 		bool indicesMatch = Enumerable.SequenceEqual(currentIndexes, lastIndices);
 
-		if (!force && listRect.Size == lastListSize && indicesMatch)
+		if ((!force || currentIndexes.Length == 0) && listRect.Size == lastListSize && indicesMatch)
 			return;
 
-		if (debug)
-			GD.Print($"Size: {lastListSize}=>{listRect.Size}");
-		if (debug)
-			GD.Print($"Indices: \n{string.Join(", ", lastIndices)}\n=>\n{string.Join(", ", currentIndexes)}");
+		//if (debug)
+		//	GD.Print($"Size: {lastListSize}=>{listRect.Size}");
+		//if (debug)
+		//	GD.Print($"Indices: \n{string.Join(", ", lastIndices)}\n=>\n{string.Join(", ", currentIndexes)}");
 
 		lastListSize = listRect.Size;
 		lastIndices = currentIndexes;
@@ -218,24 +223,26 @@ public partial class NewRecycleListContainer : Container, IListHandler
 			pooledEntries.Enqueue(entry);
 		}
 
-		foreach (var layoutEntry in entriesToUse)
-		{
-			if (!activeEntries.TryGetValue(layoutEntry.index, out var listEntry))
+		using (var _ = PerfTimer.Start("FitChildLoop"))
+			foreach (var layoutEntry in entriesToUse)
 			{
-				if (!pooledEntries.TryDequeue(out listEntry))
+				if (!activeEntries.TryGetValue(layoutEntry.index, out var listEntry))
 				{
-					var instantiatedEntry = recycleEntryScene.Instantiate<IListEntry>();
-					AddChild(instantiatedEntry.Node);
-					instantiatedEntry.SetListProvider(currentListProvider);
-					entryConfigurer?.Invoke(instantiatedEntry);
-					listEntry = instantiatedEntry;
+					if (!pooledEntries.TryDequeue(out listEntry))
+					{
+						var instantiatedEntry = recycleEntryScene.Instantiate<IListEntry>();
+						AddChild(instantiatedEntry.Node);
+						instantiatedEntry.SetListProvider(currentListProvider);
+						entryConfigurer?.Invoke(instantiatedEntry);
+						listEntry = instantiatedEntry;
+					}
+					activeEntries.Add(layoutEntry.index, listEntry);
 				}
-				activeEntries.Add(layoutEntry.index, listEntry);
+				listEntry.Node.Visible = true;
+				listEntry.SetTargetListIndex(layoutEntry.index);
+				using var __ = PerfTimer.Start("FitChildIter");
+				FitChildInRect(listEntry.Node, layoutEntry.rect);
 			}
-			listEntry.Node.Visible = true;
-			listEntry.SetTargetListIndex(layoutEntry.index);
-			FitChildInRect(listEntry.Node, layoutEntry.rect);
-		}
 		PerformBlink();
 		//GD.Print("active: " + activeEntries.Count);
 		//FitChildInRect(demoRect, relativeVisibleRect);

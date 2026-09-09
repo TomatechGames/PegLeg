@@ -150,11 +150,11 @@ public partial class GameOffer
 			discountAmount = -dynamicBundleInfo["discountedBasePrice"].GetValue<int>();
 			discountMin = dynamicBundleInfo["floorPrice"].GetValue<int>();
 			var itemsArray = dynamicBundleInfo["bundleItems"].AsArray();
-			int basePriceAmount = itemsArray.Select(n => n["regularPrice"].GetValue<int>()).Sum();
+			int basePriceAmount = itemsArray.Sum(n => n["regularPrice"].GetValue<int>());
 
 			conditionalDiscounts = new(
 				itemsArray
-					.Where(n => n["alreadyOwnedPriceReduction"].GetValue<int>() > 0)
+					//.Where(n => n["alreadyOwnedPriceReduction"].GetValue<int>() > 0) //removed since it caused conflicts when checking bundle ownership
 					.Select(n => new KeyValuePair<string, int>(
 						n["item"]["templateId"].ToString(),
 						n["alreadyOwnedPriceReduction"].GetValue<int>()

@@ -1,13 +1,13 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 public partial class VenturesInterface : Control
 {
 	[ExportGroup("Status Bar")]
-	[Export]
-	Control statusBarRoot;
 	[Export]
 	Label currentLevelLabel;
 	[Export]
@@ -22,69 +22,90 @@ public partial class VenturesInterface : Control
 	Label nextMajorLevelLabel;
 	[Export]
 	GameItemEntry nextMajorReward;
+	[Export]
+	LineEdit customXP;
+	[Export]
+	Control customXPSection;
+	[Export]
+	Control autoXPSection;
+	[Export]
+	Label fullXPLabel;
 
 	[ExportGroup("Modifiers")]
-	[Export(PropertyHint.ArrayType)]
+	[Export]
 	GameItemEntry[] modifierEntries;
 
-	[ExportGroup("Main Rewards")]
-	[Export(PropertyHint.ArrayType)]
-	Control[] mainItems;
+	[ExportGroup("Rewards")]
 	[Export]
-	CheckButton legendaryToggle;
-	GameItemEntry[] mainItemEntries;
-	Control[] mainItemCheckmarks;
-	Label[] mainItemLabels;
-
-	[ExportGroup("Extra Rewards")]
-	[Export(PropertyHint.ArrayType)]
-	Control[] extraItems;
-	GameItemEntry[] extraItemEntries;
-	Control[] extraItemCheckmarks;
-	Label[] extraItemLabels;
+	Button hideCompleted;
+	[Export]
+	Button importantLevels;
+	[Export]
+	VenturesLevelEntry[] mainItemEntries;
+	[Export]
+	VenturesLevelEntry[] extraItemEntries;
 
 	bool hasSeason = false;
 	VentureSeasonProgressData currentSeason;
+	VentureLevel[] currentLevels;
+	GameItem[] currentItems;
+	GameItem[] currentExtraItems;
 	Dictionary<string, VentureSeasonProgressData> ventureSeasons;
 	public override void _Ready()
 	{
-		ventureSeasons = PegLegResourceManager.LoadResourceObj<Dictionary<string, VentureSeasonProgressData>>("GameAssets/VenturesSeasons.json");
+		ventureSeasons = PegLegResourceManager.VenturesSeasons.Deserialize<Dictionary<string, VentureSeasonProgressData>>();
 		RefreshTimerController.OnDayChanged += CheckSeason;
-		legendaryToggle.Toggled += _ => FilterLegendaryItems();
+		GameAccount.ActiveAccountChanged += UpdateXP;
+		importantLevels.Toggled += _ => UpdateXP();
+		hideCompleted.Toggled += _ => UpdateXP();
+		customXP?.TextSubmitted += SetCustomXP;
 
-		mainItemEntries = new GameItemEntry[mainItems.Length];
-		mainItemCheckmarks = new Control[mainItems.Length];
-		mainItemLabels = new Label[mainItems.Length];
-
-		for (int i = 0; i < mainItems.Length; i++)
+		foreach (var item in mainItemEntries)
 		{
-			var item = mainItems[i];
-			mainItemEntries[i] = item.GetNode<GameItemEntry>("%RewardEntry");
-			mainItemCheckmarks[i] = item.GetNode<Control>("%Checkmark");
-			mainItemLabels[i] = item.GetNode<Label>("%Label");
+			item.SetInterface(this);
 		}
-
-		extraItemEntries = new GameItemEntry[extraItems.Length];
-		extraItemCheckmarks = new Control[extraItems.Length];
-		extraItemLabels = new Label[extraItems.Length];
-
-		for (int i = 0; i < extraItems.Length; i++)
+		foreach (var item in extraItemEntries)
 		{
-			var item = extraItems[i];
-			extraItemEntries[i] = item.GetNode<GameItemEntry>("%RewardEntry");
-			extraItemCheckmarks[i] = item.GetNode<Control>("%Checkmark");
-			extraItemLabels[i] = item.GetNode<Label>("%Label");
+			item.SetInterface(this);
 		}
 
 		CheckSeason();
+	}
 
-		GameAccount.ActiveAccountChanged += UpdateAccount;
+	void SetCustomXP(string newText)
+	{
+		if(int.TryParse(newText, out var newXP) && newXP >= 0)
+			customXPValue = newXP;
+		customXP.Text = customXPValue.ToString();
+		UpdateXP();
+	}
+
+	int customXPValue;
+	public event Action OnDisplayXPChanged;
+	public int DisplayXP
+	{
+		get => field;
+		set
+		{
+			field = value;
+			UpdateTopBar();
+			OnDisplayXPChanged?.Invoke();
+		}
 	}
 
 	public override void _ExitTree()
 	{
-		GameAccount.ActiveAccountChanged -= UpdateAccount;
+		GameAccount.ActiveAccountChanged -= UpdateXP;
 		RefreshTimerController.OnDayChanged -= CheckSeason;
+	}
+
+	async void Refresh()
+	{
+		if (!GameAccount.ActiveAccount.isOwned)
+			return;
+		autoXPSection.Visible = false;
+		await GameAccount.ActiveAccount.GetProfile(FnProfileTypes.AccountItems).Query();
+		UpdateXP();
 	}
 
 	void CheckSeason()
@@ -100,18 +121,13 @@ public partial class VenturesInterface : Control
 			_ => null
 		};
 		hasSeason = ventureSeasons.TryGetValue(currentSeasonFlag, out currentSeason);
-		//foreach (var key in ventureSeasons.Keys)
-		//{
-		//    if (CalenderRequests.EventFlagActive(key))
-		//    {
-		//        hasSeason = true;
-		//        if (currentSeason == ventureSeasons[key])
-		//            return;
-		//        currentSeasonFlag = key;
-		//        currentSeason = ventureSeasons[key];
-		//        break;
-		//    }
-		//}
+
+		currentSeason.Levels ??= [];
+		currentSeason.PastLevels ??= [];
+
+		currentLevels = [.. currentSeason.Levels.OrderBy(l => l.TotalRequiredXP)];
+		currentItems = [.. currentLevels.Select(l => l.Rewards.FirstOrDefault().AsItem())];
+		currentExtraItems = [.. currentSeason.PastLevels.Select(l => l.AsItem())];
 
 		string[] modifiers = currentSeasonFlag switch
 		{
@@ -147,151 +163,125 @@ public partial class VenturesInterface : Control
 			modifierEntries[i].Visible = false;
 		}
 
-		GD.Print(currentSeason.Levels.Length);
-		currentSeason.Levels ??= [];
-		var levels = currentSeason.Levels?.OrderBy(l => l.TotalRequiredXP).ToArray() ?? [];
-		for (int i = 1; i < levels.Length; i++)
-		{
-			mainItems[i - 1].Visible = true;
-			mainItemEntries[i - 1].SetItem(levels[i].Rewards[0].AsItem());
-			mainItemLabels[i - 1].Text = $"Lv {i + 1}";
-			mainItemCheckmarks[i - 1].Visible = false;
-		}
-		for (int i = levels.Length - 1; i < mainItems.Length; i++)
-		{
-			if (i < 0)
-				continue;
-			mainItems[i].Visible = false;
-		}
+		//TODO: set up questlines
 
-		var pastLevels = currentSeason.PastLevels ?? [];
-		for (int i = 0; i < pastLevels.Length; i++)
-		{
-			extraItems[i].Visible = true;
-			extraItemLabels[i].Text = $"Lv {50 + i + 1}";
-			extraItemEntries[i].SetItem(pastLevels[i].AsItem());
-			extraItemCheckmarks[i].Visible = false;
-		}
-		for (int i = pastLevels.Length; i < extraItems.Length; i++)
-		{
-			extraItems[i].Visible = false;
-		}
-
-		FilterLegendaryItems();
-		UpdateAccount();
+		UpdateXP();
 	}
 
-	void FilterLegendaryItems()
+	//todo: make this more automated based on PL calculations (perhaps precalculate during export)
+	static int LevelToMissionUnlock(int level)=> level switch
 	{
-		bool requireLegendary = legendaryToggle.ButtonPressed;
-		var levelCount = currentSeason.Levels?.Length ?? 0;
-		for (int i = 1; i < levelCount; i++)
-		{
-			//GD.Print($"reward {i}: {mainItemEntries[i - 1].currentItem?.template?.Rarity == "Legendary"}");
-			mainItems[i - 1].Visible = !requireLegendary || mainItemEntries[i - 1].currentItem?.template?.Rarity == "Legendary";
-		}
-	}
+		7 => 23,
+		11 => 34,
+		16 => 46,
+		20 => 58,
+		23 => 70,
+		28 => 82,
+		31 => 94,
+		36 => 108,
+		39 => 124,
+		43 => 140,
+		_ => 0
+	};
 
-	async void UpdateAccount()
+	void UpdateXP()
 	{
 		if (!hasSeason)
 			return;
 
-		var levels = currentSeason.Levels?.OrderBy(l => l.TotalRequiredXP).ToArray() ?? [];
-		var pastLevels = currentSeason.PastLevels ?? [];
+		autoXPSection.Visible = GameAccount.ActiveAccount.isOwned;
+		customXPSection.Visible = !autoXPSection.Visible;
+		var xp = autoXPSection.Visible ? (GameAccount.ActiveAccount.GetProfile(FnProfileTypes.AccountItems).GetFirstTemplateItem("AccountResource:phoenixxp")?.quantity ?? 0) : customXPValue;
 
-		if (!GameAccount.ActiveAccount.isOwned)
+		var visibleLevelIndexes = Enumerable.Range(0, currentLevels.Length).Where(i =>
 		{
-			statusBarRoot.Visible = false;
-			for (int i = 1; i < levels.Length; i++)
-			{
-				mainItemCheckmarks[i - 1].Visible = false;
-			}
+			if(hideCompleted.ButtonPressed && currentLevels[i].TotalRequiredXP <= xp)
+				return i < currentLevels.Length && currentLevels[i + 1].TotalRequiredXP > xp; //only true when next level is not complete
+			if (LevelToMissionUnlock(i + 1) > 0)
+				return true;
+			if (importantLevels.ButtonPressed && currentItems[i]?.template?.RarityLevel < 5)
+				return false;
+			return true;
+		}).ToArray();
+		for (int j = 0; j < visibleLevelIndexes.Length; j++)
+		{
+			var i = visibleLevelIndexes[j];
+			var prevXP = j == 0 ? -1 : currentLevels[visibleLevelIndexes[j - 1]].TotalRequiredXP;
+			var nextXP = j == visibleLevelIndexes.Length - 1 ? -1 : currentLevels[visibleLevelIndexes[j + 1]].TotalRequiredXP;
 
-			for (int i = 0; i < pastLevels.Length; i++)
-			{
-				extraItemLabels[i].Text = $"Lv {50 + i + 1}";
-				extraItemCheckmarks[i].Visible = false;
-			}
-			return;
+			mainItemEntries[j].Visible = true;
+			mainItemEntries[j].SetInfo(currentItems[i], prevXP, currentLevels[i].TotalRequiredXP, nextXP, i + 1, LevelToMissionUnlock(i+1));
 		}
-		statusBarRoot.Visible = true;
-
-		var profile = await GameAccount.ActiveAccount.GetProfile(FnProfileTypes.AccountItems).Query();
-		var ventureXP = profile.GetFirstTemplateItem("AccountResource:phoenixxp")?.quantity ?? 0;
-		int currentLevel = 0;
-
-		int currentProgress = 0;
-		int targetProgress = 0;
-		int totalTarget = 0;
-
-		GameItem nextItem = null;
-		GameItem nextMilestone = null;
-		int milestoneLevel = 0;
-
-		for (int i = 1; i < levels.Length; i++)
+		for (int j = visibleLevelIndexes.Length; j < mainItemEntries.Length; j++)
 		{
-			bool aboveLevel = ventureXP > levels[i].TotalRequiredXP;
-			mainItemCheckmarks[i - 1].Visible = aboveLevel;
-			if (aboveLevel)
-			{
-				currentLevel = i;
-			}
-			else if (currentLevel + 1 == i)
-			{
-				nextItem = levels[i].Rewards[0].AsItem();
-				int startProgress = levels[i - 1].TotalRequiredXP;
-				currentProgress = ventureXP - startProgress;
-				targetProgress = levels[i].TotalRequiredXP - startProgress;
-				totalTarget = levels[i].TotalRequiredXP;
-			}
-			else if (nextMilestone is null && levels[i].IsMajorReward)
-			{
-				nextMilestone = levels[i].Rewards[0].AsItem();
-				milestoneLevel = i;
-			}
+			mainItemEntries[j].Visible = false;
 		}
 
-
-		if (currentLevel == currentSeason.Levels.Length - 1)
+		int extraBaseXP = currentLevels[^1].TotalRequiredXP;
+		var extraXPIncrement = currentSeason.PastLevelXPRequirement;
+		int startingExtraLevel = Mathf.Max((xp - extraBaseXP) / extraXPIncrement, 2) - 2;
+		for (int i = 0; i < extraItemEntries.Length; i++)
 		{
-			var pastMaxXP = ventureXP - levels[^1].TotalRequiredXP;
-			int pastMaxLevel = pastMaxXP / currentSeason.PastLevelXPRequirement;
-			currentProgress = pastMaxXP - (pastMaxLevel * currentSeason.PastLevelXPRequirement);
-			targetProgress = currentSeason.PastLevelXPRequirement;
-			currentLevel += pastMaxLevel;
-			totalTarget = levels[^1].TotalRequiredXP + ((pastMaxLevel + 1) * currentSeason.PastLevelXPRequirement);
+			int extraLevel = startingExtraLevel + i;
+			int levelRequirement = extraBaseXP + ((extraLevel + 1) * extraXPIncrement);
+			extraItemEntries[i].SetInfo(currentExtraItems[extraLevel % currentExtraItems.Length], levelRequirement - extraXPIncrement, levelRequirement, levelRequirement + extraXPIncrement, 51+extraLevel, 0);
+		}
 
-			var nextRewardIndex = pastMaxLevel % currentSeason.PastLevels.Length;
-			nextItem = currentSeason.PastLevels[nextRewardIndex].AsItem();
-
-			var startingPoint = pastMaxLevel - nextRewardIndex;
-			for (int i = 0; i < pastLevels.Length; i++)
-			{
-				extraItemLabels[i].Text = $"Lv {startingPoint + i + 1}";
-				extraItemCheckmarks[i].Visible = nextRewardIndex > i;
-			}
+		if (IsVisibleInTree())
+		{
+			var tween = CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Quad);
+			tween.TweenProperty(this, "DisplayXP", xp, 0.5);
 		}
 		else
 		{
-			for (int i = 0; i < pastLevels.Length; i++)
-			{
-				extraItemLabels[i].Text = $"Lv {50 + i + 1}";
-				extraItemCheckmarks[i].Visible = false;
-			}
+			DisplayXP = xp;
+		}
+	}
+
+	void UpdateTopBar()
+	{
+		if (!hasSeason)
+			return;
+
+		var xp = DisplayXP;
+		var extraXPThreshold = currentLevels[^1].TotalRequiredXP;
+		float progress = 0;
+
+		var nextLvData = currentLevels.FirstOrDefault(l => l.TotalRequiredXP > xp);
+		var currentLevel = Array.IndexOf(currentLevels, nextLvData);
+		var nextItem = nextLvData.TotalRequiredXP > 0 ? currentItems[currentLevel] : null;
+
+		var nextMilestoneLvData = currentLevels.FirstOrDefault(l => l.IsMajorReward && l.TotalRequiredXP > nextLvData.TotalRequiredXP);
+		var milestoneIdx = Array.IndexOf(currentLevels, nextMilestoneLvData);
+		var nextMilestoneItem = nextMilestoneLvData.TotalRequiredXP > 0 ? currentItems[milestoneIdx] : null;
+
+		if (nextItem is null)
+		{
+			var extraXP = xp - extraXPThreshold;
+			var extraLevel = extraXP / currentSeason.PastLevelXPRequirement;
+			currentLevel = 50 + extraLevel;
+			nextItem = currentExtraItems[extraLevel % currentExtraItems.Length];
+			progress = (float)(extraXP - (extraLevel * currentSeason.PastLevelXPRequirement)) / currentSeason.PastLevelXPRequirement;
+		}
+		else
+		{
+			var curLvData = currentLevels[currentLevel - 1];
+			var relativeXP = xp - curLvData.TotalRequiredXP;
+			var relativeTargetXP = nextLvData.TotalRequiredXP - curLvData.TotalRequiredXP;
+			progress = (float)relativeXP / relativeTargetXP;
 		}
 
-		currentLevelLabel.Text = $"Lv {currentLevel + 1}";
-		levelProgress.Value = (float)currentProgress / targetProgress;
-		levelProgress.TooltipText = $"{(targetProgress - currentProgress).Notate()} XP to Lv {currentLevel + 2} ({ventureXP.Notate()}/{totalTarget.Notate()})";
-		nextLevelLabel.Text = $"Lv {currentLevel + 2}";
+		currentLevelLabel.Text = $"Level {currentLevel}";
+		fullXPLabel.Text = xp.Notate();
+		levelProgress.Value = progress * levelProgress.MaxValue;
+		nextLevelLabel.Text = (currentLevel + 1).ToString();
 		nextReward.SetItem(nextItem);
 
-		majorLevelSection.Visible = nextMilestone is not null;
-		if (nextMilestone is not null)
+		majorLevelSection.Visible = nextMilestoneItem is not null;
+		if (nextMilestoneItem is not null)
 		{
-			nextMajorLevelLabel.Text = $"Lv {milestoneLevel + 1}";
-			nextMajorReward.SetItem(nextMilestone);
+			nextMajorLevelLabel.Text = (milestoneIdx + 1).ToString();
+			nextMajorReward.SetItem(nextMilestoneItem);
 		}
 	}
 
@@ -323,6 +313,6 @@ public partial class VenturesInterface : Control
 		[JsonInclude]
 		public int Quantity;
 
-		public readonly GameItem AsItem() => GameItemTemplate.Get(Item).CreateInstance(Quantity);
+		public readonly GameItem AsItem() => GameItemTemplate.Get(Item)?.CreateInstance(Quantity);
 	}
 }

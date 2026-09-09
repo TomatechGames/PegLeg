@@ -8,17 +8,13 @@ public static class Timeline
 {
 	static TLData timelineData;
 
-	public static void LoadTimeline()
-	{
-		timelineData = PegLegResourceManager.LoadResourceObj<TLData>("timeline.json", options: Helpers.JsonOptions.Fields);
-	}
+	public static void LazyLoadTimeline() => timelineData ??= PegLegResourceManager.LoadResourceObj<TLData>("timeline.json", options: Helpers.JsonOptions.Fields);
 
 	public static DateTime Anchor
 	{
 		get
 		{
-			if (timelineData is null)
-				LoadTimeline();
+			LazyLoadTimeline();
 			return timelineData?.anchor ?? DateTime.MinValue;
 		}
 	}
@@ -27,17 +23,15 @@ public static class Timeline
 	{
 		get
 		{
-			if (timelineData is null)
-				LoadTimeline();
+			LazyLoadTimeline();
 			return timelineData.seasons ?? [];
 		}
 	}
 
 	public static int GetWeeksInYear()
 	{
-		if (timelineData is null)
-			LoadTimeline();
-		return timelineData?.seasons.Select(s => s.duration).Sum() ?? 0;
+		LazyLoadTimeline();
+		return timelineData?.seasons.Sum(s => s.duration) ?? 0;
 	}
 
 	public static Season GetCurrentSeason() =>
@@ -46,8 +40,7 @@ public static class Timeline
 		GetCurrentSeason(out seasonStartDate, out _);
 	public static Season GetCurrentSeason(out DateTime seasonStartDate, out int seasonIndex)
 	{
-		if (timelineData is null)
-			LoadTimeline();
+		LazyLoadTimeline();
 		if (timelineData is null)
 		{
 			seasonStartDate = DateTime.MinValue;

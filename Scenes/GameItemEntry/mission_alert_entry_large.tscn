@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://dsvwnhaykngi8" path="res://Images/InterfaceIcons/BanjoPlaceholders/T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-64.png" id="2_jaw51"]
 
 [node name="MissionAlertItemEntry" type="HBoxContainer" unique_id=1093655368]
-custom_minimum_size = Vector2(500, 0)
 size_flags_horizontal = 0
 script = ExtResource("1_6fp01")
 
@@ -23,7 +22,7 @@ theme_override_constants/separation = 0
 [node name="Label" type="Label" parent="VBoxContainer" unique_id=187412061]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 20
 text = "Metal Corosion"
 text_overrun_behavior = 3
 
@@ -31,9 +30,10 @@ text_overrun_behavior = 3
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="VBoxContainer" unique_id=442091765]
-custom_minimum_size = Vector2(0, 85)
+custom_minimum_size = Vector2(400, 75)
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
 text = "Description Test
 Description Test
 Description Test

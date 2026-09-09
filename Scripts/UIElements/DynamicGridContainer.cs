@@ -49,6 +49,16 @@ public partial class DynamicGridContainer : Container
 		}
 	}
 	bool compressSpacing;
+	[Export]
+	bool ExpandChildren
+	{
+		get => field;
+		set
+		{
+			field = value;
+			UpdateLayout();
+		}
+	}
 	[Export(PropertyHint.Range, "0, 1")]
 	float CompressTowards
 	{
@@ -134,7 +144,7 @@ public partial class DynamicGridContainer : Container
 			//float totalHeight = GetRowHeights(children, colCount).Sum();
 
 			Vector2 newMinSize = new(
-				(colWidth * minCols) + (Mathf.Max(spacing.X, 0) * (minCols - 1)),
+				(colWidth * minCols) + (spacing.X * (minCols - 1)),
 				GetRowHeights(children, colCount).Sum()
 			);
 			return newMinSize;
@@ -153,7 +163,7 @@ public partial class DynamicGridContainer : Container
 		var children = GetControlChildren();
 		if (children.Length == 0)
 			return (null, []);
-		return (PrimaryChild(children), children.Where(c => c.Visible).ToArray());
+		return (PrimaryChild(children), [.. children.Where(c => c.Visible)]);
 	}
 
 	public int GetColCount(float? givenChildWidth = null) => GetColCount(givenChildWidth, out var _);
@@ -238,19 +248,22 @@ public partial class DynamicGridContainer : Container
 				lockLayout = false;
 				return;
 			}
-
 			int colCount = GetColCount(null, out var colWidth);
 			int rowCount = Mathf.CeilToInt((float)children.Length / colCount);
 
 			int compressedCols = Mathf.Min(colCount, visibleChildCount);
 			Vector2 gridSpacing = spacing;
-			gridSpacing.X = Mathf.Max(gridSpacing.X, 0);
-			gridSpacing.Y = Mathf.Max(gridSpacing.Y, 0);
+			//gridSpacing.X = Mathf.Max(gridSpacing.X, 0);
+			//gridSpacing.Y = Mathf.Max(gridSpacing.Y, 0);
 			Vector2 gridOrigin = new(0, 0);
 			float extraSpace = Size.X - ((colWidth * compressedCols) + (gridSpacing.X * (compressedCols - 1)));
 			if (compressSpacing)
 			{
 				gridOrigin.X = extraSpace * compressTowards;
+			}
+			else if (ExpandChildren)
+			{
+				colWidth += extraSpace / colCount;
 			}
 			else
 			{
