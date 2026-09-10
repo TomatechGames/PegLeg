@@ -4,36 +4,87 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using GDFileAccess = Godot.FileAccess;
 
 public partial class CosmoRequests
 {
 	// Based off Krowe Mohs RE work (and an Ai summary document Marlon made)
 
-	public record struct CosmoConfig(string gameVer, string key, string baseURL)
+	public record struct Config
 	{
-		public static CosmoConfig PLRConfig
+
+		public string Version { get; init; }
+		public string Key { get; init; }
+		public string BaseURL { get; init; }
+
+		public static void OverrideConfig(Config? overrideConfig) => Config.overrideConfig = overrideConfig;
+		static Config? overrideConfig = null;
+
+		public static Config ActiveConfig
 		{
 			get
 			{
+				if (overrideConfig is Config realOverride)
+					return realOverride;
 				if (PegLegResourceManager.MiscData["Cosmo"] is JsonObject cosmoData)
-					return new(
-						cosmoData["Version"].ToString(),
-						cosmoData["Key"].ToString(),
-						cosmoData["BaseURL"].ToString()
-					);
+					return cosmoData.Deserialize<Config>();
 				return FallbackConfig;
 			}
 		}
 
-		public static readonly CosmoConfig FallbackConfig =
-			new(
-				"41.30",
-				"OE4VTg8RVeDrg28sI23J6cClN\u002BROG0fVeEJTy6\u002BlAnI=",
-				"https://cosmo.fdeb.live.use1a.on.epicgames.com/v1/item/"
-			);
+		public static readonly Config FallbackConfig = new()
+		{
+			Version = "41.30",
+			Key = "OE4VTg8RVeDrg28sI23J6cClN\u002BROG0fVeEJTy6\u002BlAnI=",
+			BaseURL = "https://cosmo.fdeb.live.use1a.on.epicgames.com/v1/item/"
+		};
+	}
+
+	readonly record struct ConfigOverride(Config Config, DateTime? ValidUntil);
+
+	const string overridePath = "user://cosmoOverride.json";
+	public static async Task LoadConfigOverride()
+	{
+		if (GDFileAccess.FileExists(overridePath))
+		{
+			using var localOverrideFile = GDFileAccess.Open(overridePath, GDFileAccess.ModeFlags.Read);
+			try
+			{
+				var localOverride = JsonSerializer.Deserialize<ConfigOverride>(localOverrideFile.GetAsText());
+				if (localOverride.ValidUntil is not DateTime vUntil || DateTime.Now < vUntil.ToLocalTime())
+				{
+					Config.OverrideConfig(localOverride.Config);
+					if (localOverride.ValidUntil is not null)
+						return;
+				}
+			}
+			catch { }
+		}
+
+		var cosmoOverrideResponse = await ApiWebAddresses.pegLegLiteBucket
+				.MakeRequest("cosmoOverride.json")
+				.Send();
+
+		if (await cosmoOverrideResponse.CheckForError(logError: false))
+			return;
+
+		try
+		{
+			var overrideData = await cosmoOverrideResponse.ReadJson<ConfigOverride>();
+
+			using var localOverrideFile = GDFileAccess.Open(overridePath, GDFileAccess.ModeFlags.Write);
+			localOverrideFile.StoreString(JsonSerializer.Serialize(overrideData));
+
+			if (overrideData.ValidUntil is not DateTime vUntil || DateTime.Now < vUntil.ToLocalTime())
+				Config.OverrideConfig(overrideData.Config);
+			GD.Print("Fetched Cosmo Override");
+		}
+		catch { }
+
 	}
 
 	private static byte[] B64ToBytes(string base64)
@@ -97,10 +148,10 @@ public partial class CosmoRequests
 		int[] styles = null,
 		string urlSuffix = "png",
 		//string templateIdExtra = null,
-		CosmoConfig? config = null
+		Config? config = null
 	)
 	{
-		config ??= CosmoConfig.PLRConfig;
+		config ??= Config.ActiveConfig;
 		if (!templateId.Contains(':'))
 			return default;
 		var splitTemplate = templateId.Split(':');
@@ -111,10 +162,10 @@ public partial class CosmoRequests
 		//if (templateIdExtra is not null)
 		//	templateId += $"[{templateIdExtra}]";
 
-		string baseDescriptor = $"fn/{config?.gameVer}/{templateId}/{descriptorSuffix}";
+		string baseDescriptor = $"fn/{config?.Version}/{templateId}/{descriptorSuffix}";
 
 		byte[] hashDescriptorBytes = baseDescriptor.ToUtf8Buffer();
-		byte[] releaseKeyBytes = B64ToBytes(config?.key);
+		byte[] releaseKeyBytes = B64ToBytes(config?.Key);
 		byte[] projectKeyBytes = [];// projectKey is null ? [] : B64ToBytes(projectKey);
 		byte[] mergedBytes = [.. hashDescriptorBytes, .. releaseKeyBytes, .. projectKeyBytes];
 
@@ -122,7 +173,7 @@ public partial class CosmoRequests
 		//var publicDescriptor = BytesToB64(SHA256.HashData(new MemoryStream($"{baseDescriptor}/{config.key[..4]}nullnull".ToUtf8Buffer())));
 
 		return new(
-			$"{config?.baseURL}{hashDescriptor}/{urlSuffix}", //url
+			$"{config?.BaseURL}{hashDescriptor}/{urlSuffix}", //url
 			$"{templateId.Replace(":","__")}-{descriptorSuffix}" //unique name for local caching
 		);
 	}
@@ -167,6 +218,7 @@ public partial class CosmoRequests
 			return CatalogRequests.TryGetCosmeticTexture(uniqueName);
 		}
 
+		static bool hasAlertedNotFound = false;
 		public async Task<Image> FetchImage(float resolutionScale = 1)
 		{
 			if (url is null || uniqueName is null)
@@ -175,8 +227,15 @@ public partial class CosmoRequests
 				return existingTexture;
 
 			using var result = await WebHelpers.MakeRequest(url).Accepts(WebMedia.Image.Any).Send();
-			if (await result.CheckForError())
-				return null;
+
+			if(!hasAlertedNotFound && result.StatusCode == System.Net.HttpStatusCode.NotFound)
+			{
+				GD.PushWarning("WARNING: A Cosmo request has 404ed, the Cosmo key may be incorrect");
+				hasAlertedNotFound = true;
+			}
+			
+			if (result.StatusCode == System.Net.HttpStatusCode.NotFound || await result.CheckForError())
+				return null; //silently fails when encountering 404s
 
 			(Image image, byte[] buffer, string type) = await result.ReadImageWithBuffer();
 			//Image image = await result.ReadDownloadImage(testStream);

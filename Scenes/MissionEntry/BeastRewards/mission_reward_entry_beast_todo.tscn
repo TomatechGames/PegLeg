@@ -31,6 +31,9 @@ shader_parameter/HideBar = false
 [node name="MissionRewardEntry" unique_id=512148745 node_paths=PackedStringArray("todoReorderContent") instance=ExtResource("1_wyxa2")]
 todoReorderContent = NodePath("MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer3/TodoButtons/TodoReorder")
 
+[node name="MarginContainer" parent="MissionEntry/HBoxContainer/MarginContainer" parent_id_path=PackedInt32Array(633279153) index="2" unique_id=1648938085]
+theme_override_constants/margin_right = 0
+
 [node name="Icon" parent="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" parent_id_path=PackedInt32Array(357313288) index="0" unique_id=68041144]
 material = SubResource("ShaderMaterial_wyxa2")
 

@@ -173,6 +173,8 @@ public partial class MissionEntry : Control, IRecyclableEntry, IListEntry<GameMi
 			ClearMission();
 			return;
 		}
+		if (currentMission == mission)
+			return;
 		currentMission = mission;
 
 		EmitSignalNameChanged(currentMission.DisplayName);

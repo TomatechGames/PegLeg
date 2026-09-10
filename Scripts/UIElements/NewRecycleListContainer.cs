@@ -143,11 +143,7 @@ public partial class NewRecycleListContainer : Container, IListHandler
 			if (!listDirty && relativePos == prevRelativePos)
 				return;
 		}
-		//using var _ = PerfTimer.Start($"NewRecyclePerf:{Name}", debug ? 5 : 5000);
-		if (debug && Input.IsKeyPressed(Key.P))
-		{
-			GD.Print("pause");
-		}
+		using var _ = PerfTimer.Start($"NewRecyclePerf", debug ? 5 : 5000);
 		prevRelativePos = relativePos;
 		force |= listDirty;
 		listDirty = false;
@@ -223,26 +219,24 @@ public partial class NewRecycleListContainer : Container, IListHandler
 			pooledEntries.Enqueue(entry);
 		}
 
-		using (var _ = PerfTimer.Start("FitChildLoop"))
-			foreach (var layoutEntry in entriesToUse)
+		foreach (var layoutEntry in entriesToUse)
+		{
+			if (!activeEntries.TryGetValue(layoutEntry.index, out var listEntry))
 			{
-				if (!activeEntries.TryGetValue(layoutEntry.index, out var listEntry))
+				if (!pooledEntries.TryDequeue(out listEntry))
 				{
-					if (!pooledEntries.TryDequeue(out listEntry))
-					{
-						var instantiatedEntry = recycleEntryScene.Instantiate<IListEntry>();
-						AddChild(instantiatedEntry.Node);
-						instantiatedEntry.SetListProvider(currentListProvider);
-						entryConfigurer?.Invoke(instantiatedEntry);
-						listEntry = instantiatedEntry;
-					}
-					activeEntries.Add(layoutEntry.index, listEntry);
+					var instantiatedEntry = recycleEntryScene.Instantiate<IListEntry>();
+					AddChild(instantiatedEntry.Node);
+					instantiatedEntry.SetListProvider(currentListProvider);
+					entryConfigurer?.Invoke(instantiatedEntry);
+					listEntry = instantiatedEntry;
 				}
-				listEntry.Node.Visible = true;
-				listEntry.SetTargetListIndex(layoutEntry.index);
-				using var __ = PerfTimer.Start("FitChildIter");
-				FitChildInRect(listEntry.Node, layoutEntry.rect);
+				activeEntries.Add(layoutEntry.index, listEntry);
 			}
+			listEntry.Node.Visible = true;
+			listEntry.SetTargetListIndex(layoutEntry.index, force);
+			FitChildInRect(listEntry.Node, layoutEntry.rect);
+		}
 		PerformBlink();
 		//GD.Print("active: " + activeEntries.Count);
 		//FitChildInRect(demoRect, relativeVisibleRect);

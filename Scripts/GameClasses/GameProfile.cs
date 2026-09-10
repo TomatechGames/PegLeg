@@ -335,7 +335,7 @@ public class GameProfile
 				lastClientQuestLoginTime = DateTime.UtcNow;
 			lastProfileOperationTime = DateTime.UtcNow;
 
-			(var didError, var errorJson) = await opResponse.CheckForErrorJson(!silent);
+			(var didError, var errorJson) = await opResponse.CheckForErrorJson(showErrorPopup: !silent);
 			if (didError)
 			{
 				lastOp = errorJson is JsonObject obj ? obj : [];

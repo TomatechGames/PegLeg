@@ -32,7 +32,14 @@ shader_parameter/base = 0.0
 shader_parameter/scalar = 2.0
 shader_parameter/power = 1.5
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aow5b"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b802l"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t8t80"]
 resource_local_to_scene = true
 shader = ExtResource("2_513lh")
 shader_parameter/ControlSize = Vector2(25, 25)
@@ -67,7 +74,7 @@ missionInspectDependancy = NodePath("Button/MissionTooltip")
 show_behind_parent = true
 layout_mode = 2
 mouse_filter = 1
-theme_type_variation = &"SubtleButton"
+theme_type_variation = &"SubtleButtonRound"
 
 [node name="Ctx" type="Node" parent="Button" unique_id=950363944 node_paths=PackedStringArray("missionSource", "itemSource")]
 script = ExtResource("2_okcsl")
@@ -162,10 +169,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="ColorRect" type="ColorRect" parent="MissionEntry/HBoxContainer/MarginContainer" unique_id=1404367506]
+[node name="ColorRect" type="Panel" parent="MissionEntry/HBoxContainer/MarginContainer" unique_id=488909651]
 modulate = Color(1, 1, 1, 0.19607843)
 layout_mode = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_b802l")
 
 [node name="ColorRect2" type="ColorRect" parent="MissionEntry/HBoxContainer/MarginContainer" unique_id=1593471458]
 custom_minimum_size = Vector2(3, 0)
@@ -177,7 +185,6 @@ mouse_filter = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 5
-theme_override_constants/margin_right = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MissionEntry/HBoxContainer/MarginContainer/MarginContainer" unique_id=1467368915]
 layout_mode = 2
@@ -196,7 +203,7 @@ preventInteractability = true
 levelTextPrefix = " Lv "
 
 [node name="Icon" parent="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" index="0" unique_id=68041144]
-material = SubResource("ShaderMaterial_aow5b")
+material = SubResource("ShaderMaterial_t8t80")
 mouse_filter = 2
 
 [node name="Label" parent="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem/Icon" index="0" unique_id=2062077297]
@@ -310,8 +317,8 @@ expand_mode = 1
 [connection signal="IsCollectable" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" to="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/CollectableIcon" method="set_visible"]
 [connection signal="LevelTextChanged" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" to="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/ItemLv" method="set_text"]
 [connection signal="NameChanged" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" to="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/Label" method="set_text"]
-[connection signal="RarityChanged" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" to="MissionEntry/HBoxContainer/MarginContainer/ColorRect" method="set_self_modulate"]
 [connection signal="RarityChanged" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" to="MissionEntry/HBoxContainer/MarginContainer/ColorRect2" method="set_self_modulate"]
+[connection signal="RarityChanged" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" to="MissionEntry/HBoxContainer/MarginContainer/ColorRect" method="set_self_modulate"]
 [connection signal="TooltipChanged" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer/MissionCollectionHighlightItem" to="Button" method="set_tooltip_text"]
 [connection signal="pressed" from="MissionEntry/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer/MarginContainer2/MarginContainer3/Button" to="." method="AddToList"]
 

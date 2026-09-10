@@ -16,6 +16,13 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ftsg"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="SpecificMissionRewardEntry" type="MarginContainer" unique_id=1117377689 node_paths=PackedStringArray("missionEntry", "itemEntry", "levelLabel", "missionPowerLabel")]
 custom_minimum_size = Vector2(0, 24)
 script = ExtResource("1_ujtf1")
@@ -29,7 +36,7 @@ show_behind_parent = true
 custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 mouse_filter = 1
-theme_type_variation = &"SubtleButton"
+theme_type_variation = &"SubtleButtonRound"
 
 [node name="Ctx" type="Node" parent="Button" unique_id=1239503332 node_paths=PackedStringArray("missionSource")]
 script = ExtResource("2_gkeay")
@@ -114,10 +121,11 @@ theme_override_constants/margin_right = -1
 theme_override_constants/margin_bottom = -1
 script = ExtResource("7_gkeay")
 
-[node name="ColorRect" type="ColorRect" parent="MissionEntry/HBoxContainer/Item" unique_id=1444972962]
+[node name="ColorRect" type="Panel" parent="MissionEntry/HBoxContainer/Item" unique_id=780666340]
 modulate = Color(1, 1, 1, 0.19607843)
 layout_mode = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ftsg")
 
 [node name="ColorRect2" type="ColorRect" parent="MissionEntry/HBoxContainer/Item" unique_id=608396937]
 custom_minimum_size = Vector2(3, 0)
@@ -133,6 +141,7 @@ theme_override_constants/margin_left = 5
 [node name="HBoxContainer" type="HBoxContainer" parent="MissionEntry/HBoxContainer/Item/MarginContainer" unique_id=450380828]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 1
 
 [node name="ItemLevel" type="Label" parent="MissionEntry/HBoxContainer/Item/MarginContainer/HBoxContainer" unique_id=585772025]
 custom_minimum_size = Vector2(26, 0)
@@ -148,7 +157,7 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Button" type="Button" parent="MissionEntry/HBoxContainer/Item/MarginContainer/HBoxContainer" unique_id=863876314]
-custom_minimum_size = Vector2(22, 0)
+custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 tooltip_text = "Add to To-Do List"
 mouse_filter = 1
@@ -175,6 +184,6 @@ expand_mode = 1
 [connection signal="TheaterCategoryChanged" from="MissionEntry" to="MissionEntry/HBoxContainer/HBoxContainer/TheaterCat" method="set_text"]
 [connection signal="TheaterColorChanged" from="MissionEntry" to="MissionEntry/HBoxContainer/HBoxContainer/TheaterCat/TextureRect" method="set_self_modulate"]
 [connection signal="TooltipChanged" from="MissionEntry" to="Button" method="set_tooltip_text"]
-[connection signal="RarityChanged" from="MissionEntry/HBoxContainer/Item" to="MissionEntry/HBoxContainer/Item/ColorRect" method="set_color"]
 [connection signal="RarityChanged" from="MissionEntry/HBoxContainer/Item" to="MissionEntry/HBoxContainer/Item/ColorRect2" method="set_color"]
+[connection signal="RarityChanged" from="MissionEntry/HBoxContainer/Item" to="MissionEntry/HBoxContainer/Item/ColorRect" method="set_color"]
 [connection signal="pressed" from="MissionEntry/HBoxContainer/Item/MarginContainer/HBoxContainer/Button" to="." method="AddToList"]

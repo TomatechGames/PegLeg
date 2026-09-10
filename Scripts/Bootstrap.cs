@@ -13,8 +13,8 @@ public partial class Bootstrap : Node
 {
 	public const string processLockPath = "user://pid";
 	const string pipeName = "PegLegPipe";
-	const int majorPackageVersion = 3;
-	const int minorPackageVersion = 1;
+	const int majorPackageVersion = 4;
+	const int minorPackageVersion = 0;
 
 	public static event Action OnBootComplete;
 
@@ -278,6 +278,11 @@ public partial class Bootstrap : Node
 		});
 		if (isFirstBoot)
 		{
+			//progressLabel.Text = "Checking Cosmetic Key";
+			//progressBar.Indeterminate = true;
+			//progressBar.Visible = true;
+			//await CosmoRequests.LoadConfigOverride();
+
 			PrintCosmo(CosmoRequests.GetImageData("AthenaItemShopOfferDisplayData:dav2_character_hammervice", "store_image", [0], "2048x2048"));
 			PrintCosmo(CosmoRequests.GetImageData("AthenaItemShopOfferDisplayData:DAv2_Bundle_Featured_Wheel_EvilOrnament01", "preview_image"));
 			PrintCosmo(CosmoRequests.GetImageData("AthenaItemShopOfferDisplayData:dav2_cid_387_f_golf", "store_image", [1], "2048x2048"));

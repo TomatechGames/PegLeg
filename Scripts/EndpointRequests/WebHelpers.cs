@@ -382,40 +382,24 @@ public static class WebHelpers
 		return (image, buffer);
 	}
 
+	public record struct ErrorContext(HttpResponseMessage response, int epicErrorCode, JsonNode errorContent);
 	public static async Task<bool> CheckForError(this HttpResponseMessage response, bool showErrorPopup = false, bool logError = true) =>
 		(await response.CheckForErrorJson(showErrorPopup, logError)).didError;
+	public static async Task<bool> CheckForError(this HttpResponseMessage response, Func<ErrorContext, bool> logErrorPredicate, bool showErrorPopup = false) =>
+		(await response.CheckForErrorJson(logErrorPredicate, showErrorPopup)).didError;
 
-	public static async Task<(bool didError, JsonNode errorContents)> CheckForErrorJson(this HttpResponseMessage response, bool showErrorPopup = false, bool logError = true)
+	public static async Task<(bool didError, JsonNode errorContents)> CheckForErrorJson(this HttpResponseMessage response, bool logError = true, bool showErrorPopup = false) =>
+		await response.CheckForErrorJson(_ => logError, showErrorPopup);
+	public static async Task<(bool didError, JsonNode errorContents)> CheckForErrorJson(this HttpResponseMessage response, Func<ErrorContext, bool> logErrorPredicate, bool showErrorPopup = false)
 	{
 		if (response.IsSuccessStatusCode)
 			return (false, null);
 		GameAccount boundAccount = null;
 		if (response.RequestMessage is BoundHttpsRequestMessage boundMsg)
 			boundAccount = boundMsg.BoundAccount;
-		if (response.Headers.TryGetValues("x-epic-error-code", out var errCode))
-		{
-			string code = errCode.FirstOrDefault();
-			if (code == "1031")
-			{
-				GD.Print("token invalid, expiring token");
-				boundAccount?.ForceExpireToken();
-			}
-			else if (code == "1012")
-			{
-				//waiting for link code to complete, error should be silent
-				logError = false;
-				showErrorPopup = false;
-			}
-			else if (code == "18130" && response.RequestMessage.Method == HttpMethod.Delete)
-			{
-				//attempting to delete nonexistant device, error should be silent
-				logError = false;
-				showErrorPopup = false;
-			}
-		}
-		string fallbackErrorCode = null;
-		if (response.Headers.TryGetValues("x-epic-error-name", out var errName))
-			fallbackErrorCode = errName.FirstOrDefault();
+
+		response.Headers.TryGetEpicErrorCode(out var epicErrCode);
+		response.Headers.TryGetEpicErrorMsg(out var fallbackErrorName);
 
 		JsonNode errorContent = null;
 		try
@@ -427,14 +411,29 @@ public static class WebHelpers
 			GD.Print("error response disposed");
 		}
 
+		bool logError = logErrorPredicate?.Invoke(new(response, epicErrCode, errorContent)) == true;
+		switch (epicErrCode)
+		{
+			case 1031:
+				GD.Print("token invalid, expiring token");
+				boundAccount?.ForceExpireToken();
+				break;
+			case 1012: //waiting for link code to complete, error should be silent
+			case 18130 //attempting to delete nonexistant device, error should be silent
+				when response.RequestMessage.Method == HttpMethod.Delete:
+				logError = false;
+				showErrorPopup = false;
+				break;
+		}
+
 		if (logError)
 		{
 			string logMsg = $"Web Request Error when sending {response?.RequestMessage?.Method} to {response?.RequestMessage?.RequestUri}{(boundAccount is null ? "" : $" as {boundAccount.DisplayName}")}";
 			logMsg += $"\nStatusCode: {(int)(response?.StatusCode ?? HttpStatusCode.Gone)}, ReasonPhrase: {response?.ReasonPhrase}";
 			if (errorContent is not null)
 				logMsg += $"\nContent: \n{errorContent.ToJsonString()}";
-			else if (fallbackErrorCode is not null)
-				logMsg += $"\nEpic Error Name: {fallbackErrorCode}";
+			else if (fallbackErrorName is not null)
+				logMsg += $"\nEpic Error Name: {fallbackErrorName}";
 			logMsg = logMsg.FixNewlines();
 			GD.PrintRich($"[color=orange]{logMsg}[/color]");
 			if (OS.HasFeature("editor"))
@@ -452,13 +451,31 @@ public static class WebHelpers
 					"An uncaught web error occured",
 				warningText:
 					errorContent?["errorCode"]?.ToString() ??
-					fallbackErrorCode ??
+					fallbackErrorName ??
 					response.StatusCode.ToString(),
 				allowCancel: false
 			).StartTask();
 		}
 
 		return (true, errorContent);
+	}
+}
+
+public static class WebExtensions
+{
+	extension(HttpResponseHeaders responseHeaders)
+	{
+		public bool TryGetEpicErrorCode(out int errCode)
+		{
+			errCode = -1;
+			return responseHeaders.TryGetValues("x-epic-error-code", out var epicErrCodeContainer) && int.TryParse(epicErrCodeContainer.FirstOrDefault(), out errCode);
+		}
+
+		public bool TryGetEpicErrorMsg(out string errMsg)
+		{
+			errMsg = responseHeaders.TryGetValues("x-epic-error-code", out var epicErrCodeContainer) ? epicErrCodeContainer.FirstOrDefault() : null;
+			return errMsg is not null;
+		}
 	}
 }
 

@@ -225,22 +225,22 @@ public partial class InventoryInterface : Control, IRecyclableElementProvider<Ga
 		//    return;
 		//accountDirty = false;
 
-		filteredItems = [];
-		ApplySorting();
 		var account = GameAccount.ActiveAccount;
-		if (!string.IsNullOrEmpty(targetUser?.Text) && allowDevMode)
+		if (!string.IsNullOrEmpty(targetUser?.Text) && targetProfile == FnProfileTypes.AccountItems)
 		{
 			if (targetUser.Text.Length == 32)
 				account = GameAccount.GetOrCreateAccount(targetUser.Text);
 			else
 				account = (await GameAccount.SearchForAccount(targetUser?.Text)) ?? account;
 		}
-		if (allowDevMode)
-		{
-			GD.Print("Inventory target: " + account?.accountId);
-		}
-		if (targetProfile != FnProfileTypes.AccountItems && !await account.Authenticate())
+		if (currentProfile?.account == account)
 			return;
+		filteredItems = [];
+		ApplySorting();
+		if (targetProfile != FnProfileTypes.AccountItems && !account.isOwned)
+			return;
+		if (targetProfile == FnProfileTypes.AccountItems)
+			GD.Print("Inventory target: " + account?.accountId);
 
 		researchTokenArea?.Visible = false;
 

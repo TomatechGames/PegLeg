@@ -6,7 +6,7 @@ public interface IListEntry
 {
 	public Control Node => this is Control ctrl ? ctrl : null;
 	public void SetListProvider(IListProvider provider);
-	public void SetTargetListIndex(int index);
+	public void SetTargetListIndex(int index, bool force = false);
 	public void ClearListEntry() { }
 }
 
@@ -21,32 +21,27 @@ public interface IListEntry<T> : IListEntry
 		CurrentListProvider = typed;
 		if (CurrentListProvider.List is IList<T> list)
 			SetListEntryValue(list[CurrentIndexTarget]);
+		else
+			ClearListEntry();
 	}
 
 	void SelectEntry(string context = "") =>
 		CurrentListProvider?.OnItemSelected(CurrentIndexTarget, context);
 
-	void IListEntry.SetTargetListIndex(int index)
+	void IListEntry.SetTargetListIndex(int index, bool force)
 	{
-		if (index >= 0)
-			CurrentIndexTarget = index;
-		else
-		{
-			ClearListEntry();
+		if (index < 0)
 			return;
-		}
+		if (CurrentIndexTarget == index && !force)
+			return;
+		CurrentIndexTarget = index;
 		if (CurrentListProvider is null)
-		{
-			ClearListEntry();
 			return;
-		}
 		var list = CurrentListProvider.List;
-		if (list.Count <= index)
-		{
+		if (index >= 0 && index < list.Count)
+			SetListEntryValue(list[index]);
+		else
 			ClearListEntry();
-			return;
-		}
-		SetListEntryValue(list[index]);
 	}
 
 	protected void SetListEntryValue(T newValue);

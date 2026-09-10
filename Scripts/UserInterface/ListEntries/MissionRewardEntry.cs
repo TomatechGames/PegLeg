@@ -119,8 +119,10 @@ public partial class MissionRewardEntry : Control, IRecyclableEntry, IListEntry<
 
 	void SetPair(MissionRewardPair pair)
 	{
+		var guidMatch = pair.mission?.Guid == "c40c2805-b054-4ea0-b539-9525ea3242e6";
+		using var _ = PerfTimer.Start("pairTimer", guidMatch ? 0 : 1000);
 		missionEntry.SetMission(pair.mission);
-		pair.item.SetRewardNotification();
+		pair.item?.SetRewardNotification();
 		itemEntry.SetItem(pair.item);
 		currentItems = [pair.item];
 		EmitSignalIsToDo(MissionToDoListController.IsOnToDoList(itemEntry.currentItem));

@@ -13,6 +13,8 @@ public class PerfTimer : IDisposable
 	{
 		this.name = name;
 		this.milisThreshold = milisThreshold;
+		if (!OS.HasFeature("editor"))
+			return;
 		timer = Stopwatch.StartNew();
 	}
 
@@ -20,6 +22,8 @@ public class PerfTimer : IDisposable
 
 	public void Dispose()
 	{
+		if (timer is null)
+			return;
 		timer.Stop();
 		if (timer.ElapsedMilliseconds >= milisThreshold)
 			GD.Print($"PerfTimer \"{name}\" ran for {timer.Elapsed} ({timer.ElapsedMilliseconds} ms)");
