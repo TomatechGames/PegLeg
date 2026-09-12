@@ -111,8 +111,9 @@ public partial class LlamaSelector : Control
 		//    GD.Print(newLlamaItems.Select(i=>i.templateId).ToArray());
 		foreach (var item in newLlamaItems)
 		{
-			AddToStack(item);
+			AddToStack(item, false);
 		}
+		SortLlamaStacks();
 
 		//connect new profile
 		llamaItemProfile = newLlamaItemProfile;
@@ -124,6 +125,7 @@ public partial class LlamaSelector : Control
 	class CardPackStack
 	{
 		public readonly string templateId;
+		public readonly string displayName;
 		public readonly string customType;
 		public readonly bool isKnown;
 		public readonly List<GameItem> items;
@@ -133,6 +135,7 @@ public partial class LlamaSelector : Control
 		public CardPackStack(GameItem firstItem)
 		{
 			templateId = firstItem.templateId;
+			displayName = firstItem.template?.DisplayName ?? templateId;
 
 			if (firstItem.template.DisplayName.Contains("Accolade"))
 				customType = "Accolade";
@@ -151,10 +154,9 @@ public partial class LlamaSelector : Control
 
 		public bool IsStackable(GameItem item)
 		{
-			//todo: allow choice packs to be stacked
-			//if (item.attributes.ContainsKey("options"))
-			//	return false;
-			if (templateId == item.templateId)
+			//if (templateId == item.templateId)
+			//	return true;
+			if (displayName == (item.template?.DisplayName ?? item.templateId))
 				return true;
 			if (item.template.DisplayName.Contains("Accolade") && customType == "Accolade")
 				return true;
@@ -182,7 +184,8 @@ public partial class LlamaSelector : Control
 		}
 	}
 
-	void AddToStack(GameItem item)
+	void AddToStack(GameItem item) => AddToStack(item, true);
+	void AddToStack(GameItem item, bool sort)
 	{
 		if (item?.template?.Type != "CardPack")
 			return;
@@ -211,11 +214,31 @@ public partial class LlamaSelector : Control
 			newEntry.LlamaPressed += SelectLlamaItem;
 		}
 
-		newEntry.MoveToFront();
+		//newEntry.MoveToFront();
 		CardPackStack llamaStack = new(item);
 		newEntry.SetItem(llamaStack.DisplayItem);
 		llamaItemStacks.Add(llamaStack.DisplayItem.uuid, llamaStack);
 		inventoryLlamaEntries.Add(llamaStack.DisplayItem.uuid, newEntry);
+
+		//stapled on sorting system, might want to migrate to recyclable list somehow
+		if (sort)
+			SortLlamaStacks();
+	}
+
+	void SortLlamaStacks()
+	{
+		var entryArray = inventoryLlamaEntries.Values.ToArray();
+		var indexes = entryArray
+			.OrderBy(e => e.currentItem.CardPackChoices is not null)
+			.ThenBy(e => e.currentItem.template.DisplayName ?? "ZZZZ")
+			.Select(e => Array.IndexOf(entryArray, e))
+			.ToArray();
+		for (int i = 0; i < entryArray.Length; i++)
+		{
+			var sortEntry = entryArray[indexes[i]];
+			if (sortEntry.GetIndex() != i)
+				llamaItemEntryParent.MoveChild(sortEntry, i);
+		}
 	}
 
 	private void CheckStacks()

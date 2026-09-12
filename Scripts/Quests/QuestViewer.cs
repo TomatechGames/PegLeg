@@ -89,7 +89,10 @@ public partial class QuestViewer : Control
 
 		var newQuest = await account.RerollQuest(currentQuest.questItem);
 		if (newQuest == null)
+		{
+			GD.Print("NULL QUEST");
 			return;
+		}
 
 		currentQuest.LinkQuestItem(newQuest);
 		SetupQuest(currentQuest);

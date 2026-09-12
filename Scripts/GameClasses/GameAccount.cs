@@ -503,7 +503,7 @@ public partial class GameAccount
 				SetAuthentication(json);
 				return true;
 			}
-			GD.Print($"Refresh token error for {DisplayName}");
+			//GD.Print($"Refresh token error for {DisplayName}");
 		}
 		var dd = GetLocalData("DeviceDetails")?.AsArray().Select(n => n.GetValue<byte>()).ToArray();
 		var ddJson = DecryptDeviceDetails(dd);
@@ -1553,7 +1553,7 @@ public partial class GameAccount
 			.FirstOrDefault(n => n["type"].ToString() == "dailyQuestReroll");
 		if (notif is null)
 			return null;
-		return accountItems.GetItems("Quest", item => item.templateId == notif["newQuestId"].ToString()).FirstOrDefault();
+		return accountItems.GetFirstTemplateItem(notif["newQuestId"].ToString());
 	}
 
 	public bool CanRerollQuest() => (GetProfile(FnProfileTypes.AccountItems).statAttributes?["quest_manager"]?["dailyQuestRerolls"]?.GetValue<int>() ?? 0) > 0;

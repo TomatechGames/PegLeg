@@ -405,20 +405,20 @@ public partial class GameItemEntry : Control, IRecyclableEntry, IListEntry<GameI
 			"Rare" => 3,
 			"Uncommon" => 2,
 			"Common" => 1,
-			_ => 0
+			_ => displayItem?.template?.RarityLevel ?? 1
 		};
 
 		bool useInit =
 			(initLevel > 1 && initLevel <= level) ||
 			(initTier > 1 && initTier <= tier) ||
-			(initRarityLevel > 1 && initRarityLevel <= (displayItem?.template?.RarityLevel ?? 1));
+			(initRarityLevel < (displayItem?.template?.RarityLevel ?? 1));
 		EmitSignalInitVisible(useInit);
 		if (useInit)
 		{
 			EmitSignalInitLevelChanged(initLevel);
 			EmitSignalInitTierChanged(initTier);
 			EmitSignalInitRarityChanged(initRarityLevel <= 0 || initRarityLevel > 6 ? Colors.Transparent : PaletteHelper.RarityColours[initRarityLevel - 1]);
-			EmitSignalInitLevelTextChanged($"{levelTextPrefix}{level}");
+			EmitSignalInitLevelTextChanged($"{levelTextPrefix}{initLevel}");
 			EmitSignalInitLevelProgressChanged(((initLevel + 9 % 10) + 1) / 10f);
 		}
 

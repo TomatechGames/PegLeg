@@ -239,6 +239,7 @@ public partial class GameOffer
 		account ??= GameAccount.ActiveAccount;
 		var prerollItems = account.GetProfile(FnProfileTypes.AccountItems).GetItems("PrerollData");
 		var match = prerollItems.FirstOrDefault(item => item.attributes?["offerId"].ToString() == OfferId);
+		Llamalytics.TryAddPreroll(match);
 		return match;
 	}
 

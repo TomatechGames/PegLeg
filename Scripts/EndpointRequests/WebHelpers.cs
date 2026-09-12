@@ -417,6 +417,8 @@ public static class WebHelpers
 			case 1031:
 				GD.Print("token invalid, expiring token");
 				boundAccount?.ForceExpireToken();
+				logError = false;
+				showErrorPopup = false;
 				break;
 			case 1012: //waiting for link code to complete, error should be silent
 			case 18130 //attempting to delete nonexistant device, error should be silent

@@ -667,32 +667,37 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 0
 alignment = 1
 script = ExtResource("29_hrq73")
-tierImages = [NodePath("../../../../LvAndTier/VBoxContainer/MarginContainer/TierController/TextureRect"), NodePath("../../../../LvAndTier/VBoxContainer/MarginContainer/TierController/TextureRect2"), NodePath("../../../../LvAndTier/VBoxContainer/MarginContainer/TierController/TextureRect3"), NodePath("../../../../LvAndTier/VBoxContainer/MarginContainer/TierController/TextureRect4"), NodePath("../../../../LvAndTier/VBoxContainer/MarginContainer/TierController/TextureRect5")]
+tierImages = [NodePath("TextureRect"), NodePath("TextureRect2"), NodePath("TextureRect3"), NodePath("TextureRect4"), NodePath("TextureRect5")]
 superchargeColor = Color(0, 0.708333, 0.85, 1)
 
 [node name="TextureRect" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/GridContainer/VBoxContainer/InitLvAndTier/VBoxContainer/MarginContainer/TierController" index="0" unique_id=1065473129]
+material = ExtResource("14_lxpss")
 layout_mode = 2
 texture = ExtResource("30_ylct0")
 expand_mode = 3
 
 [node name="TextureRect2" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/GridContainer/VBoxContainer/InitLvAndTier/VBoxContainer/MarginContainer/TierController" index="1" unique_id=1802620561]
+material = ExtResource("14_lxpss")
 layout_mode = 2
 texture = ExtResource("30_ylct0")
 expand_mode = 3
 
 [node name="TextureRect3" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/GridContainer/VBoxContainer/InitLvAndTier/VBoxContainer/MarginContainer/TierController" index="2" unique_id=162738688]
+material = ExtResource("14_lxpss")
 layout_mode = 2
 texture = ExtResource("30_ylct0")
 expand_mode = 3
 
 [node name="TextureRect4" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/GridContainer/VBoxContainer/InitLvAndTier/VBoxContainer/MarginContainer/TierController" index="3" unique_id=1400119009]
 self_modulate = Color(0, 0, 0, 1)
+material = ExtResource("14_lxpss")
 layout_mode = 2
 texture = ExtResource("30_ylct0")
 expand_mode = 3
 
 [node name="TextureRect5" type="TextureRect" parent="Control/WindowContents/CenterContainer/window/MainContent/CommonItemDetails/GridContainer/VBoxContainer/InitLvAndTier/VBoxContainer/MarginContainer/TierController" index="4" unique_id=1082153872]
 self_modulate = Color(0, 0, 0, 1)
+material = ExtResource("14_lxpss")
 layout_mode = 2
 texture = ExtResource("30_ylct0")
 expand_mode = 3

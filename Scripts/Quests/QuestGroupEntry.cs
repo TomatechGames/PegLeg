@@ -3,13 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class QuestSlot
+public class QuestSlot(GameItemTemplate defaultTemplate)
 {
-	public QuestSlot(GameItemTemplate questTemplate)
-	{
-		this.questTemplate = questTemplate;
-	}
-
 	public void ClearQuestItem() => LinkQuestItem(null);
 	public void LinkQuestItem(GameItem newQuestItem)
 	{
@@ -18,12 +13,11 @@ public class QuestSlot
 		questItem?.OnChanged -= ProfileItemChanged;
 		questItem = newQuestItem;
 		questItem?.OnChanged += ProfileItemChanged;
-		//questTemplate = questItem?.template ?? questTemplate;
 		ProfileItemChanged();
 	}
 
 	public string questId => questItem?.templateId ?? questTemplate.TemplateId;
-	public GameItemTemplate questTemplate { get; private set; }
+	public GameItemTemplate questTemplate => questItem?.template ?? defaultTemplate;
 	public GameItem questItem { get; private set; }
 
 	void ProfileItemChanged() => OnPropertiesUpdated?.Invoke();

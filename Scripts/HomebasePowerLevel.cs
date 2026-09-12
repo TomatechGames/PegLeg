@@ -204,8 +204,9 @@ public partial class HomebasePowerLevel : Control
 			string[] cardpacksToOpen = [.. packsToClaim.Select(item => item.uuid)];
 			foreach (var cardpackId in cardpacksToOpen)
 			{
+				var original = profile.GetItem(cardpackId.ToString());
 				var resultNotification = (await profile.PerformOperation("OpenCardPack", new JsonObject() { ["cardPackItemId"] = cardpackId })).FirstOrDefault();
-				//record in Llamalytics
+				Llamalytics.TryAddCardpack(original, resultNotification?.AsObject());
 				if (resultNotification is not null)
 				{
 					var rewardData = resultNotification["lootGranted"]["items"].Deserialize<GameItem.ItemReward[]>();
