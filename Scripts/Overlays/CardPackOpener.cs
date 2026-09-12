@@ -317,14 +317,14 @@ public partial class CardPackOpener : Control
 					["cardPackItemIds"] = cardpacksToOpen
 				};
 
-				JsonArray resultItemData = [];
+				JsonNode[] resultItemData = [];
 				foreach (var cardpackId in cardpacksToOpen)
 				{
 					var original = account.GetProfile(FnProfileTypes.AccountItems).GetItem(cardpackId.ToString()).Clone();
 					var resultNotification = (await account.GetProfile(FnProfileTypes.AccountItems).PerformOperation("OpenCardPack", new JsonObject() { ["cardPackItemId"] = cardpackId.ToString() }))
 						.FirstOrDefault(n => n["type"].ToString() == "cardPackResult");
 					Llamalytics.TryAddCardpack(original, resultNotification?.AsObject());
-					resultItemData = resultNotification["lootGranted"]["items"].AsArray().SafeDeepClone();
+					resultItemData = [.. resultItemData, ..resultNotification["lootGranted"]["items"].AsArray()];
 				}
 
 				var resultItems = resultItemData
@@ -341,7 +341,7 @@ public partial class CardPackOpener : Control
 					.Select(val => account.GetProfile(val["itemProfile"].ToString()).GetItem(val["itemGuid"].ToString()))
 					.ToArray();
 
-				GD.Print("LlamaResult: \n" + resultItemData.ToString().FixNewlines());
+				GD.Print($"LlamaResult: [\n{resultItemData.JoinString(",\n")}\n]");
 
 				var exceptions = resultItemData
 					.Where(val => !val.AsObject().ContainsKey("itemGuid"))
