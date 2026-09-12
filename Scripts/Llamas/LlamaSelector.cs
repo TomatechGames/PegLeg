@@ -102,6 +102,7 @@ public partial class LlamaSelector : Control
 		var newLlamaItems = newLlamaItemProfile.GetItems("CardPack");
 		foreach (var kvp in inventoryLlamaEntries)
 		{
+			kvp.Value.Visible = false;
 			llamaItemEntryPool.Enqueue(kvp.Value);
 		}
 		inventoryLlamaEntries.Clear();

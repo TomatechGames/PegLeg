@@ -78,7 +78,7 @@ public partial class ReleaseTool : EditorScript
 		{
 			status = $"Uncommitted Changes ({untracked}+{added}+{modified}+{removed}+{missing} = {totalChanges})";
 			GD.Print(status);
-			//return false;
+			return false;
 		}
 
 		var latestCommit = repo.Head.Commits.FirstOrDefault();
@@ -128,13 +128,10 @@ public partial class ReleaseTool : EditorScript
 		//todo: auto switch presets depending on if ver number is beta
 		//start exports
 		Task buildTasks = Task.CompletedTask;
-		if (!skipExport)
+		//if (!skipExport)
 		{
 			GD.Print("Starting exports");
-			buildTasks = Task.WhenAll(
-				ExportWindows(true),
-				ExportAndroid(true)
-			);
+			buildTasks = ExportAll(true, skipExport);
 		}
 
 		string ghKey = null;
@@ -257,13 +254,23 @@ public partial class ReleaseTool : EditorScript
 		OS.ShellOpen(releaseData.html_url.Replace("/tag/", "/edit/"));
 	}
 
-	private static async Task ExportWindows(bool isBeta)
+	private static async Task ExportAll(bool isBeta, bool skipExport)
+	{
+		await ExportWindows(isBeta, skipExport);
+		if(!skipExport)
+		await ExportAndroid(isBeta);
+	}
+
+	private static async Task ExportWindows(bool isBeta, bool skipExport)
 	{
 		const string baseOutPath = "C:\\Users\\Tomatech\\Repositories\\TomatechGames\\Godot Projects\\PegLeg\\Builds\\Windows";
-		int exportStatus = 0;
-		await Task.Run(() => exportStatus = OS.Execute(OS.GetExecutablePath(), ["--headless", "--export-release", isBeta ? "Windows (Test)" : "Windows", $"{baseOutPath}\\Beta\\Build\\PegLeg.exe"], openConsole: true));
-		if (exportStatus != 0)
-			throw new ApplicationException($"Windows Export Failed: {exportStatus}");
+		if (!skipExport)
+		{
+			int exportStatus = 0;
+			await Task.Run(() => exportStatus = OS.Execute(OS.GetExecutablePath(), ["--headless", "--export-release", isBeta ? "Windows (Test)" : "Windows", $"{baseOutPath}\\Beta\\Build\\PegLeg.exe"], openConsole: true));
+			if (exportStatus != 0)
+				throw new ApplicationException($"Windows Export Failed: {exportStatus}");
+		}
 		int compressStatus = 0;
 		int installerStatus = 0;
 		await Task.WhenAll(
